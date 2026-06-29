@@ -1,2 +1,0 @@
-# Kodranni
-Hybrid TTRPG Concept
