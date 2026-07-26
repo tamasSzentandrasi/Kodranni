@@ -63,8 +63,8 @@ Different dice types simulate Advantage or Disadvantage, incorporating **context
 Kodranni dice pools are assembled from three distinct sources:
 
 - The level of the appropriate **Foundation** (1 to 3) — Foundations are inborn potential tracked within a very narrow set of human capability. Nearly static (aging and traumatic events may shift it). (See the Foundations chapter for more details.)
-- The level of the appropriate **Skills** (0 to 3) — practiced ability that matches the intent. Skills also improve with usage, both by failing at their use as well as succeeding.The Storyteller selects the most fitting category from the player’s description of what is being attempted. (See Skills chapter for an in depth look.)
-- **Exertion** (optional, single extra die, two at most if situation involves an Echo) — Fully Player controller resource. Substitutes fatigue, hunger, thirst, and is regained by sleeping, eating, drinking. (For more details, see the Exertion chapter)
+- The level of the appropriate **Skills** (0 to 3) — practiced ability that matches the intent. Skills also improve with usage, both by failing at their use as well as succeeding. The Storyteller selects the most fitting category from the player’s description of what is being attempted. (See Skills chapter for an in depth look.)
+- **Exertion** (optional, single extra die, two at most if situation involves an Echo) — Fully player-controlled resource. Substitutes fatigue, hunger, thirst, and is regained by sleeping, eating, drinking. (For more details, see the Exertion chapter)
 
 The base formula:
 
@@ -154,10 +154,12 @@ Omens rolled on any action connected to the Tide also affect it. The thresholds 
 
 Disadvantage lowers the thresholds for the disadvantaged side (negative Omens become more likely, positive less so). Severe disadvantage (the equivalent of d6 versus d12) shifts the thresholds by two full levels. Individual actions still receive their own case-by-case Advantage or Disadvantage; the macro adjustment applies only to the Tide’s Omen thresholds.
 
-When one side’s remaining Tide reaches zero, that collective side **routes**. Morale breaks. The group as a whole crumbles or flees. Individuals may still choose to stand and fight — and die a foolish, heroic, or simply stubborn death if that is what they elect. The Tide breaks collective will; it does not force personal surrender.
+Just to understand, both sides operate on the **same** scale, it's position is what they are both shifting by their actions.
+
+When one side’s Tide reaches it's end, that collective side **routes**. Morale breaks. The group as a whole crumbles or flees. Individuals may still choose to stand and fight, or in a non-physical contest, to refuse to give up — and die a foolish, heroic, or simply stubborn death, suffer ridicule, or a major setback - if that is what they elect. The Tide breaks collective will; it does not force personal surrender.
 
 > You can do everything in your power, yet if the rest of your side is being butchered, you will still find yourself flanked.
-> Addtional good hint for the Storytellers: Do not turn contests into grinding roll-battles for no reason. Set Omen faces to trigger additional events to influence the Tide tracker, and do not force your Players to play out the entire event - the Tide situation - if they no longer intend to participate (early looting, disengaging, retreating, pursuing personal objectives that the battle no longer supplies)
+> Additional good hint for the Storytellers: Do not turn contests into grinding roll-battles for no reason. Set Omen faces to trigger additional events to influence the Tide tracker, and do not force your Players to play out the entire event - the Tide situation - if they no longer intend to participate (early looting, disengaging, retreating, pursuing personal objectives that the battle no longer supplies)
 
 The bot tracks the Tide, connects individual rolls to it (a reply to a roll designates it as the opposing roll or links it to the current Tide), and handles the arithmetic. The table’s work remains narrative.
 
