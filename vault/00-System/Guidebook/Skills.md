@@ -10,7 +10,7 @@ Skills are organised under seven **Archetypes** (personified categories). These 
 - Warrior  
 - Traveller  
 - Artisan  
-- Witch  
+- Mother  
 - Sage  
 - Elder  
 - Thief  
