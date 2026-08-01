@@ -122,7 +122,8 @@ Some hints to help:
 
 ----------
 
- “In battle, momentum means riding on the force of the tide of events.” — Sun Tzu
+> _*“In battle, momentum means riding on the force of the tide of events.”*_  
+> — Sun Tzu
 
  ----------
 
