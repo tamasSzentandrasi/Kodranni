@@ -9,11 +9,11 @@ The representation of human capacity is a rather delicate task. By nature, we ar
 
 ...and on top of that, we can exert ourselves to perform above our expected levels, and motivate ourselves to overperform.
 
-These are all neatly represented in the game, each with it's own uniqueness:
+These are all neatly represented in the game, each with its own uniqueness:
 
 - **Foundations**: The inborn potential you are born with. Barring dramatic events, or the passage of long spans of time - aging, **static measure of capability**. The cause of so much variety in humans, and it influences what comes easy or hard to us as well (not just in the plain sense!).
-- **Skills**: Practiced abilities, domains, where improvement is *possible* - or rather more precisely change, *inevitable* - it's effects noticeable. Will made manifest (little spoiler).
+- **Skills**: Practiced abilities, domains, where improvement is *possible* - or rather more precisely change, *inevitable* - its effects noticeable. Will made manifest (little spoiler).
 - **Traits**: Tricks of specificity. The infinite variety of life. Binary, by nature, you know some method, have some unique condition, capable of performing a certain task - *or you are not*.
-- **Exertion**: The will to go above and beyond your potential, and the measure of it's possibility. **Fatigue, Hunger, Thirst** - they all map into this one measure.
+- **Exertion**: The will to go above and beyond your potential, and the measure of its possibility. **Fatigue, Hunger, Thirst** - they all map into this one measure.
 
 ----------
