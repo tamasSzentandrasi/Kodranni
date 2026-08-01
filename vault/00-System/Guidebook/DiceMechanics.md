@@ -164,4 +164,6 @@ When one side’s Tide reaches it's end, that collective side **routes**. Morale
 
 The bot tracks the Tide, connects individual rolls to it (a reply to a roll designates it as the opposing roll or links it to the current Tide), and handles the arithmetic. The table’s work remains narrative.
 
+> ***Crucial point: There is no requirement to resolve the Tide mechanically. Most of the time, narrative end-consequences, abandoned fights, retreats, negotiations do NOT end in total victory/defeat. Do not make your players grind out tides unnecessarily!***
+
  ----------
