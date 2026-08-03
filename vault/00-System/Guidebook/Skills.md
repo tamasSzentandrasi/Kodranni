@@ -56,7 +56,7 @@ High inborn potential therefore accelerates learning. Low potential slows it. Th
 
 ### Warrior (12)
 
-1. **Slash** (Dexterity) — cutting edges used in chopping or sweeping cuts  
+1. **Slash** (Strength) — cutting edges used in chopping or sweeping cuts  
 2. **Pierce** (Dexterity) — point work and thrusts  
 3. **Bash** (Strength) — blunt impact weapons and strikes  
 4. **Unarmed** (Strength) — striking and grappling without weapons  
@@ -67,7 +67,7 @@ High inborn potential therefore accelerates learning. Low potential slows it. Th
 9. **Tactics** (Intellect) — reading the shape of a fight, positioning, and exploiting terrain and numbers  
 10. **Footwork** (Constitution) — mobility, balance and positioning in combat  
 11. **Combat Awareness** (Perception) — noticing openings, threats and shifts in the immediate fight  
-12. **Thrown** (Strength) — any thrown weapon or object used to strike or disable  
+12. **Thrown** (Dexterity) — any thrown weapon or object used to strike or disable  
 
 ----------
 
@@ -109,10 +109,10 @@ High inborn potential therefore accelerates learning. Low potential slows it. Th
 
 1. **Cooking & Preserving** (Resolve) — preparation and preservation of food  
 2. **Herbalism** (Intellect) — medicinal plants and poisons  
-3. **Childcare** (Charisma) — raising children and midwifery  
+3. **Childcare** (Resolve) — raising children and midwifery  
 4. **Animal Husbandry** (Resolve) — breeding, care and management of domestic animals  
 5. **Farming** (Strength) — soil, crops and field management  
-6. **Empathy** (Resolve) — reading emotional states and offering personal support  
+6. **Empathy** (Charisma) — reading emotional states and offering personal support  
 7. **Expression & Singing** (Charisma) — performance through voice, body and presence  
 8. **Healing** (Resolve) — physical treatment of the body, wounds and injury  
 9. **Etiquette** (Resolve) — proper forms, manners and social conduct in domestic and relational settings  
