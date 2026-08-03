@@ -5,14 +5,13 @@
 
 ### Skills and Archetypes
 
-Skills are organised under seven **Archetypes** (personified categories). These are not character classes. They are simply the broad domains into which individual Skills fall:
+Skills are organised under six **Archetypes** (personified categories). These are not character classes. They are simply the broad domains into which individual Skills fall:
 
 - Warrior  
 - Traveller  
 - Artisan  
 - Mother  
 - Sage  
-- Elder  
 - Thief  
 
 **Skills are rated between 0 and 3.**
@@ -55,7 +54,7 @@ High inborn potential therefore accelerates learning. Low potential slows it. Th
 
 ----------
 
-### Warrior (12 — complete)
+### Warrior (12)
 
 1. **Slash** (Strength) — cutting edges used in chopping or sweeping cuts  
 2. **Pierce** (Dexterity) — point work and thrusts  
@@ -72,11 +71,11 @@ High inborn potential therefore accelerates learning. Low potential slows it. Th
 
 ----------
 
-### Traveller (12 — complete)
+### Traveller (12)
 
 1. **Scouting** (Perception) — pathfinding, navigation by stars, landmarks and trails, reading terrain for travel  
-2. **Hunting & Tracking** (Perception) — locating, following and taking game  
-3. **Wilderness** (Perception) — edible plants, fungi, fishing, traps and general living off the land  
+2. **Trapping & Tracking** (Perception) — locating, following, and the design and use of traps  
+3. **Foraging & Fishing** (Perception) — edible plants, fungi, water sources and fishing  
 4. **Archery** (Dexterity) — all bows  
 5. **Sailing & Navigation** (Strength) — small craft, rivers, lakes and basic seamanship  
 6. **Animal Handling** (Constitution) — wild animals and the training or handling of companions  
@@ -84,12 +83,12 @@ High inborn potential therefore accelerates learning. Low potential slows it. Th
 8. **Riding** (Dexterity) — control of a mount under combat and travel stress  
 9. **Ambush & Camouflage** (Perception) — choosing ground and using natural cover for surprise or concealment  
 10. **Swimming** (Constitution) — movement and survival in water  
-11. **Climbing** (Dexterity) — ascending and traversing vertical or difficult terrain  
+11. **Wilderness** (Intellect) — knowledge of nature, terrain and the living world  
 12. **Tradecraft** (Guile) — exchange, value negotiation and market dealings on the road  
 
 ----------
 
-### Artisan (12 — complete)
+### Artisan (12)
 
 1. **Tailoring & Armory** (Dexterity) — cloth, leather, soft materials and the construction or repair of protective gear  
 2. **Smithing & Forging** (Strength) — working metal at the forge  
@@ -106,7 +105,7 @@ High inborn potential therefore accelerates learning. Low potential slows it. Th
 
 ----------
 
-### Mother (12 — complete)
+### Mother (12)
 
 1. **Cooking & Preserving** (Perception) — preparation and preservation of food  
 2. **Herbalism** (Perception) — medicinal plants and poisons  
@@ -123,7 +122,7 @@ High inborn potential therefore accelerates learning. Low potential slows it. Th
 
 ----------
 
-### Sage (7 — needs more)
+### Sage (12)
 
 1. **Debate & Rhetoric** (Charisma) — structured argument and persuasive speech  
 2. **Arithmetic & Accounting** (Intellect)  
@@ -132,37 +131,29 @@ High inborn potential therefore accelerates learning. Low potential slows it. Th
 5. **Cartography** (Intellect)  
 6. **Mentoring** (Charisma)  
 7. **Illustration** (Dexterity) — technical drawing, diagrams, schematics and visual recording of knowledge  
-
-*Reading & Writing, Reasoning, and the old Research & Invention removed. Gaps remain.*
-
-----------
-
-### Elder (5 — needs more)
-
-1. **Negotiation** (Guile)  
-2. **Insight** (Perception) — pure reading of motives, emotional state and unspoken position  
-3. **Strategy** (Intellect)  
-4. **Ritual** (Intellect)  
-5. **Preaching** (Charisma)  
-
-*Persuasion removed.*
+8. **Negotiation** (Guile)  
+9. **Insight** (Perception) — pure reading of motives, emotional state and unspoken position  
+10. **Strategy** (Intellect)  
+11. **Ritual** (Intellect)  
+12. **Preaching** (Charisma)  
 
 ----------
 
-### Thief (9 — needs more)
+### Thief (12)
 
 1. **Lockpicking** (Dexterity)  
 2. **Pickpocket** (Dexterity)  
 3. **Sneak** (Dexterity)  
 4. **Forgery** (Dexterity)  
-5. **Slander** (Guile)  
+5. **Slander & Ridicule** (Guile)  
 6. **Smuggling** (Guile)  
 7. **Deception** (Guile)  
 8. **Streetwise** (Perception)  
 9. **Acrobatics** (Dexterity)  
-
-*Extortion removed.*
+10. **Sleight of Hand** (Dexterity)  
+11. **Off-hand & Improvised Combat** (Dexterity)  
+12. **Climbing** (Dexterity)  
 
 ----------
 
-*Current gaps: Sage (needs ~5), Elder (needs ~7), Thief (needs ~3). Social methods now partially cleaned.*
+*Structural list complete at 72 skills across 6 Archetypes. Foundation balancing to follow.*
