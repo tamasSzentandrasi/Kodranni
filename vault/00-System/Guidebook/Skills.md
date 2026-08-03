@@ -19,7 +19,7 @@ Skills are organised under seven **Archetypes** (personified categories). These 
 
 A rating of 0 means the character has no meaningful practice in that specific Skill. A rating of 3 means he's extremely practiced in that domain.
 
-The concrete Skills for each Archetype are listed below. Each Skill has a single ruling **Foundation** that governs its Practice thresholds.
+Each Skill has a single ruling **Foundation** that governs its Practice thresholds.
 
 Specific techniques, regional styles, named tools, or binary capabilities remain **Traits**.
 
@@ -55,47 +55,41 @@ High inborn potential therefore accelerates learning. Low potential slows it. Th
 
 ----------
 
-### Warrior
-
-The domain of violence, martial practice, and the mental edge required in combat.
+### Warrior (12 — complete)
 
 1. **Slash** (Strength) — cutting edges used in chopping or sweeping cuts  
 2. **Pierce** (Dexterity) — point work and thrusts  
 3. **Bash** (Strength) — blunt impact weapons and strikes  
 4. **Unarmed** (Strength) — striking and grappling without weapons  
-5. **Intimidate** (Authority)
-6. Footwork?
-7. Combat Awareness?
-8. **Deflection** (Dexterity) — active redirection with weapon or shield  
-9. **Command** (Authority) 
-10. **Counter** (Dexterity) — the practiced immediate reply after a successful Dodge or Deflection  
-11. Athletics?
-12. **Tactics** (Intellect) — reading the shape of a fight, positioning, and exploiting terrain and numbers in combat  
+5. **Intimidate** (Authority) — projecting threat through demonstrated or implied capacity for violence  
+6. **Deflection** (Dexterity) — active redirection with weapon or shield  
+7. **Counter** (Dexterity) — the practiced immediate reply after a successful Deflection or Dodge  
+8. **Command** (Authority) — issuing orders that are obeyed in the heat of combat or under immediate physical threat  
+9. **Tactics** (Intellect) — reading the shape of a fight, positioning, and exploiting terrain and numbers  
+10. **Footwork** (Dexterity) — mobility, balance and positioning in combat  
+11. **Combat Awareness** (Perception) — noticing openings, threats and shifts in the immediate fight  
+12. **Thrown** (Dexterity) — any thrown weapon or object used to strike or disable  
 
 ----------
 
-### Traveller
-
-Pathfinding, survival, movement through the world, and the practical arts of the road and wild.
+### Traveller (12 — complete)
 
 1. **Scouting** (Perception) — pathfinding, navigation by stars, landmarks and trails, reading terrain for travel  
 2. **Hunting & Tracking** (Perception) — locating, following and taking game  
-3. **Wilderness** (Perception) — edible plants, fungi, fishing, and the design and use of traps and snares  
+3. **Wilderness** (Perception) — edible plants, fungi, fishing, traps and general living off the land  
 4. **Archery** (Dexterity) — all bows  
 5. **Sailing & Navigation** (Strength) — small craft, rivers, lakes and basic seamanship  
 6. **Animal Handling** (Constitution) — wild animals and the training or handling of companions  
-7. **Dodge** (Dexterity) — pure evasion and body movement out of the line of attack 
-8. **Thrown** (Dexterity) — any thrown weapon or object used to strike or disable 
-9. **Riding** (Dexterity) — control of a mount under combat and travel stress  
-10. **Ambush & Camouflage** (Perception) — choosing ground and using natural cover for surprise or concealment while travelling or hunting  
-11. **Swimming** (Constitution) — movement and survival in water  
-12. **Climbing** (Dexterity) — ascending and traversing vertical or difficult terrain  
+7. **Dodge** (Dexterity) — pure evasion and body movement out of the line of attack  
+8. **Riding** (Dexterity) — control of a mount under combat and travel stress  
+9. **Ambush & Camouflage** (Perception) — choosing ground and using natural cover for surprise or concealment  
+10. **Swimming** (Constitution) — movement and survival in water  
+11. **Climbing** (Dexterity) — ascending and traversing vertical or difficult terrain  
+12. **Tradecraft** (Guile) — exchange, value negotiation and market dealings on the road  
 
 ----------
 
-### Artisan
-
-The practiced making, repairing and designing of the material world.
+### Artisan (12 — complete)
 
 1. **Tailoring & Armory** (Dexterity) — cloth, leather, soft materials and the construction or repair of protective gear  
 2. **Smithing & Forging** (Strength) — working metal at the forge  
@@ -105,62 +99,70 @@ The practiced making, repairing and designing of the material world.
 6. **Shipwright** (Strength) — building and repairing boats and ships  
 7. **Engineering & Design** (Intellect) — simple machines, structural planning and mechanisms  
 8. **Bowyer & Fletcher** (Dexterity) — bows, arrows and related equipment  
-9. Appraising?
-10. **Handcrafting** (Dexterity) — improvised tools and objects from bone, wood, sinew, stone and available materials 
-11. Foremanship? Is that even a word? 
+9. **Appraisal** (Perception) — judging value, authenticity and quality of objects and materials  
+10. **Handcrafting** (Dexterity) — improvised tools and objects from bone, wood, sinew, stone and available materials  
+11. **Oversight** (Authority) — directing and coordinating groups of workers  
 12. **Tinkering & Repair** (Dexterity) — diagnosing, adjusting and restoring existing tools, mechanisms and objects  
 
 ----------
 
-### Mother
-
-Caring, healing, the domestic and agricultural sphere, relationships, and their shadow.
+### Mother (12 — complete)
 
 1. **Cooking & Preserving** (Perception) — preparation and preservation of food  
 2. **Herbalism** (Perception) — medicinal plants and poisons  
 3. **Childcare** (Charisma) — raising children and midwifery  
 4. **Animal Husbandry** (Constitution) — breeding, care and management of domestic animals  
 5. **Farming** (Constitution) — soil, crops and field management  
-6. **Counseling** (Perception) — empathy, reading emotional states and offering personal support  
-7. Leveraging? - as in using hooks, position in family, etc?
-8. **Expression** (Charisma) — dancing, performing and related expressive arts  
-9. **Healing** (Dexterity) — physical treatment of the body, wounds and injury  
-10. **Singing** (Constitution)
-11. **Etiquette** (Charisma) — proper forms, manners and social conduct in domestic and relational settings  
-12. **Seduction** (Guile) — intimate influence, charm and emotional leverage in personal relationships  
+6. **Empathy** (Perception) — reading emotional states and offering personal support  
+7. **Expression** (Charisma) — dancing and non-vocal performance  
+8. **Healing** (Dexterity) — physical treatment of the body, wounds and injury  
+9. **Singing** (Constitution)  
+10. **Etiquette** (Charisma) — proper forms, manners and social conduct in domestic and relational settings  
+11. **Seduction** (Guile) — intimate influence, charm and emotional leverage in personal relationships  
+12. **Influence** (Authority) — using relational position, obligations and family hooks  
 
 ----------
 
-### Sage
+### Sage (11 — needs 1 more)
 
-**Reading & Writing**
-**Debate**
-**Rhetoric**
-**Arithmetic & Accounting**
-**Investigation**
-**Folklore & Heraldry**
-**Research & Invention**
-**Cartography** (Intellect) — recording routes and making or using crude maps  
-**Mentoring** (Charisma) — training apprentices and transmitting craft knowledge
-**Reasoning** (Intellect) — applied practical analysis and logical problem-solving in technical contexts  
-
-----------
-
-### Elder
-
-**Persuasion** (Charisma) — influencing others through presence 
-**Negotiation**
-**Insight**
-**Strategy**
+1. **Reading & Writing** (Intellect)  
+2. **Debate** (Intellect)  
+3. **Rhetoric** (Charisma)  
+4. **Arithmetic & Accounting** (Intellect)  
+5. **Investigation** (Perception)  
+6. **Folklore & Heraldry** (Intellect)  
+7. **Research & Invention** (Intellect)  
+8. **Cartography** (Intellect)  
+9. **Mentoring** (Charisma)  
+10. **Reasoning** (Intellect)  
+11. **Illustration** (Dexterity) — technical drawing, diagrams, schematics and visual recording of knowledge  
 
 ----------
 
-### Thief
+### Elder (6 — needs 6 more)
 
-**Tradecraft** (Charisma) — exchange, value negotiation and market dealings  
-**Lockpicking**
-**Pickpocket**
-**Sneak**
-Some form of improvised combat using your surroundings?
-Acrobatics? 
-Deception?
+1. **Persuasion** (Charisma)  
+2. **Negotiation** (Guile)  
+3. **Insight** (Perception)  
+4. **Strategy** (Intellect)  
+5. **Ritual** (Intellect)  
+6. **Preaching** (Charisma)  
+
+----------
+
+### Thief (10 — needs 2 more)
+
+1. **Lockpicking** (Dexterity)  
+2. **Pickpocket** (Dexterity)  
+3. **Sneak** (Dexterity)  
+4. **Forgery** (Dexterity)  
+5. **Slander** (Guile)  
+6. **Extortion** (Guile)  
+7. **Smuggling** (Guile)  
+8. **Deception** (Guile)  
+9. **Streetwise** (Perception)  
+10. **Acrobatics** (Dexterity)  
+
+----------
+
+*Gaps remain in Sage (1), Elder (6) and Thief (2).*
