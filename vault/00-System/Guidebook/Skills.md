@@ -63,13 +63,13 @@ The domain of violence, martial practice, and the mental edge required in combat
 2. **Pierce** (Dexterity) — point work and thrusts  
 3. **Bash** (Strength) — blunt impact weapons and strikes  
 4. **Unarmed** (Strength) — striking and grappling without weapons  
-5. **Archery** (Dexterity) — all bows  
-6. **Thrown** (Dexterity) — any thrown weapon or object used to strike or disable  
-7. **Dodge** (Dexterity) — pure evasion and body movement out of the line of attack  
+5. **Intimidate** (Authority)
+6. Footwork?
+7. Combat Awareness?
 8. **Deflection** (Dexterity) — active redirection with weapon or shield  
-9. **Guard** (Constitution) — sustained defensive posture, absorbing force, holding ground or protecting another  
+9. **Command** (Authority) 
 10. **Counter** (Dexterity) — the practiced immediate reply after a successful Dodge or Deflection  
-11. **Riding** (Dexterity) — control of a mount under combat and travel stress  
+11. Athletics?
 12. **Tactics** (Intellect) — reading the shape of a fight, positioning, and exploiting terrain and numbers in combat  
 
 ----------
@@ -80,13 +80,13 @@ Pathfinding, survival, movement through the world, and the practical arts of the
 
 1. **Scouting** (Perception) — pathfinding, navigation by stars, landmarks and trails, reading terrain for travel  
 2. **Hunting & Tracking** (Perception) — locating, following and taking game  
-3. **Foraging & Trapping** (Perception) — edible plants, fungi, water sources, and the design and use of traps and snares  
-4. **Handcrafting** (Dexterity) — improvised tools and objects from bone, wood, sinew, stone and available materials  
-5. **Sailing** (Strength) — small craft, rivers, lakes and basic seamanship  
+3. **Wilderness** (Perception) — edible plants, fungi, fishing, and the design and use of traps and snares  
+4. **Archery** (Dexterity) — all bows  
+5. **Sailing & Navigation** (Strength) — small craft, rivers, lakes and basic seamanship  
 6. **Animal Handling** (Constitution) — wild animals and the training or handling of companions  
-7. **Fishing** (Perception) — lines, nets, spears and reading water  
-8. **Cartography** (Intellect) — recording routes and making or using crude maps  
-9. **Bartering & Haggling** (Guile) — exchange, value negotiation and market dealing on the road  
+7. **Dodge** (Dexterity) — pure evasion and body movement out of the line of attack 
+8. **Thrown** (Dexterity) — any thrown weapon or object used to strike or disable 
+9. **Riding** (Dexterity) — control of a mount under combat and travel stress  
 10. **Ambush & Camouflage** (Perception) — choosing ground and using natural cover for surprise or concealment while travelling or hunting  
 11. **Swimming** (Constitution) — movement and survival in water  
 12. **Climbing** (Dexterity) — ascending and traversing vertical or difficult terrain  
@@ -105,9 +105,9 @@ The practiced making, repairing and designing of the material world.
 6. **Shipwright** (Strength) — building and repairing boats and ships  
 7. **Engineering & Design** (Intellect) — simple machines, structural planning and mechanisms  
 8. **Bowyer & Fletcher** (Dexterity) — bows, arrows and related equipment  
-9. **Prospecting** (Perception) — locating and identifying workable deposits of ore, stone and similar materials  
-10. **Mentoring** (Charisma) — training apprentices and transmitting craft knowledge  
-11. **Reasoning** (Intellect) — applied practical analysis and logical problem-solving in technical contexts  
+9. Appraising?
+10. **Handcrafting** (Dexterity) — improvised tools and objects from bone, wood, sinew, stone and available materials 
+11. Foremanship? Is that even a word? 
 12. **Tinkering & Repair** (Dexterity) — diagnosing, adjusting and restoring existing tools, mechanisms and objects  
 
 ----------
@@ -121,14 +121,46 @@ Caring, healing, the domestic and agricultural sphere, relationships, and their 
 3. **Childcare** (Charisma) — raising children and midwifery  
 4. **Animal Husbandry** (Constitution) — breeding, care and management of domestic animals  
 5. **Farming** (Constitution) — soil, crops and field management  
-6. **Empathy & Counsel** (Perception) — reading emotional states and offering personal support  
-7. **Persuasion** (Charisma) — influencing others through reason, feeling or presence  
-8. **Performance** (Charisma) — singing, dancing and related expressive arts  
+6. **Counseling** (Perception) — empathy, reading emotional states and offering personal support  
+7. Leveraging? - as in using hooks, position in family, etc?
+8. **Expression** (Charisma) — dancing, performing and related expressive arts  
 9. **Healing** (Dexterity) — physical treatment of the body, wounds and injury  
-10. **Stewardship** (Intellect) — management of household resources, stores, labour and domestic order  
+10. **Singing** (Constitution)
 11. **Etiquette** (Charisma) — proper forms, manners and social conduct in domestic and relational settings  
 12. **Seduction** (Guile) — intimate influence, charm and emotional leverage in personal relationships  
 
 ----------
 
-*Sage, Elder and Thief remain to be defined.*
+### Sage
+
+**Reading & Writing**
+**Debate**
+**Rhetoric**
+**Arithmetic & Accounting**
+**Investigation**
+**Folklore & Heraldry**
+**Research & Invention**
+**Cartography** (Intellect) — recording routes and making or using crude maps  
+**Mentoring** (Charisma) — training apprentices and transmitting craft knowledge
+**Reasoning** (Intellect) — applied practical analysis and logical problem-solving in technical contexts  
+
+----------
+
+### Elder
+
+**Persuasion** (Charisma) — influencing others through presence 
+**Negotiation**
+**Insight**
+**Strategy**
+
+----------
+
+### Thief
+
+**Tradecraft** (Charisma) — exchange, value negotiation and market dealings  
+**Lockpicking**
+**Pickpocket**
+**Sneak**
+Some form of improvised combat using your surroundings?
+Acrobatics? 
+Deception?
