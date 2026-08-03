@@ -56,18 +56,18 @@ High inborn potential therefore accelerates learning. Low potential slows it. Th
 
 ### Warrior (12)
 
-1. **Slash** (Strength) — cutting edges used in chopping or sweeping cuts  
+1. **Slash** (Dexterity) — cutting edges used in chopping or sweeping cuts  
 2. **Pierce** (Dexterity) — point work and thrusts  
 3. **Bash** (Strength) — blunt impact weapons and strikes  
 4. **Unarmed** (Strength) — striking and grappling without weapons  
 5. **Intimidate** (Authority) — projecting threat through demonstrated or implied capacity for violence  
-6. **Deflection** (Dexterity) — active redirection with weapon or shield  
-7. **Counter** (Dexterity) — the practiced immediate reply after a successful Deflection or Dodge  
+6. **Deflection** (Resolve) — active redirection with weapon or shield  
+7. **Counter** (Resolve) — the practiced immediate reply after a successful Deflection or Dodge  
 8. **Command** (Authority) — issuing orders that are obeyed in the heat of combat or under immediate physical threat  
-9. **Tactics** (Resolve) — reading the shape of a fight, positioning, and exploiting terrain and numbers  
-10. **Footwork** (Dexterity) — mobility, balance and positioning in combat  
+9. **Tactics** (Intellect) — reading the shape of a fight, positioning, and exploiting terrain and numbers  
+10. **Footwork** (Constitution) — mobility, balance and positioning in combat  
 11. **Combat Awareness** (Perception) — noticing openings, threats and shifts in the immediate fight  
-12. **Thrown** (Dexterity) — any thrown weapon or object used to strike or disable  
+12. **Thrown** (Strength) — any thrown weapon or object used to strike or disable  
 
 ----------
 
@@ -75,48 +75,48 @@ High inborn potential therefore accelerates learning. Low potential slows it. Th
 
 1. **Scouting** (Perception) — pathfinding, navigation by stars, landmarks and trails, reading terrain for travel  
 2. **Trapping & Tracking** (Perception) — locating, following, and the design and use of traps  
-3. **Foraging & Fishing** (Perception) — edible plants, fungi, water sources and fishing  
-4. **Archery** (Dexterity) — all bows  
-5. **Sailing & Navigation** (Strength) — small craft, rivers, lakes and basic seamanship  
-6. **Animal Handling** (Constitution) — wild animals and the training or handling of companions  
+3. **Foraging & Fishing** (Constitution) — edible plants, fungi, water sources and fishing  
+4. **Archery** (Perception) — all bows  
+5. **Sailing & Navigation** (Perception) — small craft, rivers, lakes and basic seamanship  
+6. **Animal Handling** (Resolve) — wild animals and the training or handling of companions  
 7. **Dodge** (Dexterity) — pure evasion and body movement out of the line of attack  
-8. **Riding** (Dexterity) — control of a mount under combat and travel stress  
-9. **Ambush & Camouflage** (Perception) — choosing ground and using natural cover for surprise or concealment  
+8. **Riding** (Authority) — control of a mount under combat and travel stress  
+9. **Ambush & Camouflage** (Guile) — choosing ground and using natural cover for surprise or concealment  
 10. **Swimming** (Constitution) — movement and survival in water  
-11. **Wilderness** (Intellect) — knowledge of nature, terrain and the living world  
-12. **Tradecraft** (Guile) — exchange, value negotiation and market dealings on the road  
+11. **Wilderness** (Constitution) — knowledge of nature, terrain and the living world  
+12. **Tradecraft** (Charisma) — exchange, value negotiation and market dealings on the road  
 
 ----------
 
 ### Artisan (12)
 
-1. **Tailoring & Armory** (Dexterity) — cloth, leather, soft materials and the construction or repair of protective gear  
+1. **Tailoring & Armory** (Constitution) — cloth, leather, soft materials and the construction or repair of protective gear  
 2. **Smithing & Forging** (Strength) — working metal at the forge  
 3. **Carpentry & Masonry** (Strength) — timber and stone construction and shaping  
-4. **Brewing** (Intellect) — fermentation and liquid preservation  
+4. **Brewing** (Constitution) — fermentation and liquid preservation  
 5. **Fine Crafts** (Dexterity) — jewellery, glass and equivalent high-precision work  
 6. **Shipwright** (Strength) — building and repairing boats and ships  
 7. **Engineering & Design** (Intellect) — simple machines, structural planning and mechanisms  
-8. **Bowyer & Fletcher** (Dexterity) — bows, arrows and related equipment  
+8. **Bowyer & Fletcher** (Constitution) — bows, arrows and related equipment  
 9. **Appraisal** (Perception) — judging value, authenticity and quality of objects and materials  
 10. **Handcrafting** (Dexterity) — improvised tools and objects from bone, wood, sinew, stone and available materials  
 11. **Oversight** (Authority) — directing and coordinating groups of workers  
-12. **Tinkering & Repair** (Dexterity) — diagnosing, adjusting and restoring existing tools, mechanisms and objects  
+12. **Tinkering & Repair** (Constitution) — diagnosing, adjusting and restoring existing tools, mechanisms and objects  
 
 ----------
 
 ### Mother (12)
 
-1. **Cooking & Preserving** (Perception) — preparation and preservation of food  
-2. **Herbalism** (Perception) — medicinal plants and poisons  
+1. **Cooking & Preserving** (Resolve) — preparation and preservation of food  
+2. **Herbalism** (Intellect) — medicinal plants and poisons  
 3. **Childcare** (Charisma) — raising children and midwifery  
-4. **Animal Husbandry** (Constitution) — breeding, care and management of domestic animals  
-5. **Farming** (Constitution) — soil, crops and field management  
+4. **Animal Husbandry** (Resolve) — breeding, care and management of domestic animals  
+5. **Farming** (Strength) — soil, crops and field management  
 6. **Empathy** (Resolve) — reading emotional states and offering personal support  
 7. **Expression & Singing** (Charisma) — performance through voice, body and presence  
 8. **Healing** (Resolve) — physical treatment of the body, wounds and injury  
-9. **Etiquette** (Charisma) — proper forms, manners and social conduct in domestic and relational settings  
-10. **Seduction** (Guile) — intimate influence, charm and emotional leverage in personal relationships  
+9. **Etiquette** (Resolve) — proper forms, manners and social conduct in domestic and relational settings  
+10. **Seduction** (Charisma) — intimate influence, charm and emotional leverage in personal relationships  
 11. **Influence** (Authority) — using relational position, obligations and family hooks  
 12. **Muse** (Authority) — inspiring others to action, feeling or creation  
 
@@ -124,36 +124,34 @@ High inborn potential therefore accelerates learning. Low potential slows it. Th
 
 ### Sage (12)
 
-1. **Debate & Rhetoric** (Resolve) — structured argument and persuasive speech  
-2. **Arithmetic & Accounting** (Intellect)  
-3. **Investigation** (Resolve)  
-4. **Folklore & Heraldry** (Intellect)  
-5. **Cartography** (Intellect)  
-6. **Mentoring** (Resolve)  
-7. **Illustration** (Dexterity) — technical drawing, diagrams, schematics and visual recording of knowledge  
-8. **Negotiation** (Authority)  
-9. **Insight** (Resolve) — pure reading of motives, emotional state and unspoken position  
-10. **Strategy** (Resolve)  
-11. **Ritual** (Authority)  
-12. **Preaching** (Authority)  
+1. **Debate & Rhetoric** (Charisma) — structured argument and persuasive speech  
+2. **Arithmetic & Accounting** (Intellect)
+3. **Investigation** (Perception)
+4. **Folklore & Heraldry** (Intellect)
+5. **Cartography** (Intellect)
+6. **Mentoring** (Charisma)
+7. **Illustration** (Intellect) — technical drawing, diagrams, schematics and visual recording of knowledge  
+8. **Negotiation** (Authority)
+9. **Insight** (Perception) — pure reading of motives, emotional state and unspoken position  
+10. **Strategy** (Intellect)
+11. **Ritual** (Authority)
+12. **Preaching** (Charisma)  
 
 ----------
 
 ### Thief (12)
 
-1. **Lockpicking** (Dexterity)  
-2. **Pickpocket** (Dexterity)  
-3. **Sneak** (Dexterity)  
-4. **Forgery** (Dexterity)  
-5. **Slander & Ridicule** (Guile)  
-6. **Smuggling** (Guile)  
-7. **Deception** (Guile)  
-8. **Streetwise** (Perception)  
-9. **Acrobatics** (Dexterity)  
-10. **Sleight of Hand** (Dexterity)  
-11. **Off-hand & Improvised Combat** (Dexterity)  
-12. **Climbing** (Dexterity)  
+1. **Lockpicking** (Guile)
+2. **Pickpocket** (Guile)
+3. **Sneak** (Dexterity)
+4. **Forgery** (Guile)
+5. **Slander & Ridicule** (Charisma)
+6. **Smuggling** (Guile)
+7. **Deception** (Guile)
+8. **Streetwise** (Guile)
+9. **Acrobatics** (Dexterity)
+10. **Sleight of Hand** (Guile)
+11. **Off-hand & Improvised Combat** (Dexterity)
+12. **Climbing** (Strength)
 
 ----------
-
-*Authority and Resolve now each have 8 skills. Foundation balancing continues.*
