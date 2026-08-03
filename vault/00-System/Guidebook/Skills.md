@@ -114,55 +114,55 @@ High inborn potential therefore accelerates learning. Low potential slows it. Th
 4. **Animal Husbandry** (Constitution) — breeding, care and management of domestic animals  
 5. **Farming** (Constitution) — soil, crops and field management  
 6. **Empathy** (Perception) — reading emotional states and offering personal support  
-7. **Expression** (Charisma) — dancing and non-vocal performance  
+7. **Expression & Singing** (Charisma) — performance through voice, body and presence  
 8. **Healing** (Dexterity) — physical treatment of the body, wounds and injury  
-9. **Singing** (Constitution)  
-10. **Etiquette** (Charisma) — proper forms, manners and social conduct in domestic and relational settings  
-11. **Seduction** (Guile) — intimate influence, charm and emotional leverage in personal relationships  
-12. **Influence** (Authority) — using relational position, obligations and family hooks  
+9. **Etiquette** (Charisma) — proper forms, manners and social conduct in domestic and relational settings  
+10. **Seduction** (Guile) — intimate influence, charm and emotional leverage in personal relationships  
+11. **Influence** (Authority) — using relational position, obligations and family hooks  
+12. **Muse** (Charisma) — inspiring others to action, feeling or creation  
 
 ----------
 
-### Sage (11 — needs 1 more)
+### Sage (7 — needs more)
 
-1. **Reading & Writing** (Intellect)  
-2. **Debate** (Intellect)  
-3. **Rhetoric** (Charisma)  
-4. **Arithmetic & Accounting** (Intellect)  
-5. **Investigation** (Perception)  
-6. **Folklore & Heraldry** (Intellect)  
-7. **Research & Invention** (Intellect)  
-8. **Cartography** (Intellect)  
-9. **Mentoring** (Charisma)  
-10. **Reasoning** (Intellect)  
-11. **Illustration** (Dexterity) — technical drawing, diagrams, schematics and visual recording of knowledge  
+1. **Debate & Rhetoric** (Charisma) — structured argument and persuasive speech  
+2. **Arithmetic & Accounting** (Intellect)  
+3. **Investigation** (Perception)  
+4. **Folklore & Heraldry** (Intellect)  
+5. **Cartography** (Intellect)  
+6. **Mentoring** (Charisma)  
+7. **Illustration** (Dexterity) — technical drawing, diagrams, schematics and visual recording of knowledge  
+
+*Reading & Writing, Reasoning, and the old Research & Invention removed. Gaps remain.*
 
 ----------
 
-### Elder (6 — needs 6 more)
+### Elder (5 — needs more)
 
-1. **Persuasion** (Charisma)  
-2. **Negotiation** (Guile)  
-3. **Insight** (Perception)  
-4. **Strategy** (Intellect)  
-5. **Ritual** (Intellect)  
-6. **Preaching** (Charisma)  
+1. **Negotiation** (Guile)  
+2. **Insight** (Perception) — pure reading of motives, emotional state and unspoken position  
+3. **Strategy** (Intellect)  
+4. **Ritual** (Intellect)  
+5. **Preaching** (Charisma)  
+
+*Persuasion removed.*
 
 ----------
 
-### Thief (10 — needs 2 more)
+### Thief (9 — needs more)
 
 1. **Lockpicking** (Dexterity)  
 2. **Pickpocket** (Dexterity)  
 3. **Sneak** (Dexterity)  
 4. **Forgery** (Dexterity)  
 5. **Slander** (Guile)  
-6. **Extortion** (Guile)  
-7. **Smuggling** (Guile)  
-8. **Deception** (Guile)  
-9. **Streetwise** (Perception)  
-10. **Acrobatics** (Dexterity)  
+6. **Smuggling** (Guile)  
+7. **Deception** (Guile)  
+8. **Streetwise** (Perception)  
+9. **Acrobatics** (Dexterity)  
+
+*Extortion removed.*
 
 ----------
 
-*Gaps remain in Sage (1), Elder (6) and Thief (2).*
+*Current gaps: Sage (needs ~5), Elder (needs ~7), Thief (needs ~3). Social methods now partially cleaned.*
