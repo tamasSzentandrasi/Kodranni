@@ -64,7 +64,7 @@ High inborn potential therefore accelerates learning. Low potential slows it. Th
 6. **Deflection** (Dexterity) — active redirection with weapon or shield  
 7. **Counter** (Dexterity) — the practiced immediate reply after a successful Deflection or Dodge  
 8. **Command** (Authority) — issuing orders that are obeyed in the heat of combat or under immediate physical threat  
-9. **Tactics** (Intellect) — reading the shape of a fight, positioning, and exploiting terrain and numbers  
+9. **Tactics** (Resolve) — reading the shape of a fight, positioning, and exploiting terrain and numbers  
 10. **Footwork** (Dexterity) — mobility, balance and positioning in combat  
 11. **Combat Awareness** (Perception) — noticing openings, threats and shifts in the immediate fight  
 12. **Thrown** (Dexterity) — any thrown weapon or object used to strike or disable  
@@ -112,30 +112,30 @@ High inborn potential therefore accelerates learning. Low potential slows it. Th
 3. **Childcare** (Charisma) — raising children and midwifery  
 4. **Animal Husbandry** (Constitution) — breeding, care and management of domestic animals  
 5. **Farming** (Constitution) — soil, crops and field management  
-6. **Empathy** (Perception) — reading emotional states and offering personal support  
+6. **Empathy** (Resolve) — reading emotional states and offering personal support  
 7. **Expression & Singing** (Charisma) — performance through voice, body and presence  
-8. **Healing** (Dexterity) — physical treatment of the body, wounds and injury  
+8. **Healing** (Resolve) — physical treatment of the body, wounds and injury  
 9. **Etiquette** (Charisma) — proper forms, manners and social conduct in domestic and relational settings  
 10. **Seduction** (Guile) — intimate influence, charm and emotional leverage in personal relationships  
 11. **Influence** (Authority) — using relational position, obligations and family hooks  
-12. **Muse** (Charisma) — inspiring others to action, feeling or creation  
+12. **Muse** (Authority) — inspiring others to action, feeling or creation  
 
 ----------
 
 ### Sage (12)
 
-1. **Debate & Rhetoric** (Charisma) — structured argument and persuasive speech  
+1. **Debate & Rhetoric** (Resolve) — structured argument and persuasive speech  
 2. **Arithmetic & Accounting** (Intellect)  
-3. **Investigation** (Perception)  
+3. **Investigation** (Resolve)  
 4. **Folklore & Heraldry** (Intellect)  
 5. **Cartography** (Intellect)  
-6. **Mentoring** (Charisma)  
+6. **Mentoring** (Resolve)  
 7. **Illustration** (Dexterity) — technical drawing, diagrams, schematics and visual recording of knowledge  
-8. **Negotiation** (Guile)  
-9. **Insight** (Perception) — pure reading of motives, emotional state and unspoken position  
-10. **Strategy** (Intellect)  
-11. **Ritual** (Intellect)  
-12. **Preaching** (Charisma)  
+8. **Negotiation** (Authority)  
+9. **Insight** (Resolve) — pure reading of motives, emotional state and unspoken position  
+10. **Strategy** (Resolve)  
+11. **Ritual** (Authority)  
+12. **Preaching** (Authority)  
 
 ----------
 
@@ -156,4 +156,4 @@ High inborn potential therefore accelerates learning. Low potential slows it. Th
 
 ----------
 
-*Structural list complete at 72 skills across 6 Archetypes. Foundation balancing to follow.*
+*Authority and Resolve now each have 8 skills. Foundation balancing continues.*
