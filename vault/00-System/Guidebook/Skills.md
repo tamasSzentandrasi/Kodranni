@@ -113,7 +113,7 @@ High inborn potential therefore accelerates learning. Low potential slows it. Th
 4. **Animal Husbandry** (Resolve) — breeding, care and management of domestic animals  
 5. **Farming** (Strength) — soil, crops and field management  
 6. **Empathy** (Charisma) — reading emotional states and offering personal support  
-7. **Expression & Singing** (Charisma) — performance through voice, body and presence  
+7. **Performance** (Charisma) — expression through voice (singing), body (dancing) and presence (acting)  
 8. **Healing** (Resolve) — physical treatment of the body, wounds and injury  
 9. **Etiquette** (Resolve) — proper forms, manners and social conduct in domestic and relational settings  
 10. **Seduction** (Charisma) — intimate influence, charm and emotional leverage in personal relationships  
