@@ -11,7 +11,7 @@ A negative Trait creates complication, imposes Disadvantage, or in extreme cases
 
 Examples:
 
-- Positive: “Fletcher”, “Midwife”, “Speaks Latin”  
+- Positive: “Horse-Archer”, “Charming Smile”, “Speaks Latin”  
 - Negative: “One-eyed”, “Hunchbacked”, “Speaks Latin”
 
 *(yes, a Trait is positive or negative depending on context)*
