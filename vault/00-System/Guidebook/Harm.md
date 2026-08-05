@@ -42,9 +42,9 @@ Harm points = (failures – Marks) divided by the protection ratio (rounded down
 
 **Protection ratios**
 
-- No armour / no relevant Reputation: ÷2  
-- Light armour / moderate Reputation advantage: ÷3  
-- Heavy armour / strong Reputation advantage: ÷4  
+- No armour / no relevant Reputation: ÷1 (no protection, each hit lands)
+- Light armour / moderate Reputation advantage: ÷2  
+- Heavy armour / strong Reputation advantage: ÷3  
 
 Reputation functions as the social and mental equivalent of Armour. Relative Hierarchy position sets the ratio. Maximum difference is two tiers (Ruler against Outcast).
 
