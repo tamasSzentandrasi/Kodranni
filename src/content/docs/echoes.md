@@ -1,3 +1,8 @@
+---
+title: Echoes
+description: Echoes, Fortunes, and Foundation Myths.
+---
+
 > _*“The life of the dead is placed in the memory of the living"*_
 > — Cicero
 

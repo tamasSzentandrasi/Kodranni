@@ -1,3 +1,8 @@
+---
+title: Hierarchies
+description: Hierarchies, Reputation, Legacies, and the Diagram.
+---
+
 > _*It is better to be on hand with ten men than absent with ten thousand.*_  
 > — Timur
 

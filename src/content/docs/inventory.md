@@ -1,3 +1,8 @@
+---
+title: Inventory
+description: Explicit possession, armour, food, water, and named items.
+---
+
 ### Inventory
 
 Inventory is kept light. Only what is declared and tracked exists.

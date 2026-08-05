@@ -1,3 +1,8 @@
+---
+title: Character Creation
+description: The two-stage process — Before the Weighing and The Weighing.
+---
+
 > _*“Atropos roughly tore the thread of flourishing life.”*_
 > — Statius
 

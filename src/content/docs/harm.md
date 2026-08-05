@@ -1,3 +1,8 @@
+---
+title: Harm
+description: The nine Harm tracks, Dying, recovery, and protection ratios.
+---
+
 > _*Deyr fé, deyja frændur, deyr sjálfur ið sama.*_  
 > _*Cattle die, kinsmen die, you yourself will also die.*_  
 > — Hávamál

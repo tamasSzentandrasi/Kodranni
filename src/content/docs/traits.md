@@ -1,3 +1,8 @@
+---
+title: Traits
+description: Binary traits that make a character specific.
+---
+
 ----------
 
 ### Traits

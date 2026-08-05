@@ -1,3 +1,8 @@
+---
+title: Dice Mechanics
+description: Dice pools, Marks, Advantage, Omen, and the Tide.
+---
+
 > _*Wyrd oft nereð unfægne eorl, þonne his ellen dēah.*_  
 > _*“Fate often spares the hero not fated to die, when his courage holds.”*_  
 > — *Beowulf*

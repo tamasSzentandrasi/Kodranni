@@ -1,0 +1,10 @@
+/* Kodranni custom styles
+   Base overrides for Starlight.
+   Expand this file for fonts, backgrounds, motifs, and atmospheric treatment. */
+
+:root {
+  /* Placeholder accent — will be refined */
+  --sl-color-accent-low: #2a1f18;
+  --sl-color-accent: #8b5e3c;
+  --sl-color-accent-high: #c4a484;
+}

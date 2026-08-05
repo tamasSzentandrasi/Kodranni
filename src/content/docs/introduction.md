@@ -1,3 +1,8 @@
+---
+title: Introduction
+description: Welcome to Kodranni — a pre-industrial grim human TTRPG system.
+---
+
 > _*"It's Fiiiine" - a Storyteller describing something definitely not fine*_
 
 ---
