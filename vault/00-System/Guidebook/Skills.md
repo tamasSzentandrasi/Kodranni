@@ -65,9 +65,9 @@ High inborn potential therefore accelerates learning. Low potential slows it. Th
 7. **Counter** (Resolve) — the practiced immediate reply after a successful Deflection or Dodge  
 8. **Command** (Authority) — issuing orders that are obeyed in the heat of combat or under immediate physical threat  
 9. **Tactics** (Intellect) — reading the shape of a fight, positioning, and exploiting terrain and numbers  
-10. **Footwork** (Constitution) — mobility, balance and positioning in combat  
+10. **Footwork** (Dexterity) — mobility, balance and positioning in combat  
 11. **Combat Awareness** (Perception) — noticing openings, threats and shifts in the immediate fight  
-12. **Thrown** (Dexterity) — any thrown weapon or object used to strike or disable  
+12. **Thrown** (Constitution) — any thrown weapon or object used to strike or disable  
 
 ----------
 
