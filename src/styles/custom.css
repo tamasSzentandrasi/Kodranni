@@ -1,10 +1,358 @@
-/* Kodranni custom styles
-   Base overrides for Starlight.
-   Expand this file for fonts, backgrounds, motifs, and atmospheric treatment. */
+/* Kodranni Guidebook — standard Starlight layout
+   Titles: UnifrakturCook · Body: Pirata One
+   Chapter icons in title + sidebar */
+
+@import url('https://fonts.googleapis.com/css2?family=Pirata+One&family=UnifrakturCook:wght@700&display=swap');
 
 :root {
-  /* Placeholder accent — will be refined */
-  --sl-color-accent-low: #2a1f18;
-  --sl-color-accent: #8b5e3c;
-  --sl-color-accent-high: #c4a484;
+  --kod-black: #050505;
+  --kod-silver: #d8d4ce;
+  --kod-silver-dim: #9a9590;
+  --kod-silver-bright: #f2efe9;
+  --kod-blood: #8a1515;
+  --kod-blood-bright: #b01c1c;
+  --kod-blood-deep: #4a0c0c;
+
+  --kod-font-display: 'UnifrakturCook', 'Pirata One', serif;
+  --kod-font-body: 'Pirata One', 'Times New Roman', Times, serif;
+
+  --sl-font: var(--kod-font-body);
+  --sl-font-system: var(--kod-font-body);
+
+  --sl-color-accent-low: var(--kod-blood-deep);
+  --sl-color-accent: var(--kod-blood);
+  --sl-color-accent-high: #e8a0a0;
+
+  --sl-text-h1: 2.55rem;
+  --sl-text-h2: 1.85rem;
+  --sl-text-h3: 1.4rem;
+}
+
+:root,
+:root[data-theme='dark'],
+:root[data-theme='light'],
+:root:not([data-theme]) {
+  --sl-color-bg: var(--kod-black);
+  --sl-color-bg-nav: #030303;
+  --sl-color-bg-sidebar: #0a0a0a;
+  --sl-color-bg-inline-code: #1a1414;
+  --sl-color-hairline: #2a2222;
+  --sl-color-text: var(--kod-silver);
+  --sl-color-text-accent: var(--kod-silver-bright);
+  --sl-color-gray-1: var(--kod-silver-bright);
+  --sl-color-gray-2: var(--kod-silver);
+  --sl-color-gray-3: var(--kod-silver-dim);
+  --sl-color-gray-4: #5c5550;
+  --sl-color-gray-5: #2e2826;
+  --sl-color-gray-6: #141010;
+  --sl-color-black: #000;
+  --sl-color-white: var(--kod-silver-bright);
+}
+
+body {
+  background-color: var(--kod-black);
+}
+
+/* Typography */
+.sl-markdown-content,
+.sidebar-content {
+  font-family: var(--kod-font-body);
+}
+
+.sl-markdown-content {
+  font-size: 1.15rem;
+  line-height: 1.8;
+  letter-spacing: 0.02em;
+}
+
+.sl-markdown-content h1,
+.sl-markdown-content h2,
+.sl-markdown-content h3,
+.sl-markdown-content h4,
+.kod-page-title h1,
+[data-has-hero] .hero h1.title,
+site-title,
+.sidebar-content .large,
+.right-sidebar h2 {
+  font-family: var(--kod-font-display);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: var(--kod-silver-bright);
+}
+
+.sl-markdown-content h1,
+.kod-page-title h1 {
+  border-bottom: none;
+}
+
+.sl-markdown-content h2 {
+  margin-top: 2em;
+  border-bottom: 1px solid var(--sl-color-hairline);
+  padding-bottom: 0.2em;
+}
+
+.sl-markdown-content strong {
+  color: var(--kod-silver-bright);
+  font-weight: 400;
+  letter-spacing: 0.03em;
+}
+
+.sl-markdown-content a:not(.sl-link-button) {
+  color: #e06060;
+  text-decoration: none;
+}
+
+.sl-markdown-content a:not(.sl-link-button):hover {
+  color: #ff8a8a;
+}
+
+.sidebar-content a {
+  text-decoration: none;
+}
+
+site-title {
+  font-family: var(--kod-font-display) !important;
+  letter-spacing: 0.06em !important;
+  font-size: 1.35rem !important;
+}
+
+[data-has-hero] .tagline {
+  font-family: var(--kod-font-body);
+  letter-spacing: 0.06em;
+  color: var(--kod-silver-dim);
+  font-size: 1.25rem;
+}
+
+[data-has-hero] .hero h1.title {
+  font-family: var(--kod-font-display);
+  letter-spacing: 0.04em;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Chapter title icon (large)                                                  */
+/* -------------------------------------------------------------------------- */
+
+.kod-page-title {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin-top: 1rem;
+  padding-bottom: 0.45em;
+  border-bottom: 1px solid color-mix(in srgb, var(--kod-blood) 45%, var(--sl-color-hairline));
+}
+
+.kod-page-title h1 {
+  margin: 0 !important;
+  font-size: var(--sl-text-h1);
+  line-height: var(--sl-line-height-headings);
+  color: var(--sl-color-white);
+}
+
+.kod-page-title__icon {
+  flex-shrink: 0;
+  width: 3.25rem;
+  height: 3.25rem;
+  object-fit: contain;
+  filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.45));
+}
+
+@media (min-width: 50rem) {
+  .kod-page-title__icon {
+    width: 3.75rem;
+    height: 3.75rem;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Sidebar chapter icons (small, before labels)                                */
+/* -------------------------------------------------------------------------- */
+
+.sidebar-content a[href] {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.sidebar-content a[href]::before {
+  content: '';
+  flex-shrink: 0;
+  width: 1.15rem;
+  height: 1.15rem;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.95;
+}
+
+.sidebar-content a[href='/introduction/']::before {
+  background-image: url('/icons/introduction.svg');
+}
+.sidebar-content a[href='/dice-mechanics/']::before {
+  background-image: url('/icons/dice-mechanics.svg');
+}
+.sidebar-content a[href='/glossary/']::before {
+  background-image: url('/icons/glossary.svg');
+}
+.sidebar-content a[href='/human-potential/']::before {
+  background-image: url('/icons/human-potential.svg');
+}
+.sidebar-content a[href='/foundations/']::before {
+  background-image: url('/icons/foundations.svg');
+}
+.sidebar-content a[href='/skills/']::before {
+  background-image: url('/icons/skills.svg');
+}
+.sidebar-content a[href='/traits/']::before {
+  background-image: url('/icons/traits.svg');
+}
+.sidebar-content a[href='/exertion/']::before {
+  background-image: url('/icons/exertion.svg');
+}
+.sidebar-content a[href='/harm/']::before {
+  background-image: url('/icons/harm.svg');
+}
+.sidebar-content a[href='/echoes/']::before {
+  background-image: url('/icons/echoes.svg');
+}
+.sidebar-content a[href='/hierarchies/']::before {
+  background-image: url('/icons/hierarchies.svg');
+}
+.sidebar-content a[href='/inventory/']::before {
+  background-image: url('/icons/inventory.svg');
+}
+.sidebar-content a[href='/campaign-setup/']::before {
+  background-image: url('/icons/campaign-setup.svg');
+}
+.sidebar-content a[href='/character-creation/']::before {
+  background-image: url('/icons/character-creation.svg');
+}
+.sidebar-content a[href='/automation/']::before {
+  background-image: url('/icons/automation.svg');
+}
+
+/* Group labels stay display face without icons */
+.sidebar-content summary {
+  font-family: var(--kod-font-display);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Rules / quotes / tables                                                     */
+/* -------------------------------------------------------------------------- */
+
+.sl-markdown-content hr {
+  border: none;
+  height: 0;
+  margin: 2rem 0;
+  text-align: center;
+}
+
+.sl-markdown-content hr::after {
+  content: '† · † · †';
+  color: var(--kod-blood);
+  letter-spacing: 0.4em;
+  font-size: 0.75rem;
+}
+
+.sl-markdown-content blockquote {
+  border-inline-start: 3px solid var(--kod-blood);
+  background: color-mix(in srgb, var(--kod-blood-deep) 35%, transparent);
+  padding: 0.75rem 1.1rem;
+  font-style: italic;
+  color: var(--kod-silver-dim);
+}
+
+.sl-markdown-content th {
+  font-family: var(--kod-font-display);
+  letter-spacing: 0.03em;
+  border-bottom-color: var(--kod-blood) !important;
+}
+
+.sl-markdown-content > ol {
+  list-style-type: upper-roman;
+  padding-inline-start: 1.75rem;
+}
+
+.sl-markdown-content > ol > li::marker {
+  color: var(--kod-blood-bright);
+  font-family: var(--kod-font-display);
+}
+
+.sl-markdown-content ol ol {
+  list-style-type: lower-alpha;
+}
+
+/* Examples */
+.starlight-aside--tip .starlight-aside__icon {
+  display: none !important;
+}
+
+.kod-example {
+  margin: 1.35rem 0 1.5rem;
+  padding: 0.95rem 1.1rem;
+  border: 1px solid color-mix(in srgb, var(--kod-blood) 40%, #333);
+  border-left: 4px solid var(--kod-blood);
+  background: color-mix(in srgb, var(--kod-blood-deep) 30%, #0c0c0c);
+  border-radius: 1px;
+}
+
+.kod-example__label {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--kod-font-display);
+  font-size: 1.2rem;
+  letter-spacing: 0.03em;
+  color: var(--kod-blood-bright);
+  margin: 0 0 0.5rem;
+}
+
+.kod-example__label::before {
+  content: '';
+  flex-shrink: 0;
+  width: 1.1em;
+  height: 1.1em;
+  background-color: var(--kod-blood-bright);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M6.2 20.4 4 22l1-3.2L14.8 8.9l1.8 1.8L6.2 20.4zm13.1-12.4-1.1 1.1-1.8-1.8 1.1-1.1c.3-.3.8-.3 1.1 0l.7.7c.3.3.3.8 0 1.1zM14.1 7.2 8.5 12.8l1.8 1.8 5.6-5.6-1.8-1.8zM19.5 2.5l-1.4 1.4 2 2L21.5 4.5c.5-.5.5-1.4 0-1.9l-.1-.1c-.5-.5-1.4-.5-1.9 0z'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M6.2 20.4 4 22l1-3.2L14.8 8.9l1.8 1.8L6.2 20.4zm13.1-12.4-1.1 1.1-1.8-1.8 1.1-1.1c.3-.3.8-.3 1.1 0l.7.7c.3.3.3.8 0 1.1zM14.1 7.2 8.5 12.8l1.8 1.8 5.6-5.6-1.8-1.8zM19.5 2.5l-1.4 1.4 2 2L21.5 4.5c.5-.5.5-1.4 0-1.9l-.1-.1c-.5-.5-1.4-.5-1.9 0z'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+}
+
+.kod-example p {
+  margin: 0.35rem 0 0;
+}
+
+.kod-example__steps {
+  margin: 0.45rem 0 0;
+  padding-inline-start: 1.2rem;
+  list-style-type: decimal;
+}
+
+.kod-example__steps li {
+  margin: 0.25rem 0;
+}
+
+.kod-example__steps li::marker {
+  color: var(--kod-blood-bright);
+  font-family: var(--kod-font-display);
+}
+
+.kod-example a {
+  color: #e06060;
+  text-decoration: underline;
+  text-underline-offset: 0.12em;
+}
+
+.kod-example a:hover {
+  color: #ff8a8a;
+}
+
+.card {
+  border-color: color-mix(in srgb, var(--kod-blood) 25%, #333) !important;
+  background: #121212 !important;
+}
+
+.starlight-aside__title {
+  font-family: var(--kod-font-display);
+  letter-spacing: 0.03em;
 }

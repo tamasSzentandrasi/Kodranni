@@ -1,0 +1,50 @@
+---
+/**
+ * Chapter title with large thematic icon.
+ */
+const { entry } = Astro.locals.starlightRoute;
+const title = entry.data.title;
+// Starlight content id is usually the file stem (e.g. "skills", "dice-mechanics")
+const slug = String(entry.id)
+	.replace(/\\/g, '/')
+	.replace(/\/index$/, '')
+	.replace(/\.mdx?$/, '')
+	.split('/')
+	.pop()!;
+
+const ICON_SLUGS = new Set([
+	'introduction',
+	'dice-mechanics',
+	'glossary',
+	'human-potential',
+	'foundations',
+	'skills',
+	'traits',
+	'exertion',
+	'harm',
+	'echoes',
+	'hierarchies',
+	'inventory',
+	'campaign-setup',
+	'character-creation',
+	'automation',
+]);
+
+const iconSlug = ICON_SLUGS.has(slug) ? slug : null;
+---
+
+<div class="kod-page-title">
+	{
+		iconSlug && (
+			<img
+				class="kod-page-title__icon"
+				src={`/icons/${iconSlug}.svg`}
+				alt=""
+				width="64"
+				height="64"
+				decoding="async"
+			/>
+		)
+	}
+	<h1 id="_top">{title}</h1>
+</div>
