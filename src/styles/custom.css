@@ -1,8 +1,8 @@
 /* Kodranni Guidebook — standard Starlight layout
-   Titles + body: Pirata One
+   Titles + body: Bellefair
    Chapter icons in title + sidebar */
 
-@import url('https://fonts.googleapis.com/css2?family=Pirata+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bellefair&display=swap');
 
 :root {
   --kod-black: #050505;
@@ -13,8 +13,8 @@
   --kod-blood-bright: #b01c1c;
   --kod-blood-deep: #4a0c0c;
 
-  --kod-font-display: 'Pirata One', 'Times New Roman', Times, serif;
-  --kod-font-body: 'Pirata One', 'Times New Roman', Times, serif;
+  --kod-font-display: 'Bellefair', 'Times New Roman', Times, serif;
+  --kod-font-body: 'Bellefair', 'Times New Roman', Times, serif;
 
   --sl-font: var(--kod-font-body);
   --sl-font-system: var(--kod-font-body);
