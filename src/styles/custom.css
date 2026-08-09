@@ -28,6 +28,11 @@
   --sl-text-h3: 1.4rem;
 }
 
+/* Slight global scale — rem-based UI (sidebar, nav, body, titles) follows. */
+html {
+  font-size: 112.5%; /* 18px when the browser default is 16px */
+}
+
 :root,
 :root[data-theme='dark'],
 :root[data-theme='light'],
@@ -60,7 +65,7 @@ body {
 }
 
 .sl-markdown-content {
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   line-height: 1.8;
   letter-spacing: 0.02em;
 }
@@ -113,7 +118,7 @@ site-title,
 site-title {
   font-family: var(--kod-font-display) !important;
   letter-spacing: 0.06em !important;
-  font-size: 1.35rem !important;
+  font-size: 1.45rem !important;
 }
 
 [data-has-hero] .tagline {
