@@ -1,8 +1,8 @@
 /* Kodranni Guidebook — standard Starlight layout
-   Titles: UnifrakturCook · Body: Pirata One
+   Titles + body: Pirata One
    Chapter icons in title + sidebar */
 
-@import url('https://fonts.googleapis.com/css2?family=Pirata+One&family=UnifrakturCook:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Pirata+One&display=swap');
 
 :root {
   --kod-black: #050505;
@@ -13,7 +13,7 @@
   --kod-blood-bright: #b01c1c;
   --kod-blood-deep: #4a0c0c;
 
-  --kod-font-display: 'UnifrakturCook', 'Pirata One', serif;
+  --kod-font-display: 'Pirata One', 'Times New Roman', Times, serif;
   --kod-font-body: 'Pirata One', 'Times New Roman', Times, serif;
 
   --sl-font: var(--kod-font-body);
@@ -75,7 +75,7 @@ site-title,
 .sidebar-content .large,
 .right-sidebar h2 {
   font-family: var(--kod-font-display);
-  font-weight: 700;
+  font-weight: 400;
   letter-spacing: 0.03em;
   color: var(--kod-silver-bright);
 }
