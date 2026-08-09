@@ -26,6 +26,7 @@ Kodranni separates that into four interlocking measures:
 
 When a character acts, the Storyteller selects the best-fitting **Foundation + Skill** pair from the player’s described intent (see [Dice Mechanics](/dice-mechanics/#the-makeup-of-the-dice-pool)).
 
+- **[Advantage / Disadvantage](/dice-mechanics/#advantage-and-disadvantage)** set the die tier from context — not a stack of modifiers.
 - **Traits** may short-circuit the roll entirely, or force Advantage / Disadvantage.
 - **Exertion** may add one extra die (two when an [Echo](/echoes/#invocation) matches the moment).
 - **Harm** reduces effective Foundations track by track ([Harm](/harm/)).
@@ -36,7 +37,7 @@ Primitive animal-tier actions (run, jump, haul, notice, recall, hold composure) 
 
 ### Reading Order
 
-If you have not yet: start with [Dice Mechanics](/dice-mechanics/) (when to roll, pools, Marks, tier).
+If you have not yet: start with [Dice Mechanics](/dice-mechanics/) (when to roll, pools, Marks, **Advantage and Disadvantage**, Omen, Tide).
 
 Then:
 

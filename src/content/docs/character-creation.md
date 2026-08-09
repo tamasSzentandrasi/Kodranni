@@ -137,6 +137,7 @@ Only then is the character written into the campaign record (via [automation](/a
 
 <aside class="kod-example">
 <p class="kod-example__label">Example — Word and The Wanting</p>
+<p class="kod-example__scene">At The Weighing, the circle looks at a newcomer. Someone speaks a true claim — “I see a hard bargainer” — and another seconds it. That speaker earns a Word. Later, in The Wanting, they spend that Word for skill points on the target, paying with a Foundation cost the menu names.</p>
 <ol class="kod-example__steps">
 <li><strong>Claim accepted:</strong> “I see a hard bargainer” + seconder → speaker gains <strong>1 Word</strong>.</li>
 <li><strong>Wanting purchase:</strong> +5 skill points (menu row) → cost −1 from a named Foundation.</li>

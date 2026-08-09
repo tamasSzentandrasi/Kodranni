@@ -73,6 +73,7 @@ Competition and cooperation on the same tier are left to roleplay.
 
 <aside class="kod-example">
 <p class="kod-example__label">Example — patronage as Echo</p>
+<p class="kod-example__scene">An Honoured merchant on the Coin ladder charges a player character to recover a mill ledger before the Althing. That charge becomes something the character chooses to carry — an Echo. How it resolves may open a Hierarchy climb; relative standing later colours social Harm protection, not automatic rank from the Echo alone.</p>
 <ol class="kod-example__steps">
 <li><strong>Hook:</strong> Honoured (Coin) charges a player to recover a ledger.</li>
 <li><strong>Echo created:</strong> “Return the mill ledger before the Althing” (weight set at the table).</li>
@@ -85,7 +86,7 @@ Competition and cooperation on the same tier are left to roleplay.
 
 ### Legacies
 
-When a character dies they are removed completely from the Hierarchy Diagram. Only the [Echoes](/echoes/) they left behind remain.
+When a character dies they are removed completely from the Hierarchy Diagram. Only the **[Echoes](/echoes/)** they left behind remain.
 
 The player’s next character may claim one of those Echoes as a **Legacy** — a personal Echo representing a claim on the predecessor’s standing, name, or unfinished work. Living up to it, rejecting it, or breaking under it is the story.
 

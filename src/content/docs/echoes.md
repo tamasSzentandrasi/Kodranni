@@ -10,7 +10,7 @@ description: Echoes, Fortunes, and Foundation Myths.
 
 ## Echoes
 
-An **Echo** is a deed, decision, or event that a character chooses to carry. It is the concrete mark of what the character cares about — personal, shared, or community-defining.
+An **Echo** is a deed, decision, or event that a character **chooses to carry**. It is the concrete mark of what the character cares about — personal, shared, or community-defining — and a cornerstone of **continuity** when individuals fall.
 
 The **player** elevates a moment into an Echo. The Storyteller may veto only for tone or outright nonsense. One or two Echoes may be declared at [character creation](/character-creation/#after-the-weighing); new ones may be created whenever a deed warrants it.
 
@@ -33,6 +33,7 @@ The **player** elevates a moment into an Echo. The Storyteller may veto only for
 
 <aside class="kod-example">
 <p class="kod-example__label">Example — Echo capacity</p>
+<p class="kod-example__scene">A character whose Resolve, Constitution, and Charisma sum to six can carry that much Echo weight. Carry nothing and the hollow of Decadence taxes every action. Fill the load carefully; past capacity, only rolls that touch those burdens suffer.</p>
 <ol class="kod-example__steps">
 <li><strong>Capacity:</strong> Resolve + Constitution + Charisma = 6.</li>
 <li><strong>No Echoes:</strong> Decadence → <strong>−1</strong> die on every roll.</li>
@@ -47,6 +48,7 @@ When a roll’s context matches one of the character’s Echoes, the player may 
 
 <aside class="kod-example">
 <p class="kod-example__label">Example — Echo invocation</p>
+<p class="kod-example__scene">Raiders press the spring the character swore to hold. The Echo matches the hour. They may pour more of themselves into the roll than Exertion normally allows — will and stake together.</p>
 <ol class="kod-example__steps">
 <li><strong>Echo matches the scene:</strong> “Hold the spring against the upper tribe.”</li>
 <li><strong>Roll:</strong> Authority + Command, d8.</li>

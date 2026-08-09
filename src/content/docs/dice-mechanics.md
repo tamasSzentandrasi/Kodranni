@@ -1,6 +1,6 @@
 ---
 title: Dice Mechanics
-description: When to roll, dice pools, Marks, Advantage, Omen, and the Tide.
+description: When to roll, dice pools, Marks, Advantage and Disadvantage, Omen, and the Tide.
 ---
 
 > _*Wyrd oft nereð unfægne eorl, þonne his ellen dēah.*_  
@@ -17,7 +17,7 @@ Similar to other TTRPGs, action resolution uses dice. When a **player** or **Sto
 
 If an action’s outcome can **significantly differ** because of luck, chance, or skill — the Storyteller **can** ask for a roll, picking the relevant characteristics to base it on. If the fiction is already clear, **do not roll**. Conversation, planning, and settled facts are not replaced by dice.
 
-The Storyteller always chooses which [Foundation](/foundations/) and (if any) [Skill](/skills/) fit the described intent, and which **die tier** the pool uses.
+The Storyteller always chooses which [Foundation](/foundations/) and (if any) [Skill](/skills/) fit the described intent, and which **die tier** the pool uses — that tier is the mechanical face of **[Advantage and Disadvantage](#advantage-and-disadvantage)**.
 
 ----------
 
@@ -31,7 +31,7 @@ Kodranni uses **three** action dice:
 | 8-sided | **d8** |
 | 12-sided | **d12** |
 
-A given roll uses **only one** of these types — a pure d6, d8, or d12 pool (plus the separate Omen die).
+A given roll uses **only one** of these types — a pure d6, d8, or d12 pool (plus the separate [Omen](#the-omen-die-and-consequences) die).
 
 ----------
 
@@ -53,20 +53,33 @@ Players are **not** chasing a secret difficulty number. They act under incomplet
 
 ----------
 
-### Die tier — Storyteller decides
+### Advantage and Disadvantage
 
-The **die tier** of a pool is declared by the **Storyteller** for that roll. There is no automatic map from Skill rating to d6 / d8 / d12.
+This is where **context** enters the roll — and one of the system’s core novelties.
 
-**Safe default:** treat **d8** as the ordinary tier for a competent attempt when nothing special presses the odds. From that baseline — or from any other tier the Storyteller names — context can shift the pool:
+In any situation, factors that influence the odds of an action are often **innumerable**: weather, footing, numbers, tools, reputation, injuries, surprise, fatigue, favour, armour as *context*, a Trait that fits the moment, a Myth that hangs over the hall. Stacking those as discrete modifiers produces bookkeeping and heavy mechanics. Kodranni refuses that path.
 
-- **Advantage** — upgrade one step (e.g. d8 → d12).  
-  Example: a trained hunter who would normally roll **d8** tracks wounded prey with hounds → **d12**.
-- **Disadvantage** — downgrade one step (e.g. d8 → d6).  
-  Example: a veteran soldier who would otherwise roll **d8** is surrounded → **d6**.
+Instead: in most cases it is **fairly easy to assess which side has the advantage**. That single judgment is enough. The system encodes it by shifting the **die tier** of the pool — not by piling pluses and minuses onto Marks.
 
-[Traits](/traits/), terrain, numbers, reputation, weather, and armour-as-context all feed this judgment. They are **not** extra mechanical layers stacked on top of Marks.
+**Different dice types are Advantage and Disadvantage.** They fold context into the roll without a modifier ledger.
 
-**Stacking:** Whether several Advantages climb more than one step, whether Advantage and Disadvantage cancel, and how hard the fiction pushes the tier is the **Storyteller’s call** for that moment. Automation records the tier the Storyteller declares; it does not invent one.
+- **Advantage** — favourable situations (beneficial terrain, superior knowledge, support, numbers, tools, a Trait that truly applies). The die tier of the roll **upgrades** one step (for example **d8 → d12**).  
+  Example: a **trained hunter** who would normally roll **d8** tracks wounded prey with hounds → **d12**.
+- **Disadvantage** — challenging circumstances (poor weather, hostile ground, being surrounded, darkness, wrong tools, a Trait that hurts). The die tier **downgrades** one step (for example **d8 → d6**).  
+  Example: a **veteran soldier** who would otherwise roll **d8** is surrounded on multiple sides → **d6**.
+
+[Traits](/traits/), terrain, numbers, reputation, weather, and armour-as-context all feed this judgment. They are **not** extra mechanical layers stacked on top of Marks. You do not add “+2 for height and +1 for cover”; you decide who has the **Advantage**, and you change the die.
+
+#### Declaring the tier
+
+There is **no automatic map** from Skill rating to d6 / d8 / d12. The **Storyteller declares** the die tier for each roll.
+
+- **Safe default:** treat **d8** as the ordinary tier for a competent attempt when nothing special presses the odds.
+- From that baseline — or from any other tier the Storyteller names — **Advantage** upgrades and **Disadvantage** downgrades.
+
+**Stacking:** Whether several Advantages climb more than one step, whether Advantage and Disadvantage cancel, and how hard the fiction pushes the tier is the **Storyteller’s call** for that moment. Automation records the tier the Storyteller declares; it does not invent one from a rules matrix.
+
+In multi-party messes, **each action still stands alone**. Advantage and Disadvantage are read from **that** action’s context — not averaged across the field. The [Tide](#the-tide) holds collective pressure separately.
 
 ----------
 
@@ -88,16 +101,17 @@ Pools assemble from three sources:
 
 <aside class="kod-example">
 <p class="kod-example__label">Example — unopposed roll</p>
+<p class="kod-example__scene">Storm weather is an hour off. Eira is a capable shipwright; the work is ordinary for her — recaulking a boat that must hold through the gale. Nothing about the scene especially favours or hinders her, so the Storyteller keeps the ordinary die tier.</p>
 <ol class="kod-example__steps">
-<li><strong>Intent:</strong> Eira recaulks a boat before a storm.</li>
-<li><strong>Storyteller names:</strong> Strength + Shipwright, die tier <strong>d8</strong>.</li>
+<li><strong>Intent:</strong> Eira recaulks the boat before the storm.</li>
+<li><strong>Storyteller names:</strong> Strength + Shipwright, die tier <strong>d8</strong> (no Advantage or Disadvantage).</li>
 <li><strong>Pool:</strong> Foundation 2 + Skill 2 = <strong>4d8</strong> (+ Omen d20).</li>
-<li><strong>Result:</strong> 2 Marks — the hull holds for the season, not longer.</li>
+<li><strong>Result:</strong> 2 Marks — the hull holds for the season, not longer; a solid job under time pressure, not a masterwork.</li>
 <li><strong>Practice:</strong> accrues only if she spent <a href="/exertion/">Exertion</a> (see <a href="/skills/#improvement">Skills</a>).</li>
 </ol>
 </aside>
 
-Additional modifiers that shrink pools:
+Additional effects that **shrink pools** (these are not die-tier shifts; they change **how many** dice you throw):
 
 - Empty Exertion: **–2** dice (floor 1) — see [Exertion](/exertion/)  
 - [Decadence](/echoes/#weight-and-capacity) (no Echoes): **–1** die on every roll  
@@ -141,16 +155,17 @@ Hints:
 - In a 1vMany or ManyvMany mess, **each action still stands alone**. Advantage and Disadvantage are read from that action’s context — not averaged across the field.
 - Treat intent and context when reading the margin: conditions, injuries, insight — all valid Storyteller levers.
 - Social, mental, and physical contests use the **same** resolution shape.
-- Armour, reputation, favours, numbers, and terrain are **context** (tier and interpretation), not separate subsystems — except where [Harm](/harm/) uses armour **or** Reputation **protection ratios** (not both on the same event; the Storyteller picks the contest type).
+- Armour, reputation, favours, numbers, and terrain are **context** for Advantage / Disadvantage and for interpreting the margin — not separate subsystems — except where [Harm](/harm/) uses armour **or** Reputation **protection ratios** (not both on the same event; the Storyteller picks the contest type).
 
 <aside class="kod-example">
 <p class="kod-example__label">Example — opposed roll (reply)</p>
+<p class="kod-example__scene">The reeve has barred the gate and will not open for strangers after dark. The player character tries to talk past him — not a fight, a contest of will and words. Neither side holds a clear upper hand: the reeve has authority and the wall; the traveller has a plausible errand and a steady voice. Ordinary tier for both.</p>
 <ol class="kod-example__steps">
-<li><strong>Intent:</strong> Talk past a reeve who bars the gate.</li>
+<li><strong>Intent:</strong> talk past the reeve who bars the gate.</li>
 <li><strong>Player roll:</strong> Charisma + Negotiation, <strong>d8</strong> → 3 Marks.</li>
 <li><strong>Opposing roll:</strong> Storyteller rolls for the reeve <em>in reply</em> — Resolve + Insight, <strong>d8</strong> → 1 Mark. (Pairs need not match.)</li>
 <li><strong>Margin:</strong> 3 − 1 = <strong>2</strong> for the player.</li>
-<li><strong>Outcome:</strong> the gate opens. <a href="/harm/">Harm</a> only if the Storyteller later rules lasting damage.</li>
+<li><strong>Outcome:</strong> the gate opens; the reeve is persuaded, not broken. <a href="/harm/">Harm</a> only if the Storyteller later rules lasting damage to standing or body.</li>
 </ol>
 </aside>
 
@@ -212,6 +227,7 @@ Disadvantage lowers thresholds for the disadvantaged side (negative Omens more l
 
 <aside class="kod-example">
 <p class="kod-example__label">Example — Tide shift</p>
+<p class="kod-example__scene">A small mill-raid: two roughly matched bands meet in the yard. Neither side holds the field yet — equal footing, small-skirmish scale. A player character barks orders to keep the line; a defender answers with threats and a raised spear. Their exchange is one push on the shared Tide, not the whole fight by itself.</p>
 <ol class="kod-example__steps">
 <li><strong>Setup:</strong> small skirmish, equal footing — weights 8 vs 8 → scale 15, start 8. Shift every <strong>2</strong> Marks of difference on Tide-linked rolls.</li>
 <li><strong>Player roll:</strong> Authority + Command, d8 → 4 Marks.</li>

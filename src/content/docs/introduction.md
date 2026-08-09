@@ -48,14 +48,15 @@ Whether the campaign is semi-historical or invented fantasy, if those three cond
 > _"Whatever you do will be insignificant, but it is very important that you do it."_ — _Mahatma Gandhi_
 
 - **Immersion**: Mechanics are meant to be non-intrusive and intuitive. ***Role-play takes precedence over mechanics***.
-- **The Story of Life**: Characters are mortal human beings. Magic, supernatural strength, and similar elements are neither supported nor encouraged. Motivations, struggles, hopes, and dreams form the campaign. **Death** — whether of old age or in battle — **will come**.
+- **The Story of Life**: Characters are **mortal human beings**. Magic, supernatural strength, and similar elements are neither supported nor encouraged. Motivations, struggles, hopes, and dreams form the campaign. **Death** — whether of old age or in battle — **will come**.
+- **Advantage over modifiers**: Context is often **innumerable**; rather than stack modifiers, the table judges who holds **[Advantage or Disadvantage](/dice-mechanics/#advantage-and-disadvantage)** and shifts die tier. A core novelty of the system.
 
 > _"All we have to decide is what to do with the time that is given us."_ - _Gandalf the Grey_
 
 - **Player Agency**: The system is permissive. Creativity, desperate attempts, and bold ideas are encouraged. The system will not stand in your way, but **how you handle risk is your responsibility**.
-- **Cooperative Struggle**: Campaigns centre on a community — a tribe, village, noble house — which the players must nurture. Actions, honourable or otherwise, shape that community’s future. **If the community is destroyed, the campaign ends.**
+- **Cooperative Struggle**: Campaigns centre on a **community** — a tribe, village, noble house — which the players must nurture. Actions, honourable or otherwise, shape that community’s future. **If the community is destroyed, the campaign ends.**
 - **Death and Continuity**: A player’s actions can outlive their character. Heroic deeds, wise counsel, and pivotal events may define the community. [**Echoes**](/echoes/) of those actions strengthen and guide future characters. [**Legacies**](/hierarchies/#legacies) and [**Foundation Myths**](/echoes/#foundation-myths) carry the strongest effects across generations.
-- **Automation Support**: Experience-point bookkeeping and a relatively intricate roll system are made playable by automation. See [Automation](/automation/) for the table-facing contract, and `docs/plans/automation-architecture.md` for engineering direction. That material will evolve as the product UI is defined.
+- **Automation Support**: Experience-point bookkeeping and a relatively intricate roll system are made playable by **automation**. See [Automation](/automation/) for the table-facing contract, and `docs/plans/automation-architecture.md` for engineering direction. That material will evolve as the product UI is defined.
 
 ----------
 
@@ -63,7 +64,7 @@ Whether the campaign is semi-historical or invented fantasy, if those three cond
 
 | Section | What it covers |
 |---------|----------------|
-| [Dice Mechanics](/dice-mechanics/) | When to roll, dice pools, Marks, Advantage, Omen, Tide |
+| [Dice Mechanics](/dice-mechanics/) | When to roll, dice pools, Marks, **Advantage / Disadvantage**, Omen, Tide |
 | [Human Potential](/human-potential/) | [Foundations](/foundations/), [Skills](/skills/), [Traits](/traits/), [Exertion](/exertion/) |
 | [Harm](/harm/) | Injury, Dying, recovery |
 | [Echoes](/echoes/) | Personal stakes, Fortunes, Foundation Myths |

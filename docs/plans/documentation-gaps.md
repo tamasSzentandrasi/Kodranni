@@ -50,12 +50,12 @@ Author positions integrated as below. Rules/architecture updated accordingly.
 
 ### C1. Base dice tier
 
-**Decision:** Storyteller declares every time (**option 3**), with **safe default d8** (**option 1** as default only).  
-**Guide:** [Dice Mechanics — Die tier](../../src/content/docs/dice-mechanics.md).
+**Decision:** Storyteller declares every time (**option 3**), with **safe default d8** (**option 1** as default only). Encoded through **Advantage / Disadvantage** (die tier), not a Skill→die map.  
+**Guide:** [Dice Mechanics — Advantage and Disadvantage](../../src/content/docs/dice-mechanics.md).
 
 ### C2. Advantage stacking
 
-**Decision:** Storyteller’s decision on result interpretation for that moment. Automation stores the final declared tier.
+**Decision:** Storyteller’s decision for that moment (how hard fiction pushes tier; cancel vs stack). Automation stores the final declared tier.
 
 ### C3. Tide arithmetic completeness
 

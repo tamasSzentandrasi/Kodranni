@@ -31,6 +31,22 @@
 /* Slight global scale — rem-based UI (sidebar, nav, body, titles) follows. */
 html {
   font-size: 112.5%; /* 18px when the browser default is 16px */
+  /* Bellefair is single-weight; synthetic bold/italic can ghost-outline glyphs in Chromium/Brave. */
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: geometricPrecision;
+}
+
+body,
+.sl-markdown-content,
+.sidebar-content,
+site-title,
+.kod-page-title h1 {
+  font-synthesis: none;
+  -webkit-text-stroke: 0;
+  -webkit-text-fill-color: currentColor;
+  text-shadow: none;
 }
 
 :root,
@@ -96,10 +112,34 @@ site-title,
   padding-bottom: 0.2em;
 }
 
+/* Core terms — slightly lifted without shouting (no text-shadow: Bellefair ghosts in Chromium) */
 .sl-markdown-content strong {
-  color: var(--kod-silver-bright);
+  color: #fff8f0;
   font-weight: 400;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.04em;
+  background: linear-gradient(
+    transparent 62%,
+    color-mix(in srgb, var(--kod-blood) 32%, transparent) 62%
+  );
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+/* Italics / notes — brighter than body silver-dim for readability */
+.sl-markdown-content em,
+.sl-markdown-content i {
+  color: #ebe6de;
+  font-style: italic;
+}
+
+.sl-markdown-content blockquote {
+  color: #e4dfd6;
+}
+
+.sl-markdown-content blockquote em,
+.sl-markdown-content blockquote i,
+.sl-markdown-content blockquote strong {
+  color: #f7f2ea;
 }
 
 .sl-markdown-content a:not(.sl-link-button) {
@@ -216,7 +256,7 @@ site-title {
   background: color-mix(in srgb, var(--kod-blood-deep) 35%, transparent);
   padding: 0.75rem 1.1rem;
   font-style: italic;
-  color: var(--kod-silver-dim);
+  /* color set with other italic rules above */
 }
 
 .sl-markdown-content th {
@@ -278,6 +318,13 @@ site-title {
 
 .kod-example p {
   margin: 0.35rem 0 0;
+}
+
+.kod-example__scene {
+  margin: 0.15rem 0 0.55rem !important;
+  color: #ebe6de;
+  font-style: normal;
+  line-height: 1.65;
 }
 
 .kod-example__steps {

@@ -11,9 +11,9 @@ description: The nine Harm tracks, Dying, recovery, and protection ratios.
 
 ## Harm
 
-Kodranni does not track hit points. It tracks the unravelling of the nine [Foundations](/foundations/).
+Kodranni does **not** track hit points. It tracks the **unravelling of the nine [Foundations](/foundations/)**.
 
-Harm is recorded on nine named tracks. Each track is permanently paired with one Foundation. Every point of Harm reduces that Foundation by one for dice purposes.
+**Harm** is recorded on nine named tracks. Each track is permanently paired with one Foundation. Every point of Harm reduces that Foundation by one for dice purposes.
 
 | Foundation | Harm Track |
 |------------|------------|
@@ -59,6 +59,7 @@ Be frugal. Most successful hits produce **0 or 1** point. Two points is notable.
 
 <aside class="kod-example">
 <p class="kod-example__label">Example — physical Harm</p>
+<p class="kod-example__scene">A spear finds a gap in light mail. The margin of the opposed exchange is real, but armour blunts lasting injury. The Storyteller reads a bleeding wound that steals fine control — not a social humiliation in the same blow.</p>
 <ol class="kod-example__steps">
 <li><strong>Opposed margin:</strong> 3 Marks.</li>
 <li><strong>Protection:</strong> Light armour → ÷2.</li>
@@ -77,12 +78,13 @@ When any Harm track reaches **3**, the character is **Dying**.
 - While Dying, **every roll requires [Exertion](/exertion/)**.  
 - When Exertion reaches **0**, the character **dies**.
 
-This window allows final actions, last words, or desperate stabilisation. Stabilisation requires a successful **[Healing](/skills/#mother-12)** attempt and removes the Dying state; the track remains at 3 until further recovery, and almost always leaves a permanent [Trait](/traits/).
+This window allows final actions, last words, or desperate stabilisation. Stabilisation requires a successful **[Healing](/skills/#mother-12)** attempt and removes the Dying state; the track remains at 3 until further recovery, and almost always leaves a permanent **[Trait](/traits/)**.
 
 After death: remove the character from the [Hierarchy Diagram](/hierarchies/#the-hierarchy-diagram). Continuity continues through [Echoes](/echoes/) and [Legacies](/hierarchies/#legacies). Play does not stop mid-session for full character replacement.
 
 <aside class="kod-example">
 <p class="kod-example__label">Example — Dying and stabilise</p>
+<p class="kod-example__scene">Fever has taken hold; the track hits three. The character is Dying — still able to act, but every effort spends what little strength remains. A companion works with Resolve and Healing to pull them back from the edge. Life returns; the fever track does not instantly clear, and a lasting Trait often stays.</p>
 <ol class="kod-example__steps">
 <li><strong>Fever track</strong> reaches 3 → character is <strong>Dying</strong>.</li>
 <li><strong>While Dying:</strong> every roll costs <a href="/exertion/">Exertion</a>. At Exertion 0 → death.</li>

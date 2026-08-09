@@ -202,8 +202,9 @@ Both adapters implement the same application ports with native components and re
 
 ## 7. Domain notes (rules-locked)
 
-### 7.1 Die tier
+### 7.1 Die tier (Advantage / Disadvantage)
 
+- Context is judged as **Advantage / Disadvantage**, not a modifier stack; that judgment is the die tier.
 - ST declares (or accepts **d8 default**). No Skill→tier map. Stacking = ST interpretation; store final tier.
 
 ### 7.2 Opposed multi-party

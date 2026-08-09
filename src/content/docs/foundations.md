@@ -10,7 +10,7 @@ description: The nine inborn Foundations that shape a character.
 
 ## Foundations
 
-Foundations are the inborn potential of a character. Barring aging, trauma, or rare Storyteller events, they do not drift session to session. They feed every dice pool and shape how quickly Skills improve.
+**Foundations** are the **inborn potential** of a character. Barring aging, trauma, or rare Storyteller events, they do not drift session to session. They feed every **dice pool** and shape how quickly Skills improve through [Practice](/skills/#improvement).
 
 There are nine Foundations, grouped by domain:
 
@@ -54,10 +54,11 @@ Values of **0** or **4** are *technically possible* — rarities for extreme cas
 
 <aside class="kod-example">
 <p class="kod-example__label">Example — Primitive action</p>
+<p class="kod-example__scene">Two travellers must cross a rope bridge in a gale. No Craft or Climb Skill applies to this moment — it is balance, grip, and nerve: a Primitive action. Neither has special footing or tools that would shift die tier; only raw Dexterity differs.</p>
 <ol class="kod-example__steps">
 <li><strong>Intent:</strong> cross a rope bridge in a gale (no Skill applies).</li>
 <li><strong>Type:</strong> Primitive — Foundation only (Dexterity).</li>
-<li><strong>Tier:</strong> d8 for both.</li>
+<li><strong>Tier:</strong> d8 for both (no Advantage or Disadvantage).</li>
 <li><strong>Pools:</strong> Dexterity 3 → <strong>3d8</strong>; Dexterity 1 → <strong>1d8</strong>.</li>
 <li><strong>Reading:</strong> Marks = how cleanly each lands; more Marks, cleaner crossing.</li>
 <li><strong>Later (Skill practice):</strong> Climbing uses Dexterity as ruling Foundation — thresholds halved at Foundation 3, doubled at 1 (see <a href="/skills/#improvement">Skills</a>).</li>

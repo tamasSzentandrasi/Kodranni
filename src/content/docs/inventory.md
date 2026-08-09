@@ -5,9 +5,9 @@ description: Explicit possession, armour, food, water, and named items.
 
 ## Inventory
 
-Inventory is kept light. Only what is declared and tracked exists.
+Inventory is kept light. Only what is **declared and tracked** exists.
 
-**Possession is explicit.** If it has not been stated that a character is carrying an item, the character does not have it. No retroactive additions once a scene has begun.
+**Possession is explicit.** If it has not been stated that a character is carrying an item, the character **does not have it**. No retroactive additions once a scene has begun.
 
 At [character creation](/character-creation/#after-the-weighing), only named items that already make sense for the concept are listed. No free supply packs. Everything else is filled in play.
 
@@ -60,6 +60,7 @@ Whether something can reasonably be carried, hauled, or stored is decided by con
 
 <aside class="kod-example">
 <p class="kod-example__label">Example — explicit possession</p>
+<p class="kod-example__scene">Ambush on the ridge. A player wants a bow for the shot — but neither the sheet nor any earlier fiction said they carried one. They do not invent gear mid-scene. After they take a bow in play, the sheet may be updated through the usual approval path.</p>
 <ol class="kod-example__steps">
 <li><strong>Scene starts:</strong> no bow on the sheet, none declared → the character does not have a bow.</li>
 <li><strong>Cannot</strong> add it mid-scene retroactively.</li>

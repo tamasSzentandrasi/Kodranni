@@ -7,7 +7,7 @@ description: The capacity to push beyond ordinary limits.
 
 ## Exertion
 
-Exertion is the character’s capacity to push beyond ordinary limits. Fatigue, hunger, and thirst all map into this single measure when management fails.
+**Exertion** is the character’s capacity to **push beyond ordinary limits**. Fatigue, hunger, and thirst all map into this single measure when management fails.
 
 It is **primarily player-controlled**: when to push, when to rest, and where to spend will. Narrative events (starvation, forced marches, prolonged fighting) can also drain it without a voluntary spend.
 
@@ -25,6 +25,7 @@ It is **primarily player-controlled**: when to push, when to rest, and where to 
 
 <aside class="kod-example">
 <p class="kod-example__label">Example — spending Exertion</p>
+<p class="kod-example__scene">The cart is stuck at a stony ford. The player decides this is worth the cost of effort: they dig deep, spend Exertion, and throw an extra die with Strength and Animal Handling. No special Advantage — just more of themselves in the pool.</p>
 <ol class="kod-example__steps">
 <li><strong>Pool before:</strong> 2 / 6.</li>
 <li><strong>Roll:</strong> Strength + Animal Handling, d8; spend <strong>1</strong> Exertion → one extra die.</li>

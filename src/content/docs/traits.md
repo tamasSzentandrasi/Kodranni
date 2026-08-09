@@ -7,12 +7,12 @@ description: Binary traits that make a character specific.
 
 ## Traits
 
-Traits are binary and entirely custom. They are the details that make a character specific rather than generic.
+**Traits** are **binary** and entirely custom. They are the details that make a character **specific** rather than generic.
 
 There are **two broad polarities**: **Positive** and **Negative** — but polarity is contextual.
 
-- A **positive** use of a Trait grants narrative permission. Actions ordinary for someone with that Trait may succeed without a roll, or receive [Advantage](/dice-mechanics/#advantage-and-disadvantage) when a roll is still required.
-- A **negative** use creates complication, imposes Disadvantage, or in extreme cases rules an action out entirely.
+- A **positive** use of a Trait grants **narrative permission**. Actions ordinary for someone with that Trait may succeed without a roll, or receive [Advantage](/dice-mechanics/#advantage-and-disadvantage) when a roll is still required.
+- A **negative** use creates complication, imposes **Disadvantage**, or in extreme cases rules an action out entirely.
 
 Examples:
 
@@ -27,10 +27,11 @@ Traits are **not rated**. They either apply or they do not. The Storyteller deci
 
 <aside class="kod-example">
 <p class="kod-example__label">Example — Trait permission vs Skill roll</p>
+<p class="kod-example__scene">A character with “Speaks Latin” is handed a charter at the table. Reading it is ordinary for them — the Trait is permission, not a Skill. Later they try to forge a matching hand: knowing the language helps the fiction, but forgery is still craft and cunning.</p>
 <ol class="kod-example__steps">
 <li><strong>Trait:</strong> Speaks Latin.</li>
 <li><strong>Read a Latin charter:</strong> no roll — Trait grants permission.</li>
-<li><strong>Forge a matching hand:</strong> roll <a href="/skills/">Forgery</a> (Guile). Speaks Latin does not replace the Skill; at most it justifies Advantage if the forgery must look learned.</li>
+<li><strong>Forge a matching hand:</strong> roll <a href="/skills/">Forgery</a> (Guile). Speaks Latin does not replace the Skill; at most it justifies <strong>Advantage</strong> if the forgery must look learned.</li>
 </ol>
 </aside>
 

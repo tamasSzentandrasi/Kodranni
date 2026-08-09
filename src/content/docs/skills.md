@@ -10,7 +10,7 @@ description: Skills organised under six Archetypes, with Practice and improvemen
 
 ## Skills and Archetypes
 
-Skills are organised under six **Archetypes** (personified categories). These are **not** character classes. They are broad domains into which individual Skills fall:
+**Skills** are organised under six **Archetypes** (personified categories). These are **not** character classes. They are broad domains into which individual Skills fall:
 
 - Warrior  
 - Traveller  
@@ -38,7 +38,7 @@ At the table, the Storyteller selects the Skill that best matches the player’s
 
 Every time a **Skill** is used in a roll it may generate **Practice** (tracked by [automation](/automation/)). [Primitive](/dice-mechanics/#the-makeup-of-the-dice-pool) actions grant **no** Practice — no Skill is involved.
 
-Practice is deeply tied to **[Exertion](/exertion/)**. Marks of Success only grant Practice when Exertion was spent.
+Practice is deeply tied to **[Exertion](/exertion/)**. **Marks of Success** only grant Practice when Exertion was spent. Struggle and effort teach; grinding without risk does not.
 
 | Roll type | Practice rule |
 |-----------|----------------|
@@ -95,6 +95,7 @@ Fiction still decides *why* rust set in; automation only applies the prompted pr
 
 <aside class="kod-example">
 <p class="kod-example__label">Example — Practice gain and degrade</p>
+<p class="kod-example__scene">A thief works a lock under pressure, fails more often than they Mark, and still learns from the fumble. Later they push with Exertion and land clean Marks. Months of downtime later, the Storyteller asks automation whether rust has set in on neglected Skills.</p>
 <ol class="kod-example__steps">
 <li><strong>Unopposed Lockpicking:</strong> more failures than Marks, no Exertion → <strong>+2 Practice</strong>.</li>
 <li><strong>Same Skill later:</strong> Exertion spent, 4 Marks → <strong>+2 Practice</strong> (floor of 4÷2). Progress is visible on the sheet.</li>

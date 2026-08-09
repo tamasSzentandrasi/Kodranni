@@ -64,7 +64,7 @@ Bots are thin clients over the community store. Bare slash-only bots are not eno
 
 1. **Storyteller authority** — Lasting mutations require Storyteller approval where the rules say so (Hierarchy, inventory, and similar). Approvals can be **pre-agreed reactions** (e.g. a checkmark) from the Storyteller role.  
 2. **Fiction first, then instruction** — In narration the Storyteller names Foundation and Skill (or Foundation alone for Primitive). The **player** initiates the roll instruction with that agreed configuration. Automation already knows the mapped user, their character, Exertion, Echoes (selectable), and community Myths that can be tagged.  
-3. **Die tier is declared** — Safe default **d8**; ultimate choice is the Storyteller’s ([Dice Mechanics](/dice-mechanics/#die-tier--storyteller-decides)).  
+3. **Die tier is declared** — Safe default **d8**; ultimate choice is the Storyteller’s via [Advantage and Disadvantage](/dice-mechanics/#advantage-and-disadvantage).  
 4. **Infer when safe; field when narrative** — States such as Decadence or over-capacity can be inferred during interactions to cut admin overhead. **Armour** and **Reputation** still need explicit fields: their presence is resolved in fiction before any ratio is applied. Hierarchy **tiers** are full ladders, not only Outsider/Ruler; relative tier difference is established narratively, then applied in instructions.  
 5. **Reply chains** — An opposed roll is simply a **roll sent in reply** to a prior roll message (any Foundation + Skill pair; player or Storyteller NPC roll). Tide contribution comes from replies to a Tide event or to a roll already tied to that Tide.  
 6. **Minimum pool floor** — No pool drops below 1 die.  

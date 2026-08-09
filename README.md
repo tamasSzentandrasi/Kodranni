@@ -80,7 +80,7 @@ Until then, the `github.io/Kodranni/Guidebook/` URL is the working docs host.
 3. Characters are ordinary human beings  
 4. If the community is destroyed, the campaign ends  
 5. Death is permanent; continuity runs through Echoes, Legacies, and Foundation Myths  
-6. Die tier is Storyteller-declared (safe default **d8**)  
+6. **Advantage / Disadvantage** set die tier (Storyteller-declared; safe default **d8**)  
 7. One shared character record and community tracker per table — no duplicate sheets  
 
 ## License

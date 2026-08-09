@@ -7,7 +7,7 @@ Quick reference. Each entry links to the chapter that owns the full rule.
 
 | Term | Definition |
 |------|------------|
-| **Advantage / Disadvantage** | Upgrade or downgrade of the dice tier (d6 ↔ d8 ↔ d12) from context, Traits, Myths, etc. → [Dice Mechanics](/dice-mechanics/#advantage-and-disadvantage) |
+| **Advantage / Disadvantage** | Core context rule: judge who has the edge instead of stacking modifiers; upgrade or downgrade die tier (d6 ↔ d8 ↔ d12). Safe default **d8**. → [Dice Mechanics](/dice-mechanics/#advantage-and-disadvantage) |
 | **Archetype** | One of six skill domains (Warrior, Traveller, Artisan, Mother, Sage, Thief). Not a class. → [Skills](/skills/) |
 | **Authority** | Social Foundation: natural command, gravitas. → [Foundations](/foundations/) |
 | **Automation** | Bot or tool layer that rolls dice, tracks state, and enforces approval workflows. → [Automation](/automation/) |
