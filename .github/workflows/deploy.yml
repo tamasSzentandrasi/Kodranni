@@ -30,13 +30,20 @@ jobs:
       - name: Install
         run: npm ci
 
-      - name: Build
+      - name: Build Guidebook
         run: npm run build
+
+      - name: Nest under /Guidebook + project portal at /
+        run: |
+          mkdir -p publish/Guidebook
+          cp -a dist/. publish/Guidebook/
+          cp public-root/index.html publish/index.html
+          # Optional: noindex nothing special; 404 for unknown paths is fine.
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          path: publish
 
   deploy:
     needs: build

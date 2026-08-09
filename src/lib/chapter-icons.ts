@@ -1,5 +1,5 @@
 /**
- * Chapter icons via Vite `?url` so `base: '/Kodranni'` is applied correctly.
+ * Chapter icons via Vite `?url` so `base: '/Kodranni/Guidebook'` is applied correctly.
  */
 import automation from '../assets/icons/automation.svg?url';
 import campaignSetup from '../assets/icons/campaign-setup.svg?url';
@@ -19,7 +19,7 @@ import traits from '../assets/icons/traits.svg?url';
 
 /** slug → resolved asset URL (includes base path when built) */
 export const chapterIcons: Record<string, string> = {
-	index: introduction, // site root is Introduction
+	index: introduction, // Guidebook root redirects to Introduction
 	introduction,
 	'dice-mechanics': diceMechanics,
 	glossary,
@@ -39,7 +39,7 @@ export const chapterIcons: Record<string, string> = {
 
 /** path segment used in sidebar hrefs → slug */
 export const hrefSegmentToSlug: Record<string, string> = {
-	'': 'index', // /Kodranni/ or /
+	'': 'index', // /Kodranni/Guidebook/ or /
 	introduction: 'introduction',
 	'dice-mechanics': 'dice-mechanics',
 	glossary: 'glossary',

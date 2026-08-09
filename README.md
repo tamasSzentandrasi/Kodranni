@@ -21,10 +21,17 @@ Content: `src/content/docs/`. Sidebar: `astro.config.mjs`. Theme: `src/styles/cu
 
 Deploy is automatic on push to `main` (`.github/workflows/deploy.yml`).
 
-**Live URL (project Pages):**  
-https://tamasszentandrasi.github.io/Kodranni/
+| URL | What you get |
+|-----|----------------|
+| [github.com/…/Kodranni](https://github.com/tamasszentandrasi/Kodranni) | **Repository** (source, issues, history) |
+| […github.io/Kodranni/](https://tamasszentandrasi.github.io/Kodranni/) | Project portal → repo + Guidebook links |
+| […github.io/Kodranni/Guidebook/](https://tamasszentandrasi.github.io/Kodranni/Guidebook/) | **Guidebook** (Starlight); starts at `/introduction/` |
 
-Repo **Settings → Pages** must use **Source: GitHub Actions** (already set).
+GitHub Pages cannot replace `github.io/Kodranni/` with the GitHub **repo UI** — those are different hosts. The portal at the Pages root points at both.
+
+Repo **Settings → Pages** must use **Source: GitHub Actions**.
+
+Build layout: Astro `base` is `/Kodranni/Guidebook`. CI copies `dist/` into `publish/Guidebook/` and adds `public-root/index.html` as the Pages root.
 
 ### Custom domain (branded URL, e.g. kodranni.com)
 
@@ -34,12 +41,13 @@ GitHub cannot invent a hostname for free beyond `*.github.io`. To drop the usern
 2. In the repo **Settings → Pages → Custom domain**, enter it and enable DNS HTTPS when available.
 3. At your registrar, point DNS as GitHub instructs (usually a `CNAME` to `tamasszentandrasi.github.io` for a `www` host, or `A` records for apex).
 4. In this repo:
-   - `astro.config.mjs`: set `site: 'https://YOUR.DOMAIN'` and `base: '/'`
-   - `scripts/prefix-base.mjs`: set `BASE = ''`
+   - `astro.config.mjs`: set `site: 'https://YOUR.DOMAIN'` and `base: '/'` (or `/Guidebook` if you keep nesting)
+   - `scripts/prefix-base.mjs`: set `BASE` to match `base` (or `''` for root)
+   - adjust `.github/workflows/deploy.yml` publish layout if you no longer nest under `Guidebook/`
    - add `public/CNAME` containing a single line: `YOUR.DOMAIN`
 5. Push; wait for DNS + certificate.
 
-Until then, the `github.io/Kodranni/` URL is the working host.
+Until then, the `github.io/Kodranni/Guidebook/` URL is the working docs host.
 
 ## Documentation map
 

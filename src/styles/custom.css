@@ -165,7 +165,7 @@ site-title {
 
 /* -------------------------------------------------------------------------- */
 /* Sidebar chapter icons — <img.kod-sidebar-icon> injected in Head.astro       */
-/* (Vite resolves asset URLs with the correct /Kodranni base.)                 */
+/* (Vite resolves asset URLs with the correct /Kodranni/Guidebook base.)      */
 /* -------------------------------------------------------------------------- */
 
 .sidebar-content a[href] {

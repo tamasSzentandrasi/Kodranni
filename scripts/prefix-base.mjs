@@ -6,7 +6,7 @@
 import { readdirSync, readFileSync, writeFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 
-const BASE = '/Kodranni'; // must match astro.config.mjs base
+const BASE = '/Kodranni/Guidebook'; // must match astro.config.mjs base
 
 if (!BASE || BASE === '/') {
 	console.log('prefix-base: no base prefix needed, skip');

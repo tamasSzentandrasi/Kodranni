@@ -30,8 +30,9 @@ const sidebarIconMap: Record<string, string> = {
 		try {
 			const path = new URL(href, window.location.origin).pathname.replace(/\/+$/, '');
 			const parts = path.split('/').filter(Boolean);
-			// Drop repo base segment when present
+			// Drop Pages prefix segments when present
 			if (parts[0] && parts[0].toLowerCase() === 'kodranni') parts.shift();
+			if (parts[0] && parts[0].toLowerCase() === 'guidebook') parts.shift();
 			return parts[0] || '';
 		} catch {
 			return '';
