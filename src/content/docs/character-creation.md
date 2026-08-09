@@ -101,82 +101,94 @@ Nothing else.
 
 # Character Creation
 
-Character creation in Kodranni is split into two clear stages.
+### Character Concept
 
-**Before the Weighing** is private work with the Storyteller. It establishes the concept, the mandatory community tie, and the bare mechanical minimums for Foundations and Skills.
+This stage is private. You and the Storyteller only.
 
-**The Weighing** is the public session. It uses the Birth Omen and Guiding Hand to distribute the remaining points, subjects the character to Judgement by the other players, and allows limited Devil’s Bargains paid for with Divine Favour. Echoes, Hierarchy standing, and starting inventory are locked only after the measure is complete.
+The campaign frame already exists. You know the community, the pressures it lives under, and the hard limits of the system. Now you decide who you are bringing into it.
 
-The entire process exists to force a concrete community tie, keep starting competence low, and make every extra advantage cost something visible to the table.
+**Concept**
 
-----------
+Write or speak a short concept. Two to five sentences is enough. Longer is usually worse.
 
-### Before the Weighing
+It must contain a concrete, binding tie to the community. Blood, debt, marriage, sponsorship, shared loss, forced service, or something equally real. A foreigner can arrive. They cannot remain outside. If the tie is weak or abstract, the concept is rejected.
 
-Done privately with the Storyteller.
+This is also the place where you tell the Storyteller what you actually want. What kind of stories you hope to see with this character. What you are afraid will happen to them. What you are willing to risk. The clearer you are, the better the Storyteller can work with what you offer.
 
-**Concept and Tie**  
-Write a short concept. It must contain a concrete, binding tie to the community — blood, debt, marriage, sponsorship, shared loss, forced service, or equivalent. A foreigner can arrive. They cannot remain outside the circle.
+The Storyteller may reject any concept that does not fit the established frame or is brought in bad faith. That decision is final.
 
-**Foundations**  
-All nine start at **1**.  
-You receive **4** free points.  
+**Foundations**
+
+All nine start at 1.
+
+You receive 4 free points.
+
 - 1 → 2 costs 1  
 - 2 → 3 costs 2  
 
-Maximum remains 3. 0 or 4 only with Storyteller approval and a matching Trait.
+Maximum is 3. A score of 0 or 4 is possible only with Storyteller approval and a matching Trait.
 
-**Skills**  
-You receive **12** points.  
-Costs are cumulative:  
+**Skills**
+
+You receive 12 points.
+
+Costs are cumulative:
+
 - 0 → 1 = 1  
 - 1 → 2 = 2  
 - 2 → 3 = 3  
 
-A full rank 3 therefore costs 6. Rank 3 at this stage is possible and expensive.
+A full rank 3 therefore costs 6. It is possible. It is expensive.
 
-These numbers stay private until the circle sits.
+These numbers stay private until the Weighing begins. Do not discuss them with the other players.
 
 ----------
 
 ### The Weighing
 
-Everyone present.
+> _*“The old forefathers lived in their posterity, filled them out with their will, and wrought their achievements through them anew.”*_  
+> — Vilhelm Grønbech
 
-**1. Birth Omen**  
-Roll a d20. Only you and the Storyteller see the result.  
-Points = the result halved and rounded up (1–10).  
-Spend them on Foundations under the same costs.  
-This is the mark under which the character was born. It is not discussed at the table.
+The Ancestors bear witness.
 
-**2. Guiding Hand**  
-One further Omen die is rolled for skills.  
-The full result (1–20) becomes additional skill points, spent under the normal cumulative costs.
+1. **Birth Omen**  
+   Roll a d20. Only you and the Storyteller see the result.  
+   Points = the result halved and rounded up (1–10).  
+   Spend them on Foundations under the normal costs.  
+   This is the mark under which the character was born. It is not discussed at the table.
 
-**3. Judgement**  
-The Storyteller turns to each character and asks:
+2. **Guiding Hand**  
+   One further Omen die is rolled for skills.  
+   The full result (1–20) becomes additional skill points, spent under the normal cumulative costs.
+
+**Who do we see?**  
+The Storyteller turns to each character in turn and asks:
 
 **“Who do we see?”**
 
-Answer in two to four spoken sentences. No more.
+Answer in two to four spoken sentences. No more. This is the claim you make for yourself before the Ancestors.
 
-Others may then claim:  
-**“I find this person to be X.”**
+Then the others may speak.
 
-X must be a single adjective or short phrase that does not already appear in the written concept or the spoken description.
+Each player may offer one claim about the person standing there. The form is simple:
 
-- Requires one seconder.  
-- Target and Storyteller may jointly reject. The player cannot refuse alone.  
-- A character may accept at most **three** Judgements.  
-- When a Judgement is accepted, the Storyteller immediately awards a fitting mechanical reward or penalty to the target based on the claim (skill points restricted to a relevant Archetype, a small Foundation adjustment, a Trait, a starting Harm, or any other consequence that fits). In addition, the target receives **one Divine Favour**.
+**“I see ___.”**
 
-The Storyteller ends the process when a full pass produces nothing further worth accepting. Two or three circuits are usually enough.
+A short adjective or phrase that is not already in the written concept or the spoken answer.
 
-Divine Favour is capped at three. It is the only currency of the Weighing. Unspent Favour is lost when the measure closes.
+- A seconder is required.  
+- The target and the Storyteller may jointly refuse.  
+- Only one claim from any given player may be accepted about any given target. Once one is accepted, that speaker may not offer further claims on that person.  
+- When a claim is accepted, two things happen:  
+  – The speaker receives one **Word**.  
+  – The Storyteller applies a fitting mark to the target. This can be additional skill points in a relevant Archetype, a small Foundation adjustment, a Trait, a starting Harm, or any other consequence that sharpens the concept the player described. The goal is definition, not punishment.
 
-**4. Devil’s Bargains**  
-You may spend any number of your Divine Favour, including none.  
-Each Favour buys one entry from the menu. You name the exact Foundations or Skills. The Storyteller approves or denies. Any Negative Trait is chosen by the Storyteller.
+The Storyteller ends the process when a full pass produces nothing further worth accepting.
+
+**The Wanting**  
+The Words you earned by speaking about others are spent here, or left unspent and lost.  
+
+Each Word buys one entry from the menu. You name the exact Foundations or Skills. The Storyteller approves or denies. Any Negative Trait is chosen by the Storyteller.
 
 - **+1 to a named Foundation**  
   Cost: remove 3 skill points of your choice.
@@ -194,13 +206,16 @@ No other options exist.
 
 ----------
 
-### After the Measure
+### After the Weighing
 
-- The group and Storyteller name **one or two Echoes** drawn from the accepted Judgements and the original concept. The community tie must be present. Capacity remains Resolve + Constitution + Charisma. Zero Echoes is Decadence.
-- Hierarchy begins at **Outcast** unless both the story and a special bargain justify higher standing.
-- Inventory and the exact moment the character enters the fiction are decided by the table last.
+- Echoes the player cares about, drawn from the accepted claims and the original concept. The community tie must be present. Capacity remains Resolve + Constitution + Charisma. Zero Echoes is Decadence.
+- Hierarchy position clarified if applicable. Default is Outcast.
+- Traits locked.
+- Partial inventory: only the named items that make sense for this character to already possess. No supplies. Everything else is filled at play time.
 
 Only then is the character written into the record.
+
+> You can troll the Weighing if you want. You will gain nothing from it, and you will kick yourself later for not participating when others are spending the Words they earned by speaking.
 
 ----------
 
