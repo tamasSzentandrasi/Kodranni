@@ -1,12 +1,12 @@
 /**
  * Prefix root-absolute href/src in dist HTML with Astro `base`.
- * Keep BASE in sync with astro.config.mjs (project Pages path).
- * When moving to a custom domain with base: '/', set BASE to '' and this becomes a no-op.
+ * Keep BASE in sync with astro.config.mjs `base`.
+ * When using a custom domain with base: '/', set BASE to '' (no-op).
  */
 import { readdirSync, readFileSync, writeFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 
-const BASE = '/Kodranni'; // '' when site is apex custom domain with base '/'
+const BASE = '/Kodranni'; // must match astro.config.mjs base
 
 if (!BASE || BASE === '/') {
 	console.log('prefix-base: no base prefix needed, skip');
@@ -25,19 +25,15 @@ function walk(dir) {
 
 function rewrite(file) {
 	let html = readFileSync(file, 'utf8');
-	const next = html.replace(
-		/(href|src)="\/(?!\/)/g,
-		(match, attr) => {
-			// already prefixed
-			if (match.slice(attr.length + 2).startsWith(bare + '/') || match.slice(attr.length + 2) === bare + '"') {
-				return match;
-			}
-			return `${attr}="${bare}/`;
-		},
-	);
-	// collapse accidental double prefix
-	const cleaned = next.replaceAll(`${bare}${bare}/`, `${bare}/`);
-	if (cleaned !== html) writeFileSync(file, cleaned);
+
+	// Only prefix root-absolute paths that are NOT already under /Kodranni/
+	const next = html.replace(/(href|src)="(\/[^"]*)"/g, (full, attr, path) => {
+		if (path === bare || path.startsWith(bare + '/')) return full;
+		// path is like "/icons/x.svg" or "/foundations/"
+		return `${attr}="${bare}${path}"`;
+	});
+
+	if (next !== html) writeFileSync(file, next);
 }
 
 walk('dist');
