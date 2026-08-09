@@ -9,27 +9,27 @@ description: The nine Harm tracks, Dying, recovery, and protection ratios.
 
 ----------
 
-### Harm
+## Harm
 
-Kodranni does not track hit points. It tracks the unravelling of the nine Foundations.
+Kodranni does not track hit points. It tracks the unravelling of the nine [Foundations](/foundations/).
 
-Harm is recorded on nine named tracks. Each track is permanently paired with one Foundation. Every point of Harm reduces that Foundation by one.
+Harm is recorded on nine named tracks. Each track is permanently paired with one Foundation. Every point of Harm reduces that Foundation by one for dice purposes.
 
-| Foundation   | Harm Track      |
-|--------------|-----------------|
-| Strength     | **Crushed**     |
-| Dexterity    | **Bleeding**    |
-| Constitution | **Fever**       |
-| Intellect    | **Fog**         |
-| Perception   | **Disoriented** |
-| Resolve      | **Shock**       |
-| Charisma     | **Tarnished**   |
-| Guile        | **Exposed**     |
-| Authority    | **Disgrace**    |
+| Foundation | Harm Track |
+|------------|------------|
+| Strength | **Crushed** |
+| Dexterity | **Bleeding** |
+| Constitution | **Fever** |
+| Intellect | **Fog** |
+| Perception | **Disoriented** |
+| Resolve | **Shock** |
+| Charisma | **Tarnished** |
+| Guile | **Exposed** |
+| Authority | **Disgrace** |
 
-Tracks run from 0 to 3.  
-Effective Foundation = max(0, Foundation – Harm points).  
-Dice pools never drop below 1 die, regardless of Harm.
+- Tracks run from **0 to 3**.  
+- Effective Foundation = max(0, Foundation − Harm points).  
+- Dice pools never drop below **1** die, regardless of Harm.
 
 The Storyteller assigns points according to the fiction. The track name is only the mechanical label.
 
@@ -37,34 +37,59 @@ The Storyteller assigns points according to the fiction. The track name is only 
 
 ### Inflicting Harm
 
-Harm arises only when the fiction and the dice justify lasting damage.
+Harm arises only when the fiction **and** the dice justify lasting damage.
 
-**Opposed rolls**  
-Harm points = Marks difference divided by the protection ratio (rounded down).
-
-**Unopposed rolls** (dangerous actions, falls, environment, etc.)  
-Harm points = (failures – Marks) divided by the protection ratio (rounded down, minimum 0).
+| Roll type | Harm points |
+|-----------|-------------|
+| **[Opposed](/dice-mechanics/#situational-dice-resolution)** | Marks difference ÷ protection ratio (**always floor**) |
+| **Unopposed** (falls, environment, dangerous acts) | (failures − Marks) ÷ protection ratio (**always floor**, minimum 0) |
 
 **Protection ratios**
 
-- No armour / no relevant Reputation: ÷1 (no protection, each hit lands)
-- Light armour / moderate Reputation advantage: ÷2  
-- Heavy armour / strong Reputation advantage: ÷3  
+| Protection | Ratio |
+|------------|-------|
+| No armour / no relevant Reputation | ÷1 |
+| Light armour / moderate Reputation advantage | ÷2 |
+| Heavy armour / strong Reputation advantage | ÷3 |
 
-Reputation functions as the social and mental equivalent of Armour. Relative Hierarchy position sets the ratio. Maximum difference is two tiers (Ruler against Outcast).
+- The **Storyteller chooses the Harm track** when fiction is ambiguous.  
+- **No mixed events:** a given infliction is physical **or** social/mental — not both stacked. Physical protection uses donned [armour](/inventory/) (None / Light / Heavy). Social and mental protection uses **Reputation** (relative [Hierarchy](/hierarchies/#reputation) position). Maximum Reputation gap for ratio purposes is two tiers (e.g. Ruler against Outcast).
 
-Be frugal. Most successful hits produce 0 or 1 point. Two points is notable. Three points in a single exchange is rare.
+Be frugal. Most successful hits produce **0 or 1** point. Two points is notable. Three in a single exchange is rare.
+
+<aside class="kod-example">
+<p class="kod-example__label">Example — physical Harm</p>
+<ol class="kod-example__steps">
+<li><strong>Opposed margin:</strong> 3 Marks.</li>
+<li><strong>Protection:</strong> Light armour → ÷2.</li>
+<li><strong>Harm points:</strong> floor(3 ÷ 2) = <strong>1</strong>.</li>
+<li><strong>Track (ST chooses):</strong> Bleeding (Dexterity) +1.</li>
+<li><strong>Not mixed:</strong> this event does not also apply social/mental tracks.</li>
+</ol>
+</aside>
 
 ----------
 
 ### Dying
 
-When any Harm track reaches 3 the character is **Dying**.
+When any Harm track reaches **3**, the character is **Dying**.
 
-While Dying, every roll requires the expenditure of Exertion.  
-When Exertion reaches 0, the character dies.
+- While Dying, **every roll requires [Exertion](/exertion/)**.  
+- When Exertion reaches **0**, the character **dies**.
 
-This window allows final actions, last words, or desperate attempts at stabilisation. Stabilisation requires successful Healing and removes the Dying state, though the track remains at 3 until further recovery is possible and almost always leaves a permanent Trait.
+This window allows final actions, last words, or desperate stabilisation. Stabilisation requires a successful **[Healing](/skills/#mother-12)** attempt and removes the Dying state; the track remains at 3 until further recovery, and almost always leaves a permanent [Trait](/traits/).
+
+After death: remove the character from the [Hierarchy Diagram](/hierarchies/#the-hierarchy-diagram). Continuity continues through [Echoes](/echoes/) and [Legacies](/hierarchies/#legacies). Play does not stop mid-session for full character replacement.
+
+<aside class="kod-example">
+<p class="kod-example__label">Example — Dying and stabilise</p>
+<ol class="kod-example__steps">
+<li><strong>Fever track</strong> reaches 3 → character is <strong>Dying</strong>.</li>
+<li><strong>While Dying:</strong> every roll costs <a href="/exertion/">Exertion</a>. At Exertion 0 → death.</li>
+<li><strong>Stabilise:</strong> successful Resolve + Healing → Dying ends; track stays at 3 until recovery; usually gain a permanent <a href="/traits/">Trait</a>.</li>
+</ol>
+</aside>
+
 
 ----------
 
@@ -72,23 +97,29 @@ This window allows final actions, last words, or desperate attempts at stabilisa
 
 Recovery is slow and depends on rest, care, and nourishment.
 
-- **Short rest**: may clear 1 point from a single track if the character is fed and the wound is tended.  
-- **Long rest**: may clear 1–2 points depending on quality of care, shelter, and food.  
-- Lack of food or water reduces or negates recovery.  
-- Inventory (bandages, herbs, clean water, proper shelter) and the context of the rest matter. The Storyteller judges what the situation actually allows.
+| Condition | Effect |
+|-----------|--------|
+| Short rest | May clear 1 point from a single track if fed and tended |
+| Long rest | May clear 1–2 points depending on care, shelter, and food |
+| No food or water | Reduces or negates recovery |
+| Track at 3 | Can only be reduced after Dying has been stabilised |
 
-A track at 3 can only be reduced after the Dying state has been stabilised.
+[Inventory](/inventory/) (bandages, herbs, clean water, shelter as fiction) and rest quality matter. The Storyteller judges what the situation allows.
 
 ----------
 
 ### Worsening and Omens
 
-All Harm can worsen.  
+All Harm can worsen.
 
-The Storyteller may load custom Omen faces to represent infection, secondary bleeding, spreading fever, growing shame, or any other deterioration. When those faces appear, additional Harm points are applied. Positive Consequences may likewise reduce or prevent Harm.
+The Storyteller may load custom [Omen](/dice-mechanics/#the-omen-die-and-consequences) faces for infection, secondary bleeding, spreading fever, growing shame, and similar deterioration. When those faces appear, additional Harm applies. Positive Consequences may reduce or prevent Harm.
 
-The ordinary faces 7 and 13 remain available for the same purpose at the Storyteller’s discretion.
+Ordinary faces **7** and **13** remain available for the same purpose at the Storyteller’s discretion.
 
 ----------
 
 > _Don’t worry. I’ll kill you eventually._
+
+Related: [Dice Mechanics](/dice-mechanics/), [Exertion](/exertion/), [Hierarchies](/hierarchies/), [Automation](/automation/).
+
+----------

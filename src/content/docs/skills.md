@@ -3,14 +3,14 @@ title: Skills
 description: Skills organised under six Archetypes, with Practice and improvement rules.
 ---
 
-> _*“People pretend not to like grapes when the vines are too high for them to reach.”*_
+> _*“People pretend not to like grapes when the vines are too high for them to reach.”*_  
 > _Marguerite de Navarre_
 
 ----------
 
-### Skills and Archetypes
+## Skills and Archetypes
 
-Skills are organised under six **Archetypes** (personified categories). These are not character classes. They are simply the broad domains into which individual Skills fall:
+Skills are organised under six **Archetypes** (personified categories). These are **not** character classes. They are broad domains into which individual Skills fall:
 
 - Warrior  
 - Traveller  
@@ -21,23 +21,29 @@ Skills are organised under six **Archetypes** (personified categories). These ar
 
 **Skills are rated between 0 and 3.**
 
-A rating of 0 means the character has no meaningful practice in that specific Skill. A rating of 3 means he's extremely practiced in that domain.
+| Rating | Meaning |
+|--------|---------|
+| **0** | No meaningful practice in that specific Skill |
+| **3** | Extremely practiced in that domain |
 
-Each Skill has a single ruling **Foundation** that governs its Practice thresholds.
+Each Skill has a single ruling **[Foundation](/foundations/)** that governs its [Practice](#improvement) thresholds.
 
-Specific techniques, regional styles, named tools, or binary capabilities remain **Traits**.
+Specific techniques, regional styles, named tools, or binary capabilities remain **[Traits](/traits/)** — not Skills.
 
-**Improvement**
+At the table, the Storyteller selects the Skill that best matches the player’s described intent when building a [dice pool](/dice-mechanics/#the-makeup-of-the-dice-pool).
 
-Every time a Skill is used in a roll it may generate Practice (tracked automatically by automation). 
+----------
 
-Lack of Practice makes a Skill susceptible to degrade (can happen during time skips or negative consequences).
-Earn enough Practice and your Skill levels up.
+### Improvement
 
-Gaining Practice is also deeply tied to the investment of **Exertion**. Marks of Success only grant Practice when Exertion was spent!
+Every time a **Skill** is used in a roll it may generate **Practice** (tracked by [automation](/automation/)). [Primitive](/dice-mechanics/#the-makeup-of-the-dice-pool) actions grant **no** Practice — no Skill is involved.
 
-- **Opposed rolls**: Practice = the Marks difference with Exertion spent. If the character lost the contest, add +2 (regardless of Exertion spending).  
-- **Unopposed rolls**: +2 Practice if the roll contained more failures than Marks (Exertion free), plus +1 Practice for every two Marks of Success (rounded down, in the case of Exertion spending).
+Practice is deeply tied to **[Exertion](/exertion/)**. Marks of Success only grant Practice when Exertion was spent.
+
+| Roll type | Practice rule |
+|-----------|----------------|
+| **Opposed** | Practice = Marks difference when Exertion was spent. If the character *lost* the contest, add **+2** (regardless of Exertion). A **0** margin leaves any extra award to the Storyteller’s reading of the fiction. |
+| **Unopposed** | **+2** Practice if the roll contained more failures than Marks (Exertion free), **plus** **+1** Practice for every two Marks of Success (rounded down) when Exertion was spent. |
 
 Practice accumulates against thresholds:
 
@@ -49,13 +55,52 @@ Practice accumulates against thresholds:
 
 These thresholds are modified by the Skill’s ruling **Foundation**:
 
-- Foundation 3 (above average) → thresholds halved  
-- Foundation 1 (below average) → thresholds doubled  
-- Foundation 2 → base values  
+| Foundation | Threshold modifier |
+|------------|--------------------|
+| **3** (above average) | Halved |
+| **2** (average) | Base values |
+| **1** (below average) | Doubled |
 
-High inborn potential therefore accelerates learning. Low potential slows it. The bot handles all accumulation and level-ups. Players never see raw Practice numbers unless they ask.
+High inborn potential accelerates learning. Low potential slows it. Automation handles accumulation and level-ups. Players never see raw Practice numbers unless they ask.
 
-> Struggle teaches. Effort is taken into account. Doing something ad infininum without hardship counts for naught.
+> Struggle teaches. Effort is taken into account. Doing something ad infinitum without hardship counts for naught.
+
+#### Degradation (prompted only)
+
+Skills can lose progress when the Storyteller asks automation to evaluate a time leap or similar narrative stretch — not continuously in the background.
+
+**Standard time leap**
+
+1. Take the **five** Skills with the **lowest** Practice progress toward the next rank.  
+2. Roll the **Omen** die.  
+3. From those five, randomly select how many Skills to downgrade:
+
+| Omen | Skills degraded (from the five) |
+|------|----------------------------------|
+| 0–4 | 0 |
+| 5–9 | 1 |
+| 10–14 | 2 |
+| 15–20 | 3 |
+
+**Short time leap (alternate)**
+
+Same five-skill pool, but only:
+
+| Omen | Skills degraded |
+|------|-----------------|
+| 0–9 | 0 |
+| 10–20 | 1 |
+
+Fiction still decides *why* rust set in; automation only applies the prompted procedure.
+
+<aside class="kod-example">
+<p class="kod-example__label">Example — Practice gain and degrade</p>
+<ol class="kod-example__steps">
+<li><strong>Unopposed Lockpicking:</strong> more failures than Marks, no Exertion → <strong>+2 Practice</strong>.</li>
+<li><strong>Same Skill later:</strong> Exertion spent, 4 Marks → <strong>+2 Practice</strong> (floor of 4÷2). Progress is visible on the sheet.</li>
+<li><strong>Short time leap (ST prompts):</strong> five lowest-progress Skills; Omen 0–9 → degrade 0 of them; Omen 10–20 → degrade 1.</li>
+</ol>
+</aside>
 
 ----------
 
@@ -119,7 +164,7 @@ High inborn potential therefore accelerates learning. Low potential slows it. Th
 5. **Farming** (Strength) — soil, crops and field management  
 6. **Empathy** (Charisma) — reading emotional states and offering personal support  
 7. **Performance** (Charisma) — expression through voice (singing), body (dancing) and presence (acting)  
-8. **Healing** (Resolve) — physical treatment of the body, wounds and injury  
+8. **Healing** (Resolve) — physical treatment of the body, wounds and injury (critical for [Dying](/harm/#dying) stabilisation)  
 9. **Etiquette** (Resolve) — proper forms, manners and social conduct in domestic and relational settings  
 10. **Seduction** (Charisma) — intimate influence, charm and emotional leverage in personal relationships  
 11. **Influence** (Authority) — using relational position, obligations and family hooks  
@@ -130,33 +175,37 @@ High inborn potential therefore accelerates learning. Low potential slows it. Th
 ### Sage (12)
 
 1. **Debate & Rhetoric** (Charisma) — structured argument and persuasive speech  
-2. **Arithmetic & Accounting** (Intellect)
-3. **Investigation** (Perception)
-4. **Folklore & Heraldry** (Intellect)
-5. **Cartography** (Intellect)
-6. **Mentoring** (Charisma)
+2. **Arithmetic & Accounting** (Intellect) — numbers, ledgers, shares, and practical calculation  
+3. **Investigation** (Perception) — systematic inquiry into events, places, and evidence  
+4. **Folklore & Heraldry** (Intellect) — local lore, lineages, signs, and remembered custom  
+5. **Cartography** (Intellect) — maps, distances, and recorded geography  
+6. **Mentoring** (Charisma) — teaching others so that skill and judgment take root  
 7. **Illustration** (Intellect) — technical drawing, diagrams, schematics and visual recording of knowledge  
-8. **Negotiation** (Authority)
+8. **Negotiation** (Authority) — formal bargaining toward agreement between parties  
 9. **Insight** (Perception) — pure reading of motives, emotional state and unspoken position  
-10. **Strategy** (Intellect)
-11. **Ritual** (Authority)
-12. **Preaching** (Charisma)  
+10. **Strategy** (Intellect) — long-horizon planning beyond the immediate fight (contrast Warrior **Tactics**)  
+11. **Ritual** (Authority) — conducting communal rites, funerals, oaths, and formal observance  
+12. **Preaching** (Charisma) — public moral or spiritual address that moves a crowd  
 
 ----------
 
 ### Thief (12)
 
-1. **Lockpicking** (Guile)
-2. **Pickpocket** (Guile)
-3. **Sneak** (Dexterity)
-4. **Forgery** (Guile)
-5. **Slander & Ridicule** (Charisma)
-6. **Smuggling** (Guile)
-7. **Deception** (Guile)
-8. **Streetwise** (Guile)
-9. **Acrobatics** (Dexterity)
-10. **Sleight of Hand** (Guile)
-11. **Off-hand & Improvised Combat** (Dexterity)
-12. **Climbing** (Strength)
+1. **Lockpicking** (Guile) — defeating locks, catches, and simple mechanical seals  
+2. **Pickpocket** (Guile) — removing objects from a person without their notice  
+3. **Sneak** (Dexterity) — quiet movement and remaining unseen while moving  
+4. **Forgery** (Guile) — false documents, seals, marks, and convincing imitations of writing or craft signs  
+5. **Slander & Ridicule** (Charisma) — public or whispered attack on reputation through words  
+6. **Smuggling** (Guile) — moving goods or people past watchers, tolls, and searchers  
+7. **Deception** (Guile) — lies, false personas, and deliberate misdirection  
+8. **Streetwise** (Guile) — reading towns, underworld channels, and informal urban power  
+9. **Acrobatics** (Dexterity) — leaps, balance, contortion, and athletic movement under stress  
+10. **Sleight of Hand** (Guile) — palm, switch, conceal, and stage small manipulations  
+11. **Off-hand & Improvised Combat** (Dexterity) — secondary weapons and objects not meant as arms  
+12. **Climbing** (Strength) — vertical movement on rock, timber, rope, and walls  
+
+----------
+
+Related: [Human Potential](/human-potential/), [Character Creation](/character-creation/) skill budgets, [Automation](/automation/) Practice tracking.
 
 ----------

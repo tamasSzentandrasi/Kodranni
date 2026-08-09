@@ -10,6 +10,39 @@ hero:
       link: /introduction/
       icon: right-arrow
       variant: primary
+    - text: Dice Mechanics
+      link: /dice-mechanics/
+      icon: document
+      variant: minimal
 ---
 
+import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
 A system built for campaigns where the characters are ordinary people, the world is unforgiving, and legacy outlives the individual.
+
+<CardGrid>
+  <Card title="Read the intent" icon="open-book">
+    [Introduction](/introduction/) — constraints, core ideas, grim reality versus fun.
+  </Card>
+  <Card title="Resolve actions" icon="seti:clock">
+    [Dice Mechanics](/dice-mechanics/) first after the intro — when to roll, pools, Marks, Omen, Tide.
+  </Card>
+  <Card title="Shape a person" icon="seti:favicon">
+    [Human Potential](/human-potential/) — Foundations, Skills, Traits, Exertion.
+  </Card>
+  <Card title="Carry the table" icon="puzzle">
+    [Automation](/automation/) — hybrid play, shared sheets, Fluxer and Discord.
+  </Card>
+</CardGrid>
+
+### Path through the Guide
+
+<CardGrid>
+  <LinkCard title="Campaign Setup" href="/campaign-setup/" description="Storyteller work before characters exist." />
+  <LinkCard title="Character Creation" href="/character-creation/" description="Concept, points, The Weighing." />
+  <LinkCard title="Glossary" href="/glossary/" description="Every major term, linked." />
+</CardGrid>
+
+### Core systems
+
+[Harm](/harm/) · [Echoes](/echoes/) · [Hierarchies](/hierarchies/) · [Inventory](/inventory/)

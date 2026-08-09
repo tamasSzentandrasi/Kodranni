@@ -1,6 +1,6 @@
 ---
 title: Dice Mechanics
-description: Dice pools, Marks, Advantage, Omen, and the Tide.
+description: When to roll, dice pools, Marks, Advantage, Omen, and the Tide.
 ---
 
 > _*Wyrd oft nereð unfægne eorl, þonne his ellen dēah.*_  
@@ -9,164 +9,226 @@ description: Dice pools, Marks, Advantage, Omen, and the Tide.
 
 ----------
 
-## **Dice Mechanics**
+## Dice Mechanics
 
-Similar to other TTRPG's, action resolution is handled by throwing dice. Whenever a **player** or **storyteller** needs to resolve an action, they discuss and throw appropriate dice to decide how that action turns out. Very standard -- *so far*. 
+Similar to other TTRPGs, action resolution uses dice. When a **player** or **Storyteller** needs to resolve an action, they discuss intent, then throw the appropriate dice. Very standard — *so far*.
+
+### When to roll
+
+If an action’s outcome can **significantly differ** because of luck, chance, or skill — the Storyteller **can** ask for a roll, picking the relevant characteristics to base it on. If the fiction is already clear, **do not roll**. Conversation, planning, and settled facts are not replaced by dice.
+
+The Storyteller always chooses which [Foundation](/foundations/) and (if any) [Skill](/skills/) fit the described intent, and which **die tier** the pool uses.
 
 ----------
 
 ### Dice Types and Pools
 
-In Kodranni, there are **three types** of dice used:
+Kodranni uses **three** action dice:
 
- - **6**-sided dice - further referred to as **d6**.
- - **8**-sided dice - further referred to as **d8**.
- - **12**-sided dice - further referred to as **d12**.
+| Die | Shorthand |
+|-----|-----------|
+| 6-sided | **d6** |
+| 8-sided | **d8** |
+| 12-sided | **d12** |
 
-Rolls consist of only one of these three types – creating d6, d8, or d12 dice pools.
+A given roll uses **only one** of these types — a pure d6, d8, or d12 pool (plus the separate Omen die).
 
 ----------
 
 ### Marks of Success
 
-Any die that lands on 5 or higher is considered a **Mark of Success**, or simply a **Mark**.
+Any die that lands on **5 or higher** is a **Mark of Success**, or simply a **Mark**.
 
-The **different dice types** thus have varying probabilities of resulting in a **Mark**:
- - **6**-sided dice (**d6**): 33%
- - **8**-sided dice (**d8**): 50%
- - **12**-sided dice (**d12**): 66%
+Approximate chance a single die is a Mark:
 
-Unlike similar dice pool systems, where a pool of dice is thrown to determine the outcome, Kodranni’s **Mark** system is slightly different. Mostly interpretational difference:
+| Die | P(Mark) |
+|-----|---------|
+| **d6** | ~33% |
+| **d8** | ~50% |
+| **d12** | ~66% |
 
-> These ***'Marks of Success'***, rather than just a binary pass/fail result, interpret rolls with layers of outcomes, assessing the **effectiveness**, **quality**, or **progress** toward achieving a goal.
+Unlike many dice-pool systems, Marks are not only a binary pass/fail. The Storyteller reads **effectiveness**, **quality**, or **progress** from the number of Marks (and, in opposed rolls, from the **margin**).
 
-What's the difference? The players are **not** trying to achieve an **arbitrary threshold**, they try their best not knowing what outcomes they might face. The burden is on the **Storyteller** to **interpret the results** of a roll, increasing the rewards and penalties based on the Marks rolled.
-
-You might ask: 
-
- - *"So how does it get determined, which type of dice do I use?"* - the next section explains just that
- - *"So how many dice do I throw?"* - patience, please, we'll get to that.
+Players are **not** chasing a secret difficulty number. They act under incomplete knowledge; the Storyteller interprets results and scales reward and cost accordingly.
 
 ----------
 
-### Advantage and Disadvantage
+### Die tier — Storyteller decides
 
-This is where ***context*** comes in. In any situation, there are certain factors that influence the outcome and the odds of success of an action. These factors are often **innumerable**, weighing the odds on both the side of success and failure. However, in most cases, it's ***fairly easy*** to assess which side has the advantage.
+The **die tier** of a pool is declared by the **Storyteller** for that roll. There is no automatic map from Skill rating to d6 / d8 / d12.
 
-Different dice types simulate Advantage or Disadvantage, incorporating **context** into any situation.
+**Safe default:** treat **d8** as the ordinary tier for a competent attempt when nothing special presses the odds. From that baseline — or from any other tier the Storyteller names — context can shift the pool:
 
-- **Advantage**: In favourable situations (such as beneficial terrain, superior knowledge, or support from others), the dice tier of the roll **upgrades**. 
-> For example, a **trained hunter** (who would normally roll **d8** dice pools) could roll **d12** when tracking a wounded prey with his hounds.
-  
-- **Disadvantage**: In challenging circumstances (e.g., poor weather, hostile terrain, or in a disadvantageous fight), the dice tier of the roll **downgrades**.
-> For example, a **veteran soldier** ( who would otherwise roll **d8** dice pools) might roll **d6** when surrounded by foes on multiple sides.
+- **Advantage** — upgrade one step (e.g. d8 → d12).  
+  Example: a trained hunter who would normally roll **d8** tracks wounded prey with hounds → **d12**.
+- **Disadvantage** — downgrade one step (e.g. d8 → d6).  
+  Example: a veteran soldier who would otherwise roll **d8** is surrounded → **d6**.
+
+[Traits](/traits/), terrain, numbers, reputation, weather, and armour-as-context all feed this judgment. They are **not** extra mechanical layers stacked on top of Marks.
+
+**Stacking:** Whether several Advantages climb more than one step, whether Advantage and Disadvantage cancel, and how hard the fiction pushes the tier is the **Storyteller’s call** for that moment. Automation records the tier the Storyteller declares; it does not invent one.
 
 ----------
 
 ### The Makeup of the Dice Pool
 
-Kodranni dice pools are assembled from three distinct sources:
+Pools assemble from three sources:
 
-- The level of the appropriate **Foundation** (1 to 3) — Foundations are inborn potential tracked within a very narrow set of human capability. Nearly static (aging and traumatic events may shift it). (See the Foundations chapter for more details.)
-- The level of the appropriate **Skills** (0 to 3) — practiced ability that matches the intent. Skills also improve with usage, both by failing at their use as well as succeeding. The Storyteller selects the most fitting category from the player’s description of what is being attempted. (See Skills chapter for an in depth look.)
-- **Exertion** (optional, single extra die, two at most if situation involves an Echo) — Fully player-controlled resource. Substitutes fatigue, hunger, thirst, and is regained by sleeping, eating, drinking. (For more details, see the Exertion chapter)
+| Source | Range | Role |
+|--------|-------|------|
+| **[Foundation](/foundations/)** | typically 1–3 (effective value after [Harm](/harm/)) | Inborn potential; nearly static |
+| **[Skill](/skills/)** | 0–3 | Practiced ability matching intent |
+| **[Exertion](/exertion/)** | 0–1 dice (2 with matching [Echo](/echoes/#invocation)) | Optional player spend |
 
-The base formula:
+**Pool size** = Foundation + Skill + optional Exertion dice  
 
-**Foundation** level + **Skill** level + **Exertion** di(c)e (optional) = *the size* of the dice pool thrown
+**Primitive actions** (run, jump, haul, see, recall, composure, and similar animal-tier acts) use **Foundation only** (+ optional Exertion). No Skill die is added. Primitive rolls grant **no [Practice](/skills/#improvement)**.
 
-One final caveat - primitive rolls that merely serve animal tier actions - running, jumping, hauling, seeing, recalling, composure, etc - merely use the Foundation as a component (with Exertion added in optionally). These actions are called ***Primitive actions***, and they do not use an appropriate skill in addition in the makeup of their dice pool.
+> Who decides *which* Foundation and *which* Skill? **The Storyteller.** Always. The player describes intent freely. The Storyteller picks the best pair. Players may propose a better pair; the Storyteller’s call is final.
 
-> You might wonder, who decides *which* Foundation and *which* Skill to roll. Storyteller. Always. As a player, you have complete freedom in describing your action as accurately as you are capable. Storyteller selects the appropriate pair of Foundation + Skill - best fit selected. If you disagree, you can voice your concerns, provided you have a more fitting pair in mind. Bear in mind though, that the final decision rests with the Storyteller.
+<aside class="kod-example">
+<p class="kod-example__label">Example — unopposed roll</p>
+<ol class="kod-example__steps">
+<li><strong>Intent:</strong> Eira recaulks a boat before a storm.</li>
+<li><strong>Storyteller names:</strong> Strength + Shipwright, die tier <strong>d8</strong>.</li>
+<li><strong>Pool:</strong> Foundation 2 + Skill 2 = <strong>4d8</strong> (+ Omen d20).</li>
+<li><strong>Result:</strong> 2 Marks — the hull holds for the season, not longer.</li>
+<li><strong>Practice:</strong> accrues only if she spent <a href="/exertion/">Exertion</a> (see <a href="/skills/#improvement">Skills</a>).</li>
+</ol>
+</aside>
+
+Additional modifiers that shrink pools:
+
+- Empty Exertion: **–2** dice (floor 1) — see [Exertion](/exertion/)  
+- [Decadence](/echoes/#weight-and-capacity) (no Echoes): **–1** die on every roll  
+- Over-capacity Echoes: **–1** die on rolls that involve any of the character’s Echoes  
 
 ----------
 
-### The Omen die and Consequences
+### The Omen Die and Consequences
 
 > *“I returned, and saw under the sun, that the race is not to the swift, nor the battle to the strong, neither yet bread to the wise, nor yet riches to men of understanding, nor yet favour to men of skill; but time and chance happeneth to them all.”*  
 > — Ecclesiastes 9:11
 
-**Every roll** includes one additional die: the **Omen** die. It is a **d20**, rolled with the main pool, and completely independent of Marks, success, failure, Traits, or Exertion of the standard dice pool. It never alters the primary outcome. It can, however, introduce a side event, a ***Consequence***.
+**Every roll** includes one extra die: the **Omen** die — a **d20**, independent of Marks, Traits, and Exertion. It never changes the primary success reading. It may introduce a side event: a **Consequence**.
 
-- Face **7** triggers a Positive Consequence.
-- Face **13** triggers a Negative Consequence.
-- All other faces remain blank or may be pre-assigned by the Storyteller before a scene for specific narrative triggers (a sudden arrival, a structural failure, a shift in weather, and the like) as additional **Consequences**. These assignments are set and cleared by the Storyteller via the bot automation.
+| Face | Default |
+|------|---------|
+| **7** | Positive Consequence |
+| **13** | Negative Consequence |
+| Other | Blank, **or** pre-assigned by the Storyteller for the scene |
 
-When a Consequence happens, the Storyteller decides how to interpret it. The sole constraint is that it must remain a genuine side-effect - it cannot alter the outcome of the dice roll it was attached to, merely add a side effect, a second outcome, a complication or a boon.
+Storyteller-assigned faces can mean a sudden arrival, structural failure, weather shift, infection, and the like. Assignments are set and cleared through [automation](/automation/).
 
-Additionally, the Omen die is also utilised in larger confrontations involving more than two people. This will be explained later in the Tide chapter.
+When a Consequence fires, the Storyteller interprets it. Constraint: it must remain a **side-effect** — it cannot rewrite the primary outcome of the roll it rode on.
+
+In multi-party contests, Omens also feed **[The Tide](#the-tide)**.
 
 ----------
 
 ### Situational Dice Resolution
 
-Now we know how large the dice pool is, how it's made up, and the Marks rolls generate. As for how to interpret a result - a few unique cases must be distinguished
+| Mode | When | Reading |
+|------|------|---------|
+| **Primitive** | Animal-tier action | Foundation-only pool; Marks give incremental benefit; no Practice |
+| **Unopposed** | No opposing character | Full pool; Marks give incremental benefit |
+| **Opposed** | Wills collide (1v1 or many actors) | Full pools (pairs need not match); each action is resolved **individually**; compare **Marks difference** on the reply chain |
+| **Tide** | Larger than clean 1v1 as a *collective* contest | Individual opposed resolutions also move a shared tracker |
 
-- **Primitive actions**  
-As mentioned previously, these rolls only use the Foundation in their base dice pool makeup. Marks provide incremental benefits based on the result.
+Hints:
 
-- **Unopposed rolls**  
-Used when a Character is not hindered (opposed) by a different Character in the action he/she attempts. Standard dice pool setup, Marks give incremental benefits - the same as before
+- Opposed rolls are handled as **replies** to a prior roll so automation can compute margins.
+- In a 1vMany or ManyvMany mess, **each action still stands alone**. Advantage and Disadvantage are read from that action’s context — not averaged across the field.
+- Treat intent and context when reading the margin: conditions, injuries, insight — all valid Storyteller levers.
+- Social, mental, and physical contests use the **same** resolution shape.
+- Armour, reputation, favours, numbers, and terrain are **context** (tier and interpretation), not separate subsystems — except where [Harm](/harm/) uses armour **or** Reputation **protection ratios** (not both on the same event; the Storyteller picks the contest type).
 
-- **1v1 Opposed rolls**  
-Used when the Character's action is opposed by another Character. Standard dice pool setup, however, the chosen Foundation + Skill pairs need not match for the sides. Results are compared by Marks difference. Interpretation of that difference is up to the Storyteller.
+<aside class="kod-example">
+<p class="kod-example__label">Example — opposed roll (reply)</p>
+<ol class="kod-example__steps">
+<li><strong>Intent:</strong> Talk past a reeve who bars the gate.</li>
+<li><strong>Player roll:</strong> Charisma + Negotiation, <strong>d8</strong> → 3 Marks.</li>
+<li><strong>Opposing roll:</strong> Storyteller rolls for the reeve <em>in reply</em> — Resolve + Insight, <strong>d8</strong> → 1 Mark. (Pairs need not match.)</li>
+<li><strong>Margin:</strong> 3 − 1 = <strong>2</strong> for the player.</li>
+<li><strong>Outcome:</strong> the gate opens. <a href="/harm/">Harm</a> only if the Storyteller later rules lasting damage.</li>
+</ol>
+</aside>
 
-Some hints to help:
-
-> Opposed rolls (no matter whether it's 1v1 1vMany or ManyvMany) are always handled as replies to the prior roll, that's how the automation knows to calculate and produce results, differences by.
-
-> A good rule of thumb with 1v1 Opposed rolls is to treat the context of the action, the intent, to measure it's success by the Marks difference produced by the roll. Adjusting advantage, imposing conditions, injuries, insight are all valid outcomes to chose from.
-
-> Opposed rolls can vary - Social rolls (eg. negotiations), Mental rolls (eg. tactics), Physical rolls (eg. combat) - the system doesn't distinguish by Contest type, their resultion is uniform.
-
-> Armour, reputation, existing favours, numbers, and terrain are handled as context. They shift the dice tier or colour the Storyteller’s reading of the margin. They are not additional mechanical layers.
-
-...and generally a good advice to follow:
-
-**Focus on the roleplay, not on the roll-play. Dice outcomes should NEVER replace conversations, decisions and planning. Roll outcomes inform us of the general EFFECT of an action, never it's content.**  
+**Focus on the roleplay, not the roll-play. Dice outcomes should NEVER replace conversations, decisions, and planning. Rolls inform the EFFECT of an action, never its content.**
 
 ----------
 
 > _*“In battle, momentum means riding on the force of the tide of events.”*_  
 > — Sun Tzu
 
- ----------
+----------
 
 ### The Tide
 
-The Tide is a **shared** progress tracker used when a contest grows larger than a clean 1v1 — a skirmish, a running fight against multiple opponents, a debate involving an entire hall, a pursuit through hostile ground.
+The Tide is a **shared** progress tracker when a contest is larger than a clean 1v1 — a skirmish, a running fight, a hall-wide debate, a pursuit through hostile ground.
 
-The Tide of an event is separated into two parts based on the **Advantage-Disadvantage** of the **general contest**. 
+#### Setup
 
-> Examples of initial setup:  
-> - Equal footing: 8 vs 8 → scale of 15, starting point 8  
-> - Slight advantage: 8 vs 6 → scale of 13, starting point 8  
-> - One side clearly superior: 8 vs 12 → scale of 19, starting point 8  
-> - Severe disadvantage: 6 vs 12 → scale of 17, starting point 6  
+The Tide is framed by the **general** Advantage / Disadvantage of the whole contest (not each individual blow). Both sides share **one** scale; the **position** of a marker is what they push.
 
-Individual opposed resolutions shift the Tide. How many Marks of difference are required to shift it by one point depends on the scale of the contest:
+**How to read the examples:** each side is given a “weight” number (higher = more favourable footing for that side).  
 
-- Tiny skirmish — every 1 Mark difference in connected rolls  
-- Small skirmish — every 2 Marks difference in connected rolls
-- Battle — every 3 Marks difference in connected rolls
-- Large battle — only Omen results can shift the Tide
+- **Scale length** = weight_A + weight_B − 1  
+- **Starting position** = weight of the side you treat as the reference “home” end (commonly the players’ side), counted from that end  
 
-Omens rolled on any action connected to the Tide also affect it. The thresholds for those Omens follow the same scale as the Marks-difference requirement, and are further modified by the overall Advantage or Disadvantage of the situation.
+| Situation | Weights | Scale | Start (from side A) |
+|-----------|---------|-------|---------------------|
+| Equal footing | 8 vs 8 | 15 | 8 |
+| Slight advantage (A) | 8 vs 6 | 13 | 8 |
+| A clearly superior | 8 vs 12 | 19 | 8 |
+| A severe disadvantage | 6 vs 12 | 17 | 6 |
 
-> On equal footing:  
-> - Tiny skirmish: 1 = negative shift for that side, 20 = positive  
-> - Small skirmish: 1–2 negative, 19–20 positive  
-> - Battle: 1–3 negative, 18–20 positive  
+(The last row starts at 6 because side A’s weight is 6 — they begin closer to collapse.)
 
-Disadvantage lowers the thresholds for the disadvantaged side (negative Omens become more likely, positive less so). Severe disadvantage (the equivalent of d6 versus d12) shifts the thresholds by two full levels. Individual actions still receive their own case-by-case Advantage or Disadvantage; the macro adjustment applies only to the Tide’s Omen thresholds.
+#### Shifting by Marks
 
-Just to understand, both sides operate on the **same** scale, it's position is what they are both shifting by their actions.
+How many Marks of difference are required to move the Tide one point depends on scale:
 
-When one side’s Tide reaches it's end, that collective side **routes**. Morale breaks. The group as a whole crumbles or flees. Individuals may still choose to stand and fight, or in a non-physical contest, to refuse to give up — and die a foolish, heroic, or simply stubborn death, suffer ridicule, or a major setback - if that is what they elect. The Tide breaks collective will; it does not force personal surrender.
+| Scale | Marks difference per Tide point |
+|-------|----------------------------------|
+| Tiny skirmish | 1 |
+| Small skirmish | 2 |
+| Battle | 3 |
+| Large battle | Only Omen results shift the Tide |
 
-> You can do everything in your power, yet if the rest of your side is being butchered, you will still find yourself flanked.
-> Additional good hint for the Storytellers: Do not turn contests into grinding roll-battles for no reason. Set Omen faces to trigger additional events to influence the Tide tracker, and do not force your Players to play out the entire event - the Tide situation - if they no longer intend to participate (early looting, disengaging, retreating, pursuing personal objectives that the battle no longer supplies)
+#### Omens on the Tide
 
-The bot tracks the Tide, connects individual rolls to it (a reply to a roll designates it as the opposing roll or links it to the current Tide), and handles the arithmetic. The table’s work remains narrative.
+Omens on Tide-linked actions also move it. Threshold bands follow the same scale idea as Marks-difference requirements, then adjust for overall Advantage / Disadvantage.
 
- ----------
+On **equal footing**:
+
+| Scale | Negative Omen faces | Positive Omen faces |
+|-------|---------------------|---------------------|
+| Tiny skirmish | 1 | 20 |
+| Small skirmish | 1–2 | 19–20 |
+| Battle | 1–3 | 18–20 |
+
+Disadvantage lowers thresholds for the disadvantaged side (negative Omens more likely, positive less so). Severe disadvantage (the d6-versus-d12 equivalent) shifts thresholds by **two full levels**. Individual actions still get their own case-by-case Advantage; the macro adjustment applies only to Tide Omen thresholds.
+
+<aside class="kod-example">
+<p class="kod-example__label">Example — Tide shift</p>
+<ol class="kod-example__steps">
+<li><strong>Setup:</strong> small skirmish, equal footing — weights 8 vs 8 → scale 15, start 8. Shift every <strong>2</strong> Marks of difference on Tide-linked rolls.</li>
+<li><strong>Player roll:</strong> Authority + Command, d8 → 4 Marks.</li>
+<li><strong>Reply (NPC):</strong> Resolve + Intimidate, d8 → 1 Mark.</li>
+<li><strong>Tide:</strong> difference 3 → floor(3÷2) = <strong>1</strong> step toward the player side. Position 8 → 9.</li>
+<li><strong>Later:</strong> Omen 20 on a Tide-linked roll moves the Tide again (equal-footing small-skirmish band).</li>
+<li><strong>When the marker hits an end:</strong> that <em>side</em> routes. Individuals may still stand.</li>
+</ol>
+</aside>
+
+#### Routing
+
+When the Tide reaches one end, that collective side **routes**. Morale breaks. The group crumbles or flees. Individuals may still stand, refuse, die heroically or foolishly, or take a major personal setback — the Tide breaks **collective** will, not personal agency.
+
+> You can do everything in your power; if the rest of your side is butchered, you will still find yourself flanked.  
+> Storyteller advice: do not grind roll-battles for their own sake. Load Omen faces that matter. Let players leave the Tide when fiction allows (loot, disengage, personal objective).
+
+Related: [Human Potential](/human-potential/), [Harm](/harm/), [Echoes](/echoes/), [Automation](/automation/).
+
+----------

@@ -5,24 +5,49 @@ description: Binary traits that make a character specific.
 
 ----------
 
-### Traits
+## Traits
 
 Traits are binary and entirely custom. They are the details that make a character specific rather than generic.
 
-Simply put, there are **two broad types of Traits**: **Positive** and **Negative**.
+There are **two broad polarities**: **Positive** and **Negative** — but polarity is contextual.
 
-A positive Trait grants narrative permission. Actions that are ordinary for someone with that Trait may succeed without a roll, or may receive Advantage when a roll is still required.  
-A negative Trait creates complication, imposes Disadvantage, or in extreme cases rules an action out entirely.
+- A **positive** use of a Trait grants narrative permission. Actions ordinary for someone with that Trait may succeed without a roll, or receive [Advantage](/dice-mechanics/#advantage-and-disadvantage) when a roll is still required.
+- A **negative** use creates complication, imposes Disadvantage, or in extreme cases rules an action out entirely.
 
 Examples:
 
-- Positive: “Horse-Archer”, “Charming Smile”, “Speaks Latin”  
-- Negative: “One-eyed”, “Hunchbacked”, “Speaks Latin”
+- Positive-leaning: “Horse-Archer”, “Charming Smile”, “Speaks Latin”  
+- Negative-leaning: “One-eyed”, “Hunchbacked”, “Speaks Latin”  
 
-*(yes, a Trait is positive or negative depending on context)*
+*(Yes — the same Trait can cut either way depending on the scene.)*
 
-Traits are not rated. They either apply or they do not. The Storyteller decides applicability from the player’s description of intent, exactly as with Foundations and Skills.
+Traits are **not rated**. They either apply or they do not. The Storyteller decides applicability from the player’s description of intent, exactly as with [Foundations](/foundations/) and [Skills](/skills/).
 
 > Traits exist to colour the character and to short-circuit unnecessary rolls. They are not a second skill system.
+
+<aside class="kod-example">
+<p class="kod-example__label">Example — Trait permission vs Skill roll</p>
+<ol class="kod-example__steps">
+<li><strong>Trait:</strong> Speaks Latin.</li>
+<li><strong>Read a Latin charter:</strong> no roll — Trait grants permission.</li>
+<li><strong>Forge a matching hand:</strong> roll <a href="/skills/">Forgery</a> (Guile). Speaks Latin does not replace the Skill; at most it justifies Advantage if the forgery must look learned.</li>
+</ol>
+</aside>
+
+----------
+
+### Where Traits Come From
+
+| Source | Notes |
+|--------|-------|
+| [Character Creation](/character-creation/) / The Wanting | Positive Traits may be bought with Words; Negative Traits are Storyteller-chosen costs. |
+| [Echo](/echoes/#resolution) resolution | A resolved Echo may become a personal Trait. |
+| [Dying](/harm/#dying) / recovery | Stabilising a track at 3 almost always leaves a permanent Trait. |
+| [Foundation Myths](/echoes/#foundation-myths) | May grant or deny a temporary/permanent Trait to all community members. |
+| Extreme Foundations (0 or 4) | Require Storyteller approval **and** a matching Trait. |
+
+Specific techniques, regional styles, named tools, and binary capabilities belong here — not on the [Skills](/skills/) list.
+
+Related: [Human Potential](/human-potential/), [Dice Mechanics](/dice-mechanics/).
 
 ----------

@@ -8,20 +8,24 @@ description: Hierarchies, Reputation, Legacies, and the Diagram.
 
 ----------
 
-### Hierarchies, Reputation and Legacies
+## Hierarchies, Reputation and Legacies
 
-Hierarchies are simply the place where the community sees its people. Their position is believed, understood, and accepted.
+Hierarchies are where the community sees its people — position believed, understood, and accepted.
 
-A Hierarchy is one axis of power inside the community. Every campaign starts with a default set of four. The Storyteller may rename, add, or remove them (to a sensible maximum of five).
+A Hierarchy is one axis of power inside the community. Every campaign starts with a default set of four. The Storyteller may rename, add, or remove them — hard **maximum of five** axes.
 
 **Default Hierarchies**
 
-- **Arms** — martial strength, protection, war, and the right to violence  
-- **Faith** — spiritual authority, ritual, sacred knowledge, and moral weight  
-- **Coin** — wealth, trade, material surplus, and economic leverage  
-- **Blood** — kinship, land, lineage, custom, and domestic authority  
+| Axis | Domain |
+|------|--------|
+| **Arms** | Martial strength, protection, war, right to violence |
+| **Faith** | Spiritual authority, ritual, sacred knowledge, moral weight |
+| **Coin** | Wealth, trade, material surplus, economic leverage |
+| **Blood** | Kinship, land, lineage, custom, domestic authority |
 
-One person may hold positions in several Hierarchies at the same time.
+One person may hold positions on several Hierarchies at once.
+
+During [Campaign Setup](/campaign-setup/), leave axes empty of names; standing is discovered and claimed in play.
 
 ----------
 
@@ -29,17 +33,19 @@ One person may hold positions in several Hierarchies at the same time.
 
 Each Hierarchy uses the same four steps:
 
-| Tier             | Meaning                                      |
-|------------------|----------------------------------------------|
-| **Outcast**      | No standing. Starting position for all community members and for Outsiders who enter the community. |
-| **Acknowledged** | Known and tolerated. Has a foothold.         |
-| **Trusted**      | Relied upon. Given real responsibility or favour. |
-| **Honoured**     | Significant voice and weight.                |
+| Tier | Meaning |
+|------|---------|
+| **Outcast** | No standing. Starting position for community members and for Outsiders who enter. |
+| **Acknowledged** | Known and tolerated. Has a foothold. |
+| **Trusted** | Relied upon. Real responsibility or favour. |
+| **Honoured** | Significant voice and weight. |
 
 Above every Hierarchy sits a single shared seat: the **Ruler**.  
 Only one individual holds the Ruler position at a time, regardless of which Hierarchy they rose through.
 
-Characters who never belonged to the community are **Outsiders**. They sit apart on the Diagram until they enter the community, at which point they begin as Outcasts.
+Characters who never belonged to the community are **Outsiders**. They sit apart on the Diagram until they enter, then begin as Outcasts.
+
+Default after [The Weighing](/character-creation/#after-the-weighing): **Outcast**, unless fiction already places them higher.
 
 ----------
 
@@ -47,9 +53,9 @@ Characters who never belonged to the community are **Outsiders**. They sit apart
 
 Reputation is a character’s relative position on the relevant Hierarchy.
 
-Its only mechanical effect is the protection ratio used when calculating Harm in Social or Mental contests. The greater the gap, the harder it is for the lower to inflict lasting social or mental damage on the higher.
+Its only hard mechanical effect is the **protection ratio** when calculating [Harm](/harm/#inflicting-harm) in Social or Mental contests. The greater the gap, the harder it is for the lower party to inflict lasting social or mental damage on the higher.
 
-Nothing else is attached to tier.
+Nothing else is mechanically attached to tier. Influence in fiction remains free roleplay.
 
 ----------
 
@@ -57,40 +63,58 @@ Nothing else is attached to tier.
 
 Rising usually begins with **patronage** or a **hook**.
 
-A higher-tier character bestows an honour, a role, a quest, or a public favour. That bestowal becomes an **Echo**. How the Echo resolves decides whether the character rises, stays, or falls.
+A higher-tier character bestows an honour, role, quest, or public favour. That bestowal becomes an **[Echo](/echoes/)**. How the Echo resolves decides whether the character rises, stays, or falls.
 
-Players may also initiate the rise of NPCs through the same means. This must be handled with care. Ambitious underlings can become a threat and create their patron’s downfall. Weak or ineffective underlings make a poor community; no one rules well without delegation.
+Players may initiate rises for NPCs the same way. Handle with care: ambitious underlings threaten patrons; weak underlings hollow out a community. No one rules well without delegation.
 
-Patronage is the clearest path. It is not the only one. Public deeds, force, the death of a superior, or simple seizure of a vacant place may also move a character. The table decides what the fiction will bear.
+Patronage is the clearest path, not the only one. Public deeds, force, death of a superior, or seizure of a vacant place may also move a character. The table decides what fiction will bear.
 
 Competition and cooperation on the same tier are left to roleplay.
+
+<aside class="kod-example">
+<p class="kod-example__label">Example — patronage as Echo</p>
+<ol class="kod-example__steps">
+<li><strong>Hook:</strong> Honoured (Coin) charges a player to recover a ledger.</li>
+<li><strong>Echo created:</strong> “Return the mill ledger before the Althing” (weight set at the table).</li>
+<li><strong>If it resolves well:</strong> ST may approve a Hierarchy climb (e.g. Outcast → Acknowledged on Coin).</li>
+<li><strong>Reputation for social Harm:</strong> relative tier gap is established in play, then used as the protection ratio when Harm is applied.</li>
+</ol>
+</aside>
 
 ----------
 
 ### Legacies
 
-When a character dies they are removed completely from the Hierarchy Diagram. Only the Echoes they left behind remain.
+When a character dies they are removed completely from the Hierarchy Diagram. Only the [Echoes](/echoes/) they left behind remain.
 
-The player’s next character may claim one of those Echoes as a **Legacy**. This is a personal Echo representing a claim on the predecessor’s standing, name, or unfinished work. Whether the new character lives up to it, rejects it, or is broken by it is the story.
+The player’s next character may claim one of those Echoes as a **Legacy** — a personal Echo representing a claim on the predecessor’s standing, name, or unfinished work. Living up to it, rejecting it, or breaking under it is the story.
 
-A Legacy confers no automatic rank. It only gives a recognised claim and a reason to strive.
+A Legacy confers **no automatic rank**. It only gives a recognised claim and a reason to strive.
 
-Character death does not interrupt the session. Play continues. Removal from the Diagram and the creation of a Legacy are handled after the session. The player returns in a later session with the new character, created in cooperation with the Storyteller.
+Character death does not interrupt the session. Play continues. Diagram removal and Legacy creation are handled **after** the session. The player returns later with a new character created with the Storyteller ([Character Creation](/character-creation/)).
 
 ----------
 
 ### The Hierarchy Diagram
 
-The Diagram is a shared record of every known and tracked character in the campaign. It is visible to all players and the Storyteller.
+The Diagram is a shared record of every known and tracked character in the campaign. Visible to all players and the Storyteller.
 
-A player asks the automation to add, remove, or move a character. The change is executed only when the Storyteller approves that request.
+Workflow (same pattern as [Inventory](/inventory/#management)):
+
+1. Player requests add / remove / move via automation  
+2. Storyteller approves  
+3. Automation executes  
 
 Dead characters are deleted. Their only remaining presence is through Echoes still carried by the living.
 
-> Any Kodranni story follows a larger community, yet it may also diverge into solo stories focused on individual characters. This is by design. Every player’s story still feeds the shared legend of the tribe, family, or place they all care about.  
+> Any Kodranni story follows a larger community, yet it may diverge into solo strands focused on individuals. By design, every player’s story still feeds the shared legend.  
 > _A tale is but half told when only one person tells it._
 
 ----------
 
 > _Don’t depend too much on anyone in this world, because even your own shadow leaves you when you are in darkness._  
 > — Taqī ad-Dīn Aḥmad ibn Taymiyyah
+
+Related: [Harm](/harm/), [Echoes](/echoes/), [Campaign Setup](/campaign-setup/), [Automation](/automation/).
+
+----------

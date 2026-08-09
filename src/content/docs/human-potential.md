@@ -7,17 +7,42 @@ description: Foundations, Skills, Traits, and Exertion — the representation of
 
 ----------
 
-## **The Human Potential**
+## The Human Potential
 
-The representation of human capacity is a rather delicate task. By nature, we are limited, yet in certain regards adaptable and we can improve our skills significantly. We have an immense variety and can specialize, acquire a near limitless amount of capabilities.
+Representing human capacity is delicate. We are limited, yet adaptable; we specialise; we can push past ordinary limits when will and body allow.
 
-...and on top of that, we can exert ourselves to perform above our expected levels, and motivate ourselves to overperform.
+Kodranni separates that into four interlocking measures:
 
-These are all neatly represented in the game, each with its own uniqueness:
+| Pillar | Role | Chapter |
+|--------|------|---------|
+| **[Foundations](/foundations/)** | Inborn potential. Nearly static (aging and trauma may shift it). Shapes what comes easy or hard — including [Practice](/skills/#improvement) thresholds. | Full list of nine |
+| **[Skills](/skills/)** | Practiced ability under six Archetypes. Change is expected; Practice accrues through use (especially with Exertion). | Full skill lists |
+| **[Traits](/traits/)** | Binary specifics — techniques, conditions, languages, disabilities. You have it, or you do not. | Custom, not rated |
+| **[Exertion](/exertion/)** | Will to push beyond the ordinary. Also the ledger for fatigue, hunger, and thirst. | Pool = Resolve + Constitution + Charisma |
 
-- **Foundations**: The inborn potential you are born with. Barring dramatic events, or the passage of long spans of time - aging, **static measure of capability**. The cause of so much variety in humans, and it influences what comes easy or hard to us as well (not just in the plain sense!).
-- **Skills**: Practiced abilities, domains, where improvement is *possible* - or rather more precisely change, *inevitable* - its effects noticeable. Will made manifest (little spoiler).
-- **Traits**: Tricks of specificity. The infinite variety of life. Binary, by nature, you know some method, have some unique condition, capable of performing a certain task - *or you are not*.
-- **Exertion**: The will to go above and beyond your potential, and the measure of its possibility. **Fatigue, Hunger, Thirst** - they all map into this one measure.
+----------
+
+### How They Meet the Dice
+
+When a character acts, the Storyteller selects the best-fitting **Foundation + Skill** pair from the player’s described intent (see [Dice Mechanics](/dice-mechanics/#the-makeup-of-the-dice-pool)).
+
+- **Traits** may short-circuit the roll entirely, or force Advantage / Disadvantage.
+- **Exertion** may add one extra die (two when an [Echo](/echoes/#invocation) matches the moment).
+- **Harm** reduces effective Foundations track by track ([Harm](/harm/)).
+
+Primitive animal-tier actions (run, jump, haul, notice, recall, hold composure) use **Foundation only**, plus optional Exertion.
+
+----------
+
+### Reading Order
+
+If you have not yet: start with [Dice Mechanics](/dice-mechanics/) (when to roll, pools, Marks, tier).
+
+Then:
+
+1. [Foundations](/foundations/) — the nine inborn ratings  
+2. [Skills](/skills/) — Archetypes, Practice, full lists  
+3. [Traits](/traits/) — binary colour and permission  
+4. [Exertion](/exertion/) — spend, restore, empty-pool penalty
 
 ----------

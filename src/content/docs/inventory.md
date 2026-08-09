@@ -3,22 +3,24 @@ title: Inventory
 description: Explicit possession, armour, food, water, and named items.
 ---
 
-### Inventory
+## Inventory
 
 Inventory is kept light. Only what is declared and tracked exists.
 
-Possession is explicit. If it has not been stated that a character is carrying an item, the character does not have it. No retroactive additions once a scene has begun.
+**Possession is explicit.** If it has not been stated that a character is carrying an item, the character does not have it. No retroactive additions once a scene has begun.
+
+At [character creation](/character-creation/#after-the-weighing), only named items that already make sense for the concept are listed. No free supply packs. Everything else is filled in play.
 
 ----------
 
 ### Tracked elements
 
-| Element          | Details                                      |
-|------------------|----------------------------------------------|
-| **Armour**       | None / Light / Heavy. Only counts when donned. |
-| **Food**         | Days remaining.                              |
-| **Water**        | Days remaining.                              |
-| **Named items**  | Distinctive or important objects only.       |
+| Element | Details |
+|---------|---------|
+| **Armour** | None / Light / Heavy. Only counts when **donned**. Feeds [Harm](/harm/#inflicting-harm) protection ratios. |
+| **Food** | Days remaining. Interacts with [Exertion](/exertion/) rest awards and Harm recovery. |
+| **Water** | Days remaining. Same interactions as food. |
+| **Named items** | Distinctive or important objects only. |
 
 Ordinary incidental gear is not listed.
 
@@ -26,24 +28,24 @@ Ordinary incidental gear is not listed.
 
 ### Management
 
-All changes (add, remove, alter armour, food, water, or named items) go through the automation.
+All changes (add, remove, alter armour, food, water, or named items) go through [automation](/automation/):
 
-- Player requests the change.  
-- Storyteller approves.  
-- Automation executes.
+1. Player requests the change  
+2. Storyteller approves  
+3. Automation executes  
 
-Same approval process as Hierarchy Diagram moves.
+Same approval process as [Hierarchy Diagram](/hierarchies/#the-hierarchy-diagram) moves.
 
 ----------
 
 ### Restock
 
-Dedicated command exists only for:
+Dedicated automation commands exist only for:
 
 - Food (days)  
-- Water (days)
+- Water (days)  
 
-All other resupply (arrows, herbs, bandages, materials, etc.) is handled in roleplay. The Storyteller decides what the situation allows.
+All other resupply (arrows, herbs, bandages, materials, etc.) is pure roleplay. The Storyteller decides what the situation allows. Bandages and herbs matter narratively for [Harm recovery](/harm/#recovery) even when not line-items.
 
 ----------
 
@@ -55,3 +57,16 @@ Whether something can reasonably be carried, hauled, or stored is decided by con
 ----------
 
 > If you did not say you brought it, you do not have it.
+
+<aside class="kod-example">
+<p class="kod-example__label">Example — explicit possession</p>
+<ol class="kod-example__steps">
+<li><strong>Scene starts:</strong> no bow on the sheet, none declared → the character does not have a bow.</li>
+<li><strong>Cannot</strong> add it mid-scene retroactively.</li>
+<li><strong>After taking one in fiction:</strong> player requests named item → Storyteller approves → sheet updates.</li>
+</ol>
+</aside>
+
+Related: [Exertion](/exertion/), [Harm](/harm/), [Automation](/automation/).
+
+----------
