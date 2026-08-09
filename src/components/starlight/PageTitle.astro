@@ -1,39 +1,10 @@
 ---
-/**
- * Chapter title with large thematic icon (base-path safe).
- */
+import { chapterIcons, slugFromEntryId } from '../../lib/chapter-icons';
+
 const { entry } = Astro.locals.starlightRoute;
 const title = entry.data.title;
-let slug = String(entry.id)
-	.replace(/\\/g, '/')
-	.replace(/\/index$/, '')
-	.replace(/\.mdx?$/, '')
-	.split('/')
-	.pop()!;
-
-const ICON_SLUGS = new Set([
-	'introduction',
-	'dice-mechanics',
-	'glossary',
-	'human-potential',
-	'foundations',
-	'skills',
-	'traits',
-	'exertion',
-	'harm',
-	'echoes',
-	'hierarchies',
-	'inventory',
-	'campaign-setup',
-	'character-creation',
-	'automation',
-]);
-
-const iconSlug = ICON_SLUGS.has(slug) ? slug : null;
-
-// BASE_URL is "/Kodranni/" or "/" — always join with a single slash
-const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
-const iconSrc = iconSlug ? `${base}icons/${iconSlug}.svg` : null;
+const slug = slugFromEntryId(entry.id);
+const iconSrc = chapterIcons[slug] ?? null;
 ---
 
 <div class="kod-page-title">

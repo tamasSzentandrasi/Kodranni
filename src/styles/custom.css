@@ -164,15 +164,9 @@ site-title {
 }
 
 /* -------------------------------------------------------------------------- */
-/* Sidebar chapter icons (small, before labels)                                */
-/* Match both local (/skills/) and Pages (/Kodranni/skills/) hrefs.            */
-/* Icon URLs must include the Pages base path.                                 */
+/* Sidebar chapter icons — <img.kod-sidebar-icon> injected in Head.astro       */
+/* (Vite resolves asset URLs with the correct /Kodranni base.)                 */
 /* -------------------------------------------------------------------------- */
-
-:root {
-  /* Keep in sync with astro.config.mjs `base` (no trailing slash). */
-  --kod-base: /Kodranni;
-}
 
 .sidebar-content a[href] {
   display: flex;
@@ -180,77 +174,13 @@ site-title {
   gap: 0.45rem;
 }
 
-.sidebar-content a[href]::before {
-  content: '';
+.sidebar-content a[href] img.kod-sidebar-icon {
   flex-shrink: 0;
   width: 1.15rem;
   height: 1.15rem;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  opacity: 0.95;
-}
-
-/* attribute$= matches the path tail so /Kodranni/skills/ and /skills/ both work */
-.sidebar-content a[href$='/introduction/']::before,
-.sidebar-content a[href$='/introduction']::before {
-  background-image: url('/Kodranni/icons/introduction.svg');
-}
-.sidebar-content a[href$='/dice-mechanics/']::before,
-.sidebar-content a[href$='/dice-mechanics']::before {
-  background-image: url('/Kodranni/icons/dice-mechanics.svg');
-}
-.sidebar-content a[href$='/glossary/']::before,
-.sidebar-content a[href$='/glossary']::before {
-  background-image: url('/Kodranni/icons/glossary.svg');
-}
-.sidebar-content a[href$='/human-potential/']::before,
-.sidebar-content a[href$='/human-potential']::before {
-  background-image: url('/Kodranni/icons/human-potential.svg');
-}
-.sidebar-content a[href$='/foundations/']::before,
-.sidebar-content a[href$='/foundations']::before {
-  background-image: url('/Kodranni/icons/foundations.svg');
-}
-.sidebar-content a[href$='/skills/']::before,
-.sidebar-content a[href$='/skills']::before {
-  background-image: url('/Kodranni/icons/skills.svg');
-}
-.sidebar-content a[href$='/traits/']::before,
-.sidebar-content a[href$='/traits']::before {
-  background-image: url('/Kodranni/icons/traits.svg');
-}
-.sidebar-content a[href$='/exertion/']::before,
-.sidebar-content a[href$='/exertion']::before {
-  background-image: url('/Kodranni/icons/exertion.svg');
-}
-.sidebar-content a[href$='/harm/']::before,
-.sidebar-content a[href$='/harm']::before {
-  background-image: url('/Kodranni/icons/harm.svg');
-}
-.sidebar-content a[href$='/echoes/']::before,
-.sidebar-content a[href$='/echoes']::before {
-  background-image: url('/Kodranni/icons/echoes.svg');
-}
-.sidebar-content a[href$='/hierarchies/']::before,
-.sidebar-content a[href$='/hierarchies']::before {
-  background-image: url('/Kodranni/icons/hierarchies.svg');
-}
-.sidebar-content a[href$='/inventory/']::before,
-.sidebar-content a[href$='/inventory']::before {
-  background-image: url('/Kodranni/icons/inventory.svg');
-}
-.sidebar-content a[href$='/campaign-setup/']::before,
-.sidebar-content a[href$='/campaign-setup']::before {
-  background-image: url('/Kodranni/icons/campaign-setup.svg');
-}
-.sidebar-content a[href$='/character-creation/']::before,
-.sidebar-content a[href$='/character-creation']::before {
-  background-image: url('/Kodranni/icons/character-creation.svg');
-}
-.sidebar-content a[href$='/automation/']::before,
-.sidebar-content a[href$='/automation']::before {
-  background-image: url('/Kodranni/icons/automation.svg');
+  object-fit: contain;
+  display: inline-block;
+  vertical-align: middle;
 }
 
 /* Group labels stay display face without icons */

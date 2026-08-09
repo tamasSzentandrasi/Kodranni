@@ -1,0 +1,66 @@
+---
+import Default from '@astrojs/starlight/components/Head.astro';
+import { chapterIcons } from '../../lib/chapter-icons';
+
+const sidebarIconMap: Record<string, string> = {
+	'': chapterIcons.index,
+	introduction: chapterIcons.introduction,
+	'dice-mechanics': chapterIcons['dice-mechanics'],
+	glossary: chapterIcons.glossary,
+	'human-potential': chapterIcons['human-potential'],
+	foundations: chapterIcons.foundations,
+	skills: chapterIcons.skills,
+	traits: chapterIcons.traits,
+	exertion: chapterIcons.exertion,
+	harm: chapterIcons.harm,
+	echoes: chapterIcons.echoes,
+	hierarchies: chapterIcons.hierarchies,
+	inventory: chapterIcons.inventory,
+	'campaign-setup': chapterIcons['campaign-setup'],
+	'character-creation': chapterIcons['character-creation'],
+	automation: chapterIcons.automation,
+};
+---
+
+<Default><slot /></Default>
+
+{/* NOT is:inline — define:vars must be processed by Astro/Vite */}
+<script define:vars={{ sidebarIconMap }}>
+	function segmentFromHref(href) {
+		try {
+			const path = new URL(href, window.location.origin).pathname.replace(/\/+$/, '');
+			const parts = path.split('/').filter(Boolean);
+			// Drop repo base segment when present
+			if (parts[0] && parts[0].toLowerCase() === 'kodranni') parts.shift();
+			return parts[0] || '';
+		} catch {
+			return '';
+		}
+	}
+
+	function inject() {
+		const root = document.getElementById('starlight__sidebar');
+		if (!root) return;
+		root.querySelectorAll('a[href]').forEach((a) => {
+			if (a.querySelector('img.kod-sidebar-icon')) return;
+			const seg = segmentFromHref(a.getAttribute('href') || '');
+			const src = sidebarIconMap[seg];
+			if (!src) return;
+			const img = document.createElement('img');
+			img.className = 'kod-sidebar-icon';
+			img.src = src;
+			img.alt = '';
+			img.width = 18;
+			img.height = 18;
+			img.decoding = 'async';
+			a.insertBefore(img, a.firstChild);
+		});
+	}
+
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', inject);
+	} else {
+		inject();
+	}
+	document.addEventListener('astro:page-load', inject);
+</script>

@@ -17,7 +17,8 @@ export default defineConfig({
         {
           label: 'Start here',
           items: [
-            { label: 'Introduction', link: '/introduction/' },
+            // Site root IS the Introduction chapter (no splash / no redirect hop).
+            { label: 'Introduction', link: '/' },
             { label: 'Dice Mechanics', link: '/dice-mechanics/' },
             { label: 'Glossary', link: '/glossary/' },
           ],
@@ -59,6 +60,7 @@ export default defineConfig({
       lastUpdated: true,
       pagination: true,
       components: {
+        Head: './src/components/starlight/Head.astro',
         PageTitle: './src/components/starlight/PageTitle.astro',
       },
     }),
