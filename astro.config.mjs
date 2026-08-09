@@ -2,8 +2,13 @@ import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 
 export default defineConfig({
-  // Set when deploying, e.g. 'https://kodranni.example.com'
-  // site: 'https://example.com',
+  // Project Pages: https://tamasszentandrasi.github.io/Kodranni/
+  // When you attach a custom domain (e.g. kodranni.com), set:
+  //   site: 'https://kodranni.com',
+  //   base: '/',
+  // and put that hostname in public/CNAME (see README).
+  site: 'https://tamasszentandrasi.github.io',
+  base: '/Kodranni',
   integrations: [
     starlight({
       title: 'Kodranni',

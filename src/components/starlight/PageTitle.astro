@@ -31,6 +31,7 @@ const ICON_SLUGS = new Set([
 ]);
 
 const iconSlug = ICON_SLUGS.has(slug) ? slug : null;
+const base = import.meta.env.BASE_URL; // includes trailing slash
 ---
 
 <div class="kod-page-title">
@@ -38,7 +39,7 @@ const iconSlug = ICON_SLUGS.has(slug) ? slug : null;
 		iconSlug && (
 			<img
 				class="kod-page-title__icon"
-				src={`/icons/${iconSlug}.svg`}
+				src={`${base}icons/${iconSlug}.svg`}
 				alt=""
 				width="64"
 				height="64"

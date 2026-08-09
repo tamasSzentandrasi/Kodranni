@@ -185,49 +185,49 @@ site-title {
 }
 
 .sidebar-content a[href='/introduction/']::before {
-  background-image: url('/icons/introduction.svg');
+  background-image: url('/Kodranni/icons/introduction.svg');
 }
 .sidebar-content a[href='/dice-mechanics/']::before {
-  background-image: url('/icons/dice-mechanics.svg');
+  background-image: url('/Kodranni/icons/dice-mechanics.svg');
 }
 .sidebar-content a[href='/glossary/']::before {
-  background-image: url('/icons/glossary.svg');
+  background-image: url('/Kodranni/icons/glossary.svg');
 }
 .sidebar-content a[href='/human-potential/']::before {
-  background-image: url('/icons/human-potential.svg');
+  background-image: url('/Kodranni/icons/human-potential.svg');
 }
 .sidebar-content a[href='/foundations/']::before {
-  background-image: url('/icons/foundations.svg');
+  background-image: url('/Kodranni/icons/foundations.svg');
 }
 .sidebar-content a[href='/skills/']::before {
-  background-image: url('/icons/skills.svg');
+  background-image: url('/Kodranni/icons/skills.svg');
 }
 .sidebar-content a[href='/traits/']::before {
-  background-image: url('/icons/traits.svg');
+  background-image: url('/Kodranni/icons/traits.svg');
 }
 .sidebar-content a[href='/exertion/']::before {
-  background-image: url('/icons/exertion.svg');
+  background-image: url('/Kodranni/icons/exertion.svg');
 }
 .sidebar-content a[href='/harm/']::before {
-  background-image: url('/icons/harm.svg');
+  background-image: url('/Kodranni/icons/harm.svg');
 }
 .sidebar-content a[href='/echoes/']::before {
-  background-image: url('/icons/echoes.svg');
+  background-image: url('/Kodranni/icons/echoes.svg');
 }
 .sidebar-content a[href='/hierarchies/']::before {
-  background-image: url('/icons/hierarchies.svg');
+  background-image: url('/Kodranni/icons/hierarchies.svg');
 }
 .sidebar-content a[href='/inventory/']::before {
-  background-image: url('/icons/inventory.svg');
+  background-image: url('/Kodranni/icons/inventory.svg');
 }
 .sidebar-content a[href='/campaign-setup/']::before {
-  background-image: url('/icons/campaign-setup.svg');
+  background-image: url('/Kodranni/icons/campaign-setup.svg');
 }
 .sidebar-content a[href='/character-creation/']::before {
-  background-image: url('/icons/character-creation.svg');
+  background-image: url('/Kodranni/icons/character-creation.svg');
 }
 .sidebar-content a[href='/automation/']::before {
-  background-image: url('/icons/automation.svg');
+  background-image: url('/Kodranni/icons/automation.svg');
 }
 
 /* Group labels stay display face without icons */

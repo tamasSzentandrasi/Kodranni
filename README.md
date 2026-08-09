@@ -17,6 +17,30 @@ npm run preview  # serve production build
 
 Content: `src/content/docs/`. Sidebar: `astro.config.mjs`. Theme: `src/styles/custom.css` (standard Starlight scroll layout).
 
+## Hosting (GitHub Pages)
+
+Deploy is automatic on push to `main` (`.github/workflows/deploy.yml`).
+
+**Live URL (project Pages):**  
+https://tamasszentandrasi.github.io/Kodranni/
+
+Repo **Settings → Pages** must use **Source: GitHub Actions** (already set).
+
+### Custom domain (branded URL, e.g. kodranni.com)
+
+GitHub cannot invent a hostname for free beyond `*.github.io`. To drop the username from the URL:
+
+1. Register a domain (e.g. `kodranni.com` or `kodranni.game`).
+2. In the repo **Settings → Pages → Custom domain**, enter it and enable DNS HTTPS when available.
+3. At your registrar, point DNS as GitHub instructs (usually a `CNAME` to `tamasszentandrasi.github.io` for a `www` host, or `A` records for apex).
+4. In this repo:
+   - `astro.config.mjs`: set `site: 'https://YOUR.DOMAIN'` and `base: '/'`
+   - `scripts/prefix-base.mjs`: set `BASE = ''`
+   - add `public/CNAME` containing a single line: `YOUR.DOMAIN`
+5. Push; wait for DNS + certificate.
+
+Until then, the `github.io/Kodranni/` URL is the working host.
+
 ## Documentation map
 
 | Area | Entry |
