@@ -1,29 +1,30 @@
 /**
- * Local community store (SQLite in a later step).
- * In-memory implementation for early wiring + tests.
+ * Local community store — SQLite (node:sqlite) authority + memory helper for unit tests.
  */
 
-export interface AuditEvent {
-  id: string;
-  ts: string;
-  type: string;
-  actor?: string;
-  clientEventId?: string;
-  payload: unknown;
-}
+export type { AuditEvent } from './types.js';
+export * from './types.js';
+export * from './paths.js';
+export * from './campaign-toml.js';
+export * from './schema.js';
+export * from './sqlite.js';
+export * from './seed.js';
+
+// --- lightweight memory store (tests / early adapters) ---
 
 export interface CommunityState {
   schemaVersion: number;
   slug: string;
   name: string;
   fortunes: Record<string, number>;
-  events: AuditEvent[];
+  events: import('./types.js').AuditEvent[];
 }
 
 export interface CommunityStore {
   get(): CommunityState;
-  append(event: Omit<AuditEvent, 'id' | 'ts'> & { id?: string; ts?: string }): AuditEvent;
-  /** Reject duplicate clientEventId (idempotency). */
+  append(
+    event: Omit<import('./types.js').AuditEvent, 'id' | 'ts'> & { id?: string; ts?: string },
+  ): import('./types.js').AuditEvent;
   hasClientEvent(clientEventId: string): boolean;
 }
 
@@ -61,7 +62,7 @@ export function createMemoryStore(seed: {
         }
         clientIds.add(event.clientEventId);
       }
-      const full: AuditEvent = {
+      const full: import('./types.js').AuditEvent = {
         id: event.id ?? `evt_${++seq}`,
         ts: event.ts ?? new Date().toISOString(),
         type: event.type,
