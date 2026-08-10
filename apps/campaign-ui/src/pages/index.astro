@@ -1,8 +1,8 @@
 ---
 import CampaignLayout from '../layouts/CampaignLayout.astro';
-import { fixtureCommunity } from '../data/fixture';
+import { loadCommunity } from '../data/load';
 
-const c = fixtureCommunity;
+const c = loadCommunity();
 ---
 
 <CampaignLayout title="Overview" communityName={c.name} generatedAt={c.generatedAt} current="home">

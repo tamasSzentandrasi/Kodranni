@@ -1,0 +1,18 @@
+{
+  "name": "@kodranni/cli",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "kodranni": "./bin/kodranni.mjs"
+  },
+  "scripts": {
+    "start": "node --experimental-sqlite --import tsx ./src/main.ts"
+  },
+  "dependencies": {
+    "@kodranni/app": "*",
+    "@kodranni/domain": "*",
+    "@kodranni/store": "*",
+    "tsx": "^4.19.3"
+  }
+}

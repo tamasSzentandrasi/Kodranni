@@ -1,17 +1,17 @@
 ---
 import CampaignLayout from '../../layouts/CampaignLayout.astro';
-import { fixtureCommunity, getCharacter } from '../../data/fixture';
+import { getCharacter, loadCommunity } from '../../data/load';
 
 export function getStaticPaths() {
-  return fixtureCommunity.characters.map((ch) => ({
+  return loadCommunity().characters.map((ch) => ({
     params: { slug: ch.slug },
   }));
 }
 
 const { slug } = Astro.params;
+const c = loadCommunity();
 const ch = getCharacter(slug!);
 if (!ch) throw new Error(`Unknown character: ${slug}`);
-const c = fixtureCommunity;
 const echoWeight = ch.echoes.reduce((a, e) => a + e.weight, 0);
 ---
 

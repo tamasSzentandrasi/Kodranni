@@ -32,7 +32,17 @@ Content: `src/content/docs/`. Sidebar: `astro.config.mjs`. Theme: `src/styles/cu
 ```bash
 npm run dev:campaign-ui   # http://localhost:8742 — fixture sheet/tracker
 npm run test:domain
+npm test
+
+# Local campaign SoT (Storyteller machine)
+npm run kodranni -- campaign seed-demo --slug ash-hill
+npm run kodranni -- roll --slug ash-hill --character eira \
+  --foundation Strength --skill Shipwright --tier 8 --exertion 1 --seed 42
+npm run kodranni -- campaign export-json --slug ash-hill --out /tmp/ash-hill.json
+KODRANNI_PUBLIC_JSON=/tmp/ash-hill.json npm run dev:campaign-ui
 ```
+
+Private data lives under `~/.kodranni/campaigns/<slug>/` (gitignored).
 
 Engineering direction: [docs/plans/automation-architecture.md](docs/plans/automation-architecture.md).
 
