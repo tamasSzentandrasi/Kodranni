@@ -1,0 +1,60 @@
+---
+import CampaignLayout from '../../layouts/CampaignLayout.astro';
+import { fixtureCommunity } from '../../data/fixture';
+
+const c = fixtureCommunity;
+---
+
+<CampaignLayout title="Tracker" communityName={c.name} generatedAt={c.generatedAt} current="tracker">
+  <section class="kod-panel">
+    <h2>Fortunes</h2>
+    <ul class="kod-stat-grid">
+      {
+        Object.entries(c.fortunes).map(([k, v]) => (
+          <li class="kod-stat">
+            <span class="kod-stat__label">{k}</span>
+            <span class="kod-stat__value">{v}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="kod-panel">
+    <h2>Hierarchy Diagram</h2>
+    <p class="kod-meta">Axes (max 5): {c.hierarchyAxes.join(' · ')}</p>
+    <p class="kod-meta">Ruler: {c.ruler ?? '— none claimed —'}</p>
+    <table class="kod-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Axis</th>
+          <th>Tier</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          c.placements.map((p) => (
+            <tr>
+              <td>{p.name}</td>
+              <td>{p.axis}</td>
+              <td>{p.tier}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </section>
+
+  <section class="kod-panel">
+    <h2>Foundation Myths</h2>
+    {
+      c.myths.map((m) => (
+        <div>
+          <strong>{m.title}</strong>
+          <p>{m.summary}</p>
+        </div>
+      ))
+    }
+  </section>
+</CampaignLayout>

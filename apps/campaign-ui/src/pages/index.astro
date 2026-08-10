@@ -1,0 +1,52 @@
+---
+import CampaignLayout from '../layouts/CampaignLayout.astro';
+import { fixtureCommunity } from '../data/fixture';
+
+const c = fixtureCommunity;
+---
+
+<CampaignLayout title="Overview" communityName={c.name} generatedAt={c.generatedAt} current="home">
+  <section class="kod-panel">
+    <h2>Fortunes</h2>
+    <ul class="kod-stat-grid">
+      {
+        Object.entries(c.fortunes).map(([k, v]) => (
+          <li class="kod-stat">
+            <span class="kod-stat__label">{k}</span>
+            <span class="kod-stat__value">{v}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="kod-panel">
+    <h2>Characters</h2>
+    <ul>
+      {
+        c.characters.map((ch) => (
+          <li>
+            <a href={`/characters/${ch.slug}/`}>{ch.name}</a>
+            <span class="kod-stat__value--muted"> — {ch.status}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="kod-panel">
+    <h2>Foundation Myths</h2>
+    {
+      c.myths.length === 0 ? (
+        <p class="kod-empty">None active.</p>
+      ) : (
+        c.myths.map((m) => (
+          <div>
+            <strong>{m.title}</strong>
+            <p class="kod-meta">{m.summary}</p>
+          </div>
+        ))
+      )
+    }
+  </section>
+</CampaignLayout>

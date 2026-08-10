@@ -1,0 +1,171 @@
+@import './fonts.css';
+@import './tokens.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 118.75%;
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: geometricPrecision;
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--kod-font-body);
+  background: var(--kod-black);
+  color: var(--kod-silver);
+  line-height: 1.55;
+}
+
+a {
+  color: var(--kod-silver-bright);
+  text-decoration-color: var(--kod-blood);
+  text-underline-offset: 0.15em;
+}
+
+a:hover {
+  color: #fff;
+}
+
+.kod-shell {
+  max-width: 52rem;
+  margin: 0 auto;
+  padding: 1.75rem 1.25rem 3rem;
+}
+
+.kod-brand {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #2a2222;
+}
+
+.kod-brand__mark {
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--kod-blood-bright);
+}
+
+.kod-brand__title {
+  font-size: 1.35rem;
+  color: var(--kod-silver-bright);
+  margin: 0;
+  font-weight: 400;
+}
+
+.kod-meta {
+  color: var(--kod-silver-dim);
+  font-size: 0.95rem;
+  margin: 0 0 1.5rem;
+}
+
+.kod-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
+  margin-bottom: 2rem;
+  font-size: 1.05rem;
+}
+
+.kod-nav a {
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+
+.kod-nav a[aria-current='page'] {
+  color: var(--kod-silver-bright);
+  border-bottom-color: var(--kod-blood);
+}
+
+.kod-panel {
+  border: 1px solid #2a2222;
+  background: #0a0a0a;
+  padding: 1.15rem 1.25rem 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.kod-panel h2 {
+  margin: 0 0 0.85rem;
+  font-size: 1.35rem;
+  font-weight: 400;
+  color: var(--kod-silver-bright);
+  letter-spacing: 0.02em;
+}
+
+.kod-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(7.5rem, 1fr));
+  gap: 0.65rem 1rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.kod-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.kod-stat__label {
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--kod-silver-dim);
+}
+
+.kod-stat__value {
+  font-size: 1.35rem;
+  color: var(--kod-silver-bright);
+}
+
+.kod-stat__value--muted {
+  color: var(--kod-silver-dim);
+  font-size: 1rem;
+}
+
+.kod-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1rem;
+}
+
+.kod-table th,
+.kod-table td {
+  text-align: left;
+  padding: 0.4rem 0.5rem;
+  border-bottom: 1px solid #1c1818;
+}
+
+.kod-table th {
+  color: var(--kod-silver-dim);
+  font-weight: 400;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.kod-flag {
+  display: inline-block;
+  margin-right: 0.4rem;
+  padding: 0.1rem 0.45rem;
+  border: 1px solid var(--kod-blood);
+  color: #e8a0a0;
+  font-size: 0.85rem;
+}
+
+.kod-empty {
+  color: var(--kod-silver-dim);
+  font-style: italic;
+}

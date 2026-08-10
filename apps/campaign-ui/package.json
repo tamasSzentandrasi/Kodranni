@@ -1,0 +1,15 @@
+{
+  "name": "@kodranni/campaign-ui",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev --port 8742",
+    "build": "astro build",
+    "preview": "astro preview --port 8742"
+  },
+  "dependencies": {
+    "@kodranni/design": "*",
+    "astro": "^7.0.0"
+  }
+}

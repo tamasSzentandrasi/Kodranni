@@ -1,0 +1,157 @@
+---
+import CampaignLayout from '../../layouts/CampaignLayout.astro';
+import { fixtureCommunity, getCharacter } from '../../data/fixture';
+
+export function getStaticPaths() {
+  return fixtureCommunity.characters.map((ch) => ({
+    params: { slug: ch.slug },
+  }));
+}
+
+const { slug } = Astro.params;
+const ch = getCharacter(slug!);
+if (!ch) throw new Error(`Unknown character: ${slug}`);
+const c = fixtureCommunity;
+const echoWeight = ch.echoes.reduce((a, e) => a + e.weight, 0);
+---
+
+<CampaignLayout
+  title={ch.name}
+  communityName={c.name}
+  generatedAt={c.generatedAt}
+  current={ch.slug}
+>
+  <section class="kod-panel">
+    <h2>{ch.name}</h2>
+    <p>{ch.communityTie}</p>
+    {
+      (ch.flags.decadence || ch.flags.overCapacity || ch.dying) && (
+        <p>
+          {ch.dying && <span class="kod-flag">Dying</span>}
+          {ch.flags.decadence && <span class="kod-flag">Decadence</span>}
+          {ch.flags.overCapacity && <span class="kod-flag">Over capacity</span>}
+        </p>
+      )
+    }
+  </section>
+
+  <section class="kod-panel">
+    <h2>Foundations</h2>
+    <ul class="kod-stat-grid">
+      {
+        Object.entries(ch.foundations).map(([k, v]) => {
+          const eff = ch.foundationsEffective[k] ?? v;
+          return (
+            <li class="kod-stat">
+              <span class="kod-stat__label">{k}</span>
+              <span class="kod-stat__value">
+                {eff}
+                {eff !== v && <span class="kod-stat__value--muted"> ({v})</span>}
+              </span>
+            </li>
+          );
+        })
+      }
+    </ul>
+  </section>
+
+  <section class="kod-panel">
+    <h2>Skills · Practice</h2>
+    <table class="kod-table">
+      <thead>
+        <tr>
+          <th>Skill</th>
+          <th>Rating</th>
+          <th>Practice</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          ch.skills.map((s) => (
+            <tr>
+              <td>{s.name}</td>
+              <td>{s.rating}</td>
+              <td>
+                {s.practice} / {s.threshold}
+              </td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </section>
+
+  <section class="kod-panel">
+    <h2>Exertion · Echoes</h2>
+    <ul class="kod-stat-grid">
+      <li class="kod-stat">
+        <span class="kod-stat__label">Exertion</span>
+        <span class="kod-stat__value">{ch.exertion.current} / {ch.exertion.max}</span>
+      </li>
+      <li class="kod-stat">
+        <span class="kod-stat__label">Echo weight</span>
+        <span class="kod-stat__value">{echoWeight} / {ch.exertion.max}</span>
+      </li>
+    </ul>
+    <ul>
+      {
+        ch.echoes.map((e) => (
+          <li>
+            {e.title} <span class="kod-stat__value--muted">(w{e.weight})</span>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="kod-panel">
+    <h2>Harm</h2>
+    <ul class="kod-stat-grid">
+      {
+        Object.entries(ch.harm).map(([k, v]) => (
+          <li class="kod-stat">
+            <span class="kod-stat__label">{k}</span>
+            <span class="kod-stat__value">{v}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="kod-panel">
+    <h2>Hierarchy · Armour · Inventory</h2>
+    <table class="kod-table">
+      <thead>
+        <tr>
+          <th>Axis</th>
+          <th>Tier</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          ch.hierarchy.map((h) => (
+            <tr>
+              <td>{h.axis}</td>
+              <td>{h.tier}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+    <p class="kod-meta">
+      Armour: {ch.armour.kind}
+      {ch.armour.donned ? ' (donned)' : ' (not donned)'}
+    </p>
+    <p class="kod-meta">
+      Food {ch.inventory.foodDays}d · Water {ch.inventory.waterDays}d
+    </p>
+    <ul>
+      {ch.inventory.named.map((n) => <li>{n}</li>)}
+    </ul>
+    {
+      ch.traits.length > 0 && (
+        <p class="kod-meta">Traits: {ch.traits.join(' · ')}</p>
+      )
+    }
+  </section>
+</CampaignLayout>

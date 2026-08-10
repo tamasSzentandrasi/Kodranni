@@ -1,0 +1,18 @@
+/* Kodranni design tokens — Guidebook + campaign-ui + chat palette */
+
+:root {
+  --kod-black: #050505;
+  --kod-silver: #b8b3ab;
+  --kod-silver-dim: #8a8580;
+  --kod-silver-bright: #f2efe9;
+  --kod-blood: #8a1515;
+  --kod-blood-bright: #b01c1c;
+  --kod-blood-deep: #4a0c0c;
+
+  --kod-font-display: 'Bellefair', 'Times New Roman', Times, serif;
+  --kod-font-body: 'Bellefair', 'Times New Roman', Times, serif;
+  --kod-font-runic: 'Noto Sans Runic', 'Segoe UI Historic', 'Noto Sans', sans-serif;
+
+  /* Chat embed accent (Discord/Fluxer) */
+  --kod-chat-accent: #8a1515;
+}

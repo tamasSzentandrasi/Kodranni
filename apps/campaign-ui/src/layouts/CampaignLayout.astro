@@ -1,0 +1,41 @@
+---
+import '@kodranni/design/campaign.css';
+
+interface Props {
+  title: string;
+  communityName: string;
+  generatedAt: string;
+  current?: 'home' | 'tracker' | string;
+}
+
+const { title, communityName, generatedAt, current = 'home' } = Astro.props;
+const asOf = new Date(generatedAt).toLocaleString(undefined, {
+  dateStyle: 'medium',
+  timeStyle: 'short',
+});
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>{title} · {communityName}</title>
+  </head>
+  <body>
+    <div class="kod-shell">
+      <header class="kod-brand">
+        <span class="kod-brand__mark">Kodranni</span>
+        <h1 class="kod-brand__title">{communityName}</h1>
+      </header>
+      <p class="kod-meta">As of {asOf} · shared record (read-only)</p>
+      <nav class="kod-nav" aria-label="Campaign">
+        <a href="/" aria-current={current === 'home' ? 'page' : undefined}>Overview</a>
+        <a href="/tracker/" aria-current={current === 'tracker' ? 'page' : undefined}>Tracker</a>
+        <a href="/characters/eira/" aria-current={current === 'eira' ? 'page' : undefined}>Eira</a>
+      </nav>
+      <slot />
+    </div>
+  </body>
+</html>

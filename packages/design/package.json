@@ -1,0 +1,15 @@
+{
+  "name": "@kodranni/design",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./tokens.css": "./tokens.css",
+    "./fonts.css": "./fonts.css",
+    "./campaign.css": "./campaign.css"
+  },
+  "files": [
+    "*.css",
+    "fonts"
+  ]
+}
