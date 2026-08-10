@@ -1,17 +1,30 @@
 {
   "name": "kodranni",
+  "private": true,
   "type": "module",
   "version": "0.0.1",
+  "workspaces": [
+    "packages/*",
+    "apps/*",
+    "adapters/*"
+  ],
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro build && node scripts/prefix-base.mjs",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "test": "npm run test --workspaces --if-present",
+    "test:domain": "npm run test -w @kodranni/domain",
+    "dev:campaign-ui": "npm run dev -w @kodranni/campaign-ui",
+    "build:campaign-ui": "npm run build -w @kodranni/campaign-ui"
   },
   "dependencies": {
     "@astrojs/starlight": "^0.41.0",
     "astro": "^7.0.0",
     "sharp": "^0.33.5"
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true
   }
 }

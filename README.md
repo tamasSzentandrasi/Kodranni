@@ -13,9 +13,28 @@ npm install
 npm run dev      # http://localhost:4321
 npm run build    # static site → dist/
 npm run preview  # serve production build
+npm test         # domain + chat-ui + store tests
 ```
 
-Content: `src/content/docs/`. Sidebar: `astro.config.mjs`. Theme: `src/styles/custom.css` (standard Starlight scroll layout).
+Content: `src/content/docs/`. Sidebar: `astro.config.mjs`. Theme: `src/styles/custom.css` (self-hosted **Bellefair** under `public/fonts/`, no Google Fonts CDN).
+
+## Automation monorepo (in progress)
+
+| Path | Role |
+|------|------|
+| `packages/domain` | Pure rules + golden tests |
+| `packages/design` | Tokens + fonts + campaign CSS |
+| `packages/chat-port` / `chat-ui` | Dual-platform chat model |
+| `packages/store` | Local SoT (memory first; SQLite next) |
+| `apps/campaign-ui` | Astro live/archive sheets + tracker |
+| `adapters/discord` · `adapters/fluxer` | ChatPort adapters (skeletons) |
+
+```bash
+npm run dev:campaign-ui   # http://localhost:8742 — fixture sheet/tracker
+npm run test:domain
+```
+
+Engineering direction: [docs/plans/automation-architecture.md](docs/plans/automation-architecture.md).
 
 ## Hosting (GitHub Pages)
 

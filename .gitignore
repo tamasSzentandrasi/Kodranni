@@ -5,6 +5,12 @@ node_modules/
 # Build outputs
 dist/
 .astro/
+apps/**/dist/
+packages/**/dist/
+
+# Local Storyteller campaign data (never commit)
+.kodranni/
+**/.kodranni/
 
 # Environment
 .env
