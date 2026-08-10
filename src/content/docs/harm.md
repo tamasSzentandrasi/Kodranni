@@ -31,10 +31,6 @@ Kodranni does **not** track hit points. It tracks the **unravelling of the nine 
 
 The Storyteller assigns points according to the fiction. The track name is only the mechanical label.
 
-<figure class="kod-art" data-art="harm-tracks" aria-hidden="true">
-  <div class="kod-art__slot"></div>
-</figure>
-
 ----------
 
 ## Inflicting Harm

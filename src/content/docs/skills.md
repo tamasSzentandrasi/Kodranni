@@ -8,18 +8,7 @@ description: Skills organised under six Archetypes, with Practice and improvemen
 
 ----------
 
-**Skills** are organised under six **Archetypes** — personified domains, **not** character classes. You mix freely across them.
-
-| Archetype | Domain | Folk / mythic root |
-|-----------|--------|--------------------|
-| **Warrior** | Violence, the fight, command under threat | Universal protector / fighter figure |
-| **Wayfarer** | Path, wild, road, the open world | Wanderer / seeker on the road |
-| **Artisan** | Craft, tools, structures, repair | Traditional craft vocation / guild domain |
-| **Mother** | Hearth, care, body, kin, influence at home | Jungian Mother / hearth-keeper (not a gender class) |
-| **Sage** | Knowledge, counsel, rite, long thought | Wise figure / keeper of lore |
-| **Trickster** | Cunning, stealth, masks, the underside | Jungian Trickster (broader than “criminal”) |
-
-These names lean on folk and psychological tradition (Warrior, Mother, Sage, Trickster) with **Wayfarer** for the road and **Artisan** for the craft-bench. They are labels for skill lists — nothing locks a character to one Archetype.
+**Skills** are organised under six **Archetypes** — personified domains, **not** character classes. A character may draw freely from any list; the Archetype is a shelf, not a destiny.
 
 **Skills are rated between 0 and 3.**
 
@@ -33,10 +22,6 @@ Each Skill has a single ruling **[Foundation](/foundations/)** that governs its 
 Specific techniques, regional styles, named tools, or binary capabilities remain **[Traits](/traits/)** — not Skills.
 
 At the table, the Storyteller selects the Skill that best matches the player’s described intent when building a [dice pool](/dice-mechanics/#the-makeup-of-the-dice-pool).
-
-<figure class="kod-art" data-art="skills-archetypes" aria-hidden="true">
-  <div class="kod-art__slot"></div>
-</figure>
 
 ----------
 
@@ -116,11 +101,13 @@ Fiction still decides *why* rust set in; automation only applies the prompted pr
 
 ## The six Archetypes
 
-Each list is twelve Skills. Use them as menus — not as destinies.
+Twelve Skills each. Read the short address, then the list.
 
 ----------
 
 ### Warrior (12)
+
+Steel and will under threat. The Warrior is the hand that holds the line when the yard is full of enemies, the voice that orders retreat before the line breaks, the eye that sees the opening in a shield-wall. These Skills belong to violence and its discipline — not to cruelty for its own sake, but to the craft of not dying first when dying is near.
 
 1. **Slash** (Strength) — cutting edges used in chopping or sweeping cuts  
 2. **Pierce** (Dexterity) — point work and thrusts  
@@ -139,6 +126,8 @@ Each list is twelve Skills. Use them as menus — not as destinies.
 
 ### Wayfarer (12)
 
+Road, river, ridge, and the long dark between fires. The Wayfarer is whoever must read the land before the land kills them — scout, hunter, guide, sailor, rider. These Skills keep a body moving through weather and wilderness, and bring news home when the path is not safe.
+
 1. **Scouting** (Perception) — pathfinding, navigation by stars, landmarks and trails, reading terrain for travel  
 2. **Trapping & Tracking** (Perception) — locating, following, and the design and use of traps  
 3. **Foraging & Fishing** (Constitution) — edible plants, fungi, water sources and fishing  
@@ -155,6 +144,8 @@ Each list is twelve Skills. Use them as menus — not as destinies.
 ----------
 
 ### Artisan (12)
+
+Hammer, loom, keel, and kiln. The Artisan is the one who leaves the world more shaped than they found it — hull tight against the gale, blade true, wall standing, brew that will keep through winter. These Skills are the patient violence of making, and the pride of work that outlives the worker.
 
 1. **Tailoring & Armory** (Constitution) — cloth, leather, soft materials and the construction or repair of protective gear  
 2. **Smithing & Forging** (Strength) — working metal at the forge  
@@ -173,6 +164,8 @@ Each list is twelve Skills. Use them as menus — not as destinies.
 
 ### Mother (12)
 
+Hearth, body, kin, and the soft iron of obligation. The Mother is not a gender and not only a parent — it is whoever holds the house together when the field fails, who midwifes, feeds, heals, comforts, and binds people with duty and love. These Skills keep the living among the living.
+
 1. **Cooking & Preserving** (Resolve) — preparation and preservation of food  
 2. **Herbalism** (Intellect) — medicinal plants and poisons  
 3. **Childcare** (Resolve) — raising children and midwifery  
@@ -190,6 +183,8 @@ Each list is twelve Skills. Use them as menus — not as destinies.
 
 ### Sage (12)
 
+Memory, counsel, and the long view. The Sage keeps what the village would otherwise forget — numbers, names, maps, rites, the shape of a bargain, the weight of a sermon. These Skills turn chaos into record and argument into path, when force alone cannot hold the community.
+
 1. **Debate & Rhetoric** (Charisma) — structured argument and persuasive speech  
 2. **Arithmetic & Accounting** (Intellect) — numbers, ledgers, shares, and practical calculation  
 3. **Investigation** (Perception) — systematic inquiry into events, places, and evidence  
@@ -206,6 +201,8 @@ Each list is twelve Skills. Use them as menus — not as destinies.
 ----------
 
 ### Trickster (12)
+
+Mask, shadow, and the door that should have stayed locked. The Trickster is cunning made practice — not always a thief by trade, but always someone who moves where honest eyes are not looking. These Skills open what is closed, hide what is wanted, and turn words into weapons when steel would be too loud.
 
 1. **Lockpicking** (Guile) — defeating locks, catches, and simple mechanical seals  
 2. **Pickpocket** (Guile) — removing objects from a person without their notice  

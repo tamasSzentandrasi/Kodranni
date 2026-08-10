@@ -76,10 +76,6 @@ Players act under incomplete knowledge. The Storyteller scales reward, cost, and
 <p>Do not pre-assign “3 Marks = success.” Pre-hold <em>possible</em> tiers of outcome if you like, then let the dice pick which tier the night earns. Opposed rolls use the same mindset: the <strong>margin</strong> is how much one will overbore another, not a hit-point subtraction by default.</p>
 </aside>
 
-<figure class="kod-art" data-art="dice-marks-night" aria-hidden="true">
-  <div class="kod-art__slot"></div>
-</figure>
-
 ----------
 
 ## Advantage and Disadvantage
@@ -149,10 +145,6 @@ Additional effects that **shrink pools** (these are not die-tier shifts; they ch
 - [Decadence](/echoes/#weight-and-capacity) (no Echoes): **–1** die on every roll  
 - Over-capacity Echoes: **–1** die on rolls that involve any of the character’s Echoes  
 
-<figure class="kod-art" data-art="dice-pool-table" aria-hidden="true">
-  <div class="kod-art__slot"></div>
-</figure>
-
 ----------
 
 > *“I returned, and saw under the sun, that the race is not to the swift, nor the battle to the strong, neither yet bread to the wise, nor yet riches to men of understanding, nor yet favour to men of skill; but time and chance happeneth to them all.”*  
@@ -211,10 +203,6 @@ Hints:
 <p class="kod-note__label">Note</p>
 <p><strong>Focus on the roleplay, not the roll-play.</strong> Dice outcomes should <strong>never</strong> replace conversations, decisions, and planning. Rolls inform the <strong>effect</strong> of an action, never its content.</p>
 </aside>
-
-<figure class="kod-art" data-art="dice-opposed-gate" aria-hidden="true">
-  <div class="kod-art__slot"></div>
-</figure>
 
 ----------
 

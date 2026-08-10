@@ -31,10 +31,6 @@ This is also where you tell the Storyteller what you actually want: the kinds of
 
 The Storyteller may reject any concept that does not fit the established frame or is brought in bad faith. That decision is final.
 
-<figure class="kod-art" data-art="creation-concept" aria-hidden="true">
-  <div class="kod-art__slot"></div>
-</figure>
-
 ----------
 
 ### Foundations
@@ -115,10 +111,6 @@ Rules for claims:
   2. The **Storyteller** immediately applies a **fitting mark to the target** of the claim — additional skill points in a relevant [Archetype](/skills/), a small Foundation adjustment, a Trait, a starting [Harm](/harm/), or any other consequence that sharpens who that person is. The goal is **definition**, not punishment. The speaker does **not** choose this mark; the Storyteller does.
 
 The Storyteller ends the process when a full pass produces nothing further worth accepting.
-
-<figure class="kod-art" data-art="creation-weighing" aria-hidden="true">
-  <div class="kod-art__slot"></div>
-</figure>
 
 ----------
 

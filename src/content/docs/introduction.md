@@ -29,10 +29,6 @@ Many concepts are interconnected. The Guide is ordered so that each chapter buil
 
 For **Storytellers**, the Guide outlines principles, campaign setup, and common pitfalls — see especially [Campaign Setup](/campaign-setup/) and the advice later in this chapter.
 
-<figure class="kod-art" data-art="intro-welcome" aria-hidden="true">
-  <div class="kod-art__slot"></div>
-</figure>
-
 ----------
 
 ## What the system is for
@@ -65,10 +61,6 @@ Whether the campaign is semi-historical or invented fantasy, if those three cond
 - **Cooperative Struggle**: Campaigns centre on a **community** — a tribe, village, noble house — which the players must nurture. Actions, honourable or otherwise, shape that community’s future. **If the community is destroyed, the campaign ends.**
 - **Death and Continuity**: A player’s actions can outlive their character. Heroic deeds, wise counsel, and pivotal events may define the community. [**Echoes**](/echoes/) of those actions strengthen and guide future characters. [**Legacies**](/hierarchies/#legacies) and [**Foundation Myths**](/echoes/#foundation-myths) carry the strongest effects across generations.
 - **Automation Support**: Experience-point bookkeeping and a relatively intricate roll system are made playable by **automation**. See [Automation](/automation/) for the table-facing contract, and `docs/plans/automation-architecture.md` for engineering direction. That material will evolve as the product UI is defined.
-
-<figure class="kod-art" data-art="intro-core-ideas" aria-hidden="true">
-  <div class="kod-art__slot"></div>
-</figure>
 
 ----------
 

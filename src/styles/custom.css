@@ -212,21 +212,42 @@ site-title {
 }
 
 /* -------------------------------------------------------------------------- */
-/* Dividers                                                                    */
+/* Dividers — real vertical space + visible ornament (hr::after alone is flaky) */
 /* -------------------------------------------------------------------------- */
 
 .sl-markdown-content hr {
   border: none;
-  height: 0;
-  margin: 2.25rem 0;
-  text-align: center;
+  margin: 2.5rem auto;
+  max-width: 16rem;
+  height: 1.75rem;
+  display: block;
+  position: relative;
+  overflow: visible;
+  background: linear-gradient(
+    to right,
+    transparent,
+    color-mix(in srgb, var(--kod-blood) 70%, #444) 20%,
+    color-mix(in srgb, var(--kod-blood) 70%, #444) 80%,
+    transparent
+  );
+  background-size: 100% 1px;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .sl-markdown-content hr::after {
   content: '† · † · †';
-  color: var(--kod-blood);
-  letter-spacing: 0.4em;
-  font-size: 0.75rem;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  padding: 0 0.85rem;
+  background: var(--kod-black);
+  color: var(--kod-blood-bright);
+  letter-spacing: 0.35em;
+  font-size: 0.8rem;
+  line-height: 1;
+  white-space: nowrap;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -446,54 +467,12 @@ site-title {
   display: none !important;
 }
 
-/* -------------------------------------------------------------------------- */
-/* Art placeholders — reserved breaks for future thematic images               */
-/* Invisible in layout sense: no labels, near-zero chrome; keep vertical room  */
-/* -------------------------------------------------------------------------- */
-
-.kod-art {
-  margin: 1.75rem 0 2rem;
-  padding: 0;
-  border: none;
-  background: transparent;
-}
-
-.kod-art__slot {
-  width: 100%;
-  min-height: 7.5rem;
-  max-height: 14rem;
-  border-radius: 2px;
-  /* Nearly invisible: soft hairline + faint blood wash so designers can spot slots in dev */
-  border: 1px solid color-mix(in srgb, var(--kod-blood) 12%, transparent);
-  background: linear-gradient(
-    160deg,
-    color-mix(in srgb, var(--kod-blood-deep) 18%, transparent),
-    transparent 55%,
-    color-mix(in srgb, #1a1816 40%, transparent)
-  );
-  opacity: 0.55;
-}
-
-/* When an <img> is placed inside later, drop the empty chrome */
-.kod-art:has(img) .kod-art__slot {
-  display: none;
-}
-
-.kod-art img {
-  display: block;
-  width: 100%;
-  height: auto;
-  max-height: 18rem;
-  object-fit: cover;
-  border-radius: 2px;
-  border: 1px solid color-mix(in srgb, var(--kod-blood) 25%, #333);
-}
-
-/* Site logo size in header */
+/* Site logo size in header — blood-field mark needs a bit more presence */
 site-title img,
 .site-title img {
-  height: 1.85rem !important;
+  height: 2.1rem !important;
   width: auto !important;
+  border-radius: 0.35rem;
 }
 
 /* Chapter body rhythm — slightly more air after H2/H3 */
