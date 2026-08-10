@@ -56,7 +56,10 @@ Whether something can reasonably be carried, hauled, or stored is decided by con
 
 ----------
 
-> If you did not say you brought it, you do not have it.
+<aside class="kod-note">
+<p class="kod-note__label">Note</p>
+<p>If you did not say you brought it, you do not have it.</p>
+</aside>
 
 <aside class="kod-example">
 <p class="kod-example__label">Example — explicit possession</p>

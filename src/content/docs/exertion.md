@@ -54,7 +54,10 @@ Suggested awards:
 
 When the pool reaches **zero**, the character suffers a standing **–2** to the size of every dice pool. This penalty never reduces a pool below **1** die. The character can still act; every action simply costs more than it should until they recover.
 
-> Empty Exertion is not unconsciousness. It is the point at which every action costs more than it should. Characters who continue to push while empty are living on nerve and stubbornness alone.
+<aside class="kod-note">
+<p class="kod-note__label">Note</p>
+<p>Empty Exertion is not unconsciousness. It is the point at which every action costs more than it should. Characters who continue to push while empty are living on nerve and stubbornness alone.</p>
+</aside>
 
 Exertion can also be depleted by pure narrative events — lack of food or water, or a prolonged skirmish. Do not assume the pool is full when the fiction says otherwise.
 

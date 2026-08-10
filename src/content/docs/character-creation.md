@@ -99,17 +99,19 @@ Rules for claims:
 - A **seconder** is required.  
 - The target and the Storyteller may jointly refuse.  
 - Only one claim from any given player may be accepted about any given target. Once one is accepted, that speaker may not offer further claims on that person.  
-- When a claim is accepted:  
-  - The speaker receives one **Word**.  
-  - The Storyteller applies a fitting mark to the target — additional skill points in a relevant [Archetype](/skills/), a small Foundation adjustment, a Trait, a starting [Harm](/harm/), or any other consequence that sharpens the concept. The goal is **definition**, not punishment.
+- When a claim is accepted, **two things happen**:  
+  1. The **speaker** receives one **Word** (a currency they spend later, on **their own** character, in [The Wanting](#the-wanting)).  
+  2. The **Storyteller** immediately applies a **fitting mark to the target** of the claim — additional skill points in a relevant [Archetype](/skills/), a small Foundation adjustment, a Trait, a starting [Harm](/harm/), or any other consequence that sharpens who that person is. The goal is **definition**, not punishment. The speaker does **not** choose this mark; the Storyteller does.
 
 The Storyteller ends the process when a full pass produces nothing further worth accepting.
 
 ### The Wanting
 
-The Words you earned by speaking about others are spent here, or left unspent and **lost**.
+The **Words** you earned by speaking true claims about **others** are spent here — or left unspent and **lost**.
 
-Each Word buys one entry from the menu. You name the exact Foundations or Skills. The Storyteller approves or denies (as an automation instruction on the **target** character). Any Negative Trait is chosen by the Storyteller.
+**Important:** each Word is spent on **your own character**, not on the person you spoke about. The target was already marked when the claim was accepted. The Wanting is your chance to reshape **yourself** with the currency of what you saw in others.
+
+Each Word buys one entry from the menu. You name the exact Foundations or Skills on **your** sheet. The Storyteller approves or denies (automation instruction on **your** character). Any Negative Trait cost is chosen by the Storyteller.
 
 | Purchase | Cost |
 |----------|------|
@@ -136,16 +138,20 @@ Lock the following before the character enters the record:
 Only then is the character written into the campaign record (via [automation](/automation/) when available).
 
 <aside class="kod-example">
-<p class="kod-example__label">Example — Word and The Wanting</p>
-<p class="kod-example__scene">At The Weighing, the circle looks at a newcomer. Someone speaks a true claim — “I see a hard bargainer” — and another seconds it. That speaker earns a Word. Later, in The Wanting, they spend that Word for skill points on the target, paying with a Foundation cost the menu names.</p>
+<p class="kod-example__label">Example — claim, Storyteller mark, then The Wanting</p>
+<p class="kod-example__scene">Mara is the target. Cal speaks: “I see a hard bargainer.” A seconder agrees. Mara and the Storyteller accept. Two different people are changed by that acceptance — and not the same way.</p>
 <ol class="kod-example__steps">
-<li><strong>Claim accepted:</strong> “I see a hard bargainer” + seconder → speaker gains <strong>1 Word</strong>.</li>
-<li><strong>Wanting purchase:</strong> +5 skill points (menu row) → cost −1 from a named Foundation.</li>
-<li><strong>Spend:</strong> player names Skills (e.g. Tradecraft, Negotiation); ST confirms; target character sheet is updated.</li>
+<li><strong>Claim accepted</strong> about Mara: “I see a hard bargainer.”</li>
+<li><strong>Speaker (Cal)</strong> receives <strong>1 Word</strong> — banked for The Wanting later.</li>
+<li><strong>Storyteller marks the target (Mara)</strong> now: e.g. +2 skill points into Negotiation / Tradecraft, or a Trait “Hard bargainer,” whatever fits definition. Cal does not spend his Word on Mara.</li>
+<li><strong>The Wanting (later):</strong> Cal spends <strong>his</strong> Word on <strong>himself</strong> — e.g. menu row “+5 skill points” → he pays −1 from a named Foundation on his own sheet, names Skills he wants, Storyteller confirms.</li>
 </ol>
 </aside>
 
-> You can troll The Weighing if you want. You will gain nothing from it, and you will kick yourself later for not participating when others are spending the Words they earned by speaking.
+<aside class="kod-note">
+<p class="kod-note__label">Note</p>
+<p>You can troll The Weighing if you want. You will gain nothing from it, and you will kick yourself later for not participating when others are spending the Words they earned by speaking.</p>
+</aside>
 
 ----------
 

@@ -29,7 +29,10 @@ The **player** elevates a moment into an Echo. The Storyteller may veto only for
 | Total Echo weight **> capacity** | **–1** die on every roll that involves any of the character’s Echoes |
 | **No Echoes at all** (**Decadence**) | **–1** die on **every** roll |
 
-> The load is not abstract. Too many burdens crack a person. None at all leaves them hollow.
+<aside class="kod-note">
+<p class="kod-note__label">Note</p>
+<p>The load is not abstract. Too many burdens crack a person. None at all leaves them hollow.</p>
+</aside>
 
 <aside class="kod-example">
 <p class="kod-example__label">Example — Echo capacity</p>

@@ -23,7 +23,10 @@ Examples:
 
 Traits are **not rated**. They either apply or they do not. The Storyteller decides applicability from the player’s description of intent, exactly as with [Foundations](/foundations/) and [Skills](/skills/).
 
-> Traits exist to colour the character and to short-circuit unnecessary rolls. They are not a second skill system.
+<aside class="kod-note">
+<p class="kod-note__label">Note</p>
+<p>Traits exist to colour the character and to short-circuit unnecessary rolls. They are not a second skill system.</p>
+</aside>
 
 <aside class="kod-example">
 <p class="kod-example__label">Example — Trait permission vs Skill roll</p>

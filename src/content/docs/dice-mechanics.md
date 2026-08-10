@@ -47,9 +47,31 @@ Approximate chance a single die is a Mark:
 | **d8** | ~50% |
 | **d12** | ~66% |
 
-Unlike many dice-pool systems, Marks are not only a binary pass/fail. The Storyteller reads **effectiveness**, **quality**, or **progress** from the number of Marks (and, in opposed rolls, from the **margin**).
+#### Target numbers vs Marks — a change of mindset
 
-Players are **not** chasing a secret difficulty number. They act under incomplete knowledge; the Storyteller interprets results and scales reward and cost accordingly.
+Most systems ask: *did you hit the number?* Pass or fail. The Storyteller holds a hidden threshold; the table waits for a binary answer.
+
+**Kodranni’s difference is interpretational.** You are not supposed to keep **strict margins** for a binary succeed/fail decision. Marks are **information** — how much of the intent landed, how cleanly, how deep the reading goes. The Storyteller decides **incremental results** from the count of Marks (and, in opposed rolls, from the **margin** between two counts). There is no secret target the player is trying to “clear.”
+
+That requires a subtle shift: less “did it work?”, more “**what does this many Marks tell us about how it went?**” Zero Marks is still a result with colour. Four Marks is not merely “better pass” — it may open facts a thinner success would never have revealed.
+
+Players act under incomplete knowledge. The Storyteller scales reward, cost, and **what the fiction discloses** to the Marks on the table.
+
+<aside class="kod-example">
+<p class="kod-example__label">Example — reading Marks (scouting)</p>
+<p class="kod-example__scene">A young warrior is sent out in the middle of the night to learn what the opposing army plans for the days ahead. The Storyteller names Perception + Scouting. The player rolls a pool of four dice. There is no hidden “you need three successes to spot the camp.” The Marks decide how the night unfolds.</p>
+<ol class="kod-example__steps">
+<li><strong>0 Marks:</strong> he gets lost in the woods. The mission fails into mishap, not a clean “you see nothing.”</li>
+<li><strong>1 Mark:</strong> thin, anxious success — he grows paranoid; the Storyteller can sell him the fear that the enemy are onto him, that a patrol with torches is following.</li>
+<li><strong>3 Marks:</strong> solid reading — campfires, men around them, camp layout; the enemy mean to settle in, wait out the bad weather.</li>
+<li><strong>4 Marks:</strong> deep reading — those are decoys; something is wrong; he should hurry back; a night raid may be imminent.</li>
+</ol>
+</aside>
+
+<aside class="kod-note">
+<p class="kod-note__label">Storyteller note</p>
+<p>Do not pre-assign “3 Marks = success.” Pre-hold <em>possible</em> tiers of outcome if you like, then let the dice pick which tier the night earns. Opposed rolls use the same mindset: the <strong>margin</strong> is how much one will overbore another, not a hit-point subtraction by default.</p>
+</aside>
 
 ----------
 
@@ -97,7 +119,10 @@ Pools assemble from three sources:
 
 **Primitive actions** (run, jump, haul, see, recall, composure, and similar animal-tier acts) use **Foundation only** (+ optional Exertion). No Skill die is added. Primitive rolls grant **no [Practice](/skills/#improvement)**.
 
-> Who decides *which* Foundation and *which* Skill? **The Storyteller.** Always. The player describes intent freely. The Storyteller picks the best pair. Players may propose a better pair; the Storyteller’s call is final.
+<aside class="kod-note">
+<p class="kod-note__label">Note</p>
+<p>Who decides <em>which</em> Foundation and <em>which</em> Skill? <strong>The Storyteller.</strong> Always. The player describes intent freely. The Storyteller picks the best pair. Players may propose a better pair; the Storyteller’s call is final.</p>
+</aside>
 
 <aside class="kod-example">
 <p class="kod-example__label">Example — unopposed roll</p>
@@ -169,7 +194,10 @@ Hints:
 </ol>
 </aside>
 
-**Focus on the roleplay, not the roll-play. Dice outcomes should NEVER replace conversations, decisions, and planning. Rolls inform the EFFECT of an action, never its content.**
+<aside class="kod-note">
+<p class="kod-note__label">Note</p>
+<p><strong>Focus on the roleplay, not the roll-play.</strong> Dice outcomes should <strong>never</strong> replace conversations, decisions, and planning. Rolls inform the <strong>effect</strong> of an action, never its content.</p>
+</aside>
 
 ----------
 
@@ -242,8 +270,10 @@ Disadvantage lowers thresholds for the disadvantaged side (negative Omens more l
 
 When the Tide reaches one end, that collective side **routes**. Morale breaks. The group crumbles or flees. Individuals may still stand, refuse, die heroically or foolishly, or take a major personal setback — the Tide breaks **collective** will, not personal agency.
 
-> You can do everything in your power; if the rest of your side is butchered, you will still find yourself flanked.  
-> Storyteller advice: do not grind roll-battles for their own sake. Load Omen faces that matter. Let players leave the Tide when fiction allows (loot, disengage, personal objective).
+<aside class="kod-note">
+<p class="kod-note__label">Storyteller note</p>
+<p>You can do everything in your power; if the rest of your side is butchered, you will still find yourself flanked. Do not grind roll-battles for their own sake. Load Omen faces that matter. Let players leave the Tide when fiction allows (loot, disengage, personal objective).</p>
+</aside>
 
 Related: [Human Potential](/human-potential/), [Harm](/harm/), [Echoes](/echoes/), [Automation](/automation/).
 

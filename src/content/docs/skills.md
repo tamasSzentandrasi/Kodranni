@@ -10,14 +10,18 @@ description: Skills organised under six Archetypes, with Practice and improvemen
 
 ## Skills and Archetypes
 
-**Skills** are organised under six **Archetypes** (personified categories). These are **not** character classes. They are broad domains into which individual Skills fall:
+**Skills** are organised under six **Archetypes** — personified domains, **not** character classes. You mix freely across them.
 
-- Warrior  
-- Traveller  
-- Artisan  
-- Mother  
-- Sage  
-- Thief  
+| Archetype | Domain | Folk / mythic root |
+|-----------|--------|--------------------|
+| **Warrior** | Violence, the fight, command under threat | Universal protector / fighter figure |
+| **Wayfarer** | Path, wild, road, the open world | Wanderer / seeker on the road |
+| **Maker** | Craft, tools, structures, repair | Smith and artisan vocation |
+| **Mother** | Hearth, care, body, kin, influence at home | Jungian Mother / hearth-keeper (not a gender class) |
+| **Sage** | Knowledge, counsel, rite, long thought | Wise figure / keeper of lore |
+| **Trickster** | Cunning, stealth, masks, the underside | Jungian Trickster (broader than “criminal”) |
+
+These names lean on folk and psychological tradition (Warrior, Mother, Sage, Trickster) with **Wayfarer** and **Maker** as clear vocation words for the road and the craft-bench. They are labels for skill lists — nothing locks a character to one Archetype.
 
 **Skills are rated between 0 and 3.**
 
@@ -63,7 +67,10 @@ These thresholds are modified by the Skill’s ruling **Foundation**:
 
 High inborn potential accelerates learning. Low potential slows it. Automation handles accumulation and level-ups. Players never see raw Practice numbers unless they ask.
 
-> Struggle teaches. Effort is taken into account. Doing something ad infinitum without hardship counts for naught.
+<aside class="kod-note">
+<p class="kod-note__label">Note</p>
+<p>Struggle teaches. Effort is taken into account. Doing something ad infinitum without hardship counts for naught.</p>
+</aside>
 
 #### Degradation (prompted only)
 
@@ -122,7 +129,7 @@ Fiction still decides *why* rust set in; automation only applies the prompted pr
 
 ----------
 
-### Traveller (12)
+### Wayfarer (12)
 
 1. **Scouting** (Perception) — pathfinding, navigation by stars, landmarks and trails, reading terrain for travel  
 2. **Trapping & Tracking** (Perception) — locating, following, and the design and use of traps  
@@ -139,7 +146,7 @@ Fiction still decides *why* rust set in; automation only applies the prompted pr
 
 ----------
 
-### Artisan (12)
+### Maker (12)
 
 1. **Tailoring & Armory** (Constitution) — cloth, leather, soft materials and the construction or repair of protective gear  
 2. **Smithing & Forging** (Strength) — working metal at the forge  
@@ -190,7 +197,7 @@ Fiction still decides *why* rust set in; automation only applies the prompted pr
 
 ----------
 
-### Thief (12)
+### Trickster (12)
 
 1. **Lockpicking** (Guile) — defeating locks, catches, and simple mechanical seals  
 2. **Pickpocket** (Guile) — removing objects from a person without their notice  
