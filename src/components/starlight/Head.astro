@@ -56,7 +56,7 @@ const icon = (name: string) => `${base}${name}`;
 		}
 	}
 
-	function inject() {
+	function injectSidebarIcons() {
 		const root = document.getElementById('starlight__sidebar');
 		if (!root) return;
 		root.querySelectorAll('a[href]').forEach((a) => {
@@ -75,10 +75,39 @@ const icon = (name: string) => `${base}${name}`;
 		});
 	}
 
-	if (document.readyState === 'loading') {
-		document.addEventListener('DOMContentLoaded', inject);
-	} else {
-		inject();
+	// Elder Futhark — blood-red divider ornaments (3 distinct runes per <hr>)
+	const ELDER_FUTHARK = [
+		'ᚠ', 'ᚢ', 'ᚦ', 'ᚨ', 'ᚱ', 'ᚲ', 'ᚷ', 'ᚹ',
+		'ᚺ', 'ᚾ', 'ᛁ', 'ᛃ', 'ᛇ', 'ᛈ', 'ᛉ', 'ᛊ',
+		'ᛏ', 'ᛒ', 'ᛖ', 'ᛗ', 'ᛚ', 'ᛜ', 'ᛞ', 'ᛟ',
+	];
+
+	function pickRuneTriad() {
+		const pool = ELDER_FUTHARK.slice();
+		const out = [];
+		for (let i = 0; i < 3; i++) {
+			const idx = Math.floor(Math.random() * pool.length);
+			out.push(pool.splice(idx, 1)[0]);
+		}
+		return out.join(' · ');
 	}
-	document.addEventListener('astro:page-load', inject);
+
+	function decorateDividers() {
+		document.querySelectorAll('.sl-markdown-content hr').forEach((hr) => {
+			// Fresh triad each paint / navigation so pages feel alive
+			hr.setAttribute('data-runes', pickRuneTriad());
+		});
+	}
+
+	function enhance() {
+		injectSidebarIcons();
+		decorateDividers();
+	}
+
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', enhance);
+	} else {
+		enhance();
+	}
+	document.addEventListener('astro:page-load', enhance);
 </script>

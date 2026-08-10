@@ -1,7 +1,7 @@
 /* Kodranni Guidebook — Bellefair, black/silver/blood
    Boxes: example · quote · note · chapter icons */
 
-@import url('https://fonts.googleapis.com/css2?family=Bellefair&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bellefair&family=Noto+Sans+Runic&display=swap');
 
 :root {
   --kod-black: #050505;
@@ -235,8 +235,9 @@ site-title {
   background-position: center;
 }
 
+/* Rune triad set by Head.astro (data-runes). Fallback until JS runs. */
 .sl-markdown-content hr::after {
-  content: '† · † · †';
+  content: 'ᚱ · ᚢ · ᚾ';
   position: absolute;
   left: 50%;
   top: 50%;
@@ -244,10 +245,17 @@ site-title {
   padding: 0 0.85rem;
   background: var(--kod-black);
   color: var(--kod-blood-bright);
-  letter-spacing: 0.35em;
-  font-size: 0.8rem;
+  font-family: 'Noto Sans Runic', 'Segoe UI Historic', 'Noto Sans', sans-serif;
+  font-size: 0.95rem;
+  letter-spacing: 0.28em;
   line-height: 1;
   white-space: nowrap;
+  font-weight: 400;
+  font-synthesis: none;
+}
+
+.sl-markdown-content hr[data-runes]::after {
+  content: attr(data-runes);
 }
 
 /* -------------------------------------------------------------------------- */
