@@ -1,0 +1,13 @@
+{
+  "name": "@kodranni/adapter-fluxer",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@kodranni/chat-port": "*",
+    "@kodranni/chat-ui": "*"
+  }
+}
