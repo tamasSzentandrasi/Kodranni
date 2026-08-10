@@ -56,13 +56,15 @@ Automation **supports two platforms** as equal chat surfaces:
 
 Each deployment binds platform credentials, **guild / server ID** (or Fluxer equivalent), and the **community** record. Bots also map **account IDs and nicknames** to characters so a target instruction always knows *which player’s character* it addresses.
 
-Bots are thin clients over the community store. Bare slash-only bots are not enough: player-facing UI must make Foundation, Skill, tier, Exertion, Echo/Myth tags, and approvals **easy to select**, using each platform’s built-in strengths first (menus, buttons, **reactions** for Storyteller approval, reply threads) — researched, innovative, high-quality UX, not a wall of flags.
+Bots are thin clients over the community store. Bare slash-only bots are not enough: player-facing UI must make Foundation, Skill, tier, Exertion, Echo/Myth tags, and approvals **easy to select**, using each platform’s built-in strengths first (menus, buttons for Storyteller **approve/deny**, reply threads) — researched, innovative, high-quality UX, not a wall of flags.
+
+Between and during sessions, players also use a **pretty shared view** of sheets and the community tracker: a **live** URL while the Storyteller’s session is running, and a **public archive** URL (campaign presentation site) when it is not. Platform account maps and full audit trails stay on the Storyteller’s machine — not on the public site.
 
 ----------
 
 ## Design Principles
 
-1. **Storyteller authority** — Lasting mutations require Storyteller approval where the rules say so (Hierarchy, inventory, and similar). Approvals can be **pre-agreed reactions** (e.g. a checkmark) from the Storyteller role.  
+1. **Storyteller authority** — Lasting mutations require Storyteller approval where the rules say so (Hierarchy, inventory, and similar). Approvals use **Storyteller-role buttons** (approve / deny) on the request message.  
 2. **Fiction first, then instruction** — In narration the Storyteller names Foundation and Skill (or Foundation alone for Primitive). The **player** initiates the roll instruction with that agreed configuration. Automation already knows the mapped user, their character, Exertion, Echoes (selectable), and community Myths that can be tagged.  
 3. **Die tier is declared** — Safe default **d8**; ultimate choice is the Storyteller’s via [Advantage and Disadvantage](/dice-mechanics/#advantage-and-disadvantage).  
 4. **Infer when safe; field when narrative** — States such as Decadence or over-capacity can be inferred during interactions to cut admin overhead. **Armour** and **Reputation** still need explicit fields: their presence is resolved in fiction before any ratio is applied. Hierarchy **tiers** are full ladders, not only Outsider/Ruler; relative tier difference is established narratively, then applied in instructions.  
@@ -89,8 +91,8 @@ Bots are thin clients over the community store. Bare slash-only bots are not eno
 | **Fortunes** | — | Adjust | On Community tracker |
 | **Foundation Myths** | Tag on roll when relevant | Craft toggleable/compound effects (ST-only) | Apply only when tagged |
 | **Harm / Dying** | — | Chooses track; applies; heals (separate) | Tracks; Dying; death flow |
-| **Hierarchy Diagram** | Request move | Approve (e.g. reaction) | ≤5 axes on tracker |
-| **Inventory** | Request changes; restock food/water | Approve | Shared sheet loadout |
+| **Hierarchy Diagram** | Request move | Approve (button) | ≤5 axes on tracker |
+| **Inventory** | Request changes; restock food/water | Approve (button) | Shared sheet loadout |
 | **Character / Weighing** | Concept onward | Finalises; Word boons to **target** | Budgets; private Omen rolls; sheet updates |
 | **Legacy** | Crafted as an Echo with the ST (not a special bot path) | Same as other Echo outcomes | Ordinary Echo / sheet changes |
 
@@ -114,7 +116,8 @@ Automation rolls main pool + Omen; presents results;
 Storyteller narrates outcome (+ Consequence if Omen fires)
         ↓
 If lasting state needs approval (loot, rank…):
-  request → Storyteller reaction/approve → shared sheet/tracker
+  request → Storyteller button approve → shared sheet/tracker
+  (live pretty view updates immediately; public archive follows)
 ```
 
 **Storyteller rolling an NPC:** separate ST roll instruction with explicit numbers (Foundation, Skill, Exertion, tier, Advantage). No player character sheet is required.
@@ -146,7 +149,7 @@ Command **families** (names follow UX design):
 - Exertion award · Harm apply/heal (separate) · Tide open/close  
 - Scene Omen list/set/clear (ST)  
 - Echo · Myth craft (ST) · Fortune  
-- Hierarchy request + ST reaction approve · Diagram on tracker  
+- Hierarchy request + ST button approve · Diagram on tracker  
 - Inventory request + approve · restock  
 - Character sheet · Community tracker · Practice degrade (prompted) · **Revert last roll**
 
