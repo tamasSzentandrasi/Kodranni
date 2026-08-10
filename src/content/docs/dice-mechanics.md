@@ -9,11 +9,13 @@ description: When to roll, dice pools, Marks, Advantage and Disadvantage, Omen, 
 
 ----------
 
-## Dice Mechanics
-
 Similar to other TTRPGs, action resolution uses dice. When a **player** or **Storyteller** needs to resolve an action, they discuss intent, then throw the appropriate dice. Very standard — *so far*.
 
-### When to roll
+This chapter walks the stack in order: **when** to roll → **what** dice mean → **how** context sets the tier → **how large** the pool is → Omen and Tide for the moments that outgrow a single throw.
+
+----------
+
+## When to roll
 
 If an action’s outcome can **significantly differ** because of luck, chance, or skill — the Storyteller **can** ask for a roll, picking the relevant characteristics to base it on. If the fiction is already clear, **do not roll**. Conversation, planning, and settled facts are not replaced by dice.
 
@@ -21,7 +23,7 @@ The Storyteller always chooses which [Foundation](/foundations/) and (if any) [S
 
 ----------
 
-### Dice Types and Pools
+## Dice Types and Pools
 
 Kodranni uses **three** action dice:
 
@@ -35,7 +37,7 @@ A given roll uses **only one** of these types — a pure d6, d8, or d12 pool (pl
 
 ----------
 
-### Marks of Success
+## Marks of Success
 
 Any die that lands on **5 or higher** is a **Mark of Success**, or simply a **Mark**.
 
@@ -47,7 +49,7 @@ Approximate chance a single die is a Mark:
 | **d8** | ~50% |
 | **d12** | ~66% |
 
-#### Target numbers vs Marks — a change of mindset
+### Target numbers vs Marks — a change of mindset
 
 Most systems ask: *did you hit the number?* Pass or fail. The Storyteller holds a hidden threshold; the table waits for a binary answer.
 
@@ -63,6 +65,7 @@ Players act under incomplete knowledge. The Storyteller scales reward, cost, and
 <ol class="kod-example__steps">
 <li><strong>0 Marks:</strong> he gets lost in the woods. The mission fails into mishap, not a clean “you see nothing.”</li>
 <li><strong>1 Mark:</strong> thin, anxious success — he grows paranoid; the Storyteller can sell him the fear that the enemy are onto him, that a patrol with torches is following.</li>
+<li><strong>2 Marks:</strong> he spots the camp from a distance — potential approaches, weaknesses — but finds no safe way to crawl closer and see more.</li>
 <li><strong>3 Marks:</strong> solid reading — campfires, men around them, camp layout; the enemy mean to settle in, wait out the bad weather.</li>
 <li><strong>4 Marks:</strong> deep reading — those are decoys; something is wrong; he should hurry back; a night raid may be imminent.</li>
 </ol>
@@ -73,9 +76,13 @@ Players act under incomplete knowledge. The Storyteller scales reward, cost, and
 <p>Do not pre-assign “3 Marks = success.” Pre-hold <em>possible</em> tiers of outcome if you like, then let the dice pick which tier the night earns. Opposed rolls use the same mindset: the <strong>margin</strong> is how much one will overbore another, not a hit-point subtraction by default.</p>
 </aside>
 
+<figure class="kod-art" data-art="dice-marks-night" aria-hidden="true">
+  <div class="kod-art__slot"></div>
+</figure>
+
 ----------
 
-### Advantage and Disadvantage
+## Advantage and Disadvantage
 
 This is where **context** enters the roll — and one of the system’s core novelties.
 
@@ -92,7 +99,7 @@ Instead: in most cases it is **fairly easy to assess which side has the advantag
 
 [Traits](/traits/), terrain, numbers, reputation, weather, and armour-as-context all feed this judgment. They are **not** extra mechanical layers stacked on top of Marks. You do not add “+2 for height and +1 for cover”; you decide who has the **Advantage**, and you change the die.
 
-#### Declaring the tier
+### Declaring the tier
 
 There is **no automatic map** from Skill rating to d6 / d8 / d12. The **Storyteller declares** the die tier for each roll.
 
@@ -105,7 +112,7 @@ In multi-party messes, **each action still stands alone**. Advantage and Disadva
 
 ----------
 
-### The Makeup of the Dice Pool
+## The Makeup of the Dice Pool
 
 Pools assemble from three sources:
 
@@ -142,12 +149,18 @@ Additional effects that **shrink pools** (these are not die-tier shifts; they ch
 - [Decadence](/echoes/#weight-and-capacity) (no Echoes): **–1** die on every roll  
 - Over-capacity Echoes: **–1** die on rolls that involve any of the character’s Echoes  
 
-----------
+<figure class="kod-art" data-art="dice-pool-table" aria-hidden="true">
+  <div class="kod-art__slot"></div>
+</figure>
 
-### The Omen Die and Consequences
+----------
 
 > *“I returned, and saw under the sun, that the race is not to the swift, nor the battle to the strong, neither yet bread to the wise, nor yet riches to men of understanding, nor yet favour to men of skill; but time and chance happeneth to them all.”*  
 > — Ecclesiastes 9:11
+
+----------
+
+## The Omen Die and Consequences
 
 **Every roll** includes one extra die: the **Omen** die — a **d20**, independent of Marks, Traits, and Exertion. It never changes the primary success reading. It may introduce a side event: a **Consequence**.
 
@@ -165,7 +178,7 @@ In multi-party contests, Omens also feed **[The Tide](#the-tide)**.
 
 ----------
 
-### Situational Dice Resolution
+## Situational Dice Resolution
 
 | Mode | When | Reading |
 |------|------|---------|
@@ -199,6 +212,10 @@ Hints:
 <p><strong>Focus on the roleplay, not the roll-play.</strong> Dice outcomes should <strong>never</strong> replace conversations, decisions, and planning. Rolls inform the <strong>effect</strong> of an action, never its content.</p>
 </aside>
 
+<figure class="kod-art" data-art="dice-opposed-gate" aria-hidden="true">
+  <div class="kod-art__slot"></div>
+</figure>
+
 ----------
 
 > _*“In battle, momentum means riding on the force of the tide of events.”*_  
@@ -206,11 +223,11 @@ Hints:
 
 ----------
 
-### The Tide
+## The Tide
 
 The Tide is a **shared** progress tracker when a contest is larger than a clean 1v1 — a skirmish, a running fight, a hall-wide debate, a pursuit through hostile ground.
 
-#### Setup
+### Setup
 
 The Tide is framed by the **general** Advantage / Disadvantage of the whole contest (not each individual blow). Both sides share **one** scale; the **position** of a marker is what they push.
 
@@ -228,7 +245,7 @@ The Tide is framed by the **general** Advantage / Disadvantage of the whole cont
 
 (The last row starts at 6 because side A’s weight is 6 — they begin closer to collapse.)
 
-#### Shifting by Marks
+### Shifting by Marks
 
 How many Marks of difference are required to move the Tide one point depends on scale:
 
@@ -239,7 +256,7 @@ How many Marks of difference are required to move the Tide one point depends on 
 | Battle | 3 |
 | Large battle | Only Omen results shift the Tide |
 
-#### Omens on the Tide
+### Omens on the Tide
 
 Omens on Tide-linked actions also move it. Threshold bands follow the same scale idea as Marks-difference requirements, then adjust for overall Advantage / Disadvantage.
 
@@ -266,7 +283,7 @@ Disadvantage lowers thresholds for the disadvantaged side (negative Omens more l
 </ol>
 </aside>
 
-#### Routing
+### Routing
 
 When the Tide reaches one end, that collective side **routes**. Morale breaks. The group crumbles or flees. Individuals may still stand, refuse, die heroically or foolishly, or take a major personal setback — the Tide breaks **collective** will, not personal agency.
 

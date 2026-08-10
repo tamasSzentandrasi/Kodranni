@@ -8,6 +8,7 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 	<link href="https://fonts.googleapis.com/css2?family=Bellefair&display=swap" rel="stylesheet" />
+	<link rel="icon" href="./Guidebook/favicon.svg" type="image/svg+xml" />
 	<style>
 		:root {
 			color-scheme: dark;
@@ -46,8 +47,20 @@
 			width: min(32rem, 100%);
 			text-align: center;
 		}
+		.brand {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: 0.65rem;
+			margin-bottom: 0.35rem;
+		}
+		.brand img {
+			width: 4.25rem;
+			height: 4.25rem;
+			object-fit: contain;
+		}
 		h1 {
-			margin: 0 0 0.35rem;
+			margin: 0;
 			font-family: "Bellefair", Georgia, serif;
 			font-size: clamp(2.75rem, 10vw, 4rem);
 			font-weight: 400;
@@ -108,7 +121,10 @@
 </head>
 <body>
 	<main>
-		<h1>Kodranni</h1>
+		<div class="brand">
+			<img src="./Guidebook/falcon-logo.svg" width="68" height="68" alt="" />
+			<h1>Kodranni</h1>
+		</div>
 		<p class="tag">Pre-industrial. Human. Grim.</p>
 		<div class="cards">
 			<a class="card" href="https://github.com/tamasszentandrasi/Kodranni">

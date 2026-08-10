@@ -9,8 +9,6 @@ description: The nine Harm tracks, Dying, recovery, and protection ratios.
 
 ----------
 
-## Harm
-
 Kodranni does **not** track hit points. It tracks the **unravelling of the nine [Foundations](/foundations/)**.
 
 **Harm** is recorded on nine named tracks. Each track is permanently paired with one Foundation. Every point of Harm reduces that Foundation by one for dice purposes.
@@ -33,9 +31,13 @@ Kodranni does **not** track hit points. It tracks the **unravelling of the nine 
 
 The Storyteller assigns points according to the fiction. The track name is only the mechanical label.
 
+<figure class="kod-art" data-art="harm-tracks" aria-hidden="true">
+  <div class="kod-art__slot"></div>
+</figure>
+
 ----------
 
-### Inflicting Harm
+## Inflicting Harm
 
 Harm arises only when the fiction **and** the dice justify lasting damage.
 
@@ -71,7 +73,9 @@ Be frugal. Most successful hits produce **0 or 1** point. Two points is notable.
 
 ----------
 
-### Dying
+----------
+
+## Dying
 
 When any Harm track reaches **3**, the character is **Dying**.
 
@@ -95,7 +99,9 @@ After death: remove the character from the [Hierarchy Diagram](/hierarchies/#the
 
 ----------
 
-### Recovery
+----------
+
+## Recovery
 
 Recovery is slow and depends on rest, care, and nourishment.
 
@@ -110,7 +116,9 @@ Recovery is slow and depends on rest, care, and nourishment.
 
 ----------
 
-### Worsening and Omens
+----------
+
+## Worsening and Omens
 
 All Harm can worsen.
 

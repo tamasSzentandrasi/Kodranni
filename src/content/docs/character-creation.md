@@ -8,19 +8,20 @@ description: Concept, Foundations, Skills, The Weighing, and what happens after.
 
 ----------
 
-# Character Creation
-
 Prerequisite: the Storyteller has completed [Campaign Setup](/campaign-setup/). The campaign frame, community pressures, and system constraints already exist.
 
-This stage is private at first — you and the Storyteller only — until **The Weighing** brings the table together.
+Creation has **two phases**:
+
+1. **Private prep** — you and the Storyteller only (concept, Foundations, Skills).  
+2. **The Weighing** — the table gathers; claims, Words, and The Wanting reshape the sheet in public.
 
 ----------
 
-## Character Concept
+## Private prep
 
 At this stage the character record is **created** in automation (draft): initial Foundation and Skill budgets are granted so spends can be validated as you go. See [Automation — Weighing](/automation/#weighing-automation-depth).
 
-**Concept**
+### Concept
 
 Write or speak a short concept. Two to five sentences is enough. Longer is usually worse.
 
@@ -29,6 +30,12 @@ It must contain a concrete, binding **tie to the community**. Blood, debt, marri
 This is also where you tell the Storyteller what you actually want: the kinds of stories you hope to see, what you fear for this character, what you are willing to risk. Clarity helps the Storyteller work with your offer.
 
 The Storyteller may reject any concept that does not fit the established frame or is brought in bad faith. That decision is final.
+
+<figure class="kod-art" data-art="creation-concept" aria-hidden="true">
+  <div class="kod-art__slot"></div>
+</figure>
+
+----------
 
 ### Foundations
 
@@ -63,7 +70,9 @@ These numbers stay **private** until The Weighing begins. Do not discuss them wi
 
 ## The Weighing
 
-The Ancestors bear witness.
+The Ancestors bear witness. What follows is spoken at the table — then spent.
+
+----------
 
 ### 1. Birth Omen
 
@@ -78,7 +87,9 @@ This is the mark under which the character was born. It is not discussed at the 
 One further Omen die is rolled for skills.  
 The full result (**1–20**) becomes additional skill points, spent under the normal cumulative costs.
 
-### Who do we see?
+----------
+
+### 3. Who do we see?
 
 The Storyteller turns to each character in turn and asks:
 
@@ -105,7 +116,13 @@ Rules for claims:
 
 The Storyteller ends the process when a full pass produces nothing further worth accepting.
 
-### The Wanting
+<figure class="kod-art" data-art="creation-weighing" aria-hidden="true">
+  <div class="kod-art__slot"></div>
+</figure>
+
+----------
+
+### 4. The Wanting
 
 The **Words** you earned by speaking true claims about **others** are spent here — or left unspent and **lost**.
 

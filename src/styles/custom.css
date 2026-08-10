@@ -445,3 +445,75 @@ site-title {
 .starlight-aside--tip .starlight-aside__icon {
   display: none !important;
 }
+
+/* -------------------------------------------------------------------------- */
+/* Art placeholders — reserved breaks for future thematic images               */
+/* Invisible in layout sense: no labels, near-zero chrome; keep vertical room  */
+/* -------------------------------------------------------------------------- */
+
+.kod-art {
+  margin: 1.75rem 0 2rem;
+  padding: 0;
+  border: none;
+  background: transparent;
+}
+
+.kod-art__slot {
+  width: 100%;
+  min-height: 7.5rem;
+  max-height: 14rem;
+  border-radius: 2px;
+  /* Nearly invisible: soft hairline + faint blood wash so designers can spot slots in dev */
+  border: 1px solid color-mix(in srgb, var(--kod-blood) 12%, transparent);
+  background: linear-gradient(
+    160deg,
+    color-mix(in srgb, var(--kod-blood-deep) 18%, transparent),
+    transparent 55%,
+    color-mix(in srgb, #1a1816 40%, transparent)
+  );
+  opacity: 0.55;
+}
+
+/* When an <img> is placed inside later, drop the empty chrome */
+.kod-art:has(img) .kod-art__slot {
+  display: none;
+}
+
+.kod-art img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 18rem;
+  object-fit: cover;
+  border-radius: 2px;
+  border: 1px solid color-mix(in srgb, var(--kod-blood) 25%, #333);
+}
+
+/* Site logo size in header */
+site-title img,
+.site-title img {
+  height: 1.85rem !important;
+  width: auto !important;
+}
+
+/* Chapter body rhythm — slightly more air after H2/H3 */
+.sl-markdown-content h2 {
+  margin-top: 2.35em;
+}
+
+.sl-markdown-content h3 {
+  margin-top: 1.65em;
+  letter-spacing: 0.04em;
+  color: #ebe6de;
+}
+
+.sl-markdown-content h4 {
+  margin-top: 1.35em;
+  color: #ddd8d0;
+}
+
+/* Lead paragraph under a chapter H1 / first section */
+.sl-markdown-content > p:first-of-type {
+  font-size: 1.05em;
+  color: #c4bfb6;
+}

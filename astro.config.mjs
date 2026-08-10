@@ -15,6 +15,11 @@ export default defineConfig({
     starlight({
       title: 'Kodranni',
       description: 'A pre-industrial grim human TTRPG system.',
+      logo: {
+        src: './src/assets/falcon-logo.svg',
+        alt: 'Kodranni',
+      },
+      favicon: '/favicon.svg',
       sidebar: [
         {
           label: 'Start here',

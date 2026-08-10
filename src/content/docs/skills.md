@@ -8,20 +8,18 @@ description: Skills organised under six Archetypes, with Practice and improvemen
 
 ----------
 
-## Skills and Archetypes
-
 **Skills** are organised under six **Archetypes** — personified domains, **not** character classes. You mix freely across them.
 
 | Archetype | Domain | Folk / mythic root |
 |-----------|--------|--------------------|
 | **Warrior** | Violence, the fight, command under threat | Universal protector / fighter figure |
 | **Wayfarer** | Path, wild, road, the open world | Wanderer / seeker on the road |
-| **Maker** | Craft, tools, structures, repair | Smith and artisan vocation |
+| **Artisan** | Craft, tools, structures, repair | Traditional craft vocation / guild domain |
 | **Mother** | Hearth, care, body, kin, influence at home | Jungian Mother / hearth-keeper (not a gender class) |
 | **Sage** | Knowledge, counsel, rite, long thought | Wise figure / keeper of lore |
 | **Trickster** | Cunning, stealth, masks, the underside | Jungian Trickster (broader than “criminal”) |
 
-These names lean on folk and psychological tradition (Warrior, Mother, Sage, Trickster) with **Wayfarer** and **Maker** as clear vocation words for the road and the craft-bench. They are labels for skill lists — nothing locks a character to one Archetype.
+These names lean on folk and psychological tradition (Warrior, Mother, Sage, Trickster) with **Wayfarer** for the road and **Artisan** for the craft-bench. They are labels for skill lists — nothing locks a character to one Archetype.
 
 **Skills are rated between 0 and 3.**
 
@@ -36,9 +34,13 @@ Specific techniques, regional styles, named tools, or binary capabilities remain
 
 At the table, the Storyteller selects the Skill that best matches the player’s described intent when building a [dice pool](/dice-mechanics/#the-makeup-of-the-dice-pool).
 
+<figure class="kod-art" data-art="skills-archetypes" aria-hidden="true">
+  <div class="kod-art__slot"></div>
+</figure>
+
 ----------
 
-### Improvement
+## Improvement
 
 Every time a **Skill** is used in a roll it may generate **Practice** (tracked by [automation](/automation/)). [Primitive](/dice-mechanics/#the-makeup-of-the-dice-pool) actions grant **no** Practice — no Skill is involved.
 
@@ -72,7 +74,7 @@ High inborn potential accelerates learning. Low potential slows it. Automation h
 <p>Struggle teaches. Effort is taken into account. Doing something ad infinitum without hardship counts for naught.</p>
 </aside>
 
-#### Degradation (prompted only)
+### Degradation (prompted only)
 
 Skills can lose progress when the Storyteller asks automation to evaluate a time leap or similar narrative stretch — not continuously in the background.
 
@@ -112,6 +114,12 @@ Fiction still decides *why* rust set in; automation only applies the prompted pr
 
 ----------
 
+## The six Archetypes
+
+Each list is twelve Skills. Use them as menus — not as destinies.
+
+----------
+
 ### Warrior (12)
 
 1. **Slash** (Strength) — cutting edges used in chopping or sweeping cuts  
@@ -146,7 +154,7 @@ Fiction still decides *why* rust set in; automation only applies the prompted pr
 
 ----------
 
-### Maker (12)
+### Artisan (12)
 
 1. **Tailoring & Armory** (Constitution) — cloth, leather, soft materials and the construction or repair of protective gear  
 2. **Smithing & Forging** (Strength) — working metal at the forge  
