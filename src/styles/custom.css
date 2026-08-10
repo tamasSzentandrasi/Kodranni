@@ -467,12 +467,14 @@ site-title {
   display: none !important;
 }
 
-/* Site logo size in header — blood-field mark needs a bit more presence */
+/* Site logo — user falcon mark (square PNG with circular composition) */
 site-title img,
 .site-title img {
-  height: 2.1rem !important;
-  width: auto !important;
-  border-radius: 0.35rem;
+  height: 2.15rem !important;
+  width: 2.15rem !important;
+  object-fit: cover !important;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--kod-blood) 55%, transparent);
 }
 
 /* Chapter body rhythm — slightly more air after H2/H3 */

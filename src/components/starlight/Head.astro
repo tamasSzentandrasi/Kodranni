@@ -25,12 +25,21 @@ const sidebarIconMap: Record<string, string> = {
 const base = import.meta.env.BASE_URL.endsWith('/')
 	? import.meta.env.BASE_URL
 	: `${import.meta.env.BASE_URL}/`;
-const faviconHref = `${base}favicon.svg`;
+const icon = (name: string) => `${base}${name}`;
 ---
 
 <Default><slot /></Default>
-{/* Explicit icons — Starlight also emits one; keep path correct under base */}
-<link rel="icon" href={faviconHref} type="image/svg+xml" sizes="any" />
+{/*
+  Favicon stack — why this exists:
+  - Project Pages live under /Kodranni/Guidebook/, so root /favicon.ico is wrong.
+  - SVG favicons were ignored or cached-as-broken in some Chromium tabs.
+  - ICO + sized PNGs is the most portable set for browser tabs.
+*/}
+<link rel="icon" href={icon('favicon.ico')} sizes="any" />
+<link rel="icon" type="image/png" sizes="32x32" href={icon('favicon-32x32.png')} />
+<link rel="icon" type="image/png" sizes="16x16" href={icon('favicon-16x16.png')} />
+<link rel="apple-touch-icon" sizes="180x180" href={icon('apple-touch-icon.png')} />
+<meta name="theme-color" content="#8a1515" />
 
 {/* NOT is:inline — define:vars must be processed by Astro/Vite */}
 <script define:vars={{ sidebarIconMap }}>

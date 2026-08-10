@@ -8,8 +8,11 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 	<link href="https://fonts.googleapis.com/css2?family=Bellefair&display=swap" rel="stylesheet" />
-	<link rel="icon" href="./Guidebook/favicon.svg" type="image/svg+xml" sizes="any" />
-	<link rel="shortcut icon" href="./Guidebook/favicon.svg" type="image/svg+xml" />
+	<link rel="icon" href="./Guidebook/favicon.ico" sizes="any" />
+	<link rel="icon" type="image/png" sizes="32x32" href="./Guidebook/favicon-32x32.png" />
+	<link rel="icon" type="image/png" sizes="16x16" href="./Guidebook/favicon-16x16.png" />
+	<link rel="apple-touch-icon" sizes="180x180" href="./Guidebook/apple-touch-icon.png" />
+	<meta name="theme-color" content="#8a1515" />
 	<style>
 		:root {
 			color-scheme: dark;
@@ -56,9 +59,11 @@
 			margin-bottom: 0.35rem;
 		}
 		.brand img {
-			width: 4.25rem;
-			height: 4.25rem;
+			width: 5rem;
+			height: 5rem;
 			object-fit: contain;
+			border-radius: 50%;
+			box-shadow: 0 0 0 2px color-mix(in srgb, var(--blood) 55%, transparent);
 		}
 		h1 {
 			margin: 0;
@@ -123,7 +128,7 @@
 <body>
 	<main>
 		<div class="brand">
-			<img src="./Guidebook/falcon-logo.svg" width="68" height="68" alt="" />
+			<img src="./Guidebook/falcon-logo.png" width="80" height="80" alt="Kodranni falcon" />
 			<h1>Kodranni</h1>
 		</div>
 		<p class="tag">Pre-industrial. Human. Grim.</p>

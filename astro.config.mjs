@@ -16,10 +16,12 @@ export default defineConfig({
       title: 'Kodranni',
       description: 'A pre-industrial grim human TTRPG system.',
       logo: {
-        src: './src/assets/falcon-logo.svg',
+        src: './src/assets/falcon-logo.png',
         alt: 'Kodranni',
       },
-      favicon: '/favicon.svg',
+      // Prefer ICO for tab icons (SVG was unreliable; PNG alone is flaky on some browsers).
+      // Head.astro also emits a full multi-size set under the correct base path.
+      favicon: '/favicon.ico',
       sidebar: [
         {
           label: 'Start here',
