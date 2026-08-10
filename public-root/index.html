@@ -5,15 +5,20 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<title>Kodranni</title>
 	<meta name="description" content="Kodranni — pre-industrial grim human TTRPG. Source on GitHub; Guidebook on GitHub Pages." />
-	<link rel="preconnect" href="https://fonts.googleapis.com" />
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-	<link href="https://fonts.googleapis.com/css2?family=Bellefair&display=swap" rel="stylesheet" />
 	<link rel="icon" href="./Guidebook/favicon.ico" sizes="any" />
 	<link rel="icon" type="image/png" sizes="32x32" href="./Guidebook/favicon-32x32.png" />
 	<link rel="icon" type="image/png" sizes="16x16" href="./Guidebook/favicon-16x16.png" />
 	<link rel="apple-touch-icon" sizes="180x180" href="./Guidebook/apple-touch-icon.png" />
 	<meta name="theme-color" content="#8a1515" />
 	<style>
+		/* Self-hosted Bellefair from Guidebook deploy (no Google CDN) */
+		@font-face {
+			font-family: "Bellefair";
+			font-style: normal;
+			font-weight: 400;
+			font-display: swap;
+			src: url("./Guidebook/fonts/bellefair/bellefair-latin-400-normal.woff2") format("woff2");
+		}
 		:root {
 			color-scheme: dark;
 			--bg: #050505;

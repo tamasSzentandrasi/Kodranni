@@ -1,7 +1,7 @@
 /* Kodranni Guidebook — Bellefair, black/silver/blood
    Boxes: example · quote · note · chapter icons */
 
-@import url('https://fonts.googleapis.com/css2?family=Bellefair&family=Noto+Sans+Runic&display=swap');
+/* Fonts: @font-face with BASE_URL injected in Head.astro (Project Pages base path). */
 
 :root {
   --kod-black: #050505;
