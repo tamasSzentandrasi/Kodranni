@@ -13,7 +13,7 @@ Similar to other TTRPGs, action resolution uses dice. When a **player** or **Sto
 
 This chapter walks the stack in order: **when** to roll → **what** dice mean → **how** context sets the tier → **how large** the pool is → Omen and Tide for the moments that outgrow a single throw.
 
-<div class="kod-lanes">
+<div class="kod-lanes not-content">
 <div class="kod-lane kod-lane--player">
 <p class="kod-lane__title">Player</p>
 <p>Describe intent. Spend <span class="kod-term" data-tip="Spendable pool for extra dice; also fatigue, hunger, thirst.">Exertion</span> if you push. Read Marks as the Storyteller narrates them — not a hidden target number.</p>
@@ -70,9 +70,9 @@ That requires a subtle shift: less “did it work?”, more “**what does this 
 
 Players act under incomplete knowledge. The Storyteller scales reward, cost, and **what the fiction discloses** to the Marks on the table.
 
-<div class="kod-widget" data-widget="marks-ladder">
+<div class="kod-widget not-content" data-widget="marks-ladder">
 <p class="kod-widget__title">Scenario: The Scout</p>
-<p class="kod-widget__intro">A young warrior is sent out at night to learn what the opposing army plans. The Storyteller names Perception + Scouting. There is no hidden “need three successes.”<br /><strong>The player rolled:</strong> a pool of four dice. Choose how many Marks landed:</p>
+<p class="kod-widget__intro"><strong>Setup:</strong> night scout, Perception + Scouting, pool of 4 dice. No target number — Marks decide how much he learns. Select Marks:</p>
 <div class="kod-widget__controls" role="group" aria-label="Marks of Success">
 <button type="button" class="kod-widget__btn" data-marks="0">0 Marks</button>
 <button type="button" class="kod-widget__btn" data-marks="1">1 Mark</button>
@@ -84,7 +84,7 @@ Players act under incomplete knowledge. The Storyteller scales reward, cost, and
 </div>
 
 <aside class="kod-counsel" aria-label="Counsel">
-<p>Do not pre-assign “3 Marks = success.” Pre-hold <em>possible</em> tiers of outcome if you like, then let the dice pick which tier the night earns. Opposed rolls use the same mindset: the <strong>margin</strong> is how much one will overbore another, not a hit-point subtraction by default.</p>
+<p>Do not pre-assign “3 Marks = success.” Hold a few <em>possible</em> outcome tiers, then let the dice pick which one lands. Opposed rolls use the same idea: the <strong>margin</strong> is how far one side overbore the other — not hit-point subtraction by default.</p>
 </aside>
 
 ----------
@@ -104,9 +104,9 @@ Instead: in most cases it is **fairly easy to assess which side has the advantag
 - **Disadvantage** — challenging circumstances (poor weather, hostile ground, being surrounded, darkness, wrong tools, a Trait that hurts). The die tier **downgrades** one step (for example **d8 → d6**).  
   Example: a **veteran soldier** who would otherwise roll **d8** is surrounded on multiple sides → **d6**.
 
-<div class="kod-widget" data-widget="tier-dial">
-<p class="kod-widget__title">Different die tiers and their meaning</p>
-<p class="kod-widget__intro">The Storyteller names the tier for the roll. Select a tier to see how the table should read it:</p>
+<div class="kod-widget not-content" data-widget="tier-dial">
+<p class="kod-widget__title">Die tier</p>
+<p class="kod-widget__intro">Storyteller names the tier. Select one:</p>
 <div class="kod-widget__controls" role="group" aria-label="Die tier">
 <button type="button" class="kod-widget__btn" data-tier="d6">d6</button>
 <button type="button" class="kod-widget__btn" data-tier="d8">d8</button>

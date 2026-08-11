@@ -152,15 +152,58 @@ const fontFacesCss = `
 		});
 	}
 
-	function setupArchetypeAccordion() {
+	/** Exclusive archetype focus: hide siblings, full row, small ← back */
+	function setupArchetypeFocus() {
 		const root = document.querySelector('.kod-archetypes');
-		if (!root) return;
+		if (!root || root.dataset.ready) return;
+		root.dataset.ready = '1';
+
+		let back = root.querySelector('.kod-archetypes__back');
+		if (!back) {
+			back = document.createElement('button');
+			back.type = 'button';
+			back.className = 'kod-archetypes__back';
+			back.setAttribute('aria-label', 'Back to all archetypes');
+			back.textContent = '← Back';
+			root.insertBefore(back, root.firstChild);
+		}
+
+		function exitFocus() {
+			root.querySelectorAll('details.kod-archetype').forEach((d) => {
+				d.open = false;
+			});
+			root.classList.remove('is-focus');
+			if (!prefersReduced) {
+				root.classList.add('is-exiting');
+				window.setTimeout(() => root.classList.remove('is-exiting'), 240);
+			}
+		}
+
+		back.addEventListener('click', (e) => {
+			e.preventDefault();
+			exitFocus();
+		});
+
 		root.querySelectorAll('details.kod-archetype').forEach((d) => {
 			d.addEventListener('toggle', () => {
-				if (!d.open) return;
-				root.querySelectorAll('details.kod-archetype').forEach((other) => {
-					if (other !== d) other.open = false;
-				});
+				if (d.open) {
+					root.querySelectorAll('details.kod-archetype').forEach((other) => {
+						if (other !== d) other.open = false;
+					});
+					root.classList.remove('is-exiting');
+					root.classList.add('is-focus');
+					if (!prefersReduced) {
+						requestAnimationFrame(() => {
+							d.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+						});
+					}
+				} else if (!root.querySelector('details.kod-archetype[open]')) {
+					root.classList.remove('is-focus');
+					if (!prefersReduced) {
+						root.classList.add('is-exiting');
+						window.setTimeout(() => root.classList.remove('is-exiting'), 240);
+					}
+				}
 			});
 		});
 	}
@@ -172,11 +215,11 @@ const fontFacesCss = `
 			const panel = root.querySelector('[data-panel]');
 			const buttons = [...root.querySelectorAll('[data-marks]')];
 			const scenes = {
-				0: '<strong>0 Marks</strong> — He gets lost in the woods. The mission fails into mishap, not a clean “you see nothing.”',
-				1: '<strong>1 Mark</strong> — Thin, anxious success: paranoia. The Storyteller can sell the fear that the enemy are onto him, that a patrol with torches is following.',
-				2: '<strong>2 Marks</strong> — Camp spotted from a distance: approaches, weaknesses — but no safe way to crawl closer and see more.',
-				3: '<strong>3 Marks</strong> — Solid reading: campfires, men, layout; they mean to settle in and wait out the weather.',
-				4: '<strong>4 Marks</strong> — Deep reading: decoys; something is wrong; hurry back — a night raid may be imminent.',
+				0: '<strong>0 Marks</strong> — Lost. No intel. Mission fails into mishap.',
+				1: '<strong>1 Mark</strong> — Barely close. Paranoia of patrols; almost no useful detail.',
+				2: '<strong>2 Marks</strong> — Camp from a distance: approaches and weak points. No safe way closer.',
+				3: '<strong>3 Marks</strong> — Clear read: numbers, layout; they mean to wait out the weather.',
+				4: '<strong>4 Marks</strong> — Deep read: decoys; something is wrong; a night raid may be imminent. Return now.',
 			};
 			function set(n) {
 				buttons.forEach((b) =>
@@ -196,9 +239,9 @@ const fontFacesCss = `
 			const panel = root.querySelector('[data-panel]');
 			const buttons = [...root.querySelectorAll('[data-tier]')];
 			const scenes = {
-				d6: '<strong>d6 — Disadvantage</strong> — Odds lean against the attempt: surrounded, wrong tools, hostile ground, a Trait that hurts. Marks are rarer; the Storyteller reads a harder night.',
-				d8: '<strong>d8 — Ordinary</strong> — Safe default for a competent attempt when nothing special presses the odds. Neither favoured nor cursed.',
-				d12: '<strong>d12 — Advantage</strong> — Odds lean with the attempt: good ground, support, tools, a Trait that truly applies. Marks come easier; deeper success is more likely.',
+				d6: '<strong>d6 — Disadvantage</strong> — Odds against: surrounded, wrong tools, hostile ground, a Trait that hurts. Marks rarer.',
+				d8: '<strong>d8 — Ordinary</strong> — Default for a competent attempt when nothing special presses the odds.',
+				d12: '<strong>d12 — Advantage</strong> — Odds with: good ground, support, tools, a Trait that fits. Marks come easier.',
 			};
 			function set(t) {
 				buttons.forEach((b) =>
@@ -274,11 +317,17 @@ const fontFacesCss = `
 			if (kids.length < 2) return;
 			kids.forEach((k) => {
 				k.style.minHeight = '';
+				k.style.height = '';
 			});
+			// force reflow before measure
+			void parent.offsetHeight;
 			const max = Math.max(...kids.map((k) => k.getBoundingClientRect().height));
-			if (max > 0) kids.forEach((k) => {
-				k.style.minHeight = max + 'px';
-			});
+			if (max > 0) {
+				const px = Math.ceil(max) + 'px';
+				kids.forEach((k) => {
+					k.style.minHeight = px;
+				});
+			}
 		});
 	}
 
@@ -291,22 +340,25 @@ const fontFacesCss = `
 		injectSidebarIcons();
 		decorateDividers();
 		normalizeBoxes();
-		setupArchetypeAccordion();
+		setupArchetypeFocus();
 		setupMarksLadder();
 		setupTierDial();
 		setupScrollReveal();
 		setupTableStrip();
-		// after layout
+		// after layout + fonts
 		requestAnimationFrame(() => {
 			layoutEqualizers();
 			requestAnimationFrame(layoutEqualizers);
 		});
+		if (document.fonts && document.fonts.ready) {
+			document.fonts.ready.then(() => layoutEqualizers()).catch(() => {});
+		}
 	}
 
 	window.addEventListener('resize', () => {
-		// clear then remeasure
 		document.querySelectorAll('.kod-lane, .kod-brick').forEach((el) => {
 			el.style.minHeight = '';
+			el.style.height = '';
 		});
 		requestAnimationFrame(layoutEqualizers);
 	});

@@ -3,7 +3,7 @@ title: Human Potential
 description: Foundations, Skills, Traits, and Exertion — the representation of human capacity.
 ---
 
-<aside class="kod-note" aria-label="Note">
+<aside class="kod-counsel" aria-label="Counsel">
 <p><em>“What…defines a person as a unique individual? A natural disposition? A face? A vocabulary of gestures? Are we born individuals…or do we mold ourselves into unique creatures through our experiences and accomplishments?“</em></p>
 </aside>
 

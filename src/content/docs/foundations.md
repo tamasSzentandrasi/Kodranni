@@ -14,7 +14,7 @@ description: The nine inborn Foundations that shape a character.
 
 There are nine Foundations, grouped by domain:
 
-<div class="kod-domain-stack">
+<div class="kod-domain-stack not-content">
 <div class="kod-domain-lane kod-domain-lane--physical">
 <p class="kod-domain-lane__label">Physical</p>
 <div class="kod-domain-lane__bricks">

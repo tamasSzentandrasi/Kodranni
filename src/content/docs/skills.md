@@ -99,9 +99,9 @@ Fiction still decides *why* rust set in; automation only applies the prompted pr
 
 ## The six Archetypes
 
-Twelve Skills each. Open a stained-glass panel — one open at a time.
+Twelve Skills each. Open one panel — it takes the full row; use ← to return.
 
-<div class="kod-archetypes">
+<div class="kod-archetypes not-content">
 
 <details class="kod-archetype kod-archetype--warrior" id="warrior-12">
 <summary class="kod-archetype__summary">

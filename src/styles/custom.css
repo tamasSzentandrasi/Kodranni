@@ -293,7 +293,7 @@ site-title {
   mask: center / contain no-repeat;
 }
 
-/* Example — quill (worked scene) */
+/* Example — eye (worked scene / what was seen) */
 .kod-example {
   border: 1px solid color-mix(in srgb, var(--kod-blood) 45%, #333);
   border-left: 4px solid var(--kod-blood);
@@ -303,8 +303,9 @@ site-title {
 
 .kod-example::before {
   color: var(--kod-blood-bright);
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M3 21l3.5-1 11-11a2.1 2.1 0 0 0 0-3l-1.5-1.5a2.1 2.1 0 0 0-3 0l-11 11L3 21zm13.2-14.7l1.5 1.5-1.1 1.1-1.5-1.5 1.1-1.1zM5.2 18.1l1.6-1.6 1.5 1.5-1.6 1.6-1.5-1.5z'/%3E%3C/svg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M3 21l3.5-1 11-11a2.1 2.1 0 0 0 0-3l-1.5-1.5a2.1 2.1 0 0 0-3 0l-11 11L3 21zm13.2-14.7l1.5 1.5-1.1 1.1-1.5-1.5 1.1-1.1zM5.2 18.1l1.6-1.6 1.5 1.5-1.6 1.6-1.5-1.5z'/%3E%3C/svg%3E");
+  /* open eye */
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M12 5c-5.2 0-9.5 3.4-11 7 1.5 3.6 5.8 7 11 7s9.5-3.4 11-7c-1.5-3.6-5.8-7-11-7zm0 11.5A4.5 4.5 0 1 1 16.5 12 4.5 4.5 0 0 1 12 16.5zm0-7A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M12 5c-5.2 0-9.5 3.4-11 7 1.5 3.6 5.8 7 11 7s9.5-3.4 11-7c-1.5-3.6-5.8-7-11-7zm0 11.5A4.5 4.5 0 1 1 16.5 12 4.5 4.5 0 0 1 12 16.5zm0-7A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5z'/%3E%3C/svg%3E");
 }
 
 .kod-example p {
@@ -386,7 +387,7 @@ site-title {
   margin-top: 0;
 }
 
-/* Note — factual (teal) — compass/ring icon */
+/* Note — factual (teal) — feather pen */
 .kod-note {
   border: 1px solid color-mix(in srgb, #3d6a6a 55%, #333);
   border-left: 4px solid #4a9a8a;
@@ -396,8 +397,9 @@ site-title {
 
 .kod-note::before {
   color: #6fc4b0;
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8zm1-13h-2v2h2V7zm0 4h-2v6h2v-6z'/%3E%3Cpath fill='black' d='M12 5.5 13.5 12 12 18.5 10.5 12 12 5.5z' opacity='.35'/%3E%3C/svg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8zm1-13h-2v2h2V7zm0 4h-2v6h2v-6z'/%3E%3Cpath fill='black' d='M12 5.5 13.5 12 12 18.5 10.5 12 12 5.5z' opacity='.35'/%3E%3C/svg%3E");
+  /* feather quill */
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M20.7 3.3c-2.4-2.4-7.1-.6-10.6 2.9-2.1 2.1-3.5 4.5-3.9 6.3l-2.9 1c-.5.2-.8.6-.9 1.1l-.5 2.4 2.4-.5c.5-.1.9-.4 1.1-.9l1-2.9c1.8-.4 4.2-1.8 6.3-3.9 3.5-3.5 5.3-8.2 2.9-10.6zm-3.2 3.2c-.4.4-.9.4-1.3 0s-.4-.9 0-1.3.9-.4 1.3 0 .4.9 0 1.3zM4 20l3.2-1.1c.2 0 .3.1.3.3L6.4 22H4v-2z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M20.7 3.3c-2.4-2.4-7.1-.6-10.6 2.9-2.1 2.1-3.5 4.5-3.9 6.3l-2.9 1c-.5.2-.8.6-.9 1.1l-.5 2.4 2.4-.5c.5-.1.9-.4 1.1-.9l1-2.9c1.8-.4 4.2-1.8 6.3-3.9 3.5-3.5 5.3-8.2 2.9-10.6zm-3.2 3.2c-.4.4-.9.4-1.3 0s-.4-.9 0-1.3.9-.4 1.3 0 .4.9 0 1.3zM4 20l3.2-1.1c.2 0 .3.1.3.3L6.4 22H4v-2z'/%3E%3C/svg%3E");
 }
 
 .kod-note p {
@@ -413,7 +415,7 @@ site-title {
   color: #7ec9b8;
 }
 
-/* Counsel — ST wisdom (violet) — torch/flame icon */
+/* Counsel — ST wisdom (violet) — scales of justice */
 .kod-counsel {
   border: 1px solid color-mix(in srgb, #4a3a8a 55%, #333);
   border-left: 4px solid #6a5ab8;
@@ -423,8 +425,9 @@ site-title {
 
 .kod-counsel::before {
   color: #9b8fd4;
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M12 2c2.5 3.5 1 5.5 1 8 0 1.2.5 2.2 1.2 3C15.5 11.5 17 9.2 17 7c2 2.5 3 5 3 7.5A8 8 0 0 1 4 14.5C4 10 8 6.5 12 2zm-1 12.2c-.6-.9-1-2-1-3.2 0-1.3.4-2.4 1-3.5.6 1.1 1 2.2 1 3.5 0 1.2-.4 2.3-1 3.2zM9 18h6v2H9v-2z'/%3E%3C/svg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M12 2c2.5 3.5 1 5.5 1 8 0 1.2.5 2.2 1.2 3C15.5 11.5 17 9.2 17 7c2 2.5 3 5 3 7.5A8 8 0 0 1 4 14.5C4 10 8 6.5 12 2zm-1 12.2c-.6-.9-1-2-1-3.2 0-1.3.4-2.4 1-3.5.6 1.1 1 2.2 1 3.5 0 1.2-.4 2.3-1 3.2zM9 18h6v2H9v-2z'/%3E%3C/svg%3E");
+  /* balance scale ⚖ */
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M12 2v2.1l7 2.3-1.5 4.6c-.9 1.4-2.6 2.2-4.3 1.9L12 12.5l-1.2.4c-1.7.3-3.4-.5-4.3-1.9L5 6.4l7-2.3V2h0zm0 4.2L7.8 7.6l.9 2.8c.3.5.9.8 1.5.7L12 10.6V6.2zm0 0v4.4l1.8.5c.6.1 1.2-.2 1.5-.7l.9-2.8L12 6.2zM11 13h2v7h3v2H8v-2h3v-7z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M12 2v2.1l7 2.3-1.5 4.6c-.9 1.4-2.6 2.2-4.3 1.9L12 12.5l-1.2.4c-1.7.3-3.4-.5-4.3-1.9L5 6.4l7-2.3V2h0zm0 4.2L7.8 7.6l.9 2.8c.3.5.9.8 1.5.7L12 10.6V6.2zm0 0v4.4l1.8.5c.6.1 1.2-.2 1.5-.7l.9-2.8L12 6.2zM11 13h2v7h3v2H8v-2h3v-7z'/%3E%3C/svg%3E");
 }
 
 .kod-counsel p {
@@ -667,6 +670,8 @@ site-title img,
   gap: 0.75rem;
   margin: 1.25rem 0 1.5rem;
   align-items: stretch;
+  /* equal row tracks when multi-column */
+  grid-auto-rows: 1fr;
 }
 
 @media (min-width: 50rem) {
@@ -675,13 +680,21 @@ site-title img,
   }
 }
 
+/* Kill Starlight sibling margin-top inside layout shells */
+.sl-markdown-content .kod-lanes > *,
+.sl-markdown-content .kod-domain-stack > *,
+.sl-markdown-content .kod-domain-lane__bricks > *,
+.sl-markdown-content .kod-widget__controls > *,
+.sl-markdown-content .kod-archetypes > * {
+  margin-top: 0 !important;
+}
+
 .sl-markdown-content .kod-lane {
   display: flex !important;
   flex-direction: column;
   box-sizing: border-box;
   min-height: 0;
-  /* stretch to row height in grid */
-  height: auto;
+  height: 100%;
   align-self: stretch;
   padding: 0.9rem 1.05rem;
   border-radius: 2px;
@@ -791,6 +804,7 @@ site-title img,
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.55rem;
   align-items: stretch;
+  grid-auto-rows: 1fr;
 }
 
 @media (max-width: 40rem) {
@@ -803,6 +817,7 @@ site-title img,
   box-sizing: border-box;
   min-width: 0;
   min-height: 5.5rem;
+  height: 100%;
   padding: 0.65rem 0.75rem;
   border: 1px solid color-mix(in srgb, #f2efe9 12%, #333);
   border-radius: 2px;
@@ -811,34 +826,121 @@ site-title img,
   flex-direction: column;
 }
 
+.kod-brick > * {
+  margin-top: 0 !important;
+}
+
 .kod-brick strong {
   background: none !important;
   color: #fff8f0;
   letter-spacing: 0.03em;
   font-size: 1em;
   line-height: 1.25;
+  display: block;
 }
 
 .kod-brick p {
-  margin: 0.35rem 0 0;
+  margin: 0.35rem 0 0 !important;
   font-size: 0.9em;
   color: var(--kod-silver-dim);
   line-height: 1.4;
   flex: 1;
 }
 
-/* --- Archetype stained-glass cards (2-col, panel = face) ------------------- */
+/* --- Archetype stained-glass cards (2-col → exclusive focus) -------------- */
 .sl-markdown-content .kod-archetypes {
   display: grid !important;
   grid-template-columns: 1fr;
   gap: 1rem;
   margin: 1.25rem 0 2rem;
+  position: relative;
+  transition: gap 0.2s ease;
 }
 
 @media (min-width: 50rem) {
-  .sl-markdown-content .kod-archetypes {
+  .sl-markdown-content .kod-archetypes:not(.is-focus) {
     grid-template-columns: 1fr 1fr;
   }
+}
+
+/* Focus mode: single full-width card; others hidden */
+.sl-markdown-content .kod-archetypes.is-focus {
+  grid-template-columns: 1fr;
+  gap: 0.65rem;
+}
+
+.sl-markdown-content .kod-archetypes.is-focus .kod-archetype:not([open]) {
+  display: none;
+}
+
+.sl-markdown-content .kod-archetypes.is-focus .kod-archetype[open] {
+  animation: kod-archetype-focus-in 0.28s ease both;
+}
+
+@keyframes kod-archetype-focus-in {
+  from {
+    opacity: 0.55;
+    transform: translateY(0.4rem) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes kod-archetype-grid-in {
+  from {
+    opacity: 0.4;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.sl-markdown-content .kod-archetypes.is-exiting .kod-archetype {
+  animation: kod-archetype-grid-in 0.22s ease both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sl-markdown-content .kod-archetypes.is-focus .kod-archetype[open],
+  .sl-markdown-content .kod-archetypes.is-exiting .kod-archetype {
+    animation: none;
+  }
+}
+
+/* Small back control — only in focus mode */
+.sl-markdown-content .kod-archetypes__back {
+  appearance: none;
+  display: none;
+  align-items: center;
+  gap: 0.35rem;
+  width: fit-content;
+  margin: 0 0 0.15rem;
+  padding: 0.28rem 0.55rem;
+  border: 1px solid color-mix(in srgb, #f2efe9 18%, #333);
+  border-radius: 2px;
+  background: #121010;
+  color: var(--kod-silver-dim);
+  font-family: var(--kod-font-body);
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  cursor: pointer;
+  transition: border-color 0.12s ease, color 0.12s ease, background 0.12s ease;
+}
+
+.sl-markdown-content .kod-archetypes.is-focus .kod-archetypes__back {
+  display: inline-flex;
+}
+
+.sl-markdown-content .kod-archetypes__back:hover,
+.sl-markdown-content .kod-archetypes__back:focus-visible {
+  border-color: var(--kod-blood-bright);
+  color: var(--kod-silver-bright);
+  outline: none;
+  background: color-mix(in srgb, var(--kod-blood-deep) 35%, #121010);
 }
 
 .sl-markdown-content .kod-archetype {
@@ -847,6 +949,7 @@ site-title img,
   overflow: hidden;
   list-style: none;
   margin: 0;
+  min-width: 0;
 }
 
 /* Per-archetype colour wash */
@@ -985,13 +1088,15 @@ site-title img,
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  align-items: stretch;
+  align-items: center; /* same baseline — never stretch-first / margin-second */
+  align-content: center;
   gap: 0.45rem;
   margin: 0 auto 0.9rem;
 }
 
 .kod-widget__btn {
   appearance: none;
+  -webkit-appearance: none;
   box-sizing: border-box;
   flex: 0 0 auto;
   /* Fixed equal footprint — stops “0 Marks” looking larger */
@@ -1009,12 +1114,14 @@ site-title img,
   color: var(--kod-silver);
   font-family: var(--kod-font-body);
   font-size: 0.82rem;
-  line-height: 1.1;
+  line-height: 1;
+  margin: 0 !important; /* Starlight sibling gap would lift the first button */
   padding: 0;
   border-radius: 2px;
   cursor: pointer;
   letter-spacing: 0.01em;
   white-space: nowrap;
+  vertical-align: middle;
   transition: border-color 0.12s ease, background 0.12s ease, color 0.12s ease;
 }
 

@@ -91,16 +91,18 @@ Everyone wants, at times, to be the **Hero** or the main protagonist. Kodranni d
 
 ### Two patterns that ruin the table
 
-1. **Players who churn out characters designed to die** for short-term chaos:  
-   _Why care for a character destined to die?_  
-   <aside class="kod-counsel" aria-label="Counsel">
-<p>Yup, it is fun short term — then the player gets bored, immersion dies, and the campaign becomes the dullest ruin they have ever sat through.</p>
+**1. Players who churn out characters designed to die** for short-term chaos.  
+_Why care for a character destined to die?_
+
+<aside class="kod-counsel" aria-label="Counsel">
+<p>Fun short-term. Then immersion dies, the player gets bored, and the campaign is a ruin.</p>
 </aside>
 
-2. **Storytellers who punish for the sake of punishment**:  
-   _Why make a character the Storyteller will just kill?_  
-   <aside class="kod-counsel" aria-label="Counsel">
-<p>You do not need to overplay the grim nature. The system does that for you. Most of the time you will be as relieved as your players when a risky plan succeeds. If you play against the players rather than the world, they will play against you.</p>
+**2. Storytellers who punish for the sake of punishment.**  
+_Why invest in a character the Storyteller will just kill?_
+
+<aside class="kod-counsel" aria-label="Counsel">
+<p>Do not overplay the grim. The system already does. Most nights you will be as relieved as the players when a risk pays off. If you play against the players instead of the world, they will play against you.</p>
 </aside>
 
 In short: **Embrace the Contrast**. Do not shield. Allow creativity. Craft stories that are grim but filled with meaning.
