@@ -101,13 +101,13 @@ Fiction still decides *why* rust set in; automation only applies the prompted pr
 
 ## The six Archetypes
 
-Twelve Skills each. Open a panel — stained glass for now; your art can replace the face tiles later. Only one panel stays open at a time.
+Twelve Skills each. Open a stained-glass panel — one open at a time.
 
 <div class="kod-archetypes">
 
 <details class="kod-archetype" id="warrior-12">
 <summary class="kod-archetype__summary">
-<span class="kod-archetype__glass" data-glyph="ᛏ" aria-hidden="true"></span>
+<span class="kod-archetype__glass" data-glyph="ᛏ" aria-hidden="true"><img src="/archetypes/warrior.jpg" alt="" width="128" height="128" loading="lazy" decoding="async" /></span>
 <span>
 <p class="kod-archetype__name">Warrior</p>
 <p class="kod-archetype__tag">Steel and will under threat</p>
@@ -135,7 +135,7 @@ Twelve Skills each. Open a panel — stained glass for now; your art can replace
 
 <details class="kod-archetype" id="wayfarer-12">
 <summary class="kod-archetype__summary">
-<span class="kod-archetype__glass" data-glyph="ᚱ" aria-hidden="true"></span>
+<span class="kod-archetype__glass" data-glyph="ᚱ" aria-hidden="true"><img src="/archetypes/wayfarer.jpg" alt="" width="128" height="128" loading="lazy" decoding="async" /></span>
 <span>
 <p class="kod-archetype__name">Wayfarer</p>
 <p class="kod-archetype__tag">Road, river, ridge, and the dark between fires</p>
@@ -163,7 +163,7 @@ Twelve Skills each. Open a panel — stained glass for now; your art can replace
 
 <details class="kod-archetype" id="artisan-12">
 <summary class="kod-archetype__summary">
-<span class="kod-archetype__glass" data-glyph="ᚲ" aria-hidden="true"></span>
+<span class="kod-archetype__glass" data-glyph="ᚲ" aria-hidden="true"><img src="/archetypes/artisan.jpg" alt="" width="128" height="128" loading="lazy" decoding="async" /></span>
 <span>
 <p class="kod-archetype__name">Artisan</p>
 <p class="kod-archetype__tag">Hammer, loom, keel, and kiln</p>
@@ -191,7 +191,7 @@ Twelve Skills each. Open a panel — stained glass for now; your art can replace
 
 <details class="kod-archetype" id="mother-12">
 <summary class="kod-archetype__summary">
-<span class="kod-archetype__glass" data-glyph="ᛒ" aria-hidden="true"></span>
+<span class="kod-archetype__glass" data-glyph="ᛒ" aria-hidden="true"><img src="/archetypes/mother.jpg" alt="" width="128" height="128" loading="lazy" decoding="async" /></span>
 <span>
 <p class="kod-archetype__name">Mother</p>
 <p class="kod-archetype__tag">Hearth, body, kin, obligation</p>
@@ -219,7 +219,7 @@ Twelve Skills each. Open a panel — stained glass for now; your art can replace
 
 <details class="kod-archetype" id="sage-12">
 <summary class="kod-archetype__summary">
-<span class="kod-archetype__glass" data-glyph="ᚨ" aria-hidden="true"></span>
+<span class="kod-archetype__glass" data-glyph="ᚨ" aria-hidden="true"><img src="/archetypes/sage.jpg" alt="" width="128" height="128" loading="lazy" decoding="async" /></span>
 <span>
 <p class="kod-archetype__name">Sage</p>
 <p class="kod-archetype__tag">Memory, counsel, and the long view</p>
@@ -247,7 +247,7 @@ Twelve Skills each. Open a panel — stained glass for now; your art can replace
 
 <details class="kod-archetype" id="trickster-12">
 <summary class="kod-archetype__summary">
-<span class="kod-archetype__glass" data-glyph="ᚦ" aria-hidden="true"></span>
+<span class="kod-archetype__glass" data-glyph="ᚦ" aria-hidden="true"><img src="/archetypes/trickster.jpg" alt="" width="128" height="128" loading="lazy" decoding="async" /></span>
 <span>
 <p class="kod-archetype__name">Trickster</p>
 <p class="kod-archetype__tag">Mask, shadow, and the unlocked door</p>
