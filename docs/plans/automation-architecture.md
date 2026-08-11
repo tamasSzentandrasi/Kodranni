@@ -615,7 +615,7 @@ Use this as the pre-implementation gate. **Locked** = do not re-litigate without
 - [ ] Pool floor 1 always (empty Exertion −2, Harm, Decadence, over-cap)
 - [ ] Effective Foundation = max(0, rating − harm track)
 - [ ] **Exertion max** = Resolve + Constitution + Charisma
-- [ ] **Echo capacity** = max(Strength, Dexterity) + Intellect + Authority (not the same sum as Exertion)
+- [ ] **Echo capacity** = max(Strength, Dexterity) + Intellect + Authority
 - [ ] Omen **every** roll; scene faces + defaults 7/13
 - [ ] Practice matrix: opposed / unopposed / Primitive / margin 0 / Foundation threshold half/double
 - [ ] Dying: every roll costs Exertion; 0 → death

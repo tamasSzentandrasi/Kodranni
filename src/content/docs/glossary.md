@@ -8,7 +8,7 @@ Quick reference. Each entry links to the chapter that owns the full rule.
 | Term | Definition |
 |------|------------|
 | **Advantage / Disadvantage** | Core context rule: judge who has the edge instead of stacking modifiers; upgrade or downgrade die tier (d6 ↔ d8 ↔ d12). Safe default **d8**. → [Dice Mechanics](/dice-mechanics/#advantage-and-disadvantage) |
-| **Archetype** | One of six personified patterns of capacity (Warrior, Wayfarer, Artisan, Mother, Sage, Trickster) — a collection of related Skills, not a class. → [Skills](/skills/) |
+| **Archetype** | One of six named groups of related Skills (Warrior, Wayfarer, Artisan, Mother, Sage, Trickster). Not a class. → [Skills](/skills/) |
 | **Authority** | Social Foundation: natural command, gravitas. Part of Echo capacity. → [Foundations](/foundations/) |
 | **Automation** | Bot or tool layer that rolls dice, tracks state, and enforces approval workflows. → [Automation](/automation/) |
 | **Birth Omen** | Private d20 at The Weighing; half (rounded up) becomes Foundation points. → [Character Creation](/character-creation/#the-weighing) |

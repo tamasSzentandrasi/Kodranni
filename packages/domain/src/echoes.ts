@@ -1,12 +1,9 @@
-/** Max Exertion pool = Resolve + Constitution + Charisma. */
+/** Max Exertion = Resolve + Constitution + Charisma. */
 export function exertionMax(resolve: number, constitution: number, charisma: number): number {
   return resolve + constitution + charisma;
 }
 
-/**
- * Echo capacity = max(Strength, Dexterity) + Intellect + Authority.
- * Separate from Exertion so other Foundations also weight carried burden.
- */
+/** Echo capacity = max(Strength, Dexterity) + Intellect + Authority. */
 export function echoCapacity(
   strength: number,
   dexterity: number,

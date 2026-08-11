@@ -18,7 +18,7 @@ Kodranni separates that into four interlocking measures:
 | Pillar | Role | Chapter |
 |--------|------|---------|
 | **[Foundations](/foundations/)** | Inborn potential. Nearly static (aging and trauma may shift it). Shapes what comes easy or hard — including [Practice](/skills/#improvement) thresholds. | Full list of nine |
-| **[Skills](/skills/)** | Practiced ability under six Archetypes (personified patterns, not classes). Change is expected; Practice accrues through use (especially with Exertion). | Full skill lists |
+| **[Skills](/skills/)** | Improvable practiced ability, grouped under six Archetypes (not classes). Improved through Practice. | Full skill lists |
 | **[Traits](/traits/)** | Binary specifics — techniques, conditions, languages, disabilities. You have it, or you do not. | Custom, not rated |
 | **[Exertion](/exertion/)** | Will to push beyond the ordinary. Also the ledger for fatigue, hunger, and thirst. | Max = Resolve + Constitution + Charisma |
 | **[Echoes](/echoes/)** | Carried deeds and burdens. | Capacity = max(Strength, Dexterity) + Intellect + Authority |

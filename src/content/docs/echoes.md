@@ -24,8 +24,6 @@ The **player** elevates a moment into an Echo. The Storyteller may veto only for
 
 **Echo capacity** = **max(Strength, Dexterity) + Intellect + Authority**.
 
-This is separate from the [Exertion](/exertion/) maximum (Resolve + Constitution + Charisma). Carried burden and the will to push are not the same measure.
-
 | Condition | Effect |
 |-----------|--------|
 | Total Echo weight **> capacity** | **–1** die on every roll that involves any of the character’s Echoes |
