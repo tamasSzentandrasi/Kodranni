@@ -1569,20 +1569,21 @@ site-title img,
 }
 
 /*
- * Fortune icons — multi-element line silhouettes (mask fill):
- * Vitality  — hearth + three kin figures (people who remain)
- * Cohesion  — hall roof over interlocked rings (shared house)
- * Surplus   — storehouse gable, sheaves, cask
- * Standing  — cairn rise, standard, seal
- * Tradition — standing stone with spiral + oral circle
+ * Fortune icons (mask fill), as specified:
+ * Vitality  — drop of blood
+ * Cohesion  — dots in a circle
+ * Surplus   — stacked grain / sheaf
+ * Standing  — Roman helmet
+ * Tradition — Greek column capital (Doric/Ionic head)
  */
 .kod-fortune-pillar--vitality {
   --kod-fortune-accent: #c45a6a;
   border-top-color: #c45a6a;
 }
 .kod-fortune-pillar--vitality .kod-fortune-pillar__icon {
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M8.5 14.2a2.2 2.2 0 1 1 0-4.4 2.2 2.2 0 0 1 0 4.4zm7.5.4a2.6 2.6 0 1 1 0-5.2 2.6 2.6 0 0 1 0 5.2zm7.5-.4a2.2 2.2 0 1 1 0-4.4 2.2 2.2 0 0 1 0 4.4zM5.8 16.5h5.4c.9 0 1.6.7 1.6 1.6V24H4.2v-5.9c0-1 .7-1.6 1.6-1.6zm7.1-.2h6.2c1 0 1.8.8 1.8 1.8V25h-9.8v-6.9c0-1 .8-1.8 1.8-1.8zm7.8.2h5.4c.9 0 1.6.7 1.6 1.6V24h-8.6v-5.9c0-.9.7-1.6 1.6-1.6zM14.5 25.5h3V29h-3v-3.5zM11 27.2h10v1.6H11v-1.6zM15.2 3.2c.3-.5 1.3-.5 1.6 0 .9 1.4 1.3 2.6 1.1 3.7-.1.7-.5 1.3-1.1 1.7v2.1h-1.6V8.6c-.6-.4-1-1-1.1-1.7-.2-1.1.2-2.3 1.1-3.7z'/%3E%3C/svg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M8.5 14.2a2.2 2.2 0 1 1 0-4.4 2.2 2.2 0 0 1 0 4.4zm7.5.4a2.6 2.6 0 1 1 0-5.2 2.6 2.6 0 0 1 0 5.2zm7.5-.4a2.2 2.2 0 1 1 0-4.4 2.2 2.2 0 0 1 0 4.4zM5.8 16.5h5.4c.9 0 1.6.7 1.6 1.6V24H4.2v-5.9c0-1 .7-1.6 1.6-1.6zm7.1-.2h6.2c1 0 1.8.8 1.8 1.8V25h-9.8v-6.9c0-1 .8-1.8 1.8-1.8zm7.8.2h5.4c.9 0 1.6.7 1.6 1.6V24h-8.6v-5.9c0-.9.7-1.6 1.6-1.6zM14.5 25.5h3V29h-3v-3.5zM11 27.2h10v1.6H11v-1.6zM15.2 3.2c.3-.5 1.3-.5 1.6 0 .9 1.4 1.3 2.6 1.1 3.7-.1.7-.5 1.3-1.1 1.7v2.1h-1.6V8.6c-.6-.4-1-1-1.1-1.7-.2-1.1.2-2.3 1.1-3.7z'/%3E%3C/svg%3E");
+  /* blood drop */
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M16 2.5c.4 0 1.1.8 2.2 2.4 1.5 2.2 3.6 5.6 5 9.1 1.2 3 1.8 5.7 1.8 7.5 0 5-3.8 8.5-9 8.5s-9-3.5-9-8.5c0-1.8.6-4.5 1.8-7.5 1.4-3.5 3.5-6.9 5-9.1C14.9 3.3 15.6 2.5 16 2.5zm0 3.2c-1.2 1.7-3.1 4.8-4.4 8-1.1 2.8-1.6 5.2-1.6 6.8 0 3.8 2.8 6.5 6 6.5s6-2.7 6-6.5c0-1.6-.5-4-1.6-6.8-1.3-3.2-3.2-6.3-4.4-8z'/%3E%3Cpath fill='black' d='M13.2 18.2c0-2.2 1.4-4 3.2-4.6.3 1 .5 2.1.5 3.2 0 1.8-.7 3.3-1.8 4.3-1.1-.8-1.9-2.2-1.9-3.9z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M16 2.5c.4 0 1.1.8 2.2 2.4 1.5 2.2 3.6 5.6 5 9.1 1.2 3 1.8 5.7 1.8 7.5 0 5-3.8 8.5-9 8.5s-9-3.5-9-8.5c0-1.8.6-4.5 1.8-7.5 1.4-3.5 3.5-6.9 5-9.1C14.9 3.3 15.6 2.5 16 2.5zm0 3.2c-1.2 1.7-3.1 4.8-4.4 8-1.1 2.8-1.6 5.2-1.6 6.8 0 3.8 2.8 6.5 6 6.5s6-2.7 6-6.5c0-1.6-.5-4-1.6-6.8-1.3-3.2-3.2-6.3-4.4-8z'/%3E%3Cpath fill='black' d='M13.2 18.2c0-2.2 1.4-4 3.2-4.6.3 1 .5 2.1.5 3.2 0 1.8-.7 3.3-1.8 4.3-1.1-.8-1.9-2.2-1.9-3.9z'/%3E%3C/svg%3E");
 }
 
 .kod-fortune-pillar--cohesion {
@@ -1590,8 +1591,9 @@ site-title img,
   border-top-color: #6a9fd4;
 }
 .kod-fortune-pillar--cohesion .kod-fortune-pillar__icon {
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M16 2.8 3.2 12.2l1.1 1.4L16 5.4l11.7 8.2 1.1-1.4L16 2.8zM5.5 13.5v15h2.2V15.2h16.6v13.3H26.5v-15H5.5zm6.2 3.8a3.6 3.6 0 0 1 2.7-3.5 3.3 3.3 0 1 1 3.2 0 3.6 3.6 0 1 1-1.5 6.6v-2.1a1.6 1.6 0 1 0-1.4 0v2.1a3.6 3.6 0 0 1-3-3.1zm3.3-5.6a1.5 1.5 0 1 0 1.5-1.5 1.5 1.5 0 0 0-1.5 1.5zm-3.3 5.6a1.8 1.8 0 1 0 1.7-1.8 1.8 1.8 0 0 0-1.7 1.8zm6.6 0a1.8 1.8 0 1 0 1.7-1.8 1.8 1.8 0 0 0-1.7 1.8z'/%3E%3C/svg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M16 2.8 3.2 12.2l1.1 1.4L16 5.4l11.7 8.2 1.1-1.4L16 2.8zM5.5 13.5v15h2.2V15.2h16.6v13.3H26.5v-15H5.5zm6.2 3.8a3.6 3.6 0 0 1 2.7-3.5 3.3 3.3 0 1 1 3.2 0 3.6 3.6 0 1 1-1.5 6.6v-2.1a1.6 1.6 0 1 0-1.4 0v2.1a3.6 3.6 0 0 1-3-3.1zm3.3-5.6a1.5 1.5 0 1 0 1.5-1.5 1.5 1.5 0 0 0-1.5 1.5zm-3.3 5.6a1.8 1.8 0 1 0 1.7-1.8 1.8 1.8 0 0 0-1.7 1.8zm6.6 0a1.8 1.8 0 1 0 1.7-1.8 1.8 1.8 0 0 0-1.7 1.8z'/%3E%3C/svg%3E");
+  /* eight dots on a circle + centre */
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='2.2' fill='black'/%3E%3Ccircle cx='16' cy='5.2' r='2' fill='black'/%3E%3Ccircle cx='16' cy='26.8' r='2' fill='black'/%3E%3Ccircle cx='5.2' cy='16' r='2' fill='black'/%3E%3Ccircle cx='26.8' cy='16' r='2' fill='black'/%3E%3Ccircle cx='8.4' cy='8.4' r='2' fill='black'/%3E%3Ccircle cx='23.6' cy='8.4' r='2' fill='black'/%3E%3Ccircle cx='8.4' cy='23.6' r='2' fill='black'/%3E%3Ccircle cx='23.6' cy='23.6' r='2' fill='black'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='2.2' fill='black'/%3E%3Ccircle cx='16' cy='5.2' r='2' fill='black'/%3E%3Ccircle cx='16' cy='26.8' r='2' fill='black'/%3E%3Ccircle cx='5.2' cy='16' r='2' fill='black'/%3E%3Ccircle cx='26.8' cy='16' r='2' fill='black'/%3E%3Ccircle cx='8.4' cy='8.4' r='2' fill='black'/%3E%3Ccircle cx='23.6' cy='8.4' r='2' fill='black'/%3E%3Ccircle cx='8.4' cy='23.6' r='2' fill='black'/%3E%3Ccircle cx='23.6' cy='23.6' r='2' fill='black'/%3E%3C/svg%3E");
 }
 
 .kod-fortune-pillar--surplus {
@@ -1599,8 +1601,9 @@ site-title img,
   border-top-color: #c4a035;
 }
 .kod-fortune-pillar--surplus .kod-fortune-pillar__icon {
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M16 2.2 3.5 11.5v1.9h2.1V29h20.8V13.4h2.1v-1.9L16 2.2zm0 2.5 10.4 7.7V27H5.6V12.4L16 4.7zM10.2 13.8c1.1 1.8 1.1 3.6 0 5.4-1.1-1.8-1.1-3.6 0-5.4zm5.8 0c1.1 1.8 1.1 3.6 0 5.4-1.1-1.8-1.1-3.6 0-5.4zm5.8 0c1.1 1.8 1.1 3.6 0 5.4-1.1-1.8-1.1-3.6 0-5.4zM8.8 20.2h14.4v1.6H8.8v-1.6zm1.4 2.8h4.2c.8 0 1.4.6 1.4 1.4V27H8.8v-2.6c0-.8.6-1.4 1.4-1.4zm7.4 0h4.2c.8 0 1.4.6 1.4 1.4V27h-5.6v-2.6c0-.8.6-1.4 1.4-1.4zM14.2 12.8h3.6v6.2h-3.6v-6.2z'/%3E%3C/svg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M16 2.2 3.5 11.5v1.9h2.1V29h20.8V13.4h2.1v-1.9L16 2.2zm0 2.5 10.4 7.7V27H5.6V12.4L16 4.7zM10.2 13.8c1.1 1.8 1.1 3.6 0 5.4-1.1-1.8-1.1-3.6 0-5.4zm5.8 0c1.1 1.8 1.1 3.6 0 5.4-1.1-1.8-1.1-3.6 0-5.4zm5.8 0c1.1 1.8 1.1 3.6 0 5.4-1.1-1.8-1.1-3.6 0-5.4zM8.8 20.2h14.4v1.6H8.8v-1.6zm1.4 2.8h4.2c.8 0 1.4.6 1.4 1.4V27H8.8v-2.6c0-.8.6-1.4 1.4-1.4zm7.4 0h4.2c.8 0 1.4.6 1.4 1.4V27h-5.6v-2.6c0-.8.6-1.4 1.4-1.4zM14.2 12.8h3.6v6.2h-3.6v-6.2z'/%3E%3C/svg%3E");
+  /* stacked grain / wheat sheaf */
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M15.1 29h1.8V17.2c1.9.3 3.3 1.2 4.2 2.6l1.4-1c-1.1-1.8-2.9-2.9-5.1-3.3V12c2.2-.3 3.9-1.6 4.8-3.5l-1.5-.8c-.7 1.4-1.9 2.3-3.5 2.6V7.5c1.4-.3 2.5-1.2 3.1-2.5l-1.6-.8c-.4.9-1.2 1.5-2.2 1.7V2.8h-1.8v3.1c-1-.2-1.8-.8-2.2-1.7l-1.6.8c.6 1.3 1.7 2.2 3.1 2.5v2.8c-1.6-.3-2.8-1.2-3.5-2.6l-1.5.8c.9 1.9 2.6 3.2 4.8 3.5v3.5c-2.2.4-4 1.5-5.1 3.3l1.4 1c.9-1.4 2.3-2.3 4.2-2.6V29z'/%3E%3Cpath fill='black' d='M12.2 19.2c-.9 1.3-.9 2.7 0 4 .9-1.3.9-2.7 0-4zm7.6 0c.9 1.3.9 2.7 0 4-.9-1.3-.9-2.7 0-4zM10.6 14.5c-.7 1.1-.7 2.2 0 3.3.7-1.1.7-2.2 0-3.3zm10.8 0c.7 1.1.7 2.2 0 3.3-.7-1.1-.7-2.2 0-3.3zM9.8 10.2c-.6.9-.6 1.9 0 2.8.6-.9.6-1.9 0-2.8zm12.4 0c.6.9.6 1.9 0 2.8-.6-.9-.6-1.9 0-2.8z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M15.1 29h1.8V17.2c1.9.3 3.3 1.2 4.2 2.6l1.4-1c-1.1-1.8-2.9-2.9-5.1-3.3V12c2.2-.3 3.9-1.6 4.8-3.5l-1.5-.8c-.7 1.4-1.9 2.3-3.5 2.6V7.5c1.4-.3 2.5-1.2 3.1-2.5l-1.6-.8c-.4.9-1.2 1.5-2.2 1.7V2.8h-1.8v3.1c-1-.2-1.8-.8-2.2-1.7l-1.6.8c.6 1.3 1.7 2.2 3.1 2.5v2.8c-1.6-.3-2.8-1.2-3.5-2.6l-1.5.8c.9 1.9 2.6 3.2 4.8 3.5v3.5c-2.2.4-4 1.5-5.1 3.3l1.4 1c.9-1.4 2.3-2.3 4.2-2.6V29z'/%3E%3Cpath fill='black' d='M12.2 19.2c-.9 1.3-.9 2.7 0 4 .9-1.3.9-2.7 0-4zm7.6 0c.9 1.3.9 2.7 0 4-.9-1.3-.9-2.7 0-4zM10.6 14.5c-.7 1.1-.7 2.2 0 3.3.7-1.1.7-2.2 0-3.3zm10.8 0c.7 1.1.7 2.2 0 3.3-.7-1.1-.7-2.2 0-3.3zM9.8 10.2c-.6.9-.6 1.9 0 2.8.6-.9.6-1.9 0-2.8zm12.4 0c.6.9.6 1.9 0 2.8-.6-.9-.6-1.9 0-2.8z'/%3E%3C/svg%3E");
 }
 
 .kod-fortune-pillar--standing {
@@ -1608,8 +1611,9 @@ site-title img,
   border-top-color: #9b8fd4;
 }
 .kod-fortune-pillar--standing .kod-fortune-pillar__icon {
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M4.5 28.2h23v1.7h-23v-1.7zm2.4-1.7h18.2l-2.6-6.8H9.5l-2.6 6.8zm3.4-8.4h11.4l1.5 3.9H8.8l1.5-3.9zM15.1 3.5h1.8v14h-1.8v-14zm1.8 0 7.8 3.5-1.3 2.3-4.7-2.1v4l5.2 2.3-1.3 2.3-5.7-2.5V3.5zM9.8 9.2a4.1 4.1 0 0 1 4.2-4.1c.5 0 .9.1 1.3.2v1.8c-.4-.1-.8-.2-1.3-.2a2.4 2.4 0 0 0-2.4 2.4c0 1 .5 1.8 1.4 2.2l-1.4 3.5A4.1 4.1 0 0 1 9.8 9.2z'/%3E%3C/svg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M4.5 28.2h23v1.7h-23v-1.7zm2.4-1.7h18.2l-2.6-6.8H9.5l-2.6 6.8zm3.4-8.4h11.4l1.5 3.9H8.8l1.5-3.9zM15.1 3.5h1.8v14h-1.8v-14zm1.8 0 7.8 3.5-1.3 2.3-4.7-2.1v4l5.2 2.3-1.3 2.3-5.7-2.5V3.5zM9.8 9.2a4.1 4.1 0 0 1 4.2-4.1c.5 0 .9.1 1.3.2v1.8c-.4-.1-.8-.2-1.3-.2a2.4 2.4 0 0 0-2.4 2.4c0 1 .5 1.8 1.4 2.2l-1.4 3.5A4.1 4.1 0 0 1 9.8 9.2z'/%3E%3C/svg%3E");
+  /* Roman galea / imperial helmet silhouette */
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M15.1 2.4h1.8v3.2c2.8.3 5.1 1.6 6.6 3.6l-1.4 1.1c-1.2-1.6-3.1-2.7-5.2-2.9v2.4c3.6.5 6.3 3.4 6.3 7.1v1.8c0 1.3-.5 2.4-1.3 3.3 1.5.6 2.5 1.9 2.5 3.5v2.1H7.6v-2.1c0-1.6 1-2.9 2.5-3.5-.8-.9-1.3-2-1.3-3.3v-1.8c0-3.7 2.7-6.6 6.3-7.1V7.4c-2.1.2-4 1.3-5.2 2.9l-1.4-1.1c1.5-2 3.8-3.3 6.6-3.6V2.4zm.9 8.2c-2.9 0-5.2 2.2-5.2 5.1v1.5h10.4v-1.5c0-2.9-2.3-5.1-5.2-5.1zm-6.6 12.3c-.4.3-.6.7-.6 1.2v.5h14.4v-.5c0-.5-.2-.9-.6-1.2-1.1.5-2.7.9-4.6 1.1v1.3h-4v-1.3c-1.9-.2-3.5-.6-4.6-1.1z'/%3E%3Cpath fill='black' d='M14.6 4.8h2.8v1.5h-2.8V4.8z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M15.1 2.4h1.8v3.2c2.8.3 5.1 1.6 6.6 3.6l-1.4 1.1c-1.2-1.6-3.1-2.7-5.2-2.9v2.4c3.6.5 6.3 3.4 6.3 7.1v1.8c0 1.3-.5 2.4-1.3 3.3 1.5.6 2.5 1.9 2.5 3.5v2.1H7.6v-2.1c0-1.6 1-2.9 2.5-3.5-.8-.9-1.3-2-1.3-3.3v-1.8c0-3.7 2.7-6.6 6.3-7.1V7.4c-2.1.2-4 1.3-5.2 2.9l-1.4-1.1c1.5-2 3.8-3.3 6.6-3.6V2.4zm.9 8.2c-2.9 0-5.2 2.2-5.2 5.1v1.5h10.4v-1.5c0-2.9-2.3-5.1-5.2-5.1zm-6.6 12.3c-.4.3-.6.7-.6 1.2v.5h14.4v-.5c0-.5-.2-.9-.6-1.2-1.1.5-2.7.9-4.6 1.1v1.3h-4v-1.3c-1.9-.2-3.5-.6-4.6-1.1z'/%3E%3Cpath fill='black' d='M14.6 4.8h2.8v1.5h-2.8V4.8z'/%3E%3C/svg%3E");
 }
 
 .kod-fortune-pillar--tradition {
@@ -1617,8 +1621,9 @@ site-title img,
   border-top-color: #6fc4b0;
 }
 .kod-fortune-pillar--tradition .kod-fortune-pillar__icon {
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M10 3h12l1.5 23.5H8.5L10 3zm1.8 1.7-.9 15.2h10.2l-.9-15.2H11.8zm4.2 2.4a3.8 3.8 0 0 1 2.2 6.9l1.9 5.6h-1.8l-1.7-5h-.8l-1.7 5H12l1.9-5.6a3.8 3.8 0 0 1 2.1-6.9zm0 1.6a2.2 2.2 0 1 0 2.2 2.2 2.2 2.2 0 0 0-2.2-2.2zM6.2 27.4c0-1.7 1.6-3 3.7-3.5.4 1 1 1.9 1.7 2.6-1.5.2-2.5.9-2.5 1.7 0 1.1 2.2 2 5.1 2h4c2.9 0 5.1-.9 5.1-2 0-.8-1-1.5-2.5-1.7.7-.7 1.3-1.6 1.7-2.6 2.1.5 3.7 1.8 3.7 3.5 0 2.4-3.6 4.2-8 4.2h-4c-4.4 0-8-1.8-8-4.2z'/%3E%3C/svg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M10 3h12l1.5 23.5H8.5L10 3zm1.8 1.7-.9 15.2h10.2l-.9-15.2H11.8zm4.2 2.4a3.8 3.8 0 0 1 2.2 6.9l1.9 5.6h-1.8l-1.7-5h-.8l-1.7 5H12l1.9-5.6a3.8 3.8 0 0 1 2.1-6.9zm0 1.6a2.2 2.2 0 1 0 2.2 2.2 2.2 2.2 0 0 0-2.2-2.2zM6.2 27.4c0-1.7 1.6-3 3.7-3.5.4 1 1 1.9 1.7 2.6-1.5.2-2.5.9-2.5 1.7 0 1.1 2.2 2 5.1 2h4c2.9 0 5.1-.9 5.1-2 0-.8-1-1.5-2.5-1.7.7-.7 1.3-1.6 1.7-2.6 2.1.5 3.7 1.8 3.7 3.5 0 2.4-3.6 4.2-8 4.2h-4c-4.4 0-8-1.8-8-4.2z'/%3E%3C/svg%3E");
+  /* Greek column: capital (echinus + abacus) + fluted shaft + base */
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M5.5 4.2h21v2.2H5.5V4.2zm1.5 2.8h18c0 1.1-.5 2-1.3 2.7-.5.4-1.1.8-1.6 1.3H9.9c-.5-.5-1.1-.9-1.6-1.3-.8-.7-1.3-1.6-1.3-2.7zm3.6 5.2h11.8v14.2h-2V14.4h-2.2v11.8h-2.2V14.4h-2.2v11.8H12V14.4H9.8v11.8H7.8V12.2h2.8zM6.2 27.2h19.6v1.6H6.2v-1.6zm1.4 2.2h16.8V31H7.6v-1.6z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M5.5 4.2h21v2.2H5.5V4.2zm1.5 2.8h18c0 1.1-.5 2-1.3 2.7-.5.4-1.1.8-1.6 1.3H9.9c-.5-.5-1.1-.9-1.6-1.3-.8-.7-1.3-1.6-1.3-2.7zm3.6 5.2h11.8v14.2h-2V14.4h-2.2v11.8h-2.2V14.4h-2.2v11.8H12V14.4H9.8v11.8H7.8V12.2h2.8zM6.2 27.2h19.6v1.6H6.2v-1.6zm1.4 2.2h16.8V31H7.6v-1.6z'/%3E%3C/svg%3E");
 }
 
 .sl-markdown-content .kod-fortune-hall > * {
@@ -1740,7 +1745,14 @@ site-title img,
   --kod-hier-accent: #8a5a9a;
 }
 .kod-hier-axis__head {
-  padding: 0.55rem 0.5rem 0.5rem;
+  /* Fixed head band so every axis ladder starts on the same baseline */
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  min-height: 5.35rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 0.55rem 0.5rem 0.55rem;
   text-align: center;
   border-bottom: 1px solid color-mix(in srgb, #f2efe9 8%, #2a2222);
 }
@@ -1750,13 +1762,18 @@ site-title img,
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: #fff8f0;
-  margin: 0 0 0.2rem;
+  margin: 0 0 0.35rem;
+  flex: 0 0 auto;
 }
 .kod-hier-axis__domain {
   margin: 0;
   font-size: 0.78em;
   line-height: 1.35;
   color: var(--kod-silver-dim);
+  flex: 1 1 auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
 }
 .kod-hier-rungs {
   list-style: none;
