@@ -102,7 +102,7 @@ _Why care for a character destined to die?_
 _Why invest in a character the Storyteller will just kill?_
 
 <aside class="kod-counsel" aria-label="Counsel">
-<p>You really do not need to overplay the grim nature — the system does that for you. Most of the time you will be as relieved as your players when a risky plan succeeds. And if you are an ass, your players will be playing against you, not their intended foes in-game.</p>
+<p>You do not need to overplay the grim — the system already does; you’ll usually be as relieved as the players when a risk works; if you act as an adversary, they play against you, not the foes in the game.</p>
 </aside>
 
 In short: **Embrace the Contrast**. Do not shield. Allow creativity. Craft stories that are grim but filled with meaning.
