@@ -21,13 +21,13 @@ description: Welcome to Kodranni — a pre-industrial grim human TTRPG system.
 
 ## Welcome
 
-This Guide provides the concepts, procedures, and context needed to run and play **Kodranni** — an online tabletop role-playing game system built for pre-industrial, purely human campaigns.
+This Guide serves to provide all the necessary insight one could ask for about this **online tabletop role-playing game** system. 
 
-Many concepts are interconnected. The Guide is ordered so that each chapter builds on the previous ones; when something is introduced early and resolved later, links point you forward. Continue with [Dice Mechanics](/dice-mechanics/), then [Human Potential](/human-potential/).
+There are plenty of **concepts** that are explained in detail, with context, examples. The Guide tries to follow an iterative process, though many concepts are interconnected. In these cases, please exercise patience, the Guide does its best to cover all your questions.
 
-**Playing** requires understanding the core concepts. The mechanical load is intentionally light so that immersion is not broken by constant rule-checking.
+**Playing the game** requires the reader to understand these concepts, its design is purposefully light to avoid immersion breaking mechanic overload.
 
-For **Storytellers**, the Guide outlines principles, campaign setup, and common pitfalls — see especially [Campaign Setup](/campaign-setup/) and the advice later in this chapter.
+For prospective **Storytellers**, the Guide outlines the system’s principles and approaches, and offers advice on avoiding common pitfalls — see especially [Campaign Setup](/campaign-setup/) and the advice later in this chapter.
 
 ----------
 
@@ -35,11 +35,11 @@ For **Storytellers**, the Guide outlines principles, campaign setup, and common 
 
 The system supports campaigns with:
 
-1. No magic or supernatural beings  
-2. Pre-industrial setting  
-3. Characters who are ordinary human beings  
+1. No magic or supernatural beings
+2. Pre-Industrial setting
+3. The characters are regular human beings
 
-Whether the campaign is semi-historical or invented fantasy, if those three conditions hold, Kodranni can serve you.
+Whether it's a semi-historical campaign or a fantasy one, if the three conditions apply, the system can be of use.
 
 ----------
 
@@ -50,17 +50,17 @@ Whether the campaign is semi-historical or invented fantasy, if those three cond
 ----------
 
 - **Immersion**: Mechanics are meant to be non-intrusive and intuitive. ***Role-play takes precedence over mechanics***.
-- **The Story of Life**: Characters are **mortal human beings**. Magic, supernatural strength, and similar elements are neither supported nor encouraged. Motivations, struggles, hopes, and dreams form the campaign. **Death** — whether of old age or in battle — **will come**.
-- **Advantage over modifiers**: Context is often **innumerable**; rather than stack modifiers, the table judges who holds **[Advantage or Disadvantage](/dice-mechanics/#advantage-and-disadvantage)** and shifts die tier. A core novelty of the system.
+- **The Story of Life**: Characters are **mortal human beings**. Magic, supernatural strength, and similar elements are neither supported nor encouraged. Their motivations, struggles, hopes and dreams create the basis of your campaign. **Death** - whether of old age or in battle - **will come**. 
+- **Advantage over modifiers**: Taking into account context is managed through the **[Advantage/Disadvantage](/dice-mechanics/#advantage-and-disadvantage)** system where it matters for the mechanics. An alternative approach instead of stacking modifiers.
 
 > _"All we have to decide is what to do with the time that is given us."_ - _Gandalf the Grey_
 
 ----------
 
-- **Player Agency**: The system is permissive. Creativity, desperate attempts, and bold ideas are encouraged. The system will not stand in your way, but **how you handle risk is your responsibility**.
+- **Player Agency**: The system is intentionally designed to be permissive. Creativity, desperate attempts, and bold ideas are encouraged from the players. The system will not stand in your way regardless of your aims, but **how you handle risk stays your responsibility**.
 - **Cooperative Struggle**: Campaigns centre on a **community** — a tribe, village, noble house — which the players must nurture. Actions, honourable or otherwise, shape that community’s future. **If the community is destroyed, the campaign ends.**
-- **Death and Continuity**: A player’s actions can outlive their character. Heroic deeds, wise counsel, and pivotal events may define the community. [**Echoes**](/echoes/) of those actions strengthen and guide future characters. [**Legacies**](/hierarchies/#legacies) and [**Foundation Myths**](/echoes/#foundation-myths) carry the strongest effects across generations.
-- **Automation Support**: Experience-point bookkeeping and a relatively intricate roll system are made playable by **automation**. See [Automation](/automation/) for the table-facing contract, and `docs/plans/automation-architecture.md` for engineering direction. That material will evolve as the product UI is defined.
+- **Death and Continuity**: A player’s actions can outlive their character. Heroic deeds, wise counsel, and pivotal events may define the community. [**Echoes**](/echoes/) of those actions strengthen and guide future characters. [**Legacies**](/hierarchies/#legacies) and [**Foundation Myths**](/echoes/#foundation-myths) carry the accomplishments your earlier deeds.
+- **Automation Support**: The ease-of-use of many of these concepts and more are made possible by **automation**. See [Automation](/automation/) for the capabilities and coverage, and `docs/plans/automation-architecture.md` for engineering direction. That material will evolve as the product UI is defined.
 
 ----------
 
@@ -68,7 +68,7 @@ Whether the campaign is semi-historical or invented fantasy, if those three cond
 
 | Section | What it covers |
 |---------|----------------|
-| [Dice Mechanics](/dice-mechanics/) | When to roll, dice pools, Marks, **Advantage / Disadvantage**, Omen, Tide |
+| [Dice Mechanics](/dice-mechanics/) | When to roll, dice pools, Marks, Advantage/Disadvantage, Omen, Tide |
 | [Human Potential](/human-potential/) | [Foundations](/foundations/), [Skills](/skills/), [Traits](/traits/), [Exertion](/exertion/) |
 | [Harm](/harm/) | Injury, Dying, recovery |
 | [Echoes](/echoes/) | Personal stakes, Fortunes, Foundation Myths |
@@ -87,22 +87,24 @@ This is a key point: without it, campaigns will not work with this system. Kodra
 
 The fun is in challenge and achievement. Odds are **stacked against** the characters, yet the system rewards steps that **remain in the campaign** regardless of what happens to individual characters.
 
-Everyone wants, at times, to be the **Hero** or the main protagonist. Kodranni does not forbid that. It ensures that **when you fall**, you can **continue** without losing the meaning of prior **accomplishments** already built into the campaign.
+The characters are going up against odds that are **stacked against them**, yet every step, the concepts of this system provide them with rewards that **stay within the campaign** regardless of what happens to their characters. 
+
+Sure, in the end, all of us want to be the **Hero**, the **Savior**, or simply put, the main protagonist of the story, and Kodranni does not bar you from trying. It simply ensures that **when you fall**, you’ll be able to **continue** without losing the meaning of prior **accomplishments** - as they are built-into parts of your campaign that survive your fall.
 
 ### Two patterns that ruin the table
 
-**1. Players who churn out characters designed to die** for short-term chaos.  
+**1. Players who churn out characters designed to die** for short-term chaos and fun.  
 _Why care for a character destined to die?_
 
 <aside class="kod-counsel" aria-label="Counsel">
-<p>Fun short-term. Then immersion dies, the player gets bored, and the campaign is a ruin.</p>
+<p>Yup, it's fun short term, but the player will get bored of it, the campaign will get ruined, immersion will be gone, and then it becomes the most boring campaign ruining experience they had ever felt.</p>
 </aside>
 
 **2. Storytellers who punish for the sake of punishment.**  
 _Why invest in a character the Storyteller will just kill?_
 
 <aside class="kod-counsel" aria-label="Counsel">
-<p>Do not overplay the grim. The system already does. Most nights you will be as relieved as the players when a risk pays off. If you play against the players instead of the world, they will play against you.</p>
+<p>You really don't need to overplay the grim nature, the system does it for you, most of the time you'll be as relieved as your players when a risky plan succeeds. And if you're an ass, your players will be playing against you, not their intended foes in-game.</p>
 </aside>
 
 In short: **Embrace the Contrast**. Do not shield. Allow creativity. Craft stories that are grim but filled with meaning.

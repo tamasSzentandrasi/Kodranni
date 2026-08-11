@@ -10,7 +10,7 @@ description: The nine inborn Foundations that shape a character.
 
 ## Foundations
 
-**Foundations** are the **inborn potential** of a character. Barring aging, trauma, or rare Storyteller events, they do not drift session to session. They feed every **dice pool** and shape how quickly Skills improve through [Practice](/skills/#improvement).
+**Foundations** are the **inborn potential** of each character. Barring aging, trauma, or rare Storyteller events, they do not drift session to session. They feed every **dice pool** and shape how quickly Skills improve through [Practice](/skills/#improvement).
 
 There are nine Foundations, grouped by domain:
 
@@ -60,9 +60,9 @@ Values of **0** or **4** are *technically possible* — rarities for extreme cas
 | [Dice pools](/dice-mechanics/#the-makeup-of-the-dice-pool) | Foundation level is always part of pool size (Skills too, except Primitive actions). |
 | [Skills / Practice](/skills/#improvement) | Each Skill has a ruling Foundation. Foundation 3 halves Practice thresholds; Foundation 1 doubles them. |
 | [Exertion](/exertion/) | Maximum pool = **Resolve + Constitution + Charisma**. |
-| [Echo capacity](/echoes/#weight-and-capacity) | Same sum as Exertion maximum. |
+| [Echo capacity](/echoes/#weight-and-capacity) | Maximum pool = **The higher value of(Strength, Dexterity) + Intellect + Authority**. |
 | [Harm](/harm/) | Each Foundation has a paired Harm track; Harm reduces *effective* Foundation. |
-| [Character Creation](/character-creation/) | Start at 1; free points, Birth Omen, and The Wanting all adjust Foundations. |
+| [Character Creation](/character-creation/) | Obviously, Birth Omen, and The Wanting all adjust Foundations. |
 
 <aside class="kod-example">
 <p class="kod-example__scene">Two travellers must cross a rope bridge in a gale. No Craft or Climb Skill applies to this moment — it is balance, grip, and nerve: a Primitive action. Neither has special footing or tools that would shift die tier; only raw Dexterity differs.</p>
