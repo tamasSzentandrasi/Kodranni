@@ -72,7 +72,6 @@ Patronage is the clearest path, not the only one. Public deeds, force, death of 
 Competition and cooperation on the same tier are left to roleplay.
 
 <aside class="kod-example">
-<p class="kod-example__label"></p>
 <p class="kod-example__scene">An Honoured merchant on the Coin ladder charges a player character to recover a mill ledger before the Althing. That charge becomes something the character chooses to carry — an Echo. How it resolves may open a Hierarchy climb; relative standing later colours social Harm protection, not automatic rank from the Echo alone.</p>
 <ol class="kod-example__steps">
 <li><strong>Hook:</strong> Honoured (Coin) charges a player to recover a ledger.</li>
@@ -109,7 +108,6 @@ Workflow (same pattern as [Inventory](/inventory/#management)):
 Dead characters are deleted. Their only remaining presence is through Echoes still carried by the living.
 
 <aside class="kod-counsel" aria-label="Counsel">
-<p class="kod-counsel__label"></p>
 <p>Any Kodranni story follows a larger community, yet it may diverge into solo strands focused on individuals. By design, every player’s story still feeds the shared legend.</p>
 <p><em>A tale is but half told when only one person tells it.</em></p>
 </aside>

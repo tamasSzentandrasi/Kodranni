@@ -16,7 +16,7 @@ This chapter walks the stack in order: **when** to roll → **what** dice mean �
 <div class="kod-lanes">
 <div class="kod-lane kod-lane--player">
 <p class="kod-lane__title">Player</p>
-<p>Describe intent freely. Spend <span class="kod-term" data-tip="Spendable pool for extra dice; also fatigue, hunger, thirst.">Exertion</span> if you push. Read the Marks and the fiction the Storyteller gives back — not a hidden target number.</p>
+<p>Describe intent. Spend <span class="kod-term" data-tip="Spendable pool for extra dice; also fatigue, hunger, thirst.">Exertion</span> if you push. Read Marks as the Storyteller narrates them — not a hidden target number.</p>
 </div>
 <div class="kod-lane kod-lane--st">
 <p class="kod-lane__title">Storyteller</p>
@@ -84,7 +84,6 @@ Players act under incomplete knowledge. The Storyteller scales reward, cost, and
 </div>
 
 <aside class="kod-counsel" aria-label="Counsel">
-<p class="kod-counsel__label"></p>
 <p>Do not pre-assign “3 Marks = success.” Pre-hold <em>possible</em> tiers of outcome if you like, then let the dice pick which tier the night earns. Opposed rolls use the same mindset: the <strong>margin</strong> is how much one will overbore another, not a hit-point subtraction by default.</p>
 </aside>
 
@@ -146,12 +145,10 @@ Pools assemble from three sources:
 **Primitive actions** (run, jump, haul, see, recall, composure, and similar animal-tier acts) use **Foundation only** (+ optional Exertion). No Skill die is added. Primitive rolls grant **no [Practice](/skills/#improvement)**.
 
 <aside class="kod-counsel" aria-label="Counsel">
-<p class="kod-counsel__label"></p>
 <p>Who decides <em>which</em> Foundation and <em>which</em> Skill? <strong>The Storyteller.</strong> Always. The player describes intent freely. The Storyteller picks the best pair. Players may propose a better pair; the Storyteller’s call is final.</p>
 </aside>
 
 <aside class="kod-example" aria-label="Example">
-<p class="kod-example__label"></p>
 <p class="kod-example__scene">Storm weather is an hour off. Eira is a capable shipwright; the work is ordinary for her — recaulking a boat that must hold through the gale. Nothing about the scene especially favours or hinders her, so the Storyteller keeps the ordinary die tier.</p>
 <ol class="kod-example__steps">
 <li><strong>Intent:</strong> Eira recaulks the boat before the storm.</li>
@@ -211,7 +208,6 @@ Hints:
 - Armour, reputation, favours, numbers, and terrain are **context** for Advantage / Disadvantage and for interpreting the margin — not separate subsystems — except where [Harm](/harm/) uses armour **or** Reputation **protection ratios** (not both on the same event; the Storyteller picks the contest type).
 
 <aside class="kod-example" aria-label="Example">
-<p class="kod-example__label"></p>
 <p class="kod-example__scene">The reeve has barred the gate and will not open for strangers after dark. The player character tries to talk past him — not a fight, a contest of will and words. Neither side holds a clear upper hand: the reeve has authority and the wall; the traveller has a plausible errand and a steady voice. Ordinary tier for both.</p>
 <ol class="kod-example__steps">
 <li><strong>Intent:</strong> talk past the reeve who bars the gate.</li>
@@ -223,7 +219,6 @@ Hints:
 </aside>
 
 <aside class="kod-counsel" aria-label="Counsel">
-<p class="kod-counsel__label"></p>
 <p><strong>Focus on the roleplay, not the roll-play.</strong> Dice outcomes should <strong>never</strong> replace conversations, decisions, and planning. Rolls inform the <strong>effect</strong> of an action, never its content.</p>
 </aside>
 
@@ -282,7 +277,6 @@ On **equal footing**:
 Disadvantage lowers thresholds for the disadvantaged side (negative Omens more likely, positive less so). Severe disadvantage (the d6-versus-d12 equivalent) shifts thresholds by **two full levels**. Individual actions still get their own case-by-case Advantage; the macro adjustment applies only to Tide Omen thresholds.
 
 <aside class="kod-example">
-<p class="kod-example__label"></p>
 <p class="kod-example__scene">A small mill-raid: two roughly matched bands meet in the yard. Neither side holds the field yet — equal footing, small-skirmish scale. A player character barks orders to keep the line; a defender answers with threats and a raised spear. Their exchange is one push on the shared Tide, not the whole fight by itself.</p>
 <ol class="kod-example__steps">
 <li><strong>Setup:</strong> small skirmish, equal footing — weights 8 vs 8 → scale 15, start 8. Shift every <strong>2</strong> Marks of difference on Tide-linked rolls.</li>
@@ -299,7 +293,6 @@ Disadvantage lowers thresholds for the disadvantaged side (negative Omens more l
 When the Tide reaches one end, that collective side **routes**. Morale breaks. The group crumbles or flees. Individuals may still stand, refuse, die heroically or foolishly, or take a major personal setback — the Tide breaks **collective** will, not personal agency.
 
 <aside class="kod-counsel" aria-label="Counsel">
-<p class="kod-counsel__label"></p>
 <p>You can do everything in your power; if the rest of your side is butchered, you will still find yourself flanked. Do not grind roll-battles for their own sake. Load Omen faces that matter. Let players leave the Tide when fiction allows (loot, disengage, personal objective).</p>
 </aside>
 

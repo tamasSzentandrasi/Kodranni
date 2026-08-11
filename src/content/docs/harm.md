@@ -56,7 +56,6 @@ Harm arises only when the fiction **and** the dice justify lasting damage.
 Be frugal. Most successful hits produce **0 or 1** point. Two points is notable. Three in a single exchange is rare.
 
 <aside class="kod-example">
-<p class="kod-example__label"></p>
 <p class="kod-example__scene">A spear finds a gap in light mail. The margin of the opposed exchange is real, but armour blunts lasting injury. The Storyteller reads a bleeding wound that steals fine control — not a social humiliation in the same blow.</p>
 <ol class="kod-example__steps">
 <li><strong>Opposed margin:</strong> 3 Marks.</li>
@@ -83,7 +82,6 @@ This window allows final actions, last words, or desperate stabilisation. Stabil
 After death: remove the character from the [Hierarchy Diagram](/hierarchies/#the-hierarchy-diagram). Continuity continues through [Echoes](/echoes/) and [Legacies](/hierarchies/#legacies). Play does not stop mid-session for full character replacement.
 
 <aside class="kod-example">
-<p class="kod-example__label"></p>
 <p class="kod-example__scene">Fever has taken hold; the track hits three. The character is Dying — still able to act, but every effort spends what little strength remains. A companion works with Resolve and Healing to pull them back from the edge. Life returns; the fever track does not instantly clear, and a lasting Trait often stays.</p>
 <ol class="kod-example__steps">
 <li><strong>Fever track</strong> reaches 3 → character is <strong>Dying</strong>.</li>
@@ -125,7 +123,6 @@ Ordinary faces **7** and **13** remain available for the same purpose at the Sto
 ----------
 
 <aside class="kod-note" aria-label="Note">
-<p class="kod-note__label"></p>
 <p><em>Don’t worry. I’ll kill you eventually.</em></p>
 </aside>
 

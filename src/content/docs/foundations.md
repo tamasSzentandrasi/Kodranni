@@ -14,16 +14,31 @@ description: The nine inborn Foundations that shape a character.
 
 There are nine Foundations, grouped by domain:
 
-<div class="kod-card-grid">
-<div class="kod-card"><p class="kod-card__domain">Physical</p><strong>Strength</strong><p>Raw power, lifting, striking force, physical dominance</p></div>
-<div class="kod-card"><p class="kod-card__domain">Physical</p><strong>Dexterity</strong><p>Speed, precision, balance, fine motor control</p></div>
-<div class="kod-card"><p class="kod-card__domain">Physical</p><strong>Constitution</strong><p>Endurance, hardiness, resistance to fatigue and hardship</p></div>
-<div class="kod-card"><p class="kod-card__domain">Mental</p><strong>Intellect</strong><p>Reasoning, learning, memory, problem-solving</p></div>
-<div class="kod-card"><p class="kod-card__domain">Mental</p><strong>Perception</strong><p>Awareness, observation, noticing the hidden or out-of-place</p></div>
-<div class="kod-card"><p class="kod-card__domain">Mental</p><strong>Resolve</strong><p>Willpower, mental fortitude, capacity to keep going</p></div>
-<div class="kod-card"><p class="kod-card__domain">Social</p><strong>Charisma</strong><p>Presence, force of personality, the ability to draw others</p></div>
-<div class="kod-card"><p class="kod-card__domain">Social</p><strong>Guile</strong><p>Cunning, misdirection, deception</p></div>
-<div class="kod-card"><p class="kod-card__domain">Social</p><strong>Authority</strong><p>Natural command, gravitas</p></div>
+<div class="kod-domain-stack">
+<div class="kod-domain-lane kod-domain-lane--physical">
+<p class="kod-domain-lane__label">Physical</p>
+<div class="kod-domain-lane__bricks">
+<div class="kod-brick"><strong>Strength</strong><p>Raw power, lifting, striking force, physical dominance</p></div>
+<div class="kod-brick"><strong>Dexterity</strong><p>Speed, precision, balance, fine motor control</p></div>
+<div class="kod-brick"><strong>Constitution</strong><p>Endurance, hardiness, resistance to fatigue and hardship</p></div>
+</div>
+</div>
+<div class="kod-domain-lane kod-domain-lane--mental">
+<p class="kod-domain-lane__label">Mental</p>
+<div class="kod-domain-lane__bricks">
+<div class="kod-brick"><strong>Intellect</strong><p>Reasoning, learning, memory, problem-solving</p></div>
+<div class="kod-brick"><strong>Perception</strong><p>Awareness, observation, noticing the hidden or out-of-place</p></div>
+<div class="kod-brick"><strong>Resolve</strong><p>Willpower, mental fortitude, capacity to keep going</p></div>
+</div>
+</div>
+<div class="kod-domain-lane kod-domain-lane--social">
+<p class="kod-domain-lane__label">Social</p>
+<div class="kod-domain-lane__bricks">
+<div class="kod-brick"><strong>Charisma</strong><p>Presence, force of personality, the ability to draw others</p></div>
+<div class="kod-brick"><strong>Guile</strong><p>Cunning, misdirection, deception</p></div>
+<div class="kod-brick"><strong>Authority</strong><p>Natural command, gravitas</p></div>
+</div>
+</div>
 </div>
 
 Each Foundation is rated on a narrow scale:
@@ -50,7 +65,6 @@ Values of **0** or **4** are *technically possible* — rarities for extreme cas
 | [Character Creation](/character-creation/) | Start at 1; free points, Birth Omen, and The Wanting all adjust Foundations. |
 
 <aside class="kod-example">
-<p class="kod-example__label"></p>
 <p class="kod-example__scene">Two travellers must cross a rope bridge in a gale. No Craft or Climb Skill applies to this moment — it is balance, grip, and nerve: a Primitive action. Neither has special footing or tools that would shift die tier; only raw Dexterity differs.</p>
 <ol class="kod-example__steps">
 <li><strong>Intent:</strong> cross a rope bridge in a gale (no Skill applies).</li>

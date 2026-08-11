@@ -136,16 +136,19 @@ const fontFacesCss = `
 		});
 	}
 
-	/** Ensure asides have accessible names; labels are icon-only in CSS */
+	/** Ensure asides have accessible names; icons are CSS ::before on the aside */
 	function normalizeBoxes() {
 		document.querySelectorAll('aside.kod-example').forEach((el) => {
 			if (!el.getAttribute('aria-label')) el.setAttribute('aria-label', 'Example');
+			el.querySelectorAll('.kod-example__label').forEach((n) => n.remove());
 		});
 		document.querySelectorAll('aside.kod-note').forEach((el) => {
 			if (!el.getAttribute('aria-label')) el.setAttribute('aria-label', 'Note');
+			el.querySelectorAll('.kod-note__label').forEach((n) => n.remove());
 		});
 		document.querySelectorAll('aside.kod-counsel').forEach((el) => {
 			if (!el.getAttribute('aria-label')) el.setAttribute('aria-label', 'Counsel');
+			el.querySelectorAll('.kod-counsel__label').forEach((n) => n.remove());
 		});
 	}
 
@@ -264,6 +267,26 @@ const fontFacesCss = `
 		main.appendChild(strip);
 	}
 
+	/** Equalize heights of grid children that should match (lanes, brick rows) */
+	function equalizeHeights(selector, childSelector) {
+		document.querySelectorAll(selector).forEach((parent) => {
+			const kids = [...parent.querySelectorAll(childSelector)];
+			if (kids.length < 2) return;
+			kids.forEach((k) => {
+				k.style.minHeight = '';
+			});
+			const max = Math.max(...kids.map((k) => k.getBoundingClientRect().height));
+			if (max > 0) kids.forEach((k) => {
+				k.style.minHeight = max + 'px';
+			});
+		});
+	}
+
+	function layoutEqualizers() {
+		equalizeHeights('.kod-lanes', ':scope > .kod-lane');
+		equalizeHeights('.kod-domain-lane__bricks', ':scope > .kod-brick');
+	}
+
 	function enhance() {
 		injectSidebarIcons();
 		decorateDividers();
@@ -273,7 +296,20 @@ const fontFacesCss = `
 		setupTierDial();
 		setupScrollReveal();
 		setupTableStrip();
+		// after layout
+		requestAnimationFrame(() => {
+			layoutEqualizers();
+			requestAnimationFrame(layoutEqualizers);
+		});
 	}
+
+	window.addEventListener('resize', () => {
+		// clear then remeasure
+		document.querySelectorAll('.kod-lane, .kod-brick').forEach((el) => {
+			el.style.minHeight = '';
+		});
+		requestAnimationFrame(layoutEqualizers);
+	});
 
 	if (document.readyState === 'loading') {
 		document.addEventListener('DOMContentLoaded', enhance);

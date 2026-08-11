@@ -24,12 +24,10 @@ Examples:
 Traits are **not rated**. They either apply or they do not. The Storyteller decides applicability from the player’s description of intent, exactly as with [Foundations](/foundations/) and [Skills](/skills/).
 
 <aside class="kod-counsel" aria-label="Counsel">
-<p class="kod-counsel__label"></p>
 <p>Traits exist to colour the character and to short-circuit unnecessary rolls. They are not a second skill system.</p>
 </aside>
 
 <aside class="kod-example">
-<p class="kod-example__label"></p>
 <p class="kod-example__scene">A character with “Speaks Latin” is handed a charter at the table. Reading it is ordinary for them — the Trait is permission, not a Skill. Later they try to forge a matching hand: knowing the language helps the fiction, but forgery is still craft and cunning.</p>
 <ol class="kod-example__steps">
 <li><strong>Trait:</strong> Speaks Latin.</li>

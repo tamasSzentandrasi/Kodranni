@@ -55,7 +55,6 @@ These thresholds are modified by the Skill’s ruling **Foundation**:
 High inborn potential accelerates learning. Low potential slows it. Automation handles accumulation and level-ups. Players never see raw Practice numbers unless they ask.
 
 <aside class="kod-counsel" aria-label="Counsel">
-<p class="kod-counsel__label"></p>
 <p>Struggle teaches. Effort is taken into account. Doing something ad infinitum without hardship counts for naught.</p>
 </aside>
 
@@ -88,7 +87,6 @@ Same five-skill pool, but only:
 Fiction still decides *why* rust set in; automation only applies the prompted procedure.
 
 <aside class="kod-example">
-<p class="kod-example__label"></p>
 <p class="kod-example__scene">A thief works a lock under pressure, fails more often than they Mark, and still learns from the fumble. Later they push with Exertion and land clean Marks. Months of downtime later, the Storyteller asks automation whether rust has set in on neglected Skills.</p>
 <ol class="kod-example__steps">
 <li><strong>Unopposed Lockpicking:</strong> more failures than Marks, no Exertion → <strong>+2 Practice</strong>.</li>
@@ -105,14 +103,11 @@ Twelve Skills each. Open a stained-glass panel — one open at a time.
 
 <div class="kod-archetypes">
 
-<details class="kod-archetype" id="warrior-12">
+<details class="kod-archetype kod-archetype--warrior" id="warrior-12">
 <summary class="kod-archetype__summary">
-<span class="kod-archetype__glass" data-glyph="ᛏ" aria-hidden="true"><img src="/archetypes/warrior.jpg" alt="" width="128" height="128" loading="lazy" decoding="async" /></span>
-<span>
-<p class="kod-archetype__name">Warrior</p>
-<p class="kod-archetype__tag">Steel and will under threat</p>
-</span>
-<span class="kod-archetype__chevron" aria-hidden="true">▸</span>
+<img class="kod-archetype__panel" src="/archetypes/warrior.jpg" alt="" width="256" height="256" loading="lazy" decoding="async" />
+<span class="kod-archetype__name">Warrior</span>
+<span class="kod-archetype__tag">Steel and will under threat</span>
 </summary>
 <div class="kod-archetype__body">
 <p>Steel and will under threat. The Warrior is the hand that holds the line when the yard is full of enemies, the voice that orders retreat before the line breaks, the eye that sees the opening in a shield-wall. These Skills belong to violence and its discipline — not to cruelty for its own sake, but to the craft of not dying first when dying is near.</p>
@@ -133,14 +128,11 @@ Twelve Skills each. Open a stained-glass panel — one open at a time.
 </div>
 </details>
 
-<details class="kod-archetype" id="wayfarer-12">
+<details class="kod-archetype kod-archetype--wayfarer" id="wayfarer-12">
 <summary class="kod-archetype__summary">
-<span class="kod-archetype__glass" data-glyph="ᚱ" aria-hidden="true"><img src="/archetypes/wayfarer.jpg" alt="" width="128" height="128" loading="lazy" decoding="async" /></span>
-<span>
-<p class="kod-archetype__name">Wayfarer</p>
-<p class="kod-archetype__tag">Road, river, ridge, and the dark between fires</p>
-</span>
-<span class="kod-archetype__chevron" aria-hidden="true">▸</span>
+<img class="kod-archetype__panel" src="/archetypes/wayfarer.jpg" alt="" width="256" height="256" loading="lazy" decoding="async" />
+<span class="kod-archetype__name">Wayfarer</span>
+<span class="kod-archetype__tag">Road, river, ridge, and the dark between fires</span>
 </summary>
 <div class="kod-archetype__body">
 <p>Road, river, ridge, and the long dark between fires. The Wayfarer is whoever must read the land before the land kills them — scout, hunter, guide, sailor, rider. These Skills keep a body moving through weather and wilderness, and bring news home when the path is not safe.</p>
@@ -161,14 +153,11 @@ Twelve Skills each. Open a stained-glass panel — one open at a time.
 </div>
 </details>
 
-<details class="kod-archetype" id="artisan-12">
+<details class="kod-archetype kod-archetype--artisan" id="artisan-12">
 <summary class="kod-archetype__summary">
-<span class="kod-archetype__glass" data-glyph="ᚲ" aria-hidden="true"><img src="/archetypes/artisan.jpg" alt="" width="128" height="128" loading="lazy" decoding="async" /></span>
-<span>
-<p class="kod-archetype__name">Artisan</p>
-<p class="kod-archetype__tag">Hammer, loom, keel, and kiln</p>
-</span>
-<span class="kod-archetype__chevron" aria-hidden="true">▸</span>
+<img class="kod-archetype__panel" src="/archetypes/artisan.jpg" alt="" width="256" height="256" loading="lazy" decoding="async" />
+<span class="kod-archetype__name">Artisan</span>
+<span class="kod-archetype__tag">Hammer, loom, keel, and kiln</span>
 </summary>
 <div class="kod-archetype__body">
 <p>Hammer, loom, keel, and kiln. The Artisan is the one who leaves the world more shaped than they found it — hull tight against the gale, blade true, wall standing, brew that will keep through winter. These Skills are the patient violence of making, and the pride of work that outlives the worker.</p>
@@ -189,14 +178,11 @@ Twelve Skills each. Open a stained-glass panel — one open at a time.
 </div>
 </details>
 
-<details class="kod-archetype" id="mother-12">
+<details class="kod-archetype kod-archetype--mother" id="mother-12">
 <summary class="kod-archetype__summary">
-<span class="kod-archetype__glass" data-glyph="ᛒ" aria-hidden="true"><img src="/archetypes/mother.jpg" alt="" width="128" height="128" loading="lazy" decoding="async" /></span>
-<span>
-<p class="kod-archetype__name">Mother</p>
-<p class="kod-archetype__tag">Hearth, body, kin, obligation</p>
-</span>
-<span class="kod-archetype__chevron" aria-hidden="true">▸</span>
+<img class="kod-archetype__panel" src="/archetypes/mother.jpg" alt="" width="256" height="256" loading="lazy" decoding="async" />
+<span class="kod-archetype__name">Mother</span>
+<span class="kod-archetype__tag">Hearth, body, kin, obligation</span>
 </summary>
 <div class="kod-archetype__body">
 <p>Hearth, body, kin, and the soft iron of obligation. The Mother is not a gender and not only a parent — it is whoever holds the house together when the field fails, who midwifes, feeds, heals, comforts, and binds people with duty and love. These Skills keep the living among the living.</p>
@@ -217,14 +203,11 @@ Twelve Skills each. Open a stained-glass panel — one open at a time.
 </div>
 </details>
 
-<details class="kod-archetype" id="sage-12">
+<details class="kod-archetype kod-archetype--sage" id="sage-12">
 <summary class="kod-archetype__summary">
-<span class="kod-archetype__glass" data-glyph="ᚨ" aria-hidden="true"><img src="/archetypes/sage.jpg" alt="" width="128" height="128" loading="lazy" decoding="async" /></span>
-<span>
-<p class="kod-archetype__name">Sage</p>
-<p class="kod-archetype__tag">Memory, counsel, and the long view</p>
-</span>
-<span class="kod-archetype__chevron" aria-hidden="true">▸</span>
+<img class="kod-archetype__panel" src="/archetypes/sage.jpg" alt="" width="256" height="256" loading="lazy" decoding="async" />
+<span class="kod-archetype__name">Sage</span>
+<span class="kod-archetype__tag">Memory, counsel, and the long view</span>
 </summary>
 <div class="kod-archetype__body">
 <p>Memory, counsel, and the long view. The Sage keeps what the village would otherwise forget — numbers, names, maps, rites, the shape of a bargain, the weight of a sermon. These Skills turn chaos into record and argument into path, when force alone cannot hold the community.</p>
@@ -245,14 +228,11 @@ Twelve Skills each. Open a stained-glass panel — one open at a time.
 </div>
 </details>
 
-<details class="kod-archetype" id="trickster-12">
+<details class="kod-archetype kod-archetype--trickster" id="trickster-12">
 <summary class="kod-archetype__summary">
-<span class="kod-archetype__glass" data-glyph="ᚦ" aria-hidden="true"><img src="/archetypes/trickster.jpg" alt="" width="128" height="128" loading="lazy" decoding="async" /></span>
-<span>
-<p class="kod-archetype__name">Trickster</p>
-<p class="kod-archetype__tag">Mask, shadow, and the unlocked door</p>
-</span>
-<span class="kod-archetype__chevron" aria-hidden="true">▸</span>
+<img class="kod-archetype__panel" src="/archetypes/trickster.jpg" alt="" width="256" height="256" loading="lazy" decoding="async" />
+<span class="kod-archetype__name">Trickster</span>
+<span class="kod-archetype__tag">Mask, shadow, and the unlocked door</span>
 </summary>
 <div class="kod-archetype__body">
 <p>Mask, shadow, and the door that should have stayed locked. The Trickster is cunning made practice — not always a thief by trade, but always someone who moves where honest eyes are not looking. These Skills open what is closed, hide what is wanted, and turn words into weapons when steel would be too loud.</p>

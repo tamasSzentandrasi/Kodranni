@@ -147,7 +147,6 @@ Lock the following before the character enters the record:
 Only then is the character written into the campaign record (via [automation](/automation/) when available).
 
 <aside class="kod-example">
-<p class="kod-example__label"></p>
 <p class="kod-example__scene">Mara is the target. Cal speaks: “I see a hard bargainer.” A seconder agrees. Mara and the Storyteller accept. Two different people are changed by that acceptance — and not the same way.</p>
 <ol class="kod-example__steps">
 <li><strong>Claim accepted</strong> about Mara: “I see a hard bargainer.”</li>
@@ -158,14 +157,12 @@ Only then is the character written into the campaign record (via [automation](/a
 </aside>
 
 <aside class="kod-counsel" aria-label="Counsel">
-<p class="kod-counsel__label"></p>
 <p>You can troll The Weighing if you want. You will gain nothing from it, and you will kick yourself later for not participating when others are spending the Words they earned by speaking.</p>
 </aside>
 
 ----------
 
 <aside class="kod-counsel" aria-label="Counsel">
-<p class="kod-counsel__label"></p>
 <p><em>What the circle has weighed, let no one lightly set aside.</em><br />
 <em>What was bargained in the open, the world will collect in its time.</em></p>
 </aside>

@@ -30,12 +30,10 @@ The **player** elevates a moment into an Echo. The Storyteller may veto only for
 | **No Echoes at all** (**Decadence**) | **–1** die on **every** roll |
 
 <aside class="kod-counsel" aria-label="Counsel">
-<p class="kod-counsel__label"></p>
 <p>The load is not abstract. Too many burdens crack a person. None at all leaves them hollow.</p>
 </aside>
 
 <aside class="kod-example">
-<p class="kod-example__label"></p>
 <p class="kod-example__scene">A character whose Resolve, Constitution, and Charisma sum to six can carry that much Echo weight. Carry nothing and the hollow of Decadence taxes every action. Fill the load carefully; past capacity, only rolls that touch those burdens suffer.</p>
 <ol class="kod-example__steps">
 <li><strong>Capacity:</strong> Resolve + Constitution + Charisma = 6.</li>
@@ -50,7 +48,6 @@ The **player** elevates a moment into an Echo. The Storyteller may veto only for
 When a roll’s context matches one of the character’s Echoes, the player may spend **one extra [Exertion](/exertion/) die** beyond the normal limit of one. See [dice pool makeup](/dice-mechanics/#the-makeup-of-the-dice-pool).
 
 <aside class="kod-example">
-<p class="kod-example__label"></p>
 <p class="kod-example__scene">Raiders press the spring the character swore to hold. The Echo matches the hour. They may pour more of themselves into the roll than Exertion normally allows — will and stake together.</p>
 <ol class="kod-example__steps">
 <li><strong>Echo matches the scene:</strong> “Hold the spring against the upper tribe.”</li>

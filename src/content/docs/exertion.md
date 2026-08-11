@@ -24,7 +24,6 @@ It is **primarily player-controlled**: when to push, when to rest, and where to 
 - [Dying](/harm/#dying) characters must spend Exertion on **every** roll; death follows when the pool hits zero while Dying.
 
 <aside class="kod-example">
-<p class="kod-example__label"></p>
 <p class="kod-example__scene">The cart is stuck at a stony ford. The player decides this is worth the cost of effort: they dig deep, spend Exertion, and throw an extra die with Strength and Animal Handling. No special Advantage — just more of themselves in the pool.</p>
 <ol class="kod-example__steps">
 <li><strong>Pool before:</strong> 2 / 6.</li>
@@ -55,7 +54,6 @@ Suggested awards:
 When the pool reaches **zero**, the character suffers a standing **–2** to the size of every dice pool. This penalty never reduces a pool below **1** die. The character can still act; every action simply costs more than it should until they recover.
 
 <aside class="kod-counsel" aria-label="Counsel">
-<p class="kod-counsel__label"></p>
 <p>Empty Exertion is not unconsciousness. It is the point at which every action costs more than it should. Characters who continue to push while empty are living on nerve and stubbornness alone.</p>
 </aside>
 
