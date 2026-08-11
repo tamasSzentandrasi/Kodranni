@@ -95,14 +95,14 @@ Everyone wants, at times, to be the **hero** or the main protagonist. Kodranni d
 _Why care for a character destined to die?_
 
 <aside class="kod-counsel" aria-label="Counsel">
-<p>Fun short-term. Then immersion dies, the player gets bored, and the campaign is a ruin.</p>
+<p>Yup, it is fun short-term — but the player will get bored of it, immersion will go, the campaign will be ruined, and it becomes the most boring campaign-ruining experience they have ever sat through.</p>
 </aside>
 
 **2. Storytellers who punish for the sake of punishment.**  
 _Why invest in a character the Storyteller will just kill?_
 
 <aside class="kod-counsel" aria-label="Counsel">
-<p>Do not overplay the grim. The system already does. Most nights you will be as relieved as the players when a risk pays off. If you play against the players instead of the world, they will play against you.</p>
+<p>You really do not need to overplay the grim nature — the system does that for you. Most of the time you will be as relieved as your players when a risky plan succeeds. And if you are an ass, your players will be playing against you, not their intended foes in-game.</p>
 </aside>
 
 In short: **Embrace the Contrast**. Do not shield. Allow creativity. Craft stories that are grim but filled with meaning.
