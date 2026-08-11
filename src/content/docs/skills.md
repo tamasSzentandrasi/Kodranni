@@ -87,10 +87,10 @@ Same five-skill pool, but only:
 Fiction still decides *why* rust set in; automation only applies the prompted procedure.
 
 <aside class="kod-example">
-<p class="kod-example__scene">Under a closed gate after dark, Eira works a lock. First pass: more failures than Marks, no Exertion. Later she spends Exertion and lands four Marks. After a long downtime, the Storyteller prompts automation for a short time leap on neglected Skills.</p>
+<p class="kod-example__scene">Odd needs a storehouse key the reeve will not give. After dark he works the lock on the side door. First attempt is messy. Later the same night he pushes with Exertion and lands clean Marks. Months later, after a quiet winter, the Storyteller prompts automation for a short time leap on neglected Skills.</p>
 <ol class="kod-example__steps">
 <li><strong>Unopposed Lockpicking:</strong> more failures than Marks, no Exertion → <strong>+2 Practice</strong>.</li>
-<li><strong>Same Skill, later:</strong> Exertion spent, 4 Marks → <strong>+2 Practice</strong> (floor of 4÷2).</li>
+<li><strong>Same Skill, later that night:</strong> Exertion spent, 4 Marks → <strong>+2 Practice</strong> (floor of 4÷2).</li>
 <li><strong>Short time leap (ST prompts):</strong> take the five Skills with lowest progress; Omen 0–9 → degrade none; Omen 10–20 → degrade one of those five at random.</li>
 </ol>
 </aside>

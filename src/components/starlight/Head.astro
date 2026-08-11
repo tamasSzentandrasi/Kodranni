@@ -255,6 +255,32 @@ const fontFacesCss = `
 		});
 	}
 
+	/** Generic tab panels: buttons [data-tab], panels [data-panel-id] in the same widget */
+	function setupContentTabs() {
+		document.querySelectorAll('[data-widget="content-tabs"]').forEach((root) => {
+			if (root.dataset.ready) return;
+			root.dataset.ready = '1';
+			const buttons = [...root.querySelectorAll('[data-tab]')];
+			const panels = [...root.querySelectorAll('[data-panel-id]')];
+			if (!buttons.length || !panels.length) return;
+			function set(id) {
+				buttons.forEach((b) =>
+					b.setAttribute('aria-pressed', b.dataset.tab === id ? 'true' : 'false'),
+				);
+				panels.forEach((p) => {
+					const show = p.getAttribute('data-panel-id') === id;
+					if (show) p.removeAttribute('hidden');
+					else p.setAttribute('hidden', '');
+				});
+			}
+			buttons.forEach((b) => b.addEventListener('click', () => set(b.dataset.tab)));
+			const initial =
+				buttons.find((b) => b.getAttribute('aria-pressed') === 'true')?.dataset.tab ||
+				buttons[0].dataset.tab;
+			set(initial);
+		});
+	}
+
 	function setupScrollReveal() {
 		const root = document.querySelector('.sl-markdown-content');
 		if (!root) return;
@@ -335,6 +361,7 @@ const fontFacesCss = `
 	function layoutEqualizers() {
 		equalizeHeights('.kod-lanes', ':scope > .kod-lane');
 		equalizeHeights('.kod-domain-lane__bricks', ':scope > .kod-brick');
+		equalizeHeights('.kod-seed-grid', ':scope > .kod-seed');
 	}
 
 	function enhance() {
@@ -344,6 +371,7 @@ const fontFacesCss = `
 		setupArchetypeFocus();
 		setupMarksLadder();
 		setupTierDial();
+		setupContentTabs();
 		setupScrollReveal();
 		setupTableStrip();
 		// after layout + fonts
@@ -357,7 +385,7 @@ const fontFacesCss = `
 	}
 
 	window.addEventListener('resize', () => {
-		document.querySelectorAll('.kod-lane, .kod-brick').forEach((el) => {
+		document.querySelectorAll('.kod-lane, .kod-brick, .kod-seed').forEach((el) => {
 			el.style.minHeight = '';
 			el.style.height = '';
 		});

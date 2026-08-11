@@ -33,15 +33,15 @@ During [Campaign Setup](/campaign-setup/), leave axes empty of names; standing i
 
 Each Hierarchy uses the same four steps:
 
-| Tier | Meaning |
-|------|---------|
-| **Outcast** | No standing. Starting position for community members and for Outsiders who enter. |
-| **Acknowledged** | Known and tolerated. Has a foothold. |
-| **Trusted** | Relied upon. Real responsibility or favour. |
-| **Honoured** | Significant voice and weight. |
+<div class="kod-tier-ladder not-content">
+<div class="kod-tier"><strong>Outcast</strong> No standing. Default start.</div>
+<div class="kod-tier"><strong>Acknowledged</strong> Known and tolerated. A foothold.</div>
+<div class="kod-tier"><strong>Trusted</strong> Relied upon. Real responsibility.</div>
+<div class="kod-tier"><strong>Honoured</strong> Significant voice and weight.</div>
+<div class="kod-tier kod-tier--ruler"><strong>Ruler</strong> One seat above every Hierarchy. Only one person holds it.</div>
+</div>
 
-Above every Hierarchy sits a single shared seat: the **Ruler**.  
-Only one individual holds the Ruler position at a time, regardless of which Hierarchy they rose through.
+Only one individual holds the **Ruler** position at a time, regardless of which Hierarchy they rose through.
 
 Characters who never belonged to the community are **Outsiders**. They sit apart on the Diagram until they enter, then begin as Outcasts.
 
@@ -72,12 +72,12 @@ Patronage is the clearest path, not the only one. Public deeds, force, death of 
 Competition and cooperation on the same tier are left to roleplay.
 
 <aside class="kod-example">
-<p class="kod-example__scene">An Honoured merchant (Coin) charges a player to recover a mill ledger before the Althing. The player takes it as an Echo. Resolution may open a climb; the Echo alone does not grant rank. Relative standing later colours social Harm protection.</p>
+<p class="kod-example__scene">Before the Althing, the Honoured merchant on Coin — the woman who still holds the only sound mill accounts — pulls a player aside in the yard. The ledger that proves her claim on the mill shares was stolen last week. She names them before witnesses: bring it back before the assembly sits, and she will speak for them. That charge becomes something the character chooses to carry — an Echo. Completing it well may open a climb on Coin. The Echo alone does not grant rank. Later, if someone tries to shame them in public, relative standing on the relevant Hierarchy colours social Harm protection — not automatic power from the favour itself.</p>
 <ol class="kod-example__steps">
-<li><strong>Hook:</strong> Honoured (Coin) charges recovery of the ledger.</li>
-<li><strong>Echo:</strong> “Return the mill ledger before the Althing” (weight set at the table).</li>
-<li><strong>Resolves well:</strong> ST may approve a climb (e.g. Outcast → Acknowledged on Coin).</li>
-<li><strong>Social Harm later:</strong> relative tier gap is set in play, then used as the protection ratio.</li>
+<li><strong>Hook:</strong> Honoured (Coin) publicly charges recovery of the mill ledger before the Althing.</li>
+<li><strong>Echo created:</strong> “Return the mill ledger before the Althing” (weight set at the table).</li>
+<li><strong>If it resolves well:</strong> Storyteller may approve a Hierarchy climb (e.g. Outcast → Acknowledged on Coin).</li>
+<li><strong>Reputation for social Harm:</strong> relative tier gap is established in play, then used as the protection ratio when social or mental Harm is applied.</li>
 </ol>
 </aside>
 

@@ -147,13 +147,13 @@ Pools assemble from three sources:
 </aside>
 
 <aside class="kod-example" aria-label="Example">
-<p class="kod-example__scene">A gale is an hour off. Eira is a capable shipwright. She recaulks a boat that must hold through the storm. Ordinary work for her; nothing about the scene shifts the tier.</p>
+<p class="kod-example__scene">The roof of the grain store is leaking into the seed barley. Tomas is a capable carpenter. He has dry planks and pitch; the weather is fair; nothing special about the job. Ordinary tier.</p>
 <ol class="kod-example__steps">
-<li><strong>Intent:</strong> recaulk the boat before the storm.</li>
-<li><strong>Storyteller names:</strong> Strength + Shipwright, <strong>d8</strong>.</li>
+<li><strong>Intent:</strong> patch the store roof before the next rain.</li>
+<li><strong>Storyteller names:</strong> Strength + Carpentry &amp; Masonry, <strong>d8</strong>.</li>
 <li><strong>Pool:</strong> Foundation 2 + Skill 2 = <strong>4d8</strong> (+ Omen d20).</li>
-<li><strong>Result:</strong> 2 Marks — the hull holds for the season, not a masterwork under time pressure.</li>
-<li><strong>Practice:</strong> only if she spent <a href="/exertion/">Exertion</a> (see <a href="/skills/#improvement">Skills</a>).</li>
+<li><strong>Result:</strong> 2 Marks — the leak is stopped for the season; not fine work, not a rebuild.</li>
+<li><strong>Practice:</strong> only if he spent <a href="/exertion/">Exertion</a> (see <a href="/skills/#improvement">Skills</a>).</li>
 </ol>
 </aside>
 
@@ -206,13 +206,13 @@ Hints:
 - Armour, reputation, favours, numbers, and terrain are **context** for Advantage / Disadvantage and for interpreting the margin — not separate subsystems — except where [Harm](/harm/) uses armour **or** Reputation **protection ratios** (not both on the same event; the Storyteller picks the contest type).
 
 <aside class="kod-example" aria-label="Example">
-<p class="kod-example__scene">The reeve has barred the gate after dark. A traveller needs through — not a fight, a contest of will and words. Neither side holds clear Advantage: the reeve has authority and the wall; the traveller has a plausible errand and a steady voice. Ordinary tier for both.</p>
+<p class="kod-example__scene">After dark, the reeve has barred the gate. A traveller must get a sick child to the healer inside the walls. Not a fight — will and words. The reeve has the wall and his office; the traveller has a clear errand and a steady voice. Neither side holds clear Advantage. Ordinary tier for both.</p>
 <ol class="kod-example__steps">
-<li><strong>Intent:</strong> talk past the reeve.</li>
+<li><strong>Intent:</strong> persuade the reeve to open the gate.</li>
 <li><strong>Player:</strong> Charisma + Negotiation, <strong>d8</strong> → 3 Marks.</li>
 <li><strong>Reply (reeve):</strong> Resolve + Insight, <strong>d8</strong> → 1 Mark. (Pairs need not match.)</li>
 <li><strong>Margin:</strong> 3 − 1 = <strong>2</strong> for the player.</li>
-<li><strong>Outcome:</strong> the gate opens; the reeve is persuaded, not broken. <a href="/harm/">Harm</a> only if lasting damage to standing or body is later ruled.</li>
+<li><strong>Outcome:</strong> the gate opens; the reeve is convinced, not humiliated. <a href="/harm/">Harm</a> only if the Storyteller later rules lasting damage to standing or body.</li>
 </ol>
 </aside>
 
@@ -275,14 +275,14 @@ On **equal footing**:
 Disadvantage lowers thresholds for the disadvantaged side (negative Omens more likely, positive less so). Severe disadvantage (the d6-versus-d12 equivalent) shifts thresholds by **two full levels**. Individual actions still get their own case-by-case Advantage; the macro adjustment applies only to Tide Omen thresholds.
 
 <aside class="kod-example">
-<p class="kod-example__scene">A mill-raid in the yard: two roughly matched bands. Equal footing, small-skirmish scale. One push on the shared Tide is not the whole fight.</p>
+<p class="kod-example__scene">Raiders hit the mill yard at dusk. Two roughly matched bands — the mill households and the raiders. Equal footing, small-skirmish scale. One exchange is only a push on the shared Tide, not the whole fight.</p>
 <ol class="kod-example__steps">
-<li><strong>Setup:</strong> weights 8 vs 8 → scale 15, start 8. Shift every <strong>2</strong> Marks of difference.</li>
-<li><strong>Player:</strong> Authority + Command, d8 → 4 Marks.</li>
-<li><strong>Reply:</strong> Resolve + Intimidate, d8 → 1 Mark.</li>
+<li><strong>Setup:</strong> weights 8 vs 8 → scale 15, start 8. Shift every <strong>2</strong> Marks of difference on Tide-linked rolls.</li>
+<li><strong>Player:</strong> barks the line into place — Authority + Command, d8 → 4 Marks.</li>
+<li><strong>Reply (raider):</strong> tries to break their nerve — Resolve + Intimidate, d8 → 1 Mark.</li>
 <li><strong>Tide:</strong> difference 3 → floor(3÷2) = <strong>1</strong> step toward the players. Position 8 → 9.</li>
-<li><strong>Later:</strong> Omen 20 on a Tide-linked roll moves it again (equal-footing small-skirmish band).</li>
-<li><strong>End of scale:</strong> that <em>side</em> routes. Individuals may still stand.</li>
+<li><strong>Later:</strong> Omen 20 on a Tide-linked roll moves the Tide again (equal-footing small-skirmish band).</li>
+<li><strong>End of scale:</strong> that <em>side</em> routes as a group. Individuals may still stand, flee, or die on their own terms.</li>
 </ol>
 </aside>
 

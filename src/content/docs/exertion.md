@@ -22,12 +22,12 @@ It is **primarily player-controlled**: when to push, when to rest, and where to 
 - [Dying](/harm/#dying) characters must spend Exertion on **every** roll; death follows when the pool hits zero while Dying.
 
 <aside class="kod-example">
-<p class="kod-example__scene">A cart is stuck at a stony ford. The player spends Exertion for one extra die — no tier shift, just more body in the pool.</p>
+<p class="kod-example__scene">The cart is hung on a stony ford. The oxen will not pull; the water is rising. The player decides this is worth the cost: they dig in, spend Exertion, and put one more die into the pool. The die tier does not change — they are not better situated, only more committed.</p>
 <ol class="kod-example__steps">
-<li><strong>Pool before:</strong> 2 / 6.</li>
-<li><strong>Roll:</strong> Strength + Animal Handling, d8; spend <strong>1</strong> Exertion → +1 die.</li>
-<li><strong>Pool after:</strong> 1 / 6. Result: 3 Marks — cart through.</li>
-<li><strong>If pool is 0:</strong> every dice pool is <strong>−2</strong> dice (minimum 1). The character can still act.</li>
+<li><strong>Exertion pool before:</strong> 2 / 6.</li>
+<li><strong>Roll:</strong> Strength + Animal Handling, d8; spend <strong>1</strong> Exertion → one extra die in the pool.</li>
+<li><strong>Pool after:</strong> 1 / 6. Result: 3 Marks — the cart comes free before the current takes it.</li>
+<li><strong>If the pool later hits 0:</strong> every dice pool is <strong>−2</strong> dice (minimum 1). The character can still act; every action simply costs more than it should.</li>
 </ol>
 </aside>
 

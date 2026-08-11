@@ -13,17 +13,32 @@ Kodranni does **not** track hit points. It tracks the **unravelling of the nine 
 
 **Harm** is recorded on nine named tracks. Each track is permanently paired with one Foundation. Every point of Harm reduces that Foundation by one for dice purposes.
 
-| Foundation | Harm Track |
-|------------|------------|
-| Strength | **Crushed** |
-| Dexterity | **Bleeding** |
-| Constitution | **Fever** |
-| Intellect | **Fog** |
-| Perception | **Disoriented** |
-| Resolve | **Shock** |
-| Charisma | **Tarnished** |
-| Guile | **Exposed** |
-| Authority | **Disgrace** |
+<div class="kod-harm-grid not-content">
+<div class="kod-harm-col kod-harm-col--phys">
+<p class="kod-harm-col__label">Physical</p>
+<ul>
+<li><strong>Crushed</strong> ← Strength</li>
+<li><strong>Bleeding</strong> ← Dexterity</li>
+<li><strong>Fever</strong> ← Constitution</li>
+</ul>
+</div>
+<div class="kod-harm-col kod-harm-col--ment">
+<p class="kod-harm-col__label">Mental</p>
+<ul>
+<li><strong>Fog</strong> ← Intellect</li>
+<li><strong>Disoriented</strong> ← Perception</li>
+<li><strong>Shock</strong> ← Resolve</li>
+</ul>
+</div>
+<div class="kod-harm-col kod-harm-col--soc">
+<p class="kod-harm-col__label">Social</p>
+<ul>
+<li><strong>Tarnished</strong> ← Charisma</li>
+<li><strong>Exposed</strong> ← Guile</li>
+<li><strong>Disgrace</strong> ← Authority</li>
+</ul>
+</div>
+</div>
 
 - Tracks run from **0 to 3**.  
 - Effective Foundation = max(0, Foundation − Harm points).  
@@ -56,13 +71,13 @@ Harm arises only when the fiction **and** the dice justify lasting damage.
 Be frugal. Most successful hits produce **0 or 1** point. Two points is notable. Three in a single exchange is rare.
 
 <aside class="kod-example">
-<p class="kod-example__scene">A spear finds a gap in light mail. The opposed margin is real; armour still blunts lasting injury. The Storyteller assigns a physical track — not social Harm on the same event.</p>
+<p class="kod-example__scene">In the yard fight a spear finds a gap under the edge of light mail. The opposed exchange went clearly for the attacker (margin of 3 Marks). The armour still matters: it halves lasting injury. The Storyteller reads a physical wound that steals fine control of the hand — not a social humiliation on the same blow.</p>
 <ol class="kod-example__steps">
-<li><strong>Opposed margin:</strong> 3 Marks.</li>
-<li><strong>Protection:</strong> light armour → ÷2.</li>
-<li><strong>Harm:</strong> floor(3 ÷ 2) = <strong>1</strong> point.</li>
-<li><strong>Track (ST chooses):</strong> Bleeding (Dexterity) +1.</li>
-<li><strong>Not mixed:</strong> no social or mental track on this same blow.</li>
+<li><strong>Opposed margin:</strong> 3 Marks (attacker ahead).</li>
+<li><strong>Protection:</strong> light armour → divide by 2.</li>
+<li><strong>Harm points:</strong> floor(3 ÷ 2) = <strong>1</strong>.</li>
+<li><strong>Track (ST chooses from the fiction):</strong> Bleeding (Dexterity) +1 — the wound is in the arm; the hand shakes.</li>
+<li><strong>Not mixed:</strong> this event does not also apply a social or mental track.</li>
 </ol>
 </aside>
 
@@ -82,11 +97,11 @@ This window allows final actions, last words, or desperate stabilisation. Stabil
 After death: remove the character from the [Hierarchy Diagram](/hierarchies/#the-hierarchy-diagram). Continuity continues through [Echoes](/echoes/) and [Legacies](/hierarchies/#legacies). Play does not stop mid-session for full character replacement.
 
 <aside class="kod-example">
-<p class="kod-example__scene">Fever hits 3. The character is Dying — still able to act, but every roll costs Exertion. A companion stabilises them with Healing. Dying ends; the track stays at 3 until recovery, and a lasting Trait usually remains.</p>
+<p class="kod-example__scene">The wound went bad on the road. Fever has climbed for two days; when the Fever track hits 3, the character is <strong>Dying</strong>. They can still speak and act, but every effort spends what little strength remains. A companion works through the night with herbs and steady hands.</p>
 <ol class="kod-example__steps">
-<li><strong>Fever</strong> reaches 3 → <strong>Dying</strong>.</li>
-<li><strong>While Dying:</strong> every roll costs <a href="/exertion/">Exertion</a>. At Exertion 0 → death.</li>
-<li><strong>Stabilise:</strong> Resolve + Healing succeeds → Dying ends; track stays at 3 until recovery; usually a permanent <a href="/traits/">Trait</a>.</li>
+<li><strong>Fever</strong> reaches 3 → character is <strong>Dying</strong>.</li>
+<li><strong>While Dying:</strong> every roll costs <a href="/exertion/">Exertion</a>. When Exertion hits 0 → death.</li>
+<li><strong>Stabilise:</strong> companion rolls Resolve + Healing and succeeds → Dying ends. The Fever track stays at 3 until recovery work clears points. A permanent <a href="/traits/">Trait</a> usually remains (scar, limp, weakened chest — Storyteller names it).</li>
 </ol>
 </aside>
 

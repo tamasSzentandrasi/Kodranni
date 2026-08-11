@@ -20,42 +20,80 @@ If you are a player reading ahead: you only need the constraints and the seeds y
 
 Players receive only a ranked list of campaign seeds and the system constraints. Nothing else written. If someone asks about a specific name, answer in two spoken sentences at most.
 
-State the constraints once, clearly:
+<div class="kod-lanes not-content">
+<div class="kod-lane kod-lane--st">
+<p class="kod-lane__title">Constraints (state once)</p>
+<p><strong>No magic.</strong> Pre-industrial tools and knowledge only. Ordinary human beings.<br /><strong>The community is the real protagonist.</strong> If it is destroyed, the campaign ends.<br /><strong>Death is permanent.</strong></p>
+</div>
+<div class="kod-lane kod-lane--player">
+<p class="kod-lane__title">What players do</p>
+<p>Rank your top three seeds. Ask at most two spoken sentences about any name. Wait for the Storyteller to frame the community — then create characters.</p>
+</div>
+</div>
 
-- **No magic.** Pre-industrial tools and knowledge only. Ordinary human beings.  
-- **The community is the real protagonist.** If it is destroyed, the campaign ends.  
-- **Death is permanent.**
+The seeds below are examples only — concrete, campaign-scale situations that work. Replace or rewrite them freely. Players rank their top three.
 
-The seeds below are examples only — inspirations for the kind of concrete, campaign-scale situation that works. Replace or rewrite them freely.
+### Campaign seeds
 
-### Campaign seeds (rank your top 3)
+<div class="kod-widget not-content" data-widget="content-tabs">
+<p class="kod-widget__title">Browse by setting type</p>
+<p class="kod-widget__intro">Same pressure in every band: a real community under real strain, with something left worth fighting for.</p>
+<div class="kod-widget__controls" role="group" aria-label="Seed type">
+<button type="button" class="kod-widget__btn" data-tab="hist" aria-pressed="true">Tightly historical</button>
+<button type="button" class="kod-widget__btn" data-tab="semi">Semi-historical</button>
+<button type="button" class="kod-widget__btn" data-tab="inv">Fully invented</button>
+</div>
 
-**Tightly historical**
+<div class="kod-widget__panel" data-panel-id="hist">
+<div class="kod-seed-grid">
+<div class="kod-seed kod-seed--hist">
+<p class="kod-seed__title">The Debatable Land, 1320s</p>
+<p>Related Border households live on ground both English and Scottish lords now claim. Service and payment are demanded from both sides. The old quiet understandings that kept the middle ground alive are dead.</p>
+<p class="kod-seed__hook">Winter is coming. The harvest was thin. Choose whom to serve — or whom to refuse — and still be a people in spring.</p>
+</div>
+<div class="kod-seed kod-seed--hist">
+<p class="kod-seed__title">Goðorð under strain, late 12th century</p>
+<p>A chieftain’s following is losing its best pasture and driftwood rights to a richer neighbour. No powerful friend remains. The next Althing will decide whether the weaker side still exists as a force of its own.</p>
+<p class="kod-seed__hook">Arrive with law, with force, or with a bargain that costs something real — or watch the following scatter.</p>
+</div>
+</div>
+</div>
 
-1. **The Debatable Land, 1320s**  
-   Related Border households caught between two stronger lords. Both sides now demand service and payment. The old middle-ground understandings are dead. Winter is coming and the harvest was thin.
+<div class="kod-widget__panel" data-panel-id="semi" hidden>
+<div class="kod-seed-grid">
+<div class="kod-seed kod-seed--semi">
+<p class="kod-seed__title">Caravan Blood on the Inland Road</p>
+<p>A kin-band that has lived by caravan protection, trade, and seasonal movement along a stretch of the inland routes. Stronger settled powers are closing the old paths, demanding tribute, or killing stragglers. The animals are fewer each year.</p>
+<p class="kod-seed__hook">The question is no longer how to prosper — it is whether the band continues at all, and in what form.</p>
+</div>
+<div class="kod-seed kod-seed--semi">
+<p class="kod-seed__title">The Mill Kin</p>
+<p>Three intermarried households control the only working mill for days in every direction. The millstone is cracking, the river is shifting course, and one household has opened secret talks with outsiders who want the stone for themselves.</p>
+<p class="kod-seed__hook">If the mill stops, the valley starves or leaves. If one house takes it alone, the kinship breaks. Either path is a campaign.</p>
+</div>
+</div>
+</div>
 
-2. **Icelandic Goðorð under strain, late 12th century**  
-   A chieftain’s following whose best pasture and driftwood rights are being taken by a richer neighbour. No powerful friend remains. The next Althing will decide whether the weaker side still exists as a separate force.
-
-**Semi-historical**
-
-3. **Silk Road Tribe**  
-   A nomadic clan that has lived by raiding, trading, and moving with the seasons along a stretch of the inland routes. Stronger settled powers are closing the old paths, demanding tribute, or simply killing stragglers. The clan’s animals are fewer each year. The question is no longer how to prosper — it is whether the clan continues at all, and in what form.
-
-4. **The Mill Families**  
-   Three intermarried households that together control the only working mill for days in every direction. The stone is failing, the river is changing, and one family has begun secret talks with outsiders. If the mill stops, the surrounding settlements starve or leave. If one household takes it alone, the kinship breaks.
-
-**Fully invented**
-
-5. **The Ash-Hill People after the Coughing Plague**  
-   A settlement of related families on the lower slopes of a dead volcano. Two years ago a coughing sickness killed one in three. The upper pastures that fed the herds were then seized by a stronger tribe that moved in while the ash-hill people were burying their dead. The only reliable spring is still theirs. Everything else is contested or gone.
-
-6. **The Net-Blood in the Third Year of Failure**  
-   A coastal kinship group whose entire identity rests on one great seasonal fish run. The run has failed or come late for three years. Seed grain is already being eaten. Younger adults are leaving to join foreign crews. The remaining households must decide whether to abandon the old grounds, fight those now fishing them, or watch the kinship dissolve.
-
-7. **The Dry-Pasture Clan**  
-   A herding people whose high summer pastures have received almost no rain for two consecutive years. The lower valleys are claimed by settled farmers who will not open their gates. Animals are being slaughtered early. Children have started dying. The clan can try to force the valleys, move into unknown country, or break apart.
+<div class="kod-widget__panel" data-panel-id="inv" hidden>
+<div class="kod-seed-grid">
+<div class="kod-seed kod-seed--invented">
+<p class="kod-seed__title">Ash-Hill after the Coughing Plague</p>
+<p>Related families on the lower slopes of a dead volcano. Two years ago a coughing sickness killed one in three. While they buried their dead, a stronger tribe seized the upper pastures. The only reliable spring is still theirs. Everything else is contested or gone.</p>
+<p class="kod-seed__hook">Hold the water, reclaim the grass, or find a third path before the next dry season.</p>
+</div>
+<div class="kod-seed kod-seed--invented">
+<p class="kod-seed__title">Net-Blood, third year of failure</p>
+<p>A coastal kinship whose entire identity rests on one great seasonal fish run. The run has failed or come late for three years. Seed grain is already being eaten. Younger adults leave on foreign crews.</p>
+<p class="kod-seed__hook">Abandon the old grounds, fight those now fishing them, or watch the kinship dissolve on the shore.</p>
+</div>
+<div class="kod-seed kod-seed--invented">
+<p class="kod-seed__title">Dry-Pasture Clan</p>
+<p>Herders whose high summer pastures have had almost no rain for two years. The lower valleys are held by settled farmers who will not open their gates. Animals are slaughtered early. Children have begun to die.</p>
+<p class="kod-seed__hook">Force the valleys, move into unknown country, or break apart — and live with what that makes you.</p>
+</div>
+</div>
+</div>
+</div>
 
 ----------
 

@@ -10,10 +10,16 @@ description: Concept, Foundations, Skills, The Weighing, and what happens after.
 
 Prerequisite: the Storyteller has completed [Campaign Setup](/campaign-setup/). The campaign frame, community pressures, and system constraints already exist.
 
-Creation has **two phases**:
-
-1. **Private prep** — you and the Storyteller only (concept, Foundations, Skills).  
-2. **The Weighing** — the table gathers; claims, Words, and The Wanting reshape the sheet in public.
+<div class="kod-lanes not-content">
+<div class="kod-lane kod-lane--teal">
+<p class="kod-lane__title">1. Private prep</p>
+<p>You and the Storyteller only. Concept, Foundations, Skills. Numbers stay private until The Weighing.</p>
+</div>
+<div class="kod-lane kod-lane--amber">
+<p class="kod-lane__title">2. The Weighing</p>
+<p>The table gathers. Birth Omen, Guiding Hand, claims, Words, and The Wanting reshape the sheet in public.</p>
+</div>
+</div>
 
 ----------
 
@@ -68,20 +74,18 @@ These numbers stay **private** until The Weighing begins. Do not discuss them wi
 
 The Ancestors bear witness. What follows is spoken at the table — then spent.
 
-----------
-
-### 1. Birth Omen
-
-Roll a **d20** (the [Omen](/dice-mechanics/#the-omen-die-and-consequences) die). Only you and the Storyteller see the result.
-
-**Points** = result halved and rounded up (**1–10**).  
-Spend them on Foundations under the normal costs.  
-This is the mark under which the character was born. It is not discussed at the table.
-
-### 2. Guiding Hand
-
-One further Omen die is rolled for skills.  
-The full result (**1–20**) becomes additional skill points, spent under the normal cumulative costs.
+<div class="kod-phases not-content">
+<div class="kod-phase">
+<p class="kod-phase__n">Step 1</p>
+<p class="kod-phase__title">Birth Omen</p>
+<p>Roll a <strong>d20</strong> (the <a href="/dice-mechanics/#the-omen-die-and-consequences">Omen</a> die). Only you and the Storyteller see the result. <strong>Points</strong> = result halved and rounded up (<strong>1–10</strong>). Spend them on Foundations under the normal costs. This is the mark under which the character was born. It is not discussed at the table.</p>
+</div>
+<div class="kod-phase">
+<p class="kod-phase__n">Step 2</p>
+<p class="kod-phase__title">Guiding Hand</p>
+<p>One further Omen die is rolled for skills. The full result (<strong>1–20</strong>) becomes additional skill points, spent under the normal cumulative costs.</p>
+</div>
+</div>
 
 ----------
 
@@ -147,14 +151,25 @@ Lock the following before the character enters the record:
 Only then is the character written into the campaign record (via [automation](/automation/) when available).
 
 <aside class="kod-example">
-<p class="kod-example__scene">Mara is the target. Cal says: “I see a hard bargainer.” A seconder agrees. Mara and the Storyteller accept. Speaker and target are changed differently.</p>
+<p class="kod-example__scene">At The Weighing, Mara stands. She has spoken who she is. Cal, who has bargained with her kind before, says: “I see a hard bargainer.” Another player seconds. Mara and the Storyteller accept. Two people are changed — not the same way.</p>
 <ol class="kod-example__steps">
 <li><strong>Claim accepted</strong> about Mara: “hard bargainer.”</li>
-<li><strong>Cal (speaker)</strong> banks <strong>1 Word</strong> for The Wanting later.</li>
-<li><strong>Mara (target)</strong> is marked now: e.g. +2 skill points into Negotiation / Tradecraft, or Trait “Hard bargainer.” Cal’s Word is not spent on Mara.</li>
-<li><strong>The Wanting (later):</strong> Cal spends his Word on <strong>himself</strong> — e.g. “+5 skill points” → pays −1 from a named Foundation on his sheet, names Skills, Storyteller confirms.</li>
+<li><strong>Cal (speaker)</strong> banks <strong>1 Word</strong> — spent later on <em>his own</em> character in The Wanting.</li>
+<li><strong>Mara (target)</strong> is marked <em>now</em> by the Storyteller: e.g. +2 skill points into Negotiation or Tradecraft, or the Trait “Hard bargainer.” Cal does not choose or spend on Mara.</li>
+<li><strong>The Wanting (later):</strong> Cal spends his Word on <strong>himself</strong> — e.g. menu row “+5 skill points” → he pays −1 from a named Foundation on his sheet, names the Skills he wants, Storyteller confirms.</li>
 </ol>
 </aside>
+
+<div class="kod-lanes not-content">
+<div class="kod-lane kod-lane--violet">
+<p class="kod-lane__title">Speaker earns</p>
+<p>One <strong>Word</strong> per accepted claim — currency for The Wanting, spent only on the speaker’s own sheet.</p>
+</div>
+<div class="kod-lane kod-lane--amber">
+<p class="kod-lane__title">Target is marked</p>
+<p>Storyteller applies definition now: skill points, Trait, Foundation tweak, or similar. Not punishment for its own sake.</p>
+</div>
+</div>
 
 <aside class="kod-counsel" aria-label="Counsel">
 <p>You can troll The Weighing if you want. You will gain nothing from it, and you will kick yourself later for not participating when others are spending the Words they earned by speaking.</p>

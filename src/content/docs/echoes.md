@@ -34,12 +34,12 @@ The **player** elevates a moment into an Echo. The Storyteller may veto only for
 </aside>
 
 <aside class="kod-example">
-<p class="kod-example__scene">Strength 2, Dexterity 1, Intellect 2, Authority 2 → capacity max(2, 1) + 2 + 2 = <strong>6</strong>. Empty load is Decadence; over capacity hurts only rolls that touch the character’s Echoes.</p>
+<p class="kod-example__scene">Leif’s sheet: Strength 2, Dexterity 1, Intellect 2, Authority 2. Capacity is max(2, 1) + 2 + 2 = <strong>6</strong>. He has carried nothing all winter (Decadence). After the spring raid he takes on three Echoes whose weights sum to 6 — full load, no over-cap penalty. A fourth weight-1 Echo would push him past capacity.</p>
 <ol class="kod-example__steps">
 <li><strong>Capacity:</strong> 6.</li>
 <li><strong>No Echoes:</strong> Decadence → <strong>−1</strong> die on every roll.</li>
 <li><strong>Weights 1 + 2 + 3 = 6:</strong> at capacity — no over-cap penalty.</li>
-<li><strong>Total weight &gt; 6:</strong> −1 die on rolls that involve any of that character’s Echoes.</li>
+<li><strong>Total weight &gt; 6:</strong> −1 die on rolls that involve any of his Echoes (not on unrelated rolls).</li>
 </ol>
 </aside>
 
@@ -48,12 +48,12 @@ The **player** elevates a moment into an Echo. The Storyteller may veto only for
 When a roll’s context matches one of the character’s Echoes, the player may spend **one extra [Exertion](/exertion/) die** beyond the normal limit of one. See [dice pool makeup](/dice-mechanics/#the-makeup-of-the-dice-pool).
 
 <aside class="kod-example">
-<p class="kod-example__scene">Raiders press the spring the character swore to hold. The Echo matches. They may spend one more Exertion die than usual on that roll.</p>
+<p class="kod-example__scene">Last harvest Leif swore before the hall that the spring above the ash-hill would not fall to the upper tribe. That vow is an Echo. Tonight raiders are at the spring. The Storyteller agrees the scene matches. Leif may put more of himself into the roll than Exertion normally allows.</p>
 <ol class="kod-example__steps">
 <li><strong>Echo:</strong> “Hold the spring against the upper tribe.”</li>
-<li><strong>Roll:</strong> Authority + Command, d8.</li>
-<li><strong>Exertion:</strong> 1 normal + <strong>1</strong> from the matching Echo (two total).</li>
-<li><strong>No matching Echo:</strong> only one Exertion die may be spent.</li>
+<li><strong>Roll:</strong> Authority + Command, d8 — ordering the line at the water.</li>
+<li><strong>Exertion:</strong> spend 1 as usual, plus <strong>1 more</strong> because the Echo matches (two Exertion dice total).</li>
+<li><strong>Without a matching Echo:</strong> only one Exertion die may be spent on a roll.</li>
 </ol>
 </aside>
 
@@ -77,13 +77,13 @@ Hierarchy advancement often begins when patronage or a hook becomes an Echo; how
 
 The community is tracked by five soft measures called **Fortunes**. They never produce absolute tallies (no cattle head-counts, no exact census). They exist as contextual levers.
 
-| Fortune | What it reflects |
-|---------|------------------|
-| **Vitality** | People, health, capacity to absorb loss |
-| **Cohesion** | Trust, internal order, willingness to act together |
-| **Surplus** | Material buffer — food, tools, stores |
-| **Standing** | External reputation, treaties, fear or respect |
-| **Tradition** | Shared memory, lore, what the community believes about itself |
+<div class="kod-chip-row not-content">
+<div class="kod-chip"><strong>Vitality</strong> People, health, capacity to absorb loss</div>
+<div class="kod-chip"><strong>Cohesion</strong> Trust, internal order, willingness to act together</div>
+<div class="kod-chip"><strong>Surplus</strong> Material buffer — food, tools, stores</div>
+<div class="kod-chip"><strong>Standing</strong> External reputation, treaties, fear or respect</div>
+<div class="kod-chip"><strong>Tradition</strong> Shared memory, lore, what the community believes about itself</div>
+</div>
 
 | Rating | State |
 |--------|-------|
