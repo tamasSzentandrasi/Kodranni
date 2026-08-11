@@ -54,8 +54,8 @@ These thresholds are modified by the Skill’s ruling **Foundation**:
 
 High inborn potential accelerates learning. Low potential slows it. Automation handles accumulation and level-ups. Players never see raw Practice numbers unless they ask.
 
-<aside class="kod-note">
-<p class="kod-note__label">Note</p>
+<aside class="kod-counsel" aria-label="Counsel">
+<p class="kod-counsel__label"></p>
 <p>Struggle teaches. Effort is taken into account. Doing something ad infinitum without hardship counts for naught.</p>
 </aside>
 
@@ -88,7 +88,7 @@ Same five-skill pool, but only:
 Fiction still decides *why* rust set in; automation only applies the prompted procedure.
 
 <aside class="kod-example">
-<p class="kod-example__label">Example — Practice gain and degrade</p>
+<p class="kod-example__label"></p>
 <p class="kod-example__scene">A thief works a lock under pressure, fails more often than they Mark, and still learns from the fumble. Later they push with Exertion and land clean Marks. Months of downtime later, the Storyteller asks automation whether rust has set in on neglected Skills.</p>
 <ol class="kod-example__steps">
 <li><strong>Unopposed Lockpicking:</strong> more failures than Marks, no Exertion → <strong>+2 Practice</strong>.</li>

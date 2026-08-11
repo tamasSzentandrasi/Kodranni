@@ -50,7 +50,7 @@ Values of **0** or **4** are *technically possible* — rarities for extreme cas
 | [Character Creation](/character-creation/) | Start at 1; free points, Birth Omen, and The Wanting all adjust Foundations. |
 
 <aside class="kod-example">
-<p class="kod-example__label">Example — Primitive action</p>
+<p class="kod-example__label"></p>
 <p class="kod-example__scene">Two travellers must cross a rope bridge in a gale. No Craft or Climb Skill applies to this moment — it is balance, grip, and nerve: a Primitive action. Neither has special footing or tools that would shift die tier; only raw Dexterity differs.</p>
 <ol class="kod-example__steps">
 <li><strong>Intent:</strong> cross a rope bridge in a gale (no Skill applies).</li>

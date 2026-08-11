@@ -31,6 +31,7 @@ This chapter walks the stack in order: **when** to roll → **what** dice mean �
 If an action’s outcome can **significantly differ** because of luck, chance, or skill — the Storyteller **can** ask for a roll, picking the relevant characteristics to base it on. If the fiction is already clear, **do not roll**. Conversation, planning, and settled facts are not replaced by dice.
 
 The Storyteller always chooses which [Foundation](/foundations/) and (if any) [Skill](/skills/) fit the described intent, and which **die tier** the pool uses — that tier is the mechanical face of **[Advantage and Disadvantage](#advantage-and-disadvantage)**.
+
 ----------
 
 ## Dice Types and Pools
@@ -70,32 +71,20 @@ That requires a subtle shift: less “did it work?”, more “**what does this 
 Players act under incomplete knowledge. The Storyteller scales reward, cost, and **what the fiction discloses** to the Marks on the table.
 
 <div class="kod-widget" data-widget="marks-ladder">
-<p class="kod-widget__title">Try it — night scouting ladder</p>
-<p style="margin:0 0 0.65rem;color:var(--kod-silver-dim);font-size:0.98em;">A young warrior is sent out at night to learn what the opposing army plans. Perception + Scouting, four dice. There is no hidden “need three successes.” Step the Marks:</p>
+<p class="kod-widget__title">Scenario: The Scout</p>
+<p class="kod-widget__intro">A young warrior is sent out at night to learn what the opposing army plans. The Storyteller names Perception + Scouting. There is no hidden “need three successes.”<br /><strong>The player rolled:</strong> a pool of four dice. Choose how many Marks landed:</p>
 <div class="kod-widget__controls" role="group" aria-label="Marks of Success">
-<button type="button" class="kod-widget__btn" data-marks="0">0</button>
-<button type="button" class="kod-widget__btn" data-marks="1">1</button>
-<button type="button" class="kod-widget__btn" data-marks="2">2</button>
-<button type="button" class="kod-widget__btn" data-marks="3">3</button>
-<button type="button" class="kod-widget__btn" data-marks="4">4</button>
+<button type="button" class="kod-widget__btn" data-marks="0">0 Marks</button>
+<button type="button" class="kod-widget__btn" data-marks="1">1 Mark</button>
+<button type="button" class="kod-widget__btn" data-marks="2">2 Marks</button>
+<button type="button" class="kod-widget__btn" data-marks="3">3 Marks</button>
+<button type="button" class="kod-widget__btn" data-marks="4">4 Marks</button>
 </div>
 <div class="kod-widget__panel" data-panel></div>
 </div>
 
-<aside class="kod-example">
-<p class="kod-example__label">Example — reading Marks (scouting, full list)</p>
-<p class="kod-example__scene">Same night mission, written out as a single ladder for reference.</p>
-<ol class="kod-example__steps">
-<li><strong>0 Marks:</strong> he gets lost in the woods. The mission fails into mishap, not a clean “you see nothing.”</li>
-<li><strong>1 Mark:</strong> thin, anxious success — he grows paranoid; the Storyteller can sell him the fear that the enemy are onto him, that a patrol with torches is following.</li>
-<li><strong>2 Marks:</strong> he spots the camp from a distance — potential approaches, weaknesses — but finds no safe way to crawl closer and see more.</li>
-<li><strong>3 Marks:</strong> solid reading — campfires, men around them, camp layout; the enemy mean to settle in, wait out the bad weather.</li>
-<li><strong>4 Marks:</strong> deep reading — those are decoys; something is wrong; he should hurry back; a night raid may be imminent.</li>
-</ol>
-</aside>
-
-<aside class="kod-note">
-<p class="kod-note__label">Storyteller note</p>
+<aside class="kod-counsel" aria-label="Counsel">
+<p class="kod-counsel__label"></p>
 <p>Do not pre-assign “3 Marks = success.” Pre-hold <em>possible</em> tiers of outcome if you like, then let the dice pick which tier the night earns. Opposed rolls use the same mindset: the <strong>margin</strong> is how much one will overbore another, not a hit-point subtraction by default.</p>
 </aside>
 
@@ -117,7 +106,8 @@ Instead: in most cases it is **fairly easy to assess which side has the advantag
   Example: a **veteran soldier** who would otherwise roll **d8** is surrounded on multiple sides → **d6**.
 
 <div class="kod-widget" data-widget="tier-dial">
-<p class="kod-widget__title">Try it — die tier</p>
+<p class="kod-widget__title">Different die tiers and their meaning</p>
+<p class="kod-widget__intro">The Storyteller names the tier for the roll. Select a tier to see how the table should read it:</p>
 <div class="kod-widget__controls" role="group" aria-label="Die tier">
 <button type="button" class="kod-widget__btn" data-tier="d6">d6</button>
 <button type="button" class="kod-widget__btn" data-tier="d8">d8</button>
@@ -155,13 +145,13 @@ Pools assemble from three sources:
 
 **Primitive actions** (run, jump, haul, see, recall, composure, and similar animal-tier acts) use **Foundation only** (+ optional Exertion). No Skill die is added. Primitive rolls grant **no [Practice](/skills/#improvement)**.
 
-<aside class="kod-note">
-<p class="kod-note__label">Note</p>
+<aside class="kod-counsel" aria-label="Counsel">
+<p class="kod-counsel__label"></p>
 <p>Who decides <em>which</em> Foundation and <em>which</em> Skill? <strong>The Storyteller.</strong> Always. The player describes intent freely. The Storyteller picks the best pair. Players may propose a better pair; the Storyteller’s call is final.</p>
 </aside>
 
-<aside class="kod-example">
-<p class="kod-example__label">Example — unopposed roll</p>
+<aside class="kod-example" aria-label="Example">
+<p class="kod-example__label"></p>
 <p class="kod-example__scene">Storm weather is an hour off. Eira is a capable shipwright; the work is ordinary for her — recaulking a boat that must hold through the gale. Nothing about the scene especially favours or hinders her, so the Storyteller keeps the ordinary die tier.</p>
 <ol class="kod-example__steps">
 <li><strong>Intent:</strong> Eira recaulks the boat before the storm.</li>
@@ -220,8 +210,8 @@ Hints:
 - Social, mental, and physical contests use the **same** resolution shape.
 - Armour, reputation, favours, numbers, and terrain are **context** for Advantage / Disadvantage and for interpreting the margin — not separate subsystems — except where [Harm](/harm/) uses armour **or** Reputation **protection ratios** (not both on the same event; the Storyteller picks the contest type).
 
-<aside class="kod-example">
-<p class="kod-example__label">Example — opposed roll (reply)</p>
+<aside class="kod-example" aria-label="Example">
+<p class="kod-example__label"></p>
 <p class="kod-example__scene">The reeve has barred the gate and will not open for strangers after dark. The player character tries to talk past him — not a fight, a contest of will and words. Neither side holds a clear upper hand: the reeve has authority and the wall; the traveller has a plausible errand and a steady voice. Ordinary tier for both.</p>
 <ol class="kod-example__steps">
 <li><strong>Intent:</strong> talk past the reeve who bars the gate.</li>
@@ -232,8 +222,8 @@ Hints:
 </ol>
 </aside>
 
-<aside class="kod-note">
-<p class="kod-note__label">Note</p>
+<aside class="kod-counsel" aria-label="Counsel">
+<p class="kod-counsel__label"></p>
 <p><strong>Focus on the roleplay, not the roll-play.</strong> Dice outcomes should <strong>never</strong> replace conversations, decisions, and planning. Rolls inform the <strong>effect</strong> of an action, never its content.</p>
 </aside>
 
@@ -292,7 +282,7 @@ On **equal footing**:
 Disadvantage lowers thresholds for the disadvantaged side (negative Omens more likely, positive less so). Severe disadvantage (the d6-versus-d12 equivalent) shifts thresholds by **two full levels**. Individual actions still get their own case-by-case Advantage; the macro adjustment applies only to Tide Omen thresholds.
 
 <aside class="kod-example">
-<p class="kod-example__label">Example — Tide shift</p>
+<p class="kod-example__label"></p>
 <p class="kod-example__scene">A small mill-raid: two roughly matched bands meet in the yard. Neither side holds the field yet — equal footing, small-skirmish scale. A player character barks orders to keep the line; a defender answers with threats and a raised spear. Their exchange is one push on the shared Tide, not the whole fight by itself.</p>
 <ol class="kod-example__steps">
 <li><strong>Setup:</strong> small skirmish, equal footing — weights 8 vs 8 → scale 15, start 8. Shift every <strong>2</strong> Marks of difference on Tide-linked rolls.</li>
@@ -308,8 +298,8 @@ Disadvantage lowers thresholds for the disadvantaged side (negative Omens more l
 
 When the Tide reaches one end, that collective side **routes**. Morale breaks. The group crumbles or flees. Individuals may still stand, refuse, die heroically or foolishly, or take a major personal setback — the Tide breaks **collective** will, not personal agency.
 
-<aside class="kod-note">
-<p class="kod-note__label">Storyteller note</p>
+<aside class="kod-counsel" aria-label="Counsel">
+<p class="kod-counsel__label"></p>
 <p>You can do everything in your power; if the rest of your side is butchered, you will still find yourself flanked. Do not grind roll-battles for their own sake. Load Omen faces that matter. Let players leave the Tide when fiction allows (loot, disengage, personal objective).</p>
 </aside>
 

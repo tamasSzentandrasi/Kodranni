@@ -136,51 +136,16 @@ const fontFacesCss = `
 		});
 	}
 
-	/** Collapse examples / ST notes into progressive disclosure */
-	function wrapDisclosures() {
-		document.querySelectorAll('aside.kod-example').forEach((aside) => {
-			if (aside.closest('details.kod-disclose')) return;
-			const labelEl = aside.querySelector('.kod-example__label');
-			let title = labelEl ? labelEl.textContent.trim() : 'Example';
-			title = title.replace(/^Example\s*[—–-]\s*/i, '');
-			if (labelEl) labelEl.remove();
-			const details = document.createElement('details');
-			details.className = 'kod-disclose kod-disclose--example';
-			const summary = document.createElement('summary');
-			summary.className = 'kod-disclose__summary';
-			summary.innerHTML =
-				'<span class="kod-disclose__mark">Example</span> ' + title;
-			const body = document.createElement('div');
-			body.className = 'kod-disclose__body';
-			while (aside.firstChild) body.appendChild(aside.firstChild);
-			details.appendChild(summary);
-			details.appendChild(body);
-			aside.replaceWith(details);
+	/** Ensure asides have accessible names; labels are icon-only in CSS */
+	function normalizeBoxes() {
+		document.querySelectorAll('aside.kod-example').forEach((el) => {
+			if (!el.getAttribute('aria-label')) el.setAttribute('aria-label', 'Example');
 		});
-
-		document.querySelectorAll('aside.kod-note').forEach((aside) => {
-			if (aside.closest('details.kod-disclose')) return;
-			// Keep short notes open-looking only if already inside list and tiny? Always collapse ST/long notes.
-			const labelEl = aside.querySelector('.kod-note__label');
-			const label = labelEl ? labelEl.textContent.trim() : 'Note';
-			const isST = /storyteller/i.test(label);
-			if (labelEl) labelEl.remove();
-			const details = document.createElement('details');
-			details.className = 'kod-disclose kod-disclose--note';
-			// Plain "Note" stays collapsed; calm mode opens all
-			const summary = document.createElement('summary');
-			summary.className = 'kod-disclose__summary';
-			summary.innerHTML =
-				'<span class="kod-disclose__mark">' +
-				(isST ? 'Storyteller' : 'Note') +
-				'</span> ' +
-				(isST ? 'Counsel' : 'Expand');
-			const body = document.createElement('div');
-			body.className = 'kod-disclose__body';
-			while (aside.firstChild) body.appendChild(aside.firstChild);
-			details.appendChild(summary);
-			details.appendChild(body);
-			aside.replaceWith(details);
+		document.querySelectorAll('aside.kod-note').forEach((el) => {
+			if (!el.getAttribute('aria-label')) el.setAttribute('aria-label', 'Note');
+		});
+		document.querySelectorAll('aside.kod-counsel').forEach((el) => {
+			if (!el.getAttribute('aria-label')) el.setAttribute('aria-label', 'Counsel');
 		});
 	}
 
@@ -211,7 +176,9 @@ const fontFacesCss = `
 				4: '<strong>4 Marks</strong> — Deep reading: decoys; something is wrong; hurry back — a night raid may be imminent.',
 			};
 			function set(n) {
-				buttons.forEach((b) => b.setAttribute('aria-pressed', b.dataset.marks === String(n) ? 'true' : 'false'));
+				buttons.forEach((b) =>
+					b.setAttribute('aria-pressed', b.dataset.marks === String(n) ? 'true' : 'false'),
+				);
 				if (panel) panel.innerHTML = scenes[n] || scenes[0];
 			}
 			buttons.forEach((b) => b.addEventListener('click', () => set(b.dataset.marks)));
@@ -231,7 +198,9 @@ const fontFacesCss = `
 				d12: '<strong>d12 — Advantage</strong> — Odds lean with the attempt: good ground, support, tools, a Trait that truly applies. Marks come easier; deeper success is more likely.',
 			};
 			function set(t) {
-				buttons.forEach((b) => b.setAttribute('aria-pressed', b.dataset.tier === t ? 'true' : 'false'));
+				buttons.forEach((b) =>
+					b.setAttribute('aria-pressed', b.dataset.tier === t ? 'true' : 'false'),
+				);
 				if (panel) panel.innerHTML = scenes[t] || scenes.d8;
 			}
 			buttons.forEach((b) => b.addEventListener('click', () => set(b.dataset.tier)));
@@ -247,7 +216,6 @@ const fontFacesCss = `
 			bq.classList.add('kod-reveal', 'kod-type');
 		});
 
-		// First-level list items under main content (not nested widget lists)
 		root.querySelectorAll(':scope > ul > li, :scope > ol > li').forEach((li) => {
 			li.classList.add('kod-reveal-item');
 		});
@@ -255,7 +223,7 @@ const fontFacesCss = `
 		const targets = root.querySelectorAll('blockquote.kod-reveal, .kod-reveal-item');
 		if (!targets.length) return;
 
-		if (prefersReduced || document.documentElement.getAttribute('data-kod-calm') === '1') {
+		if (prefersReduced) {
 			targets.forEach((el) => el.classList.add('is-in'));
 			return;
 		}
@@ -292,73 +260,19 @@ const fontFacesCss = `
 			'<span>Default tier <strong>d8</strong></span>' +
 			'<span><strong>Advantage</strong> upgrades · <strong>Disadvantage</strong> downgrades</span>' +
 			'<span>ST names pair + tier</span>' +
-			'</div>' +
-			'<button type="button" class="kod-table-strip__btn" data-calm-toggle>Calm mode</button>';
+			'</div>';
 		main.appendChild(strip);
-	}
-
-	function setupCalmFab() {
-		if (document.querySelector('.kod-calm-fab')) return;
-		const btn = document.createElement('button');
-		btn.type = 'button';
-		btn.className = 'kod-calm-fab';
-		btn.setAttribute('data-calm-toggle', '');
-		btn.setAttribute('aria-label', 'Toggle calm mode');
-		btn.textContent = 'Calm';
-		document.body.appendChild(btn);
-	}
-
-	function applyCalm(on) {
-		document.documentElement.setAttribute('data-kod-calm', on ? '1' : '0');
-		try {
-			localStorage.setItem('kod-calm', on ? '1' : '0');
-		} catch {}
-		document.querySelectorAll('[data-calm-toggle]').forEach((b) => {
-			b.setAttribute('aria-pressed', on ? 'true' : 'false');
-			if (b.classList.contains('kod-calm-fab')) {
-				b.textContent = on ? 'Calm on' : 'Calm';
-			} else {
-				b.textContent = on ? 'Calm on' : 'Calm mode';
-			}
-		});
-		if (on) {
-			document.querySelectorAll('details.kod-disclose, details.kod-archetype').forEach((d) => {
-				d.open = true;
-			});
-			document.querySelectorAll('.kod-reveal, .kod-reveal-item').forEach((el) => {
-				el.classList.add('is-in');
-			});
-		}
-	}
-
-	function setupCalm() {
-		let on = false;
-		try {
-			on = localStorage.getItem('kod-calm') === '1';
-		} catch {}
-		if (prefersReduced) on = true;
-		applyCalm(on);
-		document.querySelectorAll('[data-calm-toggle]').forEach((b) => {
-			if (b.dataset.bound) return;
-			b.dataset.bound = '1';
-			b.addEventListener('click', () => {
-				const next = document.documentElement.getAttribute('data-kod-calm') !== '1';
-				applyCalm(next);
-			});
-		});
 	}
 
 	function enhance() {
 		injectSidebarIcons();
 		decorateDividers();
-		wrapDisclosures();
+		normalizeBoxes();
 		setupArchetypeAccordion();
 		setupMarksLadder();
 		setupTierDial();
 		setupScrollReveal();
 		setupTableStrip();
-		setupCalmFab();
-		setupCalm();
 	}
 
 	if (document.readyState === 'loading') {

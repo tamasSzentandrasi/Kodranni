@@ -56,13 +56,13 @@ Whether something can reasonably be carried, hauled, or stored is decided by con
 
 ----------
 
-<aside class="kod-note">
-<p class="kod-note__label">Note</p>
+<aside class="kod-counsel" aria-label="Counsel">
+<p class="kod-counsel__label"></p>
 <p>If you did not say you brought it, you do not have it.</p>
 </aside>
 
 <aside class="kod-example">
-<p class="kod-example__label">Example — explicit possession</p>
+<p class="kod-example__label"></p>
 <p class="kod-example__scene">Ambush on the ridge. A player wants a bow for the shot — but neither the sheet nor any earlier fiction said they carried one. They do not invent gear mid-scene. After they take a bow in play, the sheet may be updated through the usual approval path.</p>
 <ol class="kod-example__steps">
 <li><strong>Scene starts:</strong> no bow on the sheet, none declared → the character does not have a bow.</li>

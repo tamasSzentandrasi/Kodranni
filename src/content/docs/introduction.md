@@ -21,7 +21,7 @@ description: Welcome to Kodranni — a pre-industrial grim human TTRPG system.
 
 ## Welcome
 
-This Guide provides the concepts, procedures, and context needed to run and play **Kodranni** — an online tabletop role-playing game system built for pre-industrial, purely human campaigns. Use **Calm** (bottom corner) if you prefer every example open and no motion.
+This Guide provides the concepts, procedures, and context needed to run and play **Kodranni** — an online tabletop role-playing game system built for pre-industrial, purely human campaigns.
 
 Many concepts are interconnected. The Guide is ordered so that each chapter builds on the previous ones; when something is introduced early and resolved later, links point you forward. Continue with [Dice Mechanics](/dice-mechanics/), then [Human Potential](/human-potential/).
 
@@ -93,17 +93,17 @@ Everyone wants, at times, to be the **Hero** or the main protagonist. Kodranni d
 
 1. **Players who churn out characters designed to die** for short-term chaos:  
    _Why care for a character destined to die?_  
-   <aside class="kod-note">
-   <p class="kod-note__label">Note</p>
-   <p>Yup, it is fun short term — then the player gets bored, immersion dies, and the campaign becomes the dullest ruin they have ever sat through.</p>
-   </aside>
+   <aside class="kod-counsel" aria-label="Counsel">
+<p class="kod-counsel__label"></p>
+<p>Yup, it is fun short term — then the player gets bored, immersion dies, and the campaign becomes the dullest ruin they have ever sat through.</p>
+</aside>
 
 2. **Storytellers who punish for the sake of punishment**:  
    _Why make a character the Storyteller will just kill?_  
-   <aside class="kod-note">
-   <p class="kod-note__label">Note</p>
-   <p>You do not need to overplay the grim nature. The system does that for you. Most of the time you will be as relieved as your players when a risky plan succeeds. If you play against the players rather than the world, they will play against you.</p>
-   </aside>
+   <aside class="kod-counsel" aria-label="Counsel">
+<p class="kod-counsel__label"></p>
+<p>You do not need to overplay the grim nature. The system does that for you. Most of the time you will be as relieved as your players when a risky plan succeeds. If you play against the players rather than the world, they will play against you.</p>
+</aside>
 
 In short: **Embrace the Contrast**. Do not shield. Allow creativity. Craft stories that are grim but filled with meaning.
 
