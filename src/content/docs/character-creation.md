@@ -164,8 +164,11 @@ Only then is the character written into the campaign record (via [automation](/a
 
 ----------
 
-> *What the circle has weighed, let no one lightly set aside.*  
-> *What was bargained in the open, the world will collect in its time.*
+<aside class="kod-note">
+<p class="kod-note__label">Note</p>
+<p><em>What the circle has weighed, let no one lightly set aside.</em><br />
+<em>What was bargained in the open, the world will collect in its time.</em></p>
+</aside>
 
 Related: [Campaign Setup](/campaign-setup/), [Dice Mechanics](/dice-mechanics/), [Human Potential](/human-potential/), [Glossary](/glossary/), [Automation](/automation/).
 

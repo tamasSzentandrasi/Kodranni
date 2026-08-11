@@ -108,8 +108,11 @@ Workflow (same pattern as [Inventory](/inventory/#management)):
 
 Dead characters are deleted. Their only remaining presence is through Echoes still carried by the living.
 
-> Any Kodranni story follows a larger community, yet it may diverge into solo strands focused on individuals. By design, every player’s story still feeds the shared legend.  
-> _A tale is but half told when only one person tells it._
+<aside class="kod-note">
+<p class="kod-note__label">Note</p>
+<p>Any Kodranni story follows a larger community, yet it may diverge into solo strands focused on individuals. By design, every player’s story still feeds the shared legend.</p>
+<p><em>A tale is but half told when only one person tells it.</em></p>
+</aside>
 
 ----------
 

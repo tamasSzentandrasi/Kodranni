@@ -124,7 +124,10 @@ Ordinary faces **7** and **13** remain available for the same purpose at the Sto
 
 ----------
 
-> _Don’t worry. I’ll kill you eventually._
+<aside class="kod-note">
+<p class="kod-note__label">Note</p>
+<p><em>Don’t worry. I’ll kill you eventually.</em></p>
+</aside>
 
 Related: [Dice Mechanics](/dice-mechanics/), [Exertion](/exertion/), [Hierarchies](/hierarchies/), [Automation](/automation/).
 
