@@ -1540,14 +1540,14 @@ site-title img,
 
 .kod-fortune-pillar__icon {
   display: block;
-  width: 2.1rem;
-  height: 2.1rem;
-  margin: 0 0 0.7rem;
+  width: 2.65rem;
+  height: 2.65rem;
+  margin: 0.15rem 0 0.85rem;
   background-color: var(--kod-fortune-accent, var(--kod-blood-bright));
   -webkit-mask: center / contain no-repeat;
   mask: center / contain no-repeat;
   flex-shrink: 0;
-  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--kod-fortune-accent) 45%, transparent));
+  filter: drop-shadow(0 0 8px color-mix(in srgb, var(--kod-fortune-accent) 40%, transparent));
 }
 
 .kod-fortune-pillar__name {
@@ -1568,54 +1568,57 @@ site-title img,
   flex: 1 1 auto;
 }
 
-/* Vitality — life / pulse (people & health) */
+/*
+ * Fortune icons — multi-element line silhouettes (mask fill):
+ * Vitality  — hearth + three kin figures (people who remain)
+ * Cohesion  — hall roof over interlocked rings (shared house)
+ * Surplus   — storehouse gable, sheaves, cask
+ * Standing  — cairn rise, standard, seal
+ * Tradition — standing stone with spiral + oral circle
+ */
 .kod-fortune-pillar--vitality {
   --kod-fortune-accent: #c45a6a;
   border-top-color: #c45a6a;
 }
 .kod-fortune-pillar--vitality .kod-fortune-pillar__icon {
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M12 21s-7.2-4.6-9.5-8.2C.8 10.2 1.5 6.8 4.2 5.4 6.2 4.4 8.5 5 10 6.6L12 8.8l2-2.2C15.5 5 17.8 4.4 19.8 5.4c2.7 1.4 3.4 4.8 1.7 7.4C19.2 16.4 12 21 12 21z'/%3E%3C/svg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M12 21s-7.2-4.6-9.5-8.2C.8 10.2 1.5 6.8 4.2 5.4 6.2 4.4 8.5 5 10 6.6L12 8.8l2-2.2C15.5 5 17.8 4.4 19.8 5.4c2.7 1.4 3.4 4.8 1.7 7.4C19.2 16.4 12 21 12 21z'/%3E%3C/svg%3E");
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M8.5 14.2a2.2 2.2 0 1 1 0-4.4 2.2 2.2 0 0 1 0 4.4zm7.5.4a2.6 2.6 0 1 1 0-5.2 2.6 2.6 0 0 1 0 5.2zm7.5-.4a2.2 2.2 0 1 1 0-4.4 2.2 2.2 0 0 1 0 4.4zM5.8 16.5h5.4c.9 0 1.6.7 1.6 1.6V24H4.2v-5.9c0-1 .7-1.6 1.6-1.6zm7.1-.2h6.2c1 0 1.8.8 1.8 1.8V25h-9.8v-6.9c0-1 .8-1.8 1.8-1.8zm7.8.2h5.4c.9 0 1.6.7 1.6 1.6V24h-8.6v-5.9c0-.9.7-1.6 1.6-1.6zM14.5 25.5h3V29h-3v-3.5zM11 27.2h10v1.6H11v-1.6zM15.2 3.2c.3-.5 1.3-.5 1.6 0 .9 1.4 1.3 2.6 1.1 3.7-.1.7-.5 1.3-1.1 1.7v2.1h-1.6V8.6c-.6-.4-1-1-1.1-1.7-.2-1.1.2-2.3 1.1-3.7z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M8.5 14.2a2.2 2.2 0 1 1 0-4.4 2.2 2.2 0 0 1 0 4.4zm7.5.4a2.6 2.6 0 1 1 0-5.2 2.6 2.6 0 0 1 0 5.2zm7.5-.4a2.2 2.2 0 1 1 0-4.4 2.2 2.2 0 0 1 0 4.4zM5.8 16.5h5.4c.9 0 1.6.7 1.6 1.6V24H4.2v-5.9c0-1 .7-1.6 1.6-1.6zm7.1-.2h6.2c1 0 1.8.8 1.8 1.8V25h-9.8v-6.9c0-1 .8-1.8 1.8-1.8zm7.8.2h5.4c.9 0 1.6.7 1.6 1.6V24h-8.6v-5.9c0-.9.7-1.6 1.6-1.6zM14.5 25.5h3V29h-3v-3.5zM11 27.2h10v1.6H11v-1.6zM15.2 3.2c.3-.5 1.3-.5 1.6 0 .9 1.4 1.3 2.6 1.1 3.7-.1.7-.5 1.3-1.1 1.7v2.1h-1.6V8.6c-.6-.4-1-1-1.1-1.7-.2-1.1.2-2.3 1.1-3.7z'/%3E%3C/svg%3E");
 }
 
-/* Cohesion — linked ring (trust & order) */
 .kod-fortune-pillar--cohesion {
   --kod-fortune-accent: #6a9fd4;
   border-top-color: #6a9fd4;
 }
 .kod-fortune-pillar--cohesion .kod-fortune-pillar__icon {
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M8.5 7a4 4 0 1 1 0 8 4 4 0 0 1 0-8zm0 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a4 4 0 1 1 0 8 4 4 0 0 1 0-8zm0 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM10.2 12h3.6v2h-3.6v-2z'/%3E%3C/svg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M8.5 7a4 4 0 1 1 0 8 4 4 0 0 1 0-8zm0 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a4 4 0 1 1 0 8 4 4 0 0 1 0-8zm0 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM10.2 12h3.6v2h-3.6v-2z'/%3E%3C/svg%3E");
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M16 2.8 3.2 12.2l1.1 1.4L16 5.4l11.7 8.2 1.1-1.4L16 2.8zM5.5 13.5v15h2.2V15.2h16.6v13.3H26.5v-15H5.5zm6.2 3.8a3.6 3.6 0 0 1 2.7-3.5 3.3 3.3 0 1 1 3.2 0 3.6 3.6 0 1 1-1.5 6.6v-2.1a1.6 1.6 0 1 0-1.4 0v2.1a3.6 3.6 0 0 1-3-3.1zm3.3-5.6a1.5 1.5 0 1 0 1.5-1.5 1.5 1.5 0 0 0-1.5 1.5zm-3.3 5.6a1.8 1.8 0 1 0 1.7-1.8 1.8 1.8 0 0 0-1.7 1.8zm6.6 0a1.8 1.8 0 1 0 1.7-1.8 1.8 1.8 0 0 0-1.7 1.8z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M16 2.8 3.2 12.2l1.1 1.4L16 5.4l11.7 8.2 1.1-1.4L16 2.8zM5.5 13.5v15h2.2V15.2h16.6v13.3H26.5v-15H5.5zm6.2 3.8a3.6 3.6 0 0 1 2.7-3.5 3.3 3.3 0 1 1 3.2 0 3.6 3.6 0 1 1-1.5 6.6v-2.1a1.6 1.6 0 1 0-1.4 0v2.1a3.6 3.6 0 0 1-3-3.1zm3.3-5.6a1.5 1.5 0 1 0 1.5-1.5 1.5 1.5 0 0 0-1.5 1.5zm-3.3 5.6a1.8 1.8 0 1 0 1.7-1.8 1.8 1.8 0 0 0-1.7 1.8zm6.6 0a1.8 1.8 0 1 0 1.7-1.8 1.8 1.8 0 0 0-1.7 1.8z'/%3E%3C/svg%3E");
 }
 
-/* Surplus — grain sheaf / store (material buffer) */
 .kod-fortune-pillar--surplus {
   --kod-fortune-accent: #c4a035;
   border-top-color: #c4a035;
 }
 .kod-fortune-pillar--surplus .kod-fortune-pillar__icon {
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M12 2c1.2 2.2 1.2 4.2 0 6.2-1.2-2-1.2-4 0-6.2zm0 6.5c1.5 2.4 1.5 4.6 0 7-1.5-2.4-1.5-4.6 0-7zm-3.2-3.2c1.5 1.6 2.2 3.3 2 5.2-1.8-.4-3.2-1.6-4.2-3.4 1 .2 1.7-.4 2.2-1.8zm6.4 0c.5 1.4 1.2 2 2.2 1.8-1 1.8-2.4 3-4.2 3.4-.2-1.9.5-3.6 2-5.2zM11 15.5h2V22h-2v-6.5z'/%3E%3C/svg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M12 2c1.2 2.2 1.2 4.2 0 6.2-1.2-2-1.2-4 0-6.2zm0 6.5c1.5 2.4 1.5 4.6 0 7-1.5-2.4-1.5-4.6 0-7zm-3.2-3.2c1.5 1.6 2.2 3.3 2 5.2-1.8-.4-3.2-1.6-4.2-3.4 1 .2 1.7-.4 2.2-1.8zm6.4 0c.5 1.4 1.2 2 2.2 1.8-1 1.8-2.4 3-4.2 3.4-.2-1.9.5-3.6 2-5.2zM11 15.5h2V22h-2v-6.5z'/%3E%3C/svg%3E");
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M16 2.2 3.5 11.5v1.9h2.1V29h20.8V13.4h2.1v-1.9L16 2.2zm0 2.5 10.4 7.7V27H5.6V12.4L16 4.7zM10.2 13.8c1.1 1.8 1.1 3.6 0 5.4-1.1-1.8-1.1-3.6 0-5.4zm5.8 0c1.1 1.8 1.1 3.6 0 5.4-1.1-1.8-1.1-3.6 0-5.4zm5.8 0c1.1 1.8 1.1 3.6 0 5.4-1.1-1.8-1.1-3.6 0-5.4zM8.8 20.2h14.4v1.6H8.8v-1.6zm1.4 2.8h4.2c.8 0 1.4.6 1.4 1.4V27H8.8v-2.6c0-.8.6-1.4 1.4-1.4zm7.4 0h4.2c.8 0 1.4.6 1.4 1.4V27h-5.6v-2.6c0-.8.6-1.4 1.4-1.4zM14.2 12.8h3.6v6.2h-3.6v-6.2z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M16 2.2 3.5 11.5v1.9h2.1V29h20.8V13.4h2.1v-1.9L16 2.2zm0 2.5 10.4 7.7V27H5.6V12.4L16 4.7zM10.2 13.8c1.1 1.8 1.1 3.6 0 5.4-1.1-1.8-1.1-3.6 0-5.4zm5.8 0c1.1 1.8 1.1 3.6 0 5.4-1.1-1.8-1.1-3.6 0-5.4zm5.8 0c1.1 1.8 1.1 3.6 0 5.4-1.1-1.8-1.1-3.6 0-5.4zM8.8 20.2h14.4v1.6H8.8v-1.6zm1.4 2.8h4.2c.8 0 1.4.6 1.4 1.4V27H8.8v-2.6c0-.8.6-1.4 1.4-1.4zm7.4 0h4.2c.8 0 1.4.6 1.4 1.4V27h-5.6v-2.6c0-.8.6-1.4 1.4-1.4zM14.2 12.8h3.6v6.2h-3.6v-6.2z'/%3E%3C/svg%3E");
 }
 
-/* Standing — banner (external weight) */
 .kod-fortune-pillar--standing {
   --kod-fortune-accent: #9b8fd4;
   border-top-color: #9b8fd4;
 }
 .kod-fortune-pillar--standing .kod-fortune-pillar__icon {
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M5 3h2v18H5V3zm3 1h9.5l-1.8 3.2L17.5 10H8V4zm2 2v2h5.2l-.9-1.5L15.2 6H10z'/%3E%3C/svg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M5 3h2v18H5V3zm3 1h9.5l-1.8 3.2L17.5 10H8V4zm2 2v2h5.2l-.9-1.5L15.2 6H10z'/%3E%3C/svg%3E");
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M4.5 28.2h23v1.7h-23v-1.7zm2.4-1.7h18.2l-2.6-6.8H9.5l-2.6 6.8zm3.4-8.4h11.4l1.5 3.9H8.8l1.5-3.9zM15.1 3.5h1.8v14h-1.8v-14zm1.8 0 7.8 3.5-1.3 2.3-4.7-2.1v4l5.2 2.3-1.3 2.3-5.7-2.5V3.5zM9.8 9.2a4.1 4.1 0 0 1 4.2-4.1c.5 0 .9.1 1.3.2v1.8c-.4-.1-.8-.2-1.3-.2a2.4 2.4 0 0 0-2.4 2.4c0 1 .5 1.8 1.4 2.2l-1.4 3.5A4.1 4.1 0 0 1 9.8 9.2z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M4.5 28.2h23v1.7h-23v-1.7zm2.4-1.7h18.2l-2.6-6.8H9.5l-2.6 6.8zm3.4-8.4h11.4l1.5 3.9H8.8l1.5-3.9zM15.1 3.5h1.8v14h-1.8v-14zm1.8 0 7.8 3.5-1.3 2.3-4.7-2.1v4l5.2 2.3-1.3 2.3-5.7-2.5V3.5zM9.8 9.2a4.1 4.1 0 0 1 4.2-4.1c.5 0 .9.1 1.3.2v1.8c-.4-.1-.8-.2-1.3-.2a2.4 2.4 0 0 0-2.4 2.4c0 1 .5 1.8 1.4 2.2l-1.4 3.5A4.1 4.1 0 0 1 9.8 9.2z'/%3E%3C/svg%3E");
 }
 
-/* Tradition — scroll / memory */
 .kod-fortune-pillar--tradition {
   --kod-fortune-accent: #6fc4b0;
   border-top-color: #6fc4b0;
 }
 .kod-fortune-pillar--tradition .kod-fortune-pillar__icon {
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M6 3h9a3 3 0 0 1 3 3v11.5a1.5 1.5 0 1 1-1.2-2.9V6a1 1 0 0 0-1-1H7v14h8.5a.5.5 0 0 1 0 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm2 4h6v1.5H8V7zm0 3h6v1.5H8V10zm0 3h4v1.5H8V13z'/%3E%3C/svg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M6 3h9a3 3 0 0 1 3 3v11.5a1.5 1.5 0 1 1-1.2-2.9V6a1 1 0 0 0-1-1H7v14h8.5a.5.5 0 0 1 0 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm2 4h6v1.5H8V7zm0 3h6v1.5H8V10zm0 3h4v1.5H8V13z'/%3E%3C/svg%3E");
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M10 3h12l1.5 23.5H8.5L10 3zm1.8 1.7-.9 15.2h10.2l-.9-15.2H11.8zm4.2 2.4a3.8 3.8 0 0 1 2.2 6.9l1.9 5.6h-1.8l-1.7-5h-.8l-1.7 5H12l1.9-5.6a3.8 3.8 0 0 1 2.1-6.9zm0 1.6a2.2 2.2 0 1 0 2.2 2.2 2.2 2.2 0 0 0-2.2-2.2zM6.2 27.4c0-1.7 1.6-3 3.7-3.5.4 1 1 1.9 1.7 2.6-1.5.2-2.5.9-2.5 1.7 0 1.1 2.2 2 5.1 2h4c2.9 0 5.1-.9 5.1-2 0-.8-1-1.5-2.5-1.7.7-.7 1.3-1.6 1.7-2.6 2.1.5 3.7 1.8 3.7 3.5 0 2.4-3.6 4.2-8 4.2h-4c-4.4 0-8-1.8-8-4.2z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M10 3h12l1.5 23.5H8.5L10 3zm1.8 1.7-.9 15.2h10.2l-.9-15.2H11.8zm4.2 2.4a3.8 3.8 0 0 1 2.2 6.9l1.9 5.6h-1.8l-1.7-5h-.8l-1.7 5H12l1.9-5.6a3.8 3.8 0 0 1 2.1-6.9zm0 1.6a2.2 2.2 0 1 0 2.2 2.2 2.2 2.2 0 0 0-2.2-2.2zM6.2 27.4c0-1.7 1.6-3 3.7-3.5.4 1 1 1.9 1.7 2.6-1.5.2-2.5.9-2.5 1.7 0 1.1 2.2 2 5.1 2h4c2.9 0 5.1-.9 5.1-2 0-.8-1-1.5-2.5-1.7.7-.7 1.3-1.6 1.7-2.6 2.1.5 3.7 1.8 3.7 3.5 0 2.4-3.6 4.2-8 4.2h-4c-4.4 0-8-1.8-8-4.2z'/%3E%3C/svg%3E");
 }
 
 .sl-markdown-content .kod-fortune-hall > * {
@@ -1646,40 +1649,164 @@ site-title img,
   font-size: 0.95em;
   margin-bottom: 0.1rem;
 }
-.kod-tier-ladder {
+/* --- Hierarchy diagram: parallel axis ladders + Ruler crown -------------- */
+.kod-hier-diagram {
+  margin: 1.25rem 0 1.55rem;
+  padding: 0.85rem 0.75rem 1rem;
+  border: 1px solid color-mix(in srgb, var(--kod-blood) 30%, #333);
+  border-radius: 3px;
+  background: #0a0808;
+}
+.kod-hier-ruler {
+  box-sizing: border-box;
+  margin: 0 0 0.85rem !important;
+  padding: 0.7rem 0.9rem;
+  text-align: center;
+  border: 1px solid color-mix(in srgb, var(--kod-blood) 55%, #444);
+  border-radius: 2px;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--kod-blood-deep) 65%, #1a0c0c),
+    #100808 80%
+  );
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--kod-blood) 20%, transparent);
+}
+.kod-hier-ruler__title {
+  font-family: var(--kod-font-display);
+  font-size: 1.15rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #f0c0c0;
+  margin: 0 0 0.25rem;
+}
+.kod-hier-ruler__note {
+  margin: 0;
+  font-size: 0.9em;
+  line-height: 1.45;
+  color: #d0b0b0;
+}
+.kod-hier-join {
+  display: flex;
+  justify-content: center;
+  gap: 0.35rem;
+  margin: 0 0 0.55rem;
+  color: color-mix(in srgb, var(--kod-blood-bright) 70%, #666);
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  opacity: 0.85;
+}
+.kod-hier-axes {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 0.4rem;
-  margin: 0.85rem 0 1.1rem;
+  gap: 0.5rem;
+  align-items: stretch;
 }
-@media (max-width: 40rem) {
-  .kod-tier-ladder {
+@media (max-width: 50rem) {
+  .kod-hier-axes {
     grid-template-columns: 1fr 1fr;
   }
 }
-.kod-tier {
+@media (max-width: 28rem) {
+  .kod-hier-axes {
+    grid-template-columns: 1fr;
+  }
+}
+.kod-hier-axis {
   box-sizing: border-box;
   margin: 0 !important;
-  padding: 0.55rem 0.6rem;
-  text-align: center;
-  border: 1px solid #3a3030;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  border: 1px solid #2a2424;
+  border-top: 3px solid var(--kod-hier-accent, #666);
   border-radius: 2px;
-  background: #0e0c0c;
-  font-size: 0.88em;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--kod-hier-accent, #444) 14%, #0c0a0a),
+    #0a0808 70%
+  );
+  overflow: hidden;
+}
+.kod-hier-axis--arms {
+  --kod-hier-accent: #b85a4a;
+}
+.kod-hier-axis--faith {
+  --kod-hier-accent: #7a8fd4;
+}
+.kod-hier-axis--coin {
+  --kod-hier-accent: #c4a035;
+}
+.kod-hier-axis--blood {
+  --kod-hier-accent: #8a5a9a;
+}
+.kod-hier-axis__head {
+  padding: 0.55rem 0.5rem 0.5rem;
+  text-align: center;
+  border-bottom: 1px solid color-mix(in srgb, #f2efe9 8%, #2a2222);
+}
+.kod-hier-axis__name {
+  font-family: var(--kod-font-display);
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #fff8f0;
+  margin: 0 0 0.2rem;
+}
+.kod-hier-axis__domain {
+  margin: 0;
+  font-size: 0.78em;
+  line-height: 1.35;
   color: var(--kod-silver-dim);
 }
-.kod-tier strong {
+.kod-hier-rungs {
+  list-style: none;
+  margin: 0;
+  padding: 0.35rem 0.4rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.28rem;
+  flex: 1 1 auto;
+}
+.kod-hier-rungs li {
+  margin: 0 !important;
+  padding: 0.35rem 0.4rem;
+  text-align: center;
+  font-size: 0.82em;
+  letter-spacing: 0.04em;
+  color: var(--kod-silver);
+  border: 1px solid color-mix(in srgb, var(--kod-hier-accent, #666) 25%, #333);
+  border-radius: 2px;
+  background: color-mix(in srgb, #0c0a0a 70%, transparent);
+}
+.kod-hier-rungs li strong {
   display: block;
   background: none !important;
   color: #fff8f0;
-  font-size: 1em;
-  margin-bottom: 0.2rem;
+  font-size: 0.95em;
+  margin-bottom: 0.1rem;
+  font-family: var(--kod-font-display);
+  letter-spacing: 0.06em;
 }
-.kod-tier--ruler {
-  border-color: color-mix(in srgb, var(--kod-blood) 50%, #333);
-  background: color-mix(in srgb, var(--kod-blood-deep) 40%, #0e0c0c);
-  grid-column: 1 / -1;
-  color: #e8a0a0;
+/* Top of ladder (Honoured) slightly emphasised */
+.kod-hier-rungs li:first-child {
+  border-color: color-mix(in srgb, var(--kod-hier-accent, #666) 55%, #444);
+  background: color-mix(in srgb, var(--kod-hier-accent, #444) 18%, #0c0a0a);
+}
+/* Bottom (Outcast) quieter */
+.kod-hier-rungs li:last-child {
+  opacity: 0.88;
+  color: var(--kod-silver-dim);
+}
+.kod-hier-caption {
+  margin: 0.75rem 0 0 !important;
+  text-align: center;
+  font-size: 0.92em;
+  line-height: 1.5;
+  color: var(--kod-silver-dim);
+}
+.sl-markdown-content .kod-hier-diagram > *,
+.sl-markdown-content .kod-hier-axes > * {
+  margin-top: 0 !important;
 }
 
 /* Harm track pairing as compact grid */

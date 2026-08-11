@@ -12,38 +12,76 @@ description: Hierarchies, Reputation, Legacies, and the Diagram.
 
 Hierarchies are where the community sees its people — position believed, understood, and accepted.
 
-A Hierarchy is one axis of power inside the community. Every campaign starts with a default set of four. The Storyteller may rename, add, or remove them — hard **maximum of five** axes.
+A Hierarchy is **one axis** of power inside the community — not the whole social map. Every campaign starts with a default set of four axes. The Storyteller may rename, add, or remove them — hard **maximum of five**.
 
-**Default Hierarchies**
-
-| Axis | Domain |
-|------|--------|
-| **Arms** | Martial strength, protection, war, right to violence |
-| **Faith** | Spiritual authority, ritual, sacred knowledge, moral weight |
-| **Coin** | Wealth, trade, material surplus, economic leverage |
-| **Blood** | Kinship, land, lineage, custom, domestic authority |
-
-One person may hold positions on several Hierarchies at once.
+One person may hold a tier on **several** axes at once (Honoured on Coin, Acknowledged on Arms). Climbing is **per axis**. The **Ruler** is not the fifth rung of any ladder — it is a **single shared seat above all axes**. Only one person holds it, no matter which axis they rose through.
 
 During [Campaign Setup](/campaign-setup/), leave axes empty of names; standing is discovered and claimed in play.
 
-----------
+### The shape of the Diagram
 
-### Tiers
+Read the diagram top-down: one crown, then parallel ladders. Each column is a separate Hierarchy. Each ladder uses the **same four tiers** (top of column = Honoured, bottom = Outcast).
 
-Each Hierarchy uses the same four steps:
-
-<div class="kod-tier-ladder not-content">
-<div class="kod-tier"><strong>Outcast</strong> No standing. Default start.</div>
-<div class="kod-tier"><strong>Acknowledged</strong> Known and tolerated. A foothold.</div>
-<div class="kod-tier"><strong>Trusted</strong> Relied upon. Real responsibility.</div>
-<div class="kod-tier"><strong>Honoured</strong> Significant voice and weight.</div>
-<div class="kod-tier kod-tier--ruler"><strong>Ruler</strong> One seat above every Hierarchy. Only one person holds it.</div>
+<div class="kod-hier-diagram not-content" aria-label="Hierarchy diagram">
+<div class="kod-hier-ruler">
+<p class="kod-hier-ruler__title">Ruler</p>
+<p class="kod-hier-ruler__note">One seat for the whole community — above every axis, not the top of Arms, Faith, Coin, or Blood.</p>
+</div>
+<p class="kod-hier-join" aria-hidden="true">↓ · ↓ · ↓ · ↓</p>
+<div class="kod-hier-axes">
+<div class="kod-hier-axis kod-hier-axis--arms">
+<div class="kod-hier-axis__head">
+<p class="kod-hier-axis__name">Arms</p>
+<p class="kod-hier-axis__domain">Martial strength, protection, war, right to violence</p>
+</div>
+<ol class="kod-hier-rungs">
+<li><strong>Honoured</strong> Significant voice</li>
+<li><strong>Trusted</strong> Real responsibility</li>
+<li><strong>Acknowledged</strong> A foothold</li>
+<li><strong>Outcast</strong> No standing</li>
+</ol>
+</div>
+<div class="kod-hier-axis kod-hier-axis--faith">
+<div class="kod-hier-axis__head">
+<p class="kod-hier-axis__name">Faith</p>
+<p class="kod-hier-axis__domain">Ritual, sacred knowledge, moral weight</p>
+</div>
+<ol class="kod-hier-rungs">
+<li><strong>Honoured</strong> Significant voice</li>
+<li><strong>Trusted</strong> Real responsibility</li>
+<li><strong>Acknowledged</strong> A foothold</li>
+<li><strong>Outcast</strong> No standing</li>
+</ol>
+</div>
+<div class="kod-hier-axis kod-hier-axis--coin">
+<div class="kod-hier-axis__head">
+<p class="kod-hier-axis__name">Coin</p>
+<p class="kod-hier-axis__domain">Wealth, trade, material surplus, leverage</p>
+</div>
+<ol class="kod-hier-rungs">
+<li><strong>Honoured</strong> Significant voice</li>
+<li><strong>Trusted</strong> Real responsibility</li>
+<li><strong>Acknowledged</strong> A foothold</li>
+<li><strong>Outcast</strong> No standing</li>
+</ol>
+</div>
+<div class="kod-hier-axis kod-hier-axis--blood">
+<div class="kod-hier-axis__head">
+<p class="kod-hier-axis__name">Blood</p>
+<p class="kod-hier-axis__domain">Kinship, land, lineage, domestic authority</p>
+</div>
+<ol class="kod-hier-rungs">
+<li><strong>Honoured</strong> Significant voice</li>
+<li><strong>Trusted</strong> Real responsibility</li>
+<li><strong>Acknowledged</strong> A foothold</li>
+<li><strong>Outcast</strong> No standing</li>
+</ol>
+</div>
+</div>
+<p class="kod-hier-caption">Same four rungs on every axis. A character may stand high on one and low on another. The Ruler seat is singular and sits above the whole set.</p>
 </div>
 
-Only one individual holds the **Ruler** position at a time, regardless of which Hierarchy they rose through.
-
-Characters who never belonged to the community are **Outsiders**. They sit apart on the Diagram until they enter, then begin as Outcasts.
+Characters who never belonged to the community are **Outsiders**. They sit **apart** on the Diagram (not on any axis) until they enter, then begin as **Outcast** on the axes that apply.
 
 Default after [The Weighing](/character-creation/#after-the-weighing): **Outcast**, unless fiction already places them higher.
 
