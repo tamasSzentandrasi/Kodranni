@@ -206,13 +206,13 @@ Hints:
 - Armour, reputation, favours, numbers, and terrain are **context** for Advantage / Disadvantage and for interpreting the margin — not separate subsystems — except where [Harm](/harm/) uses armour **or** Reputation **protection ratios** (not both on the same event; the Storyteller picks the contest type).
 
 <aside class="kod-example" aria-label="Example">
-<p class="kod-example__scene">After dark, the reeve has barred the gate. A traveller must get a sick child to the healer inside the walls. Not a fight — will and words. The reeve has the wall and his office; the traveller has a clear errand and a steady voice. Neither side holds clear Advantage. Ordinary tier for both.</p>
+<p class="kod-example__scene">A landowner has barred his hall after dark. A traveller must get a sick child to the healer who lives within. Not a fight — will and words. The landowner has the door and his household; the traveller has a clear errand and a steady voice. Neither side holds clear Advantage. Ordinary tier for both.</p>
 <ol class="kod-example__steps">
-<li><strong>Intent:</strong> persuade the reeve to open the gate.</li>
+<li><strong>Intent:</strong> persuade the landowner to open the hall.</li>
 <li><strong>Player:</strong> Charisma + Negotiation, <strong>d8</strong> → 3 Marks.</li>
-<li><strong>Reply (reeve):</strong> Resolve + Insight, <strong>d8</strong> → 1 Mark. (Pairs need not match.)</li>
+<li><strong>Reply (landowner):</strong> Resolve + Insight, <strong>d8</strong> → 1 Mark. (Pairs need not match.)</li>
 <li><strong>Margin:</strong> 3 − 1 = <strong>2</strong> for the player.</li>
-<li><strong>Outcome:</strong> the gate opens; the reeve is convinced, not humiliated. <a href="/harm/">Harm</a> only if the Storyteller later rules lasting damage to standing or body.</li>
+<li><strong>Outcome:</strong> the door opens; the landowner is convinced, not humiliated. <a href="/harm/">Harm</a> only if the Storyteller later rules lasting damage to standing or body.</li>
 </ol>
 </aside>
 

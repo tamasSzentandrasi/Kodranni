@@ -99,34 +99,83 @@ The seeds below are examples only — concrete, campaign-scale situations that w
 
 ## Worldbuilding Practices
 
-Do these in order.
+Do these **in order**. Use the walkthrough below — each step has the rule, a worked example, and a short best practice. The examples follow one coastal kinship so the picture stays coherent; change the setting freely.
 
-1. Decide the spectrum position (tightly historical / semi-historical / fully invented) and keep it consistent.
+<div class="kod-widget not-content" data-widget="step-flow">
+<p class="kod-widget__title">Worldbuilding walkthrough</p>
+<p class="kod-widget__intro">Nine steps. Build a place that can feed a campaign — not a map of everything that exists.</p>
+<p class="kod-step-flow__label" data-step-label></p>
+<div class="kod-step-flow__track" role="group" aria-label="Worldbuilding steps">
+<button type="button" class="kod-widget__btn" data-tab="1" aria-pressed="true">1</button>
+<button type="button" class="kod-widget__btn" data-tab="2">2</button>
+<button type="button" class="kod-widget__btn" data-tab="3">3</button>
+<button type="button" class="kod-widget__btn" data-tab="4">4</button>
+<button type="button" class="kod-widget__btn" data-tab="5">5</button>
+<button type="button" class="kod-widget__btn" data-tab="6">6</button>
+<button type="button" class="kod-widget__btn" data-tab="7">7</button>
+<button type="button" class="kod-widget__btn" data-tab="8">8</button>
+<button type="button" class="kod-widget__btn" data-tab="9">9</button>
+</div>
 
-2. Research and fix the ordinary professions and daily lifestyle of the people who live in this community. What most of them actually do from season to season to stay alive and keep the group intact. This is the baseline everything else presses against.  
-   Example: for a coastal kinship group — the men and older boys are on the water from before dawn in the fishing months, the women and children dry and salt the catch, mend nets, and keep the smokehouses running; in the off months everyone turns to boat repair, cordage, and the small barley plots behind the houses.
+<div class="kod-widget__panel" data-panel-id="1" data-step-title="Spectrum">
+<p><strong>Decide the spectrum</strong> — tightly historical, semi-historical, or fully invented — and keep it consistent for the whole campaign.</p>
+<div class="kod-step-example"><strong>Example</strong>Semi-historical coastal kinship: real seasonal fishing pressure, invented names and exact shore, no magic.</div>
+<div class="kod-step-best"><strong>Best practice</strong>Write the spectrum choice in one line at the top of your notes. If you drift into high fantasy mid-prep, the constraints will fight you later.</div>
+</div>
 
-3. Name the specific material things that must keep working or the community begins to fail.  
-   Examples: the upper summer pasture that still holds grass after midsummer; the only spring that does not dry in August; the three remaining boats sound enough for the open water; the seed barley still unmixed with last year’s mould; the right to cut reed on the far bank; the memory of the exact wording of the toll agreement with the downstream settlement.
+<div class="kod-widget__panel" data-panel-id="2" data-step-title="Daily life" hidden>
+<p><strong>Fix ordinary professions and daily lifestyle.</strong> What most people do from season to season to stay alive and keep the group intact. This is the baseline everything else presses against.</p>
+<div class="kod-step-example"><strong>Example</strong>Fishing months: men and older boys on the water before dawn; women and children dry and salt the catch, mend nets, run the smokehouses. Off months: boat repair, cordage, small barley plots behind the houses.</div>
+<div class="kod-step-best"><strong>Best practice</strong>One paragraph is enough. If you cannot say how people eat in winter, you do not have a community yet.</div>
+</div>
 
-4. For each of those things write one concrete sentence of present strain. Exact and local.  
-   Examples:  
-   - The upper pasture was still under late snow in the third week of June and the ewes came down thin.  
-   - The spring flow is half what the oldest women remember and the waiting line starts before first light.  
-   - Two of the three good boats took water in the last autumn blow and have not been fully recaulked.  
-   - The seed barley was stored damp; a third of it shows the black dust.
+<div class="kod-widget__panel" data-panel-id="3" data-step-title="What must work" hidden>
+<p><strong>Name the material things that must keep working</strong> or the community begins to fail. Specific objects, rights, and places — not abstract “resources.”</p>
+<div class="kod-step-example"><strong>Example</strong>The upper summer pasture that still holds grass after midsummer; the only spring that does not dry in August; the three boats still sound for open water; the seed barley not yet moulded; the reed-cutting right on the far bank; the exact wording of the toll agreement with the downstream settlement.</div>
+<div class="kod-step-best"><strong>Best practice</strong>Aim for five to eight named things. Each should be something a player can steal, defend, burn, or bargain over in a single session.</div>
+</div>
 
-5. Identify the living people who currently control or know those things. Households and individuals, not titles. Do **not** place them on any [Hierarchy](/hierarchies/) yet.  
-   Examples: the widow who still holds the best drying racks and will not lend them; the two brothers who alone know the deep channel markers; the old man who can still recite the toll agreement word for word; the household that kept its iron tools when others sold theirs.
+<div class="kod-widget__panel" data-panel-id="4" data-step-title="Present strain" hidden>
+<p><strong>For each of those things, write one concrete sentence of present strain.</strong> Exact and local — what is wrong <em>now</em>.</p>
+<div class="kod-step-example"><strong>Example</strong>The upper pasture was still under late snow in the third week of June and the ewes came down thin. The spring flow is half what the oldest women remember; the waiting line starts before first light. Two of the three good boats took water in the last autumn blow and have not been fully recaulked. The seed barley was stored damp; a third shows the black dust.</div>
+<div class="kod-step-best"><strong>Best practice</strong>If the strain sentence could fit any village, rewrite it until it could only be this place this year.</div>
+</div>
 
-6. Leave the Hierarchy axes empty of names. Standing will be discovered and claimed in play. Default axes: Arms, Faith, Coin, Blood — see [Hierarchies](/hierarchies/).
+<div class="kod-widget__panel" data-panel-id="5" data-step-title="Who holds it" hidden>
+<p><strong>Identify the living people who control or know those things.</strong> Households and individuals — not titles. Do <strong>not</strong> place them on any <a href="/hierarchies/">Hierarchy</a> yet.</p>
+<div class="kod-step-example"><strong>Example</strong>The widow who still holds the best drying racks and will not lend them. The two brothers who alone know the deep channel markers. The old man who can recite the toll agreement word for word. The household that kept its iron tools when others sold theirs.</div>
+<div class="kod-step-best"><strong>Best practice</strong>Give each a desire and a fear in six words or less. Standing will be claimed in play; prep people, not ranks.</div>
+</div>
 
-7. Prepare three or four visible traces of recent history that anyone can see.  
-   Examples: a row of new graves cut into the hard ground above the old burial place; the blackened posts of a storehouse that burned two winters ago and was never rebuilt; a boat pulled high and left with its planks sprung; the empty pens where the second herd used to be counted.
+<div class="kod-widget__panel" data-panel-id="6" data-step-title="Empty Hierarchies" hidden>
+<p><strong>Leave the Hierarchy axes empty of names.</strong> Standing will be discovered and claimed in play. Default axes: Arms, Faith, Coin, Blood — see <a href="/hierarchies/">Hierarchies</a>.</p>
+<div class="kod-step-example"><strong>Example</strong>Arms / Faith / Coin / Blood drawn as empty ladders on the Diagram. No one written in yet — not even the obvious elders.</div>
+<div class="kod-step-best"><strong>Best practice</strong>If you pre-fill ranks, players arrive to a finished court drama. Leave the seats cold until fiction fills them.</div>
+</div>
 
-8. Stop.
+<div class="kod-widget__panel" data-panel-id="7" data-step-title="Visible history" hidden>
+<p><strong>Prepare three or four visible traces of recent history</strong> that anyone can see without a roll or a lecture.</p>
+<div class="kod-step-example"><strong>Example</strong>A row of new graves cut into the hard ground above the old burial place. The blackened posts of a storehouse that burned two winters ago and was never rebuilt. A boat pulled high with its planks sprung. The empty pens where the second herd used to be counted.</div>
+<div class="kod-step-best"><strong>Best practice</strong>Each trace should answer “what hurt us lately?” without the Storyteller saying so. Players will ask. Answer with what they can touch and see.</div>
+</div>
 
-9. From everything above, set the community’s starting **[Fortunes](/echoes/#fortunes)** (Vitality, Cohesion, Surplus, Standing, Tradition) as soft 0–3 impressions. These are working assumptions only; early play will confirm or correct them. Automation should store them when the campaign record is created.
+<div class="kod-widget__panel" data-panel-id="8" data-step-title="Stop" hidden>
+<p><strong>Stop.</strong></p>
+<div class="kod-step-example"><strong>Example</strong>Notes closed. No more named cousins, no secret maps, no second village “just in case.”</div>
+<div class="kod-step-best"><strong>Best practice</strong>Over-prep kills discovery. If you feel the urge to add another subplot, write one sentence of pressure instead and leave it for play.</div>
+</div>
+
+<div class="kod-widget__panel" data-panel-id="9" data-step-title="Starting Fortunes" hidden>
+<p><strong>Set starting <a href="/echoes/#fortunes">Fortunes</a></strong> — Vitality, Cohesion, Surplus, Standing, Tradition — as soft 0–3 impressions from everything above. Working assumptions only; early play will confirm or correct them. Automation should store them when the campaign record is created.</p>
+<div class="kod-step-example"><strong>Example</strong>Vitality 1 (plague graves, thin ewes). Cohesion 2 (still one kinship, fraying). Surplus 1 (seed mould, boats bad). Standing 1 (downstream settlement presses the toll). Tradition 2 (the agreement is still remembered word for word).</div>
+<div class="kod-step-best"><strong>Best practice</strong>If every Fortune is 2 or 3, you have not used your strain sentences. Let the worst material facts drag the numbers down.</div>
+</div>
+
+<div class="kod-step-flow__nav">
+<button type="button" data-step-prev>← Back</button>
+<button type="button" data-step-next>Next →</button>
+</div>
+</div>
 
 ----------
 

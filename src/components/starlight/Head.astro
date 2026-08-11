@@ -281,6 +281,61 @@ const fontFacesCss = `
 		});
 	}
 
+	/**
+	 * Step-flow wizard: numbered buttons + prev/next + optional title labels.
+	 * Markup: [data-widget="step-flow"] with [data-tab] buttons (ordered),
+	 * [data-panel-id] panels, [data-step-prev]/[data-step-next], optional [data-step-label].
+	 */
+	function setupStepFlows() {
+		document.querySelectorAll('[data-widget="step-flow"]').forEach((root) => {
+			if (root.dataset.ready) return;
+			root.dataset.ready = '1';
+			const buttons = [...root.querySelectorAll('[data-tab]')];
+			const panels = [...root.querySelectorAll('[data-panel-id]')];
+			const prev = root.querySelector('[data-step-prev]');
+			const next = root.querySelector('[data-step-next]');
+			const labelEl = root.querySelector('[data-step-label]');
+			if (!buttons.length || !panels.length) return;
+			const ids = buttons.map((b) => b.dataset.tab);
+			let index = Math.max(
+				0,
+				ids.indexOf(
+					buttons.find((b) => b.getAttribute('aria-pressed') === 'true')?.dataset.tab ||
+						ids[0],
+				),
+			);
+
+			function setIndex(i) {
+				index = Math.max(0, Math.min(ids.length - 1, i));
+				const id = ids[index];
+				buttons.forEach((b, bi) =>
+					b.setAttribute('aria-pressed', bi === index ? 'true' : 'false'),
+				);
+				panels.forEach((p) => {
+					const show = p.getAttribute('data-panel-id') === id;
+					if (show) p.removeAttribute('hidden');
+					else p.setAttribute('hidden', '');
+				});
+				if (labelEl) {
+					const title =
+						panels
+							.find((p) => p.getAttribute('data-panel-id') === id)
+							?.getAttribute('data-step-title') || '';
+					labelEl.textContent = title
+						? `${index + 1} / ${ids.length} — ${title}`
+						: `${index + 1} / ${ids.length}`;
+				}
+				if (prev) prev.disabled = index === 0;
+				if (next) next.disabled = index === ids.length - 1;
+			}
+
+			buttons.forEach((b, bi) => b.addEventListener('click', () => setIndex(bi)));
+			if (prev) prev.addEventListener('click', () => setIndex(index - 1));
+			if (next) next.addEventListener('click', () => setIndex(index + 1));
+			setIndex(index);
+		});
+	}
+
 	function setupScrollReveal() {
 		const root = document.querySelector('.sl-markdown-content');
 		if (!root) return;
@@ -372,6 +427,7 @@ const fontFacesCss = `
 		setupMarksLadder();
 		setupTierDial();
 		setupContentTabs();
+		setupStepFlows();
 		setupScrollReveal();
 		setupTableStrip();
 		// after layout + fonts

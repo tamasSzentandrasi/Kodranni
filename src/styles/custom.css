@@ -443,11 +443,86 @@ site-title {
   color: #b0a4e8;
 }
 
-/* Tables / lists */
+/* Tables — guidebook card style (override Starlight block table defaults) */
+.sl-markdown-content table:not(:where(.not-content *)) {
+  display: table;
+  width: 100%;
+  max-width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 1.25rem 0 1.5rem;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--kod-blood) 35%, #333);
+  border-radius: 3px;
+  background: #0c0a0a;
+  font-size: 0.98em;
+  line-height: 1.5;
+}
+
+.sl-markdown-content table:not(:where(.not-content *)) thead {
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--kod-blood-deep) 55%, #121010),
+    color-mix(in srgb, #141010 90%, #000)
+  );
+}
+
 .sl-markdown-content th {
   font-family: var(--kod-font-display);
-  letter-spacing: 0.03em;
-  border-bottom-color: var(--kod-blood) !important;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-size: 0.82em;
+  color: #f2efe9 !important;
+  border-bottom: 1px solid color-mix(in srgb, var(--kod-blood) 55%, #333) !important;
+  padding: 0.65rem 0.85rem !important;
+  vertical-align: middle;
+  text-align: start;
+}
+
+.sl-markdown-content th:first-child,
+.sl-markdown-content td:first-child {
+  padding-inline-start: 0.9rem !important;
+}
+
+.sl-markdown-content th:last-child,
+.sl-markdown-content td:last-child {
+  padding-inline-end: 0.9rem !important;
+}
+
+.sl-markdown-content td {
+  border-bottom: 1px solid color-mix(in srgb, #f2efe9 8%, #2a2222) !important;
+  padding: 0.6rem 0.85rem !important;
+  vertical-align: top;
+  color: var(--kod-silver);
+}
+
+.sl-markdown-content tbody tr:last-child td {
+  border-bottom: none !important;
+}
+
+.sl-markdown-content tbody tr:nth-child(even) td {
+  background: color-mix(in srgb, #f2efe9 3%, transparent);
+}
+
+.sl-markdown-content tbody tr:hover td {
+  background: color-mix(in srgb, var(--kod-blood-deep) 28%, transparent);
+}
+
+.sl-markdown-content td strong,
+.sl-markdown-content th strong {
+  background: none !important;
+  color: #fff8f0;
+}
+
+@media (max-width: 40rem) {
+  .sl-markdown-content table:not(:where(.not-content *)) {
+    font-size: 0.92em;
+  }
+  .sl-markdown-content th,
+  .sl-markdown-content td {
+    padding: 0.5rem 0.55rem !important;
+  }
 }
 
 .sl-markdown-content > ol {
@@ -1537,4 +1612,151 @@ site-title img,
 .sl-markdown-content .kod-tier-ladder > *,
 .sl-markdown-content .kod-harm-grid > * {
   margin-top: 0 !important;
+}
+
+/* --- Step flow (click-through wizard) -------------------------------------- */
+.kod-widget[data-widget='step-flow'] {
+  text-align: left;
+  padding-bottom: 1.25rem;
+}
+.kod-widget[data-widget='step-flow'] .kod-widget__title,
+.kod-widget[data-widget='step-flow'] .kod-widget__intro {
+  text-align: center;
+}
+.kod-step-flow__track {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.35rem;
+  margin: 0 0 1rem;
+}
+.kod-step-flow__track .kod-widget__btn {
+  width: 2.35rem;
+  min-width: 2.35rem;
+  max-width: 2.35rem;
+  height: 2.35rem;
+  min-height: 2.35rem;
+  max-height: 2.35rem;
+  border-radius: 50%;
+  font-family: var(--kod-font-display);
+  font-size: 0.95rem;
+  padding: 0;
+}
+.kod-step-flow__label {
+  text-align: center;
+  font-family: var(--kod-font-display);
+  font-size: 1.05rem;
+  letter-spacing: 0.04em;
+  color: var(--kod-silver-bright);
+  margin: 0 0 0.75rem;
+}
+.kod-widget[data-widget='step-flow'] .kod-widget__panel {
+  min-height: 8rem;
+  border-left-color: color-mix(in srgb, var(--kod-blood) 70%, #666);
+}
+.kod-widget[data-widget='step-flow'] .kod-widget__panel[hidden] {
+  display: none !important;
+}
+.kod-step-flow__nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.9rem;
+}
+.kod-step-flow__nav button {
+  appearance: none;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0.4rem 0.85rem;
+  border: 1px solid #3a3330;
+  border-radius: 2px;
+  background: #141010;
+  color: var(--kod-silver);
+  font-family: var(--kod-font-body);
+  font-size: 0.9rem;
+  cursor: pointer;
+  letter-spacing: 0.03em;
+}
+.kod-step-flow__nav button:hover:not(:disabled),
+.kod-step-flow__nav button:focus-visible:not(:disabled) {
+  border-color: var(--kod-blood-bright);
+  color: #fff8f0;
+  outline: none;
+}
+.kod-step-flow__nav button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+.kod-step-best {
+  margin: 0.85rem 0 0;
+  padding: 0.65rem 0.8rem;
+  border-left: 3px solid #4a9a8a;
+  background: color-mix(in srgb, #0a1414 85%, #1a2e2a);
+  color: #cfd8d6;
+  font-size: 0.95em;
+  line-height: 1.55;
+}
+.kod-step-best strong {
+  background: none !important;
+  color: #8fd4c0;
+  display: block;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.3rem;
+}
+.kod-step-example {
+  margin: 0.75rem 0 0;
+  padding: 0.65rem 0.8rem;
+  border-left: 3px solid var(--kod-blood);
+  background: color-mix(in srgb, var(--kod-blood-deep) 28%, transparent);
+  color: #e4dfd6;
+  font-size: 0.95em;
+  line-height: 1.55;
+}
+.kod-step-example strong {
+  background: none !important;
+  color: var(--kod-blood-bright);
+  display: block;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.3rem;
+}
+.kod-menu-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.55rem;
+  margin: 0.75rem 0 0;
+}
+@media (min-width: 45rem) {
+  .kod-menu-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.kod-menu-item {
+  box-sizing: border-box;
+  margin: 0 !important;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid #3a3030;
+  border-radius: 2px;
+  background: #100e0e;
+}
+.kod-menu-item__buy {
+  font-family: var(--kod-font-display);
+  font-size: 1rem;
+  color: #fff8f0;
+  margin: 0 0 0.3rem;
+  letter-spacing: 0.02em;
+}
+.kod-menu-item__cost {
+  margin: 0;
+  font-size: 0.9em;
+  color: var(--kod-silver-dim);
+  line-height: 1.45;
+}
+.kod-menu-item__cost strong {
+  background: none !important;
+  color: #e8a0a0;
 }
