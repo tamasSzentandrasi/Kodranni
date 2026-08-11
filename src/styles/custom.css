@@ -506,3 +506,551 @@ site-title img,
   font-size: 1.05em;
   color: #c4bfb6;
 }
+
+/* ========================================================================== */
+/* Interactive Guidebook layer                                                 */
+/* ========================================================================== */
+
+/* --- Soft image breath bands (no hard borders) ----------------------------- */
+.kod-breath {
+  margin: 1.75rem 0 2rem;
+  padding: 0;
+  border: none;
+  background: transparent;
+  line-height: 0;
+}
+
+.kod-breath img {
+  display: block;
+  width: 100%;
+  max-height: 16rem;
+  object-fit: cover;
+  border: none;
+  border-radius: 0;
+  /* Fade into page — no hard frame */
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #000 12%,
+    #000 78%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #000 12%,
+    #000 78%,
+    transparent 100%
+  );
+  opacity: 0.92;
+  filter: saturate(0.95) contrast(1.02);
+}
+
+.kod-breath--side {
+  float: right;
+  width: min(42%, 14rem);
+  margin: 0.25rem 0 1rem 1.25rem;
+}
+
+.kod-breath--side img {
+  max-height: 12rem;
+  -webkit-mask-image: radial-gradient(ellipse 80% 75% at 50% 50%, #000 40%, transparent 75%);
+  mask-image: radial-gradient(ellipse 80% 75% at 50% 50%, #000 40%, transparent 75%);
+}
+
+@media (max-width: 50rem) {
+  .kod-breath--side {
+    float: none;
+    width: 100%;
+    margin: 1.25rem 0;
+  }
+}
+
+/* --- Progressive disclosure ------------------------------------------------ */
+.kod-disclose {
+  margin: 1.35rem 0 1.5rem;
+  border: 1px solid color-mix(in srgb, var(--kod-blood) 35%, #333);
+  border-left: 4px solid var(--kod-blood);
+  background: color-mix(in srgb, var(--kod-blood-deep) 28%, #0c0c0c);
+  border-radius: 2px;
+}
+
+.kod-disclose--note {
+  border-color: color-mix(in srgb, #4a6a7a 45%, #333);
+  border-left-color: #6a8fa0;
+  background: color-mix(in srgb, #0c1418 90%, #1a2a32);
+}
+
+.kod-disclose__summary {
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  font-family: var(--kod-font-display);
+  font-size: 1.1rem;
+  letter-spacing: 0.03em;
+  color: var(--kod-blood-bright);
+  user-select: none;
+}
+
+.kod-disclose--note > .kod-disclose__summary {
+  color: #8eb4c4;
+}
+
+.kod-disclose__summary::-webkit-details-marker {
+  display: none;
+}
+
+.kod-disclose__summary::before {
+  content: '▸';
+  display: inline-block;
+  transition: transform 0.15s ease;
+  font-size: 0.85em;
+  opacity: 0.85;
+}
+
+.kod-disclose[open] > .kod-disclose__summary::before {
+  transform: rotate(90deg);
+}
+
+.kod-disclose__body {
+  padding: 0 1.1rem 1rem;
+}
+
+.kod-disclose__mark {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  opacity: 0.75;
+  margin-right: 0.15rem;
+}
+
+/* --- Two lanes (player / ST) ----------------------------------------------- */
+.kod-lanes {
+  display: grid;
+  gap: 0.75rem;
+  margin: 1.25rem 0 1.5rem;
+}
+
+@media (min-width: 50rem) {
+  .kod-lanes {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.kod-lane {
+  padding: 0.85rem 1rem;
+  border-radius: 2px;
+  border: 1px solid #2a2424;
+  background: #0c0c0c;
+}
+
+.kod-lane--player {
+  border-left: 3px solid #8a9a5a;
+}
+
+.kod-lane--st {
+  border-left: 3px solid var(--kod-blood);
+}
+
+.kod-lane__title {
+  font-family: var(--kod-font-display);
+  font-size: 0.95rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin: 0 0 0.4rem;
+  color: var(--kod-silver-bright);
+}
+
+.kod-lane p {
+  margin: 0;
+  font-size: 0.98em;
+  line-height: 1.55;
+  color: var(--kod-silver);
+}
+
+/* --- Foundation / skill cards ---------------------------------------------- */
+.kod-card-grid {
+  display: grid;
+  gap: 0.65rem;
+  margin: 1rem 0 1.35rem;
+  grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+}
+
+.kod-card {
+  padding: 0.75rem 0.9rem;
+  border: 1px solid #2a2424;
+  border-radius: 2px;
+  background: linear-gradient(160deg, #121010, #0a0a0a);
+}
+
+.kod-card__domain {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--kod-blood-bright);
+  margin: 0 0 0.25rem;
+}
+
+.kod-card strong {
+  background: none;
+  color: #fff8f0;
+  letter-spacing: 0.03em;
+}
+
+.kod-card p {
+  margin: 0.3rem 0 0;
+  font-size: 0.95em;
+  color: var(--kod-silver-dim);
+  line-height: 1.45;
+}
+
+/* --- Archetype stained-glass panels ---------------------------------------- */
+.kod-archetypes {
+  display: grid;
+  gap: 0.75rem;
+  margin: 1.25rem 0 2rem;
+}
+
+.kod-archetype {
+  border: 1px solid color-mix(in srgb, var(--kod-blood) 40%, #3a3030);
+  border-radius: 3px;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--kod-blood) 18%, transparent), transparent 42%),
+    linear-gradient(225deg, color-mix(in srgb, #4a6a7a 12%, transparent), transparent 50%),
+    #0a0808;
+  overflow: hidden;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, #f2efe9 6%, transparent);
+}
+
+.kod-archetype__summary {
+  cursor: pointer;
+  list-style: none;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 0.75rem 1rem;
+  align-items: center;
+  padding: 0.9rem 1.1rem;
+  user-select: none;
+}
+
+.kod-archetype__summary::-webkit-details-marker {
+  display: none;
+}
+
+.kod-archetype__glass {
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 2px;
+  border: 1px solid color-mix(in srgb, var(--kod-blood) 50%, #666);
+  background:
+    linear-gradient(145deg, color-mix(in srgb, var(--kod-blood-bright) 55%, #200), #1a0a0a 55%, #2a2030);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, #fff 12%, transparent),
+    inset 0 0 12px color-mix(in srgb, var(--kod-blood) 35%, transparent);
+  position: relative;
+}
+
+.kod-archetype__glass::after {
+  content: attr(data-glyph);
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: 'Noto Sans Runic', sans-serif;
+  font-size: 1.15rem;
+  color: #f2efe9;
+  text-shadow: 0 0 8px color-mix(in srgb, var(--kod-blood) 60%, transparent);
+}
+
+.kod-archetype__name {
+  font-family: var(--kod-font-display);
+  font-size: 1.35rem;
+  letter-spacing: 0.04em;
+  color: var(--kod-silver-bright);
+  margin: 0;
+}
+
+.kod-archetype__tag {
+  margin: 0.15rem 0 0;
+  font-size: 0.95em;
+  color: var(--kod-silver-dim);
+  line-height: 1.4;
+}
+
+.kod-archetype__chevron {
+  color: var(--kod-blood-bright);
+  transition: transform 0.15s ease;
+  font-size: 1.1rem;
+}
+
+.kod-archetype[open] .kod-archetype__chevron {
+  transform: rotate(90deg);
+}
+
+.kod-archetype__body {
+  padding: 0 1.15rem 1.15rem;
+  border-top: 1px solid color-mix(in srgb, var(--kod-blood) 25%, transparent);
+}
+
+.kod-archetype__body > p:first-child {
+  margin-top: 0.85rem;
+  color: #d8d2c8;
+}
+
+.kod-archetype__body ol {
+  margin: 0.65rem 0 0;
+  padding-inline-start: 1.2rem;
+}
+
+.kod-archetype__body li {
+  margin: 0.2rem 0;
+}
+
+/* --- Teaching widgets ------------------------------------------------------ */
+.kod-widget {
+  margin: 1.35rem 0 1.6rem;
+  padding: 1rem 1.1rem 1.15rem;
+  border: 1px solid color-mix(in srgb, var(--kod-blood) 40%, #333);
+  border-radius: 2px;
+  background: #0b0a0a;
+}
+
+.kod-widget__title {
+  font-family: var(--kod-font-display);
+  font-size: 1.15rem;
+  letter-spacing: 0.04em;
+  color: var(--kod-silver-bright);
+  margin: 0 0 0.65rem;
+}
+
+.kod-widget__controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0 0 0.85rem;
+}
+
+.kod-widget__btn {
+  appearance: none;
+  border: 1px solid #3a3330;
+  background: #141010;
+  color: var(--kod-silver);
+  font-family: var(--kod-font-body);
+  font-size: 0.95rem;
+  padding: 0.35rem 0.7rem;
+  border-radius: 2px;
+  cursor: pointer;
+  letter-spacing: 0.03em;
+  transition: border-color 0.12s ease, background 0.12s ease, color 0.12s ease;
+}
+
+.kod-widget__btn:hover,
+.kod-widget__btn:focus-visible {
+  border-color: var(--kod-blood-bright);
+  outline: none;
+}
+
+.kod-widget__btn[aria-pressed='true'] {
+  border-color: var(--kod-blood-bright);
+  background: color-mix(in srgb, var(--kod-blood-deep) 55%, #141010);
+  color: #fff8f0;
+}
+
+.kod-widget__panel {
+  min-height: 4.5rem;
+  padding: 0.75rem 0.85rem;
+  border-left: 3px solid var(--kod-blood);
+  background: color-mix(in srgb, var(--kod-blood-deep) 25%, transparent);
+  color: #e4dfd6;
+  line-height: 1.6;
+}
+
+.kod-widget__panel strong {
+  background: none;
+  color: #fff8f0;
+}
+
+/* --- Glossary terms -------------------------------------------------------- */
+.kod-term {
+  border-bottom: 1px dotted color-mix(in srgb, var(--kod-blood-bright) 55%, transparent);
+  cursor: help;
+  position: relative;
+}
+
+.kod-term:hover,
+.kod-term:focus-visible {
+  color: #fff8f0;
+}
+
+.kod-term::after {
+  content: attr(data-tip);
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 0.4rem);
+  transform: translateX(-50%) translateY(0.15rem);
+  width: max(12rem, min(18rem, 70vw));
+  padding: 0.5rem 0.65rem;
+  background: #121010;
+  border: 1px solid color-mix(in srgb, var(--kod-blood) 45%, #444);
+  color: #e8e2d8;
+  font-size: 0.88rem;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.12s ease, transform 0.12s ease;
+  z-index: 40;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+}
+
+.kod-term:hover::after,
+.kod-term:focus-visible::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* --- Scroll reveal / quote ink --------------------------------------------- */
+.sl-markdown-content blockquote.kod-reveal,
+.sl-markdown-content .kod-reveal-item {
+  opacity: 0;
+  transform: translateY(0.45rem);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+
+.sl-markdown-content blockquote.kod-reveal.is-in,
+.sl-markdown-content .kod-reveal-item.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+.sl-markdown-content blockquote.kod-type.is-in {
+  /* soft “written” feel without full typewriter on all chars */
+  animation: kod-ink 0.7s ease both;
+}
+
+@keyframes kod-ink {
+  from {
+    opacity: 0;
+    filter: blur(1.5px);
+  }
+  to {
+    opacity: 1;
+    filter: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sl-markdown-content blockquote.kod-reveal,
+  .sl-markdown-content .kod-reveal-item,
+  .sl-markdown-content blockquote.kod-type.is-in {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+    filter: none !important;
+    transition: none !important;
+  }
+}
+
+html[data-kod-calm='1'] .sl-markdown-content blockquote.kod-reveal,
+html[data-kod-calm='1'] .sl-markdown-content .kod-reveal-item,
+html[data-kod-calm='1'] .sl-markdown-content blockquote.kod-type.is-in {
+  opacity: 1 !important;
+  transform: none !important;
+  animation: none !important;
+  filter: none !important;
+  transition: none !important;
+}
+
+html[data-kod-calm='1'] .kod-disclose:not([open]),
+html[data-kod-calm='1'] .kod-archetype:not([open]) {
+  /* calm mode expands via JS; this is fallback hint */
+}
+
+/* --- Sticky “at the table” strip ------------------------------------------- */
+.kod-table-strip {
+  position: sticky;
+  bottom: 0;
+  z-index: 30;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  margin: 2rem -0.25rem 0;
+  padding: 0.55rem 0.85rem;
+  background: color-mix(in srgb, #050505 88%, var(--kod-blood-deep));
+  border-top: 1px solid color-mix(in srgb, var(--kod-blood) 45%, #333);
+  backdrop-filter: blur(6px);
+  font-size: 0.92rem;
+  color: var(--kod-silver);
+}
+
+.kod-table-strip__rules {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.85rem;
+  letter-spacing: 0.03em;
+}
+
+.kod-table-strip__rules span strong {
+  background: none;
+  color: #fff8f0;
+}
+
+.kod-table-strip__btn {
+  appearance: none;
+  border: 1px solid #4a3a3a;
+  background: #120e0e;
+  color: var(--kod-silver-bright);
+  font-family: var(--kod-font-body);
+  font-size: 0.85rem;
+  padding: 0.3rem 0.65rem;
+  border-radius: 2px;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+}
+
+.kod-table-strip__btn:hover,
+.kod-table-strip__btn:focus-visible {
+  border-color: var(--kod-blood-bright);
+  outline: none;
+}
+
+html[data-kod-calm='1'] .kod-table-strip__btn[data-calm-toggle] {
+  border-color: var(--kod-blood-bright);
+  background: color-mix(in srgb, var(--kod-blood-deep) 50%, #120e0e);
+}
+
+/* Floating calm control on pages without strip */
+.kod-calm-fab {
+  position: fixed;
+  right: 0.85rem;
+  bottom: 0.85rem;
+  z-index: 50;
+  appearance: none;
+  border: 1px solid #4a3a3a;
+  background: color-mix(in srgb, #0a0a0a 90%, var(--kod-blood-deep));
+  color: var(--kod-silver);
+  font-family: var(--kod-font-body);
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  padding: 0.4rem 0.65rem;
+  border-radius: 2px;
+  cursor: pointer;
+  opacity: 0.85;
+}
+
+.kod-calm-fab:hover,
+.kod-calm-fab:focus-visible {
+  opacity: 1;
+  border-color: var(--kod-blood-bright);
+  outline: none;
+}
+
+.kod-table-strip ~ .kod-calm-fab,
+body:has(.kod-table-strip) .kod-calm-fab {
+  display: none;
+}

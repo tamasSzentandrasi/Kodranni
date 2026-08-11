@@ -21,7 +21,7 @@ description: Welcome to Kodranni — a pre-industrial grim human TTRPG system.
 
 ## Welcome
 
-This Guide provides the concepts, procedures, and context needed to run and play **Kodranni** — an online tabletop role-playing game system built for pre-industrial, purely human campaigns.
+This Guide provides the concepts, procedures, and context needed to run and play **Kodranni** — an online tabletop role-playing game system built for pre-industrial, purely human campaigns. Use **Calm** (bottom corner) if you prefer every example open and no motion.
 
 Many concepts are interconnected. The Guide is ordered so that each chapter builds on the previous ones; when something is introduced early and resolved later, links point you forward. Continue with [Dice Mechanics](/dice-mechanics/), then [Human Potential](/human-potential/).
 

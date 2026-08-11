@@ -13,6 +13,17 @@ Similar to other TTRPGs, action resolution uses dice. When a **player** or **Sto
 
 This chapter walks the stack in order: **when** to roll → **what** dice mean → **how** context sets the tier → **how large** the pool is → Omen and Tide for the moments that outgrow a single throw.
 
+<div class="kod-lanes">
+<div class="kod-lane kod-lane--player">
+<p class="kod-lane__title">Player</p>
+<p>Describe intent freely. Spend <span class="kod-term" data-tip="Spendable pool for extra dice; also fatigue, hunger, thirst.">Exertion</span> if you push. Read the Marks and the fiction the Storyteller gives back — not a hidden target number.</p>
+</div>
+<div class="kod-lane kod-lane--st">
+<p class="kod-lane__title">Storyteller</p>
+<p>Name Foundation + Skill (or Primitive), declare die tier, interpret Marks and margins. No secret difficulty number to “clear.”</p>
+</div>
+</div>
+
 ----------
 
 ## When to roll
@@ -20,7 +31,6 @@ This chapter walks the stack in order: **when** to roll → **what** dice mean �
 If an action’s outcome can **significantly differ** because of luck, chance, or skill — the Storyteller **can** ask for a roll, picking the relevant characteristics to base it on. If the fiction is already clear, **do not roll**. Conversation, planning, and settled facts are not replaced by dice.
 
 The Storyteller always chooses which [Foundation](/foundations/) and (if any) [Skill](/skills/) fit the described intent, and which **die tier** the pool uses — that tier is the mechanical face of **[Advantage and Disadvantage](#advantage-and-disadvantage)**.
-
 ----------
 
 ## Dice Types and Pools
@@ -39,7 +49,7 @@ A given roll uses **only one** of these types — a pure d6, d8, or d12 pool (pl
 
 ## Marks of Success
 
-Any die that lands on **5 or higher** is a **Mark of Success**, or simply a **Mark**.
+Any die that lands on **5 or higher** is a <span class="kod-term" data-tip="Any die face of 5 or higher. Count of Marks is information the Storyteller interprets — not a pass/fail target.">**Mark of Success**</span>, or simply a **Mark**.
 
 Approximate chance a single die is a Mark:
 
@@ -59,9 +69,22 @@ That requires a subtle shift: less “did it work?”, more “**what does this 
 
 Players act under incomplete knowledge. The Storyteller scales reward, cost, and **what the fiction discloses** to the Marks on the table.
 
+<div class="kod-widget" data-widget="marks-ladder">
+<p class="kod-widget__title">Try it — night scouting ladder</p>
+<p style="margin:0 0 0.65rem;color:var(--kod-silver-dim);font-size:0.98em;">A young warrior is sent out at night to learn what the opposing army plans. Perception + Scouting, four dice. There is no hidden “need three successes.” Step the Marks:</p>
+<div class="kod-widget__controls" role="group" aria-label="Marks of Success">
+<button type="button" class="kod-widget__btn" data-marks="0">0</button>
+<button type="button" class="kod-widget__btn" data-marks="1">1</button>
+<button type="button" class="kod-widget__btn" data-marks="2">2</button>
+<button type="button" class="kod-widget__btn" data-marks="3">3</button>
+<button type="button" class="kod-widget__btn" data-marks="4">4</button>
+</div>
+<div class="kod-widget__panel" data-panel></div>
+</div>
+
 <aside class="kod-example">
-<p class="kod-example__label">Example — reading Marks (scouting)</p>
-<p class="kod-example__scene">A young warrior is sent out in the middle of the night to learn what the opposing army plans for the days ahead. The Storyteller names Perception + Scouting. The player rolls a pool of four dice. There is no hidden “you need three successes to spot the camp.” The Marks decide how the night unfolds.</p>
+<p class="kod-example__label">Example — reading Marks (scouting, full list)</p>
+<p class="kod-example__scene">Same night mission, written out as a single ladder for reference.</p>
 <ol class="kod-example__steps">
 <li><strong>0 Marks:</strong> he gets lost in the woods. The mission fails into mishap, not a clean “you see nothing.”</li>
 <li><strong>1 Mark:</strong> thin, anxious success — he grows paranoid; the Storyteller can sell him the fear that the enemy are onto him, that a patrol with torches is following.</li>
@@ -92,6 +115,16 @@ Instead: in most cases it is **fairly easy to assess which side has the advantag
   Example: a **trained hunter** who would normally roll **d8** tracks wounded prey with hounds → **d12**.
 - **Disadvantage** — challenging circumstances (poor weather, hostile ground, being surrounded, darkness, wrong tools, a Trait that hurts). The die tier **downgrades** one step (for example **d8 → d6**).  
   Example: a **veteran soldier** who would otherwise roll **d8** is surrounded on multiple sides → **d6**.
+
+<div class="kod-widget" data-widget="tier-dial">
+<p class="kod-widget__title">Try it — die tier</p>
+<div class="kod-widget__controls" role="group" aria-label="Die tier">
+<button type="button" class="kod-widget__btn" data-tier="d6">d6</button>
+<button type="button" class="kod-widget__btn" data-tier="d8">d8</button>
+<button type="button" class="kod-widget__btn" data-tier="d12">d12</button>
+</div>
+<div class="kod-widget__panel" data-panel></div>
+</div>
 
 [Traits](/traits/), terrain, numbers, reputation, weather, and armour-as-context all feed this judgment. They are **not** extra mechanical layers stacked on top of Marks. You do not add “+2 for height and +1 for cover”; you decide who has the **Advantage**, and you change the die.
 

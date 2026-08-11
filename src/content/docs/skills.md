@@ -101,121 +101,179 @@ Fiction still decides *why* rust set in; automation only applies the prompted pr
 
 ## The six Archetypes
 
-Twelve Skills each. Read the short address, then the list.
+Twelve Skills each. Open a panel — stained glass for now; your art can replace the face tiles later. Only one panel stays open at a time.
 
-----------
+<div class="kod-archetypes">
 
-### Warrior (12)
+<details class="kod-archetype" id="warrior-12">
+<summary class="kod-archetype__summary">
+<span class="kod-archetype__glass" data-glyph="ᛏ" aria-hidden="true"></span>
+<span>
+<p class="kod-archetype__name">Warrior</p>
+<p class="kod-archetype__tag">Steel and will under threat</p>
+</span>
+<span class="kod-archetype__chevron" aria-hidden="true">▸</span>
+</summary>
+<div class="kod-archetype__body">
+<p>Steel and will under threat. The Warrior is the hand that holds the line when the yard is full of enemies, the voice that orders retreat before the line breaks, the eye that sees the opening in a shield-wall. These Skills belong to violence and its discipline — not to cruelty for its own sake, but to the craft of not dying first when dying is near.</p>
+<ol>
+<li><strong>Slash</strong> (Strength) — cutting edges used in chopping or sweeping cuts</li>
+<li><strong>Pierce</strong> (Dexterity) — point work and thrusts</li>
+<li><strong>Bash</strong> (Strength) — blunt impact weapons and strikes</li>
+<li><strong>Unarmed</strong> (Strength) — striking and grappling without weapons</li>
+<li><strong>Intimidate</strong> (Authority) — projecting threat through demonstrated or implied capacity for violence</li>
+<li><strong>Deflection</strong> (Resolve) — active redirection with weapon or shield</li>
+<li><strong>Counter</strong> (Resolve) — the practiced immediate reply after a successful Deflection or Dodge</li>
+<li><strong>Command</strong> (Authority) — issuing orders that are obeyed in the heat of combat or under immediate physical threat</li>
+<li><strong>Tactics</strong> (Intellect) — reading the shape of a fight, positioning, and exploiting terrain and numbers</li>
+<li><strong>Footwork</strong> (Dexterity) — mobility, balance and positioning in combat</li>
+<li><strong>Combat Awareness</strong> (Perception) — noticing openings, threats and shifts in the immediate fight</li>
+<li><strong>Thrown</strong> (Constitution) — any thrown weapon or object used to strike or disable</li>
+</ol>
+</div>
+</details>
 
-Steel and will under threat. The Warrior is the hand that holds the line when the yard is full of enemies, the voice that orders retreat before the line breaks, the eye that sees the opening in a shield-wall. These Skills belong to violence and its discipline — not to cruelty for its own sake, but to the craft of not dying first when dying is near.
+<details class="kod-archetype" id="wayfarer-12">
+<summary class="kod-archetype__summary">
+<span class="kod-archetype__glass" data-glyph="ᚱ" aria-hidden="true"></span>
+<span>
+<p class="kod-archetype__name">Wayfarer</p>
+<p class="kod-archetype__tag">Road, river, ridge, and the dark between fires</p>
+</span>
+<span class="kod-archetype__chevron" aria-hidden="true">▸</span>
+</summary>
+<div class="kod-archetype__body">
+<p>Road, river, ridge, and the long dark between fires. The Wayfarer is whoever must read the land before the land kills them — scout, hunter, guide, sailor, rider. These Skills keep a body moving through weather and wilderness, and bring news home when the path is not safe.</p>
+<ol>
+<li><strong>Scouting</strong> (Perception) — pathfinding, navigation by stars, landmarks and trails, reading terrain for travel</li>
+<li><strong>Trapping &amp; Tracking</strong> (Perception) — locating, following, and the design and use of traps</li>
+<li><strong>Foraging &amp; Fishing</strong> (Constitution) — edible plants, fungi, water sources and fishing</li>
+<li><strong>Archery</strong> (Perception) — all bows</li>
+<li><strong>Sailing &amp; Navigation</strong> (Perception) — small craft, rivers, lakes and basic seamanship</li>
+<li><strong>Animal Handling</strong> (Resolve) — wild animals and the training or handling of companions</li>
+<li><strong>Dodge</strong> (Dexterity) — pure evasion and body movement out of the line of attack</li>
+<li><strong>Riding</strong> (Authority) — control of a mount under combat and travel stress</li>
+<li><strong>Ambush &amp; Camouflage</strong> (Guile) — choosing ground and using natural cover for surprise or concealment</li>
+<li><strong>Swimming</strong> (Constitution) — movement and survival in water</li>
+<li><strong>Wilderness</strong> (Constitution) — knowledge of nature, terrain and the living world</li>
+<li><strong>Tradecraft</strong> (Charisma) — exchange, value negotiation and market dealings on the road</li>
+</ol>
+</div>
+</details>
 
-1. **Slash** (Strength) — cutting edges used in chopping or sweeping cuts  
-2. **Pierce** (Dexterity) — point work and thrusts  
-3. **Bash** (Strength) — blunt impact weapons and strikes  
-4. **Unarmed** (Strength) — striking and grappling without weapons  
-5. **Intimidate** (Authority) — projecting threat through demonstrated or implied capacity for violence  
-6. **Deflection** (Resolve) — active redirection with weapon or shield  
-7. **Counter** (Resolve) — the practiced immediate reply after a successful Deflection or Dodge  
-8. **Command** (Authority) — issuing orders that are obeyed in the heat of combat or under immediate physical threat  
-9. **Tactics** (Intellect) — reading the shape of a fight, positioning, and exploiting terrain and numbers  
-10. **Footwork** (Dexterity) — mobility, balance and positioning in combat  
-11. **Combat Awareness** (Perception) — noticing openings, threats and shifts in the immediate fight  
-12. **Thrown** (Constitution) — any thrown weapon or object used to strike or disable  
+<details class="kod-archetype" id="artisan-12">
+<summary class="kod-archetype__summary">
+<span class="kod-archetype__glass" data-glyph="ᚲ" aria-hidden="true"></span>
+<span>
+<p class="kod-archetype__name">Artisan</p>
+<p class="kod-archetype__tag">Hammer, loom, keel, and kiln</p>
+</span>
+<span class="kod-archetype__chevron" aria-hidden="true">▸</span>
+</summary>
+<div class="kod-archetype__body">
+<p>Hammer, loom, keel, and kiln. The Artisan is the one who leaves the world more shaped than they found it — hull tight against the gale, blade true, wall standing, brew that will keep through winter. These Skills are the patient violence of making, and the pride of work that outlives the worker.</p>
+<ol>
+<li><strong>Tailoring &amp; Armory</strong> (Constitution) — cloth, leather, soft materials and the construction or repair of protective gear</li>
+<li><strong>Smithing &amp; Forging</strong> (Strength) — working metal at the forge</li>
+<li><strong>Carpentry &amp; Masonry</strong> (Strength) — timber and stone construction and shaping</li>
+<li><strong>Brewing</strong> (Constitution) — fermentation and liquid preservation</li>
+<li><strong>Fine Crafts</strong> (Dexterity) — jewellery, glass and equivalent high-precision work</li>
+<li><strong>Shipwright</strong> (Strength) — building and repairing boats and ships</li>
+<li><strong>Engineering &amp; Design</strong> (Intellect) — simple machines, structural planning and mechanisms</li>
+<li><strong>Bowyer &amp; Fletcher</strong> (Constitution) — bows, arrows and related equipment</li>
+<li><strong>Appraisal</strong> (Perception) — judging value, authenticity and quality of objects and materials</li>
+<li><strong>Handcrafting</strong> (Dexterity) — improvised tools and objects from bone, wood, sinew, stone and available materials</li>
+<li><strong>Oversight</strong> (Authority) — directing and coordinating groups of workers</li>
+<li><strong>Tinkering &amp; Repair</strong> (Constitution) — diagnosing, adjusting and restoring existing tools, mechanisms and objects</li>
+</ol>
+</div>
+</details>
 
-----------
+<details class="kod-archetype" id="mother-12">
+<summary class="kod-archetype__summary">
+<span class="kod-archetype__glass" data-glyph="ᛒ" aria-hidden="true"></span>
+<span>
+<p class="kod-archetype__name">Mother</p>
+<p class="kod-archetype__tag">Hearth, body, kin, obligation</p>
+</span>
+<span class="kod-archetype__chevron" aria-hidden="true">▸</span>
+</summary>
+<div class="kod-archetype__body">
+<p>Hearth, body, kin, and the soft iron of obligation. The Mother is not a gender and not only a parent — it is whoever holds the house together when the field fails, who midwifes, feeds, heals, comforts, and binds people with duty and love. These Skills keep the living among the living.</p>
+<ol>
+<li><strong>Cooking &amp; Preserving</strong> (Resolve) — preparation and preservation of food</li>
+<li><strong>Herbalism</strong> (Intellect) — medicinal plants and poisons</li>
+<li><strong>Childcare</strong> (Resolve) — raising children and midwifery</li>
+<li><strong>Animal Husbandry</strong> (Resolve) — breeding, care and management of domestic animals</li>
+<li><strong>Farming</strong> (Strength) — soil, crops and field management</li>
+<li><strong>Empathy</strong> (Charisma) — reading emotional states and offering personal support</li>
+<li><strong>Performance</strong> (Charisma) — expression through voice (singing), body (dancing) and presence (acting)</li>
+<li><strong>Healing</strong> (Resolve) — physical treatment of the body, wounds and injury (critical for <a href="/harm/#dying">Dying</a> stabilisation)</li>
+<li><strong>Etiquette</strong> (Resolve) — proper forms, manners and social conduct in domestic and relational settings</li>
+<li><strong>Seduction</strong> (Charisma) — intimate influence, charm and emotional leverage in personal relationships</li>
+<li><strong>Influence</strong> (Authority) — using relational position, obligations and family hooks</li>
+<li><strong>Muse</strong> (Authority) — inspiring others to action, feeling or creation</li>
+</ol>
+</div>
+</details>
 
-### Wayfarer (12)
+<details class="kod-archetype" id="sage-12">
+<summary class="kod-archetype__summary">
+<span class="kod-archetype__glass" data-glyph="ᚨ" aria-hidden="true"></span>
+<span>
+<p class="kod-archetype__name">Sage</p>
+<p class="kod-archetype__tag">Memory, counsel, and the long view</p>
+</span>
+<span class="kod-archetype__chevron" aria-hidden="true">▸</span>
+</summary>
+<div class="kod-archetype__body">
+<p>Memory, counsel, and the long view. The Sage keeps what the village would otherwise forget — numbers, names, maps, rites, the shape of a bargain, the weight of a sermon. These Skills turn chaos into record and argument into path, when force alone cannot hold the community.</p>
+<ol>
+<li><strong>Debate &amp; Rhetoric</strong> (Charisma) — structured argument and persuasive speech</li>
+<li><strong>Arithmetic &amp; Accounting</strong> (Intellect) — numbers, ledgers, shares, and practical calculation</li>
+<li><strong>Investigation</strong> (Perception) — systematic inquiry into events, places, and evidence</li>
+<li><strong>Folklore &amp; Heraldry</strong> (Intellect) — local lore, lineages, signs, and remembered custom</li>
+<li><strong>Cartography</strong> (Intellect) — maps, distances, and recorded geography</li>
+<li><strong>Mentoring</strong> (Charisma) — teaching others so that skill and judgment take root</li>
+<li><strong>Illustration</strong> (Intellect) — technical drawing, diagrams, schematics and visual recording of knowledge</li>
+<li><strong>Negotiation</strong> (Authority) — formal bargaining toward agreement between parties</li>
+<li><strong>Insight</strong> (Perception) — pure reading of motives, emotional state and unspoken position</li>
+<li><strong>Strategy</strong> (Intellect) — long-horizon planning beyond the immediate fight (contrast Warrior <strong>Tactics</strong>)</li>
+<li><strong>Ritual</strong> (Authority) — conducting communal rites, funerals, oaths, and formal observance</li>
+<li><strong>Preaching</strong> (Charisma) — public moral or spiritual address that moves a crowd</li>
+</ol>
+</div>
+</details>
 
-Road, river, ridge, and the long dark between fires. The Wayfarer is whoever must read the land before the land kills them — scout, hunter, guide, sailor, rider. These Skills keep a body moving through weather and wilderness, and bring news home when the path is not safe.
+<details class="kod-archetype" id="trickster-12">
+<summary class="kod-archetype__summary">
+<span class="kod-archetype__glass" data-glyph="ᚦ" aria-hidden="true"></span>
+<span>
+<p class="kod-archetype__name">Trickster</p>
+<p class="kod-archetype__tag">Mask, shadow, and the unlocked door</p>
+</span>
+<span class="kod-archetype__chevron" aria-hidden="true">▸</span>
+</summary>
+<div class="kod-archetype__body">
+<p>Mask, shadow, and the door that should have stayed locked. The Trickster is cunning made practice — not always a thief by trade, but always someone who moves where honest eyes are not looking. These Skills open what is closed, hide what is wanted, and turn words into weapons when steel would be too loud.</p>
+<ol>
+<li><strong>Lockpicking</strong> (Guile) — defeating locks, catches, and simple mechanical seals</li>
+<li><strong>Pickpocket</strong> (Guile) — removing objects from a person without their notice</li>
+<li><strong>Sneak</strong> (Dexterity) — quiet movement and remaining unseen while moving</li>
+<li><strong>Forgery</strong> (Guile) — false documents, seals, marks, and convincing imitations of writing or craft signs</li>
+<li><strong>Slander &amp; Ridicule</strong> (Charisma) — public or whispered attack on reputation through words</li>
+<li><strong>Smuggling</strong> (Guile) — moving goods or people past watchers, tolls, and searchers</li>
+<li><strong>Deception</strong> (Guile) — lies, false personas, and deliberate misdirection</li>
+<li><strong>Streetwise</strong> (Guile) — reading towns, underworld channels, and informal urban power</li>
+<li><strong>Acrobatics</strong> (Dexterity) — leaps, balance, contortion, and athletic movement under stress</li>
+<li><strong>Sleight of Hand</strong> (Guile) — palm, switch, conceal, and stage small manipulations</li>
+<li><strong>Off-hand &amp; Improvised Combat</strong> (Dexterity) — secondary weapons and objects not meant as arms</li>
+<li><strong>Climbing</strong> (Strength) — vertical movement on rock, timber, rope, and walls</li>
+</ol>
+</div>
+</details>
 
-1. **Scouting** (Perception) — pathfinding, navigation by stars, landmarks and trails, reading terrain for travel  
-2. **Trapping & Tracking** (Perception) — locating, following, and the design and use of traps  
-3. **Foraging & Fishing** (Constitution) — edible plants, fungi, water sources and fishing  
-4. **Archery** (Perception) — all bows  
-5. **Sailing & Navigation** (Perception) — small craft, rivers, lakes and basic seamanship  
-6. **Animal Handling** (Resolve) — wild animals and the training or handling of companions  
-7. **Dodge** (Dexterity) — pure evasion and body movement out of the line of attack  
-8. **Riding** (Authority) — control of a mount under combat and travel stress  
-9. **Ambush & Camouflage** (Guile) — choosing ground and using natural cover for surprise or concealment  
-10. **Swimming** (Constitution) — movement and survival in water  
-11. **Wilderness** (Constitution) — knowledge of nature, terrain and the living world  
-12. **Tradecraft** (Charisma) — exchange, value negotiation and market dealings on the road  
-
-----------
-
-### Artisan (12)
-
-Hammer, loom, keel, and kiln. The Artisan is the one who leaves the world more shaped than they found it — hull tight against the gale, blade true, wall standing, brew that will keep through winter. These Skills are the patient violence of making, and the pride of work that outlives the worker.
-
-1. **Tailoring & Armory** (Constitution) — cloth, leather, soft materials and the construction or repair of protective gear  
-2. **Smithing & Forging** (Strength) — working metal at the forge  
-3. **Carpentry & Masonry** (Strength) — timber and stone construction and shaping  
-4. **Brewing** (Constitution) — fermentation and liquid preservation  
-5. **Fine Crafts** (Dexterity) — jewellery, glass and equivalent high-precision work  
-6. **Shipwright** (Strength) — building and repairing boats and ships  
-7. **Engineering & Design** (Intellect) — simple machines, structural planning and mechanisms  
-8. **Bowyer & Fletcher** (Constitution) — bows, arrows and related equipment  
-9. **Appraisal** (Perception) — judging value, authenticity and quality of objects and materials  
-10. **Handcrafting** (Dexterity) — improvised tools and objects from bone, wood, sinew, stone and available materials  
-11. **Oversight** (Authority) — directing and coordinating groups of workers  
-12. **Tinkering & Repair** (Constitution) — diagnosing, adjusting and restoring existing tools, mechanisms and objects  
-
-----------
-
-### Mother (12)
-
-Hearth, body, kin, and the soft iron of obligation. The Mother is not a gender and not only a parent — it is whoever holds the house together when the field fails, who midwifes, feeds, heals, comforts, and binds people with duty and love. These Skills keep the living among the living.
-
-1. **Cooking & Preserving** (Resolve) — preparation and preservation of food  
-2. **Herbalism** (Intellect) — medicinal plants and poisons  
-3. **Childcare** (Resolve) — raising children and midwifery  
-4. **Animal Husbandry** (Resolve) — breeding, care and management of domestic animals  
-5. **Farming** (Strength) — soil, crops and field management  
-6. **Empathy** (Charisma) — reading emotional states and offering personal support  
-7. **Performance** (Charisma) — expression through voice (singing), body (dancing) and presence (acting)  
-8. **Healing** (Resolve) — physical treatment of the body, wounds and injury (critical for [Dying](/harm/#dying) stabilisation)  
-9. **Etiquette** (Resolve) — proper forms, manners and social conduct in domestic and relational settings  
-10. **Seduction** (Charisma) — intimate influence, charm and emotional leverage in personal relationships  
-11. **Influence** (Authority) — using relational position, obligations and family hooks  
-12. **Muse** (Authority) — inspiring others to action, feeling or creation  
-
-----------
-
-### Sage (12)
-
-Memory, counsel, and the long view. The Sage keeps what the village would otherwise forget — numbers, names, maps, rites, the shape of a bargain, the weight of a sermon. These Skills turn chaos into record and argument into path, when force alone cannot hold the community.
-
-1. **Debate & Rhetoric** (Charisma) — structured argument and persuasive speech  
-2. **Arithmetic & Accounting** (Intellect) — numbers, ledgers, shares, and practical calculation  
-3. **Investigation** (Perception) — systematic inquiry into events, places, and evidence  
-4. **Folklore & Heraldry** (Intellect) — local lore, lineages, signs, and remembered custom  
-5. **Cartography** (Intellect) — maps, distances, and recorded geography  
-6. **Mentoring** (Charisma) — teaching others so that skill and judgment take root  
-7. **Illustration** (Intellect) — technical drawing, diagrams, schematics and visual recording of knowledge  
-8. **Negotiation** (Authority) — formal bargaining toward agreement between parties  
-9. **Insight** (Perception) — pure reading of motives, emotional state and unspoken position  
-10. **Strategy** (Intellect) — long-horizon planning beyond the immediate fight (contrast Warrior **Tactics**)  
-11. **Ritual** (Authority) — conducting communal rites, funerals, oaths, and formal observance  
-12. **Preaching** (Charisma) — public moral or spiritual address that moves a crowd  
-
-----------
-
-### Trickster (12)
-
-Mask, shadow, and the door that should have stayed locked. The Trickster is cunning made practice — not always a thief by trade, but always someone who moves where honest eyes are not looking. These Skills open what is closed, hide what is wanted, and turn words into weapons when steel would be too loud.
-
-1. **Lockpicking** (Guile) — defeating locks, catches, and simple mechanical seals  
-2. **Pickpocket** (Guile) — removing objects from a person without their notice  
-3. **Sneak** (Dexterity) — quiet movement and remaining unseen while moving  
-4. **Forgery** (Guile) — false documents, seals, marks, and convincing imitations of writing or craft signs  
-5. **Slander & Ridicule** (Charisma) — public or whispered attack on reputation through words  
-6. **Smuggling** (Guile) — moving goods or people past watchers, tolls, and searchers  
-7. **Deception** (Guile) — lies, false personas, and deliberate misdirection  
-8. **Streetwise** (Guile) — reading towns, underworld channels, and informal urban power  
-9. **Acrobatics** (Dexterity) — leaps, balance, contortion, and athletic movement under stress  
-10. **Sleight of Hand** (Guile) — palm, switch, conceal, and stage small manipulations  
-11. **Off-hand & Improvised Combat** (Dexterity) — secondary weapons and objects not meant as arms  
-12. **Climbing** (Strength) — vertical movement on rock, timber, rope, and walls  
+</div>
 
 ----------
 

@@ -14,20 +14,17 @@ description: The nine inborn Foundations that shape a character.
 
 There are nine Foundations, grouped by domain:
 
-**Physical**  
-- **Strength** — raw power, lifting, striking force, physical dominance  
-- **Dexterity** — speed, precision, balance, fine motor control  
-- **Constitution** — endurance, hardiness, resistance to fatigue and hardship  
-
-**Mental**  
-- **Intellect** — reasoning, learning, memory, problem-solving  
-- **Perception** — awareness, observation, noticing the hidden or the out-of-place  
-- **Resolve** — willpower, mental fortitude, the capacity to keep going in the face of adversity  
-
-**Social**  
-- **Charisma** — presence, force of personality, the ability to draw others  
-- **Guile** — cunning, misdirection, deception  
-- **Authority** — natural command, gravitas  
+<div class="kod-card-grid">
+<div class="kod-card"><p class="kod-card__domain">Physical</p><strong>Strength</strong><p>Raw power, lifting, striking force, physical dominance</p></div>
+<div class="kod-card"><p class="kod-card__domain">Physical</p><strong>Dexterity</strong><p>Speed, precision, balance, fine motor control</p></div>
+<div class="kod-card"><p class="kod-card__domain">Physical</p><strong>Constitution</strong><p>Endurance, hardiness, resistance to fatigue and hardship</p></div>
+<div class="kod-card"><p class="kod-card__domain">Mental</p><strong>Intellect</strong><p>Reasoning, learning, memory, problem-solving</p></div>
+<div class="kod-card"><p class="kod-card__domain">Mental</p><strong>Perception</strong><p>Awareness, observation, noticing the hidden or out-of-place</p></div>
+<div class="kod-card"><p class="kod-card__domain">Mental</p><strong>Resolve</strong><p>Willpower, mental fortitude, capacity to keep going</p></div>
+<div class="kod-card"><p class="kod-card__domain">Social</p><strong>Charisma</strong><p>Presence, force of personality, the ability to draw others</p></div>
+<div class="kod-card"><p class="kod-card__domain">Social</p><strong>Guile</strong><p>Cunning, misdirection, deception</p></div>
+<div class="kod-card"><p class="kod-card__domain">Social</p><strong>Authority</strong><p>Natural command, gravitas</p></div>
+</div>
 
 Each Foundation is rated on a narrow scale:
 

@@ -78,11 +78,15 @@ const fontFacesCss = `
 
 {/* NOT is:inline — define:vars must be processed by Astro/Vite */}
 <script define:vars={{ sidebarIconMap }}>
+	const prefersReduced =
+		typeof window !== 'undefined' &&
+		window.matchMedia &&
+		window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 	function segmentFromHref(href) {
 		try {
 			const path = new URL(href, window.location.origin).pathname.replace(/\/+$/, '');
 			const parts = path.split('/').filter(Boolean);
-			// Drop Pages prefix segments when present
 			if (parts[0] && parts[0].toLowerCase() === 'kodranni') parts.shift();
 			if (parts[0] && parts[0].toLowerCase() === 'guidebook') parts.shift();
 			return parts[0] || '';
@@ -110,7 +114,6 @@ const fontFacesCss = `
 		});
 	}
 
-	// Elder Futhark — blood-red divider ornaments (3 distinct runes per <hr>)
 	const ELDER_FUTHARK = [
 		'ᚠ', 'ᚢ', 'ᚦ', 'ᚨ', 'ᚱ', 'ᚲ', 'ᚷ', 'ᚹ',
 		'ᚺ', 'ᚾ', 'ᛁ', 'ᛃ', 'ᛇ', 'ᛈ', 'ᛉ', 'ᛊ',
@@ -129,14 +132,233 @@ const fontFacesCss = `
 
 	function decorateDividers() {
 		document.querySelectorAll('.sl-markdown-content hr').forEach((hr) => {
-			// Fresh triad each paint / navigation so pages feel alive
 			hr.setAttribute('data-runes', pickRuneTriad());
+		});
+	}
+
+	/** Collapse examples / ST notes into progressive disclosure */
+	function wrapDisclosures() {
+		document.querySelectorAll('aside.kod-example').forEach((aside) => {
+			if (aside.closest('details.kod-disclose')) return;
+			const labelEl = aside.querySelector('.kod-example__label');
+			let title = labelEl ? labelEl.textContent.trim() : 'Example';
+			title = title.replace(/^Example\s*[—–-]\s*/i, '');
+			if (labelEl) labelEl.remove();
+			const details = document.createElement('details');
+			details.className = 'kod-disclose kod-disclose--example';
+			const summary = document.createElement('summary');
+			summary.className = 'kod-disclose__summary';
+			summary.innerHTML =
+				'<span class="kod-disclose__mark">Example</span> ' + title;
+			const body = document.createElement('div');
+			body.className = 'kod-disclose__body';
+			while (aside.firstChild) body.appendChild(aside.firstChild);
+			details.appendChild(summary);
+			details.appendChild(body);
+			aside.replaceWith(details);
+		});
+
+		document.querySelectorAll('aside.kod-note').forEach((aside) => {
+			if (aside.closest('details.kod-disclose')) return;
+			// Keep short notes open-looking only if already inside list and tiny? Always collapse ST/long notes.
+			const labelEl = aside.querySelector('.kod-note__label');
+			const label = labelEl ? labelEl.textContent.trim() : 'Note';
+			const isST = /storyteller/i.test(label);
+			if (labelEl) labelEl.remove();
+			const details = document.createElement('details');
+			details.className = 'kod-disclose kod-disclose--note';
+			// Plain "Note" stays collapsed; calm mode opens all
+			const summary = document.createElement('summary');
+			summary.className = 'kod-disclose__summary';
+			summary.innerHTML =
+				'<span class="kod-disclose__mark">' +
+				(isST ? 'Storyteller' : 'Note') +
+				'</span> ' +
+				(isST ? 'Counsel' : 'Expand');
+			const body = document.createElement('div');
+			body.className = 'kod-disclose__body';
+			while (aside.firstChild) body.appendChild(aside.firstChild);
+			details.appendChild(summary);
+			details.appendChild(body);
+			aside.replaceWith(details);
+		});
+	}
+
+	function setupArchetypeAccordion() {
+		const root = document.querySelector('.kod-archetypes');
+		if (!root) return;
+		root.querySelectorAll('details.kod-archetype').forEach((d) => {
+			d.addEventListener('toggle', () => {
+				if (!d.open) return;
+				root.querySelectorAll('details.kod-archetype').forEach((other) => {
+					if (other !== d) other.open = false;
+				});
+			});
+		});
+	}
+
+	function setupMarksLadder() {
+		document.querySelectorAll('[data-widget="marks-ladder"]').forEach((root) => {
+			if (root.dataset.ready) return;
+			root.dataset.ready = '1';
+			const panel = root.querySelector('[data-panel]');
+			const buttons = [...root.querySelectorAll('[data-marks]')];
+			const scenes = {
+				0: '<strong>0 Marks</strong> — He gets lost in the woods. The mission fails into mishap, not a clean “you see nothing.”',
+				1: '<strong>1 Mark</strong> — Thin, anxious success: paranoia. The Storyteller can sell the fear that the enemy are onto him, that a patrol with torches is following.',
+				2: '<strong>2 Marks</strong> — Camp spotted from a distance: approaches, weaknesses — but no safe way to crawl closer and see more.',
+				3: '<strong>3 Marks</strong> — Solid reading: campfires, men, layout; they mean to settle in and wait out the weather.',
+				4: '<strong>4 Marks</strong> — Deep reading: decoys; something is wrong; hurry back — a night raid may be imminent.',
+			};
+			function set(n) {
+				buttons.forEach((b) => b.setAttribute('aria-pressed', b.dataset.marks === String(n) ? 'true' : 'false'));
+				if (panel) panel.innerHTML = scenes[n] || scenes[0];
+			}
+			buttons.forEach((b) => b.addEventListener('click', () => set(b.dataset.marks)));
+			set('2');
+		});
+	}
+
+	function setupTierDial() {
+		document.querySelectorAll('[data-widget="tier-dial"]').forEach((root) => {
+			if (root.dataset.ready) return;
+			root.dataset.ready = '1';
+			const panel = root.querySelector('[data-panel]');
+			const buttons = [...root.querySelectorAll('[data-tier]')];
+			const scenes = {
+				d6: '<strong>d6 — Disadvantage</strong> — Odds lean against the attempt: surrounded, wrong tools, hostile ground, a Trait that hurts. Marks are rarer; the Storyteller reads a harder night.',
+				d8: '<strong>d8 — Ordinary</strong> — Safe default for a competent attempt when nothing special presses the odds. Neither favoured nor cursed.',
+				d12: '<strong>d12 — Advantage</strong> — Odds lean with the attempt: good ground, support, tools, a Trait that truly applies. Marks come easier; deeper success is more likely.',
+			};
+			function set(t) {
+				buttons.forEach((b) => b.setAttribute('aria-pressed', b.dataset.tier === t ? 'true' : 'false'));
+				if (panel) panel.innerHTML = scenes[t] || scenes.d8;
+			}
+			buttons.forEach((b) => b.addEventListener('click', () => set(b.dataset.tier)));
+			set('d8');
+		});
+	}
+
+	function setupScrollReveal() {
+		const root = document.querySelector('.sl-markdown-content');
+		if (!root) return;
+
+		root.querySelectorAll('blockquote').forEach((bq) => {
+			bq.classList.add('kod-reveal', 'kod-type');
+		});
+
+		// First-level list items under main content (not nested widget lists)
+		root.querySelectorAll(':scope > ul > li, :scope > ol > li').forEach((li) => {
+			li.classList.add('kod-reveal-item');
+		});
+
+		const targets = root.querySelectorAll('blockquote.kod-reveal, .kod-reveal-item');
+		if (!targets.length) return;
+
+		if (prefersReduced || document.documentElement.getAttribute('data-kod-calm') === '1') {
+			targets.forEach((el) => el.classList.add('is-in'));
+			return;
+		}
+
+		const io = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((e) => {
+					if (e.isIntersecting) {
+						e.target.classList.add('is-in');
+						io.unobserve(e.target);
+					}
+				});
+			},
+			{ rootMargin: '0px 0px -8% 0px', threshold: 0.12 },
+		);
+		targets.forEach((el) => io.observe(el));
+	}
+
+	function isDicePage() {
+		return /dice-mechanics/i.test(location.pathname);
+	}
+
+	function setupTableStrip() {
+		if (!isDicePage()) return;
+		if (document.querySelector('.kod-table-strip')) return;
+		const main = document.querySelector('.sl-markdown-content');
+		if (!main) return;
+		const strip = document.createElement('aside');
+		strip.className = 'kod-table-strip';
+		strip.setAttribute('aria-label', 'At the table');
+		strip.innerHTML =
+			'<div class="kod-table-strip__rules">' +
+			'<span><strong>Mark</strong> ≥ 5</span>' +
+			'<span>Default tier <strong>d8</strong></span>' +
+			'<span><strong>Advantage</strong> upgrades · <strong>Disadvantage</strong> downgrades</span>' +
+			'<span>ST names pair + tier</span>' +
+			'</div>' +
+			'<button type="button" class="kod-table-strip__btn" data-calm-toggle>Calm mode</button>';
+		main.appendChild(strip);
+	}
+
+	function setupCalmFab() {
+		if (document.querySelector('.kod-calm-fab')) return;
+		const btn = document.createElement('button');
+		btn.type = 'button';
+		btn.className = 'kod-calm-fab';
+		btn.setAttribute('data-calm-toggle', '');
+		btn.setAttribute('aria-label', 'Toggle calm mode');
+		btn.textContent = 'Calm';
+		document.body.appendChild(btn);
+	}
+
+	function applyCalm(on) {
+		document.documentElement.setAttribute('data-kod-calm', on ? '1' : '0');
+		try {
+			localStorage.setItem('kod-calm', on ? '1' : '0');
+		} catch {}
+		document.querySelectorAll('[data-calm-toggle]').forEach((b) => {
+			b.setAttribute('aria-pressed', on ? 'true' : 'false');
+			if (b.classList.contains('kod-calm-fab')) {
+				b.textContent = on ? 'Calm on' : 'Calm';
+			} else {
+				b.textContent = on ? 'Calm on' : 'Calm mode';
+			}
+		});
+		if (on) {
+			document.querySelectorAll('details.kod-disclose, details.kod-archetype').forEach((d) => {
+				d.open = true;
+			});
+			document.querySelectorAll('.kod-reveal, .kod-reveal-item').forEach((el) => {
+				el.classList.add('is-in');
+			});
+		}
+	}
+
+	function setupCalm() {
+		let on = false;
+		try {
+			on = localStorage.getItem('kod-calm') === '1';
+		} catch {}
+		if (prefersReduced) on = true;
+		applyCalm(on);
+		document.querySelectorAll('[data-calm-toggle]').forEach((b) => {
+			if (b.dataset.bound) return;
+			b.dataset.bound = '1';
+			b.addEventListener('click', () => {
+				const next = document.documentElement.getAttribute('data-kod-calm') !== '1';
+				applyCalm(next);
+			});
 		});
 	}
 
 	function enhance() {
 		injectSidebarIcons();
 		decorateDividers();
+		wrapDisclosures();
+		setupArchetypeAccordion();
+		setupMarksLadder();
+		setupTierDial();
+		setupScrollReveal();
+		setupTableStrip();
+		setupCalmFab();
+		setupCalm();
 	}
 
 	if (document.readyState === 'loading') {
