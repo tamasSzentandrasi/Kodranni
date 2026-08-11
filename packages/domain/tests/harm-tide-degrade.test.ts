@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { armourToRatio, harmFromOpposed, harmFromUnopposed } from '../src/harm.js';
 import { degradeCountFromOmen } from '../src/degrade.js';
 import { tideScale, tideStartFromA, tideStepsFromMargin } from '../src/tide.js';
-import { echoCapacity, isDecadent, isOverCapacity } from '../src/echoes.js';
+import { echoCapacity, exertionMax, isDecadent, isOverCapacity } from '../src/echoes.js';
 import { countMarks } from '../src/marks.js';
 
 describe('harm', () => {
@@ -52,7 +52,10 @@ describe('degrade', () => {
 
 describe('echoes + marks', () => {
   it('capacity and flags', () => {
-    expect(echoCapacity(2, 2, 2)).toBe(6);
+    // max(Strength, Dexterity) + Intellect + Authority
+    expect(echoCapacity(2, 1, 2, 2)).toBe(6);
+    expect(echoCapacity(1, 3, 2, 1)).toBe(6);
+    expect(exertionMax(2, 2, 2)).toBe(6);
     expect(isDecadent(0)).toBe(true);
     expect(isOverCapacity(7, 6)).toBe(true);
   });

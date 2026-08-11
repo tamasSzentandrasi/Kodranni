@@ -8,7 +8,7 @@ description: Skills organised under six Archetypes, with Practice and improvemen
 
 ----------
 
-**Skills** are organised under six **Archetypes** — personified domains, **not** character classes. A character may draw freely from any list; the Archetype is just an abstraction above related skills.
+**Skills** are organised under six **Archetypes**. An Archetype is not a class. It is a personified pattern of capacity — a psychological and characteristic profile, a metaphysical shape a person may inhabit — and under it, a collection of related Skills. A character may draw freely from any list.
 
 **Skills are rated between 0 and 3.**
 
@@ -99,7 +99,7 @@ Fiction still decides *why* rust set in; automation only applies the prompted pr
 
 ## The six Archetypes
 
-Six domains of related Skills. **Not classes** — a character may take Skills from any list. Each entry names the Skill, its ruling Foundation, and what it covers.
+Each Archetype is a pattern first, a Skill list second. Characters are not locked to one; the pattern is the shelf the Skills hang from. Each Skill lists its ruling Foundation and what it covers.
 
 <div class="kod-archetypes not-content">
 
@@ -107,10 +107,10 @@ Six domains of related Skills. **Not classes** — a character may take Skills f
 <summary class="kod-archetype__summary">
 <img class="kod-archetype__panel" src="/archetypes/warrior.jpg" alt="" width="256" height="256" loading="lazy" decoding="async" />
 <span class="kod-archetype__name">Warrior</span>
-<span class="kod-archetype__tag">Violence under discipline</span>
+<span class="kod-archetype__tag">Steel and will under threat</span>
 </summary>
 <div class="kod-archetype__body">
-<p>Combat and the control of violence: weapons, defence, orders in a fight, and reading the field. Use these Skills when the intent is to harm, hold, threaten, or command under physical threat — not for cruelty as flavour, but for the work of surviving a fight.</p>
+<p>The Warrior is the pattern of meeting force under pressure — who holds a line, strikes, threatens, and orders when violence is near. Its Skills are the disciplines of that shape: weapons, defence, the field of battle, and the will that keeps people standing when dying is close. Not cruelty for its own sake; the craft of not falling first.</p>
 <ol>
 <li><strong>Slash</strong> (Strength) — cutting edges used in chopping or sweeping cuts</li>
 <li><strong>Pierce</strong> (Dexterity) — point work and thrusts</li>
@@ -132,10 +132,10 @@ Six domains of related Skills. **Not classes** — a character may take Skills f
 <summary class="kod-archetype__summary">
 <img class="kod-archetype__panel" src="/archetypes/wayfarer.jpg" alt="" width="256" height="256" loading="lazy" decoding="async" />
 <span class="kod-archetype__name">Wayfarer</span>
-<span class="kod-archetype__tag">Travel, wilderness, and the road</span>
+<span class="kod-archetype__tag">Road, river, ridge, and the dark between fires</span>
 </summary>
 <div class="kod-archetype__body">
-<p>Getting a body through land, water, and weather, and living off what the road provides. Scouting, hunting, mounts, small craft, and trade while moving. Use these when the intent is travel, survival outdoors, or field craft — not domestic work or formal learning.</p>
+<p>The Wayfarer is the pattern of the road and the wild — who must read land, weather, and distance before they kill. Scout, hunter, guide, sailor, rider: the same profile under different clothes. Its Skills keep a body moving through weather and wilderness, and bring news home when the path is not safe.</p>
 <ol>
 <li><strong>Scouting</strong> (Perception) — pathfinding, navigation by stars, landmarks and trails, reading terrain for travel</li>
 <li><strong>Trapping &amp; Tracking</strong> (Perception) — locating, following, and the design and use of traps</li>
@@ -157,10 +157,10 @@ Six domains of related Skills. **Not classes** — a character may take Skills f
 <summary class="kod-archetype__summary">
 <img class="kod-archetype__panel" src="/archetypes/artisan.jpg" alt="" width="256" height="256" loading="lazy" decoding="async" />
 <span class="kod-archetype__name">Artisan</span>
-<span class="kod-archetype__tag">Making, building, and repair</span>
+<span class="kod-archetype__tag">Hammer, loom, keel, and kiln</span>
 </summary>
 <div class="kod-archetype__body">
-<p>Craft and construction: metal, timber, cloth, boats, tools, and the direction of work crews. Use these when the intent is to build, mend, judge materials, or run a workshop — lasting work, not a single shove or a Primitive haul.</p>
+<p>The Artisan is the pattern of making and mending — who leaves material more shaped than found: hull tight against the gale, blade true, wall standing, brew that will keep through winter. Its Skills are the patient work of craft, and the pride of work that may outlive the worker.</p>
 <ol>
 <li><strong>Tailoring &amp; Armory</strong> (Constitution) — cloth, leather, soft materials, and the construction or repair of protective gear</li>
 <li><strong>Smithing &amp; Forging</strong> (Strength) — working metal at the forge</li>
@@ -182,10 +182,10 @@ Six domains of related Skills. **Not classes** — a character may take Skills f
 <summary class="kod-archetype__summary">
 <img class="kod-archetype__panel" src="/archetypes/mother.jpg" alt="" width="256" height="256" loading="lazy" decoding="async" />
 <span class="kod-archetype__name">Mother</span>
-<span class="kod-archetype__tag">Household, body, and kin</span>
+<span class="kod-archetype__tag">Hearth, body, kin, obligation</span>
 </summary>
 <div class="kod-archetype__body">
-<p>Keeping people fed, well, and bound together. Not a gender and not only parents — whoever runs the house, midwifes, heals, farms, or holds kin by duty and care. Use these for domestic work, body-care, and personal influence inside a household or close circle.</p>
+<p>The Mother is the pattern of the household and the living body — not a gender and not only a parent, but whoever holds the house together when the field fails: who midwifes, feeds, heals, comforts, and binds people with duty and care. Its Skills keep the living among the living.</p>
 <ol>
 <li><strong>Cooking &amp; Preserving</strong> (Resolve) — preparation and preservation of food</li>
 <li><strong>Herbalism</strong> (Intellect) — medicinal plants and poisons</li>
@@ -207,10 +207,10 @@ Six domains of related Skills. **Not classes** — a character may take Skills f
 <summary class="kod-archetype__summary">
 <img class="kod-archetype__panel" src="/archetypes/sage.jpg" alt="" width="256" height="256" loading="lazy" decoding="async" />
 <span class="kod-archetype__name">Sage</span>
-<span class="kod-archetype__tag">Record, counsel, and long plans</span>
+<span class="kod-archetype__tag">Memory, counsel, and the long view</span>
 </summary>
 <div class="kod-archetype__body">
-<p>What the community would otherwise forget or fail to argue through: numbers, lore, maps, rites, teaching, and formal speech. Use these when the intent is to learn, record, persuade in structured settings, or plan beyond the immediate fight (contrast Warrior <strong>Tactics</strong>).</p>
+<p>The Sage is the pattern of memory and counsel — who keeps what a people would otherwise forget: numbers, names, maps, rites, the shape of a bargain, the weight of a sermon. Its Skills turn chaos into record and argument into path when force alone cannot hold the community. Long-horizon planning here contrasts with Warrior <strong>Tactics</strong> in the heat of a fight.</p>
 <ol>
 <li><strong>Debate &amp; Rhetoric</strong> (Charisma) — structured argument and persuasive speech</li>
 <li><strong>Arithmetic &amp; Accounting</strong> (Intellect) — numbers, ledgers, shares, and practical calculation</li>
@@ -232,10 +232,10 @@ Six domains of related Skills. **Not classes** — a character may take Skills f
 <summary class="kod-archetype__summary">
 <img class="kod-archetype__panel" src="/archetypes/trickster.jpg" alt="" width="256" height="256" loading="lazy" decoding="async" />
 <span class="kod-archetype__name">Trickster</span>
-<span class="kod-archetype__tag">Concealment, deceit, and the quiet path</span>
+<span class="kod-archetype__tag">Mask, shadow, and the unlocked door</span>
 </summary>
 <div class="kod-archetype__body">
-<p>Work done out of honest sight: locks, lies, stealth, forgery, smuggling, and soft violence with words or improvised tools. Not always a career thief — anyone who needs to open, hide, mislead, or move past watchers. Use these when steel would be too loud or the door should have stayed shut.</p>
+<p>The Trickster is the pattern of the shadow path — cunning made practice. Not always a thief by trade, but always someone who moves where honest eyes are not looking. Its Skills open what is closed, hide what is wanted, and turn words into weapons when steel would be too loud.</p>
 <ol>
 <li><strong>Lockpicking</strong> (Guile) — defeating locks, catches, and simple mechanical seals</li>
 <li><strong>Pickpocket</strong> (Guile) — removing objects from a person without their notice</li>

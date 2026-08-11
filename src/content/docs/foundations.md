@@ -60,7 +60,7 @@ Values of **0** or **4** are *technically possible* — rarities for extreme cas
 | [Dice pools](/dice-mechanics/#the-makeup-of-the-dice-pool) | Foundation is always part of pool size (Skills too, except Primitive actions). |
 | [Skills / Practice](/skills/#improvement) | Each Skill has a ruling Foundation. Foundation 3 halves Practice thresholds; Foundation 1 doubles them. |
 | [Exertion](/exertion/) | Maximum pool = **Resolve + Constitution + Charisma**. |
-| [Echo capacity](/echoes/#weight-and-capacity) | Same sum as Exertion maximum. |
+| [Echo capacity](/echoes/#weight-and-capacity) | **max(Strength, Dexterity) + Intellect + Authority**. |
 | [Harm](/harm/) | Each Foundation has a paired Harm track; Harm reduces *effective* Foundation. |
 | [Character Creation](/character-creation/) | Start at 1; free points, Birth Omen, and The Wanting all adjust Foundations. |
 

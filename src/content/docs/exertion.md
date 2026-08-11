@@ -15,7 +15,7 @@ It is **primarily player-controlled**: when to push, when to rest, and where to 
 
 **Maximum Exertion = Resolve + Constitution + Charisma**
 
-(These are three of the nine [Foundations](/foundations/). The same sum is [Echo capacity](/echoes/#weight-and-capacity).)
+These are three of the nine [Foundations](/foundations/). [Echo capacity](/echoes/#weight-and-capacity) uses a different sum: **max(Strength, Dexterity) + Intellect + Authority**.
 
 ### Spending
 

@@ -8,22 +8,22 @@ Quick reference. Each entry links to the chapter that owns the full rule.
 | Term | Definition |
 |------|------------|
 | **Advantage / Disadvantage** | Core context rule: judge who has the edge instead of stacking modifiers; upgrade or downgrade die tier (d6 ↔ d8 ↔ d12). Safe default **d8**. → [Dice Mechanics](/dice-mechanics/#advantage-and-disadvantage) |
-| **Archetype** | One of six skill domains (Warrior, Wayfarer, Artisan, Mother, Sage, Trickster). Not a class. → [Skills](/skills/) |
-| **Authority** | Social Foundation: natural command, gravitas. → [Foundations](/foundations/) |
+| **Archetype** | One of six personified patterns of capacity (Warrior, Wayfarer, Artisan, Mother, Sage, Trickster) — a collection of related Skills, not a class. → [Skills](/skills/) |
+| **Authority** | Social Foundation: natural command, gravitas. Part of Echo capacity. → [Foundations](/foundations/) |
 | **Automation** | Bot or tool layer that rolls dice, tracks state, and enforces approval workflows. → [Automation](/automation/) |
 | **Birth Omen** | Private d20 at The Weighing; half (rounded up) becomes Foundation points. → [Character Creation](/character-creation/#the-weighing) |
-| **Capacity (Echo)** | Resolve + Constitution + Charisma; max total Echo weight without penalty. → [Echoes](/echoes/#weight-and-capacity) |
+| **Capacity (Echo)** | max(Strength, Dexterity) + Intellect + Authority; max total Echo weight without penalty. → [Echoes](/echoes/#weight-and-capacity) |
 | **Charisma** | Social Foundation: presence and force of personality. → [Foundations](/foundations/) |
 | **Cohesion** | Fortune: trust and willingness to act together. → [Echoes](/echoes/#fortunes) |
 | **Community** | The shared protagonist (tribe, village, house…). If destroyed, the campaign ends. → [Introduction](/introduction/) |
 | **Consequence** | Side event from the Omen die; must not rewrite the primary roll outcome. → [Dice Mechanics](/dice-mechanics/#the-omen-die-and-consequences) |
-| **Constitution** | Physical Foundation: endurance and hardiness. Part of Exertion max. → [Foundations](/foundations/) |
+| **Constitution** | Physical Foundation: endurance and hardiness. Part of Exertion maximum. → [Foundations](/foundations/) |
 | **Decadence** | Carrying zero Echoes; –1 die on every roll. → [Echoes](/echoes/#weight-and-capacity) |
-| **Dexterity** | Physical Foundation: speed, precision, balance. → [Foundations](/foundations/) |
+| **Dexterity** | Physical Foundation: speed, precision, balance. Part of Echo capacity (with Strength, take the higher). → [Foundations](/foundations/) |
 | **Diagram** | Shared Hierarchy record of tracked characters. → [Hierarchies](/hierarchies/#the-hierarchy-diagram) |
 | **Dying** | Any Harm track at 3; every roll costs Exertion; death at Exertion 0. → [Harm](/harm/#dying) |
 | **Echo** | A carried deed or concern with weight 1–3. → [Echoes](/echoes/) |
-| **Exertion** | Spendable pool for extra dice; also fatigue/hunger/thirst ledger. → [Exertion](/exertion/) |
+| **Exertion** | Spendable pool for extra dice; also fatigue/hunger/thirst ledger. Max = Resolve + Constitution + Charisma. → [Exertion](/exertion/) |
 | **Foundation** | One of nine inborn ratings (1–3 typical). → [Foundations](/foundations/) |
 | **Foundation Myth** | One of up to three active resolved Pivotal Echoes with community-wide effects. → [Echoes](/echoes/#foundation-myths) |
 | **Fortune** | One of five soft community measures (0–3). → [Echoes](/echoes/#fortunes) |
@@ -32,7 +32,7 @@ Quick reference. Each entry links to the chapter that owns the full rule.
 | **Harm** | Damage on a Foundation’s named track (0–3). → [Harm](/harm/) |
 | **Hierarchy** | Axis of standing (Arms, Faith, Coin, Blood by default). → [Hierarchies](/hierarchies/) |
 | **Honoured / Trusted / Acknowledged / Outcast** | Hierarchy tiers. → [Hierarchies](/hierarchies/#tiers) |
-| **Intellect** | Mental Foundation: reasoning and learning. → [Foundations](/foundations/) |
+| **Intellect** | Mental Foundation: reasoning and learning. Part of Echo capacity. → [Foundations](/foundations/) |
 | **Invocation** | Spending a second Exertion die when an Echo matches the roll. → [Echoes](/echoes/#invocation) |
 | **Legacy** | Echo claimed by a successor character after death. No free rank. → [Hierarchies](/hierarchies/#legacies) |
 | **Mark (of Success)** | A die showing 5+. → [Dice Mechanics](/dice-mechanics/#marks-of-success) |
@@ -49,7 +49,7 @@ Quick reference. Each entry links to the chapter that owns the full rule.
 | **Ruler** | Single shared top seat above all Hierarchies. → [Hierarchies](/hierarchies/#tiers) |
 | **Skill** | Rated 0–3 practiced ability under an Archetype. → [Skills](/skills/) |
 | **Standing** (Fortune) | External reputation of the *community*. → [Echoes](/echoes/#fortunes) |
-| **Strength** | Physical Foundation: raw power. → [Foundations](/foundations/) |
+| **Strength** | Physical Foundation: raw power. Part of Echo capacity (with Dexterity, take the higher). → [Foundations](/foundations/) |
 | **Surplus** | Fortune: material buffer. → [Echoes](/echoes/#fortunes) |
 | **Tide** | Shared tracker for multi-party contests. → [Dice Mechanics](/dice-mechanics/#the-tide) |
 | **Tradition** | Fortune: shared memory and self-belief. → [Echoes](/echoes/#fortunes) |

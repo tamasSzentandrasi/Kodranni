@@ -1,6 +1,19 @@
-/** Echo capacity = max Exertion = Resolve + Constitution + Charisma. */
-export function echoCapacity(resolve: number, constitution: number, charisma: number): number {
+/** Max Exertion pool = Resolve + Constitution + Charisma. */
+export function exertionMax(resolve: number, constitution: number, charisma: number): number {
   return resolve + constitution + charisma;
+}
+
+/**
+ * Echo capacity = max(Strength, Dexterity) + Intellect + Authority.
+ * Separate from Exertion so other Foundations also weight carried burden.
+ */
+export function echoCapacity(
+  strength: number,
+  dexterity: number,
+  intellect: number,
+  authority: number,
+): number {
+  return Math.max(strength, dexterity) + intellect + authority;
 }
 
 export function totalEchoWeight(weights: readonly number[]): number {

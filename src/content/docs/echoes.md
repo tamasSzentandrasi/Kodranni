@@ -22,7 +22,9 @@ The **player** elevates a moment into an Echo. The Storyteller may veto only for
 | **2** | Group | Shared among a small circle; not enough alone to shift a Fortune |
 | **3** | Pivotal | Tied to the community; can move a Fortune |
 
-**Echo capacity** = maximum [Exertion](/exertion/) pool = **Resolve + Constitution + Charisma**.
+**Echo capacity** = **max(Strength, Dexterity) + Intellect + Authority**.
+
+This is separate from the [Exertion](/exertion/) maximum (Resolve + Constitution + Charisma). Carried burden and the will to push are not the same measure.
 
 | Condition | Effect |
 |-----------|--------|
@@ -34,7 +36,7 @@ The **player** elevates a moment into an Echo. The Storyteller may veto only for
 </aside>
 
 <aside class="kod-example">
-<p class="kod-example__scene">Capacity is Resolve + Constitution + Charisma. Here that sum is 6. Empty load is Decadence; over capacity hurts only rolls that touch the character’s Echoes.</p>
+<p class="kod-example__scene">Strength 2, Dexterity 1, Intellect 2, Authority 2 → capacity max(2, 1) + 2 + 2 = <strong>6</strong>. Empty load is Decadence; over capacity hurts only rolls that touch the character’s Echoes.</p>
 <ol class="kod-example__steps">
 <li><strong>Capacity:</strong> 6.</li>
 <li><strong>No Echoes:</strong> Decadence → <strong>−1</strong> die on every roll.</li>

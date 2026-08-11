@@ -5,6 +5,7 @@ import {
   cryptoRng,
   effectiveFoundation,
   echoCapacity,
+  exertionMax,
   isDecadent,
   isOverCapacity,
   resolveRoll,
@@ -53,15 +54,20 @@ export interface PlayerRollResult {
 }
 
 function recomputeFlags(ch: CharacterRecord): void {
-  const cap = echoCapacity(
+  ch.exertion.max = exertionMax(
     ch.foundations.Resolve ?? 0,
     ch.foundations.Constitution ?? 0,
     ch.foundations.Charisma ?? 0,
   );
-  ch.exertion.max = cap;
+  const echoCap = echoCapacity(
+    ch.foundations.Strength ?? 0,
+    ch.foundations.Dexterity ?? 0,
+    ch.foundations.Intellect ?? 0,
+    ch.foundations.Authority ?? 0,
+  );
   const weight = totalEchoWeight(ch.echoes.map((e) => e.weight));
   ch.flags.decadence = isDecadent(ch.echoes.length);
-  ch.flags.overCapacity = isOverCapacity(weight, cap);
+  ch.flags.overCapacity = isOverCapacity(weight, echoCap);
   // effective foundations from harm tracks (name map simplified: track not paired here — use stored effective or raw)
   for (const [k, v] of Object.entries(ch.foundations)) {
     const harmKey = foundationToHarmTrack(k);

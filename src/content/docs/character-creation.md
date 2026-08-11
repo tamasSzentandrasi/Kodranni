@@ -139,7 +139,7 @@ Lock the following before the character enters the record:
 
 | Item | Rule |
 |------|------|
-| **[Echoes](/echoes/)** | Drawn from accepted claims and the original concept. Community tie must be present. Capacity = Resolve + Constitution + Charisma. **Zero Echoes = Decadence.** |
+| **[Echoes](/echoes/)** | Drawn from accepted claims and the original concept. Community tie must be present. Capacity = **max(Strength, Dexterity) + Intellect + Authority**. **Zero Echoes = Decadence.** |
 | **[Hierarchy](/hierarchies/)** | Clarify position if applicable. Default is **Outcast**. |
 | **[Traits](/traits/)** | Locked. |
 | **[Inventory](/inventory/)** | Partial only: named items that already make sense. No free supplies. Rest filled in play. |
