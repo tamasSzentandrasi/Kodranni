@@ -9,18 +9,18 @@ description: When to roll, dice pools, Marks, Advantage and Disadvantage, Omen, 
 
 ----------
 
-Similar to other TTRPGs, action resolution uses dice. When a **player** or **Storyteller** needs to resolve an action, they discuss intent, then throw the appropriate dice. Very standard — *so far*.
+Similar to other TTRPGs, action resolution uses dice. When a **player** or **Storyteller** needs to resolve an action, they describe the action, then throw the appropriate dice best describing the action. Very standard — *so far*.
 
-This chapter walks the stack in order: **when** to roll → **what** dice mean → **how** context sets the tier → **how large** the pool is → Omen and Tide for the moments that outgrow a single throw.
+This chapter describes the entire process in order: **when** to roll → **what** type of dice exists and their meaning → **how** context sets the tier, the advantage/disadvantage concept → **how large** the pool is, how is it made up → **special side effects** introduced by Omen and Tide mechanics.
 
 <div class="kod-lanes not-content">
 <div class="kod-lane kod-lane--player">
 <p class="kod-lane__title">Player</p>
-<p>Describe intent. Spend <span class="kod-term" data-tip="Spendable pool for extra dice; also fatigue, hunger, thirst.">Exertion</span> if you push. Read Marks as the Storyteller narrates them — not a hidden target number.</p>
+<p>Describe the action that your character intends to do. Decide if you want to <span class="kod-term" data-tip="Spendable pool for extra dice; also fatigue, hunger, thirst.">Exert yourself</span> - should you wish to push your limits. Recieve the results of your intent in Marks as the Storyteller narrates them</p>
 </div>
 <div class="kod-lane kod-lane--st">
 <p class="kod-lane__title">Storyteller</p>
-<p>Name Foundation + Skill (or Primitive), declare die tier, interpret Marks and margins. No secret difficulty number to “clear.”</p>
+<p>Decide on the appropriate dice throw: Name Foundation + Skill (or Primitive), declare die tier, interpret the resulting Marks and margins.</p>
 </div>
 </div>
 
@@ -28,9 +28,9 @@ This chapter walks the stack in order: **when** to roll → **what** dice mean �
 
 ## When to roll
 
-If an action’s outcome can **significantly differ** because of luck, chance, or skill — the Storyteller **can** ask for a roll, picking the relevant characteristics to base it on. If the fiction is already clear, **do not roll**. Conversation, planning, and settled facts are not replaced by dice.
+If an action’s outcome can **significantly differ** because of luck, chance, or skill — the Storyteller **can** ask for a roll, picking the relevant characteristics to base it on. If the fiction is already clear, **do not roll**. Conversation, planning, and role-play especially should not be replaced by dice throws.
 
-The Storyteller always chooses which [Foundation](/foundations/) and (if any) [Skill](/skills/) fit the described intent, and which **die tier** the pool uses — that tier is the mechanical face of **[Advantage and Disadvantage](#advantage-and-disadvantage)**.
+The Storyteller always chooses which [Foundation](/foundations/) and (if any) [Skill](/skills/) fit the described intent, and which **die tier** the pool uses — based on the of **[Advantage and Disadvantage](#advantage-and-disadvantage)** concept.
 
 ----------
 
@@ -64,15 +64,15 @@ Approximate chance a single die is a Mark:
 
 Most systems ask: *did you hit the number?* Pass or fail. The Storyteller holds a hidden threshold; the table waits for a binary answer.
 
-**Kodranni’s difference is interpretational.** You are not supposed to keep **strict margins** for a binary succeed/fail decision. Marks are **information** — how much of the intent landed, how cleanly, how deep the reading goes. The Storyteller decides **incremental results** from the count of Marks (and, in opposed rolls, from the **margin** between two counts). There is no secret target the player is trying to “clear.”
+**Kodranni’s Resolution is different - it's interpretational.** You are not supposed to keep **strict margins** for a binary succeed/fail decision. Marks are **information** — how much of the intent landed, how cleanly, how deep the reading goes. The Storyteller weighs the outcome based on **incremental results** from the count of Marks (and, in opposed rolls, from the **margin** between the two opposing rolls). There shouldn't be *one* secret target the player is trying to achieve.
 
-That requires a subtle shift: less “did it work?”, more “**what does this many Marks tell us about how it went?**” Zero Marks is still a result with colour. Four Marks is not merely “better pass” — it may open facts a thinner success would never have revealed.
+That requires a subtle mental shift from the Storyteller: less “did it work?”, more “**what does this many Marks tell us about how it went?**” Graded multiple threshold results - most simply achieved by withholding or granting more in the presentation of the result.
 
-Players act under incomplete knowledge. The Storyteller scales reward, cost, and **what the fiction discloses** to the Marks on the table.
+Players on the other hand, act under incomplete knowledge. The Storyteller scales reward, cost, and **what the fiction discloses** based on the Marks rolled.
 
 <div class="kod-widget not-content" data-widget="marks-ladder">
 <p class="kod-widget__title">Scenario: The Scout</p>
-<p class="kod-widget__intro"><strong>Setup:</strong> night scout, Perception + Scouting, pool of 4 dice. No target number — Marks decide how much he learns. Select Marks:</p>
+<p class="kod-widget__intro"><strong>Scene:</strong> A young warrior (the player's character) is sent out to observe the enemy camp during the night, As he get's close, the Storyteller prompts him to roll Perception + Scouting, a pool of 4 dice, based on the action that he is attempting. If he rolls:</p>
 <div class="kod-widget__controls" role="group" aria-label="Marks of Success">
 <button type="button" class="kod-widget__btn" data-marks="0">0 Marks</button>
 <button type="button" class="kod-widget__btn" data-marks="1">1 Mark</button>
@@ -84,24 +84,22 @@ Players act under incomplete knowledge. The Storyteller scales reward, cost, and
 </div>
 
 <aside class="kod-counsel" aria-label="Counsel">
-<p>Do not pre-assign “3 Marks = success.” Hold a few <em>possible</em> outcome tiers, then let the dice pick which one lands. Opposed rolls use the same idea: the <strong>margin</strong> is how far one side overbore the other — not hit-point subtraction by default.</p>
+<p><em>Do not</em> pre-assign arbitrary success margins and targets. If possible, decide on a few <em>possible</em> outcome tiers, then let the dice pick which one lands. Opposed rolls use the same idea: the <strong>margin</strong> is how far one side overcame the other.</p>
 </aside>
 
 ----------
 
 ## Advantage and Disadvantage
 
-This is where **context** enters the roll — and one of the system’s core novelties.
-
-In any situation, factors that influence the odds of an action are often **innumerable**: weather, footing, numbers, tools, reputation, injuries, surprise, fatigue, favour, armour as *context*, a Trait that fits the moment, a Myth that hangs over the hall. Stacking those as discrete modifiers produces bookkeeping and heavy mechanics. Kodranni refuses that path.
+In any situation, factors that influence the odds of an action are often **innumerable**: weather, footing, numbers, tools, reputation, injuries, surprise, fatigue, favour, arms & armour, a trait that fits the moment, a tradition that gives an edge. Stacking those as discrete modifiers produces bookkeeping and heavy mechanics. Kodranni refuses that path.
 
 Instead: in most cases it is **fairly easy to assess which side has the advantage**. That single judgment is enough. The system encodes it by shifting the **die tier** of the pool — not by piling pluses and minuses onto Marks.
 
-**Different dice types are Advantage and Disadvantage.** They fold context into the roll without a modifier ledger.
+**This concept is called Advantage and Disadvantage.** They fold context into the roll without a modifier ledger.
 
-- **Advantage** — favourable situations (beneficial terrain, superior knowledge, support, numbers, tools, a Trait that truly applies). The die tier of the roll **upgrades** one step (for example **d8 → d12**).  
+- **Advantage** — favourable situations (beneficial terrain, superior knowledge, support, numbers, tools, an applicable trait). The die tier of the roll **upgrades** one step (for example **d8 → d12**).  
   Example: a **trained hunter** who would normally roll **d8** tracks wounded prey with hounds → **d12**.
-- **Disadvantage** — challenging circumstances (poor weather, hostile ground, being surrounded, darkness, wrong tools, a Trait that hurts). The die tier **downgrades** one step (for example **d8 → d6**).  
+- **Disadvantage** — challenging circumstances (poor weather, hostile ground, being surrounded, darkness, wrong tools, an applicable trait that hinders). The die tier **downgrades** one step (for example **d8 → d6**).  
   Example: a **veteran soldier** who would otherwise roll **d8** is surrounded on multiple sides → **d6**.
 
 <div class="kod-widget not-content" data-widget="tier-dial">
@@ -119,14 +117,14 @@ Instead: in most cases it is **fairly easy to assess which side has the advantag
 
 ### Declaring the tier
 
-There is **no automatic map** from Skill rating to d6 / d8 / d12. The **Storyteller declares** the die tier for each roll.
+There is **no automatic map** defining which Skill rating results in a d6 / d8 / d12 context. The **Storyteller declares** the die tier for each roll.
 
 - **Safe default:** treat **d8** as the ordinary tier for a competent attempt when nothing special presses the odds.
 - From that baseline — or from any other tier the Storyteller names — **Advantage** upgrades and **Disadvantage** downgrades.
 
-**Stacking:** Whether several Advantages climb more than one step, whether Advantage and Disadvantage cancel, and how hard the fiction pushes the tier is the **Storyteller’s call** for that moment. Automation records the tier the Storyteller declares; it does not invent one from a rules matrix.
+**Stacking:** Whether several Advantages climb more than one step, whether Advantage and Disadvantage cancel, and how hard the fiction pushes the tier is the **Storyteller’s call** for that moment, assessing the narrative context. 
 
-In multi-party messes, **each action still stands alone**. Advantage and Disadvantage are read from **that** action’s context — not averaged across the field. The [Tide](#the-tide) holds collective pressure separately.
+In multi-party messes, **each action is treated as a single, unique action**. Advantage and Disadvantage are read from **that** action’s context — not averaged across the field. The [Tide](#the-tide) describes collective resolution separately.
 
 ----------
 
