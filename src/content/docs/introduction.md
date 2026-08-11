@@ -23,7 +23,7 @@ description: Welcome to Kodranni — a pre-industrial grim human TTRPG system.
 
 This Guide serves to provide all the necessary insight one could ask for about this **online tabletop role-playing game** system. 
 
-There are plenty of **concepts** that are explained in detail, with context, examples. The Guide tries to follow an iterative process, though many concepts are interconnected. In these cases, please exercise patience, the Guide does its best to cover all your questions.
+There are plenty of **concepts** that are explained in detail, with context, examples. The Guide is ordered so that each chapter builds on the previous ones; when something is introduced early and resolved later, links point you forward.
 
 **Playing the game** requires the reader to understand these concepts, its design is purposefully light to avoid immersion breaking mechanic overload.
 
