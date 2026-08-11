@@ -7,22 +7,16 @@ description: Why Kodranni is a hybrid TTRPG, shared sheets, and the Fluxer/Disco
 
 ## Why Automation Exists
 
-Kodranni is a **hybrid** tabletop system: human storytelling first, software as the quiet ledger and dice engine underneath. Automation is not a convenience bolt-on. It is what makes several design choices *possible at the table* without drowning the story.
+Kodranni is a **hybrid** tabletop system: storytelling first, software as ledger and dice engine underneath. Without automation, several procedures in this Guide would drown the table in bookkeeping.
 
-### What a hybrid table gains
+### What the table gains
 
-Classic pen-and-paper excels at presence, voice, and shared imagination. It struggles when bookkeeping grows dense, when sessions stretch across months, or when the table is already online. A hybrid design keeps the Storyteller’s judgment and the players’ role-play as the centre of gravity, while the machine:
+- **One living record** per character and community — no divergent notebooks.
+- **Fast resolution** of pools, Omens, margins, Practice, Exertion, Harm, and Tide — so fiction is not stopped for arithmetic.
+- **State at the moment of action** — who is rolling, Exertion left, Echoes, Myths — without retyping sheets into chat.
+- **Online continuity** between sessions on shared sheets and a community tracker.
 
-- **Holds one living record** of each character and of the community — no divergent notebooks, no “wait, how many food days did we say?”
-- **Resolves intricate procedures quickly** — dice pools, Omens, opposed margins, Practice thresholds, Exertion, Harm tracks, Tide arithmetic — so the fiction is not interrupted by long arithmetic.
-- **Surfaces state at the moment of action** — who is rolling, what their Exertion is, which Echoes they carry, which Myths exist — without the player retyping a sheet into chat.
-- **Supports online continuity** — the campaign lives between sessions on shared sheets and a community tracker, not only in one person’s memory.
-
-Those are **capabilities**, not the *reason*. The reason is storytelling: **more room for consequence, legacy, and community pressure** without the table becoming an accounting exercise. Practice without XP theatre, Echo capacity without spreadsheets, Fortunes that stay soft but tracked — hybrid design lets Kodranni stay grim and continuous rather than simplified into something thinner.
-
-Concrete procedures automation happens to handle (pools, Practice, Tide, approvals, and the rest) are listed below. They illustrate the load — they are not the philosophy.
-
-This page is the **table-facing** contract. Engineering direction lives in `docs/plans/automation-architecture.md` and will change as the product UI is invented. Prefer **clarity and intuitiveness** over clever command syntax; building that UI well requires deliberate research and a high bar for quality.
+This page is the **table-facing** contract. Engineering direction lives in `docs/plans/automation-architecture.md` and will change as the product UI is defined.
 
 ----------
 

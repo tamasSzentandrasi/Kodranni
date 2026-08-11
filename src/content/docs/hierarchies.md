@@ -72,12 +72,12 @@ Patronage is the clearest path, not the only one. Public deeds, force, death of 
 Competition and cooperation on the same tier are left to roleplay.
 
 <aside class="kod-example">
-<p class="kod-example__scene">An Honoured merchant on the Coin ladder charges a player character to recover a mill ledger before the Althing. That charge becomes something the character chooses to carry — an Echo. How it resolves may open a Hierarchy climb; relative standing later colours social Harm protection, not automatic rank from the Echo alone.</p>
+<p class="kod-example__scene">An Honoured merchant (Coin) charges a player to recover a mill ledger before the Althing. The player takes it as an Echo. Resolution may open a climb; the Echo alone does not grant rank. Relative standing later colours social Harm protection.</p>
 <ol class="kod-example__steps">
-<li><strong>Hook:</strong> Honoured (Coin) charges a player to recover a ledger.</li>
-<li><strong>Echo created:</strong> “Return the mill ledger before the Althing” (weight set at the table).</li>
-<li><strong>If it resolves well:</strong> ST may approve a Hierarchy climb (e.g. Outcast → Acknowledged on Coin).</li>
-<li><strong>Reputation for social Harm:</strong> relative tier gap is established in play, then used as the protection ratio when Harm is applied.</li>
+<li><strong>Hook:</strong> Honoured (Coin) charges recovery of the ledger.</li>
+<li><strong>Echo:</strong> “Return the mill ledger before the Althing” (weight set at the table).</li>
+<li><strong>Resolves well:</strong> ST may approve a climb (e.g. Outcast → Acknowledged on Coin).</li>
+<li><strong>Social Harm later:</strong> relative tier gap is set in play, then used as the protection ratio.</li>
 </ol>
 </aside>
 

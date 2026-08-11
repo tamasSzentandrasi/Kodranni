@@ -9,18 +9,18 @@ description: When to roll, dice pools, Marks, Advantage and Disadvantage, Omen, 
 
 ----------
 
-Similar to other TTRPGs, action resolution uses dice. When a **player** or **Storyteller** needs to resolve an action, they describe the action, then throw the appropriate dice best describing the action. Very standard — *so far*.
+Similar to other TTRPGs, action resolution uses dice. When a **player** or **Storyteller** needs to resolve an action, they settle intent, then throw the appropriate dice. Very standard — *so far*.
 
-This chapter describes the entire process in order: **when** to roll → **what** type of dice exists and their meaning → **how** context sets the tier, the advantage/disadvantage concept → **how large** the pool is, how is it made up → **special side effects** introduced by Omen and Tide mechanics.
+This chapter walks the stack in order: **when** to roll → **what** dice mean → **how** context sets the tier (Advantage / Disadvantage) → **how large** the pool is → Omen and Tide for the moments that outgrow a single throw.
 
 <div class="kod-lanes not-content">
 <div class="kod-lane kod-lane--player">
 <p class="kod-lane__title">Player</p>
-<p>Describe the action that your character intends to do. Decide if you want to <span class="kod-term" data-tip="Spendable pool for extra dice; also fatigue, hunger, thirst.">Exert yourself</span> - should you wish to push your limits. Recieve the results of your intent in Marks as the Storyteller narrates them</p>
+<p>Describe intent. Spend <span class="kod-term" data-tip="Spendable pool for extra dice; also fatigue, hunger, thirst.">Exertion</span> if you push. Read Marks as the Storyteller narrates them — not a hidden target number.</p>
 </div>
 <div class="kod-lane kod-lane--st">
 <p class="kod-lane__title">Storyteller</p>
-<p>Decide on the appropriate dice throw: Name Foundation + Skill (or Primitive), declare die tier, interpret the resulting Marks and margins.</p>
+<p>Name Foundation + Skill (or Primitive), declare die tier, interpret Marks and margins. No secret difficulty number to “clear.”</p>
 </div>
 </div>
 
@@ -28,9 +28,9 @@ This chapter describes the entire process in order: **when** to roll → **what*
 
 ## When to roll
 
-If an action’s outcome can **significantly differ** because of luck, chance, or skill — the Storyteller **can** ask for a roll, picking the relevant characteristics to base it on. If the fiction is already clear, **do not roll**. Conversation, planning, and role-play especially should not be replaced by dice throws.
+If an action’s outcome can **significantly differ** because of luck, chance, or skill — the Storyteller **can** ask for a roll, picking the relevant characteristics to base it on. If the fiction is already clear, **do not roll**. Conversation, planning, and role-play are not replaced by dice.
 
-The Storyteller always chooses which [Foundation](/foundations/) and (if any) [Skill](/skills/) fit the described intent, and which **die tier** the pool uses — based on the of **[Advantage and Disadvantage](#advantage-and-disadvantage)** concept.
+The Storyteller always chooses which [Foundation](/foundations/) and (if any) [Skill](/skills/) fit the described intent, and which **die tier** the pool uses — that tier is the mechanical face of **[Advantage and Disadvantage](#advantage-and-disadvantage)**.
 
 ----------
 
@@ -64,15 +64,15 @@ Approximate chance a single die is a Mark:
 
 Most systems ask: *did you hit the number?* Pass or fail. The Storyteller holds a hidden threshold; the table waits for a binary answer.
 
-**Kodranni’s Resolution is different - it's interpretational.** You are not supposed to keep **strict margins** for a binary succeed/fail decision. Marks are **information** — how much of the intent landed, how cleanly, how deep the reading goes. The Storyteller weighs the outcome based on **incremental results** from the count of Marks (and, in opposed rolls, from the **margin** between the two opposing rolls). There shouldn't be *one* secret target the player is trying to achieve.
+**Kodranni’s resolution is interpretational.** You do not keep **strict margins** for a binary succeed/fail decision. Marks are **information** — how much of the intent landed, how cleanly, how deep the reading goes. The Storyteller decides **incremental results** from the count of Marks (and, in opposed rolls, from the **margin** between two counts). There is no single secret target the player is trying to “clear.”
 
-That requires a subtle mental shift from the Storyteller: less “did it work?”, more “**what does this many Marks tell us about how it went?**” Graded multiple threshold results - most simply achieved by withholding or granting more in the presentation of the result.
+That requires a shift: less “did it work?”, more “**what does this many Marks tell us about how it went?**” Zero Marks is still a result with colour. Four Marks is not merely “better pass” — it may open facts a thinner success would never have revealed.
 
-Players on the other hand, act under incomplete knowledge. The Storyteller scales reward, cost, and **what the fiction discloses** based on the Marks rolled.
+Players act under incomplete knowledge. The Storyteller scales reward, cost, and **what the fiction discloses** to the Marks on the table.
 
 <div class="kod-widget not-content" data-widget="marks-ladder">
 <p class="kod-widget__title">Scenario: The Scout</p>
-<p class="kod-widget__intro"><strong>Scene:</strong> A young warrior (the player's character) is sent out to observe the enemy camp during the night, As he get's close, the Storyteller prompts him to roll Perception + Scouting, a pool of 4 dice, based on the action that he is attempting. If he rolls:</p>
+<p class="kod-widget__intro"><strong>Scene:</strong> A young warrior is sent at night to observe an enemy camp. As he draws close, the Storyteller calls for Perception + Scouting — a pool of 4 dice. There is no hidden target number. If he rolls:</p>
 <div class="kod-widget__controls" role="group" aria-label="Marks of Success">
 <button type="button" class="kod-widget__btn" data-marks="0">0 Marks</button>
 <button type="button" class="kod-widget__btn" data-marks="1">1 Mark</button>
@@ -95,16 +95,16 @@ In any situation, factors that influence the odds of an action are often **innum
 
 Instead: in most cases it is **fairly easy to assess which side has the advantage**. That single judgment is enough. The system encodes it by shifting the **die tier** of the pool — not by piling pluses and minuses onto Marks.
 
-**This concept is called Advantage and Disadvantage.** They fold context into the roll without a modifier ledger.
+**Different dice types are Advantage and Disadvantage.** They fold context into the roll without a modifier ledger.
 
-- **Advantage** — favourable situations (beneficial terrain, superior knowledge, support, numbers, tools, an applicable trait). The die tier of the roll **upgrades** one step (for example **d8 → d12**).  
+- **Advantage** — favourable situations (beneficial terrain, superior knowledge, support, numbers, tools, a Trait that truly applies). The die tier **upgrades** one step (for example **d8 → d12**).  
   Example: a **trained hunter** who would normally roll **d8** tracks wounded prey with hounds → **d12**.
-- **Disadvantage** — challenging circumstances (poor weather, hostile ground, being surrounded, darkness, wrong tools, an applicable trait that hinders). The die tier **downgrades** one step (for example **d8 → d6**).  
+- **Disadvantage** — challenging circumstances (poor weather, hostile ground, being surrounded, darkness, wrong tools, a Trait that hurts). The die tier **downgrades** one step (for example **d8 → d6**).  
   Example: a **veteran soldier** who would otherwise roll **d8** is surrounded on multiple sides → **d6**.
 
 <div class="kod-widget not-content" data-widget="tier-dial">
 <p class="kod-widget__title">Die tier</p>
-<p class="kod-widget__intro">Storyteller names the tier. Select one:</p>
+<p class="kod-widget__intro">The Storyteller names the tier for the roll. Select one:</p>
 <div class="kod-widget__controls" role="group" aria-label="Die tier">
 <button type="button" class="kod-widget__btn" data-tier="d6">d6</button>
 <button type="button" class="kod-widget__btn" data-tier="d8">d8</button>
@@ -117,14 +117,14 @@ Instead: in most cases it is **fairly easy to assess which side has the advantag
 
 ### Declaring the tier
 
-There is **no automatic map** defining which Skill rating results in a d6 / d8 / d12 context. The **Storyteller declares** the die tier for each roll.
+There is **no automatic map** from Skill rating to d6 / d8 / d12. The **Storyteller declares** the die tier for each roll.
 
 - **Safe default:** treat **d8** as the ordinary tier for a competent attempt when nothing special presses the odds.
 - From that baseline — or from any other tier the Storyteller names — **Advantage** upgrades and **Disadvantage** downgrades.
 
-**Stacking:** Whether several Advantages climb more than one step, whether Advantage and Disadvantage cancel, and how hard the fiction pushes the tier is the **Storyteller’s call** for that moment, assessing the narrative context. 
+**Stacking:** Whether several Advantages climb more than one step, whether Advantage and Disadvantage cancel, and how hard the fiction pushes the tier is the **Storyteller’s call** for that moment.
 
-In multi-party messes, **each action is treated as a single, unique action**. Advantage and Disadvantage are read from **that** action’s context — not averaged across the field. The [Tide](#the-tide) describes collective resolution separately.
+In multi-party messes, **each action still stands alone**. Advantage and Disadvantage are read from **that** action’s context — not averaged across the field. The [Tide](#the-tide) holds collective pressure separately.
 
 ----------
 
@@ -147,13 +147,13 @@ Pools assemble from three sources:
 </aside>
 
 <aside class="kod-example" aria-label="Example">
-<p class="kod-example__scene">Storm weather is an hour off. Eira is a capable shipwright; the work is ordinary for her — recaulking a boat that must hold through the gale. Nothing about the scene especially favours or hinders her, so the Storyteller keeps the ordinary die tier.</p>
+<p class="kod-example__scene">A gale is an hour off. Eira is a capable shipwright. She recaulks a boat that must hold through the storm. Ordinary work for her; nothing about the scene shifts the tier.</p>
 <ol class="kod-example__steps">
-<li><strong>Intent:</strong> Eira recaulks the boat before the storm.</li>
-<li><strong>Storyteller names:</strong> Strength + Shipwright, die tier <strong>d8</strong> (no Advantage or Disadvantage).</li>
+<li><strong>Intent:</strong> recaulk the boat before the storm.</li>
+<li><strong>Storyteller names:</strong> Strength + Shipwright, <strong>d8</strong>.</li>
 <li><strong>Pool:</strong> Foundation 2 + Skill 2 = <strong>4d8</strong> (+ Omen d20).</li>
-<li><strong>Result:</strong> 2 Marks — the hull holds for the season, not longer; a solid job under time pressure, not a masterwork.</li>
-<li><strong>Practice:</strong> accrues only if she spent <a href="/exertion/">Exertion</a> (see <a href="/skills/#improvement">Skills</a>).</li>
+<li><strong>Result:</strong> 2 Marks — the hull holds for the season, not a masterwork under time pressure.</li>
+<li><strong>Practice:</strong> only if she spent <a href="/exertion/">Exertion</a> (see <a href="/skills/#improvement">Skills</a>).</li>
 </ol>
 </aside>
 
@@ -206,13 +206,13 @@ Hints:
 - Armour, reputation, favours, numbers, and terrain are **context** for Advantage / Disadvantage and for interpreting the margin — not separate subsystems — except where [Harm](/harm/) uses armour **or** Reputation **protection ratios** (not both on the same event; the Storyteller picks the contest type).
 
 <aside class="kod-example" aria-label="Example">
-<p class="kod-example__scene">The reeve has barred the gate and will not open for strangers after dark. The player character tries to talk past him — not a fight, a contest of will and words. Neither side holds a clear upper hand: the reeve has authority and the wall; the traveller has a plausible errand and a steady voice. Ordinary tier for both.</p>
+<p class="kod-example__scene">The reeve has barred the gate after dark. A traveller needs through — not a fight, a contest of will and words. Neither side holds clear Advantage: the reeve has authority and the wall; the traveller has a plausible errand and a steady voice. Ordinary tier for both.</p>
 <ol class="kod-example__steps">
-<li><strong>Intent:</strong> talk past the reeve who bars the gate.</li>
-<li><strong>Player roll:</strong> Charisma + Negotiation, <strong>d8</strong> → 3 Marks.</li>
-<li><strong>Opposing roll:</strong> Storyteller rolls for the reeve <em>in reply</em> — Resolve + Insight, <strong>d8</strong> → 1 Mark. (Pairs need not match.)</li>
+<li><strong>Intent:</strong> talk past the reeve.</li>
+<li><strong>Player:</strong> Charisma + Negotiation, <strong>d8</strong> → 3 Marks.</li>
+<li><strong>Reply (reeve):</strong> Resolve + Insight, <strong>d8</strong> → 1 Mark. (Pairs need not match.)</li>
 <li><strong>Margin:</strong> 3 − 1 = <strong>2</strong> for the player.</li>
-<li><strong>Outcome:</strong> the gate opens; the reeve is persuaded, not broken. <a href="/harm/">Harm</a> only if the Storyteller later rules lasting damage to standing or body.</li>
+<li><strong>Outcome:</strong> the gate opens; the reeve is persuaded, not broken. <a href="/harm/">Harm</a> only if lasting damage to standing or body is later ruled.</li>
 </ol>
 </aside>
 
@@ -275,14 +275,14 @@ On **equal footing**:
 Disadvantage lowers thresholds for the disadvantaged side (negative Omens more likely, positive less so). Severe disadvantage (the d6-versus-d12 equivalent) shifts thresholds by **two full levels**. Individual actions still get their own case-by-case Advantage; the macro adjustment applies only to Tide Omen thresholds.
 
 <aside class="kod-example">
-<p class="kod-example__scene">A small mill-raid: two roughly matched bands meet in the yard. Neither side holds the field yet — equal footing, small-skirmish scale. A player character barks orders to keep the line; a defender answers with threats and a raised spear. Their exchange is one push on the shared Tide, not the whole fight by itself.</p>
+<p class="kod-example__scene">A mill-raid in the yard: two roughly matched bands. Equal footing, small-skirmish scale. One push on the shared Tide is not the whole fight.</p>
 <ol class="kod-example__steps">
-<li><strong>Setup:</strong> small skirmish, equal footing — weights 8 vs 8 → scale 15, start 8. Shift every <strong>2</strong> Marks of difference on Tide-linked rolls.</li>
-<li><strong>Player roll:</strong> Authority + Command, d8 → 4 Marks.</li>
-<li><strong>Reply (NPC):</strong> Resolve + Intimidate, d8 → 1 Mark.</li>
-<li><strong>Tide:</strong> difference 3 → floor(3÷2) = <strong>1</strong> step toward the player side. Position 8 → 9.</li>
-<li><strong>Later:</strong> Omen 20 on a Tide-linked roll moves the Tide again (equal-footing small-skirmish band).</li>
-<li><strong>When the marker hits an end:</strong> that <em>side</em> routes. Individuals may still stand.</li>
+<li><strong>Setup:</strong> weights 8 vs 8 → scale 15, start 8. Shift every <strong>2</strong> Marks of difference.</li>
+<li><strong>Player:</strong> Authority + Command, d8 → 4 Marks.</li>
+<li><strong>Reply:</strong> Resolve + Intimidate, d8 → 1 Mark.</li>
+<li><strong>Tide:</strong> difference 3 → floor(3÷2) = <strong>1</strong> step toward the players. Position 8 → 9.</li>
+<li><strong>Later:</strong> Omen 20 on a Tide-linked roll moves it again (equal-footing small-skirmish band).</li>
+<li><strong>End of scale:</strong> that <em>side</em> routes. Individuals may still stand.</li>
 </ol>
 </aside>
 

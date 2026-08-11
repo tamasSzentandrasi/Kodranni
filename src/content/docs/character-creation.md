@@ -147,12 +147,12 @@ Lock the following before the character enters the record:
 Only then is the character written into the campaign record (via [automation](/automation/) when available).
 
 <aside class="kod-example">
-<p class="kod-example__scene">Mara is the target. Cal speaks: “I see a hard bargainer.” A seconder agrees. Mara and the Storyteller accept. Two different people are changed by that acceptance — and not the same way.</p>
+<p class="kod-example__scene">Mara is the target. Cal says: “I see a hard bargainer.” A seconder agrees. Mara and the Storyteller accept. Speaker and target are changed differently.</p>
 <ol class="kod-example__steps">
-<li><strong>Claim accepted</strong> about Mara: “I see a hard bargainer.”</li>
-<li><strong>Speaker (Cal)</strong> receives <strong>1 Word</strong> — banked for The Wanting later.</li>
-<li><strong>Storyteller marks the target (Mara)</strong> now: e.g. +2 skill points into Negotiation / Tradecraft, or a Trait “Hard bargainer,” whatever fits definition. Cal does not spend his Word on Mara.</li>
-<li><strong>The Wanting (later):</strong> Cal spends <strong>his</strong> Word on <strong>himself</strong> — e.g. menu row “+5 skill points” → he pays −1 from a named Foundation on his own sheet, names Skills he wants, Storyteller confirms.</li>
+<li><strong>Claim accepted</strong> about Mara: “hard bargainer.”</li>
+<li><strong>Cal (speaker)</strong> banks <strong>1 Word</strong> for The Wanting later.</li>
+<li><strong>Mara (target)</strong> is marked now: e.g. +2 skill points into Negotiation / Tradecraft, or Trait “Hard bargainer.” Cal’s Word is not spent on Mara.</li>
+<li><strong>The Wanting (later):</strong> Cal spends his Word on <strong>himself</strong> — e.g. “+5 skill points” → pays −1 from a named Foundation on his sheet, names Skills, Storyteller confirms.</li>
 </ol>
 </aside>
 

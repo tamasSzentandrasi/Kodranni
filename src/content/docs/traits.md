@@ -28,11 +28,10 @@ Traits are **not rated**. They either apply or they do not. The Storyteller deci
 </aside>
 
 <aside class="kod-example">
-<p class="kod-example__scene">A character with “Speaks Latin” is handed a charter at the table. Reading it is ordinary for them — the Trait is permission, not a Skill. Later they try to forge a matching hand: knowing the language helps the fiction, but forgery is still craft and cunning.</p>
+<p class="kod-example__scene">Trait: “Speaks Latin.” A charter is laid on the table. Reading it needs no roll. Forging a matching hand still does.</p>
 <ol class="kod-example__steps">
-<li><strong>Trait:</strong> Speaks Latin.</li>
-<li><strong>Read a Latin charter:</strong> no roll — Trait grants permission.</li>
-<li><strong>Forge a matching hand:</strong> roll <a href="/skills/">Forgery</a> (Guile). Speaks Latin does not replace the Skill; at most it justifies <strong>Advantage</strong> if the forgery must look learned.</li>
+<li><strong>Read the charter:</strong> no roll — Trait grants permission.</li>
+<li><strong>Forge a matching hand:</strong> roll <a href="/skills/">Forgery</a> (Guile). The Trait does not replace the Skill; at most it justifies <strong>Advantage</strong> if the forgery must look learned.</li>
 </ol>
 </aside>
 

@@ -56,13 +56,13 @@ Harm arises only when the fiction **and** the dice justify lasting damage.
 Be frugal. Most successful hits produce **0 or 1** point. Two points is notable. Three in a single exchange is rare.
 
 <aside class="kod-example">
-<p class="kod-example__scene">A spear finds a gap in light mail. The margin of the opposed exchange is real, but armour blunts lasting injury. The Storyteller reads a bleeding wound that steals fine control — not a social humiliation in the same blow.</p>
+<p class="kod-example__scene">A spear finds a gap in light mail. The opposed margin is real; armour still blunts lasting injury. The Storyteller assigns a physical track — not social Harm on the same event.</p>
 <ol class="kod-example__steps">
 <li><strong>Opposed margin:</strong> 3 Marks.</li>
-<li><strong>Protection:</strong> Light armour → ÷2.</li>
-<li><strong>Harm points:</strong> floor(3 ÷ 2) = <strong>1</strong>.</li>
+<li><strong>Protection:</strong> light armour → ÷2.</li>
+<li><strong>Harm:</strong> floor(3 ÷ 2) = <strong>1</strong> point.</li>
 <li><strong>Track (ST chooses):</strong> Bleeding (Dexterity) +1.</li>
-<li><strong>Not mixed:</strong> this event does not also apply social/mental tracks.</li>
+<li><strong>Not mixed:</strong> no social or mental track on this same blow.</li>
 </ol>
 </aside>
 
@@ -82,11 +82,11 @@ This window allows final actions, last words, or desperate stabilisation. Stabil
 After death: remove the character from the [Hierarchy Diagram](/hierarchies/#the-hierarchy-diagram). Continuity continues through [Echoes](/echoes/) and [Legacies](/hierarchies/#legacies). Play does not stop mid-session for full character replacement.
 
 <aside class="kod-example">
-<p class="kod-example__scene">Fever has taken hold; the track hits three. The character is Dying — still able to act, but every effort spends what little strength remains. A companion works with Resolve and Healing to pull them back from the edge. Life returns; the fever track does not instantly clear, and a lasting Trait often stays.</p>
+<p class="kod-example__scene">Fever hits 3. The character is Dying — still able to act, but every roll costs Exertion. A companion stabilises them with Healing. Dying ends; the track stays at 3 until recovery, and a lasting Trait usually remains.</p>
 <ol class="kod-example__steps">
-<li><strong>Fever track</strong> reaches 3 → character is <strong>Dying</strong>.</li>
+<li><strong>Fever</strong> reaches 3 → <strong>Dying</strong>.</li>
 <li><strong>While Dying:</strong> every roll costs <a href="/exertion/">Exertion</a>. At Exertion 0 → death.</li>
-<li><strong>Stabilise:</strong> successful Resolve + Healing → Dying ends; track stays at 3 until recovery; usually gain a permanent <a href="/traits/">Trait</a>.</li>
+<li><strong>Stabilise:</strong> Resolve + Healing succeeds → Dying ends; track stays at 3 until recovery; usually a permanent <a href="/traits/">Trait</a>.</li>
 </ol>
 </aside>
 

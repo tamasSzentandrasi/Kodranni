@@ -61,11 +61,11 @@ Whether something can reasonably be carried, hauled, or stored is decided by con
 </aside>
 
 <aside class="kod-example">
-<p class="kod-example__scene">Ambush on the ridge. A player wants a bow for the shot — but neither the sheet nor any earlier fiction said they carried one. They do not invent gear mid-scene. After they take a bow in play, the sheet may be updated through the usual approval path.</p>
+<p class="kod-example__scene">Ambush on the ridge. A player wants a bow for the shot. Neither the sheet nor any earlier fiction said they carried one.</p>
 <ol class="kod-example__steps">
-<li><strong>Scene starts:</strong> no bow on the sheet, none declared → the character does not have a bow.</li>
-<li><strong>Cannot</strong> add it mid-scene retroactively.</li>
-<li><strong>After taking one in fiction:</strong> player requests named item → Storyteller approves → sheet updates.</li>
+<li><strong>Scene starts:</strong> no bow on the sheet, none declared → they do not have a bow.</li>
+<li><strong>Cannot</strong> invent it mid-scene.</li>
+<li><strong>After taking one in play:</strong> player requests the named item → Storyteller approves → sheet updates.</li>
 </ol>
 </aside>
 

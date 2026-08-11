@@ -3,7 +3,7 @@ title: Echoes
 description: Echoes, Fortunes, and Foundation Myths.
 ---
 
-> _*“The life of the dead is placed in the memory of the living"*_  
+> _*“The life of the dead is placed in the memory of the living.”*_  
 > — Cicero
 
 ----------
@@ -34,12 +34,12 @@ The **player** elevates a moment into an Echo. The Storyteller may veto only for
 </aside>
 
 <aside class="kod-example">
-<p class="kod-example__scene">A character whose Resolve, Constitution, and Charisma sum to six can carry that much Echo weight. Carry nothing and the hollow of Decadence taxes every action. Fill the load carefully; past capacity, only rolls that touch those burdens suffer.</p>
+<p class="kod-example__scene">Capacity is Resolve + Constitution + Charisma. Here that sum is 6. Empty load is Decadence; over capacity hurts only rolls that touch the character’s Echoes.</p>
 <ol class="kod-example__steps">
-<li><strong>Capacity:</strong> Resolve + Constitution + Charisma = 6.</li>
+<li><strong>Capacity:</strong> 6.</li>
 <li><strong>No Echoes:</strong> Decadence → <strong>−1</strong> die on every roll.</li>
-<li><strong>Carried:</strong> weights 1 + 2 + 3 = 6 → at capacity (no over-cap penalty).</li>
-<li><strong>If total weight &gt; 6:</strong> −1 die on rolls that involve any of that character’s Echoes.</li>
+<li><strong>Weights 1 + 2 + 3 = 6:</strong> at capacity — no over-cap penalty.</li>
+<li><strong>Total weight &gt; 6:</strong> −1 die on rolls that involve any of that character’s Echoes.</li>
 </ol>
 </aside>
 
@@ -48,12 +48,12 @@ The **player** elevates a moment into an Echo. The Storyteller may veto only for
 When a roll’s context matches one of the character’s Echoes, the player may spend **one extra [Exertion](/exertion/) die** beyond the normal limit of one. See [dice pool makeup](/dice-mechanics/#the-makeup-of-the-dice-pool).
 
 <aside class="kod-example">
-<p class="kod-example__scene">Raiders press the spring the character swore to hold. The Echo matches the hour. They may pour more of themselves into the roll than Exertion normally allows — will and stake together.</p>
+<p class="kod-example__scene">Raiders press the spring the character swore to hold. The Echo matches. They may spend one more Exertion die than usual on that roll.</p>
 <ol class="kod-example__steps">
-<li><strong>Echo matches the scene:</strong> “Hold the spring against the upper tribe.”</li>
+<li><strong>Echo:</strong> “Hold the spring against the upper tribe.”</li>
 <li><strong>Roll:</strong> Authority + Command, d8.</li>
-<li><strong>Exertion:</strong> spend 1 as usual, plus <strong>1 more</strong> for the Echo (two dice from Exertion total).</li>
-<li><strong>Without a matching Echo:</strong> only one Exertion die may be spent.</li>
+<li><strong>Exertion:</strong> 1 normal + <strong>1</strong> from the matching Echo (two total).</li>
+<li><strong>No matching Echo:</strong> only one Exertion die may be spent.</li>
 </ol>
 </aside>
 
