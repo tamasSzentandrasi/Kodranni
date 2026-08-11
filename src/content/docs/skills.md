@@ -8,7 +8,7 @@ description: Skills organised under six Archetypes, with Practice and improvemen
 
 ----------
 
-**Skills** are organised under six **Archetypes** — personified domains, **not** character classes. A character may draw freely from any list; the Archetype is a shelf, not a destiny.
+**Skills** are organised under six **Archetypes** — personified domains, **not** character classes. A character may draw freely from any list; the Archetype is just an abstraction above related skills.
 
 **Skills are rated between 0 and 3.**
 
@@ -19,7 +19,7 @@ description: Skills organised under six Archetypes, with Practice and improvemen
 
 Each Skill has a single ruling **[Foundation](/foundations/)** that governs its [Practice](#improvement) thresholds.
 
-Specific techniques, regional styles, named tools, or binary capabilities remain **[Traits](/traits/)** — not Skills.
+Specific techniques, regional styles, named tools, or binary capabilities remain **[Traits](/traits/)** — not Skills — you are either capable of a technique, apt at using a specific tool, or capable of a certain thing or not.
 
 At the table, the Storyteller selects the Skill that best matches the player’s described intent when building a [dice pool](/dice-mechanics/#the-makeup-of-the-dice-pool).
 
@@ -33,7 +33,7 @@ Practice is deeply tied to **[Exertion](/exertion/)**. **Marks of Success** only
 
 | Roll type | Practice rule |
 |-----------|----------------|
-| **Opposed** | Practice = Marks difference when Exertion was spent. If the character *lost* the contest, add **+2** (regardless of Exertion). A **0** margin leaves any extra award to the Storyteller’s reading of the fiction. |
+| **Opposed** | Practice = Marks difference when Exertion was spent. If the character *lost* the contest, add **+2** (regardless of Exertion). A **0** margin counts as not lost. |
 | **Unopposed** | **+2** Practice if the roll contained more failures than Marks (Exertion free), **plus** **+1** Practice for every two Marks of Success (rounded down) when Exertion was spent. |
 
 Practice accumulates against thresholds:
@@ -91,15 +91,13 @@ Fiction still decides *why* rust set in; automation only applies the prompted pr
 <ol class="kod-example__steps">
 <li><strong>Unopposed Lockpicking:</strong> more failures than Marks, no Exertion → <strong>+2 Practice</strong>.</li>
 <li><strong>Same Skill later:</strong> Exertion spent, 4 Marks → <strong>+2 Practice</strong> (floor of 4÷2). Progress is visible on the sheet.</li>
-<li><strong>Short time leap (ST prompts):</strong> five lowest-progress Skills; Omen 0–9 → degrade 0 of them; Omen 10–20 → degrade 1.</li>
+<li><strong>Short time leap (ST prompts):</strong> five lowest-progress Skills; Omen 0–9 → degrade 0 of them; Omen 10–20 → degrade a randomly selected 1 among those 5.</li>
 </ol>
 </aside>
 
 ----------
 
 ## The six Archetypes
-
-Twelve Skills each. Open one panel — it takes the full row; use ← to return.
 
 <div class="kod-archetypes not-content">
 
