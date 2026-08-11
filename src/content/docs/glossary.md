@@ -26,7 +26,7 @@ Quick reference. Each entry links to the chapter that owns the full rule.
 | **Exertion** | Spendable pool for extra dice; also fatigue/hunger/thirst ledger. Max = Resolve + Constitution + Charisma. → [Exertion](/exertion/) |
 | **Foundation** | One of nine inborn ratings (1–3 typical). → [Foundations](/foundations/) |
 | **Foundation Myth** | One of up to three active resolved Pivotal Echoes with community-wide effects. → [Echoes](/echoes/#foundation-myths) |
-| **Fortune** | One of five soft community measures (0–3). → [Echoes](/echoes/#fortunes) |
+| **Fortune** | One of five soft community measures (0–3). Ambient context for the whole community — colours scenes for PCs and NPCs alike. → [Echoes](/echoes/#fortunes) |
 | **Guile** | Social Foundation: cunning and deception. → [Foundations](/foundations/) |
 | **Guiding Hand** | Second Weighing Omen; full d20 as skill points. → [Character Creation](/character-creation/#the-weighing) |
 | **Harm** | Damage on a Foundation’s named track (0–3). → [Harm](/harm/) |

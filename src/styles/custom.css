@@ -1493,7 +1493,136 @@ site-title img,
   color: var(--kod-silver);
 }
 
-/* --- Fortune chips / tier ladder ------------------------------------------- */
+/* --- Fortune hall: five vertical pillars ----------------------------------- */
+.kod-fortune-hall {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.55rem;
+  margin: 1.35rem 0 1.6rem;
+  align-items: stretch;
+}
+@media (max-width: 60rem) {
+  .kod-fortune-hall {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (max-width: 40rem) {
+  .kod-fortune-hall {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 28rem) {
+  .kod-fortune-hall {
+    grid-template-columns: 1fr;
+  }
+}
+
+.kod-fortune-pillar {
+  box-sizing: border-box;
+  margin: 0 !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  min-height: 14.5rem;
+  padding: 1rem 0.65rem 1.05rem;
+  border-radius: 3px 3px 2px 2px;
+  border: 1px solid #2a2424;
+  border-top-width: 4px;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--kod-fortune-accent, var(--kod-blood)) 22%, #0c0a0a) 0%,
+    #0a0808 55%,
+    #080606 100%
+  );
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--kod-fortune-accent, #fff) 18%, transparent);
+}
+
+.kod-fortune-pillar__icon {
+  display: block;
+  width: 2.1rem;
+  height: 2.1rem;
+  margin: 0 0 0.7rem;
+  background-color: var(--kod-fortune-accent, var(--kod-blood-bright));
+  -webkit-mask: center / contain no-repeat;
+  mask: center / contain no-repeat;
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--kod-fortune-accent) 45%, transparent));
+}
+
+.kod-fortune-pillar__name {
+  font-family: var(--kod-font-display);
+  font-size: 1.05rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fff8f0;
+  margin: 0 0 0.55rem;
+  line-height: 1.2;
+}
+
+.kod-fortune-pillar__blurb {
+  margin: 0;
+  font-size: 0.88em;
+  line-height: 1.45;
+  color: var(--kod-silver);
+  flex: 1 1 auto;
+}
+
+/* Vitality — life / pulse (people & health) */
+.kod-fortune-pillar--vitality {
+  --kod-fortune-accent: #c45a6a;
+  border-top-color: #c45a6a;
+}
+.kod-fortune-pillar--vitality .kod-fortune-pillar__icon {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M12 21s-7.2-4.6-9.5-8.2C.8 10.2 1.5 6.8 4.2 5.4 6.2 4.4 8.5 5 10 6.6L12 8.8l2-2.2C15.5 5 17.8 4.4 19.8 5.4c2.7 1.4 3.4 4.8 1.7 7.4C19.2 16.4 12 21 12 21z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M12 21s-7.2-4.6-9.5-8.2C.8 10.2 1.5 6.8 4.2 5.4 6.2 4.4 8.5 5 10 6.6L12 8.8l2-2.2C15.5 5 17.8 4.4 19.8 5.4c2.7 1.4 3.4 4.8 1.7 7.4C19.2 16.4 12 21 12 21z'/%3E%3C/svg%3E");
+}
+
+/* Cohesion — linked ring (trust & order) */
+.kod-fortune-pillar--cohesion {
+  --kod-fortune-accent: #6a9fd4;
+  border-top-color: #6a9fd4;
+}
+.kod-fortune-pillar--cohesion .kod-fortune-pillar__icon {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M8.5 7a4 4 0 1 1 0 8 4 4 0 0 1 0-8zm0 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a4 4 0 1 1 0 8 4 4 0 0 1 0-8zm0 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM10.2 12h3.6v2h-3.6v-2z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M8.5 7a4 4 0 1 1 0 8 4 4 0 0 1 0-8zm0 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a4 4 0 1 1 0 8 4 4 0 0 1 0-8zm0 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM10.2 12h3.6v2h-3.6v-2z'/%3E%3C/svg%3E");
+}
+
+/* Surplus — grain sheaf / store (material buffer) */
+.kod-fortune-pillar--surplus {
+  --kod-fortune-accent: #c4a035;
+  border-top-color: #c4a035;
+}
+.kod-fortune-pillar--surplus .kod-fortune-pillar__icon {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M12 2c1.2 2.2 1.2 4.2 0 6.2-1.2-2-1.2-4 0-6.2zm0 6.5c1.5 2.4 1.5 4.6 0 7-1.5-2.4-1.5-4.6 0-7zm-3.2-3.2c1.5 1.6 2.2 3.3 2 5.2-1.8-.4-3.2-1.6-4.2-3.4 1 .2 1.7-.4 2.2-1.8zm6.4 0c.5 1.4 1.2 2 2.2 1.8-1 1.8-2.4 3-4.2 3.4-.2-1.9.5-3.6 2-5.2zM11 15.5h2V22h-2v-6.5z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M12 2c1.2 2.2 1.2 4.2 0 6.2-1.2-2-1.2-4 0-6.2zm0 6.5c1.5 2.4 1.5 4.6 0 7-1.5-2.4-1.5-4.6 0-7zm-3.2-3.2c1.5 1.6 2.2 3.3 2 5.2-1.8-.4-3.2-1.6-4.2-3.4 1 .2 1.7-.4 2.2-1.8zm6.4 0c.5 1.4 1.2 2 2.2 1.8-1 1.8-2.4 3-4.2 3.4-.2-1.9.5-3.6 2-5.2zM11 15.5h2V22h-2v-6.5z'/%3E%3C/svg%3E");
+}
+
+/* Standing — banner (external weight) */
+.kod-fortune-pillar--standing {
+  --kod-fortune-accent: #9b8fd4;
+  border-top-color: #9b8fd4;
+}
+.kod-fortune-pillar--standing .kod-fortune-pillar__icon {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M5 3h2v18H5V3zm3 1h9.5l-1.8 3.2L17.5 10H8V4zm2 2v2h5.2l-.9-1.5L15.2 6H10z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M5 3h2v18H5V3zm3 1h9.5l-1.8 3.2L17.5 10H8V4zm2 2v2h5.2l-.9-1.5L15.2 6H10z'/%3E%3C/svg%3E");
+}
+
+/* Tradition — scroll / memory */
+.kod-fortune-pillar--tradition {
+  --kod-fortune-accent: #6fc4b0;
+  border-top-color: #6fc4b0;
+}
+.kod-fortune-pillar--tradition .kod-fortune-pillar__icon {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M6 3h9a3 3 0 0 1 3 3v11.5a1.5 1.5 0 1 1-1.2-2.9V6a1 1 0 0 0-1-1H7v14h8.5a.5.5 0 0 1 0 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm2 4h6v1.5H8V7zm0 3h6v1.5H8V10zm0 3h4v1.5H8V13z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M6 3h9a3 3 0 0 1 3 3v11.5a1.5 1.5 0 1 1-1.2-2.9V6a1 1 0 0 0-1-1H7v14h8.5a.5.5 0 0 1 0 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm2 4h6v1.5H8V7zm0 3h6v1.5H8V10zm0 3h4v1.5H8V13z'/%3E%3C/svg%3E");
+}
+
+.sl-markdown-content .kod-fortune-hall > * {
+  margin-top: 0 !important;
+}
+
+/* Legacy chip styles (if still used elsewhere) */
 .kod-chip-row {
   display: flex;
   flex-wrap: wrap;
