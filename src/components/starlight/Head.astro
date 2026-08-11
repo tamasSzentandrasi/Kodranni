@@ -215,11 +215,11 @@ const fontFacesCss = `
 			const panel = root.querySelector('[data-panel]');
 			const buttons = [...root.querySelectorAll('[data-marks]')];
 			const scenes = {
-				0: '<strong>0 Marks</strong> — Lost. No intel. Mission fails into mishap.',
-				1: '<strong>1 Mark</strong> — Barely close. Paranoia of patrols; almost no useful detail.',
-				2: '<strong>2 Marks</strong> — Camp from a distance: approaches and weak points. No safe way closer.',
-				3: '<strong>3 Marks</strong> — Clear read: numbers, layout; they mean to wait out the weather.',
-				4: '<strong>4 Marks</strong> — Deep read: decoys; something is wrong; a night raid may be imminent. Return now.',
+				0: '<strong>0 Marks</strong> — The Scout gets lost in the woods, the player gains nothing.',
+				1: '<strong>1 Mark</strong> — The Scout gets paranoid on the way, seeing flickering lights of torches in the woods, convinced that a patrol is on his heels. Returns in haste.',
+				2: '<strong>2 Marks</strong> — The Scout observes the camp from a distance: notices approaches and weak points, but finds no safe way to closer.',
+				3: '<strong>3 Marks</strong> — The Scout manages to observe the camp and it's surroundings, get's as close as possible. Notes: numbers, camp layout; infers that they mean to wait out the bad weather.',
+				4: '<strong>4 Marks</strong> — The Scout notices a deception: Apart from a few men, the rest are decoys; something is wrong; a night raid may be imminent. Strong indication that he should return in haste to warn the others.',
 			};
 			function set(n) {
 				buttons.forEach((b) =>
