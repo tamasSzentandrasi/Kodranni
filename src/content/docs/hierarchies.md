@@ -6,6 +6,10 @@ description: Hierarchies, Reputation, Legacies, and the Diagram.
 > _*It is better to be on hand with ten men than absent with ten thousand.*_  
 > — Timur
 
+<figure class="kod-breath not-content">
+<img src="/scenes/emissaries.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
+</figure>
+
 ----------
 
 ## Hierarchies, Reputation and Legacies
@@ -120,6 +124,10 @@ Competition and cooperation on the same tier are left to roleplay.
 </aside>
 
 ----------
+
+<figure class="kod-breath not-content">
+<img src="/scenes/death.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
+</figure>
 
 ### Legacies
 

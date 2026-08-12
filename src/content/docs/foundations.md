@@ -7,7 +7,7 @@ description: The nine inborn Foundations that shape a character.
 > — Traditional English proverb
 
 <figure class="kod-breath not-content">
-<img src="/scenes/after-harvest.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+<img src="/scenes/peasantkid.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
 </figure>
 
 ----------
