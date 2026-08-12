@@ -31,13 +31,13 @@ Players receive only a ranked list of campaign seeds and the system constraints.
 </div>
 </div>
 
-The seeds below are examples only — concrete, campaign-scale situations that work. Replace or rewrite them freely. Players rank their top three.
+The seeds below are **examples only**. Replace them. Players rank their top three. A good seed is not “we are poor.” It is a community on a collision course with **war, death, hunger, plague, or forced flight** — with enough left alive that player action can still change who dies next.
 
 ### Campaign seeds
 
 <div class="kod-widget not-content" data-widget="content-tabs">
 <p class="kod-widget__title">Browse by setting type</p>
-<p class="kod-widget__intro">Each seed is a community with a countdown, a wound that will not wait, and room for player characters to matter — or to fail publicly.</p>
+<p class="kod-widget__intro">Historical seeds are locked to a real place and year. Semi-historical seeds start from a real crisis and break one hinge. Fully invented seeds must still feel as hard as history.</p>
 <div class="kod-widget__controls" role="group" aria-label="Seed type">
 <button type="button" class="kod-widget__btn" data-tab="hist" aria-pressed="true">Tightly historical</button>
 <button type="button" class="kod-widget__btn" data-tab="semi">Semi-historical</button>
@@ -52,9 +52,9 @@ The seeds below are examples only — concrete, campaign-scale situations that w
 <p class="kod-seed__hook">Winter is coming. The harvest was thin. Choose whom to serve — or whom to refuse — and still be a people in spring.</p>
 </div>
 <div class="kod-seed kod-seed--hist">
-<p class="kod-seed__title">After the burnings — Iceland, late Commonwealth</p>
-<p>Two neighbouring chieftains’ followings still share a valley. Last winter, halls burned and men died; the killers walk free under partial settlements and thin law. Hayfields, driftwood rights, and blood-price are tangled. The next Althing is weeks away. Neither side will walk in unarmed — and neither can afford open war until after the hay is in.</p>
-<p class="kod-seed__hook">Keep your people fed, keep your dead avenged without finishing the kinship, or watch the following scatter to stronger goðar before the court even sits.</p>
+<p class="kod-seed__title">Magdeburg country, winter 1631</p>
+<p>After the sack, the survivors of linked farmsteads and a half-burned market village are still on the Elbe road. Most of the fighting men are dead or pressed. The winter is early. Protestant and Imperial columns both “forage” the same hamlets. Children are sold for bread. A Swedish outrider has offered protection if the community delivers a named man who hid in their barns — a man who once saved half of them from fire.</p>
+<p class="kod-seed__hook">Feed the living through the freeze, keep the hidden man without being burned out again, or hand him over and learn what “protection” costs when the next army comes.</p>
 </div>
 </div>
 </div>
@@ -62,14 +62,14 @@ The seeds below are examples only — concrete, campaign-scale situations that w
 <div class="kod-widget__panel" data-panel-id="semi" hidden>
 <div class="kod-seed-grid">
 <div class="kod-seed kod-seed--semi">
-<p class="kod-seed__title">The Salt-Road Clan between two armies</p>
-<p>A free pastoral clan that has always lived by guiding caravans and taking toll on a desert salt track. This year both a coastal satrapy and an inland khanate mean to own the road. Each has sent “gifts” and hostages. The wells on the long stretch are few; the next caravan is already on the sand; the clan’s young men are being bought as scouts by both sides.</p>
-<p class="kod-seed__hook">Pick a master and become a tool, play them against each other until one army arrives in force, or burn the wells and vanish — and decide who you are when the road no longer needs you.</p>
+<p class="kod-seed__title">Kaffa’s shadow never lifted (1347→)</p>
+<p><strong>Basis:</strong> the Black Death leaves Crimea and rides west. <strong>Break:</strong> in this timeline the first wave never truly ends on the northern Black Sea littoral — it returns every few years, and the Genoese and Tatar powers treat the steppe edge as a dumping ground for the dying and the expelled. Your community is a mixed port-kin of fishers, porters, and convert households that survived three visitations by dumping their own sick on the ice and still lost half. A new fever ship is in the roads. The citadel will not take them in. Inland pastures have closed. The dead of the last wave are not all buried; wolves work the edges of the burial pits at night.</p>
+<p class="kod-seed__hook">Quarantine your own blood, burn the ship, flee inland through hostile steppe, or sell the healthy young as rowers to the next galley that will take them — before the fever is inside the walls.</p>
 </div>
 <div class="kod-seed kod-seed--semi">
-<p class="kod-seed__title">Three houses and one millstone</p>
-<p>Three intermarried houses hold the only working mill for two days’ ride. The river is cutting a new channel; the old stone is cracked; the next flood will finish it. One house has already met a foreign merchant who will fund a new mill — on land titled in his name alone. The other two have sons who would rather kill than kneel. The harvest is three weeks off. Grain is already stacking in the yards.</p>
-<p class="kod-seed__hook">Save the stone, break the kinship cleanly before it breaks in blood, or sell the valley’s future and live with who becomes landlord.</p>
+<p class="kod-seed__title">The Varangians stayed (Vinland, c. 1020→)</p>
+<p><strong>Basis:</strong> Norse landings in Vinland. <strong>Break:</strong> the settlement did not fail. Three generations later a thin coastal kin still holds a timber fort and a few cleared fields, bleeding from Skræling war, scurvy winters, and ships that no longer come from Greenland with iron and wives. This spring a longship finally arrives — not with kin, but with a Christian magnate’s men who mean to take the fort as a mission-station and thrall-yard. The local people who once traded will no longer treat; they remember the last raid. Half the Norse children already speak more of the forest than of Norway.</p>
+<p class="kod-seed__hook">Fight the newcomers and starve without iron, kneel and lose the freeholding, or cut a peace with the forest peoples that will make you something Greenland will not recognise as Norse.</p>
 </div>
 </div>
 </div>
@@ -77,19 +77,19 @@ The seeds below are examples only — concrete, campaign-scale situations that w
 <div class="kod-widget__panel" data-panel-id="inv" hidden>
 <div class="kod-seed-grid">
 <div class="kod-seed kod-seed--invented">
-<p class="kod-seed__title">Ash-Hill after the coughing year</p>
-<p>Related families on the lower slopes of a dead volcano. Two winters ago a coughing sickness killed one in three — including most of the fighting age. While the living dug graves, the upper-pasture tribe walked the empty folds and claimed them by fire-mark. The only spring that does not fail in August is still on Ash-Hill ground. The upper tribe has begun to fence the paths to it. Children already carry water before first light.</p>
-<p class="kod-seed__hook">Reclaim the grass, hold the water without a war you cannot win, or cut a deal that costs names and graves — before the dry season makes every choice uglier.</p>
+<p class="kod-seed__title">The column that did not die at the ford</p>
+<p>A people driven from their river towns by a war they did not start. They are not an army — old men, women, children, a few armed household bands. At the last ford, the pursuing horse expected them to break on the ice. They did not. They crossed. The cost was a third of the column and almost all the baggage. Now they sit on the far bank with no food for ten days, no right to the land they stand on, and the horse still camping on the other side waiting for the ice to thicken. The local king will grant passage only if they leave their weapons and their firstborn as hostages. The horse will grant nothing.</p>
+<p class="kod-seed__hook">Force another march into winter, accept the king’s chain, turn and die on the ice, or break the column into pieces that will never be one people again.</p>
 </div>
 <div class="kod-seed kod-seed--invented">
-<p class="kod-seed__title">The third failed run</p>
-<p>A coastal kinship whose identity is the great autumn fish run that fills smokehouses and pays the grain-debt inland. Three years the run has come late or thin. The smokehouses are cold; seed barley is being eaten; the inland creditors are due at first frost. Younger adults have shipped with foreign crews and send no word. Rival fishers from the next headland now work the old grounds with better nets and a charter from a distant shore-lord the kinship never recognised.</p>
-<p class="kod-seed__hook">Drive the rivals off the grounds, abandon the shore and become someone else inland, or find a catch that pays the debt without selling the next generation — while the frost date still approaches.</p>
+<p class="kod-seed__title">Siege winter: the city that ate its dogs</p>
+<p>A walled river city has been closed for five months. The garrison is foreign and unpaid. The citizen kin-houses still control the granaries — what is left of them. Dogs are gone. Leather is broth. A peace party wants to open a gate at dawn and take the conqueror’s terms: the leading houses hanged, the rest spared. A war party has found a sewer path and means to murder the garrison officers and fight on. Both parties need the same three player-linked houses to tip the night. Outside the walls, the besiegers have begun building cages for the survivors they mean to sell.</p>
+<p class="kod-seed__hook">Open the gate, kill the officers, or hold a third path until the ice breaks the river-road — knowing each choice will leave bodies in the street and names on the next Foundation Myth.</p>
 </div>
 <div class="kod-seed kod-seed--invented">
-<p class="kod-seed__title">When the high grass died</p>
-<p>Herders of the high summer folds. Two years of failed rain; the upland turf is brown by midsummer. The valley farms below have closed their gates and doubled the water-toll. The clan has already slaughtered the weak stock early. A third of the lambs will not see autumn. The old routes west into empty steppe are half-remembered; the last scouts who tried them did not return. The valley headman has offered grain for hostages and for the clan’s best riding stock — “until the rains return.”</p>
-<p class="kod-seed__hook">Force the valleys open, risk the western dark, break into smaller bands and lose the name, or take the headman’s bread and know what your children will be called when they grow up in his yards.</p>
+<p class="kod-seed__title">The plague year they called mercy</p>
+<p>A highland valley of related villages sealed itself when the coughing plague came up from the lowlands. They lived. The lowlands did not. Now the survivors of the low road have returned as a starving host under a holy man who preaches that the valley’s health is stolen sin — and that emptying the valley is mercy. They have already burned the outermost hamlet. The valley can field one real fight. After that, only starvation or flight over the winter pass remains. Inside the valley, three families hid lowland kin against the seal laws; if that is proven, the valley will tear itself open before the host arrives.</p>
+<p class="kod-seed__hook">Fight once and die thin, open the seal and be judged, flee the pass and abandon the old and the sick, or expose the hidden kin and buy a week of unity with a civil slaughter.</p>
 </div>
 </div>
 </div>
@@ -99,11 +99,11 @@ The seeds below are examples only — concrete, campaign-scale situations that w
 
 ## Worldbuilding Practices
 
-Do these **in order**. The walkthrough follows one worked place — a coastal kinship after a third failed fish run — so every step builds on the last. Swap the setting; keep the method.
+Do these **in order**. The worked thread below follows **the column that crossed the ford** (fully invented seed). Swap the seed; keep the discipline: material facts first, people second, ranks last.
 
 <div class="kod-widget not-content" data-widget="step-flow">
 <p class="kod-widget__title">Worldbuilding walkthrough</p>
-<p class="kod-widget__intro">Nine steps. You are not inventing a continent. You are inventing enough pressure that player characters cannot sit still without becoming irrelevant.</p>
+<p class="kod-widget__intro">Nine steps. Enough truth to hurt. Not a continent in a binder.</p>
 <p class="kod-step-flow__label" data-step-label></p>
 <div class="kod-step-flow__track" role="group" aria-label="Worldbuilding steps">
 <button type="button" class="kod-widget__btn" data-tab="1" aria-pressed="true">1</button>
@@ -118,57 +118,57 @@ Do these **in order**. The walkthrough follows one worked place — a coastal ki
 </div>
 
 <div class="kod-widget__panel" data-panel-id="1" data-step-title="Spectrum">
-<p><strong>Decide the spectrum</strong> — tightly historical, semi-historical, or fully invented — and keep it consistent for the whole campaign.</p>
-<div class="kod-step-example"><strong>Example</strong>Semi-historical coastal kinship: real grain-debt and seasonal fish pressure; invented headland names and kin-houses; no magic, no secret empires off-map.</div>
-<div class="kod-step-best"><strong>Best practice</strong>Write the choice in one line and treat it as a law. Tightly historical means real law, seasons, and power can constrain you — use that. Fully invented means you still need the same economic gravity; invention is not an excuse for soft stakes. If you invent a wonder, ask what it costs the community to keep or lose.</div>
+<p><strong>Lock the spectrum</strong> — tightly historical, semi-historical, or fully invented — for the whole campaign.</p>
+<div class="kod-step-example"><strong>Example</strong>Fully invented refugee column: no named real empire, but the same physics as real flight — cold, horse, hunger, hostage law.</div>
+<div class="kod-step-best"><strong>Best practice</strong>Historical: real calendars, real armies, real disease timelines are your friends. Semi-historical: change one hinge, then respect every consequence. Invented: if it could not kill people the way history does, it is tourism. Write the spectrum on the first line of your notes and do not cheat it when a cool idea arrives.</div>
 </div>
 
-<div class="kod-widget__panel" data-panel-id="2" data-step-title="Daily life" hidden>
-<p><strong>Fix ordinary professions and daily lifestyle.</strong> What most people do from season to season to stay alive and keep the group intact. This is the baseline everything else presses against — and where player characters “should” be when they are not chasing danger.</p>
-<div class="kod-step-example"><strong>Example</strong>Run-months: almost every able body on the water or the drying racks from dark to dark; smokehouses never cold; children carry salt and watch the racks for theft. Off-months: net-mending, boat repair, small barley behind the houses, and hard talk about who still owes inland grain. The few who do not fish (midwives, the smith, the old channel-reader) become natural knots of influence because everyone else is exhausted.</div>
-<div class="kod-step-best"><strong>Best practice</strong>Know who is free at midwinter and who is owned by the season. Adventures that ignore the calendar feel fake; adventures that steal people from the racks create guilt and plot. If you cannot say how this people eats in the worst month, stop — you do not have a community yet.</div>
+<div class="kod-widget__panel" data-panel-id="2" data-step-title="How they live" hidden>
+<p><strong>How does this people stay alive day to day?</strong> Work, sex, food, who watches children, who buries the dead. This is where characters “should” be when they are not bleeding for the plot.</p>
+<div class="kod-step-example"><strong>Example</strong>On the far bank: no permanent houses. Lean-tos from broken carts. Women dig root pits and boil leather. Armed bands take two-hour watches facing the ice. Children gather dung for fire. The old who cannot walk are already dying of cold at night. There is no “normal week” — only the next ten days of food that does not exist.</div>
+<div class="kod-step-best"><strong>Best practice</strong>Know the worst month. Know who starves first. If player adventures ignore that calendar, the world feels fake. If they drag people off watch or off the root-pits, the community should notice — resentment is plot. No livelihood note means no community.</div>
 </div>
 
-<div class="kod-widget__panel" data-panel-id="3" data-step-title="What must work" hidden>
-<p><strong>Name the material things that must keep working</strong> or the community begins to fail. Specific objects, rights, and places — not abstract “resources.”</p>
-<div class="kod-step-example"><strong>Example</strong>The three sound open-water boats; the deep channel markers only two brothers still read right; the seed barley still dry in the loft; the reed-cutting right on the far bank (smokehouse fuel); the grain-debt paper held by the inland creditor; the old claim-words that say these grounds are theirs when the next headland’s charter says otherwise.</div>
-<div class="kod-step-best"><strong>Best practice</strong>Five to eight named things. Each should be stealable, burnable, bargained, or defended in a single session. Prefer things that create arguments between households, not just “vs outsiders.” If nothing on the list can force a player to choose between kin and survival, the list is decoration.</div>
+<div class="kod-widget__panel" data-panel-id="3" data-step-title="What must not fail" hidden>
+<p><strong>Name the things whose failure ends the community.</strong> Objects, rights, bodies of knowledge, food stores, fords, hostages — concrete, countable, stealable.</p>
+<div class="kod-step-example"><strong>Example</strong>The last wagons that still roll; the remaining seed grain sewn into coats; the hostage-oath the far king will accept; the ice thickness at the ford (measured twice a day); the name-list of fighting men still able to stand; the banner the column still carries so scattered kin can find them.</div>
+<div class="kod-step-best"><strong>Best practice</strong>Five to eight items. Each must be able to force a session: burn it, steal it, bargain it, or die on it. Prefer items that set households against each other (who eats the seed? who is given as hostage?). Soft “morale” is not an item. A ford that kills is.</div>
 </div>
 
-<div class="kod-widget__panel" data-panel-id="4" data-step-title="Present strain" hidden>
-<p><strong>For each of those things, write one concrete sentence of present strain.</strong> Exact and local — what is wrong <em>now</em>, not what was wrong “in the bad years.”</p>
-<div class="kod-step-example"><strong>Example</strong>Two of the three good boats took water in the autumn blow and still smell of damp oak. The brothers quarrel; one will not teach the young the channel marks until a blood-price is paid for a drowned cousin. A third of the seed shows black dust; the inland creditor arrives at first frost with armed men. Rival nets already sit on the old grounds under a shore-lord’s seal. Reed on the far bank was cut early by the next headland’s people “by mistake.”</div>
-<div class="kod-step-best"><strong>Best practice</strong>Strain is a countdown and a face. Prefer names, seasons, and who is angry. If the sentence could be pasted onto any village, it is not ready. Ask: what happens if nobody solves this before the next feast day? If the answer is “mild inconvenience,” raise the cost.</div>
+<div class="kod-widget__panel" data-panel-id="4" data-step-title="Strain now" hidden>
+<p><strong>One present-tense strain sentence per item.</strong> What is wrong <em>this week</em>. Who is angry. What the deadline is.</p>
+<div class="kod-step-example"><strong>Example</strong>Two wagons broke their axles on the climb; parts are firewood if no smith is found. Seed coats are already being cut open for porridge. The king’s envoys want the firstborn of three named houses by dawn in three days. Ice will take a horse by tomorrow night. The banner-bearer has fever and cannot stand. Fighting men are down to numbers that lose any pitched fight on open ground.</div>
+<div class="kod-step-best"><strong>Best practice</strong>If nobody acts before the deadline, people die or the community dissolves. “Mild hardship” is not strain. Name the feast day, the frost, the messenger’s return. If the sentence works for any village, rewrite until it only works here.</div>
 </div>
 
-<div class="kod-widget__panel" data-panel-id="5" data-step-title="Who holds it" hidden>
-<p><strong>Identify the living people who control or know those things.</strong> Households and individuals — not titles. Do <strong>not</strong> place them on any <a href="/hierarchies/">Hierarchy</a> yet.</p>
-<div class="kod-step-example"><strong>Example</strong>The widow who owns the best drying racks and will not lend them to a house that still owes her a son’s bride-price. The two channel brothers — one proud, one drinking. The inland creditor’s local factor who sleeps in the guest-hall and smiles too much. The young skipper who already took foreign silver to guide rival boats. The midwife who knows which babies were switched in the plague year and has never spoken it.</div>
-<div class="kod-step-best"><strong>Best practice</strong>For each person: what they want this season, what they fear this season, and what they will not forgive. Standing will be claimed in play — prep leverage, not ranks. Leave at least one person whose interests cut against the community’s survival so the table is not a simple “us vs them.”</div>
+<div class="kod-widget__panel" data-panel-id="5" data-step-title="Living holders" hidden>
+<p><strong>Name the living people who hold or know those things.</strong> Individuals and houses — not ranks. No Hierarchy placement yet.</p>
+<div class="kod-step-example"><strong>Example</strong>The widow who sewed half the seed into her dead husband’s coat and will kill before she opens it for another house’s child. The captain who wants to turn and die on the ice rather than kneel. The envoy’s local guide — born of this people, paid in grain. The fevered banner-bearer whose nephew wants the cloth more than the man. The midwife who already smothered two infants on the road and has not slept since.</div>
+<div class="kod-step-best"><strong>Best practice</strong>For each: want this week, fear this week, unforgivable wound. At least one person whose private interest works against collective survival — otherwise the table is a cartoon. Prep leverage. Play will assign ranks.</div>
 </div>
 
-<div class="kod-widget__panel" data-panel-id="6" data-step-title="Empty Hierarchies" hidden>
-<p><strong>Leave the Hierarchy axes empty of names.</strong> Standing will be discovered and claimed in play. Default axes: Arms, Faith, Coin, Blood — see <a href="/hierarchies/">Hierarchies</a>.</p>
-<div class="kod-step-example"><strong>Example</strong>Arms / Faith / Coin / Blood empty. The factor clearly has Coin weight if anyone bothers to name it; the midwife has Blood and quiet Faith; nobody is Ruler. You do not write that down on the Diagram yet.</div>
-<div class="kod-step-best"><strong>Best practice</strong>Pre-filling ranks turns the first sessions into catching up with your novel. Let play promote and humiliate. You may know privately who would win a vote — still leave the ladder cold so player action can rearrange the room.</div>
+<div class="kod-widget__panel" data-panel-id="6" data-step-title="Empty ladders" hidden>
+<p><strong>Leave Hierarchy axes empty of names.</strong> Default: Arms, Faith, Coin, Blood. Standing is claimed in play. See <a href="/hierarchies/">Hierarchies</a>.</p>
+<div class="kod-step-example"><strong>Example</strong>No Ruler. The captain would take Arms if anyone voted. The widow would take Blood. The guide already has Coin with outsiders. You do not write them on the Diagram until fiction does.</div>
+<div class="kod-step-best"><strong>Best practice</strong>Pre-filled ladders turn session one into homework. You may know who would win a knife-vote — still leave the Diagram cold so player action can crown or hang.</div>
 </div>
 
-<div class="kod-widget__panel" data-panel-id="7" data-step-title="Visible history" hidden>
-<p><strong>Prepare three or four visible traces of recent history</strong> that anyone can see without a roll or a lecture. These are how the world teaches the players what hurts here.</p>
-<div class="kod-step-example"><strong>Example</strong>Smokehouses cold and clean while the season should have blackened them. New graves cut above the old line, still bare of grass. A foreign-net buoy tangled on the home beach and left there as insult. The guest-hall’s best bed given to the creditor’s factor, with the old kin-banner rolled under a bench.</div>
-<div class="kod-step-best"><strong>Best practice</strong>Each trace answers “what broke us lately?” without the Storyteller monologuing. When players ask, answer with what they can touch, smell, and count. Never use a trace only once — let it reappear until the table has earned the right to change it.</div>
+<div class="kod-widget__panel" data-panel-id="7" data-step-title="What they can see" hidden>
+<p><strong>Three or four visible scars of recent history.</strong> No lecture. Anyone can point at them.</p>
+<div class="kod-step-example"><strong>Example</strong>Bodies still on the ice where the horse cut them down. A child-sized empty cradle used as firewood. The king’s white cloth on a spear at the near bank. Missing fingers on half the adults — frost and fighting. Dogs already eaten; only the bones left in a pile the crows work.</div>
+<div class="kod-step-best"><strong>Best practice</strong>Each scar answers “what killed us lately?” without a speech. When players ask, answer with count, smell, and name. Bring scars back until the table has earned the right to change them. Do not shy from corpses, cages, or hunger — this system is built for grim reality, not soft focus.</div>
 </div>
 
 <div class="kod-widget__panel" data-panel-id="8" data-step-title="Stop" hidden>
 <p><strong>Stop.</strong></p>
-<div class="kod-step-example"><strong>Example</strong>No second headland fully mapped. No secret prince. No complete list of every cousin. One page of pressure, one cast of people who matter this season, and the Fortunes still blank until step 9.</div>
-<div class="kod-step-best"><strong>Best practice</strong>Mastery is restraint. Extra subplots dilute dread. If you itch to add more, write one sharper strain sentence instead. Leave blank space for player Echoes, stupid plans, and consequences you did not predict — that is where the campaign becomes theirs.</div>
+<div class="kod-step-example"><strong>Example</strong>No full map of the kingdom. No secret bloodline. One page of pressure, one cast for this fortnight, Fortunes still unset until step 9.</div>
+<div class="kod-step-best"><strong>Best practice</strong>More prep often means less dread. Cut subplots. Raise costs. Leave room for player Echoes, bad plans, and deaths you did not schedule. The campaign belongs to the table when it can still surprise you.</div>
 </div>
 
-<div class="kod-widget__panel" data-panel-id="9" data-step-title="Starting Fortunes" hidden>
-<p><strong>Set starting <a href="/echoes/#fortunes">Fortunes</a></strong> — Vitality, Cohesion, Surplus, Standing, Tradition — as soft 0–3 impressions derived from the material facts above. Working assumptions only; early play will confirm or correct them. Automation should store them when the campaign record is created.</p>
-<div class="kod-step-example"><strong>Example</strong>Vitality 1 (thin bodies, cold smokehouses, graves). Cohesion 1 (houses blame each other; young skipper already sold out). Surplus 0 (seed eaten, debt due). Standing 1 (charter and foreign nets; creditors talk over them). Tradition 2 (they still know the claim-words and the grounds — for now).</div>
-<div class="kod-step-best"><strong>Best practice</strong>Fortunes are the weather of every scene for PCs and NPCs. If your numbers look comfortable, re-read the strain list. Drop the Fortunes that the facts actually broke. Abundance everywhere means you prepped a postcard, not a campaign.</div>
+<div class="kod-widget__panel" data-panel-id="9" data-step-title="Fortunes" hidden>
+<p><strong>Set starting <a href="/echoes/#fortunes">Fortunes</a></strong> (Vitality, Cohesion, Surplus, Standing, Tradition) as soft 0–3 from the facts above. Store them when the campaign record is created. Early play may correct them.</p>
+<div class="kod-step-example"><strong>Example</strong>Vitality 0 (dead on the ice, frostbite, fever). Cohesion 1 (houses already choosing hostages against each other). Surplus 0 (seed coats cut open). Standing 0 (no right to the ground; envoys talk over them). Tradition 2 (banner still up; name still spoken as one people).</div>
+<div class="kod-step-best"><strong>Best practice</strong>Fortunes colour every scene for PCs and NPCs. Comfortable numbers mean you lied in the strain list. If war, plague, or flight just hit, the board should look like it. Abundance after a massacre is a mistake, not mercy.</div>
 </div>
 
 <div class="kod-step-flow__nav">

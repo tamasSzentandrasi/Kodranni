@@ -83,8 +83,6 @@ Be frugal. Most successful hits produce **0 or 1** point. Two points is notable.
 
 ----------
 
-----------
-
 ## Dying
 
 When any Harm track reaches **3**, the character is **Dying**.
@@ -105,9 +103,6 @@ After death: remove the character from the [Hierarchy Diagram](/hierarchies/#the
 </ol>
 </aside>
 
-
-----------
-
 ----------
 
 ## Recovery
@@ -122,8 +117,6 @@ Recovery is slow and depends on rest, care, and nourishment.
 | Track at 3 | Can only be reduced after Dying has been stabilised |
 
 [Inventory](/inventory/) (bandages, herbs, clean water, shelter as fiction) and rest quality matter. The Storyteller judges what the situation allows.
-
-----------
 
 ----------
 
