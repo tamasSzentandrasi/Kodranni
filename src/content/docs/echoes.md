@@ -6,11 +6,11 @@ description: Echoes, Fortunes, and Foundation Myths.
 > _*“The life of the dead is placed in the memory of the living.”*_  
 > — Cicero
 
+----------
+
 <figure class="kod-breath not-content">
 <img src="/scenes/cominghome.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
 </figure>
-
-----------
 
 ## Echoes
 

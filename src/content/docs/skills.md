@@ -6,11 +6,11 @@ description: Skills organised under six Archetypes, with Practice and improvemen
 > _*“People pretend not to like grapes when the vines are too high for them to reach.”*_  
 > _Marguerite de Navarre_
 
+----------
+
 <figure class="kod-breath not-content">
 <img src="/scenes/vineyard.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
 </figure>
-
-----------
 
 **Skills** are organised under six **Archetypes**. Archetypes are not classes. Each is a named group of related Skills; a character may take Skills from any of them.
 

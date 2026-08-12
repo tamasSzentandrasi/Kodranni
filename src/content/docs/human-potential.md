@@ -7,11 +7,11 @@ description: Foundations, Skills, Traits, and Exertion — the representation of
 <p><em>“What…defines a person as a unique individual? A natural disposition? A face? A vocabulary of gestures? Are we born individuals…or do we mold ourselves into unique creatures through our experiences and accomplishments?“</em></p>
 </aside>
 
+----------
+
 <figure class="kod-breath not-content">
 <img src="/scenes/reeds.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
 </figure>
-
-----------
 
 ## The Human Potential
 

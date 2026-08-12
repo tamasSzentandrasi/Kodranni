@@ -3,11 +3,11 @@ title: Traits
 description: Binary traits that make a character specific.
 ---
 
+----------
+
 <figure class="kod-breath not-content">
 <img src="/scenes/manuscript.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
 </figure>
-
-----------
 
 ## Traits
 

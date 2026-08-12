@@ -5,11 +5,11 @@ description: Welcome to Kodranni — a pre-industrial grim human TTRPG system.
 
 > _*"It's Fiiiine" - a Storyteller describing something definitely not fine*_
 
+----------
+
 <figure class="kod-breath not-content">
 <img src="/scenes/falconer.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
 </figure>
-
-----------
 
 > _*"The sunsets and sunrises of civilization are inevitably separated by intervals of isolated darkness.*_
 >

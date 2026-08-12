@@ -6,11 +6,11 @@ description: Storyteller work before characters exist — seeds, worldbuilding, 
 > _*“Atropos roughly tore the thread of flourishing life.”*_  
 > — Statius
 
+----------
+
 <figure class="kod-breath not-content">
 <img src="/scenes/settlers.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
 </figure>
-
-----------
 
 # The Storyteller’s Campaign Guide
 

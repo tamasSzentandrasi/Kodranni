@@ -3,10 +3,6 @@ title: Inventory
 description: Explicit possession, armour, food, water, and named items.
 ---
 
-<figure class="kod-breath not-content">
-<img src="/scenes/storeroom.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
-</figure>
-
 ## Inventory
 
 Inventory is kept light. Only what is **declared and tracked** exists.
@@ -16,6 +12,10 @@ Inventory is kept light. Only what is **declared and tracked** exists.
 At [character creation](/character-creation/#after-the-weighing), only named items that already make sense for the concept are listed. No free supply packs. Everything else is filled in play.
 
 ----------
+
+<figure class="kod-breath not-content">
+<img src="/scenes/storeroom.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+</figure>
 
 ### Tracked elements
 

@@ -6,11 +6,11 @@ description: The nine inborn Foundations that shape a character.
 > _*“What is bred in the bone will not come out of the flesh.”*_  
 > — Traditional English proverb
 
+----------
+
 <figure class="kod-breath not-content">
 <img src="/scenes/peasantkid.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
 </figure>
-
-----------
 
 ## Foundations
 
