@@ -3,11 +3,11 @@ title: Inventory
 description: Explicit possession, armour, food, water, and named items.
 ---
 
-## Inventory
-
-<figure class="kod-breath kod-breath--side not-content">
-<img src="/scenes/named-gear.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+<figure class="kod-breath not-content">
+<img src="/scenes/storeroom.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
 </figure>
+
+## Inventory
 
 Inventory is kept light. Only what is **declared and tracked** exists.
 

@@ -22,7 +22,7 @@ Prerequisite: the Storyteller has completed [Campaign Setup](/campaign-setup/). 
 </div>
 
 <figure class="kod-breath not-content">
-<img src="/scenes/weighing-hearth.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+<img src="/scenes/soothsayer.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
 </figure>
 
 ----------
