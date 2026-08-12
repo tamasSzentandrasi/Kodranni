@@ -89,9 +89,9 @@ A good seed names a **community**, a **real pressure** (war, law, plague, tax, f
 <p class="kod-seed__hook">Open the gate, hold for the thaw, or force a third bargain before hunger and sickness decide for you.</p>
 </div>
 <div class="kod-seed kod-seed--invented">
-<p class="kod-seed__title">The sealed valley</p>
-<p>When fever came up the low road, related highland villages closed the pass. They lived. The low road emptied. Now the survivors below are moving again under a preacher who blames the valley’s health on sin and means to force the seal. They have taken the outermost hamlet without a massacre — but with clear intent to settle. The valley can fight one serious engagement; after that only the winter pass remains. Three families hid lowland kin against the seal. If that is known, the valley may break before the host arrives.</p>
-<p class="kod-seed__hook">Fight once, open the seal under terms, take the winter pass, or settle the hidden kin before outsiders use them as a wedge.</p>
+<p class="kod-seed__title">Settlers on a broken shore</p>
+<p>A migratory folk helped pull down a river empire — not as its only hand, but as one that took part in the burning and the taking. The old capital is a ruin. Its king is dead or fled; no clear heir holds the low country. Your people mean to plant here and stay. The fields they want still show last year’s fire. Survivors of the empire live in the marshes and the half-empty towns, some willing to trade, some not. Other war-bands from the same campaign are staking claims on the next bend of the river. Spring sowing is late. The first real harvest will decide whether this is a home or another camp on the road.</p>
+<p class="kod-seed__hook">Hold the ground you took, make a peace that the survivors can live under, or keep living as raiders until someone stronger finishes what you started.</p>
 </div>
 </div>
 </div>
@@ -101,11 +101,13 @@ A good seed names a **community**, a **real pressure** (war, law, plague, tax, f
 
 ## Worldbuilding Practices
 
-Do these **in order**. The worked thread follows **After the lost war** (invented freehold valley under a new levy). Change the seed; keep the order: how they live, what can break, who holds it, ranks last.
+Do these **in order**. Prep **situations** — unstable circumstances, people with goals, places under pressure — not a fixed sequence of scenes. The story is what happens when the table acts. You may know more than you show; you do not open with a lore dump.
+
+The worked thread below follows **Settlers on a broken shore**. Change the seed; keep the method.
 
 <div class="kod-widget not-content" data-widget="step-flow">
 <p class="kod-widget__title">Worldbuilding walkthrough</p>
-<p class="kod-widget__intro">Nine steps. Concrete prep. Not a catalogue of suffering.</p>
+<p class="kod-widget__intro">Nine steps. Enough material for weight and choice. Not a novel the players must recite.</p>
 <p class="kod-step-flow__label" data-step-label></p>
 <div class="kod-step-flow__track" role="group" aria-label="Worldbuilding steps">
 <button type="button" class="kod-widget__btn" data-tab="1" aria-pressed="true">1</button>
@@ -120,57 +122,57 @@ Do these **in order**. The worked thread follows **After the lost war** (invente
 </div>
 
 <div class="kod-widget__panel" data-panel-id="1" data-step-title="Spectrum">
-<p><strong>Lock the spectrum</strong> — tightly historical, semi-historical, or fully invented — for the whole campaign.</p>
-<div class="kod-step-example"><strong>Example</strong>Fully invented freehold valley after a lost war: no real kingdom named, but tax, hostages, and billeting work as they did in real defeated countryside.</div>
-<div class="kod-step-best"><strong>Best practice</strong>Historical: use real seasons, law, and armies. Semi-historical: change one hinge, then follow the consequences. Invented: same rules of food, weather, and power — invention is not an excuse for soft stakes or for piling cruelty. Write the spectrum on the first line of your notes.</div>
+<p><strong>Lock the spectrum</strong> — tightly historical, semi-historical, or fully invented — and keep it for the whole campaign.</p>
+<div class="kod-step-example"><strong>Example</strong>Fully invented: a migratory war-folk settling ruined river country after an empire fell — with their own hands in the fall. No real map names required; food, weather, and armed neighbours still work as in history.</div>
+<div class="kod-step-best"><strong>Best practice</strong>Write the spectrum on the first line of your notes. Historical: real seasons, law, and armies constrain you — use that. Semi-historical: change one hinge, then honour the consequences. Invented: same gravity of hunger, weather, and power. Do not invent away the cost of living, and do not invent cruelty for spectacle.</div>
 </div>
 
 <div class="kod-widget__panel" data-panel-id="2" data-step-title="How they live" hidden>
-<p><strong>How does this people stay alive day to day?</strong> Work, food, who holds the watch, who settles disputes. Where player characters “should” be when they are not on a job.</p>
-<div class="kod-step-example"><strong>Example</strong>Most freeholders plough and tend stock. The levy took the autumn surplus; seed for spring is counted house by house. Young men who still have arms take turns on the low-road watch. Women run the indoor stores and the kin-debts. There is little idle time before sowing.</div>
-<div class="kod-step-best"><strong>Best practice</strong>Know the worst month and who is free when. If play ignores the calendar, the world feels false. Pulling people off watch or off the seed-count should cost trust. If you cannot say how they eat in late winter, you do not have a community yet.</div>
+<p><strong>How does this people stay alive from season to season?</strong> Work, food, shelter, who settles quarrels. Where characters “should” be when they are not on a job.</p>
+<div class="kod-step-example"><strong>Example</strong>Most of the folk still live in wagons and half-raised halls by the river bend. Able bodies clear scorched ground and dig for sound seed. Hunters work the reed-edge for meat. A few smiths repair gear from the campaign. Children mind stock that survived the march. There is little leisure before first sowing.</div>
+<div class="kod-step-best"><strong>Best practice</strong>Material life is the foundation of the world. Know the hard season and who is free in it. If play never touches how people eat and work, the place feels hollow. When player plans pull people off the fields or the watch, the community should notice — that friction is story. If you cannot say how they get through late winter, fix that before you invent another faction.</div>
 </div>
 
 <div class="kod-widget__panel" data-panel-id="3" data-step-title="What must not fail" hidden>
-<p><strong>Name the things whose failure breaks the community.</strong> Objects, rights, stores, knowledge — concrete and countable.</p>
-<div class="kod-step-example"><strong>Example</strong>Seed grain for spring; the arms still hidden under floors; the hostage list the victors demand; the low-road bridge (toll and control); the mill that still turns; the written terms of the levy, if any copy exists.</div>
-<div class="kod-step-best"><strong>Best practice</strong>Five to eight items. Each should be able to drive a session — taken, bargained, destroyed, or defended. Prefer things that set houses against each other (who gives a hostage? who keeps a spear?). Abstract “morale” is not an item.</div>
+<p><strong>Name the concrete things whose failure ends this community as a community.</strong> Stores, rights, places, tools, bonds — countable and at risk.</p>
+<div class="kod-step-example"><strong>Example</strong>The last sound seed for the river fields; the ford they control (or fail to); the wagons still fit to move if settlement fails; the claim on the burned capital’s remaining stores; the chance of truce with the marsh survivors; the absence of any living king who could lawfully regrant the land.</div>
+<div class="kod-step-best"><strong>Best practice</strong>Five to eight items. Each should be able to drive a session if threatened, stolen, bargained, or defended. Prefer things that force choices between households (who eats the last seed? who holds the ford at night?). An empty throne or missing lord can be one of these — not as backstory to recite, but as a gap everyone feels when a decision needs a name on it.</div>
 </div>
 
 <div class="kod-widget__panel" data-panel-id="4" data-step-title="Strain now" hidden>
-<p><strong>One present-tense strain sentence per item.</strong> What is wrong this season. Who is pressing. What the deadline is.</p>
-<div class="kod-step-example"><strong>Example</strong>Seed is short two houses already. The victors’ collectors return in a fortnight for arms and names. The bridge is held by a small garrison that takes a cut of every cart. The mill needs a new stone before harvest or the valley cannot grind. Three houses refuse to disarm; two will plant only if the others comply.</div>
-<div class="kod-step-best"><strong>Best practice</strong>Deadlines and faces beat adjectives. If nobody acts before the collectors return, the community loses options — not necessarily in a massacre, but in law, food, or freedom. If the sentence fits any village, make it local.</div>
+<p><strong>One present-tense strain sentence per item.</strong> What is wrong this season. Who is pressing. What cannot wait.</p>
+<div class="kod-step-example"><strong>Example</strong>Seed will not cover every strip if late frost hits again. The next war-band has camped a day’s ride upriver and is taking “forage.” Marsh survivors will trade fish only if the settlers return captives from last autumn’s raid. The ford is still disputed after dark. Without a king, no one will put a seal on any grant of land — every bargain is personal and fragile.</div>
+<div class="kod-step-best"><strong>Best practice</strong>Strain is a situation the players can walk into, not a monologue. Prefer deadlines, faces, and pressure over adjectives. If nobody acts before the next moon, the community loses options — food, ground, or unity. Prep what would happen if the table did nothing; that gives you a living world, not a script waiting for its cue. If the sentence could sit on any map, make it local to this river and this season.</div>
 </div>
 
-<div class="kod-widget__panel" data-panel-id="5" data-step-title="Living holders" hidden>
-<p><strong>Name the living people who hold or know those things.</strong> Individuals and houses — not ranks. No Hierarchy placement yet.</p>
-<div class="kod-step-example"><strong>Example</strong>The widow who controls the largest seed loft and will not open it for a house that still owes her kin. The freeholder who kept spears and wants a second fight. The miller, who needs peace more than pride. The collector’s local guide — born here, paid from the levy. The midwife who knows which hostages would break which houses.</div>
-<div class="kod-step-best"><strong>Best practice</strong>For each: what they want this season, what they fear, what they will not forgive. At least one interest that cuts against easy unity. Prep people with leverage. Play assigns standing.</div>
+<div class="kod-widget__panel" data-panel-id="5" data-step-title="Who holds it" hidden>
+<p><strong>Name only the people you need to make those strains playable.</strong> A few individuals and houses with wants and fears — enough to bind scenes together, not a cast list for a novel.</p>
+<div class="kod-step-example"><strong>Example</strong>The war-leader who still thinks in raids and will not plant. The house that holds most of the remaining seed and will not open it without a say in where the people settle. A marsh elder willing to talk if last year’s captives come home. A rival captain from the same campaign who wants the ford for himself. The absent king is only a fact: no seal, no court, every promise weaker for it.</div>
+<div class="kod-step-best"><strong>Best practice</strong>Prep <em>people with leverage and goals</em>, not ranks or titles to recite. For each: what they want this season, what they will not forgive, what they do if left alone. Name places and people when it ties the story together — a ford, a house, an elder — not to dump a gazetteer in session one. Leave room for the table to meet them in play and form their own judgments.</div>
 </div>
 
-<div class="kod-widget__panel" data-panel-id="6" data-step-title="Empty ladders" hidden>
-<p><strong>Leave Hierarchy axes empty of names.</strong> Default: Arms, Faith, Coin, Blood. Standing is claimed in play. See <a href="/hierarchies/">Hierarchies</a>.</p>
-<div class="kod-step-example"><strong>Example</strong>No Ruler written. The freeholder with spears would take Arms if anyone named it. The widow would take Blood. The guide already has Coin with outsiders. The Diagram stays blank until fiction fills it.</div>
-<div class="kod-step-best"><strong>Best practice</strong>Pre-filled ranks turn session one into catching up with your notes. You may know who would win a quiet vote — still leave the ladders cold so player action can rearrange the room.</div>
+<div class="kod-widget__panel" data-panel-id="6" data-step-title="Leave blanks" hidden>
+<p><strong>Do not pre-solve the social map for the players.</strong> Who is trusted, who leads, who is owed — that is best discovered in play through action, rumour, and consequence. You may hold private notes. You do not open with a lecture on who sits where.</p>
+<div class="kod-step-example"><strong>Example</strong>You know the war-leader expects obedience and the seed-house expects a voice. You do not tell the table the order of standing. They learn it when someone gives an order and is obeyed — or is not — and when a bargain holds or breaks.</div>
+<div class="kod-step-best"><strong>Best practice</strong>Connections, standing, and hierarchy emerge from fiction. Naming every rung of power up front is a lore dump: it kills immersion and steals discovery. Hold what you need for consistency; reveal through scenes. If a bookkeeping diagram of standing exists for your own use, keep it off the table until play has earned the right to fill it. The point of this step is blank space the players walk into.</div>
 </div>
 
 <div class="kod-widget__panel" data-panel-id="7" data-step-title="What they can see" hidden>
-<p><strong>Three or four visible marks of recent history.</strong> No lecture required. Anyone can point at them.</p>
-<div class="kod-step-example"><strong>Example</strong>Empty places at the watch-fire where men did not come home. A foreign banner on the bridge tower. Seed sacks counted in public for the first time anyone remembers. Charred posts of a barn that burned in the retreat — still standing, still unused.</div>
-<div class="kod-step-best"><strong>Best practice</strong>Each mark answers “what changed us lately?” without a speech. When players ask, answer with what they can see and count. Bring marks back until the table has earned the right to change them. Reality includes loss; you do not need to decorate every scene with it.</div>
+<p><strong>Three or four visible marks of recent history</strong> — things anyone can point at without a speech.</p>
+<div class="kod-step-example"><strong>Example</strong>Blackened orchard rows still standing along the approach to the ruined capital. New wagon-ruts where the settlers camped all winter. A ford marked with poles from both banks. Smoke from a second camp upriver on clear mornings.</div>
+<div class="kod-step-best"><strong>Best practice</strong>Show, do not lecture. When players ask “what happened here?”, answer with what they can walk to and touch. Repeat marks across sessions until the table has changed them. War and settlement leave traces; you need not decorate every scene with them.</div>
 </div>
 
-<div class="kod-widget__panel" data-panel-id="8" data-step-title="Stop" hidden>
-<p><strong>Stop.</strong></p>
-<div class="kod-step-example"><strong>Example</strong>No full map of the victors’ kingdom. No secret bloodline. One page of pressure, one cast for this season, Fortunes still unset until step 9.</div>
-<div class="kod-step-best"><strong>Best practice</strong>Extra subplots dilute focus. Prefer one sharp deadline over five mild ones. Leave room for player Echoes, bad plans, and outcomes you did not schedule.</div>
+<div class="kod-widget__panel" data-panel-id="8" data-step-title="Themes and threads" hidden>
+<p><strong>Craft themes and side threads — then leave engagement to the players.</strong> Weave them through the main pressure so the world feels deep. Do not force a path through them.</p>
+<div class="kod-step-example"><strong>Example</strong>Threads you hold ready: the marsh survivors want captives returned; the upriver band wants the ford; a house within the settlers wants to keep living as raiders; someone still claims to speak for the dead king’s seal. Themes under them: home after conquest, guilt for the burning, legitimacy without a throne. None of these is a required path. Any can rise if the players lean that way — and each advances if they do not.</div>
+<div class="kod-step-best"><strong>Best practice</strong>Side stories are not clutter; they are how a campaign feels lived-in. Prep each thread as a <em>situation</em>: people with goals, pressure that worsens if ignored, more than one way in. Weave themes through the main strain — settlement, food, legitimacy, the cost of war — without scripting which scenes the table must play. Participation rests with the players. That is not “no side plots”; it is no railroading. If they never take a thread, the world still moves; if they take it, you already know who wants what.</div>
 </div>
 
 <div class="kod-widget__panel" data-panel-id="9" data-step-title="Fortunes" hidden>
 <p><strong>Set starting <a href="/echoes/#fortunes">Fortunes</a></strong> (Vitality, Cohesion, Surplus, Standing, Tradition) as soft 0–3 from the facts above. Store them when the campaign record is created. Early play may correct them.</p>
-<div class="kod-step-example"><strong>Example</strong>Vitality 1 (men missing from the war). Cohesion 1 (houses split on arms and hostages). Surplus 1 (seed short, levy due). Standing 1 (defeated; outsiders set terms). Tradition 2 (freeholding memory still strong).</div>
-<div class="kod-step-best"><strong>Best practice</strong>Fortunes are community weather for every scene — PCs and NPCs. They should follow the material facts, not a desire to make the table feel epic. If numbers look comfortable after a lost war, re-check the strain list.</div>
+<div class="kod-step-example"><strong>Example</strong>Vitality 2 (war-hardened, but worn). Cohesion 1 (raiders and planters already pull apart). Surplus 1 (stores thin, fields not yet reliable). Standing 1 (neighbours treat them as a problem, not a realm). Tradition 2 (they still know who they were on the march — not yet who they are as settlers).</div>
+<div class="kod-step-best"><strong>Best practice</strong>Fortunes are community weather for every scene — PCs and NPCs. Derive them from material facts, not from a wish to sound epic. If the board looks comfortable after war and flight, re-check the strain list.</div>
 </div>
 
 <div class="kod-step-flow__nav">
