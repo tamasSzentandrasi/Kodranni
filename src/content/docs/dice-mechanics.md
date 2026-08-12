@@ -70,6 +70,10 @@ That requires a shift: less “did it work?”, more “**what does this many Ma
 
 Players act under incomplete knowledge. The Storyteller scales reward, cost, and **what the fiction discloses** to the Marks on the table.
 
+<figure class="kod-breath not-content">
+<img src="/scenes/scout-night.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+</figure>
+
 <div class="kod-widget not-content" data-widget="marks-ladder">
 <p class="kod-widget__title">Scenario: The Scout</p>
 <p class="kod-widget__intro"><strong>Scene:</strong> A young warrior is sent at night to observe an enemy camp. As he draws close, the Storyteller calls for Perception + Scouting — a pool of 4 dice. There is no hidden target number. If he rolls:</p>
@@ -224,6 +228,10 @@ Hints:
 
 > _*“In battle, momentum means riding on the force of the tide of events.”*_  
 > — Sun Tzu
+
+<figure class="kod-breath not-content">
+<img src="/scenes/hattin.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+</figure>
 
 ----------
 

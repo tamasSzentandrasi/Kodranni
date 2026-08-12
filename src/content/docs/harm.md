@@ -7,6 +7,10 @@ description: The nine Harm tracks, Dying, recovery, and protection ratios.
 > _*Cattle die, kinsmen die, you yourself will also die.*_  
 > — Hávamál
 
+<figure class="kod-breath not-content">
+<img src="/scenes/wound-care.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+</figure>
+
 ----------
 
 Kodranni does **not** track hit points. It tracks the **unravelling of the nine [Foundations](/foundations/)**.

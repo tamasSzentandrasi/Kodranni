@@ -3,6 +3,10 @@ title: Exertion
 description: The capacity to push beyond ordinary limits.
 ---
 
+<figure class="kod-breath not-content">
+<img src="/scenes/ford-cart.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+</figure>
+
 ----------
 
 ## Exertion

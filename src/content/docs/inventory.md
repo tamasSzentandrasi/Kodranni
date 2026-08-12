@@ -5,6 +5,10 @@ description: Explicit possession, armour, food, water, and named items.
 
 ## Inventory
 
+<figure class="kod-breath kod-breath--side not-content">
+<img src="/scenes/named-gear.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+</figure>
+
 Inventory is kept light. Only what is **declared and tracked** exists.
 
 **Possession is explicit.** If it has not been stated that a character is carrying an item, the character **does not have it**. No retroactive additions once a scene has begun.
