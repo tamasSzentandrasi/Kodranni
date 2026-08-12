@@ -622,51 +622,65 @@ site-title img,
 /* Interactive Guidebook layer                                                 */
 /* ========================================================================== */
 
-/* --- Soft image breath bands (no hard borders) ----------------------------- */
+/* --- Soft image breath bands (full frame; fade edges only, no crop) -------- */
 .kod-breath {
   margin: 1.75rem 0 2rem;
   padding: 0;
   border: none;
   background: transparent;
   line-height: 0;
-}
-
-.kod-breath img {
-  display: block;
-  width: 100%;
-  max-height: 16rem;
-  object-fit: cover;
-  border: none;
-  border-radius: 0;
-  /* Fade into page — no hard frame */
+  /* Edge fade lives on the figure so the whole painting stays visible */
   -webkit-mask-image: linear-gradient(
     to bottom,
     transparent 0%,
-    #000 12%,
-    #000 78%,
+    #000 8%,
+    #000 92%,
     transparent 100%
   );
   mask-image: linear-gradient(
     to bottom,
     transparent 0%,
-    #000 12%,
-    #000 78%,
+    #000 8%,
+    #000 92%,
     transparent 100%
   );
-  opacity: 0.92;
-  filter: saturate(0.95) contrast(1.02);
 }
 
+.kod-breath img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: none;
+  object-fit: contain;
+  object-position: center;
+  border: none;
+  border-radius: 0;
+  opacity: 0.94;
+  filter: saturate(0.96) contrast(1.02);
+}
+
+/* Side: still full image; soft radial edge fade, no hard crop */
 .kod-breath--side {
   float: right;
-  width: min(42%, 14rem);
+  width: min(44%, 16rem);
   margin: 0.25rem 0 1rem 1.25rem;
+  -webkit-mask-image: radial-gradient(
+    ellipse 92% 88% at 50% 50%,
+    #000 55%,
+    transparent 100%
+  );
+  mask-image: radial-gradient(
+    ellipse 92% 88% at 50% 50%,
+    #000 55%,
+    transparent 100%
+  );
 }
 
 .kod-breath--side img {
-  max-height: 12rem;
-  -webkit-mask-image: radial-gradient(ellipse 80% 75% at 50% 50%, #000 40%, transparent 75%);
-  mask-image: radial-gradient(ellipse 80% 75% at 50% 50%, #000 40%, transparent 75%);
+  width: 100%;
+  height: auto;
+  max-height: none;
+  object-fit: contain;
 }
 
 @media (max-width: 50rem) {
@@ -674,6 +688,20 @@ site-title img,
     float: none;
     width: 100%;
     margin: 1.25rem 0;
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      #000 8%,
+      #000 92%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      #000 8%,
+      #000 92%,
+      transparent 100%
+    );
   }
 }
 
