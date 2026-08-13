@@ -51,6 +51,7 @@ site-title,
 :root[data-theme='dark'],
 :root[data-theme='light'],
 :root:not([data-theme]) {
+  color-scheme: dark;
   --sl-color-bg: var(--kod-black);
   --sl-color-bg-nav: #030303;
   --sl-color-bg-sidebar: #0a0a0a;
@@ -68,8 +69,20 @@ site-title,
   --sl-color-white: var(--kod-silver-bright);
 }
 
+/* Dark only — hide Starlight theme control if it ever reappears */
+starlight-theme-select,
+.social-icons starlight-theme-select,
+header starlight-theme-select {
+  display: none !important;
+}
+
 body {
   background-color: var(--kod-black);
+  background-image:
+    radial-gradient(ellipse 120% 80% at 50% -10%, rgba(74, 12, 12, 0.14), transparent 55%),
+    radial-gradient(ellipse 90% 60% at 100% 100%, rgba(0, 0, 0, 0.55), transparent 50%),
+    radial-gradient(ellipse 70% 50% at 0% 80%, rgba(0, 0, 0, 0.4), transparent 45%);
+  background-attachment: fixed;
 }
 
 /* Typography */
@@ -622,46 +635,102 @@ site-title img,
 /* Interactive Guidebook layer                                                 */
 /* ========================================================================== */
 
-/* --- Soft image breath bands (full frame; fade edges only, no crop) -------- */
+/* --- Theatrical breath bands: uneven black smoke edges, full frame -------- */
 .kod-breath {
-  margin: 1.75rem 0 2rem;
+  position: relative;
+  margin: 2rem 0 2.35rem;
   padding: 0;
   border: none;
   background: transparent;
   line-height: 0;
-  /* Full-frame fade: stronger top/bottom, lighter left/right — no content crop */
+  /* Off-center vignette + asymmetric edges — theatrical, not equal bands */
   -webkit-mask-image:
+    radial-gradient(
+      ellipse 108% 96% at 46% 42%,
+      #000 28%,
+      #000 52%,
+      rgba(0, 0, 0, 0.55) 72%,
+      transparent 92%
+    ),
     linear-gradient(
       to bottom,
       transparent 0%,
-      #000 10%,
-      #000 90%,
+      #000 7%,
+      #000 18%,
+      #000 78%,
+      #000 88%,
       transparent 100%
     ),
     linear-gradient(
       to right,
       transparent 0%,
-      #000 5%,
-      #000 95%,
+      #000 4%,
+      #000 14%,
+      #000 86%,
+      #000 94%,
       transparent 100%
     );
   mask-image:
+    radial-gradient(
+      ellipse 108% 96% at 46% 42%,
+      #000 28%,
+      #000 52%,
+      rgba(0, 0, 0, 0.55) 72%,
+      transparent 92%
+    ),
     linear-gradient(
       to bottom,
       transparent 0%,
-      #000 10%,
-      #000 90%,
+      #000 7%,
+      #000 18%,
+      #000 78%,
+      #000 88%,
       transparent 100%
     ),
     linear-gradient(
       to right,
       transparent 0%,
-      #000 5%,
-      #000 95%,
+      #000 4%,
+      #000 14%,
+      #000 86%,
+      #000 94%,
       transparent 100%
     );
-  -webkit-mask-composite: source-in;
-  mask-composite: intersect;
+  -webkit-mask-composite: source-in, source-in;
+  mask-composite: intersect, intersect;
+}
+
+/* Soft black smoke veil — dissolves into the page */
+.kod-breath::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background:
+    radial-gradient(
+      ellipse 95% 85% at 52% 48%,
+      transparent 42%,
+      rgba(0, 0, 0, 0.22) 68%,
+      rgba(0, 0, 0, 0.72) 100%
+    ),
+    linear-gradient(
+      185deg,
+      rgba(0, 0, 0, 0.78) 0%,
+      rgba(0, 0, 0, 0.12) 16%,
+      transparent 32%,
+      transparent 68%,
+      rgba(0, 0, 0, 0.2) 84%,
+      rgba(0, 0, 0, 0.88) 100%
+    ),
+    linear-gradient(
+      95deg,
+      rgba(0, 0, 0, 0.55) 0%,
+      transparent 11%,
+      transparent 87%,
+      rgba(0, 0, 0, 0.62) 100%
+    );
+  mix-blend-mode: multiply;
 }
 
 .kod-breath img {
@@ -673,24 +742,34 @@ site-title img,
   object-position: center;
   border: none;
   border-radius: 0;
-  opacity: 0.94;
-  filter: saturate(0.96) contrast(1.02);
+  opacity: 0.97;
+  filter: saturate(0.92) contrast(1.06) brightness(0.94);
 }
 
-/* Side: still full image; soft radial edge fade, no hard crop */
+/* Side: smoky radial, full image, no crop */
 .kod-breath--side {
   float: right;
   width: min(44%, 16rem);
   margin: 0.25rem 0 1rem 1.25rem;
   -webkit-mask-image: radial-gradient(
-    ellipse 92% 88% at 50% 50%,
-    #000 55%,
-    transparent 100%
+    ellipse 88% 80% at 48% 46%,
+    #000 32%,
+    #000 48%,
+    transparent 82%
   );
   mask-image: radial-gradient(
-    ellipse 92% 88% at 50% 50%,
-    #000 55%,
-    transparent 100%
+    ellipse 88% 80% at 48% 46%,
+    #000 32%,
+    #000 48%,
+    transparent 82%
+  );
+}
+
+.kod-breath--side::after {
+  background: radial-gradient(
+    ellipse 90% 85% at 50% 50%,
+    transparent 35%,
+    rgba(0, 0, 0, 0.55) 100%
   );
 }
 
@@ -706,38 +785,6 @@ site-title img,
     float: none;
     width: 100%;
     margin: 1.25rem 0;
-    -webkit-mask-image:
-      linear-gradient(
-        to bottom,
-        transparent 0%,
-        #000 10%,
-        #000 90%,
-        transparent 100%
-      ),
-      linear-gradient(
-        to right,
-        transparent 0%,
-        #000 5%,
-        #000 95%,
-        transparent 100%
-      );
-    mask-image:
-      linear-gradient(
-        to bottom,
-        transparent 0%,
-        #000 10%,
-        #000 90%,
-        transparent 100%
-      ),
-      linear-gradient(
-        to right,
-        transparent 0%,
-        #000 5%,
-        #000 95%,
-        transparent 100%
-      );
-    -webkit-mask-composite: source-in;
-    mask-composite: intersect;
   }
 }
 
@@ -2096,4 +2143,147 @@ site-title img,
 .kod-menu-item__cost strong {
   background: none !important;
   color: #e8a0a0;
+}
+
+/* ========================================================================== */
+/* Aesthetic finish pass — dark-only grim register                             */
+/* ========================================================================== */
+
+/* Main content panel: slight inset depth */
+.main-frame,
+.sl-container {
+  isolation: isolate;
+}
+
+.sl-markdown-content {
+  max-width: 48rem;
+}
+
+/* Blockquotes: manuscript-like, blood rule */
+.sl-markdown-content blockquote {
+  border: 1px solid color-mix(in srgb, var(--kod-blood) 28%, #2a2222);
+  border-left: 3px solid var(--kod-blood);
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--kod-blood-deep) 22%, #0a0808),
+      #0a0808 70%
+    );
+  color: #d8d2c8;
+  font-style: italic;
+  letter-spacing: 0.02em;
+}
+
+.sl-markdown-content blockquote p {
+  margin: 0.35em 0;
+}
+
+.sl-markdown-content blockquote p:first-child {
+  margin-top: 0;
+}
+
+/* Tables: card surface, blood hairlines */
+.sl-markdown-content table {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  margin: 1.25rem 0 1.5rem;
+  font-size: 0.95em;
+  border: 1px solid color-mix(in srgb, var(--kod-blood) 30%, #2a2222);
+  border-radius: 2px;
+  background: #0c0a0a;
+}
+
+.sl-markdown-content thead {
+  background: color-mix(in srgb, var(--kod-blood-deep) 45%, #0a0808);
+}
+
+.sl-markdown-content th {
+  font-family: var(--kod-font-display);
+  letter-spacing: 0.05em;
+  color: var(--kod-silver-bright);
+  border-bottom: 1px solid color-mix(in srgb, var(--kod-blood) 55%, #333) !important;
+  padding: 0.55rem 0.75rem;
+  text-align: left;
+}
+
+.sl-markdown-content td {
+  border-bottom: 1px solid #1e1818;
+  padding: 0.5rem 0.75rem;
+  color: var(--kod-silver);
+  vertical-align: top;
+}
+
+.sl-markdown-content tr:last-child td {
+  border-bottom: none;
+}
+
+.sl-markdown-content tbody tr:hover td {
+  background: color-mix(in srgb, var(--kod-blood-deep) 18%, transparent);
+}
+
+/* Code / inline */
+.sl-markdown-content code:not(pre code) {
+  border: 1px solid #2a2222;
+  border-radius: 2px;
+  padding: 0.08em 0.35em;
+  font-size: 0.88em;
+  color: #e8c8c8;
+}
+
+/* Sidebar: blood accent on current page */
+.sidebar-content a[aria-current='page'],
+.sidebar-content [aria-current='page'] {
+  color: var(--kod-silver-bright) !important;
+  border-inline-start: 2px solid var(--kod-blood-bright);
+  padding-inline-start: 0.45rem;
+  background: color-mix(in srgb, var(--kod-blood-deep) 35%, transparent);
+}
+
+/* Right TOC */
+.right-sidebar a {
+  color: var(--kod-silver-dim);
+}
+
+.right-sidebar a:hover,
+.right-sidebar a[aria-current='true'] {
+  color: var(--kod-silver-bright);
+}
+
+/* Header bar */
+header.header {
+  border-bottom: 1px solid color-mix(in srgb, var(--kod-blood) 35%, #1a1414);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+}
+
+/* Site logo mark */
+site-title img,
+.site-title img {
+  filter: drop-shadow(0 0 8px rgba(138, 21, 21, 0.35));
+}
+
+/* Content images in markdown (non-breath) */
+.sl-markdown-content img:not(.kod-page-title__icon):not(.kod-sidebar-icon):not(.kod-archetype__panel) {
+  border-radius: 1px;
+}
+
+/* Focus: blood ring, no browser default blue */
+:focus-visible {
+  outline: 1px solid var(--kod-blood-bright);
+  outline-offset: 2px;
+}
+
+/* Mobile menu button chrome */
+starlight-menu-button button,
+.menu-toggle {
+  border-color: color-mix(in srgb, var(--kod-blood) 40%, #333) !important;
+}
+
+/* Last updated / edit meta — quiet */
+.sl-markdown-content .meta,
+.last-updated {
+  color: var(--kod-silver-dim);
+  font-size: 0.85em;
+  letter-spacing: 0.04em;
 }

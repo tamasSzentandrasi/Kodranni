@@ -1,0 +1,19 @@
+---
+// Force dark theme only — no system preference or localStorage light mode.
+---
+
+<script is:inline>
+	window.StarlightThemeProvider = (() => {
+		document.documentElement.dataset.theme = 'dark';
+		try {
+			localStorage.setItem('starlight-theme', 'dark');
+		} catch {
+			/* private mode */
+		}
+		return {
+			updatePickers() {
+				/* no-op: theme is fixed */
+			},
+		};
+	})();
+</script>
