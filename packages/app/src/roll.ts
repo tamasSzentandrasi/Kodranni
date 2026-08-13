@@ -1,18 +1,10 @@
 import { randomUUID } from 'node:crypto';
+import { DEFAULT_DIE_TIER, type DieTier, cryptoRng, resolveRoll, type Rng } from '@kodranni/domain';
 import {
-  DEFAULT_DIE_TIER,
-  type DieTier,
-  cryptoRng,
-  effectiveFoundation,
-  echoCapacity,
-  exertionMax,
-  isDecadent,
-  isOverCapacity,
-  resolveRoll,
-  totalEchoWeight,
-  type Rng,
-} from '@kodranni/domain';
-import type { CharacterRecord, SqliteCommunityStore } from '@kodranni/store';
+  refreshCharacterDerived,
+  type CharacterRecord,
+  type SqliteCommunityStore,
+} from '@kodranni/store';
 
 export interface PlayerRollCommand {
   characterSlug: string;
@@ -53,44 +45,6 @@ export interface PlayerRollResult {
   reused: boolean;
 }
 
-function recomputeFlags(ch: CharacterRecord): void {
-  ch.exertion.max = exertionMax(
-    ch.foundations.Resolve ?? 0,
-    ch.foundations.Constitution ?? 0,
-    ch.foundations.Charisma ?? 0,
-  );
-  const echoCap = echoCapacity(
-    ch.foundations.Strength ?? 0,
-    ch.foundations.Dexterity ?? 0,
-    ch.foundations.Intellect ?? 0,
-    ch.foundations.Authority ?? 0,
-  );
-  const weight = totalEchoWeight(ch.echoes.map((e) => e.weight));
-  ch.flags.decadence = isDecadent(ch.echoes.length);
-  ch.flags.overCapacity = isOverCapacity(weight, echoCap);
-  // effective foundations from harm tracks (name map simplified: track not paired here — use stored effective or raw)
-  for (const [k, v] of Object.entries(ch.foundations)) {
-    const harmKey = foundationToHarmTrack(k);
-    const h = harmKey ? (ch.harm[harmKey] ?? 0) : 0;
-    ch.foundationsEffective[k] = effectiveFoundation(v, h);
-  }
-}
-
-function foundationToHarmTrack(foundation: string): string | undefined {
-  const map: Record<string, string> = {
-    Strength: 'Crushed',
-    Dexterity: 'Bleeding',
-    Constitution: 'Fever',
-    Intellect: 'Fog',
-    Perception: 'Disoriented',
-    Resolve: 'Shock',
-    Charisma: 'Tarnished',
-    Guile: 'Exposed',
-    Authority: 'Disgrace',
-  };
-  return map[foundation];
-}
-
 export function executePlayerRoll(
   store: SqliteCommunityStore,
   cmd: PlayerRollCommand,
@@ -109,7 +63,7 @@ export function executePlayerRoll(
   if (!ch) throw new Error(`unknown character slug: ${cmd.characterSlug}`);
   if (ch.status === 'dead') throw new Error(`${ch.name} is dead`);
 
-  recomputeFlags(ch);
+  refreshCharacterDerived(ch);
 
   const primitive = cmd.primitive || !cmd.skill;
   const skillName = cmd.skill?.trim() || '';
@@ -180,7 +134,7 @@ export function executePlayerRoll(
     }
   }
 
-  recomputeFlags(ch);
+  refreshCharacterDerived(ch);
   store.putCharacter(ch);
 
   const rollId = randomUUID();

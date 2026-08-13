@@ -34,8 +34,18 @@ describe('sqlite store', () => {
 
     const snap = store.toPublicSnapshot();
     expect(snap.community.slug).toBe('ash-hill');
-    expect(snap.characters).toHaveLength(1);
-    expect(snap.characters[0]!.name).toBe('Eira');
+    expect(snap.characters.length).toBeGreaterThanOrEqual(1);
+    const eira = snap.characters.find((c) => c.slug === 'eira')!;
+    expect(eira.name).toBe('Eira');
+    // max(Str2,Dex2)+Int2+Auth1 = 5; Exertion max Res2+Con2+Cha2 = 6
+    expect(eira.echoCapacity).toBe(5);
+    expect(eira.exertion.max).toBe(6);
+    expect(eira.echoCapacity).not.toBe(eira.exertion.max);
+    const leif = snap.characters.find((c) => c.slug === 'leif')!;
+    // Guidebook: max(2,1)+2+2 = 6; Exertion max 2+2+1 = 5
+    expect(leif.echoCapacity).toBe(6);
+    expect(leif.exertion.max).toBe(5);
+    expect(leif.echoWeight).toBe(6);
     const json = JSON.stringify(snap);
     expect(json).not.toContain('123456789012345678');
     expect(store.listMembers()).toHaveLength(1);

@@ -9,6 +9,9 @@
   "scripts": {
     "test": "NODE_OPTIONS='--experimental-sqlite' vitest run"
   },
+  "dependencies": {
+    "@kodranni/domain": "*"
+  },
   "devDependencies": {
     "vitest": "^3.0.9"
   }

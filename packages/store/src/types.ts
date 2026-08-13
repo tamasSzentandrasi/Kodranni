@@ -34,8 +34,13 @@ export interface CharacterRecord {
   foundationsEffective: Record<string, number>;
   skills: { name: string; rating: number; practice: number; threshold: number; foundation?: string }[];
   traits: string[];
+  /** Max = Resolve + Constitution + Charisma (raw Foundations). */
   exertion: { current: number; max: number };
   echoes: { title: string; weight: number }[];
+  /** max(Strength, Dexterity) + Intellect + Authority — independent of Exertion max. */
+  echoCapacity: number;
+  /** Sum of Echo weights. */
+  echoWeight: number;
   harm: Record<string, number>;
   dying: boolean;
   hierarchy: { axis: string; tier: string }[];

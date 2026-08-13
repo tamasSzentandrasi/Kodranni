@@ -9,6 +9,7 @@ export * from './campaign-toml.js';
 export * from './schema.js';
 export * from './sqlite.js';
 export * from './seed.js';
+export * from './derived.js';
 
 // --- lightweight memory store (tests / early adapters) ---
 
