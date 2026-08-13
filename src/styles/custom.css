@@ -2159,69 +2159,8 @@ site-title img,
   max-width: 48rem;
 }
 
-/* Blockquotes: manuscript-like, blood rule */
-.sl-markdown-content blockquote {
-  border: 1px solid color-mix(in srgb, var(--kod-blood) 28%, #2a2222);
-  border-left: 3px solid var(--kod-blood);
-  background:
-    linear-gradient(
-      135deg,
-      color-mix(in srgb, var(--kod-blood-deep) 22%, #0a0808),
-      #0a0808 70%
-    );
-  color: #d8d2c8;
-  font-style: italic;
-  letter-spacing: 0.02em;
-}
-
-.sl-markdown-content blockquote p {
-  margin: 0.35em 0;
-}
-
-.sl-markdown-content blockquote p:first-child {
-  margin-top: 0;
-}
-
-/* Tables: card surface, blood hairlines */
-.sl-markdown-content table {
-  display: block;
-  width: 100%;
-  overflow-x: auto;
-  border-collapse: collapse;
-  margin: 1.25rem 0 1.5rem;
-  font-size: 0.95em;
-  border: 1px solid color-mix(in srgb, var(--kod-blood) 30%, #2a2222);
-  border-radius: 2px;
-  background: #0c0a0a;
-}
-
-.sl-markdown-content thead {
-  background: color-mix(in srgb, var(--kod-blood-deep) 45%, #0a0808);
-}
-
-.sl-markdown-content th {
-  font-family: var(--kod-font-display);
-  letter-spacing: 0.05em;
-  color: var(--kod-silver-bright);
-  border-bottom: 1px solid color-mix(in srgb, var(--kod-blood) 55%, #333) !important;
-  padding: 0.55rem 0.75rem;
-  text-align: left;
-}
-
-.sl-markdown-content td {
-  border-bottom: 1px solid #1e1818;
-  padding: 0.5rem 0.75rem;
-  color: var(--kod-silver);
-  vertical-align: top;
-}
-
-.sl-markdown-content tr:last-child td {
-  border-bottom: none;
-}
-
-.sl-markdown-content tbody tr:hover td {
-  background: color-mix(in srgb, var(--kod-blood-deep) 18%, transparent);
-}
+/* Quotes & tables: keep the established card styles above (do not override).
+   The display:block table rule broke short tables (border full-width, columns narrow). */
 
 /* Code / inline */
 .sl-markdown-content code:not(pre code) {
