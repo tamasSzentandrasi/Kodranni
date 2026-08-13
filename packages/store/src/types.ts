@@ -7,6 +7,51 @@ export interface AuditEvent {
   payload: unknown;
 }
 
+/** Typed Foundation Myth effects (Guidebook craft ingredients). */
+export type MythEffectKind =
+  | 'exertion_free'
+  | 'exertion_forced'
+  | 'advantage'
+  | 'disadvantage'
+  | 'omen_faces'
+  | 'practice_mod'
+  | 'tide_mod'
+  | 'trait_grant'
+  | 'trait_deny';
+
+export interface MythEffect {
+  kind: MythEffectKind;
+  /** Short chip label shown in the tracker. */
+  label: string;
+  /** Optional detail for hover / expand. */
+  detail?: string;
+  /** Omen faces when kind is omen_faces. */
+  faces?: number[];
+  /** Numeric delta when relevant (practice, tide, etc.). */
+  amount?: number;
+}
+
+export interface FoundationMyth {
+  title: string;
+  /** Short blurb — UI may show on hover over the name. */
+  summary?: string;
+  effects: MythEffect[];
+}
+
+export interface HierarchyPlacement {
+  name: string;
+  axis: string;
+  tier: string;
+  /** Optional link to character slug when the name is a PC/NPC on sheet. */
+  characterSlug?: string;
+}
+
+export interface OutsiderRecord {
+  name: string;
+  note?: string;
+  characterSlug?: string;
+}
+
 export interface CommunityRecord {
   slug: string;
   name: string;
@@ -17,10 +62,39 @@ export interface CommunityRecord {
     standing: number;
     tradition: number;
   };
-  myths: { title: string; summary: string }[];
+  myths: FoundationMyth[];
   hierarchyAxes: string[];
   ruler: string | null;
-  placements: { name: string; axis: string; tier: string }[];
+  rulerCharacterSlug?: string;
+  placements: HierarchyPlacement[];
+  outsiders: OutsiderRecord[];
+}
+
+export interface InventoryItem {
+  name: string;
+  /** Short functional / contextual note. */
+  note?: string;
+  tags?: string[];
+}
+
+export interface TraitRecord {
+  name: string;
+  note?: string;
+}
+
+export interface PlayerBinding {
+  platform: 'discord' | 'fluxer' | 'local' | string;
+  /** Display handle / nickname. */
+  displayName: string;
+  accountId?: string;
+}
+
+export interface SkillProgress {
+  name: string;
+  rating: number;
+  practice: number;
+  threshold: number;
+  foundation?: string;
 }
 
 export interface CharacterRecord {
@@ -29,23 +103,32 @@ export interface CharacterRecord {
   name: string;
   kind: 'pc' | 'npc' | 'notable';
   status: 'active' | 'dead' | 'draft';
+  /** Binding claim to the community (creation tie). */
   communityTie: string;
+  /** “Who do we see?” — short claim, shown as quote. */
+  whoWeSee?: string;
+  /** Player account mapped to this character (display on sheet). */
+  player?: PlayerBinding;
   foundations: Record<string, number>;
   foundationsEffective: Record<string, number>;
-  skills: { name: string; rating: number; practice: number; threshold: number; foundation?: string }[];
-  traits: string[];
+  skills: SkillProgress[];
+  traits: TraitRecord[];
   /** Max = Resolve + Constitution + Charisma (raw Foundations). */
   exertion: { current: number; max: number };
-  echoes: { title: string; weight: number }[];
-  /** max(Strength, Dexterity) + Intellect + Authority — independent of Exertion max. */
+  echoes: { title: string; weight: number; note?: string }[];
+  /** max(Strength, Dexterity) + Intellect + Authority */
   echoCapacity: number;
-  /** Sum of Echo weights. */
   echoWeight: number;
   harm: Record<string, number>;
   dying: boolean;
+  /** Stored for community diagram; not primary sheet chrome. */
   hierarchy: { axis: string; tier: string }[];
   armour: { kind: 'none' | 'light' | 'heavy'; donned: boolean };
-  inventory: { foodDays: number; waterDays: number; named: string[] };
+  inventory: {
+    foodDays: number;
+    waterDays: number;
+    items: InventoryItem[];
+  };
   flags: { decadence: boolean; overCapacity: boolean };
 }
 

@@ -1,0 +1,47 @@
+---
+export const prerender = false;
+
+import CampaignLayout from '../../layouts/CampaignLayout.astro';
+import { loadCommunity } from '../../data/load';
+
+const c = loadCommunity();
+const selected = Astro.url.searchParams.get('sel') ?? '';
+---
+
+<CampaignLayout
+  title="Characters"
+  communityName={c.name}
+  generatedAt={c.generatedAt}
+  primary="characters"
+  source={c.source}
+>
+  <p class="kod-meta">
+    Browse the living record. Status at a glance; open a panel for the full sheet. Hierarchy lives on
+    the Community page.
+  </p>
+
+  <div class="kod-char-grid">
+    {
+      c.characters.map((ch) => (
+        <a
+          class="kod-char-card"
+          href={`/characters/${ch.slug}/`}
+          data-selected={selected === ch.slug ? 'true' : 'false'}
+        >
+          <p class="kod-char-card__name">{ch.name}</p>
+          <span class="kod-char-card__status" data-status={ch.status}>
+            {ch.status}
+            {ch.dying ? ' · dying' : ''}
+          </span>
+          <p class="kod-char-card__meta">
+            {ch.player?.displayName ?? 'Unmapped player'}
+            <br />
+            Exertion {ch.exertion.current}/{ch.exertion.max} · Echo {ch.echoWeight}/{ch.echoCapacity}
+            {ch.flags.decadence ? ' · Decadence' : ''}
+            {ch.flags.overCapacity ? ' · Over-cap' : ''}
+          </p>
+        </a>
+      ))
+    }
+  </div>
+</CampaignLayout>

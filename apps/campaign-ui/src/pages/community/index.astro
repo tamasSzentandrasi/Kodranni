@@ -1,0 +1,199 @@
+---
+export const prerender = false;
+
+import { HIERARCHY_TIERS } from '@kodranni/domain';
+import CampaignLayout from '../../layouts/CampaignLayout.astro';
+import { FORTUNE_LABELS, loadCommunity, MYTH_KIND_COLUMNS } from '../../data/load';
+
+const c = loadCommunity();
+const tiers = [...HIERARCHY_TIERS];
+
+function effectsForKind(
+  effects: { kind: string; label: string; detail?: string; faces?: number[] }[],
+  kind: string,
+) {
+  return effects.filter((e) => e.kind === kind);
+}
+---
+
+<CampaignLayout
+  title="Community"
+  communityName={c.name}
+  generatedAt={c.generatedAt}
+  primary="community"
+  source={c.source}
+>
+  <div class="kod-toolbar">
+    <span class="kod-meta" style="margin:0">Scale</span>
+    <button type="button" data-density-btn="compact" aria-pressed="false">Compact</button>
+    <button type="button" data-density-btn="normal" aria-pressed="true">Normal</button>
+    <button type="button" data-density-btn="roomy" aria-pressed="false">Roomy</button>
+  </div>
+
+  <section aria-labelledby="fortunes-h">
+    <h2 id="fortunes-h" class="kod-panel" style="padding-bottom:0.5rem;border:none;background:transparent;margin:0">
+      Fortunes
+    </h2>
+    <p class="kod-meta">Community-wide pressure — ambient for every scene, not a second character sheet.</p>
+    <div class="kod-fortunes">
+      {
+        Object.entries(c.fortunes).map(([k, v]) => (
+          <div class="kod-fortune">
+            <span class="kod-fortune__name">{k}</span>
+            <span class="kod-fortune__value">{v}</span>
+            <span class="kod-fortune__state">{FORTUNE_LABELS[v] ?? ''}</span>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="kod-panel" aria-labelledby="hier-h">
+    <h2 id="hier-h">Hierarchy Diagram</h2>
+    <p class="kod-meta">
+      One Ruler seat above all axes. Click an axis header to collapse. Members are placed by tier — not dragged.
+      Linked names open character sheets.
+    </p>
+
+    <div class="kod-ruler-seat">
+      <span class="kod-ruler-seat__label">Ruler</span>
+      {
+        c.ruler ? (
+          c.rulerCharacterSlug ? (
+            <a class="kod-member kod-member--pc" href={`/characters/${c.rulerCharacterSlug}/`}>
+              {c.ruler}
+            </a>
+          ) : (
+            <span class="kod-member">{c.ruler}</span>
+          )
+        ) : (
+          <span class="kod-empty">— none claimed —</span>
+        )
+      }
+    </div>
+
+    <div class="kod-axes">
+      {
+        c.hierarchyAxes.map((axis) => {
+          const onAxis = c.placements.filter((p) => p.axis === axis);
+          return (
+            <div class="kod-axis" data-collapsed="false">
+              <button
+                type="button"
+                class="kod-axis__head"
+                data-axis-toggle
+                aria-expanded="true"
+                style="width:100%;text-align:left;font:inherit;border:none"
+              >
+                <span>{axis}</span>
+                <span class="kod-stat__value--muted">{onAxis.length}</span>
+              </button>
+              <div class="kod-axis__body">
+                {tiers.map((tier) => {
+                  const members = onAxis.filter((p) => p.tier === tier);
+                  return (
+                    <div class="kod-rung">
+                      <span class="kod-rung__tier">{tier}</span>
+                      <div class="kod-rung__members">
+                        {members.length === 0 ? (
+                          <span class="kod-empty">—</span>
+                        ) : (
+                          members.map((m) =>
+                            m.characterSlug ? (
+                              <a
+                                class="kod-member kod-member--pc"
+                                href={`/characters/${m.characterSlug}/`}
+                              >
+                                {m.name}
+                              </a>
+                            ) : (
+                              <span class="kod-member">{m.name}</span>
+                            ),
+                          )
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })
+      }
+    </div>
+
+    <div class="kod-outsiders">
+      <h3 style="margin:0 0 0.35rem;font-weight:400;color:var(--kod-silver-bright)">Outsiders</h3>
+      <p class="kod-meta">Apart from every axis until they enter as Outcast.</p>
+      <ul class="kod-outsider-list">
+        {
+          (c.outsiders ?? []).length === 0 ? (
+            <li class="kod-empty">None tracked.</li>
+          ) : (
+            (c.outsiders ?? []).map((o) => (
+              <li class="kod-outsider">
+                <strong>{o.name}</strong>
+                {o.note && <span>{o.note}</span>}
+              </li>
+            ))
+          )
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="kod-panel" aria-labelledby="myths-h">
+    <h2 id="myths-h">Foundation Myths</h2>
+    <p class="kod-meta">
+      Effects by type. Hover a myth name for its short description. Tag on a roll to fire — free prose alone does not.
+    </p>
+    <div style="overflow-x:auto">
+      <table class="kod-myths">
+        <thead>
+          <tr>
+            <th>Myth</th>
+            {MYTH_KIND_COLUMNS.map((col) => <th>{col.header}</th>)}
+          </tr>
+        </thead>
+        <tbody>
+          {
+            c.myths.length === 0 ? (
+              <tr>
+                <td colspan={1 + MYTH_KIND_COLUMNS.length} class="kod-empty">
+                  No active Foundation Myths.
+                </td>
+              </tr>
+            ) : (
+              c.myths.map((m) => (
+                <tr>
+                  <td>
+                    <span class="kod-myth-name" title={m.summary ?? ''}>
+                      {m.title}
+                    </span>
+                  </td>
+                  {MYTH_KIND_COLUMNS.map((col) => {
+                    const cells = effectsForKind(m.effects ?? [], col.kind);
+                    return (
+                      <td>
+                        {cells.length === 0 ? (
+                          <span class="kod-empty">—</span>
+                        ) : (
+                          cells.map((e) => (
+                            <span class="kod-chip" data-kind={e.kind} title={e.detail ?? e.label}>
+                              {e.label}
+                              {e.faces?.length ? ` (${e.faces.join(', ')})` : ''}
+                            </span>
+                          ))
+                        )}
+                      </td>
+                    );
+                  })}
+                </tr>
+              ))
+            )
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+</CampaignLayout>

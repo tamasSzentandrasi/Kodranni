@@ -1,0 +1,202 @@
+---
+export const prerender = false;
+
+import {
+  ARCHETYPES,
+  FOUNDATION_GROUPS,
+  FOUNDATION_HARM,
+} from '@kodranni/domain';
+import CampaignLayout from '../../../layouts/CampaignLayout.astro';
+import { getCharacter, loadCommunity } from '../../../data/load';
+
+const { slug } = Astro.params;
+const c = loadCommunity();
+const ch = getCharacter(slug!);
+if (!ch) {
+  return new Response('Character not found', { status: 404, statusText: 'Not Found' });
+}
+
+const skillMap = new Map(ch.skills.map((s) => [s.name, s]));
+
+function practiceFrac(practice: number, threshold: number): number {
+  if (threshold <= 0) return 0;
+  return Math.min(1, Math.max(0, practice / threshold));
+}
+---
+
+<CampaignLayout
+  title={ch.name}
+  communityName={c.name}
+  generatedAt={c.generatedAt}
+  primary="characters"
+  source={c.source}
+>
+  <nav class="kod-sheet-tabs" aria-label="Sheet sections">
+    <a href={`/characters/${ch.slug}/`} aria-current="page">Core</a>
+    <a href={`/characters/${ch.slug}/burden/`}>Echoes · Inventory · Traits</a>
+    <a href={`/characters/?sel=${ch.slug}`}>← Browse</a>
+  </nav>
+
+  <div class="kod-sheet-grid">
+    <div>
+      <div class="kod-exertion" aria-label="Exertion">
+        <div>
+          <span class="kod-exertion__label">Exertion</span>
+          <div class="kod-exertion__value">
+            {ch.exertion.current} / {ch.exertion.max}
+          </div>
+          <span class="kod-meta" style="margin:0">Res + Con + Cha</span>
+        </div>
+        <div
+          class="kod-meter"
+          role="meter"
+          aria-valuenow={ch.exertion.current}
+          aria-valuemin={0}
+          aria-valuemax={ch.exertion.max}
+        >
+          <span
+            style={`width: ${ch.exertion.max ? (100 * ch.exertion.current) / ch.exertion.max : 0}%`}
+          ></span>
+        </div>
+        {
+          (ch.flags.decadence || ch.flags.overCapacity || ch.dying) && (
+            <p style="margin:0">
+              {ch.dying && <span class="kod-flag">Dying</span>}
+              {ch.flags.decadence && <span class="kod-flag">Decadence</span>}
+              {ch.flags.overCapacity && <span class="kod-flag">Over capacity</span>}
+            </p>
+          )
+        }
+      </div>
+
+      <section class="kod-panel" style="padding:0;overflow:hidden">
+        <h2 style="padding:0.85rem 1rem 0.35rem;margin:0">Foundations · Harm</h2>
+        <p class="kod-meta" style="padding:0 1rem 0.65rem;margin:0">
+          Grouped Physical / Mental / Social. Each Foundation shows effective value; paired Harm track
+          beside it (0–3).
+        </p>
+        <div class="kod-found-groups" style="padding:0 0.65rem 0.85rem">
+          {
+            Object.entries(FOUNDATION_GROUPS).map(([group, keys]) => (
+              <div class="kod-found-group">
+                <p class="kod-found-group__title">{group}</p>
+                {keys.map((fname) => {
+                  const raw = ch.foundations[fname] ?? 0;
+                  const eff = ch.foundationsEffective[fname] ?? raw;
+                  const harmName = FOUNDATION_HARM[fname] ?? '';
+                  const harmPts = ch.harm[harmName] ?? 0;
+                  return (
+                    <div class="kod-found-row">
+                      <span class="kod-found-row__name">{fname}</span>
+                      <span class="kod-found-row__val">
+                        {eff}
+                        {eff !== raw ? ` (${raw})` : ''}
+                      </span>
+                      <span class="kod-found-row__harm" data-level={String(harmPts)}>
+                        {harmName} {harmPts}/3
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            ))
+          }
+        </div>
+      </section>
+
+      <section class="kod-panel">
+        <h2>Skills by Archetype</h2>
+        <p class="kod-meta">
+          Full list in radial petals. Ring fill = Practice toward next rank. Centre = rating 0–3.
+          Hover a skill for Practice detail. Unrated Skills stay dim.
+        </p>
+        <div class="kod-skill-wheel">
+          {
+            ARCHETYPES.map((arch) => (
+              <div class={`kod-arch kod-arch--${arch.id}`}>
+                <div class="kod-arch__head">
+                  <span class="kod-arch__name">{arch.name}</span>
+                  <span class="kod-arch__tag">{arch.tag}</span>
+                </div>
+                <ul class="kod-arch__skills">
+                  {arch.skills.map((def) => {
+                    const prog = skillMap.get(def.name);
+                    const rating = prog?.rating ?? 0;
+                    const practice = prog?.practice ?? 0;
+                    const threshold = prog?.threshold ?? 24;
+                    const p = rating > 0 ? practiceFrac(practice, threshold) : 0;
+                    return (
+                      <li
+                        class="kod-skill"
+                        data-rating={String(rating)}
+                        data-rated={rating > 0 ? 'true' : 'false'}
+                        style={`--p: ${p}`}
+                        title={`${def.name} (${def.foundation})`}
+                      >
+                        <span class="kod-skill__hint">
+                          {rating > 0
+                            ? `${practice}/${threshold} Practice · ${def.foundation}`
+                            : `0 · ${def.foundation}`}
+                        </span>
+                        <div class="kod-skill__ring">
+                          <div class="kod-skill__ring-inner">{rating}</div>
+                        </div>
+                        <span class="kod-skill__name">{def.name}</span>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            ))
+          }
+        </div>
+      </section>
+    </div>
+
+    <aside class="kod-sideblock">
+      <p class="kod-sideblock__label">Who do we see?</p>
+      {
+        ch.whoWeSee ? (
+          <blockquote class="kod-quote">{ch.whoWeSee}</blockquote>
+        ) : (
+          <p class="kod-empty">No claim recorded.</p>
+        )
+      }
+
+      <div class="kod-player-bind">
+        <p class="kod-sideblock__label">Player</p>
+        {
+          ch.player ? (
+            <p style="margin:0">
+              <strong>{ch.player.displayName}</strong>
+              <br />
+              <span class="kod-meta" style="margin:0">
+                {ch.player.platform}
+                {ch.player.accountId ? ` · ${ch.player.accountId}` : ''}
+              </span>
+            </p>
+          ) : (
+            <p class="kod-empty" style="margin:0">
+              No account mapped.
+            </p>
+          )
+        }
+      </div>
+
+      <div class="kod-player-bind">
+        <p class="kod-sideblock__label">Status</p>
+        <p style="margin:0">
+          <span class="kod-char-card__status" data-status={ch.status}>{ch.status}</span>
+          {ch.dying ? ' · Dying' : ''}
+        </p>
+        <p class="kod-meta">
+          Armour: {ch.armour.kind}
+          {ch.armour.donned ? ' (donned)' : ' (stowed)'}
+        </p>
+        <p class="kod-meta" style="margin-bottom:0">
+          Community tie is narrative background — hierarchy placement is on the Community page.
+        </p>
+      </div>
+    </aside>
+  </div>
+</CampaignLayout>

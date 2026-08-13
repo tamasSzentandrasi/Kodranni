@@ -5,18 +5,18 @@ interface Props {
   title: string;
   communityName: string;
   generatedAt: string;
-  current?: string;
+  primary: 'community' | 'characters';
   source?: string;
-  navCharacters?: { slug: string; name: string }[];
+  density?: string;
 }
 
 const {
   title,
   communityName,
   generatedAt,
-  current = 'home',
+  primary,
   source = 'fixture',
-  navCharacters = [],
+  density = 'normal',
 } = Astro.props;
 
 const asOf = new Date(generatedAt).toLocaleString(undefined, {
@@ -37,31 +37,53 @@ const sourceLabel =
     <meta name="robots" content="noindex" />
     <title>{title} · {communityName}</title>
   </head>
-  <body>
-    <div class="kod-shell">
+  <body data-density={density}>
+    <div class="kod-shell kod-shell--wide">
       <header class="kod-brand">
         <span class="kod-brand__mark">Kodranni</span>
         <h1 class="kod-brand__title">{communityName}</h1>
       </header>
       <p class="kod-meta">
-        As of {asOf} · shared record (read-only) · <span class="kod-source">{sourceLabel}</span>
+        As of {asOf} · read-only living record · <span class="kod-source">{sourceLabel}</span>
       </p>
-      <nav class="kod-nav" aria-label="Campaign">
-        <a href="/" aria-current={current === 'home' ? 'page' : undefined}>Overview</a>
-        <a href="/tracker/" aria-current={current === 'tracker' ? 'page' : undefined}>Tracker</a>
-        {
-          navCharacters.map((ch) => (
-            <a
-              href={`/characters/${ch.slug}/`}
-              aria-current={current === ch.slug ? 'page' : undefined}
-            >
-              {ch.name}
-            </a>
-          ))
-        }
+
+      <nav class="kod-primary-tabs" aria-label="Primary">
+        <a href="/community/" aria-current={primary === 'community' ? 'page' : undefined}
+          >Community</a
+        >
+        <a href="/characters/" aria-current={primary === 'characters' ? 'page' : undefined}
+          >Characters</a
+        >
       </nav>
+
       <slot />
     </div>
+    <script is:inline>
+      (function () {
+        const key = 'kod-density';
+        const saved = localStorage.getItem(key);
+        if (saved) document.body.setAttribute('data-density', saved);
+        document.querySelectorAll('[data-density-btn]').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const d = btn.getAttribute('data-density-btn');
+            document.body.setAttribute('data-density', d);
+            localStorage.setItem(key, d);
+            document.querySelectorAll('[data-density-btn]').forEach((b) => {
+              b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+            });
+          });
+        });
+        document.querySelectorAll('[data-axis-toggle]').forEach((head) => {
+          head.addEventListener('click', () => {
+            const axis = head.closest('.kod-axis');
+            if (!axis) return;
+            const collapsed = axis.getAttribute('data-collapsed') === 'true';
+            axis.setAttribute('data-collapsed', collapsed ? 'false' : 'true');
+            head.setAttribute('aria-expanded', collapsed ? 'true' : 'false');
+          });
+        });
+      })();
+    </script>
   </body>
 </html>
 

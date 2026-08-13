@@ -11,6 +11,7 @@ import type {
   PublicSnapshot,
   RollRecord,
 } from './types.js';
+import { refreshCharacterDerived } from './derived.js';
 
 export interface SqliteCommunityStore {
   readonly path: string;
@@ -30,6 +31,46 @@ export interface SqliteCommunityStore {
   toPublicSnapshot(): PublicSnapshot;
 }
 
+function normalizeCommunity(raw: CommunityRecord): CommunityRecord {
+  return {
+    ...raw,
+    myths: (raw.myths ?? []).map((m) => {
+      if ('effects' in m && Array.isArray(m.effects)) return m;
+      // Legacy { title, summary } → empty effects
+      const legacy = m as { title: string; summary?: string };
+      return { title: legacy.title, summary: legacy.summary, effects: [] };
+    }),
+    outsiders: raw.outsiders ?? [],
+    placements: raw.placements ?? [],
+    hierarchyAxes: raw.hierarchyAxes ?? ['Arms', 'Faith', 'Coin', 'Blood'],
+  };
+}
+
+function normalizeCharacter(raw: CharacterRecord): CharacterRecord {
+  const inv = raw.inventory as CharacterRecord['inventory'] & {
+    named?: string[];
+  };
+  let items = inv?.items;
+  if (!items && inv?.named) {
+    items = inv.named.map((name) => ({ name }));
+  }
+  const traits = (raw.traits ?? []).map((t) =>
+    typeof t === 'string' ? { name: t } : t,
+  );
+  const ch: CharacterRecord = {
+    ...raw,
+    traits,
+    inventory: {
+      foodDays: inv?.foodDays ?? 0,
+      waterDays: inv?.waterDays ?? 0,
+      items: items ?? [],
+    },
+    echoCapacity: raw.echoCapacity ?? 0,
+    echoWeight: raw.echoWeight ?? 0,
+  };
+  return refreshCharacterDerived(ch);
+}
+
 export function openSqliteStore(path: string): SqliteCommunityStore {
   if (path !== ':memory:') {
     mkdirSync(dirname(path), { recursive: true });
@@ -47,33 +88,34 @@ export function openSqliteStore(path: string): SqliteCommunityStore {
         | { data: string }
         | undefined;
       if (!row) throw new Error('community row missing — run seed/init');
-      return JSON.parse(row.data) as CommunityRecord;
+      return normalizeCommunity(JSON.parse(row.data) as CommunityRecord);
     },
     putCommunity: (c) => {
       db.prepare(
         `INSERT INTO community (id, data) VALUES ('main', ?)
          ON CONFLICT(id) DO UPDATE SET data = excluded.data`,
-      ).run(JSON.stringify(c));
+      ).run(JSON.stringify(normalizeCommunity(c)));
     },
     listCharacters: () => {
       const rows = db.prepare(`SELECT data FROM characters ORDER BY name`).all() as {
         data: string;
       }[];
-      return rows.map((r) => JSON.parse(r.data) as CharacterRecord);
+      return rows.map((r) => normalizeCharacter(JSON.parse(r.data) as CharacterRecord));
     },
     getCharacterBySlug: (slug) => {
       const row = db.prepare(`SELECT data FROM characters WHERE slug = ?`).get(slug) as
         | { data: string }
         | undefined;
-      return row ? (JSON.parse(row.data) as CharacterRecord) : undefined;
+      return row ? normalizeCharacter(JSON.parse(row.data) as CharacterRecord) : undefined;
     },
     getCharacterById: (id) => {
       const row = db.prepare(`SELECT data FROM characters WHERE id = ?`).get(id) as
         | { data: string }
         | undefined;
-      return row ? (JSON.parse(row.data) as CharacterRecord) : undefined;
+      return row ? normalizeCharacter(JSON.parse(row.data) as CharacterRecord) : undefined;
     },
     putCharacter: (c) => {
+      const normalized = refreshCharacterDerived({ ...c });
       db.prepare(
         `INSERT INTO characters (id, slug, name, kind, status, data)
          VALUES (?, ?, ?, ?, ?, ?)
@@ -83,7 +125,14 @@ export function openSqliteStore(path: string): SqliteCommunityStore {
            kind = excluded.kind,
            status = excluded.status,
            data = excluded.data`,
-      ).run(c.id, c.slug, c.name, c.kind, c.status, JSON.stringify(c));
+      ).run(
+        normalized.id,
+        normalized.slug,
+        normalized.name,
+        normalized.kind,
+        normalized.status,
+        JSON.stringify(normalized),
+      );
     },
     listMembers: () => {
       const rows = db
@@ -124,7 +173,9 @@ export function openSqliteStore(path: string): SqliteCommunityStore {
     appendEvent: (event) => {
       if (event.clientEventId) {
         const existing = db
-          .prepare(`SELECT id, ts, type, actor, client_event_id, payload FROM events WHERE client_event_id = ?`)
+          .prepare(
+            `SELECT id, ts, type, actor, client_event_id, payload FROM events WHERE client_event_id = ?`,
+          )
           .get(event.clientEventId) as
           | {
               id: string;
@@ -136,7 +187,14 @@ export function openSqliteStore(path: string): SqliteCommunityStore {
             }
           | undefined;
         if (existing) {
-          return rowToEvent(existing);
+          return {
+            id: existing.id,
+            ts: existing.ts,
+            type: existing.type,
+            actor: existing.actor ?? undefined,
+            clientEventId: existing.client_event_id ?? undefined,
+            payload: JSON.parse(existing.payload),
+          };
         }
       }
       const full: AuditEvent = {
@@ -201,18 +259,20 @@ export function openSqliteStore(path: string): SqliteCommunityStore {
       };
     },
     toPublicSnapshot: () => {
-      const community = (() => {
-        const row = db.prepare(`SELECT data FROM community WHERE id = 'main'`).get() as
-          | { data: string }
-          | undefined;
-        if (!row) throw new Error('community row missing');
-        return JSON.parse(row.data) as CommunityRecord;
-      })();
+      const community = normalizeCommunity(
+        JSON.parse(
+          (
+            db.prepare(`SELECT data FROM community WHERE id = 'main'`).get() as {
+              data: string;
+            }
+          ).data,
+        ) as CommunityRecord,
+      );
       const characters = (
         db.prepare(`SELECT data FROM characters WHERE status != 'draft' ORDER BY name`).all() as {
           data: string;
         }[]
-      ).map((r) => JSON.parse(r.data) as CharacterRecord);
+      ).map((r) => normalizeCharacter(JSON.parse(r.data) as CharacterRecord));
       return {
         generatedAt: new Date().toISOString(),
         schemaVersion: SCHEMA_VERSION,
@@ -250,24 +310,6 @@ function migrate(db: DatabaseSync): void {
   }
 }
 
-function rowToEvent(row: {
-  id: string;
-  ts: string;
-  type: string;
-  actor: string | null;
-  client_event_id: string | null;
-  payload: string;
-}): AuditEvent {
-  return {
-    id: row.id,
-    ts: row.ts,
-    type: row.type,
-    actor: row.actor ?? undefined,
-    clientEventId: row.client_event_id ?? undefined,
-    payload: JSON.parse(row.payload),
-  };
-}
-
 export function emptyCommunity(slug: string, name: string): CommunityRecord {
   return {
     slug,
@@ -283,5 +325,6 @@ export function emptyCommunity(slug: string, name: string): CommunityRecord {
     hierarchyAxes: ['Arms', 'Faith', 'Coin', 'Blood'],
     ruler: null,
     placements: [],
+    outsiders: [],
   };
 }

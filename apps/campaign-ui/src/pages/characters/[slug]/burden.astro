@@ -1,0 +1,124 @@
+---
+export const prerender = false;
+
+import CampaignLayout from '../../../layouts/CampaignLayout.astro';
+import { getCharacter, loadCommunity } from '../../../data/load';
+
+const { slug } = Astro.params;
+const c = loadCommunity();
+const ch = getCharacter(slug!);
+if (!ch) {
+  return new Response('Character not found', { status: 404, statusText: 'Not Found' });
+}
+---
+
+<CampaignLayout
+  title={`${ch.name} · Burden`}
+  communityName={c.name}
+  generatedAt={c.generatedAt}
+  primary="characters"
+  source={c.source}
+>
+  <nav class="kod-sheet-tabs" aria-label="Sheet sections">
+    <a href={`/characters/${ch.slug}/`}>Core</a>
+    <a href={`/characters/${ch.slug}/burden/`} aria-current="page">Echoes · Inventory · Traits</a>
+    <a href={`/characters/?sel=${ch.slug}`}>← Browse</a>
+  </nav>
+
+  <h1 style="font-weight:400;color:var(--kod-silver-bright);margin:0 0 1rem">{ch.name}</h1>
+
+  <div class="kod-dual-cap">
+    <div class="kod-cap-box">
+      <span class="kod-cap-box__label">Exertion (will)</span>
+      <div class="kod-cap-box__value">{ch.exertion.current} / {ch.exertion.max}</div>
+      <span class="kod-cap-box__formula">Res + Con + Cha</span>
+    </div>
+    <div class="kod-cap-box">
+      <span class="kod-cap-box__label">Echo load (burden)</span>
+      <div class="kod-cap-box__value">{ch.echoWeight} / {ch.echoCapacity}</div>
+      <span class="kod-cap-box__formula">max(Str, Dex) + Int + Auth</span>
+    </div>
+  </div>
+
+  <div class="kod-sheet-grid">
+    <div>
+      <section class="kod-panel">
+        <h2>Echoes</h2>
+        <ul class="kod-echo-list">
+          {
+            ch.echoes.length === 0 ? (
+              <li class="kod-empty">None — Decadence if this stands.</li>
+            ) : (
+              ch.echoes.map((e) => (
+                <li class="kod-echo">
+                  <span class="kod-echo__title">{e.title}</span>{' '}
+                  <span class="kod-echo__w">w{e.weight}</span>
+                  {e.note && <span class="kod-item__note">{e.note}</span>}
+                </li>
+              ))
+            )
+          }
+        </ul>
+      </section>
+
+      <section class="kod-panel">
+        <h2>Traits</h2>
+        <ul class="kod-trait-list">
+          {
+            ch.traits.length === 0 ? (
+              <li class="kod-empty">None recorded.</li>
+            ) : (
+              ch.traits.map((t) => (
+                <li class="kod-trait">
+                  <span class="kod-trait__name">{t.name}</span>
+                  {t.note && <span class="kod-item__note">{t.note}</span>}
+                </li>
+              ))
+            )
+          }
+        </ul>
+      </section>
+    </div>
+
+    <div>
+      <section class="kod-panel">
+        <h2>Supplies</h2>
+        <p class="kod-meta">Food and water days — kept visible; rest and recovery care about them.</p>
+        <div class="kod-supplies">
+          <div class="kod-supply">
+            <span class="kod-supply__label">Food</span>
+            <span class="kod-supply__value">{ch.inventory.foodDays}</span>
+            <span class="kod-supply__unit">days</span>
+          </div>
+          <div class="kod-supply">
+            <span class="kod-supply__label">Water</span>
+            <span class="kod-supply__value">{ch.inventory.waterDays}</span>
+            <span class="kod-supply__unit">days</span>
+          </div>
+        </div>
+
+        <h3 style="font-weight:400;margin:1rem 0 0.35rem;color:var(--kod-silver-bright)">
+          Named items
+        </h3>
+        <ul class="kod-item-list">
+          {
+            ch.inventory.items.length === 0 ? (
+              <li class="kod-empty">None declared — if it is not here, they do not have it.</li>
+            ) : (
+              ch.inventory.items.map((it) => (
+                <li class="kod-item">
+                  <span class="kod-item__name">{it.name}</span>
+                  {it.note && <span class="kod-item__note">{it.note}</span>}
+                </li>
+              ))
+            )
+          }
+        </ul>
+        <p class="kod-meta" style="margin-bottom:0">
+          Armour: {ch.armour.kind}
+          {ch.armour.donned ? ' (donned)' : ' (not donned)'}
+        </p>
+      </section>
+    </div>
+  </div>
+</CampaignLayout>

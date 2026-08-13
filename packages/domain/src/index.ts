@@ -7,3 +7,4 @@ export * from './echoes.js';
 export * from './tide.js';
 export * from './roll.js';
 export * from './degrade.js';
+export * from './skills-catalog.js';
