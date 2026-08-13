@@ -1,18 +1,16 @@
 ---
+export const prerender = false;
+
 import CampaignLayout from '../../layouts/CampaignLayout.astro';
 import { getCharacter, loadCommunity } from '../../data/load';
-
-export function getStaticPaths() {
-  return loadCommunity().characters.map((ch) => ({
-    params: { slug: ch.slug },
-  }));
-}
 
 const { slug } = Astro.params;
 const c = loadCommunity();
 const ch = getCharacter(slug!);
-if (!ch) throw new Error(`Unknown character: ${slug}`);
-const echoWeight = ch.echoes.reduce((a, e) => a + e.weight, 0);
+if (!ch) {
+  return new Response('Character not found', { status: 404, statusText: 'Not Found' });
+}
+const navCharacters = c.characters.map((x) => ({ slug: x.slug, name: x.name }));
 ---
 
 <CampaignLayout
@@ -20,13 +18,15 @@ const echoWeight = ch.echoes.reduce((a, e) => a + e.weight, 0);
   communityName={c.name}
   generatedAt={c.generatedAt}
   current={ch.slug}
+  source={c.source}
+  navCharacters={navCharacters}
 >
   <section class="kod-panel">
     <h2>{ch.name}</h2>
     <p>{ch.communityTie}</p>
     {
       (ch.flags.decadence || ch.flags.overCapacity || ch.dying) && (
-        <p>
+        <p class="kod-flags">
           {ch.dying && <span class="kod-flag">Dying</span>}
           {ch.flags.decadence && <span class="kod-flag">Decadence</span>}
           {ch.flags.overCapacity && <span class="kod-flag">Over capacity</span>}
@@ -37,6 +37,7 @@ const echoWeight = ch.echoes.reduce((a, e) => a + e.weight, 0);
 
   <section class="kod-panel">
     <h2>Foundations</h2>
+    <p class="kod-meta">Effective after Harm in parentheses when reduced.</p>
     <ul class="kod-stat-grid">
       {
         Object.entries(ch.foundations).map(([k, v]) => {
@@ -46,7 +47,7 @@ const echoWeight = ch.echoes.reduce((a, e) => a + e.weight, 0);
               <span class="kod-stat__label">{k}</span>
               <span class="kod-stat__value">
                 {eff}
-                {eff !== v && <span class="kod-stat__value--muted"> ({v})</span>}
+                {eff !== v && <span class="kod-stat__value--muted"> ({v} raw)</span>}
               </span>
             </li>
           );
@@ -82,24 +83,35 @@ const echoWeight = ch.echoes.reduce((a, e) => a + e.weight, 0);
   </section>
 
   <section class="kod-panel">
-    <h2>Exertion · Echoes</h2>
+    <h2>Exertion · Echo load</h2>
+    <p class="kod-meta">
+      Two independent capacities — Exertion is will; Echo capacity is carried burden.
+    </p>
     <ul class="kod-stat-grid">
       <li class="kod-stat">
         <span class="kod-stat__label">Exertion</span>
         <span class="kod-stat__value">{ch.exertion.current} / {ch.exertion.max}</span>
+        <span class="kod-stat__value--muted">Res+Con+Cha</span>
       </li>
       <li class="kod-stat">
-        <span class="kod-stat__label">Echo weight</span>
-        <span class="kod-stat__value">{echoWeight} / {ch.exertion.max}</span>
+        <span class="kod-stat__label">Echo load</span>
+        <span class="kod-stat__value">
+          {ch.echoWeight} / {ch.echoCapacity}
+        </span>
+        <span class="kod-stat__value--muted">max(Str,Dex)+Int+Auth</span>
       </li>
     </ul>
-    <ul>
+    <ul class="kod-echo-list">
       {
-        ch.echoes.map((e) => (
-          <li>
-            {e.title} <span class="kod-stat__value--muted">(w{e.weight})</span>
-          </li>
-        ))
+        ch.echoes.length === 0 ? (
+          <li class="kod-empty">No Echoes — Decadence.</li>
+        ) : (
+          ch.echoes.map((e) => (
+            <li>
+              {e.title} <span class="kod-stat__value--muted">(w{e.weight})</span>
+            </li>
+          ))
+        )
       }
     </ul>
   </section>
@@ -148,10 +160,16 @@ const echoWeight = ch.echoes.reduce((a, e) => a + e.weight, 0);
     <ul>
       {ch.inventory.named.map((n) => <li>{n}</li>)}
     </ul>
-    {
-      ch.traits.length > 0 && (
-        <p class="kod-meta">Traits: {ch.traits.join(' · ')}</p>
-      )
-    }
+    {ch.traits.length > 0 && <p class="kod-meta">Traits: {ch.traits.join(' · ')}</p>}
   </section>
 </CampaignLayout>
+
+<style>
+  .kod-echo-list {
+    margin: 0.75rem 0 0;
+    padding-left: 1.1rem;
+  }
+  .kod-flags {
+    margin-top: 0.65rem;
+  }
+</style>

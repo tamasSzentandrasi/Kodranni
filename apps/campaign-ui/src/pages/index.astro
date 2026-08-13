@@ -1,19 +1,32 @@
 ---
+export const prerender = false;
+
 import CampaignLayout from '../layouts/CampaignLayout.astro';
+import { FORTUNE_LABELS } from '../data/fixture';
 import { loadCommunity } from '../data/load';
 
 const c = loadCommunity();
+const navCharacters = c.characters.map((ch) => ({ slug: ch.slug, name: ch.name }));
 ---
 
-<CampaignLayout title="Overview" communityName={c.name} generatedAt={c.generatedAt} current="home">
+<CampaignLayout
+  title="Overview"
+  communityName={c.name}
+  generatedAt={c.generatedAt}
+  current="home"
+  source={c.source}
+  navCharacters={navCharacters}
+>
   <section class="kod-panel">
     <h2>Fortunes</h2>
+    <p class="kod-meta">Community-wide pressure — not a second character sheet.</p>
     <ul class="kod-stat-grid">
       {
         Object.entries(c.fortunes).map(([k, v]) => (
           <li class="kod-stat">
             <span class="kod-stat__label">{k}</span>
             <span class="kod-stat__value">{v}</span>
+            <span class="kod-stat__value--muted">{FORTUNE_LABELS[v] ?? ''}</span>
           </li>
         ))
       }
@@ -22,12 +35,18 @@ const c = loadCommunity();
 
   <section class="kod-panel">
     <h2>Characters</h2>
-    <ul>
+    <ul class="kod-char-list">
       {
         c.characters.map((ch) => (
           <li>
             <a href={`/characters/${ch.slug}/`}>{ch.name}</a>
-            <span class="kod-stat__value--muted"> — {ch.status}</span>
+            <span class="kod-stat__value--muted">
+              {' '}
+              — Exertion {ch.exertion.current}/{ch.exertion.max} · Echoes {ch.echoWeight}/
+              {ch.echoCapacity}
+              {ch.flags.decadence ? ' · Decadence' : ''}
+              {ch.flags.overCapacity ? ' · Over capacity' : ''}
+            </span>
           </li>
         ))
       }
@@ -41,7 +60,7 @@ const c = loadCommunity();
         <p class="kod-empty">None active.</p>
       ) : (
         c.myths.map((m) => (
-          <div>
+          <div class="kod-myth">
             <strong>{m.title}</strong>
             <p class="kod-meta">{m.summary}</p>
           </div>
@@ -50,3 +69,18 @@ const c = loadCommunity();
     }
   </section>
 </CampaignLayout>
+
+<style>
+  .kod-char-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .kod-char-list li {
+    padding: 0.35rem 0;
+    border-bottom: 1px solid #1c1818;
+  }
+  .kod-myth + .kod-myth {
+    margin-top: 0.85rem;
+  }
+</style>

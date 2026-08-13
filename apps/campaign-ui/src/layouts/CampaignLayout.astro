@@ -5,14 +5,27 @@ interface Props {
   title: string;
   communityName: string;
   generatedAt: string;
-  current?: 'home' | 'tracker' | string;
+  current?: string;
+  source?: string;
+  navCharacters?: { slug: string; name: string }[];
 }
 
-const { title, communityName, generatedAt, current = 'home' } = Astro.props;
+const {
+  title,
+  communityName,
+  generatedAt,
+  current = 'home',
+  source = 'fixture',
+  navCharacters = [],
+} = Astro.props;
+
 const asOf = new Date(generatedAt).toLocaleString(undefined, {
   dateStyle: 'medium',
   timeStyle: 'short',
 });
+
+const sourceLabel =
+  source === 'live' ? 'live store' : source === 'snapshot' ? 'export snapshot' : 'fixture';
 ---
 
 <!doctype html>
@@ -21,6 +34,7 @@ const asOf = new Date(generatedAt).toLocaleString(undefined, {
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="dark" />
+    <meta name="robots" content="noindex" />
     <title>{title} · {communityName}</title>
   </head>
   <body>
@@ -29,13 +43,33 @@ const asOf = new Date(generatedAt).toLocaleString(undefined, {
         <span class="kod-brand__mark">Kodranni</span>
         <h1 class="kod-brand__title">{communityName}</h1>
       </header>
-      <p class="kod-meta">As of {asOf} · shared record (read-only)</p>
+      <p class="kod-meta">
+        As of {asOf} · shared record (read-only) · <span class="kod-source">{sourceLabel}</span>
+      </p>
       <nav class="kod-nav" aria-label="Campaign">
         <a href="/" aria-current={current === 'home' ? 'page' : undefined}>Overview</a>
         <a href="/tracker/" aria-current={current === 'tracker' ? 'page' : undefined}>Tracker</a>
-        <a href="/characters/eira/" aria-current={current === 'eira' ? 'page' : undefined}>Eira</a>
+        {
+          navCharacters.map((ch) => (
+            <a
+              href={`/characters/${ch.slug}/`}
+              aria-current={current === ch.slug ? 'page' : undefined}
+            >
+              {ch.name}
+            </a>
+          ))
+        }
       </nav>
       <slot />
     </div>
   </body>
 </html>
+
+<style is:global>
+  .kod-source {
+    color: var(--kod-silver-dim);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+  }
+</style>

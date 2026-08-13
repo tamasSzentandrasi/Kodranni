@@ -1,4 +1,4 @@
-/** Fixture SoT projection for campaign-ui development (no live store wired yet). */
+/** Fixture SoT projection when no live store / export is configured. */
 
 export interface FixtureCharacter {
   slug: string;
@@ -11,6 +11,8 @@ export interface FixtureCharacter {
   traits: string[];
   exertion: { current: number; max: number };
   echoes: { title: string; weight: number }[];
+  echoCapacity: number;
+  echoWeight: number;
   harm: Record<string, number>;
   dying: boolean;
   hierarchy: { axis: string; tier: string }[];
@@ -31,6 +33,7 @@ export interface FixtureCommunity {
   characters: FixtureCharacter[];
 }
 
+/** Eira: Exertion max 6 (2+2+2); Echo capacity max(2,2)+2+1 = 5. */
 export const fixtureCommunity: FixtureCommunity = {
   slug: 'ash-hill',
   name: 'The Ash-Hill People',
@@ -53,6 +56,7 @@ export const fixtureCommunity: FixtureCommunity = {
   placements: [
     { name: 'Eira', axis: 'Coin', tier: 'Acknowledged' },
     { name: 'Eira', axis: 'Arms', tier: 'Outcast' },
+    { name: 'Leif', axis: 'Arms', tier: 'Acknowledged' },
   ],
   characters: [
     {
@@ -89,6 +93,8 @@ export const fixtureCommunity: FixtureCommunity = {
       traits: ['Steady hands'],
       exertion: { current: 4, max: 6 },
       echoes: [{ title: 'Hold the spring against the upper tribe', weight: 2 }],
+      echoCapacity: 5,
+      echoWeight: 2,
       harm: {
         Crushed: 0,
         Bleeding: 0,
@@ -109,9 +115,66 @@ export const fixtureCommunity: FixtureCommunity = {
       inventory: { foodDays: 2, waterDays: 3, named: ['Caulking iron', 'Wool cloak'] },
       flags: { decadence: false, overCapacity: false },
     },
+    {
+      slug: 'leif',
+      name: 'Leif',
+      status: 'active',
+      communityTie: 'Owes the hall for the spring raid winter-stores.',
+      foundations: {
+        Strength: 2,
+        Dexterity: 1,
+        Constitution: 2,
+        Intellect: 2,
+        Perception: 2,
+        Resolve: 2,
+        Charisma: 1,
+        Guile: 1,
+        Authority: 2,
+      },
+      foundationsEffective: {
+        Strength: 2,
+        Dexterity: 1,
+        Constitution: 2,
+        Intellect: 2,
+        Perception: 2,
+        Resolve: 2,
+        Charisma: 1,
+        Guile: 1,
+        Authority: 2,
+      },
+      skills: [{ name: 'Command', rating: 2, practice: 0, threshold: 48 }],
+      traits: [],
+      exertion: { current: 5, max: 5 },
+      echoes: [
+        { title: 'Hold the spring against the upper tribe', weight: 3 },
+        { title: 'The yard pact with the mill brothers', weight: 2 },
+        { title: 'Mother’s knife under the floorboards', weight: 1 },
+      ],
+      echoCapacity: 6,
+      echoWeight: 6,
+      harm: {
+        Crushed: 0,
+        Bleeding: 0,
+        Fever: 0,
+        Fog: 0,
+        Disoriented: 0,
+        Shock: 0,
+        Tarnished: 0,
+        Exposed: 0,
+        Disgrace: 0,
+      },
+      dying: false,
+      hierarchy: [{ axis: 'Arms', tier: 'Acknowledged' }],
+      armour: { kind: 'light', donned: true },
+      inventory: { foodDays: 1, waterDays: 2, named: ['Spear', 'Shield'] },
+      flags: { decadence: false, overCapacity: false },
+    },
   ],
 };
 
-export function getCharacter(slug: string): FixtureCharacter | undefined {
-  return fixtureCommunity.characters.find((c) => c.slug === slug);
-}
+export const FORTUNE_LABELS: Record<number, string> = {
+  0: 'Crisis',
+  1: 'Strained',
+  2: 'Steady',
+  3: 'Abundance',
+};

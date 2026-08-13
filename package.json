@@ -16,8 +16,8 @@
     "astro": "astro",
     "test": "npm run test --workspaces --if-present",
     "test:domain": "npm run test -w @kodranni/domain",
-    "dev:campaign-ui": "npm run dev -w @kodranni/campaign-ui",
-    "build:campaign-ui": "npm run build -w @kodranni/campaign-ui",
+    "dev:campaign-ui": "NODE_OPTIONS='--experimental-sqlite' npm run dev -w @kodranni/campaign-ui",
+    "build:campaign-ui": "NODE_OPTIONS='--experimental-sqlite' npm run build -w @kodranni/campaign-ui",
     "kodranni": "npm run start -w @kodranni/cli --"
   },
   "dependencies": {
