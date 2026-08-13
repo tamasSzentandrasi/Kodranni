@@ -4,8 +4,8 @@ import { buildApprovalRequestCard, buildRollResultCard } from '../src/index.js';
 describe('chat-ui cards', () => {
   it('roll card has Marks dominant field and oppose button', () => {
     const card = buildRollResultCard({
-      characterName: 'Eira',
-      intentLine: 'Strength + Shipwright · d8',
+      characterName: 'Tomas',
+      intentLine: 'Strength + Carpentry & Masonry · d8',
       poolFormula: '2+2 = 4d8',
       dieTier: 8,
       faces: [3, 5, 8, 2],
@@ -25,8 +25,8 @@ describe('chat-ui cards', () => {
     const card = buildApprovalRequestCard({
       requestId: 'q1',
       title: 'Inventory',
-      body: 'Add named item: mill ledger',
-      requesterName: 'Eira',
+      body: 'Add named item: pitch pot',
+      requesterName: 'Tomas',
     });
     expect(card.buttons?.map((b) => b.label)).toEqual(['Approve', 'Deny']);
   });

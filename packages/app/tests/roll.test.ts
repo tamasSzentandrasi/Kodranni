@@ -15,18 +15,18 @@ function demoStore() {
   const dir = mkdtempSync(join(tmpdir(), 'kodranni-app-'));
   dirs.push(dir);
   const store = openSqliteStore(join(dir, 'c.sqlite'));
-  seedDemoCampaign(store, 'ash-hill', 'Ash-Hill');
+  seedDemoCampaign(store, 'broken-shore', 'Settlers on the broken shore');
   return store;
 }
 
 describe('executePlayerRoll', () => {
-  it('rolls Eira Strength+Shipwright and spends Exertion', () => {
+  it('rolls Tomas Strength+Carpentry & Masonry and spends Exertion', () => {
     const store = demoStore();
-    const before = store.getCharacterBySlug('eira')!.exertion.current;
+    const before = store.getCharacterBySlug('tomas')!.exertion.current;
     const r = executePlayerRoll(store, {
-      characterSlug: 'eira',
+      characterSlug: 'tomas',
       foundation: 'Strength',
-      skill: 'Shipwright',
+      skill: 'Carpentry & Masonry',
       dieTier: 8,
       exertionDice: 1,
       rng: mulberry32(99),
@@ -35,7 +35,7 @@ describe('executePlayerRoll', () => {
     expect(r.poolSize).toBeGreaterThanOrEqual(1);
     expect(r.faces).toHaveLength(r.poolSize);
     expect(r.omen).toBeTypeOf('number');
-    const after = store.getCharacterBySlug('eira')!;
+    const after = store.getCharacterBySlug('tomas')!;
     expect(after.exertion.current).toBe(before - 1);
     expect(store.getRoll(r.rollId)).toBeTruthy();
     store.close();
@@ -45,9 +45,9 @@ describe('executePlayerRoll', () => {
     const store = demoStore();
     expect(() =>
       executePlayerRoll(store, {
-        characterSlug: 'eira',
+        characterSlug: 'tomas',
         foundation: 'Strength',
-        skill: 'Shipwright',
+        skill: 'Carpentry & Masonry',
         exertionDice: 2,
         rng: mulberry32(1),
       }),

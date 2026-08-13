@@ -4,15 +4,22 @@ import type { SqliteCommunityStore } from './sqlite.js';
 import { emptyCommunity } from './sqlite.js';
 import { refreshCharacterDerived } from './derived.js';
 
-/** Demo character matching campaign-ui fixture (Eira). */
-export function demoEira(): CharacterRecord {
+/**
+ * Demo community: Guidebook campaign seed “Settlers on a broken shore”
+ * (Campaign Setup — fully invented). Characters follow current worked examples
+ * (Tomas the carpenter; capacity profile from Echoes/Foundations teaching case).
+ */
+
+/** Tomas — Dice Mechanics unopposed roll (Strength + Carpentry & Masonry). */
+export function demoTomas(): CharacterRecord {
   const ch: CharacterRecord = {
     id: randomUUID(),
-    slug: 'eira',
-    name: 'Eira',
+    slug: 'tomas',
+    name: 'Tomas',
     kind: 'pc',
     status: 'active',
-    communityTie: 'Shipwright to the mill families; debt of timber still unpaid.',
+    communityTie:
+      'Freeholder among the settlers on the burned river fields; owes labour on the grain store the kin still share.',
     foundations: {
       Strength: 2,
       Dexterity: 2,
@@ -26,12 +33,23 @@ export function demoEira(): CharacterRecord {
     },
     foundationsEffective: {},
     skills: [
-      { name: 'Shipwright', rating: 2, practice: 12, threshold: 48, foundation: 'Strength' },
+      {
+        name: 'Carpentry & Masonry',
+        rating: 2,
+        practice: 12,
+        threshold: 48,
+        foundation: 'Strength',
+      },
       { name: 'Negotiation', rating: 1, practice: 6, threshold: 24, foundation: 'Charisma' },
     ],
     traits: ['Steady hands'],
     exertion: { current: 4, max: 0 },
-    echoes: [{ title: 'Hold the spring against the upper tribe', weight: 2 }],
+    echoes: [
+      {
+        title: 'Keep the shared grain store dry through the first winter',
+        weight: 2,
+      },
+    ],
     echoCapacity: 0,
     echoWeight: 0,
     harm: {
@@ -51,21 +69,27 @@ export function demoEira(): CharacterRecord {
       { axis: 'Arms', tier: 'Outcast' },
     ],
     armour: { kind: 'none', donned: false },
-    inventory: { foodDays: 2, waterDays: 3, named: ['Caulking iron', 'Wool cloak'] },
+    inventory: { foodDays: 2, waterDays: 3, named: ['Adze', 'Wool cloak', 'Pitch pot'] },
     flags: { decadence: false, overCapacity: false },
   };
   return refreshCharacterDerived(ch);
 }
 
-/** Leif — Guidebook Echo capacity example: max(2,1)+2+2 = 6. */
-export function demoLeif(): CharacterRecord {
+/**
+ * Capacity teaching profile from Echoes (Guidebook numbers):
+ * max(Strength 2, Dexterity 1) + Intellect 2 + Authority 2 = 6.
+ * Exertion max = Resolve 2 + Constitution 2 + Charisma 1 = 5.
+ * Placed in the settlers community (not a retired seed).
+ */
+export function demoCapacityProfile(name = 'Leif'): CharacterRecord {
   const ch: CharacterRecord = {
     id: randomUUID(),
-    slug: 'leif',
-    name: 'Leif',
+    slug: name.toLowerCase().replace(/\s+/g, '-'),
+    name,
     kind: 'pc',
     status: 'active',
-    communityTie: 'Owes the hall for the spring raid winter-stores.',
+    communityTie:
+      'Took part in the taking of this shore; holds a claim on the upper fields still black from last year’s fire.',
     foundations: {
       Strength: 2,
       Dexterity: 1,
@@ -82,8 +106,8 @@ export function demoLeif(): CharacterRecord {
     traits: [],
     exertion: { current: 5, max: 0 },
     echoes: [
-      { title: 'Hold the spring against the upper tribe', weight: 3 },
-      { title: 'The yard pact with the mill brothers', weight: 2 },
+      { title: 'Hold the river ford until the hostages return', weight: 3 },
+      { title: 'Pact with the marsh folk for seed grain', weight: 2 },
       { title: 'Mother’s knife under the floorboards', weight: 1 },
     ],
     echoCapacity: 0,
@@ -108,38 +132,44 @@ export function demoLeif(): CharacterRecord {
   return refreshCharacterDerived(ch);
 }
 
+/** @deprecated use demoTomas — kept as alias during rename */
+export const demoEira = demoTomas;
+/** @deprecated use demoCapacityProfile — kept as alias during rename */
+export const demoLeif = () => demoCapacityProfile('Leif');
+
 export function seedDemoCampaign(
   store: SqliteCommunityStore,
-  slug: string,
-  name: string,
+  slug = 'broken-shore',
+  name = 'Settlers on the broken shore',
 ): { community: CommunityRecord; character: CharacterRecord } {
   const community = emptyCommunity(slug, name);
   community.fortunes = {
     vitality: 1,
     cohesion: 2,
     surplus: 1,
-    standing: 2,
+    standing: 1,
     tradition: 2,
   };
   community.myths = [
     {
-      title: 'The Spring Held',
-      summary: 'When the upper tribe pressed the only reliable spring, the hill held.',
+      title: 'The Shore Was Taken',
+      summary:
+        'The migratory kin helped pull down the river empire and mean to plant here — the first harvest will decide if this is a home.',
     },
   ];
-  const character = demoEira();
-  const leif = demoLeif();
+  const tomas = demoTomas();
+  const leif = demoCapacityProfile('Leif');
   community.placements = [
-    { name: character.name, axis: 'Coin', tier: 'Acknowledged' },
-    { name: character.name, axis: 'Arms', tier: 'Outcast' },
+    { name: tomas.name, axis: 'Coin', tier: 'Acknowledged' },
+    { name: tomas.name, axis: 'Arms', tier: 'Outcast' },
     { name: leif.name, axis: 'Arms', tier: 'Acknowledged' },
   ];
   store.putCommunity(community);
-  store.putCharacter(character);
+  store.putCharacter(tomas);
   store.putCharacter(leif);
   store.appendEvent({
     type: 'CampaignSeeded',
-    payload: { slug, characterIds: [character.id, leif.id] },
+    payload: { slug, characterIds: [tomas.id, leif.id], seed: 'settlers-on-a-broken-shore' },
   });
-  return { community, character };
+  return { community, character: tomas };
 }

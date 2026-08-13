@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { computePoolSize, effectiveFoundation } from '../src/pool.js';
 
 describe('computePoolSize', () => {
-  it('Foundation + Skill (Eira example: 2+2 = 4)', () => {
+  it('Foundation + Skill (Tomas pool: 2+2 = 4)', () => {
     expect(
       computePoolSize({
         foundation: 2,

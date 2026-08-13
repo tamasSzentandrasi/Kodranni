@@ -1,4 +1,6 @@
-/** Fixture SoT projection when no live store / export is configured. */
+/** Fixture SoT when no live store / export is configured.
+ * Aligns with Guidebook seed “Settlers on a broken shore” and Tomas / capacity examples.
+ */
 
 export interface FixtureCharacter {
   slug: string;
@@ -33,37 +35,38 @@ export interface FixtureCommunity {
   characters: FixtureCharacter[];
 }
 
-/** Eira: Exertion max 6 (2+2+2); Echo capacity max(2,2)+2+1 = 5. */
 export const fixtureCommunity: FixtureCommunity = {
-  slug: 'ash-hill',
-  name: 'The Ash-Hill People',
+  slug: 'broken-shore',
+  name: 'Settlers on the broken shore',
   generatedAt: new Date().toISOString(),
   fortunes: {
     vitality: 1,
     cohesion: 2,
     surplus: 1,
-    standing: 2,
+    standing: 1,
     tradition: 2,
   },
   myths: [
     {
-      title: 'The Spring Held',
-      summary: 'When the upper tribe pressed the only reliable spring, the hill held.',
+      title: 'The Shore Was Taken',
+      summary:
+        'The migratory kin helped pull down the river empire and mean to plant here — the first harvest will decide if this is a home.',
     },
   ],
   hierarchyAxes: ['Arms', 'Faith', 'Coin', 'Blood'],
   ruler: null,
   placements: [
-    { name: 'Eira', axis: 'Coin', tier: 'Acknowledged' },
-    { name: 'Eira', axis: 'Arms', tier: 'Outcast' },
+    { name: 'Tomas', axis: 'Coin', tier: 'Acknowledged' },
+    { name: 'Tomas', axis: 'Arms', tier: 'Outcast' },
     { name: 'Leif', axis: 'Arms', tier: 'Acknowledged' },
   ],
   characters: [
     {
-      slug: 'eira',
-      name: 'Eira',
+      slug: 'tomas',
+      name: 'Tomas',
       status: 'active',
-      communityTie: 'Shipwright to the mill families; debt of timber still unpaid.',
+      communityTie:
+        'Freeholder among the settlers on the burned river fields; owes labour on the grain store the kin still share.',
       foundations: {
         Strength: 2,
         Dexterity: 2,
@@ -87,12 +90,17 @@ export const fixtureCommunity: FixtureCommunity = {
         Authority: 1,
       },
       skills: [
-        { name: 'Shipwright', rating: 2, practice: 12, threshold: 48 },
+        { name: 'Carpentry & Masonry', rating: 2, practice: 12, threshold: 48 },
         { name: 'Negotiation', rating: 1, practice: 6, threshold: 24 },
       ],
       traits: ['Steady hands'],
       exertion: { current: 4, max: 6 },
-      echoes: [{ title: 'Hold the spring against the upper tribe', weight: 2 }],
+      echoes: [
+        {
+          title: 'Keep the shared grain store dry through the first winter',
+          weight: 2,
+        },
+      ],
       echoCapacity: 5,
       echoWeight: 2,
       harm: {
@@ -112,14 +120,15 @@ export const fixtureCommunity: FixtureCommunity = {
         { axis: 'Arms', tier: 'Outcast' },
       ],
       armour: { kind: 'none', donned: false },
-      inventory: { foodDays: 2, waterDays: 3, named: ['Caulking iron', 'Wool cloak'] },
+      inventory: { foodDays: 2, waterDays: 3, named: ['Adze', 'Wool cloak', 'Pitch pot'] },
       flags: { decadence: false, overCapacity: false },
     },
     {
       slug: 'leif',
       name: 'Leif',
       status: 'active',
-      communityTie: 'Owes the hall for the spring raid winter-stores.',
+      communityTie:
+        'Took part in the taking of this shore; holds a claim on the upper fields still black from last year’s fire.',
       foundations: {
         Strength: 2,
         Dexterity: 1,
@@ -146,8 +155,8 @@ export const fixtureCommunity: FixtureCommunity = {
       traits: [],
       exertion: { current: 5, max: 5 },
       echoes: [
-        { title: 'Hold the spring against the upper tribe', weight: 3 },
-        { title: 'The yard pact with the mill brothers', weight: 2 },
+        { title: 'Hold the river ford until the hostages return', weight: 3 },
+        { title: 'Pact with the marsh folk for seed grain', weight: 2 },
         { title: 'Mother’s knife under the floorboards', weight: 1 },
       ],
       echoCapacity: 6,

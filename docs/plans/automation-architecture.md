@@ -172,8 +172,8 @@ Automated steps (using `gh` CLI or GitHub API; ST must be logged in):
 # or <product-data>/<slug>/campaign.toml
 
 schema = 1
-slug = "ash-hill"
-name = "The Ash-Hill People"
+slug = "broken-shore"
+name = "Settlers on the broken shore"
 
 # SOURCE OF TRUTH — bot read/write (local only)
 store_path = "~/.kodranni/campaigns/ash-hill/data/community.sqlite"

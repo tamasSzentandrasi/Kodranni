@@ -83,7 +83,7 @@ async function main(): Promise<void> {
     const store = openSqliteStore(cfg.storePath);
     seedDemoCampaign(store, cfg.slug, cfg.name);
     store.close();
-    console.log(`Seeded demo community + Eira for ${cfg.slug}`);
+    console.log(`Seeded demo community (Tomas + Leif) for ${cfg.slug}`);
     console.log(`  store: ${cfg.storePath}`);
     return;
   }

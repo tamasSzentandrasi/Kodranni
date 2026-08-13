@@ -35,21 +35,33 @@ npm run test:domain
 npm test
 
 # Local campaign SoT (Storyteller machine)
-npm run kodranni -- campaign seed-demo --slug ash-hill
-npm run kodranni -- roll --slug ash-hill --character eira \
-  --foundation Strength --skill Shipwright --tier 8 --exertion 1 --seed 42
+# Demo seed: Guidebook “Settlers on a broken shore” + Tomas / capacity profile
+npm run kodranni -- campaign seed-demo --slug broken-shore
+npm run kodranni -- roll --slug broken-shore --character tomas \
+  --foundation Strength --skill "Carpentry & Masonry" --tier 8 --exertion 1 --seed 42
 
 # Live pretty sheet/tracker (SSR, re-reads SQLite each request)
-npm run kodranni -- live --slug ash-hill
+npm run kodranni -- live --slug broken-shore
 # → http://127.0.0.1:8742  (Echo load ≠ Exertion max)
 
 # Optional redacted export for archive builds
-npm run kodranni -- campaign export-json --slug ash-hill --out /tmp/ash-hill.json
+npm run kodranni -- campaign export-json --slug broken-shore --out /tmp/broken-shore.json
 ```
 
 Private data lives under `~/.kodranni/campaigns/<slug>/` (gitignored).
 
 **Capacities (Guidebook):** Exertion max = Res+Con+Cha; Echo capacity = max(Str,Dex)+Int+Auth — independent.
+
+### What works today vs not yet
+
+| Capability | Status |
+|------------|--------|
+| Local campaign init / seed / roll / export (CLI) | **Yes** |
+| Live character sheet + community tracker (SSR page) | **Yes** (`kodranni live`) |
+| Dual capacities, Practice, audit events | **Yes** (domain + store) |
+| Discord / Fluxer bot on a real server | **Not yet** — adapters are skeletons only |
+| Tunnel hashed URL automation | **Not yet** (manual cloudflared possible later) |
+| ST approve buttons, oppose, Tide, Harm UI | **Not yet** in chat |
 
 Engineering direction: [docs/plans/automation-architecture.md](docs/plans/automation-architecture.md).
 

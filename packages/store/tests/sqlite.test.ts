@@ -24,25 +24,25 @@ describe('sqlite store', () => {
     dirs.push(dir);
     const path = join(dir, 'community.sqlite');
     const store = openSqliteStore(path);
-    seedDemoCampaign(store, 'ash-hill', 'The Ash-Hill People');
+    seedDemoCampaign(store, 'broken-shore', 'Settlers on the broken shore');
     store.putMember({
       platform: 'discord',
       accountId: '123456789012345678',
-      characterId: store.getCharacterBySlug('eira')!.id,
+      characterId: store.getCharacterBySlug('tomas')!.id,
       role: 'player',
     });
 
     const snap = store.toPublicSnapshot();
-    expect(snap.community.slug).toBe('ash-hill');
+    expect(snap.community.slug).toBe('broken-shore');
     expect(snap.characters.length).toBeGreaterThanOrEqual(1);
-    const eira = snap.characters.find((c) => c.slug === 'eira')!;
-    expect(eira.name).toBe('Eira');
+    const tomas = snap.characters.find((c) => c.slug === 'tomas')!;
+    expect(tomas.name).toBe('Tomas');
     // max(Str2,Dex2)+Int2+Auth1 = 5; Exertion max Res2+Con2+Cha2 = 6
-    expect(eira.echoCapacity).toBe(5);
-    expect(eira.exertion.max).toBe(6);
-    expect(eira.echoCapacity).not.toBe(eira.exertion.max);
+    expect(tomas.echoCapacity).toBe(5);
+    expect(tomas.exertion.max).toBe(6);
+    expect(tomas.echoCapacity).not.toBe(tomas.exertion.max);
     const leif = snap.characters.find((c) => c.slug === 'leif')!;
-    // Guidebook: max(2,1)+2+2 = 6; Exertion max 2+2+1 = 5
+    // Guidebook capacity profile: max(2,1)+2+2 = 6; Exertion max 2+2+1 = 5
     expect(leif.echoCapacity).toBe(6);
     expect(leif.exertion.max).toBe(5);
     expect(leif.echoWeight).toBe(6);
@@ -65,7 +65,7 @@ describe('sqlite store', () => {
 
     store.close();
     const again = openSqliteStore(path);
-    expect(again.getCharacterBySlug('eira')?.exertion.current).toBe(4);
+    expect(again.getCharacterBySlug('tomas')?.exertion.current).toBe(4);
     again.close();
   });
 });
@@ -74,8 +74,8 @@ describe('campaign.toml', () => {
   it('round-trips fixed keys', () => {
     const text = serializeCampaignToml({
       schema: 1,
-      slug: 'ash-hill',
-      name: 'The Ash-Hill People',
+      slug: 'broken-shore',
+      name: 'Settlers on the broken shore',
       storePath: '/tmp/x.sqlite',
       liveBind: '127.0.0.1:8742',
       liveBaseUrl: 'http://127.0.0.1:8742',
@@ -83,7 +83,7 @@ describe('campaign.toml', () => {
       platforms: ['discord', 'fluxer'],
     });
     const cfg = parseCampaignToml(text);
-    expect(cfg.slug).toBe('ash-hill');
+    expect(cfg.slug).toBe('broken-shore');
     expect(cfg.platforms).toEqual(['discord', 'fluxer']);
     expect(cfg.storePath).toBe('/tmp/x.sqlite');
   });
