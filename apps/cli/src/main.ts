@@ -1,5 +1,7 @@
+import { spawn } from 'node:child_process';
 import { writeFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { mulberry32 } from '@kodranni/domain';
 import { executePlayerRoll, executeStorytellerNpcRoll } from '@kodranni/app';
 import {
@@ -22,6 +24,7 @@ Usage:
                 [--tier 6|8|12] [--exertion 0|1|2] [--echo] [--seed N]
   kodranni st-roll --slug <slug> --label <name> --foundation <n> --skill <n>
                 [--tier 6|8|12] [--exertion 0|1] [--seed N]
+  kodranni live --slug <slug>   # SSR campaign-ui from local store (port 8742)
   kodranni help
 `);
   process.exit(1);
@@ -126,6 +129,42 @@ async function main(): Promise<void> {
     if (r.practiceGained) console.log(`Practice +${r.practiceGained}`);
     console.log(r.whyPool);
     console.log(`rollId ${r.rollId}`);
+    return;
+  }
+
+  if (cmd === 'live') {
+    const slug = arg(args, '--slug');
+    if (!slug) usage();
+    const cfg = await loadConfig(slug);
+    const repoRoot = join(dirname(fileURLToPath(import.meta.url)), '../../..');
+    console.log(`Live campaign-ui for ${cfg.slug}`);
+    console.log(`  store: ${cfg.storePath}`);
+    console.log(`  url:   ${cfg.liveBaseUrl}`);
+    console.log('  (read-only SSR; re-reads SQLite each request)');
+    const child = spawn(
+      'npm',
+      ['run', 'dev', '-w', '@kodranni/campaign-ui'],
+      {
+        cwd: repoRoot,
+        stdio: 'inherit',
+        env: {
+          ...process.env,
+          KODRANNI_STORE_PATH: cfg.storePath,
+          KODRANNI_CAMPAIGN_SLUG: cfg.slug,
+          NODE_OPTIONS: [process.env.NODE_OPTIONS, '--experimental-sqlite']
+            .filter(Boolean)
+            .join(' '),
+        },
+        shell: true,
+      },
+    );
+    await new Promise<void>((resolve, reject) => {
+      child.on('exit', (code) => {
+        if (code === 0 || code === null) resolve();
+        else reject(new Error(`campaign-ui exited ${code}`));
+      });
+      child.on('error', reject);
+    });
     return;
   }
 

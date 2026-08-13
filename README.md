@@ -38,11 +38,18 @@ npm test
 npm run kodranni -- campaign seed-demo --slug ash-hill
 npm run kodranni -- roll --slug ash-hill --character eira \
   --foundation Strength --skill Shipwright --tier 8 --exertion 1 --seed 42
+
+# Live pretty sheet/tracker (SSR, re-reads SQLite each request)
+npm run kodranni -- live --slug ash-hill
+# → http://127.0.0.1:8742  (Echo load ≠ Exertion max)
+
+# Optional redacted export for archive builds
 npm run kodranni -- campaign export-json --slug ash-hill --out /tmp/ash-hill.json
-KODRANNI_PUBLIC_JSON=/tmp/ash-hill.json npm run dev:campaign-ui
 ```
 
 Private data lives under `~/.kodranni/campaigns/<slug>/` (gitignored).
+
+**Capacities (Guidebook):** Exertion max = Res+Con+Cha; Echo capacity = max(Str,Dex)+Int+Auth — independent.
 
 Engineering direction: [docs/plans/automation-architecture.md](docs/plans/automation-architecture.md).
 
