@@ -82,6 +82,14 @@ const sourceLabel =
             head.setAttribute('aria-expanded', collapsed ? 'true' : 'false');
           });
         });
+        // Sync density button pressed state from body
+        const dens = document.body.getAttribute('data-density') || 'normal';
+        document.querySelectorAll('[data-density-btn]').forEach((b) => {
+          b.setAttribute(
+            'aria-pressed',
+            b.getAttribute('data-density-btn') === dens ? 'true' : 'false',
+          );
+        });
       })();
     </script>
   </body>

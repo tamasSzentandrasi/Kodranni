@@ -12,6 +12,7 @@ import type {
   RollRecord,
 } from './types.js';
 import { refreshCharacterDerived } from './derived.js';
+import { completeMemberPlacements } from './hierarchy.js';
 
 export interface SqliteCommunityStore {
   readonly path: string;
@@ -273,6 +274,7 @@ export function openSqliteStore(path: string): SqliteCommunityStore {
           data: string;
         }[]
       ).map((r) => normalizeCharacter(JSON.parse(r.data) as CharacterRecord));
+      community.placements = completeMemberPlacements(community, characters);
       return {
         generatedAt: new Date().toISOString(),
         schemaVersion: SCHEMA_VERSION,

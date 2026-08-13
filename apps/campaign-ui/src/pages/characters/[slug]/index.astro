@@ -1,13 +1,10 @@
 ---
 export const prerender = false;
 
-import {
-  ARCHETYPES,
-  FOUNDATION_GROUPS,
-  FOUNDATION_HARM,
-} from '@kodranni/domain';
+import { ARCHETYPES, FOUNDATION_GROUPS, FOUNDATION_HARM } from '@kodranni/domain';
 import CampaignLayout from '../../../layouts/CampaignLayout.astro';
 import { getCharacter, loadCommunity } from '../../../data/load';
+import { harmPips, toRoman } from '../../../lib/format';
 
 const { slug } = Astro.params;
 const c = loadCommunity();
@@ -43,9 +40,11 @@ function practiceFrac(practice: number, threshold: number): number {
         <div>
           <span class="kod-exertion__label">Exertion</span>
           <div class="kod-exertion__value">
-            {ch.exertion.current} / {ch.exertion.max}
+            <span class="kod-roman">{toRoman(ch.exertion.current)}</span>
+            <span class="kod-slash">/</span>
+            <span class="kod-roman">{toRoman(ch.exertion.max)}</span>
           </div>
-          <span class="kod-meta" style="margin:0">Res + Con + Cha</span>
+          <span class="kod-meta" style="margin:0">Res + Con + Cha · empty → −2 dice</span>
         </div>
         <div
           class="kod-meter"
@@ -69,13 +68,13 @@ function practiceFrac(practice: number, threshold: number): number {
         }
       </div>
 
-      <section class="kod-panel" style="padding:0;overflow:hidden">
-        <h2 style="padding:0.85rem 1rem 0.35rem;margin:0">Foundations · Harm</h2>
-        <p class="kod-meta" style="padding:0 1rem 0.65rem;margin:0">
-          Grouped Physical / Mental / Social. Each Foundation shows effective value; paired Harm track
-          beside it (0–3).
+      <section class="kod-panel kod-panel--flush">
+        <h2 class="kod-panel__pad">Foundations · Harm</h2>
+        <p class="kod-section__lede kod-panel__pad">
+          Physical / Mental / Social. Value in Roman numerals; Harm as blood pips (0–III) on the
+          paired track.
         </p>
-        <div class="kod-found-groups" style="padding:0 0.65rem 0.85rem">
+        <div class="kod-found-groups kod-panel__pad-b">
           {
             Object.entries(FOUNDATION_GROUPS).map(([group, keys]) => (
               <div class="kod-found-group">
@@ -88,12 +87,19 @@ function practiceFrac(practice: number, threshold: number): number {
                   return (
                     <div class="kod-found-row">
                       <span class="kod-found-row__name">{fname}</span>
-                      <span class="kod-found-row__val">
-                        {eff}
-                        {eff !== raw ? ` (${raw})` : ''}
+                      <span class="kod-found-row__val" title={`raw ${raw}`}>
+                        {toRoman(eff)}
+                        {eff !== raw ? (
+                          <span class="kod-found-row__raw">({toRoman(raw)})</span>
+                        ) : null}
                       </span>
                       <span class="kod-found-row__harm" data-level={String(harmPts)}>
-                        {harmName} {harmPts}/3
+                        <span class="kod-found-row__harm-name">{harmName}</span>
+                        <span class="kod-pips kod-pips--harm" aria-label={`${harmPts} of 3`}>
+                          {harmPips(harmPts).map((on) => (
+                            <span class:list={['kod-pip', on && 'kod-pip--on']} />
+                          ))}
+                        </span>
                       </span>
                     </div>
                   );
@@ -106,9 +112,8 @@ function practiceFrac(practice: number, threshold: number): number {
 
       <section class="kod-panel">
         <h2>Skills by Archetype</h2>
-        <p class="kod-meta">
-          Full list in radial petals. Ring fill = Practice toward next rank. Centre = rating 0–3.
-          Hover a skill for Practice detail. Unrated Skills stay dim.
+        <p class="kod-section__lede">
+          Full catalog. Centre = rating (Roman). Ring = Practice toward next rank. Hover for detail.
         </p>
         <div class="kod-skill-wheel">
           {
@@ -131,15 +136,14 @@ function practiceFrac(practice: number, threshold: number): number {
                         data-rating={String(rating)}
                         data-rated={rating > 0 ? 'true' : 'false'}
                         style={`--p: ${p}`}
-                        title={`${def.name} (${def.foundation})`}
                       >
                         <span class="kod-skill__hint">
                           {rating > 0
-                            ? `${practice}/${threshold} Practice · ${def.foundation}`
-                            : `0 · ${def.foundation}`}
+                            ? `${toRoman(rating)} · Practice ${practice}/${threshold} · ${def.foundation}`
+                            : `∅ · ${def.foundation}`}
                         </span>
                         <div class="kod-skill__ring">
-                          <div class="kod-skill__ring-inner">{rating}</div>
+                          <div class="kod-skill__ring-inner">{toRoman(rating)}</div>
                         </div>
                         <span class="kod-skill__name">{def.name}</span>
                       </li>
@@ -164,7 +168,7 @@ function practiceFrac(practice: number, threshold: number): number {
       }
 
       <div class="kod-player-bind">
-        <p class="kod-sideblock__label">Player</p>
+        <p class="kod-sideblock__label">Player account</p>
         {
           ch.player ? (
             <p style="margin:0">
@@ -189,12 +193,8 @@ function practiceFrac(practice: number, threshold: number): number {
           <span class="kod-char-card__status" data-status={ch.status}>{ch.status}</span>
           {ch.dying ? ' · Dying' : ''}
         </p>
-        <p class="kod-meta">
-          Armour: {ch.armour.kind}
-          {ch.armour.donned ? ' (donned)' : ' (stowed)'}
-        </p>
         <p class="kod-meta" style="margin-bottom:0">
-          Community tie is narrative background — hierarchy placement is on the Community page.
+          Standing on hierarchies is shown only on the Community diagram — every member, every axis.
         </p>
       </div>
     </aside>

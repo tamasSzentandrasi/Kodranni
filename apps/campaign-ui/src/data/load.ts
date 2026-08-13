@@ -1,5 +1,6 @@
 import { existsSync, readFileSync } from 'node:fs';
 import {
+  completeMemberPlacements,
   defaultCampaignTomlPath,
   openSqliteStore,
   parseCampaignToml,
@@ -43,7 +44,8 @@ function fromSnapshot(
   source: ViewCommunity['source'],
   storePath?: string,
 ): ViewCommunity {
-  return {
+  const characters = raw.characters.map(characterToView);
+  const communityBase = {
     slug: raw.community.slug,
     name: raw.community.name,
     generatedAt: raw.generatedAt,
@@ -54,10 +56,19 @@ function fromSnapshot(
     rulerCharacterSlug: raw.community.rulerCharacterSlug,
     placements: raw.community.placements,
     outsiders: raw.community.outsiders ?? [],
-    characters: raw.characters.map(characterToView),
+    characters,
     source,
     storePath,
   };
+  // Ensure complete placements even for fixture/snapshot paths
+  communityBase.placements = completeMemberPlacements(
+    {
+      ...raw.community,
+      outsiders: raw.community.outsiders ?? [],
+    },
+    raw.characters,
+  );
+  return communityBase;
 }
 
 function fromLiveStore(storePath: string): ViewCommunity {
@@ -96,8 +107,40 @@ export function loadCommunity(): ViewCommunity {
     return fromSnapshot(raw, 'snapshot');
   }
 
-  return { ...fixtureCommunity, source: 'fixture' };
+  // Fixture: complete placements for all axes
+  const fixtureChars = fixtureCommunity.characters.map((ch) => ({
+    ...ch,
+    id: ch.slug,
+    kind: 'pc' as const,
+  })) as unknown as CharacterRecord[];
+  const placements = completeMemberPlacements(
+    {
+      slug: fixtureCommunity.slug,
+      name: fixtureCommunity.name,
+      fortunes: fixtureCommunity.fortunes as CommunityFortunes,
+      myths: fixtureCommunity.myths,
+      hierarchyAxes: fixtureCommunity.hierarchyAxes,
+      ruler: fixtureCommunity.ruler,
+      placements: fixtureCommunity.placements,
+      outsiders: fixtureCommunity.outsiders,
+    },
+    fixtureChars,
+  );
+
+  return {
+    ...fixtureCommunity,
+    placements,
+    source: 'fixture',
+  };
 }
+
+type CommunityFortunes = {
+  vitality: number;
+  cohesion: number;
+  surplus: number;
+  standing: number;
+  tradition: number;
+};
 
 export function getCharacter(slug: string) {
   return loadCommunity().characters.find((c) => c.slug === slug);
@@ -121,3 +164,18 @@ export const MYTH_KIND_COLUMNS: { kind: string; header: string }[] = [
   { kind: 'trait_grant', header: 'Trait grant' },
   { kind: 'trait_deny', header: 'Trait deny' },
 ];
+
+/** whoWeSee lookup for hover tooltips on the diagram */
+export function whoWeSeeMap(c: ViewCommunity): Map<string, string> {
+  const m = new Map<string, string>();
+  for (const ch of c.characters) {
+    if (ch.whoWeSee) {
+      m.set(ch.slug, ch.whoWeSee);
+      m.set(ch.name.toLowerCase(), ch.whoWeSee);
+    }
+  }
+  for (const o of c.outsiders ?? []) {
+    if (o.note) m.set(o.name.toLowerCase(), o.note);
+  }
+  return m;
+}

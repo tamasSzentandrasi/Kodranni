@@ -10,6 +10,7 @@ export * from './schema.js';
 export * from './sqlite.js';
 export * from './seed.js';
 export * from './derived.js';
+export * from './hierarchy.js';
 
 // --- lightweight memory store (tests / early adapters) ---
 

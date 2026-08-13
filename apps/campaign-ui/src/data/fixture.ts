@@ -107,8 +107,14 @@ export const fixtureCommunity: FixtureCommunity = {
     { name: 'Young Sten', axis: 'Arms', tier: 'Trusted' },
   ],
   outsiders: [
-    { name: 'Armed band on the low road', note: 'Levy and forage; not yet permanent garrison.' },
-    { name: 'Marsh traders', note: 'Seed grain for a price; will not fight the victors free.' },
+    {
+      name: 'Road-captain of the levy band',
+      note: 'A hard bargainer who still answers when the low road is closed.',
+    },
+    {
+      name: 'Marsh traders',
+      note: 'Quiet people who measure grain twice and will not fight the victors free.',
+    },
   ],
   characters: [
     {

@@ -209,22 +209,25 @@ export function seedDemoCampaign(
   ];
   const tomas = demoTomas();
   const leif = demoCapacityProfile('Leif');
+  // Only non-default tiers need explicit rows; completeMemberPlacements fills Outcast.
   community.placements = [
     { name: tomas.name, axis: 'Coin', tier: 'Acknowledged', characterSlug: tomas.slug },
-    { name: tomas.name, axis: 'Arms', tier: 'Outcast', characterSlug: tomas.slug },
     { name: leif.name, axis: 'Arms', tier: 'Acknowledged', characterSlug: leif.slug },
-    { name: 'Halla the mill-widow', axis: 'Coin', tier: 'Trusted' },
+    { name: 'Halla', axis: 'Coin', tier: 'Trusted' },
+    { name: 'Halla', axis: 'Blood', tier: 'Acknowledged' },
     { name: 'Old Rurik', axis: 'Faith', tier: 'Honoured' },
     { name: 'Young Sten', axis: 'Arms', tier: 'Trusted' },
+    { name: 'Young Sten', axis: 'Blood', tier: 'Outcast' },
   ];
+  // Outsiders sit beside the diagram — not on any axis until inducted.
   community.outsiders = [
     {
-      name: 'Turkic road-captain',
-      note: 'Demands permanent garrisons if this were Anatolia — here: armed band on the low road.',
+      name: 'Road-captain of the levy band',
+      note: 'A hard bargainer who still answers when the low road is closed.',
     },
     {
       name: 'Marsh traders',
-      note: 'Will sell seed grain; will not fight the victors for free.',
+      note: 'Quiet people who measure grain twice and will not fight the victors free.',
     },
   ];
   community.ruler = null;

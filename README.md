@@ -42,10 +42,11 @@ npm run kodranni -- roll --slug broken-shore --character tomas \
 
 # Live pretty sheet/tracker (SSR, re-reads SQLite each request)
 npm run kodranni -- live --slug broken-shore
-# → http://127.0.0.1:8742/community/     community tracker
-# → http://127.0.0.1:8742/characters/    character browse
-# → …/characters/tomas/                  core sheet (foundations+harm, skills radial)
-# → …/characters/tomas/burden/           echoes · inventory · traits
+# → http://127.0.0.1:8742/community/
+#      Fortunes (pips) · Hierarchy (every member on every axis) · Outsiders rail · Myths
+# → http://127.0.0.1:8742/characters/    browse / status
+# → …/characters/tomas/                  core: player, who-we-see, foundations+harm, skill radials
+# → …/characters/tomas/burden/           echoes · inventory (armour + supplies + named items) · traits
 
 # Optional redacted export for archive builds
 npm run kodranni -- campaign export-json --slug broken-shore --out /tmp/broken-shore.json
