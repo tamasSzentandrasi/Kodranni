@@ -419,18 +419,63 @@ Death: continue play; Diagram/Legacy cleanup after session.
 
 ## 10. Domain notes (rules-locked)
 
-Summarised; full formulas live in golden tests against the Guidebook.
+Summarised; full formulas live in golden tests against the Guidebook. **Guidebook is authority** — re-read after content passes; see §10b.
+
+### 10.1 Capacities (must not be conflated)
+
+| Pool | Formula | Used for |
+|------|---------|----------|
+| **Max Exertion** | Resolve + Constitution + Charisma | Exertion current/max; empty-Exertion −2 dice |
+| **Echo capacity** | **max(Strength, Dexterity) + Intellect + Authority** | Echo weight load; Decadence / over-cap |
+
+These are **independent**. Older drafts equated them; the Guidebook no longer does (Leif example: capacity from Str/Dex/Int/Authority). Sheet, seed data, live UI, and “why this pool?” must show **two numbers**.
+
+Use **raw Foundations** for both maxima (not Harm-reduced effectives). Harm already shrinks dice via effective Foundation on the pool; capacity formulas are structural load/will, not injury.
+
+### 10.2 Other locked mechanics
 
 - Die tier ST-declared; default **d8**; store final tier only.  
-- Opposed: per action; oppose button / reply link.  
-- Practice: visible; Primitive none; margin 0 special; degrade prompted only.  
-- Harm: ST track; floor; no mixed events.  
-- Myths: ST craft; tag to fire.  
+- Opposed: per action; oppose button / reply link; pairs free.  
+- Practice: accrue per Skills matrix; Primitive none; opposed margin 0 = **not lost** (no +2 loss award); degrade prompted only.  
+- **Practice on sheet:** product shows progress (automation contract). Skills prose “unless they ask” is editorial — **sheet remains the living record with Practice visible**.  
+- Harm: ST track; floor; no mixed physical+social/mental event.  
+- Myths: ST craft toggleable/compound; fire only when roll **tags** Myth.  
+- Fortunes: ambient **community** context for scene framing — **not** automatic die modifiers. Store 0–3; never invent a Fortune→pool mapping.  
+- Hierarchies: ≤5 axes; four tiers; Ruler is a **single seat above** all axes; Outsiders apart.  
 - Weighing: create at Concept; Omen automated; Word boons target character.  
 - Rest: Exertion reclaim ≠ Harm heal.  
-- Hierarchies: ≤5 axes.  
 - Tide: scale/start/Omen bands per Guidebook.  
-- Infer Decadence / over-cap; never invent Armour/Reputation.
+- Infer Decadence / over-cap at roll time; never invent Armour/Reputation.
+
+---
+
+## 10b. Guidebook re-read — plan adjustments (2026-08)
+
+Aesthetic/UX Guidebook work (dark-only, scene breath art, widgets, Fortune pillars, Hierarchy diagram, Archetype panels) does **not** change the hybrid contract. It **raises the floor** for campaign-ui and chat presentation: same craft language as the Guidebook, not a thinner “app chrome.”
+
+| Finding | Automation impact |
+|---------|-------------------|
+| **Echo capacity ≠ Exertion max** | Domain already has `echoCapacity` / `exertionMax`. **Fix UI + seeds + public snapshot** to expose `echoCapacity` separately; stop rendering Echo weight / Exertion max. Golden test Leif: Str2 Dex1 Int2 Auth2 → capacity **6**. |
+| Fortunes as ambient pressure | Tracker shows 0–3 + soft labels; no Fortune auto-mod on rolls. Optional later: ST “scene brief” text field, not a rules engine. |
+| Hierarchy visual model | Live/archive Diagram should read as **Ruler + parallel ladders**, not a flat table forever. Ship elegant structure early; polish art in craft pass. |
+| Marks interpretational | Chat roll cards: Marks dominant; never “success/fail” language. Optional “reading aid” is ST-facing, not a binary judge. |
+| Interactive teaching widgets in Guidebook | Campaign-ui can stay quieter; chat “Why this pool?” is the in-session teaching surface. |
+| Archetypes = shelves not classes | Skill pickers group by Archetype; never gate Skills by Archetype. |
+| Effective vs raw Foundations | Pool uses **effective** (after Harm). Capacities use **raw**. |
+| Death / Diagram | Mid-session play continues; Diagram remove + Legacy Echo after session (batch). |
+| Implementation order for validation | **(2) Live campaign-ui SSR from open SQLite**, then **(1) bot runtime** — so sheet truth is trustworthy before chat multiplies paths. |
+
+### Iterative validation slice (core loop)
+
+Ship thin verticals the ST can exercise without a full product:
+
+1. Local store + CLI roll (done)  
+2. **Live sheet/tracker reads SoT on every request** (next)  
+3. Domain/UI show separate Exertion max and Echo capacity  
+4. Chat adapters: roll card + approve button against same store  
+5. Tunnel URL posted at session start  
+
+No throwaway UIs; each slice is production stack, incomplete features.
 
 ---
 
