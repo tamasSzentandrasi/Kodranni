@@ -54,9 +54,9 @@ export function demoTomas(): CharacterRecord {
     exertion: { current: 4, max: 0 },
     echoes: [
       {
-        title: 'Keep the shared grain store dry through the first winter',
+        title: 'Hold the seized grain store through the first winter of occupation',
         weight: 2,
-        note: 'The leak he patched is still the proof.',
+        note: 'Patched after the taking — still the proof the Bend is theirs to keep or lose.',
       },
     ],
     echoCapacity: 0,
@@ -82,9 +82,9 @@ export function demoTomas(): CharacterRecord {
       foodDays: 2,
       waterDays: 3,
       items: [
-        { name: 'Adze', note: 'House timber; edge needs re-peening after the store roof.' },
+        { name: 'Adze', note: 'Taken timber work; edge needs re-peening after the store roof.' },
         { name: 'Wool cloak', note: 'Dry; no spare for a second person.' },
-        { name: 'Pitch pot', note: 'Half-full; enough for one more seam on the store.' },
+        { name: 'Pitch pot', note: 'Half-full; enough for one more seam on the seized store.' },
       ],
     },
     flags: { decadence: false, overCapacity: false },
