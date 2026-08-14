@@ -293,7 +293,7 @@ Omens on Tide-linked actions also move the marker. On **equal footing**:
 | **Tide** | Imperial weight **6** · Mongol weight **12** · track **17** · start **6** · **battle** (3 Marks per step) |
 | **Colours** | **Crimson** imperial footing · **Teal** Mongol pressure |
 | **Tide Omens** | Negative **1–5** (severe imbalance) · positive **20** only |
-| **Scene faces** | **4** = ambush in the left dry wash · **13** = Negative Consequence (side-effect only) |
+| **Scene faces** | **4** = ambush in the left dry wash · **13** = Negative Consequence (side-effect only) · **1** = ring closes, surrender demand (Tide-negative) |
 
 Only **people** roll. When a roll is Tide-linked, its Marks margin (and sometimes Omen) moves the bar. Step through.
 
@@ -338,7 +338,7 @@ Only **people** roll. When a roll is Tide-linked, its Marks margin (and sometime
 <thead><tr><th></th><th>Roll</th><th>Marks</th></tr></thead>
 <tbody>
 <tr><td>Zhao</td><td>Authority + Command, <strong>d6</strong></td><td><strong>2</strong></td></tr>
-<tr><td>Bait-rider (reply)</td><td>Perception + Scouting, <strong>d12</strong></td><td><strong>6</strong></td></tr>
+<tr><td>Enemy commander (reply)</td><td>Intellect + Tactics, <strong>d12</strong></td><td><strong>6</strong></td></tr>
 <tr><td>Margin</td><td>4 → floor(4÷3)</td><td><strong>1</strong> step against the column</td></tr>
 <tr><td>Omen</td><td>11</td><td>—</td></tr>
 <tr><td>Tide</td><td></td><td><strong>6 → 5</strong></td></tr>
@@ -353,7 +353,7 @@ Only **people** roll. When a roll is Tide-linked, its Marks margin (and sometime
 <table>
 <thead><tr><th></th><th>Roll</th><th>Marks</th></tr></thead>
 <tbody>
-<tr><td>Wei</td><td>Constitution + Deflection, <strong>d8</strong></td><td><strong>3</strong></td></tr>
+<tr><td>Wei</td><td>Resolve + Deflection, <strong>d8</strong></td><td><strong>3</strong></td></tr>
 <tr><td>Horse-archer (reply)</td><td>Perception + Archery, <strong>d12</strong></td><td><strong>6</strong></td></tr>
 <tr><td>Margin</td><td>3 → floor(3÷3)</td><td><strong>1</strong> step</td></tr>
 <tr><td>Omen</td><td>9</td><td>—</td></tr>
@@ -369,7 +369,7 @@ Only **people** roll. When a roll is Tide-linked, its Marks margin (and sometime
 <table>
 <thead><tr><th></th><th>Roll</th><th>Marks</th></tr></thead>
 <tbody>
-<tr><td>Zhao</td><td>Dexterity + Ride, <strong>d6</strong></td><td><strong>1</strong></td></tr>
+<tr><td>Zhao</td><td>Authority + Riding, <strong>d6</strong></td><td><strong>1</strong></td></tr>
 <tr><td>Horse-archer (reply)</td><td>Perception + Archery, <strong>d12</strong></td><td><strong>4</strong></td></tr>
 <tr><td>Margin</td><td>3 → floor(3÷3)</td><td><strong>1</strong> step</td></tr>
 <tr><td>Omen</td><td><strong>13</strong></td><td>Negative Consequence: horse dies; Zhao is thrown; <strong>Bleeding 1</strong></td></tr>
@@ -386,7 +386,7 @@ Only **people** roll. When a roll is Tide-linked, its Marks margin (and sometime
 <thead><tr><th></th><th>Roll</th><th>Marks</th></tr></thead>
 <tbody>
 <tr><td>Zhao</td><td>Perception + Combat Awareness, <strong>d8</strong></td><td><strong>2</strong></td></tr>
-<tr><td>Hidden archer (reply)</td><td>Guile + Stealth, <strong>d12</strong></td><td><strong>5</strong></td></tr>
+<tr><td>Hidden archer (reply)</td><td>Guile + Ambush &amp; Camouflage, <strong>d12</strong></td><td><strong>5</strong></td></tr>
 <tr><td>Margin</td><td>3 → floor(3÷3)</td><td><strong>1</strong> step · Tide <strong>3 → 2</strong></td></tr>
 <tr><td>Omen</td><td><strong>4</strong></td><td>Scene face: <em>riders in the left dry wash</em> · also Tide-negative · Tide <strong>2 → 1</strong></td></tr>
 </tbody>
@@ -415,29 +415,30 @@ Only **people** roll. When a roll is Tide-linked, its Marks margin (and sometime
 <table>
 <thead><tr><th></th><th>Roll</th><th>Marks</th></tr></thead>
 <tbody>
-<tr><td>Wei</td><td>Dexterity + Ride, <strong>d8</strong> (Advantage)</td><td><strong>5</strong></td></tr>
-<tr><td>Archer (reply)</td><td>Perception + Archery, <strong>d8</strong></td><td><strong>2</strong></td></tr>
+<tr><td>Wei</td><td>Authority + Riding, <strong>d8</strong> (Advantage)</td><td><strong>5</strong></td></tr>
+<tr><td>Enemy commander (reply)</td><td>Intellect + Strategy, <strong>d8</strong></td><td><strong>2</strong></td></tr>
 <tr><td>Margin</td><td>3</td><td>Emperor mounted; two household guards cling on</td></tr>
 <tr><td>Omen</td><td>12</td><td>—</td></tr>
 <tr><td>Tide</td><td></td><td><strong>stays 1</strong></td></tr>
 </tbody>
 </table>
-<p>Zhao hears the shout for the south road — if he still can.</p>
+<p>Zhao hears the shout for the south road — if he still can. The commander is late to the cut-off.</p>
 </div>
 
-<div class="kod-widget__panel" data-panel-id="t8" data-step-title="Route" data-tide-pos="0" data-tide-note="Omen 1 ends the track. Column routes. Wei may still hold the road south." hidden>
-<p>The centre files see the wash riders. Standards tip. The host stops being an army.</p>
-<p class="kod-tide-line"><strong>Tide-linked collapse</strong></p>
+<div class="kod-widget__panel" data-panel-id="t8" data-step-title="Surrounded" data-tide-pos="0" data-tide-note="Margin 4 → 1 step (1→0). Omen 1: multi Harm + face of surrender. Zhao accepts captivity (narrative)." hidden>
+<p>The wash closes. Zhao is ringed. He tries to cut a lane south toward Wei’s dust.</p>
+<p class="kod-tide-line"><strong>Zhao — Tide-linked</strong> · Break the ring and ride free.</p>
 <table>
-<thead><tr><th></th><th>Result</th></tr></thead>
+<thead><tr><th></th><th>Roll</th><th>Marks</th></tr></thead>
 <tbody>
-<tr><td>Omen</td><td><strong>1</strong> — Tide-negative · marker to imperial end</td></tr>
-<tr><td>Collective</td><td>Imperial side <strong>routes</strong></td></tr>
-<tr><td>Zhao</td><td>May die buying yards, crawl after Wei, or vanish in the grass</td></tr>
-<tr><td>Wei</td><td>Still has a horse, the Emperor, and a direction</td></tr>
+<tr><td>Zhao</td><td>Strength + Slash, <strong>d6</strong></td><td><strong>1</strong></td></tr>
+<tr><td>Surrounding riders (reply)</td><td>Strength + Slash, <strong>d12</strong></td><td><strong>5</strong></td></tr>
+<tr><td>Margin</td><td>4 → floor(4÷3)</td><td><strong>1</strong> step · Tide <strong>1 → 0</strong></td></tr>
+<tr><td>Omen</td><td><strong>1</strong></td><td>Tide-negative · Negative Consequence: <strong>Bleeding 2</strong>, <strong>Crushed 1</strong> · face: <em>ringed, blades at his throat, shouted to throw down steel</em></td></tr>
 </tbody>
 </table>
-<p>The skirmish is lost. The Emperor may still live. That was the point of the table.</p>
+<p>Spears box him in. Someone with a commander’s voice offers life for surrender. Zhao does not want to die. He drops the blade — no roll; he is taken captive.</p>
+<p>The column routes. Wei still has a horse, the Emperor, and the south road.</p>
 </div>
 
 <div class="kod-step-flow__nav">
