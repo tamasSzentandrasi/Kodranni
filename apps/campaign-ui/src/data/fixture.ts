@@ -67,12 +67,12 @@ export const fixtureCommunity: FixtureCommunity = {
   myths: [
     {
       title: 'Kelarn’s Fall',
-      summary: 'The Vardmark helped pull down the river empire and mean to plant at the Bend.',
+      summary:
+        'The Vardmark helped pull down the river empire — burning and taking — and hold Kelarn’s Bend as conquerors, not as invited guests.',
       effects: [
         {
-          kind: 'practice_mod',
-          label: '+Practice on Farming on claimed Bend fields',
-          amount: 1,
+          kind: 'advantage',
+          label: 'Advantage when enforcing claim on the burned fields',
         },
         {
           kind: 'tide_mod',
@@ -82,7 +82,8 @@ export const fixtureCommunity: FixtureCommunity = {
     },
     {
       title: 'Reed-Marsh Compact',
-      summary: 'Seed grain bought from the marsh folk after the taking.',
+      summary:
+        'Grain and silence bought from the marsh folk under the shadow of the warband — trade that can turn to blood.',
       effects: [
         {
           kind: 'disadvantage',
@@ -108,12 +109,12 @@ export const fixtureCommunity: FixtureCommunity = {
   ],
   outsiders: [
     {
-      name: 'Reed-marsh traders',
-      note: 'Quiet people who measure grain twice and will not fight free for the Bend.',
+      name: 'Reed-marsh survivors',
+      note: 'Will trade grain and silence; will not bleed free for foreign occupiers at the Bend.',
     },
     {
-      name: 'War-band on the next bend',
-      note: 'Same campaign as the Vardmark; staking claims before the harvest.',
+      name: 'Rival war-band on the next bend',
+      note: 'Same campaign of conquest; staking the next ford before the Vardmark can harden theirs.',
     },
   ],
   characters: [
@@ -121,8 +122,9 @@ export const fixtureCommunity: FixtureCommunity = {
       slug: 'tomas',
       name: 'Tomas',
       status: 'active',
-      communityTie: 'Vardmark freeholder at Kelarn’s Bend; keeps the shared grain store.',
-      whoWeSee: 'A quiet man who measures twice and keeps his word when timber is scarce.',
+      communityTie:
+        'Vardmark of Kelarn’s Bend — took the ground in the fall of Kelarn; holds the shared grain store as spoils and ration.',
+      whoWeSee: 'A quiet man who measures twice — timber, grain, and what is owed after a taking.',
       player: { platform: 'local', displayName: 'Player (Tomas)', accountId: 'local-tomas' },
       foundations: {
         Strength: 2,
@@ -155,7 +157,7 @@ export const fixtureCommunity: FixtureCommunity = {
       exertion: { current: 4, max: 6 },
       echoes: [
         {
-          title: 'Keep the shared grain store dry through the first winter',
+          title: 'Hold the seized grain store through the first winter of occupation',
           weight: 2,
         },
       ],
@@ -179,9 +181,9 @@ export const fixtureCommunity: FixtureCommunity = {
         foodDays: 2,
         waterDays: 3,
         items: [
-          { name: 'Adze', note: 'House timber; edge needs re-peening.' },
+          { name: 'Adze', note: 'Taken timber work; edge needs re-peening.' },
           { name: 'Wool cloak', note: 'Dry; no spare for a second person.' },
-          { name: 'Pitch pot', note: 'Half-full; one more seam on the store.' },
+          { name: 'Pitch pot', note: 'Half-full; one more seam on the seized store.' },
         ],
       },
       flags: { decadence: false, overCapacity: false },
@@ -190,8 +192,10 @@ export const fixtureCommunity: FixtureCommunity = {
       slug: 'leif',
       name: 'Leif',
       status: 'active',
-      communityTie: 'Claim on the upper fields at Kelarn’s Bend, still black from last year’s fire.',
-      whoWeSee: 'A hard bargainer who still answers when the ford is threatened.',
+      communityTie:
+        'Took part in the burning and the taking of Kelarn’s Bend; claims the upper fields still black from last year’s fire.',
+      whoWeSee:
+        'A hard bargainer who still answers when the ford is threatened — conqueror’s claim, not a neighbour’s.',
       player: { platform: 'discord', displayName: 'Player (Leif)', accountId: 'demo-discord-leif' },
       foundations: {
         Strength: 2,
@@ -224,7 +228,10 @@ export const fixtureCommunity: FixtureCommunity = {
       exertion: { current: 5, max: 5 },
       echoes: [
         { title: 'Hold Kelarn’s Bend ford until the hostages return', weight: 3 },
-        { title: 'Pact with the reed-marsh folk for seed grain', weight: 2 },
+        {
+          title: 'Compact with the reed-marsh folk for grain taken or traded under the sword',
+          weight: 2,
+        },
         { title: 'Mother’s knife under the floorboards', weight: 1 },
       ],
       echoCapacity: 6,

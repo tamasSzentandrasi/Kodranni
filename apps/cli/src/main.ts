@@ -19,9 +19,6 @@ import {
 function usage(code = 1): never {
   console.log(`kodranni — local automation CLI
 
-Run from the Kodranni monorepo root (directory that contains package.json),
-or set KODRANNI_REPO to that path when using a linked bin.
-
 Usage:
   kodranni campaign init --slug <slug> --name <name>
   kodranni campaign seed-demo [--slug ${DEMO_SLUG}] [--force]
@@ -62,9 +59,8 @@ function resolveRepoRoot(): string {
   // cwd if it is the repo
   if (existsSync(join(process.cwd(), 'package.json'))) return process.cwd();
   console.error(
-    'Could not find Kodranni monorepo package.json.\n' +
-      '  cd /path/to/Kodranni   then run:  npm run kodranni -- …\n' +
-      '  or set KODRANNI_REPO to the monorepo root.',
+    'Could not locate the Kodranni package root (package.json).\n' +
+      '  Set KODRANNI_REPO, or run via npm from the repository that contains this project.',
   );
   process.exit(1);
 }

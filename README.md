@@ -9,7 +9,7 @@ This repository holds the **Guidebook** (Astro + [Starlight](https://starlight.a
 ## Guidebook (local)
 
 ```bash
-cd /path/to/Kodranni    # monorepo root required for npm scripts
+cd /path/to/Kodranni
 npm install
 npm run dev      # http://localhost:4321
 npm run build    # static site → dist/
@@ -21,12 +21,10 @@ Content: `src/content/docs/`. Theme: self-hosted Bellefair under `public/fonts/`
 
 ## Automation (local Storyteller machine)
 
-**Always run CLI from the monorepo root** (or set `KODRANNI_REPO`). Running from `~` causes `ENOENT … /home/…/package.json`.
-
 ```bash
 cd /path/to/Kodranni
 
-# Fully reconstructible demo (Guidebook seed: The Vardmark at Kelarn’s Bend)
+# Reconstructible demo (Guidebook seed: The Vardmark at Kelarn’s Bend)
 npm run kodranni -- campaign destroy --slug vardmark --yes   # optional wipe
 npm run kodranni -- campaign seed-demo --force               # create/overwrite
 
@@ -42,6 +40,8 @@ npm run kodranni -- live --slug vardmark
 # → http://127.0.0.1:8742/characters/
 # → …/characters/tomas/  and  …/characters/tomas/burden/
 ```
+
+`npm run kodranni` resolves workspaces from this repo (or `KODRANNI_REPO` if the bin is invoked elsewhere).
 
 Private data: `~/.kodranni/campaigns/<slug>/` (gitignored). Override with `KODRANNI_HOME`.
 

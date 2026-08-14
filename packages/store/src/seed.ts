@@ -18,8 +18,8 @@ export function demoTomas(): CharacterRecord {
     kind: 'pc',
     status: 'active',
     communityTie:
-      'Vardmark freeholder at Kelarn’s Bend; keeps the shared grain store the kin still use.',
-    whoWeSee: 'A quiet man who measures twice and keeps his word when timber is scarce.',
+      'Vardmark of Kelarn’s Bend — took the ground in the fall of Kelarn; holds the shared grain store the warband still uses as spoils and ration.',
+    whoWeSee: 'A quiet man who measures twice — timber, grain, and what is owed after a taking.',
     player: {
       platform: 'local',
       displayName: 'Player (Tomas)',
@@ -101,8 +101,8 @@ export function demoCapacityProfile(name = 'Leif'): CharacterRecord {
     kind: 'pc',
     status: 'active',
     communityTie:
-      'Took part in the taking of Kelarn’s Bend; holds a claim on the upper fields still black from last year’s fire.',
-    whoWeSee: 'A hard bargainer who still answers when the ford is threatened.',
+      'Took part in the burning and the taking of Kelarn’s Bend; claims the upper fields still black from last year’s fire.',
+    whoWeSee: 'A hard bargainer who still answers when the ford is threatened — conqueror’s claim, not a neighbour’s.',
     player: {
       platform: 'discord',
       displayName: 'Player (Leif)',
@@ -129,7 +129,7 @@ export function demoCapacityProfile(name = 'Leif'): CharacterRecord {
     exertion: { current: 5, max: 0 },
     echoes: [
       { title: 'Hold Kelarn’s Bend ford until the hostages return', weight: 3 },
-      { title: 'Pact with the reed-marsh folk for seed grain', weight: 2 },
+      { title: 'Compact with the reed-marsh folk for grain taken or traded under the sword', weight: 2 },
       { title: 'Mother’s knife under the floorboards', weight: 1 },
     ],
     echoCapacity: 0,
@@ -180,24 +180,25 @@ export function seedDemoCampaign(
   community.myths = [
     {
       title: 'Kelarn’s Fall',
-      summary: 'The Vardmark helped pull down the river empire and mean to plant at the Bend.',
+      summary:
+        'The Vardmark helped pull down the river empire — burning and taking — and hold Kelarn’s Bend as conquerors, not as invited guests.',
       effects: [
         {
-          kind: 'practice_mod',
-          label: '+Practice on Farming on claimed Bend fields',
-          detail: 'When Myth is tagged on rolls working the burned fields.',
-          amount: 1,
+          kind: 'advantage',
+          label: 'Advantage when enforcing claim on the burned fields',
+          detail: 'When Myth is tagged and the scene is about holding what was taken.',
         },
         {
           kind: 'tide_mod',
           label: 'Tide start +1 defending the Bend ford',
-          detail: 'When a Tide is opened to hold the ford at Kelarn’s Bend.',
+          detail: 'When a Tide is opened to hold the ford at Kelarn’s Bend against rivals or survivors.',
         },
       ],
     },
     {
       title: 'Reed-Marsh Compact',
-      summary: 'Seed grain bought from the marsh folk after the taking.',
+      summary:
+        'Grain and silence bought from the marsh folk under the shadow of the warband — trade that can turn to blood.',
       effects: [
         {
           kind: 'disadvantage',
@@ -224,12 +225,12 @@ export function seedDemoCampaign(
   ];
   community.outsiders = [
     {
-      name: 'Reed-marsh traders',
-      note: 'Quiet people who measure grain twice and will not fight free for the Bend.',
+      name: 'Reed-marsh survivors',
+      note: 'Will trade grain and silence; will not bleed free for foreign occupiers at the Bend.',
     },
     {
-      name: 'War-band on the next bend',
-      note: 'Same campaign as the Vardmark; staking claims before the harvest.',
+      name: 'Rival war-band on the next bend',
+      note: 'Same campaign of conquest; staking the next ford before the Vardmark can harden theirs.',
     },
   ];
   community.ruler = null;

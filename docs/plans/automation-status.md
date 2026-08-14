@@ -9,21 +9,10 @@
 | Domain (pools, Practice, Harm, Tide, capacities) | Strong | Golden tests; dual capacity formulas |
 | Store port (hexagonal) | Improving | `CommunityStorePort`; SQLite is one adapter |
 | SQLite adapter | Working | Local SoT under `~/.kodranni/campaigns/<slug>/` |
-| CLI | Working **from monorepo root** | seed/destroy/roll/live; reconstructible with `--force` |
+| CLI | Working | seed/destroy/roll/live; reconstructible with `--force` |
 | Live campaign-ui | Functional draft | Community + character UX; not final art |
 | Discord / Fluxer bots | Not started | Skeletons only |
 | Campaign GitHub/Pages spawn | Not started | Designed only |
-
-## Critical ops note (ENOENT `/home/atari/package.json`)
-
-`npm run kodranni` **must** be run from the **Kodranni monorepo root** (the folder that contains this repo’s `package.json`).
-
-```bash
-cd ~/Projects/Kodranni   # not ~
-npm run kodranni -- campaign seed-demo --force
-```
-
-If `cwd` is `/home/atari`, npm looks for `/home/atari/package.json` and fails with ENOENT. That is not “campaign already exists” — it is wrong directory. CLI `live` now resolves the monorepo via `apps/cli` path or `KODRANNI_REPO`.
 
 ## Reconstructible demo
 
@@ -59,7 +48,6 @@ Default demo slug: **`vardmark`**. Characters: **tomas**, **leif**.
 ## Verify loop
 
 ```bash
-cd /path/to/Kodranni
 npm test
 npm run kodranni -- campaign destroy --slug vardmark --yes   # optional clean
 npm run kodranni -- campaign seed-demo --force
