@@ -4,7 +4,7 @@ export const prerender = false;
 import { ARCHETYPES, FOUNDATION_GROUPS, FOUNDATION_HARM } from '@kodranni/domain';
 import CampaignLayout from '../../../layouts/CampaignLayout.astro';
 import { getCharacter, loadCommunity } from '../../../data/load';
-import { harmPips, segments } from '../../../lib/format';
+import { avatarUrl, harmPips, monogram, segments } from '../../../lib/format';
 
 const { slug } = Astro.params;
 const c = loadCommunity();
@@ -16,6 +16,8 @@ if (!ch) {
 const skillMap = new Map(ch.skills.map((s) => [s.name, s]));
 const exSegs = segments(ch.exertion.current, ch.exertion.max);
 const echoSegs = segments(ch.echoWeight, ch.echoCapacity);
+const av = avatarUrl(ch.slug, ch.avatar);
+const live = c.source === 'live';
 
 function practiceFrac(practice: number, threshold: number): number {
   if (threshold <= 0) return 0;
@@ -38,80 +40,116 @@ const roman = (n: number) => ['∅', 'I', 'II', 'III', 'IV'][n] ?? String(n);
     <a href={`/characters/?sel=${ch.slug}`}>← Browse</a>
   </nav>
 
-  <h1 class="sheet__name">{ch.name}</h1>
+  <div class="sheet-head">
+    {
+      av ? (
+        <img class="avatar avatar--lg" src={av} alt="" width="80" height="80" />
+      ) : (
+        <span class="avatar avatar--lg avatar--mono" aria-hidden="true">
+          {monogram(ch.name)}
+        </span>
+      )
+    }
+    <div>
+      <h1 class="sheet__name">{ch.name}</h1>
+      <span class="char-card__status" data-status={ch.status}>{ch.status}</span>
+      {
+        live && (
+          <form class="avatar-upload" method="post" enctype="multipart/form-data" action={`/api/avatar/${ch.slug}`}>
+            <input type="file" name="file" accept="image/jpeg,image/png,image/webp,image/gif" required />
+            <button type="submit">Upload portrait</button>
+          </form>
+        )
+      }
+    </div>
+  </div>
 
   <div class="sheet">
     <div>
       <section class="surface">
-        <h2>Exertion</h2>
-        <div class="track-block">
-          <div
-            class="segbar"
-            aria-label={`Exertion ${ch.exertion.current} of ${ch.exertion.max}`}
+        <div class="section-head">
+          <h2>Load</h2>
+          <button
+            type="button"
+            class="info"
+            data-tip="Exertion: Res+Con+Cha, one segment = 1. Empty pool → −2 dice. Echo load: max(Str,Dex)+Int+Auth. Over capacity → −1 only on Echo-involved rolls. No Echoes → Decadence (−1 every roll)."
+            aria-label="About load trackers"
           >
-            {
-              exSegs.map((s) => (
-                <span
-                  class:list={[
-                    'segbar__seg',
-                    s.on && 'segbar__seg--on',
-                    s.over && 'segbar__seg--over',
-                  ]}
-                />
-              ))
-            }
-            <span class="segbar__readout">
-              {ch.exertion.current} / {ch.exertion.max}
-            </span>
+            i
+          </button>
+        </div>
+        <div class="track-row">
+          <div class="track-block">
+            <span class="track-block__label">Exertion</span>
+            <div class="segbar" aria-label={`Exertion ${ch.exertion.current} of ${ch.exertion.max}`}>
+              {
+                exSegs.map((s) => (
+                  <span
+                    class:list={[
+                      'segbar__seg',
+                      s.on && 'segbar__seg--on',
+                      s.over && 'segbar__seg--over',
+                    ]}
+                  />
+                ))
+              }
+              <span class="segbar__readout">
+                {ch.exertion.current} / {ch.exertion.max}
+              </span>
+            </div>
           </div>
-          <span class="track-block__formula">Res + Con + Cha · one segment = 1 · empty → −2 dice</span>
+          <div class="track-block">
+            <span class="track-block__label">Echo load</span>
+            <div
+              class="segbar segbar--echo"
+              aria-label={`Echo load ${ch.echoWeight} of ${ch.echoCapacity}`}
+            >
+              {
+                echoSegs.map((s) => (
+                  <span
+                    class:list={[
+                      'segbar__seg',
+                      s.on && 'segbar__seg--on',
+                      s.over && 'segbar__seg--over',
+                    ]}
+                  />
+                ))
+              }
+              <span class="segbar__readout">
+                {ch.echoWeight} / {ch.echoCapacity}
+              </span>
+            </div>
+          </div>
         </div>
         {
           (ch.flags.decadence || ch.flags.overCapacity || ch.dying) && (
             <p>
               {ch.dying && <span class="flag">Dying</span>}
-              {ch.flags.decadence && <span class="flag">Decadence</span>}
+              {ch.flags.decadence && (
+                <span class="flag" data-tip="No Echoes — −1 die on every roll">Decadence</span>
+              )}
               {ch.flags.overCapacity && (
-                <span class="flag" title="−1 die only on rolls that involve an Echo">
+                <span class="flag" data-tip="−1 die only on rolls that involve an Echo">
                   Over capacity
                 </span>
               )}
             </p>
           )
         }
-
-        <h2 style="margin-top:1.25rem">Echo load</h2>
-        <div class="track-block">
-          <div
-            class="segbar segbar--echo"
-            aria-label={`Echo load ${ch.echoWeight} of ${ch.echoCapacity}`}
-          >
-            {
-              echoSegs.map((s) => (
-                <span
-                  class:list={[
-                    'segbar__seg',
-                    s.on && 'segbar__seg--on',
-                    s.over && 'segbar__seg--over',
-                  ]}
-                />
-              ))
-            }
-            <span class="segbar__readout">
-              {ch.echoWeight} / {ch.echoCapacity}
-            </span>
-          </div>
-          <span class="track-block__formula">
-            max(Str, Dex) + Int + Auth · over-cap tax only on Echo-involved rolls
-          </span>
-        </div>
       </section>
 
       <section class="surface">
-        <h2>Foundations · Harm</h2>
-        <p class="lede">
-          Physical / Mental / Social. Rank as Roman mark; Harm as blood pips on the paired track.
-        </p>
+        <div class="section-head">
+          <h2>Foundations · Harm</h2>
+          <button
+            type="button"
+            class="info"
+            data-tip="Physical / Mental / Social. Rank as Roman mark; Harm as blood pips on the paired track (max 3)."
+            aria-label="About Foundations"
+          >
+            i
+          </button>
+        </div>
         <div class="found-groups">
           {
             Object.entries(FOUNDATION_GROUPS).map(([group, keys]) => (
@@ -125,7 +163,10 @@ const roman = (n: number) => ['∅', 'I', 'II', 'III', 'IV'][n] ?? String(n);
                   return (
                     <div class="found-row">
                       <span class="found-row__name">{fname}</span>
-                      <span class="found-row__val" title={`raw ${raw}`}>
+                      <span
+                        class="found-row__val"
+                        data-tip={eff !== raw ? `Effective ${roman(eff)} · raw ${roman(raw)}` : `Rank ${roman(eff)}`}
+                      >
                         {roman(eff)}
                         {eff !== raw ? ` (${roman(raw)})` : ''}
                       </span>
@@ -147,18 +188,34 @@ const roman = (n: number) => ['∅', 'I', 'II', 'III', 'IV'][n] ?? String(n);
       </section>
 
       <section class="surface">
-        <h2>Skills by Archetype</h2>
-        <p class="lede">
-          Full catalog. Centre = rating. Ring = Practice toward next rank. Hover for Practice
-          progress.
-        </p>
+        <div class="section-head">
+          <h2>Skills by Archetype</h2>
+          <button
+            type="button"
+            class="info"
+            data-tip="Centre = rating. Ring = Practice toward next rank. Hover a skill for Practice progress and governing Foundation."
+            aria-label="About Skills"
+          >
+            i
+          </button>
+        </div>
         <div class="skill-wheel">
           {
             ARCHETYPES.map((arch) => (
               <div class={`arch arch--${arch.id}`}>
-                <div class="arch__head">
-                  <span class="arch__name">{arch.name}</span>
-                  <span class="arch__tag">{arch.tag}</span>
+                <div class="arch__banner">
+                  <img
+                    src={`/archetypes/${arch.id}.jpg`}
+                    alt=""
+                    width="256"
+                    height="128"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <div class="arch__head">
+                    <span class="arch__name">{arch.name}</span>
+                    <span class="arch__tag">{arch.tag}</span>
+                  </div>
                 </div>
                 <ul class="arch__skills">
                   {arch.skills.map((def) => {
@@ -173,20 +230,21 @@ const roman = (n: number) => ['∅', 'I', 'II', 'III', 'IV'][n] ?? String(n);
                           ? 1
                           : 0;
                     const pct = Math.round(p * 100);
+                    const tip =
+                      rating <= 0
+                        ? `Untrained · ${def.foundation}`
+                        : rating >= 3
+                          ? `Rating 3 (max) · ${def.foundation}`
+                          : `Rating ${rating} · Practice ${practice}/${threshold} (${pct}% to next) · ${def.foundation}`;
                     return (
                       <li
                         class="skill"
                         data-rating={String(rating)}
                         data-rated={rating > 0 ? 'true' : 'false'}
                         style={`--p: ${p}`}
+                        data-tip={tip}
+                        tabindex="0"
                       >
-                        <span class="skill__hint">
-                          {rating <= 0
-                            ? `Untrained · ${def.foundation}`
-                            : rating >= 3
-                              ? `Rating 3 (max) · ${def.foundation}`
-                              : `Rating ${rating} · Practice ${practice}/${threshold} (${pct}% to next) · ${def.foundation}`}
-                        </span>
                         <div class="skill__ring">
                           <div class="skill__inner">{rating}</div>
                         </div>
@@ -209,6 +267,24 @@ const roman = (n: number) => ['∅', 'I', 'II', 'III', 'IV'][n] ?? String(n);
           <blockquote class="quote">{ch.whoWeSee}</blockquote>
         ) : (
           <p class="empty">No claim recorded.</p>
+        )
+      }
+
+      {
+        ch.communityTie && (
+          <div class="side__block">
+            <p class="side__lab">
+              Community tie
+              <button
+                type="button"
+                class="info"
+                data-tip={ch.communityTie}
+                aria-label="Community tie detail"
+              >
+                i
+              </button>
+            </p>
+          </div>
         )
       }
 
@@ -247,3 +323,24 @@ const roman = (n: number) => ['∅', 'I', 'II', 'III', 'IV'][n] ?? String(n);
     </aside>
   </div>
 </CampaignLayout>
+
+{
+  live && (
+    <script is:inline define:vars={{ slug: ch.slug }}>
+      (function () {
+        const form = document.querySelector('.avatar-upload');
+        if (!form) return;
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const fd = new FormData(form);
+          const res = await fetch(form.action, { method: 'POST', body: fd });
+          if (res.ok) location.reload();
+          else {
+            const j = await res.json().catch(() => ({}));
+            alert(j.error || 'Upload failed');
+          }
+        });
+      })();
+    </script>
+  )
+}

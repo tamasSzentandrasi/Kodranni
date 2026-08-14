@@ -3,7 +3,14 @@ export const prerender = false;
 
 import CampaignLayout from '../../../layouts/CampaignLayout.astro';
 import { getCharacter, loadCommunity } from '../../../data/load';
-import { ECHO_EFFECT_COLUMNS, segments } from '../../../lib/format';
+import {
+  ECHO_PHASES,
+  WEIGHT_BAND,
+  avatarUrl,
+  monogram,
+  phaseOf,
+  segments,
+} from '../../../lib/format';
 
 const { slug } = Astro.params;
 const c = loadCommunity();
@@ -17,13 +24,7 @@ const armourLabel =
 
 const echoSegs = segments(ch.echoWeight, ch.echoCapacity);
 const exSegs = segments(ch.exertion.current, ch.exertion.max);
-
-function fxFor(
-  effects: { kind: string; label: string; detail?: string }[] | undefined,
-  kind: string,
-) {
-  return (effects ?? []).filter((e) => e.kind === kind);
-}
+const av = avatarUrl(ch.slug, ch.avatar);
 ---
 
 <CampaignLayout
@@ -39,187 +40,250 @@ function fxFor(
     <a href={`/characters/?sel=${ch.slug}`}>← Browse</a>
   </nav>
 
-  <h1 class="sheet__name">{ch.name}</h1>
-
-  <section class="surface">
-    <h2>Load trackers</h2>
-    <div class="sheet" style="grid-template-columns:1fr 1fr">
-      <div class="track-block">
-        <span class="track-block__label">Exertion</span>
-        <div class="segbar" aria-label={`Exertion ${ch.exertion.current}/${ch.exertion.max}`}>
-          {
-            exSegs.map((s) => (
-              <span
-                class:list={['segbar__seg', s.on && 'segbar__seg--on', s.over && 'segbar__seg--over']}
-              />
-            ))
-          }
-          <span class="segbar__readout">
-            {ch.exertion.current}/{ch.exertion.max}
-          </span>
-        </div>
-        <span class="track-block__formula">Res + Con + Cha</span>
-      </div>
-      <div class="track-block">
-        <span class="track-block__label">Echo load</span>
-        <div
-          class="segbar segbar--echo"
-          aria-label={`Echo load ${ch.echoWeight}/${ch.echoCapacity}`}
-        >
-          {
-            echoSegs.map((s) => (
-              <span
-                class:list={['segbar__seg', s.on && 'segbar__seg--on', s.over && 'segbar__seg--over']}
-              />
-            ))
-          }
-          <span class="segbar__readout">
-            {ch.echoWeight}/{ch.echoCapacity}
-          </span>
-        </div>
-        <span class="track-block__formula">
-          max(Str,Dex)+Int+Auth · over-cap −1 only when an Echo is involved
+  <div class="sheet-head">
+    {
+      av ? (
+        <img class="avatar avatar--lg" src={av} alt="" width="80" height="80" />
+      ) : (
+        <span class="avatar avatar--lg avatar--mono" aria-hidden="true">
+          {monogram(ch.name)}
         </span>
+      )
+    }
+    <div>
+      <h1 class="sheet__name">{ch.name}</h1>
+      <div class="track-row" style="max-width:28rem">
+        <div class="track-block" style="margin:0">
+          <span class="track-block__label">Exertion</span>
+          <div class="segbar" aria-label={`Exertion ${ch.exertion.current}/${ch.exertion.max}`}>
+            {
+              exSegs.map((s) => (
+                <span
+                  class:list={[
+                    'segbar__seg',
+                    s.on && 'segbar__seg--on',
+                    s.over && 'segbar__seg--over',
+                  ]}
+                />
+              ))
+            }
+            <span class="segbar__readout">
+              {ch.exertion.current}/{ch.exertion.max}
+            </span>
+          </div>
+        </div>
+        <div class="track-block" style="margin:0">
+          <span class="track-block__label">Echo load</span>
+          <div
+            class="segbar segbar--echo"
+            aria-label={`Echo load ${ch.echoWeight}/${ch.echoCapacity}`}
+          >
+            {
+              echoSegs.map((s) => (
+                <span
+                  class:list={[
+                    'segbar__seg',
+                    s.on && 'segbar__seg--on',
+                    s.over && 'segbar__seg--over',
+                  ]}
+                />
+              ))
+            }
+            <span class="segbar__readout">
+              {ch.echoWeight}/{ch.echoCapacity}
+            </span>
+          </div>
+        </div>
       </div>
     </div>
-  </section>
+  </div>
 
   <section class="surface">
-    <h2>Echoes</h2>
-    <p class="lede">
-      Weight as discrete blocks (1–3). Mechanical inventory by type — same idea as Foundation Myths.
-      Hover a title for the short description.
-    </p>
+    <div class="section-head">
+      <h2>Echoes</h2>
+      <button
+        type="button"
+        class="info"
+        data-tip="Each Echo is a carried deed. Weight 1 Individual · 2 Group · 3 Pivotal. Effects are grouped: while carried, on resolution, continuity. Info marks hold the rule text."
+        aria-label="About Echoes"
+      >
+        i
+      </button>
+    </div>
 
     {
       ch.echoes.length === 0 ? (
         <p class="empty">None — Decadence if this stands (−1 die on every roll).</p>
       ) : (
-        <div class="scroll">
-          <table class="matrix">
-            <thead>
-              <tr>
-                <th>Echo</th>
-                <th>Weight</th>
-                {ECHO_EFFECT_COLUMNS.map((col) => (
-                  <th>{col.header}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {ch.echoes.map((e) => {
-                const w = (e.weight === 2 || e.weight === 3 ? e.weight : 1) as 1 | 2 | 3;
-                return (
-                  <tr>
-                    <td>
-                      <span class="matrix__name" title={e.note ?? ''}>
-                        {e.title}
-                      </span>
-                      {e.note && <span class="echo-row__note">{e.note}</span>}
-                    </td>
-                    <td>
-                      <span class="weight-segs" aria-label={`Weight ${w}`}>
-                        {[1, 2, 3].map((i) => (
-                          <i class={i <= w ? 'on' : ''} />
-                        ))}
-                      </span>
-                      <span style="margin-left:0.35rem;color:var(--kod-silver-dim);font-size:0.85rem">
-                        {w === 1 ? 'Individual' : w === 2 ? 'Group' : 'Pivotal'}
-                      </span>
-                    </td>
-                    {ECHO_EFFECT_COLUMNS.map((col) => {
-                      const cells = fxFor(e.effects, col.kind);
-                      return (
-                        <td>
+        <div class="echo-cards">
+          {ch.echoes.map((e) => {
+            const w = (e.weight === 2 || e.weight === 3 ? e.weight : 1) as 1 | 2 | 3;
+            const effects = e.effects ?? [];
+            return (
+              <article class="echo-card">
+                <div class="echo-card__head">
+                  <h3 class="echo-card__title">
+                    {e.title}
+                    {e.note && (
+                      <button
+                        type="button"
+                        class="info"
+                        data-tip={e.note}
+                        aria-label="Echo description"
+                      >
+                        i
+                      </button>
+                    )}
+                  </h3>
+                  <div class="echo-card__weight">
+                    <span class="weight-segs" aria-label={`Weight ${w}`}>
+                      {[1, 2, 3].map((i) => (
+                        <i class={i <= w ? 'on' : ''} />
+                      ))}
+                    </span>
+                    <span class="weight-band">{WEIGHT_BAND[w]}</span>
+                  </div>
+                </div>
+                <div class="echo-phases">
+                  {ECHO_PHASES.map((phase) => {
+                    const cells = effects.filter((fx) => phaseOf(fx) === phase.id);
+                    return (
+                      <div class="echo-phase">
+                        <p class="echo-phase__lab">{phase.label}</p>
+                        <div class="echo-phase__list">
                           {cells.length === 0 ? (
                             <span class="empty">—</span>
                           ) : (
                             cells.map((fx) => (
-                              <span class="fx" data-kind={fx.kind} title={fx.detail ?? fx.label}>
+                              <span class="fx" data-kind={fx.kind}>
                                 {fx.label}
+                                {fx.detail && (
+                                  <button
+                                    type="button"
+                                    class="info"
+                                    data-tip={fx.detail}
+                                    aria-label="Effect detail"
+                                  >
+                                    i
+                                  </button>
+                                )}
                               </span>
                             ))
                           )}
-                        </td>
-                      );
-                    })}
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </article>
+            );
+          })}
         </div>
       )
     }
   </section>
 
-  <div class="sheet">
-    <section class="surface">
+  <section class="surface">
+    <div class="section-head">
       <h2>Traits</h2>
-      <ul class="trait-list">
-        {
-          ch.traits.length === 0 ? (
-            <li class="empty">None recorded.</li>
-          ) : (
-            ch.traits.map((t) => (
-              <li class="trait">
-                <span class="trait__name">{t.name}</span>
-                {t.note && <span class="trait__note">{t.note}</span>}
-              </li>
-            ))
-          )
-        }
-      </ul>
-    </section>
-
-    <section class="surface">
-      <h2>Inventory</h2>
-      <p class="lede">Explicit possession. If it is not listed, they do not have it.</p>
-
-      <div class="armour" data-kind={ch.armour.kind} data-donned={String(ch.armour.donned)}>
-        <span class="armour__lab">Armour</span>
-        <span class="armour__val">{armourLabel}</span>
-        <span class="armour__state">
-          {ch.armour.donned
-            ? 'Donned — counts for physical Harm ratios'
-            : 'Not donned — no armour protection ratio'}
-        </span>
-      </div>
-
-      <div class="supplies">
-        <div class="supply">
-          <span class="supply__lab">Food</span>
-          <span class="supply__val">{ch.inventory.foodDays}</span>
-          <span class="app__meta" style="margin:0">days</span>
-        </div>
-        <div class="supply">
-          <span class="supply__lab">Water</span>
-          <span class="supply__val">{ch.inventory.waterDays}</span>
-          <span class="app__meta" style="margin:0">days</span>
-        </div>
-      </div>
-
-      <h3 style="font-size:1.05rem;margin:0.5rem 0 0.4rem">Named items</h3>
-      <ul class="item-list">
-        {
-          ch.inventory.items.length === 0 ? (
-            <li class="empty">None declared.</li>
-          ) : (
-            ch.inventory.items.map((it) => (
-              <li class="item">
-                <span class="item__name">{it.name}</span>
-                {it.note ? (
-                  <span class="item__note">{it.note}</span>
-                ) : (
-                  <span class="item__note" style="color:#6a5550;font-style:italic">
-                    No contextual note yet.
-                  </span>
+      <button
+        type="button"
+        class="info"
+        data-tip="Standing marks of character — often born from resolved Echoes. Info mark holds the ST note."
+        aria-label="About Traits"
+      >
+        i
+      </button>
+    </div>
+    <ul class="trait-list">
+      {
+        ch.traits.length === 0 ? (
+          <li class="empty">None recorded.</li>
+        ) : (
+          ch.traits.map((t) => (
+            <li class="trait">
+              <span class="trait__name">
+                {t.name}
+                {t.note && (
+                  <button type="button" class="info" data-tip={t.note} aria-label="Trait note">
+                    i
+                  </button>
                 )}
-              </li>
-            ))
-          )
-        }
-      </ul>
-    </section>
-  </div>
+              </span>
+            </li>
+          ))
+        )
+      }
+    </ul>
+  </section>
+
+  <section class="surface">
+    <div class="section-head">
+      <h2>Inventory</h2>
+      <button
+        type="button"
+        class="info"
+        data-tip="Explicit possession. If it is not listed, they do not have it. Armour only counts when donned."
+        aria-label="About Inventory"
+      >
+        i
+      </button>
+    </div>
+
+    <div class="inv-grid">
+      <div>
+        <div class="armour" data-kind={ch.armour.kind} data-donned={String(ch.armour.donned)}>
+          <span class="armour__lab">Armour</span>
+          <span class="armour__val">{armourLabel}</span>
+          <span class="armour__state">
+            {ch.armour.donned
+              ? 'Donned — counts for physical Harm ratios'
+              : 'Not donned — no armour protection ratio'}
+          </span>
+        </div>
+
+        <div class="supplies">
+          <div class="supply">
+            <span class="supply__lab">Food</span>
+            <span class="supply__val">{ch.inventory.foodDays}</span>
+            <span class="app__meta" style="margin:0">days</span>
+          </div>
+          <div class="supply">
+            <span class="supply__lab">Water</span>
+            <span class="supply__val">{ch.inventory.waterDays}</span>
+            <span class="app__meta" style="margin:0">days</span>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h3 style="font-size:0.95rem;margin:0 0 0.35rem">Named items</h3>
+        <ul class="item-list">
+          {
+            ch.inventory.items.length === 0 ? (
+              <li class="empty">None declared.</li>
+            ) : (
+              ch.inventory.items.map((it) => (
+                <li class="item">
+                  <span class="item__name">
+                    {it.name}
+                    {it.note && (
+                      <button
+                        type="button"
+                        class="info"
+                        data-tip={it.note}
+                        aria-label={`${it.name} note`}
+                      >
+                        i
+                      </button>
+                    )}
+                  </span>
+                </li>
+              ))
+            )
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
 </CampaignLayout>

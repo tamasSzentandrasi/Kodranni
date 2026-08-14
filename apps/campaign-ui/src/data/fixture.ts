@@ -6,13 +6,19 @@ export interface FixtureCharacter {
   status: 'active' | 'dead' | 'draft';
   communityTie: string;
   whoWeSee?: string;
+  avatar?: string;
   player?: { platform: string; displayName: string; accountId?: string };
   foundations: Record<string, number>;
   foundationsEffective: Record<string, number>;
   skills: { name: string; rating: number; practice: number; threshold: number; foundation?: string }[];
   traits: { name: string; note?: string }[];
   exertion: { current: number; max: number };
-  echoes: { title: string; weight: number; note?: string }[];
+  echoes: {
+    title: string;
+    weight: number;
+    note?: string;
+    effects?: { kind: string; phase?: string; label: string; detail?: string }[];
+  }[];
   echoCapacity: number;
   echoWeight: number;
   harm: Record<string, number>;
@@ -48,8 +54,14 @@ export interface FixtureCommunity {
   hierarchyAxes: string[];
   ruler: string | null;
   rulerCharacterSlug?: string;
-  placements: { name: string; axis: string; tier: string; characterSlug?: string }[];
-  outsiders: { name: string; note?: string; characterSlug?: string }[];
+  placements: {
+    name: string;
+    axis: string;
+    tier: string;
+    characterSlug?: string;
+    note?: string;
+  }[];
+  outsiders: { name: string; faction?: string; note?: string; characterSlug?: string }[];
   characters: FixtureCharacter[];
 }
 
@@ -73,10 +85,12 @@ export const fixtureCommunity: FixtureCommunity = {
         {
           kind: 'advantage',
           label: 'Advantage when enforcing claim on the burned fields',
+          detail: 'When Myth is tagged and the scene is about holding what was taken.',
         },
         {
           kind: 'tide_mod',
           label: 'Tide start +1 defending the Bend ford',
+          detail: 'When a Tide is opened to hold the ford at Kelarn’s Bend.',
         },
       ],
     },
@@ -100,21 +114,77 @@ export const fixtureCommunity: FixtureCommunity = {
   hierarchyAxes: ['Arms', 'Faith', 'Coin', 'Blood'],
   ruler: null,
   placements: [
-    { name: 'Tomas', axis: 'Coin', tier: 'Acknowledged', characterSlug: 'tomas' },
-    { name: 'Tomas', axis: 'Arms', tier: 'Outcast', characterSlug: 'tomas' },
-    { name: 'Leif', axis: 'Arms', tier: 'Acknowledged', characterSlug: 'leif' },
-    { name: 'Halla the mill-widow', axis: 'Coin', tier: 'Trusted' },
-    { name: 'Old Rurik', axis: 'Faith', tier: 'Honoured' },
-    { name: 'Young Sten', axis: 'Arms', tier: 'Trusted' },
+    {
+      name: 'Tomas',
+      axis: 'Coin',
+      tier: 'Acknowledged',
+      characterSlug: 'tomas',
+      note: 'A quiet man who measures twice — timber, grain, and what is owed after a taking.',
+    },
+    {
+      name: 'Leif',
+      axis: 'Arms',
+      tier: 'Acknowledged',
+      characterSlug: 'leif',
+      note: 'A hard bargainer who still answers when the ford is threatened.',
+    },
+    {
+      name: 'Halla',
+      axis: 'Coin',
+      tier: 'Trusted',
+      note: 'Keeps the mill ledger after the taking; quiet power over grain counts.',
+    },
+    {
+      name: 'Halla',
+      axis: 'Blood',
+      tier: 'Acknowledged',
+      note: 'Widow of a Bend man who did not survive the fall.',
+    },
+    {
+      name: 'Old Rurik',
+      axis: 'Faith',
+      tier: 'Honoured',
+      note: 'Speaks for the dead of the Bend and the living oaths of the Vardmark.',
+    },
+    {
+      name: 'Young Sten',
+      axis: 'Arms',
+      tier: 'Trusted',
+      note: 'Leif’s ford watch; eager, unpaid enough to leave if the freeze bites hard.',
+    },
+    {
+      name: 'Bera of the lower bank',
+      axis: 'Blood',
+      tier: 'Outcast',
+      note: 'Survived the taking; kept as labour on the fields.',
+    },
+    {
+      name: 'Gorm the tally-hand',
+      axis: 'Coin',
+      tier: 'Outcast',
+      note: 'Counts spoils for whoever holds the store tonight.',
+    },
   ],
   outsiders: [
     {
-      name: 'Reed-marsh survivors',
-      note: 'Will trade grain and silence; will not bleed free for foreign occupiers at the Bend.',
+      name: 'Mara of the Reeds',
+      faction: 'Reed-marsh folk',
+      note: 'Speaks for grain and silence; will not bleed free for foreign occupiers at the Bend.',
     },
     {
-      name: 'Rival war-band on the next bend',
-      note: 'Same campaign of conquest; staking the next ford before the Vardmark can harden theirs.',
+      name: 'Jorun Reed-eye',
+      faction: 'Reed-marsh folk',
+      note: 'Scout of the channels; knows every path that can starve or feed the ford.',
+    },
+    {
+      name: 'Skard of the Next Bend',
+      faction: 'Rival war-band',
+      note: 'Means to stake the next ford before the Vardmark hardens theirs.',
+    },
+    {
+      name: 'Inga Ash-tongue',
+      faction: 'Rival war-band',
+      note: 'Herald and bargainer for the rival band.',
     },
   ],
   characters: [
@@ -157,8 +227,9 @@ export const fixtureCommunity: FixtureCommunity = {
       exertion: { current: 4, max: 6 },
       echoes: [
         {
-          title: 'Hold the seized grain store through the first winter of occupation',
+          title: 'Keep the seized grain store standing through the first winter of occupation',
           weight: 2,
+          note: 'The store is the warband’s ration and proof they hold the Bend.',
         },
       ],
       echoCapacity: 5,
@@ -224,15 +295,24 @@ export const fixtureCommunity: FixtureCommunity = {
         { name: 'Tactics', rating: 1, practice: 10, threshold: 24 },
         { name: 'Intimidate', rating: 1, practice: 3, threshold: 24 },
       ],
-      traits: [{ name: 'Scarred knuckles' }],
+      traits: [{ name: 'Scarred knuckles', note: 'From the taking of the shore.' }],
       exertion: { current: 5, max: 5 },
       echoes: [
-        { title: 'Hold Kelarn’s Bend ford until the hostages return', weight: 3 },
         {
-          title: 'Compact with the reed-marsh folk for grain taken or traded under the sword',
-          weight: 2,
+          title: 'Hold Kelarn’s Bend ford until the hostages return',
+          weight: 3,
+          note: 'The ford is the claim; lose it and the Bend is only ash and talk.',
         },
-        { title: 'Mother’s knife under the floorboards', weight: 1 },
+        {
+          title: 'Keep Young Sten and the ford watch paid and fed through the freeze',
+          weight: 2,
+          note: 'If they desert, the ford is open and his name is ash with them.',
+        },
+        {
+          title: 'Bring his sister’s children through the first winter on seized ground',
+          weight: 1,
+          note: 'Personal stake: the occupation must feed more than the warband’s pride.',
+        },
       ],
       echoCapacity: 6,
       echoWeight: 6,

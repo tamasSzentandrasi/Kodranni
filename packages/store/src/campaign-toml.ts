@@ -123,6 +123,7 @@ export async function ensureCampaignLayout(slug: string, name: string): Promise<
   };
   await mkdir(join(dir, 'data'), { recursive: true });
   await mkdir(join(dir, 'private'), { recursive: true });
+  await mkdir(join(dir, 'media', 'avatars'), { recursive: true });
   await writeCampaignConfig(cfg, join(dir, 'campaign.toml'));
   return cfg;
 }

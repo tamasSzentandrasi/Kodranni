@@ -21,6 +21,7 @@ function characterToView(ch: CharacterRecord): FixtureCommunity['characters'][nu
     status: ch.status === 'dead' ? 'dead' : ch.status === 'draft' ? 'draft' : 'active',
     communityTie: ch.communityTie,
     whoWeSee: ch.whoWeSee,
+    avatar: ch.avatar,
     player: ch.player,
     foundations: ch.foundations,
     foundationsEffective: ch.foundationsEffective,
@@ -165,13 +166,19 @@ export const MYTH_KIND_COLUMNS: { kind: string; header: string }[] = [
   { kind: 'trait_deny', header: 'Trait deny' },
 ];
 
-/** whoWeSee lookup for hover tooltips on the diagram */
+/** whoWeSee / placement note lookup for diagram tooltips */
 export function whoWeSeeMap(c: ViewCommunity): Map<string, string> {
   const m = new Map<string, string>();
   for (const ch of c.characters) {
     if (ch.whoWeSee) {
       m.set(ch.slug, ch.whoWeSee);
       m.set(ch.name.toLowerCase(), ch.whoWeSee);
+    }
+  }
+  for (const p of c.placements ?? []) {
+    if (p.note) {
+      if (p.characterSlug) m.set(p.characterSlug, p.note);
+      m.set(p.name.toLowerCase(), p.note);
     }
   }
   for (const o of c.outsiders ?? []) {

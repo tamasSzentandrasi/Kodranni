@@ -20,6 +20,15 @@ export function defaultCampaignTomlPath(slug: string, env?: NodeJS.ProcessEnv): 
   return join(campaignDir(slug, env), 'campaign.toml');
 }
 
+/** Uploaded portraits and other campaign media. */
+export function campaignMediaDir(slug: string, env?: NodeJS.ProcessEnv): string {
+  return join(campaignDir(slug, env), 'media');
+}
+
+export function campaignAvatarsDir(slug: string, env?: NodeJS.ProcessEnv): string {
+  return join(campaignMediaDir(slug, env), 'avatars');
+}
+
 /** Fully remove a campaign directory (SoT + config). Reconstruct with seed-demo. */
 export function destroyCampaignDir(slug: string, env?: NodeJS.ProcessEnv): void {
   rmSync(campaignDir(slug, env), { recursive: true, force: true });

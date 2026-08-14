@@ -6,26 +6,21 @@ import CampaignLayout from '../../layouts/CampaignLayout.astro';
 import {
   FORTUNE_LABELS,
   loadCommunity,
-  MYTH_KIND_COLUMNS,
   whoWeSeeMap,
 } from '../../data/load';
+import { FORTUNE_BLURBS, factionHue } from '../../lib/format';
 
 const c = loadCommunity();
 const tiers = [...HIERARCHY_TIERS];
 const tips = whoWeSeeMap(c);
-const COLLAPSE_AT = 4;
 
-function effectsForKind(
-  effects: { kind: string; label: string; detail?: string; faces?: number[] }[],
-  kind: string,
-) {
-  return effects.filter((e) => e.kind === kind);
-}
-
-function tipFor(name: string, slug?: string): string {
+function tipFor(name: string, slug?: string, placementNote?: string): string {
+  if (placementNote) return placementNote;
   if (slug && tips.has(slug)) return tips.get(slug)!;
   return tips.get(name.toLowerCase()) ?? '';
 }
+
+const fortuneOrder = ['vitality', 'cohesion', 'surplus', 'standing', 'tradition'] as const;
 ---
 
 <CampaignLayout
@@ -35,40 +30,66 @@ function tipFor(name: string, slug?: string): string {
   primary="community"
   source={c.source}
 >
-  <div class="toolbar">
-    <span class="toolbar__lab">Scale</span>
-    <button type="button" data-density-btn="compact">Compact</button>
-    <button type="button" data-density-btn="normal">Normal</button>
-    <button type="button" data-density-btn="roomy">Roomy</button>
-  </div>
-
   <section class="surface" aria-labelledby="f-h">
-    <h2 id="f-h">Fortunes</h2>
-    <p class="lede">
-      Community-wide pressure. Bars only — height and colour from Crisis to Abundance. Not a second
-      character sheet.
-    </p>
-    <div class="fortune-chart" role="list">
+    <div class="section-head">
+      <h2 id="f-h">Fortunes</h2>
+      <button
+        type="button"
+        class="info"
+        data-tip="Community-wide pressure — not a second character sheet. Soft scale: Crisis 0 → Abundance 3. Colours every scene for PCs and NPCs alike."
+        aria-label="About Fortunes"
+      >
+        i
+      </button>
+    </div>
+    <div class="fortune-hall" role="list">
       {
-        Object.entries(c.fortunes).map(([k, v]) => (
-          <div class="fortune" data-level={String(v)} role="listitem" title={FORTUNE_LABELS[v] ?? ''}>
-            <div class="fortune__col" aria-hidden="true">
-              <div class="fortune__fill" style={`--h: ${Math.max(14, (v / 3) * 100)}%`} />
+        fortuneOrder.map((k) => {
+          const v = c.fortunes[k] ?? 0;
+          return (
+            <div
+              class="fortune"
+              data-key={k}
+              data-level={String(v)}
+              role="listitem"
+            >
+              <span class="fortune__icon" aria-hidden="true" />
+              <span class="fortune__name">
+                {k}
+                <button
+                  type="button"
+                  class="info"
+                  data-tip={FORTUNE_BLURBS[k] ?? ''}
+                  aria-label={`About ${k}`}
+                >
+                  i
+                </button>
+              </span>
+              <div class="fortune__meter" aria-hidden="true">
+                {[0, 1, 2, 3].map((i) => (
+                  <span class:list={['fortune__pip', i <= v && 'fortune__pip--on']} />
+                ))}
+              </div>
+              <span class="fortune__state">{FORTUNE_LABELS[v] ?? ''}</span>
             </div>
-            <span class="fortune__name">{k}</span>
-            <span class="fortune__state">{FORTUNE_LABELS[v] ?? ''}</span>
-          </div>
-        ))
+          );
+        })
       }
     </div>
   </section>
 
   <section class="surface" aria-labelledby="h-h">
-    <h2 id="h-h">Hierarchy</h2>
-    <p class="lede">
-      Every community member on every axis (default Outcast). Outsiders stand beside the ladders —
-      not Outcast, not on any axis. Hover a name for “Who do we see?”
-    </p>
+    <div class="section-head">
+      <h2 id="h-h">Hierarchy</h2>
+      <button
+        type="button"
+        class="info"
+        data-tip="Every community member on every axis (default Outcast). Collapse axes or tiers. Hover a name for who they are. Outsiders stand beside the ladders."
+        aria-label="About Hierarchy"
+      >
+        i
+      </button>
+    </div>
 
     <div class="ruler">
       <span class="ruler__lab">Ruler</span>
@@ -76,14 +97,16 @@ function tipFor(name: string, slug?: string): string {
         c.ruler ? (
           c.rulerCharacterSlug ? (
             <a
-              class="chip chip--pc"
+              class="member member--pc"
               href={`/characters/${c.rulerCharacterSlug}/`}
               data-tip={tipFor(c.ruler, c.rulerCharacterSlug)}
             >
+              <span class="member__dot" />
               {c.ruler}
             </a>
           ) : (
-            <span class="chip" data-tip={tipFor(c.ruler)}>
+            <span class="member" data-tip={tipFor(c.ruler)}>
+              <span class="member__dot" />
               {c.ruler}
             </span>
           )
@@ -100,60 +123,65 @@ function tipFor(name: string, slug?: string): string {
             const onAxis = c.placements.filter((p) => p.axis === axis);
             return (
               <div class="axis" data-collapsed="false">
-                <button type="button" class="axis__head" data-axis-toggle aria-expanded="true">
+                <button
+                  type="button"
+                  class="axis__head"
+                  data-axis-toggle
+                  aria-expanded="true"
+                >
                   <span>{axis}</span>
-                  <span style="color:#6a625c;font-size:0.85rem">{onAxis.length}</span>
+                  <span class="axis__count">{onAxis.length}</span>
                 </button>
                 <div class="axis__body">
                   {tiers.map((tier) => {
                     const members = onAxis.filter((p) => p.tier === tier);
-                    const overflow = members.length > COLLAPSE_AT;
+                    const empty = members.length === 0;
+                    // Collapse empty tiers and Outcast when crowded
+                    const defaultCollapsed =
+                      empty || (tier === 'Outcast' && members.length > 6);
                     return (
                       <div
-                        class="rung"
-                        data-expandable={overflow ? 'true' : 'false'}
-                        data-expanded="false"
+                        class:list={['rung', empty && 'rung--empty']}
+                        data-collapsed={defaultCollapsed ? 'true' : 'false'}
                       >
-                        <div class="rung__head">
+                        <button
+                          type="button"
+                          class="rung__head"
+                          data-rung-toggle
+                          aria-expanded={defaultCollapsed ? 'false' : 'true'}
+                        >
                           <span class="rung__tier">{tier}</span>
                           <span class="rung__n">{members.length}</span>
-                          {overflow && (
-                            <button type="button" class="rung__expand" data-rung-expand>
-                              Show all
-                            </button>
-                          )}
-                        </div>
-                        <div class="rung__members">
-                          {members.length === 0 ? (
-                            <span class="empty">—</span>
+                          <span class="rung__chev" aria-hidden="true">▾</span>
+                        </button>
+                        <ul class="rung__members">
+                          {empty ? (
+                            <li class="empty">—</li>
                           ) : (
-                            members.map((m, i) => {
-                              const hidden = overflow && i >= COLLAPSE_AT;
-                              const tip = tipFor(m.name, m.characterSlug);
-                              const cls = [
-                                'chip',
-                                m.characterSlug && 'chip--pc',
-                                hidden && 'chip--overflow',
-                              ]
-                                .filter(Boolean)
-                                .join(' ');
-                              return m.characterSlug ? (
-                                <a
-                                  class={cls}
-                                  href={`/characters/${m.characterSlug}/`}
-                                  data-tip={tip}
-                                  hidden={hidden || undefined}
-                                >
-                                  {m.name}
-                                </a>
-                              ) : (
-                                <span class={cls} data-tip={tip} hidden={hidden || undefined}>
-                                  {m.name}
-                                </span>
+                            members.map((m) => {
+                              const tip = tipFor(m.name, m.characterSlug, m.note);
+                              return (
+                                <li>
+                                  {m.characterSlug ? (
+                                    <a
+                                      class="member member--pc"
+                                      href={`/characters/${m.characterSlug}/`}
+                                      data-tip={tip}
+                                    >
+                                      <span class="member__dot" />
+                                      {m.name}
+                                    </a>
+                                  ) : (
+                                    <span class="member" data-tip={tip} tabindex="0">
+                                      <span class="member__dot" />
+                                      {m.name}
+                                    </span>
+                                  )}
+                                </li>
                               );
                             })
                           )}
-                        </div>
+                        </ul>
                       </div>
                     );
                   })}
@@ -165,25 +193,50 @@ function tipFor(name: string, slug?: string): string {
       </div>
 
       <aside class="outsiders" aria-labelledby="o-h">
-        <h3 id="o-h">Outsiders</h3>
-        <p class="outsiders__lede">
-          Not on any hierarchy. No Outcast status until they enter the community.
-        </p>
-        <ul>
+        <div class="section-head" style="border:none;margin:0;padding:0">
+          <h3 id="o-h">Outsiders</h3>
+          <button
+            type="button"
+            class="info"
+            data-tip="Named individuals only — never a whole faction as one entry. Faction is a property (colour). Not on any hierarchy until inducted."
+            aria-label="About Outsiders"
+          >
+            i
+          </button>
+        </div>
+        <ul class="outsiders__list">
           {
             (c.outsiders ?? []).length === 0 ? (
               <li class="empty">None tracked.</li>
             ) : (
-              (c.outsiders ?? []).map((o) => (
-                <li class="outsider" data-tip={o.note ?? ''}>
-                  {o.characterSlug ? (
-                    <a href={`/characters/${o.characterSlug}/`}>{o.name}</a>
-                  ) : (
-                    <strong>{o.name}</strong>
-                  )}
-                  {o.note && <span>{o.note}</span>}
-                </li>
-              ))
+              (c.outsiders ?? []).map((o) => {
+                const hue = o.faction ? factionHue(o.faction) : 0;
+                return (
+                  <li
+                    class="outsider"
+                    style={o.faction ? `--faction-h: ${hue}` : undefined}
+                  >
+                    {o.characterSlug ? (
+                      <a class="outsider__name" href={`/characters/${o.characterSlug}/`}>
+                        {o.name}
+                      </a>
+                    ) : (
+                      <span class="outsider__name">{o.name}</span>
+                    )}
+                    {o.faction && <span class="outsider__faction">{o.faction}</span>}
+                    {o.note && (
+                      <button
+                        type="button"
+                        class="info"
+                        data-tip={o.note}
+                        aria-label={`About ${o.name}`}
+                      >
+                        i
+                      </button>
+                    )}
+                  </li>
+                );
+              })
             )
           }
         </ul>
@@ -192,57 +245,63 @@ function tipFor(name: string, slug?: string): string {
   </section>
 
   <section class="surface" aria-labelledby="m-h">
-    <h2 id="m-h">Foundation Myths</h2>
-    <p class="lede">
-      Effects by type. Hover a name for short description. Fire only when a roll tags the Myth.
-    </p>
-    <div class="scroll">
-      <table class="matrix">
-        <thead>
-          <tr>
-            <th>Myth</th>
-            {MYTH_KIND_COLUMNS.map((col) => <th>{col.header}</th>)}
-          </tr>
-        </thead>
-        <tbody>
-          {
-            c.myths.length === 0 ? (
-              <tr>
-                <td colspan={1 + MYTH_KIND_COLUMNS.length} class="empty">
-                  No active Foundation Myths.
-                </td>
-              </tr>
-            ) : (
-              c.myths.map((m) => (
-                <tr>
-                  <td>
-                    <span class="matrix__name" title={m.summary ?? ''}>
-                      {m.title}
-                    </span>
-                  </td>
-                  {MYTH_KIND_COLUMNS.map((col) => {
-                    const cells = effectsForKind(m.effects ?? [], col.kind);
-                    return (
-                      <td>
-                        {cells.length === 0 ? (
-                          <span class="empty">—</span>
-                        ) : (
-                          cells.map((e) => (
-                            <span class="fx" data-kind={e.kind} title={e.detail ?? e.label}>
-                              {e.label}
-                              {e.faces?.length ? ` (${e.faces.join(', ')})` : ''}
-                            </span>
-                          ))
-                        )}
-                      </td>
-                    );
-                  })}
-                </tr>
-              ))
-            )
-          }
-        </tbody>
-      </table>
+    <div class="section-head">
+      <h2 id="m-h">Foundation Myths</h2>
+      <button
+        type="button"
+        class="info"
+        data-tip="Active myths of this community. Effects fire only when a roll tags the Myth. Hover chips for detail."
+        aria-label="About Foundation Myths"
+      >
+        i
+      </button>
     </div>
+    {
+      c.myths.length === 0 ? (
+        <p class="empty">No active Foundation Myths.</p>
+      ) : (
+        <div class="myth-list">
+          {c.myths.map((m) => (
+            <article class="myth-card">
+              <h3 class="myth-card__title">
+                {m.title}
+                {m.summary && (
+                  <button
+                    type="button"
+                    class="info"
+                    data-tip={m.summary}
+                    aria-label={`About ${m.title}`}
+                  >
+                    i
+                  </button>
+                )}
+              </h3>
+              <div class="myth-card__fx">
+                {(m.effects ?? []).length === 0 ? (
+                  <span class="empty">No listed effects.</span>
+                ) : (
+                  (m.effects ?? []).map((e) => (
+                    <span class="fx" data-kind={e.kind}>
+                      {e.label}
+                      {e.faces?.length ? ` (${e.faces.join(', ')})` : ''}
+                      {e.detail && (
+                        <button
+                          type="button"
+                          class="info"
+                          data-tip={e.detail}
+                          aria-label="Effect detail"
+                        >
+                          i
+                        </button>
+                      )}
+                    </span>
+                  ))
+                )}
+              </div>
+            </article>
+          ))}
+        </div>
+      )
+    }
   </section>
 </CampaignLayout>

@@ -55,9 +55,9 @@ export function demoTomas(): CharacterRecord {
     exertion: { current: 4, max: 0 },
     echoes: [
       makeEcho(
-        'Hold the seized grain store through the first winter of occupation',
+        'Keep the seized grain store standing through the first winter of occupation',
         2,
-        'Patched after the taking — still the proof the Bend is theirs to keep or lose.',
+        'The store is the warband’s ration and proof they hold the Bend — if it fails, hunger and challenge follow.',
       ),
     ],
     echoCapacity: 0,
@@ -103,7 +103,8 @@ export function demoCapacityProfile(name = 'Leif'): CharacterRecord {
     status: 'active',
     communityTie:
       'Took part in the burning and the taking of Kelarn’s Bend; claims the upper fields still black from last year’s fire.',
-    whoWeSee: 'A hard bargainer who still answers when the ford is threatened — conqueror’s claim, not a neighbour’s.',
+    whoWeSee:
+      'A hard bargainer who still answers when the ford is threatened — conqueror’s claim, not a neighbour’s.',
     player: {
       platform: 'discord',
       displayName: 'Player (Leif)',
@@ -132,17 +133,17 @@ export function demoCapacityProfile(name = 'Leif'): CharacterRecord {
       makeEcho(
         'Hold Kelarn’s Bend ford until the hostages return',
         3,
-        'The ford is the claim; lose it and the Bend is only ash and talk.',
+        'The ford is the claim; lose it and the Bend is only ash and talk. Pivotal for the whole occupation.',
       ),
       makeEcho(
-        'Compact with the reed-marsh folk for grain taken or traded under the sword',
+        'Keep Young Sten and the ford watch paid and fed through the freeze',
         2,
-        'Silence and grain under the warband’s shadow — trade that can turn to blood.',
+        'The watch is his circle — if they desert, the ford is open and his name is ash with them.',
       ),
       makeEcho(
-        'Mother’s knife under the floorboards',
+        'Bring his sister’s children through the first winter on seized ground',
         1,
-        'Personal iron; not for the hall’s ledger.',
+        'Personal stake: the occupation must feed more than the warband’s pride.',
       ),
     ],
     echoCapacity: 0,
@@ -229,21 +230,78 @@ export function seedDemoCampaign(
   const tomas = demoTomas();
   const leif = demoCapacityProfile('Leif');
   community.placements = [
-    { name: tomas.name, axis: 'Coin', tier: 'Acknowledged', characterSlug: tomas.slug },
-    { name: leif.name, axis: 'Arms', tier: 'Acknowledged', characterSlug: leif.slug },
-    { name: 'Halla', axis: 'Coin', tier: 'Trusted' },
-    { name: 'Halla', axis: 'Blood', tier: 'Acknowledged' },
-    { name: 'Old Rurik', axis: 'Faith', tier: 'Honoured' },
-    { name: 'Young Sten', axis: 'Arms', tier: 'Trusted' },
-  ];
-  community.outsiders = [
     {
-      name: 'Reed-marsh survivors',
-      note: 'Will trade grain and silence; will not bleed free for foreign occupiers at the Bend.',
+      name: tomas.name,
+      axis: 'Coin',
+      tier: 'Acknowledged',
+      characterSlug: tomas.slug,
+      note: tomas.whoWeSee,
     },
     {
-      name: 'Rival war-band on the next bend',
-      note: 'Same campaign of conquest; staking the next ford before the Vardmark can harden theirs.',
+      name: leif.name,
+      axis: 'Arms',
+      tier: 'Acknowledged',
+      characterSlug: leif.slug,
+      note: leif.whoWeSee,
+    },
+    {
+      name: 'Halla',
+      axis: 'Coin',
+      tier: 'Trusted',
+      note: 'Keeps the mill ledger after the taking; quiet power over grain counts.',
+    },
+    {
+      name: 'Halla',
+      axis: 'Blood',
+      tier: 'Acknowledged',
+      note: 'Widow of a Bend man who did not survive the fall — still claims kin-right in the hall.',
+    },
+    {
+      name: 'Old Rurik',
+      axis: 'Faith',
+      tier: 'Honoured',
+      note: 'Speaks for the dead of the Bend and the living oaths of the Vardmark — few contradict him twice.',
+    },
+    {
+      name: 'Young Sten',
+      axis: 'Arms',
+      tier: 'Trusted',
+      note: 'Leif’s ford watch; eager, unpaid enough to leave if the freeze bites hard.',
+    },
+    {
+      name: 'Bera of the lower bank',
+      axis: 'Blood',
+      tier: 'Outcast',
+      note: 'Survived the taking; kept as labour on the fields. Watches the river more than the hall.',
+    },
+    {
+      name: 'Gorm the tally-hand',
+      axis: 'Coin',
+      tier: 'Outcast',
+      note: 'Counts spoils for whoever holds the store tonight; loyalty follows the key.',
+    },
+  ];
+  // Individuals only — faction is a property, never the name
+  community.outsiders = [
+    {
+      name: 'Mara of the Reeds',
+      faction: 'Reed-marsh folk',
+      note: 'Speaks for grain and silence; will not bleed free for foreign occupiers at the Bend.',
+    },
+    {
+      name: 'Jorun Reed-eye',
+      faction: 'Reed-marsh folk',
+      note: 'Scout of the channels; knows every path that can starve or feed the ford.',
+    },
+    {
+      name: 'Skard of the Next Bend',
+      faction: 'Rival war-band',
+      note: 'Same campaign of conquest; means to stake the next ford before the Vardmark hardens theirs.',
+    },
+    {
+      name: 'Inga Ash-tongue',
+      faction: 'Rival war-band',
+      note: 'Herald and bargainer for the rival band — offers terms that never quite favour the Vardmark.',
     },
   ];
   community.ruler = null;

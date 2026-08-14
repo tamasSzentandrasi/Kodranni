@@ -27,16 +27,20 @@ const sourceLabel =
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="dark" />
     <meta name="robots" content="noindex" />
+    <link rel="icon" href="/brand/falcon-logo.png" type="image/png" />
     <title>{title} · {communityName}</title>
   </head>
-  <body data-density="normal">
+  <body>
     <div class="app">
       <header class="app__brand">
-        <span class="app__mark">Kodranni</span>
-        <h1 class="app__title">{communityName}</h1>
+        <img class="app__logo" src="/brand/falcon-logo.png" width="34" height="34" alt="" />
+        <div>
+          <span class="app__mark">Kodranni</span>
+          <h1 class="app__title">{communityName}</h1>
+        </div>
       </header>
       <p class="app__meta">
-        As of {asOf} · living record (read-only) · <span class="src">{sourceLabel}</span>
+        As of {asOf} · living record · <span class="src">{sourceLabel}</span>
       </p>
 
       <nav class="tabs" aria-label="Primary">
@@ -55,27 +59,6 @@ const sourceLabel =
 
     <script is:inline>
       (function () {
-        const densKey = 'kod-density';
-        const saved = localStorage.getItem(densKey);
-        if (saved) document.body.setAttribute('data-density', saved);
-        function syncDens() {
-          const d = document.body.getAttribute('data-density') || 'normal';
-          document.querySelectorAll('[data-density-btn]').forEach((b) => {
-            b.setAttribute(
-              'aria-pressed',
-              b.getAttribute('data-density-btn') === d ? 'true' : 'false',
-            );
-          });
-        }
-        syncDens();
-        document.querySelectorAll('[data-density-btn]').forEach((btn) => {
-          btn.addEventListener('click', () => {
-            const d = btn.getAttribute('data-density-btn');
-            document.body.setAttribute('data-density', d);
-            localStorage.setItem(densKey, d);
-            syncDens();
-          });
-        });
         document.querySelectorAll('[data-axis-toggle]').forEach((head) => {
           head.addEventListener('click', () => {
             const axis = head.closest('.axis');
@@ -85,18 +68,13 @@ const sourceLabel =
             head.setAttribute('aria-expanded', c ? 'true' : 'false');
           });
         });
-        document.querySelectorAll('[data-rung-expand]').forEach((btn) => {
-          btn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const rung = btn.closest('.rung');
+        document.querySelectorAll('[data-rung-toggle]').forEach((head) => {
+          head.addEventListener('click', () => {
+            const rung = head.closest('.rung');
             if (!rung) return;
-            const open = rung.getAttribute('data-expanded') === 'true';
-            rung.setAttribute('data-expanded', open ? 'false' : 'true');
-            btn.textContent = open ? 'Show all' : 'Collapse';
-            rung.querySelectorAll('.chip--overflow').forEach((el) => {
-              if (open) el.setAttribute('hidden', '');
-              else el.removeAttribute('hidden');
-            });
+            const c = rung.getAttribute('data-collapsed') === 'true';
+            rung.setAttribute('data-collapsed', c ? 'false' : 'true');
+            head.setAttribute('aria-expanded', c ? 'true' : 'false');
           });
         });
         const tip = document.getElementById('kod-tip');
@@ -106,8 +84,13 @@ const sourceLabel =
             tip.textContent = text;
             tip.hidden = false;
             const r = el.getBoundingClientRect();
-            tip.style.left = Math.min(window.innerWidth - 240, Math.max(8, r.left)) + 'px';
-            tip.style.top = Math.min(window.innerHeight - 90, r.bottom + 6) + 'px';
+            const left = Math.min(window.innerWidth - 260, Math.max(8, r.left));
+            const top = r.bottom + 6;
+            tip.style.left = left + 'px';
+            tip.style.top =
+              (top + tip.offsetHeight > window.innerHeight
+                ? Math.max(8, r.top - tip.offsetHeight - 6)
+                : top) + 'px';
           }
           function hide() {
             tip.hidden = true;

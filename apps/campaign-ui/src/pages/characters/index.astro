@@ -3,7 +3,7 @@ export const prerender = false;
 
 import CampaignLayout from '../../layouts/CampaignLayout.astro';
 import { loadCommunity } from '../../data/load';
-import { segments } from '../../lib/format';
+import { avatarUrl, monogram } from '../../lib/format';
 
 const c = loadCommunity();
 const selected = Astro.url.searchParams.get('sel') ?? '';
@@ -16,71 +16,45 @@ const selected = Astro.url.searchParams.get('sel') ?? '';
   primary="characters"
   source={c.source}
 >
-  <p class="lede">
-    Status at a glance. Open a card for the sheet. Hierarchy lives on Community — every member on
-    every axis.
-  </p>
+  <div class="section-head" style="border:none;margin-bottom:0.75rem">
+    <p class="app__meta" style="margin:0">
+      Open a sheet for load, foundations, skills, echoes, and inventory. Hierarchy lives on
+      Community.
+    </p>
+  </div>
 
   <div class="char-grid">
     {
       c.characters.map((ch) => {
-        const ex = segments(ch.exertion.current, ch.exertion.max);
-        const ec = segments(ch.echoWeight, ch.echoCapacity);
+        const src = avatarUrl(ch.slug, ch.avatar);
         return (
           <a
             class="char-card"
             href={`/characters/${ch.slug}/`}
             data-selected={selected === ch.slug ? 'true' : 'false'}
           >
-            <p class="char-card__name">{ch.name}</p>
-            <span class="char-card__status" data-status={ch.status}>
-              {ch.status}
-              {ch.dying ? ' · dying' : ''}
-            </span>
-            <p class="char-card__meta">{ch.player?.displayName ?? 'Unmapped player'}</p>
-            <div class="track-block" style="margin-top:0.65rem;margin-bottom:0.35rem">
-              <span class="track-block__label">Exertion</span>
-              <div class="segbar" aria-label={`Exertion ${ch.exertion.current} of ${ch.exertion.max}`}>
-                {ex.map((s) => (
-                  <span
-                    class:list={[
-                      'segbar__seg',
-                      s.on && 'segbar__seg--on',
-                      s.over && 'segbar__seg--over',
-                    ]}
-                  />
-                ))}
-                <span class="segbar__readout">
-                  {ch.exertion.current}/{ch.exertion.max}
-                </span>
-              </div>
-            </div>
-            <div class="track-block" style="margin-bottom:0">
-              <span class="track-block__label">Echo load</span>
-              <div
-                class="segbar segbar--echo"
-                aria-label={`Echo load ${ch.echoWeight} of ${ch.echoCapacity}`}
-              >
-                {ec.map((s) => (
-                  <span
-                    class:list={[
-                      'segbar__seg',
-                      s.on && 'segbar__seg--on',
-                      s.over && 'segbar__seg--over',
-                    ]}
-                  />
-                ))}
-                <span class="segbar__readout">
-                  {ch.echoWeight}/{ch.echoCapacity}
-                </span>
-              </div>
-            </div>
-            {(ch.flags.decadence || ch.flags.overCapacity) && (
-              <p class="char-card__meta" style="margin-top:0.45rem">
-                {ch.flags.decadence ? 'Decadence · ' : ''}
-                {ch.flags.overCapacity ? 'Over capacity (tax on Echo rolls)' : ''}
-              </p>
+            {src ? (
+              <img class="avatar" src={src} alt="" width="52" height="52" loading="lazy" />
+            ) : (
+              <span class="avatar avatar--mono" aria-hidden="true">
+                {monogram(ch.name)}
+              </span>
             )}
+            <div>
+              <p class="char-card__name">{ch.name}</p>
+              <span class="char-card__status" data-status={ch.status}>
+                {ch.status}
+                {ch.dying ? ' · dying' : ''}
+              </span>
+              <p class="char-card__meta">{ch.player?.displayName ?? 'Unmapped player'}</p>
+              {(ch.flags.decadence || ch.flags.overCapacity) && (
+                <p class="char-card__meta">
+                  {ch.flags.decadence ? 'Decadence' : ''}
+                  {ch.flags.decadence && ch.flags.overCapacity ? ' · ' : ''}
+                  {ch.flags.overCapacity ? 'Over capacity' : ''}
+                </p>
+              )}
+            </div>
           </a>
         );
       })

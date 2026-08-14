@@ -44,10 +44,15 @@ export interface HierarchyPlacement {
   tier: string;
   /** Optional link to character slug when the name is a PC/NPC on sheet. */
   characterSlug?: string;
+  /** Short who-we-see / flavour for diagram hover (NPCs without a full sheet). */
+  note?: string;
 }
 
 export interface OutsiderRecord {
+  /** Always a person — never a faction label as the name. */
   name: string;
+  /** Faction / banner this person answers to (colour-coded in the UI). */
+  faction?: string;
   note?: string;
   characterSlug?: string;
 }
@@ -97,20 +102,31 @@ export interface SkillProgress {
   foundation?: string;
 }
 
-/** Mechanical facets of a carried Echo (inventory for UI + future automation). */
+/**
+ * Mechanical facets of a carried Echo.
+ * Grouped by phase in the UI (while carried / on resolve / continuity).
+ */
 export type EchoEffectKind =
   | 'invoke_second_exertion'
-  | 'weight_individual'
-  | 'weight_group'
-  | 'weight_pivotal'
+  | 'load_cost'
+  | 'on_resolve_personal'
+  | 'on_resolve_group'
   | 'pivotal_fortune'
   | 'pivotal_myth'
   | 'persist_legacy'
   | 'dies_with_bearer'
-  | 'custom';
+  | 'custom'
+  /** @deprecated legacy sparse-matrix chips — rebuilt on load */
+  | 'weight_individual'
+  | 'weight_group'
+  | 'weight_pivotal';
+
+export type EchoEffectPhase = 'while_carried' | 'on_resolve' | 'continuity';
 
 export interface EchoEffect {
   kind: EchoEffectKind;
+  /** UI grouping. Defaults inferred from kind when missing. */
+  phase?: EchoEffectPhase;
   label: string;
   detail?: string;
 }
@@ -119,7 +135,7 @@ export interface EchoRecord {
   title: string;
   /** 1 Individual · 2 Group · 3 Pivotal */
   weight: 1 | 2 | 3;
-  /** Short description — hover / secondary line. */
+  /** Short description — shown via info mark, not preloaded. */
   note?: string;
   effects: EchoEffect[];
 }
@@ -134,6 +150,11 @@ export interface CharacterRecord {
   communityTie: string;
   /** “Who do we see?” — short claim, shown as quote. */
   whoWeSee?: string;
+  /**
+   * Portrait file under campaign media/avatars/ (basename), or absolute/http URL.
+   * Served by campaign-ui at /api/avatar/:slug when store-backed.
+   */
+  avatar?: string;
   /** Player account mapped to this character (display on sheet). */
   player?: PlayerBinding;
   foundations: Record<string, number>;
