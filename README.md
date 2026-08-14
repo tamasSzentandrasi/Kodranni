@@ -39,7 +39,7 @@ npm run kodranni -- live --slug vardmark
 # optional public HTTPS via Cloudflare quick tunnel (requires cloudflared on PATH):
 npm run kodranni -- live --slug vardmark --tunnel
 # → local  http://127.0.0.1:8742/community/
-# → public https://&lt;random-words&gt;.trycloudflare.com/  (while process runs;
+# → public https://random-words.trycloudflare.com/  (while process runs;
 #    free Cloudflare names are word-salad, not hex; still unguessable capability URLs)
 
 # What to share / readiness (Emissary — not “doctor”)
