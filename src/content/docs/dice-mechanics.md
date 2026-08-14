@@ -284,17 +284,33 @@ Omens on Tide-linked actions also move the marker. On **equal footing**:
 
 **Imbalance:** Disadvantage for a side lowers its thresholds (negative Omens more often, positive rarer). Severe disadvantage (the d6-versus-d12 equivalent) shifts Omen bands by **two full levels**. Personal Advantage on a single action is still judged case by case; the macro adjustment is for Tide Omen thresholds only.
 
-### Interactive example — column and horse-archers
+### Interactive example — two PCs in a dying column
 
-Unequal sides, battle-sized pressure, Omen bands under severe disadvantage, and **player agency that is not the same as winning the Tide**. Step through; the bar updates.
+**Groups do not roll.** People do. The Tide only moves when an **individual’s** Tide-linked action (and its reply, margin, and Omen) is framed against the shared struggle.
 
-**Scene:** An imperial marching column with the emperor in the centre. A Mongol horse-archer party harasses the flanks — bait, false retreats, arrow storms. **Side A (imperial, crimson)** weight **6**. **Side B (Mongol, teal)** weight **12**. Track length **17**. Start **6**. Skirmish size **battle** → **3** Marks per Tide step. Imperials are under severe collective Disadvantage for Tide Omens (negative faces **1–5**, positive only **20** in this demo).
+**You play:**
 
-Players are bodyguards and officers of the imperial side: they can still act when the column is dying.
+| Character | Role |
+|-----------|------|
+| **Cassian** | Mounted sergeant of the outriders — keeps the flanks from dissolving into dust |
+| **Liora** | Imperial bodyguard at the litter — keeps one old man breathing |
+
+**The fight:** An imperial column on the dry steppe road. A Mongol horse-archer party works the classic pattern — bait, false retreat, volleys, then a hidden cut from the wash. **Crimson** = imperial collective footing. **Teal** = Mongol pressure. Weight **6 vs 12**, track **17**, start **6**, skirmish size **battle** (3 Marks per Tide step). Macro Disadvantage for the column on Tide Omens: negative faces **1–5**, positive only **20**.
+
+**Preconfigured Omen faces (this scene):**
+
+| Face | Kind | Meaning when it lands |
+|------|------|------------------------|
+| **1–5** | Tide negative (imbalance) | Shared bar moves against the column |
+| **4** | *Also* scene face (ambush) | “Riders in the left dry wash” — the hidden flank is revealed in fiction |
+| **13** | Negative Consequence | Side-effect only; does not rewrite Marks on that roll |
+| **20** | Tide positive | Rare under this footing — bar would ease for the column |
+
+Step through. The bar updates each beat.
 
 <div class="kod-widget not-content" data-widget="tide-demo" aria-label="Tide interactive example">
-<p class="kod-widget__title">Tide demo — the emperor’s column</p>
-<p class="kod-widget__intro">Crimson = imperial footing remaining toward their collapse end. Teal = Mongol pressure. The marker is where the collective balance sits. Step through the harassment and the attempt to save the emperor.</p>
+<p class="kod-widget__title">Tide demo — dust on the imperial road</p>
+<p class="kod-widget__intro">Two player characters. Individual rolls only. Marks margins and Omen landings both push the bar. Saving the emperor is not the same as winning the skirmish.</p>
 
 <div class="kod-tide" data-tide-visual>
   <div class="kod-tide__labels">
@@ -317,63 +333,97 @@ Players are bodyguards and officers of the imperial side: they can still act whe
 <button type="button" class="kod-widget__btn" data-tab="t4">4</button>
 <button type="button" class="kod-widget__btn" data-tab="t5">5</button>
 <button type="button" class="kod-widget__btn" data-tab="t6">6</button>
+<button type="button" class="kod-widget__btn" data-tab="t7">7</button>
+<button type="button" class="kod-widget__btn" data-tab="t8">8</button>
 </div>
 
-<div class="kod-widget__panel" data-panel-id="t1" data-step-title="Open the Tide" data-tide-pos="6" data-tide-note="Position 6 of 17. Imperial weight 6 · Mongol weight 12 · battle: 3 Marks per step.">
-<p><strong>Open the Tide.</strong> The column is already the weaker force: weight 6 vs 12 → track length 17, start 6 (near imperial collapse). Macro footing is severe Disadvantage for the imperials on Tide Omens — bad luck hits them more often.</p>
-<p>Personal rolls still use their own Advantage. The bar only moves when fiction ties an action to this collective struggle.</p>
+<div class="kod-widget__panel" data-panel-id="t1" data-step-title="Dust and distance" data-tide-pos="6" data-tide-note="Position 6 of 17. Weight 6 vs 12 · battle: 3 Marks per step · Tide Omens 1–5 hurt the column.">
+<p>Noon heat. Hooves far out on the grass. Cassian’s outriders report a thin line of bows that will not close. Liora rides knee-to-knee with the litter; the emperor is pale, still giving orders no one can obey at this range.</p>
+<p>The Storyteller opens a Tide: the column is the weaker force. Crimson starts short. You do not roll for “the army.” You roll for <em>what Cassian does</em> and <em>what Liora does</em> — and when those acts are Tide-linked, the bar listens.</p>
 </div>
 
-<div class="kod-widget__panel" data-panel-id="t2" data-step-title="False retreat" data-tide-pos="5" data-tide-note="Margin 4 Marks → floor(4÷3) = 1 step against the column. 6 → 5." hidden>
-<p><strong>Bait.</strong> Horse-archers feign flight. An imperial wing pursues.</p>
+<div class="kod-widget__panel" data-panel-id="t2" data-step-title="Cassian holds the chase" data-tide-pos="5" data-tide-note="Cassian 2 Marks vs reply 6 → margin 4 → floor(4÷3) = 1 step against you. 6 → 5." hidden>
+<p>Half the horse-archers break and run. Young riders in Cassian’s troop lean after them — the classic bait.</p>
+<p><strong>Cassian</strong> cuts across their path, voice raw:</p>
 <ul>
-<li><strong>Imperial officer (NPC or PC):</strong> Authority + Command to hold the wing — d6 (bad ground, bait) → <strong>1 Mark</strong>.</li>
-<li><strong>Mongol reply:</strong> Perception + Archery (or Tactics) on the false retreat — d12 → <strong>5 Marks</strong>.</li>
-<li><strong>Margin:</strong> 4. Battle needs 3 per step → floor(4÷3) = <strong>1</strong> step toward Mongol pressure.</li>
-<li><strong>Tide:</strong> 6 → <strong>5</strong>. The crimson share of the bar shrinks.</li>
+<li><strong>Intent (Tide-linked):</strong> stop the pursuit before the false retreat opens the wing.</li>
+<li><strong>Cassian:</strong> Authority + Command, d6 (they already want blood and glory) → <strong>2 Marks</strong>.</li>
+<li><strong>Reply (lead bait-rider):</strong> Charisma + Intimidate / Perception + Scouting as he wheels — d12 → <strong>6 Marks</strong>.</li>
+<li><strong>Margin:</strong> 4 → floor(4÷3) = <strong>1</strong> Tide step against the column. Position <strong>6 → 5</strong>.</li>
+<li><strong>Omen:</strong> 11 — no Consequence, no Tide Omen face. The bar moved only from Marks.</li>
 </ul>
+<p>Fiction: two lances still chase into the dust. Cassian has held most of them. The Tide still bled.</p>
 </div>
 
-<div class="kod-widget__panel" data-panel-id="t3" data-step-title="Arrow storm + Omen" data-tide-pos="3" data-tide-note="Margin 5 → 1 step (5→4). Omen 2 (in expanded negative band) → another step (4→3)." hidden>
-<p><strong>Harassment.</strong> A Tide-linked volley into the column’s baggage and rear ranks.</p>
+<div class="kod-widget__panel" data-panel-id="t3" data-step-title="Liora in the arrow-rain" data-tide-pos="4" data-tide-note="Liora 3 vs reply 6 → margin 3 → 1 step. 5 → 4. Omen 9 quiet." hidden>
+<p>Arrows fall on the baggage and the left files. Someone screams among the mules. Liora forces her horse against the litter’s wheel, shield up for the emperor first.</p>
 <ul>
-<li><strong>Imperial shield line:</strong> Constitution + Deflection, d8 → <strong>2 Marks</strong>.</li>
-<li><strong>Mongol horse-archers:</strong> Perception + Archery, d12 → <strong>7 Marks</strong>.</li>
-<li><strong>Margin:</strong> 5 → floor(5÷3) = <strong>1</strong> step. Tide 5 → <strong>4</strong>.</li>
-<li><strong>Omen die:</strong> shows <strong>2</strong>. Under severe Disadvantage, battle negative faces stretch (demo: 1–5). A negative Omen on a Tide-linked action moves the Tide again → <strong>4 → 3</strong>.</li>
+<li><strong>Intent (Tide-linked):</strong> keep the centre from folding under the first real volley — the litter must not bolt.</li>
+<li><strong>Liora:</strong> Constitution + Deflection, d8 → <strong>3 Marks</strong>.</li>
+<li><strong>Reply (Mongol bow-hand on the near flank):</strong> Perception + Archery, d12 → <strong>6 Marks</strong>.</li>
+<li><strong>Margin:</strong> 3 → floor(3÷3) = <strong>1</strong> step. Tide <strong>5 → 4</strong>.</li>
+<li><strong>Omen:</strong> 9 — nothing special.</li>
 </ul>
-<p>Two different engines hit the same bar: Marks margin, then Omen.</p>
+<p>The emperor is unhit. A standard-bearer is not. Crimson shrinks again.</p>
 </div>
 
-<div class="kod-widget__panel" data-panel-id="t4" data-step-title="Flank and panic" data-tide-pos="1" data-tide-note="Margin 7 → floor(7÷3) = 2 steps. 3 → 1. One step from imperial route." hidden>
-<p><strong>Flank.</strong> Riders appear on the unguarded side; the false retreat has drawn the line thin.</p>
+<div class="kod-widget__panel" data-panel-id="t4" data-step-title="Consequence on Cassian" data-tide-pos="3" data-tide-note="Margin 3 → 1 step (4→3). Omen 13 is Negative Consequence only — horse killed under him; does not rewrite the Marks or double-move the Tide." hidden>
+<p>Cassian spurs to plug a gap the volley opened. A shaft finds his mount’s neck mid-shout.</p>
 <ul>
-<li><strong>Imperial centre:</strong> Resolve + Tactics to refuse the flank — d6 → <strong>1 Mark</strong>.</li>
-<li><strong>Mongol reply:</strong> Authority + Command to press the break — d12 → <strong>8 Marks</strong>.</li>
-<li><strong>Margin:</strong> 7 → floor(7÷3) = <strong>2</strong> steps. Tide 3 → <strong>1</strong>.</li>
+<li><strong>Intent (Tide-linked):</strong> re-form the outriders into a screen.</li>
+<li><strong>Cassian:</strong> Dexterity + Ride, d6 → <strong>1 Mark</strong>.</li>
+<li><strong>Reply:</strong> Perception + Archery, d12 → <strong>4 Marks</strong>.</li>
+<li><strong>Margin:</strong> 3 → floor(3÷3) = <strong>1</strong> step. Tide <strong>4 → 3</strong>.</li>
+<li><strong>Omen:</strong> <strong>13</strong> — <strong>Negative Consequence</strong> (side-effect only; cannot rewrite the Marks result). His horse goes down hard; he is thrown; take <strong>Bleeding 1</strong> or a temporary Ride/Footwork penalty as the Storyteller rules. The Tide already moved from the margin — the Consequence hits <em>Cassian</em>, not the bar a second time.</li>
 </ul>
-<p>The column is one push from collective route. Teal dominates the bar.</p>
+<p>He is on foot among panicked horses. The column has not broken yet. Something in him has.</p>
 </div>
 
-<div class="kod-widget__panel" data-panel-id="t5" data-step-title="Save the emperor" data-tide-pos="1" data-tide-note="Personal success. Tide stays at 1 — individual agency is not the same as winning the collective track." hidden>
-<p><strong>Player agency — not the same as the Tide.</strong> A bodyguard PC cuts toward the emperor’s litter.</p>
+<div class="kod-widget__panel" data-panel-id="t5" data-step-title="Ambush face" data-tide-pos="1" data-tide-note="Margin 3 → 1 step (3→2). Omen 4: preconfigured ambush face + Tide-negative band → another step (2→1)." hidden>
+<p>On his knees in the dust, Cassian sees movement where the maps showed empty scrub — the left dry wash. He scrapes enough breath to shout.</p>
 <ul>
-<li><strong>Intent:</strong> get the emperor mounted and off the killing ground.</li>
-<li><strong>Player:</strong> Strength + Footwork / Dexterity + Ride (as fits), d8 with Advantage (close, known ground of the litter) → <strong>4 Marks</strong>.</li>
-<li><strong>Reply (harassing archer):</strong> Perception + Archery, d8 → <strong>1 Mark</strong>.</li>
-<li><strong>Fiction:</strong> the emperor is on a horse, a knot of guards with him — a real personal win.</li>
-<li><strong>Tide:</strong> this action was not framed as restoring the whole column’s will. Marker stays at <strong>1</strong>. The bar does not reward heroism with automatic army victory.</li>
+<li><strong>Intent (Tide-linked):</strong> warn the line and buy a heartbeat of facing.</li>
+<li><strong>Cassian:</strong> Perception + Combat Awareness, d8 (pain, dust) → <strong>2 Marks</strong>.</li>
+<li><strong>Reply (concealed horse-archer rising from the wash):</strong> Guile + Stealth — d12 → <strong>5 Marks</strong>.</li>
+<li><strong>Margin:</strong> 3 → <strong>1</strong> step. Tide <strong>3 → 2</strong>.</li>
+<li><strong>Omen:</strong> <strong>4</strong> — in the Tide-negative band <em>and</em> the Storyteller’s preconfigured scene face: <strong>“Riders in the left dry wash.”</strong> The ambush is no longer hidden. As a Tide-negative Omen it also shifts the bar: <strong>2 → 1</strong>.</li>
 </ul>
-<p>That is the point: you can still act when the side is dying. Tide tracks the host; you track the person.</p>
+<p>Fiction and track move together: the flank is open; everyone can see why crimson is almost gone.</p>
 </div>
 
-<div class="kod-widget__panel" data-panel-id="t6" data-step-title="Route" data-tide-pos="0" data-tide-note="Final Omen 1 on a Tide-linked press → imperial end. Side A routes. The emperor may still escape with the PCs." hidden>
-<p><strong>Route.</strong> Mongols press the broken wing. A Tide-linked action rolls Omen <strong>1</strong> (still in the expanded negative band for the imperials). The marker hits the imperial end.</p>
+<div class="kod-widget__panel" data-panel-id="t6" data-step-title="Cassian’s last screen" data-tide-pos="1" data-tide-note="Personal / local fight on the wash lip — not framed as Tide-linked. Marker stays at 1. Cassian buys yards with blood." hidden>
+<p>Cassian seizes a riderless mount and throws himself into the gap between the wash and the litter. The Storyteller frames this as a <strong>local</strong> fight for ground and breath — not a Tide-linked push of the whole column.</p>
 <ul>
-<li><strong>Collective:</strong> the imperial side <strong>routes</strong> — ranks dissolve, standards fall, the host flees or is cut down in packs.</li>
-<li><strong>Personal:</strong> the bodyguard PC and whoever still answers them may still run with the emperor, form a last knot, die on the path, or vanish into dust. Tide does not erase those choices.</li>
+<li><strong>Intent:</strong> hold the lip of the wash long enough for anyone still thinking to look south.</li>
+<li><strong>Cassian:</strong> Strength + Slash as he meets the first riders, d6 → <strong>3 Marks</strong>.</li>
+<li><strong>Reply (flank leader):</strong> Strength + Slash, d12 → <strong>4 Marks</strong>.</li>
+<li><strong>Margin:</strong> 1 — he is forced back a horse-length, still upright, still buying noise and time.</li>
+<li><strong>Omen:</strong> 16 — no face.</li>
+<li><strong>Tide:</strong> unchanged at <strong>1</strong>. This roll was never about the army’s will.</li>
 </ul>
-<p>Load Omen faces that matter. Let players leave the Tide when fiction allows — here, the objective was never “win the skirmish”; it was “the emperor lives.”</p>
+<p>Teal already owns the bar. Cassian owns a few more heartbeats of road.</p>
+</div>
+
+<div class="kod-widget__panel" data-panel-id="t7" data-step-title="Liora takes the emperor" data-tide-pos="1" data-tide-note="Personal win. Tide stays at 1 — the objective was the man in the litter, not the army’s will." hidden>
+<p>Liora does not try to win the field. She cuts the litter’s near straps, hauls the emperor onto her own saddle, and turns for the only gap that still looks like road.</p>
+<ul>
+<li><strong>Intent (not Tide-linked):</strong> the emperor leaves this ground alive. The Storyteller agrees this is a personal extraction, not a rally of the column.</li>
+<li><strong>Liora:</strong> Strength + Athletics to get him up, then Dexterity + Ride, d8 with Advantage (she has drilled this nightmare) → <strong>5 Marks</strong> on the critical beat.</li>
+<li><strong>Reply (archer trying for the double target):</strong> Perception + Archery, d8 → <strong>2 Marks</strong>.</li>
+<li><strong>Fiction:</strong> they are moving. Two household guards cling on. An arrow takes Liora’s cloak, not her spine.</li>
+<li><strong>Tide:</strong> unchanged at <strong>1</strong>. Heroism here is not a free army victory.</li>
+</ul>
+<p>Cassian, if he still can, hears the shout to cover the road south. That is player agency inside a lost collective.</p>
+</div>
+
+<div class="kod-widget__panel" data-panel-id="t8" data-step-title="Route — and the road south" data-tide-pos="0" data-tide-note="Final Tide-linked collapse: Omen 1 on the press. Imperial side routes. Liora and the emperor may still be on the road." hidden>
+<p>The centre files see the wash riders and the broken screen. Standards tip. Someone cuts a mule free and runs.</p>
+<ul>
+<li>A last Tide-linked action on the imperial side (NPC panic or a PC trying one more shout) rolls Omen <strong>1</strong> — pure Tide-negative under the imbalance band. Marker to the imperial end.</li>
+<li><strong>Collective:</strong> the column <strong>routes</strong>. The host is no longer an army.</li>
+<li><strong>Personal:</strong> Liora still has a horse, an emperor, and a direction. Cassian may die buying yards, crawl after them, or vanish into the grass. The Tide does not decide those rolls for you.</li>
+</ul>
+<p>What the table was playing for was never “break the Mongols.” It was whether two characters could still matter when the crimson side of the bar went black.</p>
 </div>
 
 <div class="kod-step-flow__nav">
