@@ -1,6 +1,6 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
-import { campaignDir, defaultStorePath } from './paths.js';
+import { campaignDir, campaignRuntimeLogsDir, defaultStorePath } from './paths.js';
 
 export interface CampaignConfig {
   schema: number;
@@ -124,6 +124,7 @@ export async function ensureCampaignLayout(slug: string, name: string): Promise<
   await mkdir(join(dir, 'data'), { recursive: true });
   await mkdir(join(dir, 'private'), { recursive: true });
   await mkdir(join(dir, 'media', 'avatars'), { recursive: true });
+  await mkdir(campaignRuntimeLogsDir(slug), { recursive: true });
   await writeCampaignConfig(cfg, join(dir, 'campaign.toml'));
   return cfg;
 }

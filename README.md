@@ -29,27 +29,34 @@ npm run kodranni -- campaign destroy --slug vardmark --yes   # optional wipe
 npm run kodranni -- campaign seed-demo --force               # create/overwrite
 
 # Player / ST rolls (crypto RNG; optional --debug-seed N for verification only)
-npm run kodranni -- roll --slug vardmark --character tomas \
+npm run kodranni -- roll --slug vardmark --character torvald \
   --foundation Strength --skill "Carpentry & Masonry" --tier 8 --exertion 1
 npm run kodranni -- st-roll --slug vardmark \
   --label "War-band scout" --foundation 2 --skill 1 --tier 8
 
 # Live sheet + community tracker (SSR, re-reads SQLite each request)
 npm run kodranni -- live --slug vardmark
-# → http://127.0.0.1:8742/community/
-# → http://127.0.0.1:8742/characters/
-# → …/characters/tomas/  and  …/characters/tomas/burden/
+# optional hashed HTTPS (requires cloudflared on PATH):
+npm run kodranni -- live --slug vardmark --tunnel
+# → local  http://127.0.0.1:8742/community/
+# → public https://….trycloudflare.com/  (while process runs)
+
+# What to share / readiness (Emissary — not “doctor”)
+npm run kodranni -- emissary --slug vardmark
 ```
 
-`npm run kodranni` resolves workspaces from this repo (or `KODRANNI_REPO` if the bin is invoked elsewhere).
+`npm run kodranni` resolves workspaces from this repo (or `KODRANNI_REPO` if the bin is invoked elsewhere).  
+Bots/adapters call **`@kodranni/app`** in-process — they do not shell out to this CLI.
 
-Private data: `~/.kodranni/campaigns/<slug>/` (gitignored). Override with `KODRANNI_HOME`.
+Private data: `~/.kodranni/campaigns/<slug>/` (gitignored). Override with `KODRANNI_HOME`.  
+Runtime (live URL, logs): `~/.kodranni/campaigns/<slug>/runtime/`.
 
 | Area | Status |
 |------|--------|
 | Domain + CLI rolls + export | **Yes** |
 | Live Community + Character UI | **Functional** (polish deferred) |
 | Reconstructible demo (`seed-demo --force` / `destroy`) | **Yes** |
+| Hashed live tunnel + emissary | **Yes** (`live --tunnel`, `emissary`) |
 | Discord / Fluxer bot on a real server | **Not yet** |
 
 Capacities: **Exertion** = Res+Con+Cha; **Echo capacity** = max(Str,Dex)+Int+Auth. Over-capacity −1 only on Echo-involved rolls.

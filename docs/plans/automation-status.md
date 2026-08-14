@@ -9,10 +9,10 @@
 | Domain (pools, Practice, Harm, Tide, capacities) | Strong | Golden tests; dual capacity formulas |
 | Store port (hexagonal) | Improving | `CommunityStorePort`; SQLite is one adapter |
 | SQLite adapter | Working | Local SoT under `~/.kodranni/campaigns/<slug>/` |
-| CLI | Working | seed/destroy/roll/live; reconstructible with `--force` |
-| Live campaign-ui | Functional draft | Community + character UX; not final art |
-| Discord / Fluxer bots | Not started | Skeletons only |
-| Campaign GitHub/Pages spawn | Not started | Designed only |
+| CLI | Working | seed/destroy/roll/live/`emissary`; `live --tunnel`; reconstructible `--force` |
+| Live campaign-ui | Functional enough | Community + character UX; polish later |
+| Discord / Fluxer bots | Not started | Skeletons only; call **app** not CLI |
+| Campaign GitHub/Pages spawn | Not started | Designed only; force-publish on session end |
 
 ## Reconstructible demo
 
@@ -38,13 +38,17 @@ Default demo slug: **`vardmark`**. Characters: **torvald**, **leifr**.
 | Hierarchy | Every **member** on every axis (default Outcast); Outsiders **side rail** only |
 | Hexagonal persistence | App → `CommunityStorePort`; SQLite implements it |
 | Campaign map | **Post-initial release** — ST editor + public viewer; Atlas/Ground modes; not VTT. Grok skill/MCP templates later (after hand editor) |
+| Layering | **Adapters → `packages/app` in-process**; CLI is ST orchestration only (never bot IPC) |
+| Live access | Optional **hashed Cloudflare quick tunnel** (`live --tunnel`); `emissary` reports URLs |
+| Naming | **`emissary`** (not doctor) — readiness + what to share mid-session |
 
 ## Known gaps / next
 
-1. Bot runtime (Discord then Fluxer) on same port  
-2. Induct-outsider CLI  
-3. Publish/archive pipeline  
-4. Campaign geography map programme (deferred — see architecture §3 “Planned later”)  
+1. Background `session start/end` + structured runtime logs  
+2. Bot runtime (Discord then Fluxer) over ChatPort → app  
+3. ST harm assign + resource event app commands  
+4. Publish/archive pipeline (force on session end)  
+5. Campaign geography map programme (deferred)  
 
 ## Verify loop
 

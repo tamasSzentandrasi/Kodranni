@@ -1,5 +1,5 @@
-import { spawn } from 'node:child_process';
-import { existsSync, writeFileSync } from 'node:fs';
+import { type ChildProcess, spawn } from 'node:child_process';
+import { createWriteStream, existsSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { cryptoRng, mulberry32 } from '@kodranni/domain';
@@ -7,17 +7,31 @@ import { executePlayerRoll, executeStorytellerNpcRoll } from '@kodranni/app';
 import {
   DEMO_NAME,
   DEMO_SLUG,
+  campaignRuntimeLogsDir,
   defaultCampaignTomlPath,
   destroyCampaignDir,
   ensureCampaignLayout,
+  ensureCampaignRuntime,
   openSqliteStore,
   readCampaignConfig,
+  readLiveUrl,
   seedDemoCampaign,
+  writeLiveUrl,
+  writeSessionState,
   type CampaignConfig,
 } from '@kodranni/store';
+import { printEmissaryReport, runEmissary } from './emissary.js';
+import {
+  findCloudflared,
+  localHttpUrlFromBind,
+  startCloudflaredTunnel,
+} from './tunnel.js';
 
 function usage(code = 1): never {
   console.log(`kodranni — local automation CLI
+
+Adapters and bots call application services in-process — not this CLI.
+The CLI is for ST ops, session orchestration, and verification.
 
 Usage:
   kodranni campaign init --slug <slug> --name <name>
@@ -30,7 +44,10 @@ Usage:
                 [--tier 6|8|12] [--exertion 0|1|2] [--echo] [--debug-seed N]
   kodranni st-roll --slug <slug> --label <name> --foundation <n> --skill <n>
                 [--tier 6|8|12] [--exertion 0|1] [--debug-seed N]
-  kodranni live --slug <slug>
+  kodranni live --slug <slug> [--tunnel]
+      Live campaign-ui. --tunnel: Cloudflare quick tunnel → hashed HTTPS URL.
+  kodranni emissary [--slug <slug>]
+      Readiness + live/archive access (delivers what players should open).
   kodranni help
 
 RNG: production rolls use crypto. --debug-seed is for verification only.
@@ -53,10 +70,8 @@ function resolveRepoRoot(): string {
   if (process.env.KODRANNI_REPO && existsSync(join(process.env.KODRANNI_REPO, 'package.json'))) {
     return process.env.KODRANNI_REPO;
   }
-  // apps/cli/src → monorepo root
   const fromCli = join(dirname(fileURLToPath(import.meta.url)), '../../..');
   if (existsSync(join(fromCli, 'package.json'))) return fromCli;
-  // cwd if it is the repo
   if (existsSync(join(process.cwd(), 'package.json'))) return process.cwd();
   console.error(
     'Could not locate the Kodranni package root (package.json).\n' +
@@ -76,6 +91,15 @@ function rngFromArgs(args: string[]) {
     return mulberry32(Number(debug));
   }
   return cryptoRng();
+}
+
+function killChild(child: ChildProcess | undefined): void {
+  if (!child || child.killed) return;
+  try {
+    child.kill('SIGTERM');
+  } catch {
+    /* ignore */
+  }
 }
 
 async function main(): Promise<void> {
@@ -126,7 +150,6 @@ async function main(): Promise<void> {
       console.log(`Removed previous data for ${slug}`);
     }
     const cfg = await ensureCampaignLayout(slug, name);
-    // Always re-open store and re-seed (idempotent overwrite of demo content)
     const store = openSqliteStore(cfg.storePath);
     seedDemoCampaign(store, cfg.slug, cfg.name);
     store.close();
@@ -150,22 +173,92 @@ async function main(): Promise<void> {
     return;
   }
 
+  if (cmd === 'emissary') {
+    const slug = arg(args, '--slug') ?? DEMO_SLUG;
+    const report = await runEmissary({ slug });
+    printEmissaryReport(report, slug);
+    process.exit(report.ok ? 0 : 1);
+  }
+
   if (cmd === 'live') {
     const slug = arg(args, '--slug') ?? DEMO_SLUG;
+    const useTunnel = has(args, '--tunnel');
     const cfg = await loadConfig(slug);
     const repoRoot = resolveRepoRoot();
+    ensureCampaignRuntime(slug);
+    const logsDir = campaignRuntimeLogsDir(slug);
+    const localUrl = localHttpUrlFromBind(cfg.liveBind);
+
+    writeLiveUrl(slug, localUrl);
+    writeSessionState(slug, {
+      slug,
+      startedAt: new Date().toISOString(),
+      localUrl,
+      liveUrl: localUrl,
+      tunnel: useTunnel,
+    });
+
     console.log(`Live campaign-ui for ${cfg.slug}`);
     console.log(`  store: ${cfg.storePath}`);
-    console.log(`  url:   ${cfg.liveBaseUrl}`);
+    console.log(`  local: ${localUrl}`);
     console.log(`  repo:  ${repoRoot}`);
-    // shell:false avoids DEP0190 (args not escaped when shell concatenates)
+
+    let tunnelChild: ChildProcess | undefined;
+    if (useTunnel) {
+      const bin = await findCloudflared();
+      if (!bin) {
+        console.error(
+          'cloudflared not found on PATH.\n' +
+            '  Install Cloudflare Tunnel client, then re-run with --tunnel.\n' +
+            '  Local URL remains available without a tunnel.',
+        );
+        process.exit(1);
+      }
+      const tunnelLog = join(logsDir, 'tunnel.log');
+      console.log(`  tunnel: starting (${bin})…`);
+      const tunnel = startCloudflaredTunnel({
+        cloudflaredBin: bin,
+        localUrl,
+        logPath: tunnelLog,
+      });
+      tunnelChild = tunnel.child;
+      try {
+        const publicUrl = await Promise.race([
+          tunnel.url,
+          new Promise<string>((_, rej) =>
+            setTimeout(() => rej(new Error('Timed out waiting for tunnel URL (45s)')), 45_000),
+          ),
+        ]);
+        writeLiveUrl(slug, publicUrl);
+        writeSessionState(slug, {
+          slug,
+          startedAt: new Date().toISOString(),
+          localUrl,
+          liveUrl: publicUrl,
+          tunnel: true,
+          pids: { tunnel: tunnelChild.pid },
+        });
+        console.log(`  public: ${publicUrl}`);
+        console.log(`  (hashed URL — share only while this process runs; not for the public repo)`);
+        console.log(`  log:    ${tunnelLog}`);
+      } catch (e) {
+        killChild(tunnelChild);
+        console.error(e instanceof Error ? e.message : e);
+        process.exit(1);
+      }
+    }
+
+    const liveLogPath = join(logsDir, 'live.log');
+    const liveLog = createWriteStream(liveLogPath, { flags: 'a' });
+    liveLog.write(`\n--- live start ${new Date().toISOString()} ---\n`);
+
     const npmBin = process.platform === 'win32' ? 'npm.cmd' : 'npm';
     const child = spawn(
       npmBin,
       ['run', 'dev', '-w', '@kodranni/campaign-ui'],
       {
         cwd: repoRoot,
-        stdio: 'inherit',
+        stdio: ['inherit', 'pipe', 'pipe'],
         env: {
           ...process.env,
           KODRANNI_STORE_PATH: cfg.storePath,
@@ -177,12 +270,51 @@ async function main(): Promise<void> {
         shell: false,
       },
     );
+
+    writeSessionState(slug, {
+      slug,
+      startedAt: new Date().toISOString(),
+      localUrl,
+      liveUrl: readLiveUrl(slug) ?? localUrl,
+      tunnel: useTunnel,
+      pids: { live: child.pid, tunnel: tunnelChild?.pid },
+    });
+
+    child.stdout?.on('data', (b: Buffer) => {
+      process.stdout.write(b);
+      liveLog.write(b);
+    });
+    child.stderr?.on('data', (b: Buffer) => {
+      process.stderr.write(b);
+      liveLog.write(b);
+    });
+
+    const shutdown = () => {
+      killChild(tunnelChild);
+      killChild(child);
+    };
+    process.on('SIGINT', () => {
+      shutdown();
+      process.exit(130);
+    });
+    process.on('SIGTERM', () => {
+      shutdown();
+      process.exit(143);
+    });
+
     await new Promise<void>((resolve, reject) => {
       child.on('exit', (code) => {
+        killChild(tunnelChild);
+        liveLog.write(`\n--- live exit code=${code} ---\n`);
+        liveLog.end();
         if (code === 0 || code === null) resolve();
         else reject(new Error(`campaign-ui exited ${code}`));
       });
-      child.on('error', reject);
+      child.on('error', (err) => {
+        killChild(tunnelChild);
+        liveLog.end();
+        reject(err);
+      });
     });
     return;
   }

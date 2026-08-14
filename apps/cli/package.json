@@ -7,12 +7,16 @@
     "kodranni": "./bin/kodranni.mjs"
   },
   "scripts": {
-    "start": "node --experimental-sqlite --import tsx ./src/main.ts"
+    "start": "node --experimental-sqlite --import tsx ./src/main.ts",
+    "test": "vitest run"
   },
   "dependencies": {
     "@kodranni/app": "*",
     "@kodranni/domain": "*",
     "@kodranni/store": "*",
     "tsx": "^4.19.3"
+  },
+  "devDependencies": {
+    "vitest": "^3.0.9"
   }
 }

@@ -29,6 +29,23 @@ export function campaignAvatarsDir(slug: string, env?: NodeJS.ProcessEnv): strin
   return join(campaignMediaDir(slug, env), 'avatars');
 }
 
+/** Session runtime: pids, live URL, logs (not public snapshot). */
+export function campaignRuntimeDir(slug: string, env?: NodeJS.ProcessEnv): string {
+  return join(campaignDir(slug, env), 'runtime');
+}
+
+export function campaignRuntimeLogsDir(slug: string, env?: NodeJS.ProcessEnv): string {
+  return join(campaignRuntimeDir(slug, env), 'logs');
+}
+
+export function liveUrlPath(slug: string, env?: NodeJS.ProcessEnv): string {
+  return join(campaignRuntimeDir(slug, env), 'live.url');
+}
+
+export function sessionStatePath(slug: string, env?: NodeJS.ProcessEnv): string {
+  return join(campaignRuntimeDir(slug, env), 'session.json');
+}
+
 /** Fully remove a campaign directory (SoT + config). Reconstruct with seed-demo. */
 export function destroyCampaignDir(slug: string, env?: NodeJS.ProcessEnv): void {
   rmSync(campaignDir(slug, env), { recursive: true, force: true });

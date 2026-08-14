@@ -53,7 +53,7 @@ DURING SESSION (Storyteller PC — required)
 | **Privacy split** | Public: names, sheet numbers, Fortunes, Diagram, Myths titles/effects as table-visible. Private (ST PC only): platform account IDs, tokens, MemberMap, full audit, unmapped drafts. |
 | **Session-local bot** | Bot runs when the ST runs a session. No ST → no campaign automation. |
 | **Live mid-session tracking** | Pretty representation updates **immediately** on the **live renderer**; public Pages is archive / fallback, not the hot path. |
-| **Platform modular** | Fluxer and Discord are equal adapters over one application layer. |
+| **Platform modular** | Fluxer and Discord are equal adapters over one **application** layer (`packages/app`). **Not** over the CLI — CLI is ST orchestration only. |
 | **Buttons, not reactions** | ST approve/deny and oppose use **buttons**. |
 | **ST narrates; player instructs** | Optional **Roll Prompt**; player confirms spends/tags; ST NPC path is explicit numbers. |
 
