@@ -125,7 +125,7 @@ export async function runEmissary(opts: {
         publicProbe.ok,
         publicProbe.ok
           ? `${hashed} · ${publicProbe.detail}`
-          : `${hashed} · ${publicProbe.detail} (stale URL? re-run live --tunnel)`,
+          : `${hashed} · ${publicProbe.detail} (dead tunnel or blocked host — re-run live --tunnel)`,
       ),
     );
   } else if (hashed) {
@@ -211,7 +211,7 @@ export function printEmissaryReport(report: EmissaryReport, slug: string): void 
   console.log('');
   if (report.localUrl) console.log(`  Local live:  ${report.localUrl}`);
   if (report.liveUrl && report.liveUrl !== report.localUrl) {
-    console.log(`  Public live: ${report.liveUrl}  (hashed tunnel — mid-session)`);
+    console.log(`  Public live: ${report.liveUrl}  (tunnel — mid-session only)`);
   } else if (report.liveUrl) {
     console.log(`  Live:        ${report.liveUrl}`);
   }

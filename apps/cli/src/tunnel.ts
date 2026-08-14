@@ -38,18 +38,23 @@ export interface TunnelHandle {
 }
 
 /**
- * Start `cloudflared tunnel --url <localUrl>`.
- * Logs to logPath; resolves url promise when hashed URL appears on stdout/stderr.
+ * Start Cloudflare quick tunnel to localUrl.
+ * Free quick tunnels get a random *.trycloudflare.com name (Cloudflare-chosen words,
+ * not a hex hash — that is their free product; custom hostnames need a named tunnel + domain).
+ * --http-host-header keeps the origin Host as localhost for Vite/Astro.
  */
 export function startCloudflaredTunnel(opts: {
   cloudflaredBin: string;
   localUrl: string;
   logPath: string;
+  /** Host header sent to origin (default localhost) */
+  httpHostHeader?: string;
 }): TunnelHandle {
   const log = createWriteStream(opts.logPath, { flags: 'a' });
+  const hostHeader = opts.httpHostHeader ?? 'localhost';
   const child = spawn(
     opts.cloudflaredBin,
-    ['tunnel', '--url', opts.localUrl],
+    ['tunnel', '--url', opts.localUrl, '--http-host-header', hostHeader],
     {
       stdio: ['ignore', 'pipe', 'pipe'],
       shell: false,

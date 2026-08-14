@@ -15,6 +15,9 @@ export default defineConfig({
       external: ['node:sqlite'],
     },
     server: {
+      // Cloudflare quick tunnels (*.trycloudflare.com) and LAN access hit this host.
+      // Live UI is ST-started only — allow tunnel hostnames so mid-session share works.
+      allowedHosts: true,
       watch: {
         ignored: ['**/data/**'],
       },

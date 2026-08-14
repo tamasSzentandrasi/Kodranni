@@ -341,7 +341,10 @@ async function main(): Promise<void> {
           });
           console.log(`  public: ${publicUrl}`);
           console.log(
-            '  (hashed URL — share only while this process runs; not for the public repo)',
+            '  (Cloudflare quick tunnel — random name, unguessable; share only while this process runs)',
+          );
+          console.log(
+            '  (not for the public repo; custom hostnames need a named tunnel + your domain later)',
           );
           console.log(`  log:    ${tunnelLog}`);
         } catch (e) {
