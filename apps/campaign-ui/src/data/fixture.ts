@@ -16,7 +16,11 @@ export interface FixtureCharacter {
   echoes: {
     title: string;
     weight: number;
+    invokeWhen?: string;
     note?: string;
+    group?: { name: string; characterSlug?: string; note?: string }[];
+    groupLabel?: string;
+    resolved?: { narrative: string; at?: string };
     effects?: { kind: string; phase?: string; label: string; detail?: string }[];
   }[];
   echoCapacity: number;
@@ -80,24 +84,21 @@ export const fixtureCommunity: FixtureCommunity = {
     {
       title: 'Kelarn’s Fall',
       summary:
-        'The Vardmark helped pull down the river empire — burning and taking — and hold Kelarn’s Bend as conquerors, not as invited guests.',
+        'The Vardmark helped pull down the river empire — burning and taking — and hold Kelarn’s Bend as conquerors.',
       effects: [
         {
           kind: 'advantage',
           label: 'Advantage when enforcing claim on the burned fields',
-          detail: 'When Myth is tagged and the scene is about holding what was taken.',
         },
         {
           kind: 'tide_mod',
           label: 'Tide start +1 defending the Bend ford',
-          detail: 'When a Tide is opened to hold the ford at Kelarn’s Bend.',
         },
       ],
     },
     {
       title: 'Reed-Marsh Compact',
-      summary:
-        'Grain and silence bought from the marsh folk under the shadow of the warband — trade that can turn to blood.',
+      summary: 'Grain and silence bought from the marsh folk under the warband’s shadow.',
       effects: [
         {
           kind: 'disadvantage',
@@ -115,51 +116,51 @@ export const fixtureCommunity: FixtureCommunity = {
   ruler: null,
   placements: [
     {
-      name: 'Tomas',
+      name: 'Torvald Adzeson',
       axis: 'Coin',
       tier: 'Acknowledged',
-      characterSlug: 'tomas',
-      note: 'A quiet man who measures twice — timber, grain, and what is owed after a taking.',
+      characterSlug: 'torvald',
+      note: 'A quiet man who measures twice — timber, grain, and what is still owed after a taking.',
     },
     {
-      name: 'Leif',
+      name: 'Leifr Ketilsson',
       axis: 'Arms',
       tier: 'Acknowledged',
-      characterSlug: 'leif',
+      characterSlug: 'leifr',
       note: 'A hard bargainer who still answers when the ford is threatened.',
     },
     {
-      name: 'Halla',
+      name: 'Halla of the Mill',
       axis: 'Coin',
       tier: 'Trusted',
       note: 'Keeps the mill ledger after the taking; quiet power over grain counts.',
     },
     {
-      name: 'Halla',
+      name: 'Halla of the Mill',
       axis: 'Blood',
       tier: 'Acknowledged',
       note: 'Widow of a Bend man who did not survive the fall.',
     },
     {
-      name: 'Old Rurik',
+      name: 'Rurik the Oath-speaker',
       axis: 'Faith',
       tier: 'Honoured',
       note: 'Speaks for the dead of the Bend and the living oaths of the Vardmark.',
     },
     {
-      name: 'Young Sten',
+      name: 'Sten of the Watch',
       axis: 'Arms',
       tier: 'Trusted',
-      note: 'Leif’s ford watch; eager, unpaid enough to leave if the freeze bites hard.',
+      note: 'Leifr’s ford watch; eager, unpaid enough to leave if the freeze bites hard.',
     },
     {
-      name: 'Bera of the lower bank',
+      name: 'Bera of the Lower Bank',
       axis: 'Blood',
       tier: 'Outcast',
       note: 'Survived the taking; kept as labour on the fields.',
     },
     {
-      name: 'Gorm the tally-hand',
+      name: 'Gorm Tally-hand',
       axis: 'Coin',
       tier: 'Outcast',
       note: 'Counts spoils for whoever holds the store tonight.',
@@ -169,12 +170,12 @@ export const fixtureCommunity: FixtureCommunity = {
     {
       name: 'Mara of the Reeds',
       faction: 'Reed-marsh folk',
-      note: 'Speaks for grain and silence; will not bleed free for foreign occupiers at the Bend.',
+      note: 'Speaks for grain and silence; will not bleed free for foreign occupiers.',
     },
     {
       name: 'Jorun Reed-eye',
       faction: 'Reed-marsh folk',
-      note: 'Scout of the channels; knows every path that can starve or feed the ford.',
+      note: 'Scout of the channels.',
     },
     {
       name: 'Skard of the Next Bend',
@@ -189,13 +190,13 @@ export const fixtureCommunity: FixtureCommunity = {
   ],
   characters: [
     {
-      slug: 'tomas',
-      name: 'Tomas',
+      slug: 'torvald',
+      name: 'Torvald Adzeson',
       status: 'active',
-      communityTie:
-        'Vardmark of Kelarn’s Bend — took the ground in the fall of Kelarn; holds the shared grain store as spoils and ration.',
-      whoWeSee: 'A quiet man who measures twice — timber, grain, and what is owed after a taking.',
-      player: { platform: 'local', displayName: 'Player (Tomas)', accountId: 'local-tomas' },
+      communityTie: 'Holds the shared grain store as spoils and ration.',
+      whoWeSee:
+        'A quiet man who measures twice — timber, grain, and what is still owed after a taking.',
+      player: { platform: 'local', displayName: 'Player (Torvald)', accountId: 'local-torvald' },
       foundations: {
         Strength: 2,
         Dexterity: 2,
@@ -227,9 +228,25 @@ export const fixtureCommunity: FixtureCommunity = {
       exertion: { current: 4, max: 6 },
       echoes: [
         {
-          title: 'Keep the seized grain store standing through the first winter of occupation',
+          title: 'Keep the seized grain store standing through the first winter',
           weight: 2,
-          note: 'The store is the warband’s ration and proof they hold the Bend.',
+          invokeWhen:
+            'When the roll is about defending, repairing, rationing, or proving the warband still holds the grain store.',
+          groupLabel: 'Store-wardens',
+          group: [
+            { name: 'Torvald Adzeson', characterSlug: 'torvald' },
+            { name: 'Halla of the Mill' },
+            { name: 'Gorm Tally-hand' },
+          ],
+        },
+        {
+          title: 'Raise a sound roof over the hall before the freeze locks the ford',
+          weight: 1,
+          invokeWhen: 'When the work is carpentry or the hall roof against weather.',
+          resolved: {
+            narrative:
+              'The river-side seam held through the first hard frost. The hall no longer drips on the high bench.',
+          },
         },
       ],
       echoCapacity: 5,
@@ -252,22 +269,25 @@ export const fixtureCommunity: FixtureCommunity = {
         foodDays: 2,
         waterDays: 3,
         items: [
-          { name: 'Adze', note: 'Taken timber work; edge needs re-peening.' },
-          { name: 'Wool cloak', note: 'Dry; no spare for a second person.' },
-          { name: 'Pitch pot', note: 'Half-full; one more seam on the seized store.' },
+          { name: 'Adze', note: 'Edge needs re-peening.' },
+          { name: 'Wool cloak' },
+          { name: 'Pitch pot' },
         ],
       },
       flags: { decadence: false, overCapacity: false },
     },
     {
-      slug: 'leif',
-      name: 'Leif',
+      slug: 'leifr',
+      name: 'Leifr Ketilsson',
       status: 'active',
-      communityTie:
-        'Took part in the burning and the taking of Kelarn’s Bend; claims the upper fields still black from last year’s fire.',
+      communityTie: 'Claims the upper fields still black from last year’s fire.',
       whoWeSee:
         'A hard bargainer who still answers when the ford is threatened — conqueror’s claim, not a neighbour’s.',
-      player: { platform: 'discord', displayName: 'Player (Leif)', accountId: 'demo-discord-leif' },
+      player: {
+        platform: 'discord',
+        displayName: 'Player (Leifr)',
+        accountId: 'demo-discord-leifr',
+      },
       foundations: {
         Strength: 2,
         Dexterity: 1,
@@ -295,23 +315,33 @@ export const fixtureCommunity: FixtureCommunity = {
         { name: 'Tactics', rating: 1, practice: 10, threshold: 24 },
         { name: 'Intimidate', rating: 1, practice: 3, threshold: 24 },
       ],
-      traits: [{ name: 'Scarred knuckles', note: 'From the taking of the shore.' }],
+      traits: [{ name: 'Scarred knuckles' }],
       exertion: { current: 5, max: 5 },
       echoes: [
         {
           title: 'Hold Kelarn’s Bend ford until the hostages return',
           weight: 3,
-          note: 'The ford is the claim; lose it and the Bend is only ash and talk.',
+          invokeWhen:
+            'When the roll is about holding, contesting, or barging the ford at Kelarn’s Bend.',
         },
         {
-          title: 'Keep Young Sten and the ford watch paid and fed through the freeze',
+          title: 'Keep the ford watch paid and fed through the freeze',
           weight: 2,
-          note: 'If they desert, the ford is open and his name is ash with them.',
+          invokeWhen:
+            'When the roll is about the ford watch’s loyalty, pay, food, or desertion.',
+          groupLabel: 'Ford watch',
+          group: [
+            { name: 'Leifr Ketilsson', characterSlug: 'leifr' },
+            { name: 'Sten of the Watch' },
+            { name: 'Ase River-step' },
+            { name: 'Bjorn One-ear' },
+          ],
         },
         {
           title: 'Bring his sister’s children through the first winter on seized ground',
           weight: 1,
-          note: 'Personal stake: the occupation must feed more than the warband’s pride.',
+          invokeWhen:
+            'When the roll is about shelter, food, or safety for his sister’s children on occupied ground.',
         },
       ],
       echoCapacity: 6,
@@ -333,10 +363,7 @@ export const fixtureCommunity: FixtureCommunity = {
       inventory: {
         foodDays: 1,
         waterDays: 2,
-        items: [
-          { name: 'Spear', note: 'Ash shaft; head loose if used as a pry-bar.' },
-          { name: 'Shield', note: 'Rim split on one quarter.' },
-        ],
+        items: [{ name: 'Spear' }, { name: 'Shield' }],
       },
       flags: { decadence: false, overCapacity: false },
     },

@@ -20,11 +20,11 @@ function demoStore() {
 }
 
 describe('executePlayerRoll', () => {
-  it('rolls Tomas Strength+Carpentry & Masonry and spends Exertion', () => {
+  it('rolls Torvald Strength+Carpentry & Masonry and spends Exertion', () => {
     const store = demoStore();
-    const before = store.getCharacterBySlug('tomas')!.exertion.current;
+    const before = store.getCharacterBySlug('torvald')!.exertion.current;
     const r = executePlayerRoll(store, {
-      characterSlug: 'tomas',
+      characterSlug: 'torvald',
       foundation: 'Strength',
       skill: 'Carpentry & Masonry',
       dieTier: 8,
@@ -35,7 +35,7 @@ describe('executePlayerRoll', () => {
     expect(r.poolSize).toBeGreaterThanOrEqual(1);
     expect(r.faces).toHaveLength(r.poolSize);
     expect(r.omen).toBeTypeOf('number');
-    const after = store.getCharacterBySlug('tomas')!;
+    const after = store.getCharacterBySlug('torvald')!;
     expect(after.exertion.current).toBe(before - 1);
     expect(store.getRoll(r.rollId)).toBeTruthy();
     store.close();
@@ -45,7 +45,7 @@ describe('executePlayerRoll', () => {
     const store = demoStore();
     expect(() =>
       executePlayerRoll(store, {
-        characterSlug: 'tomas',
+        characterSlug: 'torvald',
         foundation: 'Strength',
         skill: 'Carpentry & Masonry',
         exertionDice: 2,

@@ -1,0 +1,108 @@
+---
+export const prerender = false;
+
+import CampaignLayout from '../../../layouts/CampaignLayout.astro';
+import SheetChrome from '../../../components/SheetChrome.astro';
+import { getCharacter, loadCommunity } from '../../../data/load';
+
+const { slug } = Astro.params;
+const c = loadCommunity();
+const ch = getCharacter(slug!);
+if (!ch) {
+  return new Response('Character not found', { status: 404, statusText: 'Not Found' });
+}
+
+const live = c.source === 'live';
+const armourLabel =
+  ch.armour.kind === 'none' ? 'None' : ch.armour.kind === 'light' ? 'Light' : 'Heavy';
+---
+
+<CampaignLayout
+  title={`${ch.name} · Inventory`}
+  communityName={c.name}
+  generatedAt={c.generatedAt}
+  primary="characters"
+  source={c.source}
+>
+  <SheetChrome
+    slug={ch.slug}
+    name={ch.name}
+    playerDisplay={ch.player?.displayName}
+    playerPlatform={ch.player?.platform}
+    avatar={ch.avatar}
+    status={ch.status}
+    dying={ch.dying}
+    live={live}
+    tab="inventory"
+  />
+
+  <section class="smoke">
+    <div class="section-head">
+      <h2>Inventory</h2>
+      <button
+        type="button"
+        class="info"
+        data-tip="Explicit possession. If it is not listed, they do not have it. Armour only counts when donned."
+        aria-label="About Inventory"
+      >
+        i
+      </button>
+    </div>
+
+    <div class="inv-grid">
+      <div>
+        <div class="armour" data-kind={ch.armour.kind} data-donned={String(ch.armour.donned)}>
+          <span class="armour__lab">Armour</span>
+          <span class="armour__val">{armourLabel}</span>
+          <span class="armour__state">
+            {ch.armour.donned
+              ? 'Donned — counts for physical Harm ratios'
+              : 'Not donned — no armour protection ratio'}
+          </span>
+        </div>
+
+        <div class="supplies">
+          <div class="supply">
+            <span class="supply__lab">Food</span>
+            <span class="supply__val">{ch.inventory.foodDays}</span>
+            <span class="app__meta" style="margin:0">days</span>
+          </div>
+          <div class="supply">
+            <span class="supply__lab">Water</span>
+            <span class="supply__val">{ch.inventory.waterDays}</span>
+            <span class="app__meta" style="margin:0">days</span>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h3 style="font-size:1rem;margin:0 0 0.4rem">Named items</h3>
+        <ul class="item-list">
+          {
+            ch.inventory.items.length === 0 ? (
+              <li class="empty">None declared.</li>
+            ) : (
+              ch.inventory.items.map((it) => (
+                <li class="item">
+                  <span class="item__name">
+                    {it.name}
+                    {it.note && (
+                      <button
+                        type="button"
+                        class="info"
+                        data-tip={it.note}
+                        aria-label={`${it.name} note`}
+                      >
+                        i
+                      </button>
+                    )}
+                  </span>
+                </li>
+              ))
+            )
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
+</CampaignLayout>

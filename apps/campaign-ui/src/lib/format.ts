@@ -28,35 +28,29 @@ export const WEIGHT_BAND: Record<1 | 2 | 3, string> = {
   3: 'Pivotal',
 };
 
-export const ECHO_PHASES: { id: string; label: string }[] = [
-  { id: 'while_carried', label: 'While carried' },
-  { id: 'on_resolve', label: 'On resolution' },
-  { id: 'continuity', label: 'Continuity' },
-];
+export const AXIS_DOMAIN: Record<string, string> = {
+  Arms: 'Martial strength, protection, war, right to violence',
+  Faith: 'Ritual, sacred knowledge, moral weight',
+  Coin: 'Wealth, trade, material surplus, leverage',
+  Blood: 'Kinship, land, lineage, domestic authority',
+};
 
-export function phaseOf(fx: { kind: string; phase?: string }): string {
-  if (fx.phase) return fx.phase;
-  if (fx.kind === 'invoke_second_exertion' || fx.kind === 'load_cost') return 'while_carried';
-  if (
-    fx.kind === 'on_resolve_personal' ||
-    fx.kind === 'on_resolve_group' ||
-    fx.kind === 'pivotal_fortune' ||
-    fx.kind === 'pivotal_myth'
-  )
-    return 'on_resolve';
-  if (fx.kind === 'persist_legacy' || fx.kind === 'dies_with_bearer') return 'continuity';
-  return 'while_carried';
-}
+export const AXIS_KEY: Record<string, string> = {
+  Arms: 'arms',
+  Faith: 'faith',
+  Coin: 'coin',
+  Blood: 'blood',
+};
 
 export const FORTUNE_BLURBS: Record<string, string> = {
   vitality: 'People and health — how many hands remain, how much loss the group can still take.',
   cohesion: 'Trust and order within — whether the kinship still acts as one.',
   surplus: 'Food, tools, stores — the material cushion between ordinary winter and desperation.',
   standing: 'How outsiders see the community — treaties, fear, respect, and the weight of the name.',
-  tradition: 'Shared memory and self-belief — lore, custom, and what the people still know themselves to be.',
+  tradition:
+    'Shared memory and self-belief — lore, custom, and what the people still know themselves to be.',
 };
 
-/** Stable colour hash for faction chips. */
 export function factionHue(faction: string): number {
   let h = 0;
   for (let i = 0; i < faction.length; i++) h = (h * 31 + faction.charCodeAt(i)) >>> 0;

@@ -132,7 +132,7 @@ async function main(): Promise<void> {
     store.close();
     console.log(`Seeded demo: ${cfg.name} (${cfg.slug})`);
     console.log(`  store: ${cfg.storePath}`);
-    console.log(`  characters: tomas, leif`);
+    console.log(`  characters: torvald, leifr`);
     console.log(`  recreate: npm run kodranni -- campaign seed-demo --slug ${slug} --force`);
     return;
   }

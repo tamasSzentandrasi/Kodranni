@@ -3,12 +3,8 @@ export const prerender = false;
 
 import { HIERARCHY_TIERS } from '@kodranni/domain';
 import CampaignLayout from '../../layouts/CampaignLayout.astro';
-import {
-  FORTUNE_LABELS,
-  loadCommunity,
-  whoWeSeeMap,
-} from '../../data/load';
-import { FORTUNE_BLURBS, factionHue } from '../../lib/format';
+import { FORTUNE_LABELS, loadCommunity, whoWeSeeMap } from '../../data/load';
+import { AXIS_DOMAIN, AXIS_KEY, FORTUNE_BLURBS, factionHue } from '../../lib/format';
 
 const c = loadCommunity();
 const tiers = [...HIERARCHY_TIERS];
@@ -30,13 +26,13 @@ const fortuneOrder = ['vitality', 'cohesion', 'surplus', 'standing', 'tradition'
   primary="community"
   source={c.source}
 >
-  <section class="surface" aria-labelledby="f-h">
+  <section class="smoke" aria-labelledby="f-h">
     <div class="section-head">
       <h2 id="f-h">Fortunes</h2>
       <button
         type="button"
         class="info"
-        data-tip="Community-wide pressure — not a second character sheet. Soft scale: Crisis 0 → Abundance 3. Colours every scene for PCs and NPCs alike."
+        data-tip="Community-wide pressure — not a second character sheet. Soft scale: Crisis 0 → Abundance 3."
         aria-label="About Fortunes"
       >
         i
@@ -47,12 +43,7 @@ const fortuneOrder = ['vitality', 'cohesion', 'surplus', 'standing', 'tradition'
         fortuneOrder.map((k) => {
           const v = c.fortunes[k] ?? 0;
           return (
-            <div
-              class="fortune"
-              data-key={k}
-              data-level={String(v)}
-              role="listitem"
-            >
+            <div class="fortune" data-key={k} data-level={String(v)} role="listitem">
               <span class="fortune__icon" aria-hidden="true" />
               <span class="fortune__name">
                 {k}
@@ -78,179 +69,181 @@ const fortuneOrder = ['vitality', 'cohesion', 'surplus', 'standing', 'tradition'
     </div>
   </section>
 
-  <section class="surface" aria-labelledby="h-h">
+  <section class="smoke" aria-labelledby="h-h">
     <div class="section-head">
       <h2 id="h-h">Hierarchy</h2>
       <button
         type="button"
         class="info"
-        data-tip="Every community member on every axis (default Outcast). Collapse axes or tiers. Hover a name for who they are. Outsiders stand beside the ladders."
+        data-tip="One crown, then parallel ladders. Same four tiers on every axis (Honoured → Outcast). Colour marks the axis; saturation falls toward Outcast. Hover names for who they are."
         aria-label="About Hierarchy"
       >
         i
       </button>
     </div>
 
-    <div class="ruler">
-      <span class="ruler__lab">Ruler</span>
-      {
-        c.ruler ? (
-          c.rulerCharacterSlug ? (
-            <a
-              class="member member--pc"
-              href={`/characters/${c.rulerCharacterSlug}/`}
-              data-tip={tipFor(c.ruler, c.rulerCharacterSlug)}
-            >
-              <span class="member__dot" />
-              {c.ruler}
-            </a>
-          ) : (
-            <span class="member" data-tip={tipFor(c.ruler)}>
-              <span class="member__dot" />
-              {c.ruler}
-            </span>
-          )
-        ) : (
-          <span class="empty">— none claimed —</span>
-        )
-      }
-    </div>
-
-    <div class="board">
-      <div class="axes">
+    <div class="hier-diagram">
+      <div class="hier-ruler">
+        <p class="hier-ruler__title">Ruler</p>
         {
-          c.hierarchyAxes.map((axis) => {
-            const onAxis = c.placements.filter((p) => p.axis === axis);
-            return (
-              <div class="axis" data-collapsed="false">
-                <button
-                  type="button"
-                  class="axis__head"
-                  data-axis-toggle
-                  aria-expanded="true"
-                >
-                  <span>{axis}</span>
-                  <span class="axis__count">{onAxis.length}</span>
-                </button>
-                <div class="axis__body">
-                  {tiers.map((tier) => {
-                    const members = onAxis.filter((p) => p.tier === tier);
-                    const empty = members.length === 0;
-                    // Collapse empty tiers and Outcast when crowded
-                    const defaultCollapsed =
-                      empty || (tier === 'Outcast' && members.length > 6);
-                    return (
-                      <div
-                        class:list={['rung', empty && 'rung--empty']}
-                        data-collapsed={defaultCollapsed ? 'true' : 'false'}
-                      >
-                        <button
-                          type="button"
-                          class="rung__head"
-                          data-rung-toggle
-                          aria-expanded={defaultCollapsed ? 'false' : 'true'}
-                        >
-                          <span class="rung__tier">{tier}</span>
-                          <span class="rung__n">{members.length}</span>
-                          <span class="rung__chev" aria-hidden="true">▾</span>
-                        </button>
-                        <ul class="rung__members">
-                          {empty ? (
-                            <li class="empty">—</li>
-                          ) : (
-                            members.map((m) => {
-                              const tip = tipFor(m.name, m.characterSlug, m.note);
-                              return (
-                                <li>
-                                  {m.characterSlug ? (
-                                    <a
-                                      class="member member--pc"
-                                      href={`/characters/${m.characterSlug}/`}
-                                      data-tip={tip}
-                                    >
-                                      <span class="member__dot" />
-                                      {m.name}
-                                    </a>
-                                  ) : (
-                                    <span class="member" data-tip={tip} tabindex="0">
-                                      <span class="member__dot" />
-                                      {m.name}
-                                    </span>
-                                  )}
-                                </li>
-                              );
-                            })
-                          )}
-                        </ul>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            );
-          })
+          c.ruler ? (
+            c.rulerCharacterSlug ? (
+              <a
+                class="member member--pc"
+                href={`/characters/${c.rulerCharacterSlug}/`}
+                data-tip={tipFor(c.ruler, c.rulerCharacterSlug)}
+                style="display:inline-flex;margin:0.35rem auto 0"
+              >
+                <span class="member__dot" />
+                {c.ruler}
+              </a>
+            ) : (
+              <span class="member" data-tip={tipFor(c.ruler)} style="display:inline-flex;margin:0.35rem auto 0">
+                <span class="member__dot" />
+                {c.ruler}
+              </span>
+            )
+          ) : (
+            <p class="hier-ruler__note">One seat for the whole community — none claimed.</p>
+          )
         }
       </div>
+      <p class="hier-join" aria-hidden="true">↓ · ↓ · ↓ · ↓</p>
 
-      <aside class="outsiders" aria-labelledby="o-h">
-        <div class="section-head" style="border:none;margin:0;padding:0">
-          <h3 id="o-h">Outsiders</h3>
-          <button
-            type="button"
-            class="info"
-            data-tip="Named individuals only — never a whole faction as one entry. Faction is a property (colour). Not on any hierarchy until inducted."
-            aria-label="About Outsiders"
-          >
-            i
-          </button>
-        </div>
-        <ul class="outsiders__list">
+      <div class="hier-board">
+        <div class="hier-axes">
           {
-            (c.outsiders ?? []).length === 0 ? (
-              <li class="empty">None tracked.</li>
-            ) : (
-              (c.outsiders ?? []).map((o) => {
-                const hue = o.faction ? factionHue(o.faction) : 0;
-                return (
-                  <li
-                    class="outsider"
-                    style={o.faction ? `--faction-h: ${hue}` : undefined}
-                  >
-                    {o.characterSlug ? (
-                      <a class="outsider__name" href={`/characters/${o.characterSlug}/`}>
-                        {o.name}
-                      </a>
-                    ) : (
-                      <span class="outsider__name">{o.name}</span>
-                    )}
-                    {o.faction && <span class="outsider__faction">{o.faction}</span>}
-                    {o.note && (
-                      <button
-                        type="button"
-                        class="info"
-                        data-tip={o.note}
-                        aria-label={`About ${o.name}`}
-                      >
-                        i
-                      </button>
-                    )}
-                  </li>
-                );
-              })
-            )
+            c.hierarchyAxes.map((axis) => {
+              const onAxis = c.placements.filter((p) => p.axis === axis);
+              const key = AXIS_KEY[axis] ?? axis.toLowerCase();
+              return (
+                <div class="hier-axis" data-axis={key}>
+                  <div class="hier-axis__head">
+                    <p class="hier-axis__name">{axis}</p>
+                    <p class="hier-axis__domain">{AXIS_DOMAIN[axis] ?? ''}</p>
+                    <span class="hier-axis__count">{onAxis.length} placed</span>
+                  </div>
+                  <ol class="hier-rungs">
+                    {tiers.map((tier, ti) => {
+                      const members = onAxis.filter((p) => p.tier === tier);
+                      const empty = members.length === 0;
+                      const defaultCollapsed = empty || (tier === 'Outcast' && members.length > 5);
+                      return (
+                        <li
+                          class="hier-rung"
+                          data-tier={tier}
+                          data-collapsed={defaultCollapsed ? 'true' : 'false'}
+                        >
+                          <button
+                            type="button"
+                            class="hier-rung__head"
+                            data-rung-toggle
+                            aria-expanded={defaultCollapsed ? 'false' : 'true'}
+                          >
+                            <span class="hier-rung__tier">{tier}</span>
+                            <span class="hier-rung__n">{members.length}</span>
+                            <span class="hier-rung__chev" aria-hidden="true">
+                              {defaultCollapsed ? '▸' : '▾'}
+                            </span>
+                          </button>
+                          <ul class="hier-rung__members">
+                            {empty ? (
+                              <li class="empty">—</li>
+                            ) : (
+                              members.map((m) => {
+                                const tip = tipFor(m.name, m.characterSlug, m.note);
+                                return (
+                                  <li>
+                                    {m.characterSlug ? (
+                                      <a
+                                        class="member member--pc"
+                                        href={`/characters/${m.characterSlug}/`}
+                                        data-tip={tip}
+                                      >
+                                        <span class="member__dot" />
+                                        {m.name}
+                                      </a>
+                                    ) : (
+                                      <span class="member" data-tip={tip} tabindex="0">
+                                        <span class="member__dot" />
+                                        {m.name}
+                                      </span>
+                                    )}
+                                  </li>
+                                );
+                              })
+                            )}
+                          </ul>
+                        </li>
+                      );
+                    })}
+                  </ol>
+                </div>
+              );
+            })
           }
-        </ul>
-      </aside>
+        </div>
+
+        <aside class="outsiders" aria-labelledby="o-h">
+          <div class="section-head" style="margin:0">
+            <h3 id="o-h">Outsiders</h3>
+            <button
+              type="button"
+              class="info"
+              data-tip="Named individuals only. Faction is a coloured property. Not on any ladder until inducted."
+              aria-label="About Outsiders"
+            >
+              i
+            </button>
+          </div>
+          <ul class="outsiders__list">
+            {
+              (c.outsiders ?? []).length === 0 ? (
+                <li class="empty">None tracked.</li>
+              ) : (
+                (c.outsiders ?? []).map((o) => {
+                  const hue = o.faction ? factionHue(o.faction) : 0;
+                  return (
+                    <li
+                      class="outsider"
+                      style={o.faction ? `--faction-h: ${hue}` : undefined}
+                    >
+                      {o.characterSlug ? (
+                        <a class="outsider__name" href={`/characters/${o.characterSlug}/`}>
+                          {o.name}
+                        </a>
+                      ) : (
+                        <span class="outsider__name">{o.name}</span>
+                      )}
+                      {o.faction && <span class="outsider__faction">{o.faction}</span>}
+                      {o.note && (
+                        <button
+                          type="button"
+                          class="info"
+                          data-tip={o.note}
+                          aria-label={`About ${o.name}`}
+                        >
+                          i
+                        </button>
+                      )}
+                    </li>
+                  );
+                })
+              )
+            }
+          </ul>
+        </aside>
+      </div>
     </div>
   </section>
 
-  <section class="surface" aria-labelledby="m-h">
+  <section class="smoke" aria-labelledby="m-h">
     <div class="section-head">
       <h2 id="m-h">Foundation Myths</h2>
       <button
         type="button"
         class="info"
-        data-tip="Active myths of this community. Effects fire only when a roll tags the Myth. Hover chips for detail."
+        data-tip="Active myths of this community. Effects fire only when a roll tags the Myth."
         aria-label="About Foundation Myths"
       >
         i

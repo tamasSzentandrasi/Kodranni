@@ -16,12 +16,9 @@ const selected = Astro.url.searchParams.get('sel') ?? '';
   primary="characters"
   source={c.source}
 >
-  <div class="section-head" style="border:none;margin-bottom:0.75rem">
-    <p class="app__meta" style="margin:0">
-      Open a sheet for load, foundations, skills, echoes, and inventory. Hierarchy lives on
-      Community.
-    </p>
-  </div>
+  <p class="app__meta" style="margin-bottom:0.85rem">
+    Open a sheet for load, foundations, skills, echoes, and inventory. Hierarchy lives on Community.
+  </p>
 
   <div class="char-grid">
     {
@@ -34,7 +31,7 @@ const selected = Astro.url.searchParams.get('sel') ?? '';
             data-selected={selected === ch.slug ? 'true' : 'false'}
           >
             {src ? (
-              <img class="avatar" src={src} alt="" width="52" height="52" loading="lazy" />
+              <img class="avatar" src={src} alt="" width="56" height="56" loading="lazy" />
             ) : (
               <span class="avatar avatar--mono" aria-hidden="true">
                 {monogram(ch.name)}

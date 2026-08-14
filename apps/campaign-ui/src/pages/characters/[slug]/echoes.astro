@@ -1,0 +1,211 @@
+---
+export const prerender = false;
+
+import CampaignLayout from '../../../layouts/CampaignLayout.astro';
+import SheetChrome from '../../../components/SheetChrome.astro';
+import { getCharacter, loadCommunity } from '../../../data/load';
+import { WEIGHT_BAND } from '../../../lib/format';
+
+const { slug } = Astro.params;
+const c = loadCommunity();
+const ch = getCharacter(slug!);
+if (!ch) {
+  return new Response('Character not found', { status: 404, statusText: 'Not Found' });
+}
+
+const live = c.source === 'live';
+const active = (ch.echoes ?? []).filter((e) => !e.resolved);
+const resolved = (ch.echoes ?? []).filter((e) => e.resolved);
+---
+
+<CampaignLayout
+  title={`${ch.name} · Echoes`}
+  communityName={c.name}
+  generatedAt={c.generatedAt}
+  primary="characters"
+  source={c.source}
+>
+  <SheetChrome
+    slug={ch.slug}
+    name={ch.name}
+    playerDisplay={ch.player?.displayName}
+    playerPlatform={ch.player?.platform}
+    avatar={ch.avatar}
+    status={ch.status}
+    dying={ch.dying}
+    live={live}
+    tab="echoes"
+  />
+
+  <section class="smoke">
+    <div class="section-head">
+      <h2>Active Echoes</h2>
+      <button
+        type="button"
+        class="info"
+        data-tip="Invoke condition is the argument for +1 Exertion die when the scene matches. Weight is load. Group lists the actual people who share it; Pivotal is the whole community."
+        aria-label="About active Echoes"
+      >
+        i
+      </button>
+    </div>
+
+    {
+      active.length === 0 ? (
+        <p class="empty">None active — Decadence if this stands (−1 die on every roll).</p>
+      ) : (
+        <div class="echo-list">
+          {active.map((e) => {
+            const w = (e.weight === 2 || e.weight === 3 ? e.weight : 1) as 1 | 2 | 3;
+            return (
+              <article class="echo">
+                <div class="echo__weight">
+                  <span class="weight-segs" aria-label={`Weight ${w}`}>
+                    {[1, 2, 3].map((i) => (
+                      <i class={i <= w ? 'on' : ''} />
+                    ))}
+                  </span>
+                  <span class="weight-band">{WEIGHT_BAND[w]}</span>
+                </div>
+                <div>
+                  <h3 class="echo__title">{e.title}</h3>
+                  <div class="echo__invoke">
+                    <span class="echo__invoke-lab">Invoke when</span>
+                    {e.invokeWhen}
+                  </div>
+                  {w === 1 && (
+                    <p class="echo__stake">
+                      Stake · <strong style="font-weight:400;color:var(--kod-silver)">
+                        Individual
+                      </strong>{' '}
+                      — {ch.name} alone
+                    </p>
+                  )}
+                  {w === 3 && (
+                    <p class="echo__stake">
+                      Stake · <strong style="font-weight:400;color:var(--kod-silver)">
+                        Community
+                      </strong>{' '}
+                      — {c.name}
+                    </p>
+                  )}
+                  {w === 2 && (
+                    <details class="echo__stake">
+                      <summary>
+                        Stake · {e.groupLabel ?? 'Group'}
+                        {e.group?.length ? ` (${e.group.length})` : ''}
+                      </summary>
+                      {(e.group ?? []).length === 0 ? (
+                        <p class="empty" style="margin:0.4rem 0 0">
+                          No named people recorded yet.
+                        </p>
+                      ) : (
+                        <ul class="echo__people">
+                          {(e.group ?? []).map((p) => (
+                            <li>
+                              {p.characterSlug ? (
+                                <a href={`/characters/${p.characterSlug}/`}>{p.name}</a>
+                              ) : (
+                                <span>{p.name}</span>
+                              )}
+                              {p.note && (
+                                <button
+                                  type="button"
+                                  class="info"
+                                  data-tip={p.note}
+                                  aria-label={`About ${p.name}`}
+                                >
+                                  i
+                                </button>
+                              )}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </details>
+                  )}
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      )
+    }
+  </section>
+
+  {
+    resolved.length > 0 && (
+      <section class="smoke">
+        <div class="section-head">
+          <h2>Resolved</h2>
+          <button
+            type="button"
+            class="info"
+            data-tip="Settled, broken, or transcended. No longer load. Name, weight, and resolution narrative only."
+            aria-label="About resolved Echoes"
+          >
+            i
+          </button>
+        </div>
+        <div class="echo-list">
+          {resolved.map((e) => {
+            const w = (e.weight === 2 || e.weight === 3 ? e.weight : 1) as 1 | 2 | 3;
+            return (
+              <article class="echo echo--resolved">
+                <div class="echo__weight">
+                  <span class="weight-segs" aria-label={`Weight ${w}`}>
+                    {[1, 2, 3].map((i) => (
+                      <i class={i <= w ? 'on' : ''} />
+                    ))}
+                  </span>
+                  <span class="weight-band">{WEIGHT_BAND[w]}</span>
+                </div>
+                <div>
+                  <h3 class="echo__title">{e.title}</h3>
+                  <p class="echo__resolution">
+                    <span class="echo__resolution-lab">Resolution</span>
+                    {e.resolved?.narrative}
+                  </p>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      </section>
+    )
+  }
+
+  <section class="smoke">
+    <div class="section-head">
+      <h2>Traits</h2>
+      <button
+        type="button"
+        class="info"
+        data-tip="Standing marks of character — often born from resolved Echoes."
+        aria-label="About Traits"
+      >
+        i
+      </button>
+    </div>
+    <ul class="trait-list">
+      {
+        ch.traits.length === 0 ? (
+          <li class="empty">None recorded.</li>
+        ) : (
+          ch.traits.map((t) => (
+            <li class="trait">
+              <span class="trait__name">
+                {t.name}
+                {t.note && (
+                  <button type="button" class="info" data-tip={t.note} aria-label="Trait note">
+                    i
+                  </button>
+                )}
+              </span>
+            </li>
+          ))
+        )
+      }
+    </ul>
+  </section>
+</CampaignLayout>

@@ -102,9 +102,23 @@ export interface SkillProgress {
   foundation?: string;
 }
 
+/** Named person who shares a Group Echo (weight 2). */
+export interface EchoStakeholder {
+  name: string;
+  characterSlug?: string;
+  note?: string;
+}
+
+export interface EchoResolution {
+  /** What happened when the concern was settled, broken, or transcended. */
+  narrative: string;
+  /** Optional ISO timestamp when resolved. */
+  at?: string;
+}
+
 /**
- * Mechanical facets of a carried Echo.
- * Grouped by phase in the UI (while carried / on resolve / continuity).
+ * Optional automation chips — not the primary sheet chrome.
+ * Live sheet emphasises invokeWhen, weight, and stake (group/community).
  */
 export type EchoEffectKind =
   | 'invoke_second_exertion'
@@ -116,7 +130,6 @@ export type EchoEffectKind =
   | 'persist_legacy'
   | 'dies_with_bearer'
   | 'custom'
-  /** @deprecated legacy sparse-matrix chips — rebuilt on load */
   | 'weight_individual'
   | 'weight_group'
   | 'weight_pivotal';
@@ -125,7 +138,6 @@ export type EchoEffectPhase = 'while_carried' | 'on_resolve' | 'continuity';
 
 export interface EchoEffect {
   kind: EchoEffectKind;
-  /** UI grouping. Defaults inferred from kind when missing. */
   phase?: EchoEffectPhase;
   label: string;
   detail?: string;
@@ -135,9 +147,24 @@ export interface EchoRecord {
   title: string;
   /** 1 Individual · 2 Group · 3 Pivotal */
   weight: 1 | 2 | 3;
-  /** Short description — shown via info mark, not preloaded. */
+  /**
+   * Precise condition under which the player may argue the Echo is invokable
+   * (scene match). This is the primary sheet text for active Echoes.
+   */
+  invokeWhen: string;
+  /** Optional flavour / secondary note. */
   note?: string;
-  effects: EchoEffect[];
+  /**
+   * Weight 2: the actual people who share this burden (expandable list).
+   * Weight 1 / 3: usually empty — individual bearer or whole community.
+   */
+  group?: EchoStakeholder[];
+  /** Optional short label for the group circle (weight 2). */
+  groupLabel?: string;
+  /** When set, Echo is resolved — faded card: name, weight, narrative only. */
+  resolved?: EchoResolution;
+  /** Legacy / automation effects (defaults by weight). Not primary UI. */
+  effects?: EchoEffect[];
 }
 
 export interface CharacterRecord {

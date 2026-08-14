@@ -10,21 +10,22 @@ export const DEMO_SEED_ID = 'vardmark-kelarns-bend';
 export const DEMO_SLUG = 'vardmark';
 export const DEMO_NAME = 'The Vardmark at Kelarn’s Bend';
 
-/** Tomas — Dice Mechanics carpenter example, placed in the Vardmark. */
-export function demoTomas(): CharacterRecord {
+/** Torvald Adzeson — carpenter who holds the seized grain store. */
+export function demoTorvald(): CharacterRecord {
   const ch: CharacterRecord = {
     id: randomUUID(),
-    slug: 'tomas',
-    name: 'Tomas',
+    slug: 'torvald',
+    name: 'Torvald Adzeson',
     kind: 'pc',
     status: 'active',
     communityTie:
       'Vardmark of Kelarn’s Bend — took the ground in the fall of Kelarn; holds the shared grain store the warband still uses as spoils and ration.',
-    whoWeSee: 'A quiet man who measures twice — timber, grain, and what is owed after a taking.',
+    whoWeSee:
+      'A quiet man who measures twice — timber, grain, and what is still owed after a taking.',
     player: {
       platform: 'local',
-      displayName: 'Player (Tomas)',
-      accountId: 'local-tomas',
+      displayName: 'Player (Torvald)',
+      accountId: 'local-torvald',
     },
     foundations: {
       Strength: 2,
@@ -54,11 +55,31 @@ export function demoTomas(): CharacterRecord {
     ],
     exertion: { current: 4, max: 0 },
     echoes: [
-      makeEcho(
-        'Keep the seized grain store standing through the first winter of occupation',
-        2,
-        'The store is the warband’s ration and proof they hold the Bend — if it fails, hunger and challenge follow.',
-      ),
+      makeEcho({
+        title: 'Keep the seized grain store standing through the first winter',
+        weight: 2,
+        invokeWhen:
+          'When the roll is about defending, repairing, rationing, or proving the warband still holds the grain store at Kelarn’s Bend.',
+        note: 'Patched after the taking — still the proof the Bend is theirs to keep or lose.',
+        groupLabel: 'Store-wardens',
+        group: [
+          { name: 'Torvald Adzeson', characterSlug: 'torvald' },
+          { name: 'Halla of the Mill', note: 'Keeps the mill ledger; counts what leaves the store.' },
+          { name: 'Gorm Tally-hand', note: 'Spoils-counter; loyalty follows the key.' },
+        ],
+      }),
+      makeEcho({
+        title: 'Raise a sound roof over the hall before the freeze locks the ford',
+        weight: 1,
+        invokeWhen:
+          'When the work is carpentry, timber, or finishing the hall roof against weather — and the table agrees winter is the pressure.',
+        note: 'Personal craft pride; the hall still leaks on the river side.',
+        resolved: {
+          narrative:
+            'The river-side seam held through the first hard frost. The hall no longer drips on the high bench — Torvald’s name is spoken when the roof is praised.',
+          at: '2025-11-02',
+        },
+      }),
     ],
     echoCapacity: 0,
     echoWeight: 0,
@@ -93,12 +114,12 @@ export function demoTomas(): CharacterRecord {
   return refreshCharacterDerived(ch);
 }
 
-/** Guidebook capacity profile (Echoes teaching numbers). */
-export function demoCapacityProfile(name = 'Leif'): CharacterRecord {
+/** Leifr Ketilsson — Guidebook capacity profile at the ford. */
+export function demoLeifr(): CharacterRecord {
   const ch: CharacterRecord = {
     id: randomUUID(),
-    slug: name.toLowerCase().replace(/\s+/g, '-'),
-    name,
+    slug: 'leifr',
+    name: 'Leifr Ketilsson',
     kind: 'pc',
     status: 'active',
     communityTie:
@@ -107,8 +128,8 @@ export function demoCapacityProfile(name = 'Leif'): CharacterRecord {
       'A hard bargainer who still answers when the ford is threatened — conqueror’s claim, not a neighbour’s.',
     player: {
       platform: 'discord',
-      displayName: 'Player (Leif)',
-      accountId: 'demo-discord-leif',
+      displayName: 'Player (Leifr)',
+      accountId: 'demo-discord-leifr',
     },
     foundations: {
       Strength: 2,
@@ -130,21 +151,33 @@ export function demoCapacityProfile(name = 'Leif'): CharacterRecord {
     traits: [{ name: 'Scarred knuckles', note: 'From the taking of the shore — not from sport.' }],
     exertion: { current: 5, max: 0 },
     echoes: [
-      makeEcho(
-        'Hold Kelarn’s Bend ford until the hostages return',
-        3,
-        'The ford is the claim; lose it and the Bend is only ash and talk. Pivotal for the whole occupation.',
-      ),
-      makeEcho(
-        'Keep Young Sten and the ford watch paid and fed through the freeze',
-        2,
-        'The watch is his circle — if they desert, the ford is open and his name is ash with them.',
-      ),
-      makeEcho(
-        'Bring his sister’s children through the first winter on seized ground',
-        1,
-        'Personal stake: the occupation must feed more than the warband’s pride.',
-      ),
+      makeEcho({
+        title: 'Hold Kelarn’s Bend ford until the hostages return',
+        weight: 3,
+        invokeWhen:
+          'When the roll is about holding, contesting, or barging the ford at Kelarn’s Bend — defence, crossing, hostages, or rivals who mean to take it.',
+        note: 'The ford is the claim; lose it and the Bend is only ash and talk.',
+      }),
+      makeEcho({
+        title: 'Keep the ford watch paid and fed through the freeze',
+        weight: 2,
+        invokeWhen:
+          'When the roll is about the ford watch’s loyalty, pay, food, desertion, or keeping Sten’s line from walking off in the cold.',
+        groupLabel: 'Ford watch',
+        group: [
+          { name: 'Leifr Ketilsson', characterSlug: 'leifr' },
+          { name: 'Sten of the Watch', note: 'Eager; unpaid enough to leave if the freeze bites hard.' },
+          { name: 'Ase River-step', note: 'Young spear on the night shift; fears the marsh channels.' },
+          { name: 'Bjorn One-ear', note: 'Veteran of the taking; drinks the pay first.' },
+        ],
+      }),
+      makeEcho({
+        title: 'Bring his sister’s children through the first winter on seized ground',
+        weight: 1,
+        invokeWhen:
+          'When the roll is about shelter, food, or safety for his sister’s children on occupied ground — not abstract “winter survival” for the warband alone.',
+        note: 'Personal stake: the occupation must feed more than pride.',
+      }),
     ],
     echoCapacity: 0,
     echoWeight: 0,
@@ -175,8 +208,20 @@ export function demoCapacityProfile(name = 'Leif'): CharacterRecord {
   return refreshCharacterDerived(ch);
 }
 
-export const demoEira = demoTomas;
-export const demoLeif = () => demoCapacityProfile('Leif');
+/** @deprecated use demoTorvald */
+export const demoTomas = demoTorvald;
+/** @deprecated use demoLeifr */
+export const demoEira = demoTorvald;
+/** @deprecated use demoLeifr */
+export const demoLeif = demoLeifr;
+export const demoCapacityProfile = (name = 'Leifr Ketilsson') => {
+  const ch = demoLeifr();
+  if (name !== 'Leifr Ketilsson' && name !== 'Leif') {
+    ch.name = name;
+    ch.slug = name.toLowerCase().replace(/\s+/g, '-');
+  }
+  return ch;
+};
 
 export function seedDemoCampaign(
   store: CommunityStorePort,
@@ -227,61 +272,60 @@ export function seedDemoCampaign(
       ],
     },
   ];
-  const tomas = demoTomas();
-  const leif = demoCapacityProfile('Leif');
+  const torvald = demoTorvald();
+  const leifr = demoLeifr();
   community.placements = [
     {
-      name: tomas.name,
+      name: torvald.name,
       axis: 'Coin',
       tier: 'Acknowledged',
-      characterSlug: tomas.slug,
-      note: tomas.whoWeSee,
+      characterSlug: torvald.slug,
+      note: torvald.whoWeSee,
     },
     {
-      name: leif.name,
+      name: leifr.name,
       axis: 'Arms',
       tier: 'Acknowledged',
-      characterSlug: leif.slug,
-      note: leif.whoWeSee,
+      characterSlug: leifr.slug,
+      note: leifr.whoWeSee,
     },
     {
-      name: 'Halla',
+      name: 'Halla of the Mill',
       axis: 'Coin',
       tier: 'Trusted',
       note: 'Keeps the mill ledger after the taking; quiet power over grain counts.',
     },
     {
-      name: 'Halla',
+      name: 'Halla of the Mill',
       axis: 'Blood',
       tier: 'Acknowledged',
       note: 'Widow of a Bend man who did not survive the fall — still claims kin-right in the hall.',
     },
     {
-      name: 'Old Rurik',
+      name: 'Rurik the Oath-speaker',
       axis: 'Faith',
       tier: 'Honoured',
       note: 'Speaks for the dead of the Bend and the living oaths of the Vardmark — few contradict him twice.',
     },
     {
-      name: 'Young Sten',
+      name: 'Sten of the Watch',
       axis: 'Arms',
       tier: 'Trusted',
-      note: 'Leif’s ford watch; eager, unpaid enough to leave if the freeze bites hard.',
+      note: 'Leifr’s ford watch; eager, unpaid enough to leave if the freeze bites hard.',
     },
     {
-      name: 'Bera of the lower bank',
+      name: 'Bera of the Lower Bank',
       axis: 'Blood',
       tier: 'Outcast',
       note: 'Survived the taking; kept as labour on the fields. Watches the river more than the hall.',
     },
     {
-      name: 'Gorm the tally-hand',
+      name: 'Gorm Tally-hand',
       axis: 'Coin',
       tier: 'Outcast',
       note: 'Counts spoils for whoever holds the store tonight; loyalty follows the key.',
     },
   ];
-  // Individuals only — faction is a property, never the name
   community.outsiders = [
     {
       name: 'Mara of the Reeds',
@@ -307,11 +351,11 @@ export function seedDemoCampaign(
   community.ruler = null;
 
   store.putCommunity(community);
-  store.putCharacter(tomas);
-  store.putCharacter(leif);
+  store.putCharacter(torvald);
+  store.putCharacter(leifr);
   store.appendEvent({
     type: 'CampaignSeeded',
     payload: { slug, seed: DEMO_SEED_ID },
   });
-  return { community, character: tomas };
+  return { community, character: torvald };
 }

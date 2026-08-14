@@ -28,7 +28,7 @@ function characterToView(ch: CharacterRecord): FixtureCommunity['characters'][nu
     skills: ch.skills,
     traits: ch.traits,
     exertion: ch.exertion,
-    echoes: ch.echoes,
+    echoes: ch.echoes as FixtureCommunity['characters'][number]['echoes'],
     echoCapacity: ch.echoCapacity,
     echoWeight: ch.echoWeight,
     harm: ch.harm,

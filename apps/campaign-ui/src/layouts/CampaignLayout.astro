@@ -59,22 +59,15 @@ const sourceLabel =
 
     <script is:inline>
       (function () {
-        document.querySelectorAll('[data-axis-toggle]').forEach((head) => {
-          head.addEventListener('click', () => {
-            const axis = head.closest('.axis');
-            if (!axis) return;
-            const c = axis.getAttribute('data-collapsed') === 'true';
-            axis.setAttribute('data-collapsed', c ? 'false' : 'true');
-            head.setAttribute('aria-expanded', c ? 'true' : 'false');
-          });
-        });
         document.querySelectorAll('[data-rung-toggle]').forEach((head) => {
           head.addEventListener('click', () => {
-            const rung = head.closest('.rung');
+            const rung = head.closest('.hier-rung, .rung');
             if (!rung) return;
             const c = rung.getAttribute('data-collapsed') === 'true';
             rung.setAttribute('data-collapsed', c ? 'false' : 'true');
             head.setAttribute('aria-expanded', c ? 'true' : 'false');
+            const chev = head.querySelector('.hier-rung__chev, .rung__chev');
+            if (chev) chev.textContent = c ? '▾' : '▸';
           });
         });
         const tip = document.getElementById('kod-tip');
@@ -85,12 +78,14 @@ const sourceLabel =
             tip.hidden = false;
             const r = el.getBoundingClientRect();
             const left = Math.min(window.innerWidth - 260, Math.max(8, r.left));
-            const top = r.bottom + 6;
+            let top = r.bottom + 6;
             tip.style.left = left + 'px';
-            tip.style.top =
-              (top + tip.offsetHeight > window.innerHeight
-                ? Math.max(8, r.top - tip.offsetHeight - 6)
-                : top) + 'px';
+            tip.style.top = top + 'px';
+            requestAnimationFrame(() => {
+              if (top + tip.offsetHeight > window.innerHeight - 8) {
+                tip.style.top = Math.max(8, r.top - tip.offsetHeight - 6) + 'px';
+              }
+            });
           }
           function hide() {
             tip.hidden = true;

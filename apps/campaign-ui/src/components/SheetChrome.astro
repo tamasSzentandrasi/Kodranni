@@ -1,0 +1,115 @@
+---
+import { avatarUrl, monogram } from '../lib/format';
+
+interface Props {
+  slug: string;
+  name: string;
+  playerDisplay?: string;
+  playerPlatform?: string;
+  avatar?: string;
+  status: string;
+  dying?: boolean;
+  live?: boolean;
+  tab: 'core' | 'echoes' | 'inventory';
+}
+
+const { slug, name, playerDisplay, playerPlatform, avatar, status, dying, live, tab } =
+  Astro.props;
+const av = avatarUrl(slug, avatar);
+---
+
+<div class="sheet-top">
+  <a class="sheet-back" href={`/characters/?sel=${slug}`}>← Character roster</a>
+  {
+    (status === 'dead' || dying) && (
+      <p class="app__meta" style="margin:0">
+        <span class="char-card__status" data-status={status}>
+          {status}
+          {dying ? ' · dying' : ''}
+        </span>
+      </p>
+    )
+  }
+</div>
+
+<nav class="sheet-tabs" aria-label="Sheet sections">
+  <a href={`/characters/${slug}/`} aria-current={tab === 'core' ? 'page' : undefined}>Core</a>
+  <a
+    href={`/characters/${slug}/echoes/`}
+    aria-current={tab === 'echoes' ? 'page' : undefined}
+  >
+    Echoes · Traits
+  </a>
+  <a
+    href={`/characters/${slug}/inventory/`}
+    aria-current={tab === 'inventory' ? 'page' : undefined}
+  >
+    Inventory
+  </a>
+</nav>
+
+<div class="sheet-identity">
+  {
+    av ? (
+      <img class="avatar avatar--lg" src={av} alt="" width="84" height="84" />
+    ) : (
+      <span class="avatar avatar--lg avatar--mono" aria-hidden="true">
+        {monogram(name)}
+      </span>
+    )
+  }
+  <div class="sheet-identity__text">
+    <h1 class="sheet-identity__name">{name}</h1>
+    <p class="sheet-identity__player">
+      {
+        playerDisplay ? (
+          <>
+            played by <strong>{playerDisplay}</strong>
+            {playerPlatform ? ` · ${playerPlatform}` : ''}
+          </>
+        ) : (
+          <span class="empty">No player mapped</span>
+        )
+      }
+    </p>
+    {
+      live && tab === 'core' && (
+        <form
+          class="avatar-upload"
+          method="post"
+          enctype="multipart/form-data"
+          action={`/api/avatar/${slug}`}
+        >
+          <input
+            type="file"
+            name="file"
+            accept="image/jpeg,image/png,image/webp,image/gif"
+            required
+          />
+          <button type="submit">Upload portrait</button>
+        </form>
+      )
+    }
+  </div>
+</div>
+
+{
+  live && tab === 'core' && (
+    <script is:inline define:vars={{ slug }}>
+      (function () {
+        const form = document.querySelector('.avatar-upload');
+        if (!form) return;
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const fd = new FormData(form);
+          const res = await fetch(form.action, { method: 'POST', body: fd });
+          if (res.ok) location.reload();
+          else {
+            const j = await res.json().catch(() => ({}));
+            alert(j.error || 'Upload failed');
+          }
+        });
+      })();
+    </script>
+  )
+}

@@ -7,6 +7,7 @@ import {
   totalEchoWeight,
 } from '@kodranni/domain';
 import type { CharacterRecord } from './types.js';
+import { activeEchoes } from './echo-effects.js';
 
 const FOUNDATION_TO_HARM: Record<string, string> = {
   Strength: 'Crushed',
@@ -23,6 +24,7 @@ const FOUNDATION_TO_HARM: Record<string, string> = {
 /**
  * Recompute max Exertion, Echo capacity, effective Foundations, and flags.
  * Capacities use **raw** Foundations; pool effectives use Harm.
+ * Only unresolved Echoes count toward weight and Decadence.
  */
 export function refreshCharacterDerived(ch: CharacterRecord): CharacterRecord {
   const f = ch.foundations;
@@ -33,8 +35,9 @@ export function refreshCharacterDerived(ch: CharacterRecord): CharacterRecord {
     f.Intellect ?? 0,
     f.Authority ?? 0,
   );
-  ch.echoWeight = totalEchoWeight(ch.echoes.map((e) => e.weight));
-  ch.flags.decadence = isDecadent(ch.echoes.length);
+  const active = activeEchoes(ch.echoes ?? []);
+  ch.echoWeight = totalEchoWeight(active.map((e) => e.weight));
+  ch.flags.decadence = isDecadent(active.length);
   ch.flags.overCapacity = isOverCapacity(ch.echoWeight, ch.echoCapacity);
 
   if (ch.exertion.current > ch.exertion.max) {

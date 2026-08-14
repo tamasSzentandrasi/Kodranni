@@ -28,24 +28,24 @@ describe('sqlite store', () => {
     store.putMember({
       platform: 'discord',
       accountId: '123456789012345678',
-      characterId: store.getCharacterBySlug('tomas')!.id,
+      characterId: store.getCharacterBySlug('torvald')!.id,
       role: 'player',
     });
 
     const snap = store.toPublicSnapshot();
     expect(snap.community.slug).toBe('vardmark');
     expect(snap.characters.length).toBeGreaterThanOrEqual(1);
-    const tomas = snap.characters.find((c) => c.slug === 'tomas')!;
-    expect(tomas.name).toBe('Tomas');
+    const torvald = snap.characters.find((c) => c.slug === 'torvald')!;
+    expect(torvald.name).toBe('Torvald Adzeson');
     // max(Str2,Dex2)+Int2+Auth1 = 5; Exertion max Res2+Con2+Cha2 = 6
-    expect(tomas.echoCapacity).toBe(5);
-    expect(tomas.exertion.max).toBe(6);
-    expect(tomas.echoCapacity).not.toBe(tomas.exertion.max);
-    const leif = snap.characters.find((c) => c.slug === 'leif')!;
+    expect(torvald.echoCapacity).toBe(5);
+    expect(torvald.exertion.max).toBe(6);
+    expect(torvald.echoCapacity).not.toBe(torvald.exertion.max);
+    const leifr = snap.characters.find((c) => c.slug === 'leifr')!;
     // Guidebook capacity profile: max(2,1)+2+2 = 6; Exertion max 2+2+1 = 5
-    expect(leif.echoCapacity).toBe(6);
-    expect(leif.exertion.max).toBe(5);
-    expect(leif.echoWeight).toBe(6);
+    expect(leifr.echoCapacity).toBe(6);
+    expect(leifr.exertion.max).toBe(5);
+    expect(leifr.echoWeight).toBe(6);
     const json = JSON.stringify(snap);
     expect(json).not.toContain('123456789012345678');
     expect(store.listMembers()).toHaveLength(1);
@@ -65,7 +65,7 @@ describe('sqlite store', () => {
 
     store.close();
     const again = openSqliteStore(path);
-    expect(again.getCharacterBySlug('tomas')?.exertion.current).toBe(4);
+    expect(again.getCharacterBySlug('torvald')?.exertion.current).toBe(4);
     again.close();
   });
 });
