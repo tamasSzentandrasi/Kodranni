@@ -127,13 +127,20 @@ This is free, ST-bound, and honest about GitHub’s limits.
 
 - AI Storyteller.
 - Discord-only design.
-- VTT maps / encumbrance.
+- **VTT / combat / dungeon maps** and encumbrance grids (token simulation).
 - NL rules inference as primary UX.
 - Pages/git as mechanical authority.
 - Always-on multi-tenant SaaS as default.
 - Reaction-primary approval.
 - Special Legacy bot path.
 - Publishing full audit / platform account maps.
+
+### Planned later (not initial release)
+
+- **Campaign geography map** (post-initial release): Storyteller map editor + public viewer;
+  dual modes **Atlas** (regional, settlement dots) and **Ground** (large structure /
+  approach scale only); first-party high-quality assets; optional Grok skill + MCP for
+  NL → editable map templates. Distinct from VTT — story geography, not combat mats.
 
 ---
 

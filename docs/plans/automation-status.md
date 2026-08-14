@@ -22,7 +22,7 @@
 | `campaign destroy --slug X --yes` | Delete campaign dir entirely |
 | `campaign export-json --slug X` | Redacted snapshot for inspection |
 
-Default demo slug: **`vardmark`**. Characters: **tomas**, **leif**.
+Default demo slug: **`vardmark`**. Characters: **torvald**, **leifr**.
 
 ## Design decisions locked here
 
@@ -37,13 +37,14 @@ Default demo slug: **`vardmark`**. Characters: **tomas**, **leif**.
 | Foundations UI | Roman rank marks + Harm pips (small ranks) |
 | Hierarchy | Every **member** on every axis (default Outcast); Outsiders **side rail** only |
 | Hexagonal persistence | App → `CommunityStorePort`; SQLite implements it |
+| Campaign map | **Post-initial release** — ST editor + public viewer; Atlas/Ground modes; not VTT. Grok skill/MCP templates later (after hand editor) |
 
 ## Known gaps / next
 
 1. Bot runtime (Discord then Fluxer) on same port  
 2. Induct-outsider CLI  
-3. Further tracker craft (parallel with bots)  
-4. Publish/archive pipeline  
+3. Publish/archive pipeline  
+4. Campaign geography map programme (deferred — see architecture §3 “Planned later”)  
 
 ## Verify loop
 
@@ -51,7 +52,7 @@ Default demo slug: **`vardmark`**. Characters: **tomas**, **leif**.
 npm test
 npm run kodranni -- campaign destroy --slug vardmark --yes   # optional clean
 npm run kodranni -- campaign seed-demo --force
-npm run kodranni -- roll --slug vardmark --character tomas \
+npm run kodranni -- roll --slug vardmark --character torvald \
   --foundation Strength --skill "Carpentry & Masonry" --tier 8 --exertion 1
 npm run kodranni -- live --slug vardmark
 ```
