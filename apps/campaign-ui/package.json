@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "astro dev --port 8742",
+    "dev": "astro dev --port 8742 --force",
     "build": "astro build",
     "preview": "astro preview --port 8742"
   },

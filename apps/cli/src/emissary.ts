@@ -11,7 +11,8 @@ import {
   sessionStatePath,
   type CampaignConfig,
 } from '@kodranni/store';
-import { findCloudflared } from './tunnel.js';
+import { probeHttp, processAlive } from './http.js';
+import { findCloudflared, localHttpUrlFromBind } from './tunnel.js';
 
 export interface EmissaryReport {
   ok: boolean;
@@ -93,18 +94,44 @@ export async function runEmissary(opts: {
     try {
       execFileSync('git', ['--version'], { encoding: 'utf8' });
       ghDetail = 'git present; gh auth not confirmed (archive publish later)';
-      ghOk = true; // soft: git alone is partial readiness
+      ghOk = true;
     } catch {
       ghDetail = 'neither gh auth nor git available';
     }
   }
   checks.push(check('git/gh', ghOk, ghDetail));
 
-  const localUrl = cfg.liveBaseUrl;
+  const localUrl = localHttpUrlFromBind(cfg.liveBind);
+  const communityLocal = localUrl.replace(/\/$/, '') + '/community/';
   const hashed = readLiveUrl(opts.slug);
   const session = readSessionState(opts.slug);
-  if (hashed) {
-    checks.push(check('live.url', true, `${liveUrlPath(opts.slug)} → ${hashed}`));
+
+  const localProbe = await probeHttp(communityLocal);
+  checks.push(
+    check(
+      'local UI',
+      localProbe.ok,
+      localProbe.ok
+        ? `${communityLocal} · ${localProbe.detail}`
+        : `${communityLocal} · ${localProbe.detail} — run: kodranni live --slug ${opts.slug}`,
+    ),
+  );
+
+  if (hashed && hashed !== localUrl) {
+    const publicProbe = await probeHttp(hashed.replace(/\/$/, '') + '/community/');
+    checks.push(
+      check(
+        'public tunnel',
+        publicProbe.ok,
+        publicProbe.ok
+          ? `${hashed} · ${publicProbe.detail}`
+          : `${hashed} · ${publicProbe.detail} (stale URL? re-run live --tunnel)`,
+      ),
+    );
+  } else if (hashed) {
+    checks.push(
+      check('live.url', true, `${liveUrlPath(opts.slug)} → ${hashed} (local only)`),
+    );
   } else {
     checks.push(
       check(
@@ -115,16 +142,31 @@ export async function runEmissary(opts: {
     );
   }
 
-  if (session?.startedAt) {
+  if (session?.pids?.live || session?.pids?.tunnel || session?.startedAt) {
+    const liveAlive = processAlive(session.pids?.live);
+    const tunnelAlive = processAlive(session.pids?.tunnel);
+    const parts: string[] = [];
+    if (session.startedAt) parts.push(`started ${session.startedAt}`);
+    if (session.pids?.live != null) {
+      parts.push(`live pid ${session.pids.live}${liveAlive ? '' : ' (dead)'}`);
+    }
+    if (session.pids?.tunnel != null) {
+      parts.push(`tunnel pid ${session.pids.tunnel}${tunnelAlive ? '' : ' (dead)'}`);
+    }
+    if (session.lastError) parts.push(`lastError: ${session.lastError}`);
+    const sessionOk =
+      localProbe.ok &&
+      (session.pids?.live == null || liveAlive) &&
+      !session.lastError?.includes('exited');
     checks.push(
       check(
         'session',
-        true,
-        `state ${sessionStatePath(opts.slug)} · started ${session.startedAt}`,
+        sessionOk,
+        `${sessionStatePath(opts.slug)} · ${parts.join(' · ') || 'empty'}`,
       ),
     );
   } else {
-    checks.push(check('session', true, 'no active session.json (ok if only live UI)'));
+    checks.push(check('session', true, 'no active session.json'));
   }
 
   if (cfg.publicBaseUrl) {
@@ -135,15 +177,25 @@ export async function runEmissary(opts: {
     );
   }
 
-  // store+toml required; cloudflared optional for local-only
   const hardOk = checks
-    .filter((c) => c.name === 'campaign.toml' || c.name === 'store' || c.name === 'node')
+    .filter((c) =>
+      ['campaign.toml', 'store', 'node', 'local UI'].includes(c.name),
+    )
     .every((c) => c.ok);
+
+  const shareUrl =
+    hashed &&
+    hashed !== localUrl &&
+    checks.find((c) => c.name === 'public tunnel')?.ok
+      ? hashed
+      : localProbe.ok
+        ? localUrl
+        : hashed ?? localUrl;
 
   return {
     ok: hardOk,
     checks,
-    liveUrl: hashed ?? localUrl,
+    liveUrl: shareUrl,
     localUrl,
     archiveUrl: cfg.publicBaseUrl,
   };
@@ -167,7 +219,7 @@ export function printEmissaryReport(report: EmissaryReport, slug: string): void 
   console.log('');
   console.log(
     report.ok
-      ? 'Access ready for local use. Share the public live URL only while the tunnel/session is up.'
+      ? 'Access ready. Share the public live URL only while the tunnel/session is up.'
       : 'Not ready — fix !! checks before inviting players.',
   );
 }

@@ -21,6 +21,7 @@ import {
   type CampaignConfig,
 } from '@kodranni/store';
 import { printEmissaryReport, runEmissary } from './emissary.js';
+import { waitForHttp } from './http.js';
 import {
   findCloudflared,
   localHttpUrlFromBind,
@@ -188,14 +189,17 @@ async function main(): Promise<void> {
     ensureCampaignRuntime(slug);
     const logsDir = campaignRuntimeLogsDir(slug);
     const localUrl = localHttpUrlFromBind(cfg.liveBind);
+    const communityUrl = localUrl.replace(/\/$/, '') + '/community/';
+    const startedAt = new Date().toISOString();
 
+    // Local until tunnel proves itself — avoid advertising a dead public URL
     writeLiveUrl(slug, localUrl);
     writeSessionState(slug, {
       slug,
-      startedAt: new Date().toISOString(),
+      startedAt,
       localUrl,
       liveUrl: localUrl,
-      tunnel: useTunnel,
+      tunnel: false,
     });
 
     console.log(`Live campaign-ui for ${cfg.slug}`);
@@ -203,55 +207,11 @@ async function main(): Promise<void> {
     console.log(`  local: ${localUrl}`);
     console.log(`  repo:  ${repoRoot}`);
 
-    let tunnelChild: ChildProcess | undefined;
-    if (useTunnel) {
-      const bin = await findCloudflared();
-      if (!bin) {
-        console.error(
-          'cloudflared not found on PATH.\n' +
-            '  Install Cloudflare Tunnel client, then re-run with --tunnel.\n' +
-            '  Local URL remains available without a tunnel.',
-        );
-        process.exit(1);
-      }
-      const tunnelLog = join(logsDir, 'tunnel.log');
-      console.log(`  tunnel: starting (${bin})…`);
-      const tunnel = startCloudflaredTunnel({
-        cloudflaredBin: bin,
-        localUrl,
-        logPath: tunnelLog,
-      });
-      tunnelChild = tunnel.child;
-      try {
-        const publicUrl = await Promise.race([
-          tunnel.url,
-          new Promise<string>((_, rej) =>
-            setTimeout(() => rej(new Error('Timed out waiting for tunnel URL (45s)')), 45_000),
-          ),
-        ]);
-        writeLiveUrl(slug, publicUrl);
-        writeSessionState(slug, {
-          slug,
-          startedAt: new Date().toISOString(),
-          localUrl,
-          liveUrl: publicUrl,
-          tunnel: true,
-          pids: { tunnel: tunnelChild.pid },
-        });
-        console.log(`  public: ${publicUrl}`);
-        console.log(`  (hashed URL — share only while this process runs; not for the public repo)`);
-        console.log(`  log:    ${tunnelLog}`);
-      } catch (e) {
-        killChild(tunnelChild);
-        console.error(e instanceof Error ? e.message : e);
-        process.exit(1);
-      }
-    }
-
     const liveLogPath = join(logsDir, 'live.log');
     const liveLog = createWriteStream(liveLogPath, { flags: 'a' });
-    liveLog.write(`\n--- live start ${new Date().toISOString()} ---\n`);
+    liveLog.write(`\n--- live start ${startedAt} ---\n`);
 
+    // Start UI first (astro --force replaces a stale instance on 8742), then tunnel.
     const npmBin = process.platform === 'win32' ? 'npm.cmd' : 'npm';
     const child = spawn(
       npmBin,
@@ -271,14 +231,8 @@ async function main(): Promise<void> {
       },
     );
 
-    writeSessionState(slug, {
-      slug,
-      startedAt: new Date().toISOString(),
-      localUrl,
-      liveUrl: readLiveUrl(slug) ?? localUrl,
-      tunnel: useTunnel,
-      pids: { live: child.pid, tunnel: tunnelChild?.pid },
-    });
+    let tunnelChild: ChildProcess | undefined;
+    let uiReady = false;
 
     child.stdout?.on('data', (b: Buffer) => {
       process.stdout.write(b);
@@ -302,20 +256,130 @@ async function main(): Promise<void> {
       process.exit(143);
     });
 
-    await new Promise<void>((resolve, reject) => {
-      child.on('exit', (code) => {
-        killChild(tunnelChild);
-        liveLog.write(`\n--- live exit code=${code} ---\n`);
-        liveLog.end();
-        if (code === 0 || code === null) resolve();
-        else reject(new Error(`campaign-ui exited ${code}`));
-      });
-      child.on('error', (err) => {
-        killChild(tunnelChild);
-        liveLog.end();
-        reject(err);
-      });
+    const uiExit = new Promise<number | null>((resolve, reject) => {
+      child.on('exit', (code) => resolve(code));
+      child.on('error', reject);
     });
+
+    // Fail fast if UI dies before becoming ready
+    const earlyDeath = uiExit.then((code) => {
+      if (!uiReady) {
+        throw new Error(`campaign-ui exited ${code} before becoming ready`);
+      }
+      return code;
+    });
+
+    try {
+      console.log('  waiting for local UI…');
+      await Promise.race([
+        waitForHttp(communityUrl, { timeoutMs: 90_000 }),
+        earlyDeath,
+      ]);
+      uiReady = true;
+      console.log('  local UI ready');
+    } catch (e) {
+      killChild(tunnelChild);
+      killChild(child);
+      liveLog.write(`\n--- live failed: ${e instanceof Error ? e.message : e} ---\n`);
+      liveLog.end();
+      writeSessionState(slug, {
+        slug,
+        startedAt,
+        localUrl,
+        liveUrl: localUrl,
+        tunnel: false,
+        lastError: e instanceof Error ? e.message : String(e),
+      });
+      writeLiveUrl(slug, localUrl);
+      console.error(e instanceof Error ? e.message : e);
+      process.exit(1);
+    }
+
+    writeSessionState(slug, {
+      slug,
+      startedAt,
+      localUrl,
+      liveUrl: localUrl,
+      tunnel: false,
+      pids: { live: child.pid },
+    });
+
+    if (useTunnel) {
+      const bin = await findCloudflared();
+      if (!bin) {
+        console.error(
+          'cloudflared not found on PATH.\n' +
+            '  Local UI is running; install cloudflared and re-run with --tunnel for a hashed URL.',
+        );
+      } else {
+        const tunnelLog = join(logsDir, 'tunnel.log');
+        console.log(`  tunnel: starting (${bin})…`);
+        const tunnel = startCloudflaredTunnel({
+          cloudflaredBin: bin,
+          localUrl,
+          logPath: tunnelLog,
+        });
+        tunnelChild = tunnel.child;
+        try {
+          const publicUrl = await Promise.race([
+            tunnel.url,
+            new Promise<string>((_, rej) =>
+              setTimeout(
+                () => rej(new Error('Timed out waiting for tunnel URL (45s)')),
+                45_000,
+              ),
+            ),
+          ]);
+          writeLiveUrl(slug, publicUrl);
+          writeSessionState(slug, {
+            slug,
+            startedAt,
+            localUrl,
+            liveUrl: publicUrl,
+            tunnel: true,
+            pids: { live: child.pid, tunnel: tunnelChild.pid },
+          });
+          console.log(`  public: ${publicUrl}`);
+          console.log(
+            '  (hashed URL — share only while this process runs; not for the public repo)',
+          );
+          console.log(`  log:    ${tunnelLog}`);
+        } catch (e) {
+          killChild(tunnelChild);
+          tunnelChild = undefined;
+          writeSessionState(slug, {
+            slug,
+            startedAt,
+            localUrl,
+            liveUrl: localUrl,
+            tunnel: false,
+            pids: { live: child.pid },
+            lastError: e instanceof Error ? e.message : String(e),
+          });
+          console.error(
+            `  tunnel failed: ${e instanceof Error ? e.message : e}\n` +
+              '  Local UI still running.',
+          );
+        }
+      }
+    }
+
+    const code = await uiExit;
+    killChild(tunnelChild);
+    liveLog.write(`\n--- live exit code=${code} ---\n`);
+    liveLog.end();
+    writeLiveUrl(slug, localUrl);
+    writeSessionState(slug, {
+      slug,
+      startedAt,
+      localUrl,
+      liveUrl: localUrl,
+      tunnel: false,
+      lastError: code && code !== 0 ? `campaign-ui exited ${code}` : undefined,
+    });
+    if (code !== 0 && code !== null) {
+      throw new Error(`campaign-ui exited ${code}`);
+    }
     return;
   }
 
