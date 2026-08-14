@@ -54,13 +54,19 @@ A good seed uses a **real or invented place name** (not a vague label like “ri
 <div class="kod-seed-grid">
 <div class="kod-seed kod-seed--hist">
 <p class="kod-seed__title">The Debatable Land, 1320s</p>
-<p>Related Border households live on ground both English and Scottish lords now claim. Service and payment are demanded from both sides. The old quiet understandings that kept the middle ground alive are dead.</p>
-<p class="kod-seed__hook">Winter is coming. The harvest was thin. Choose whom to serve — or whom to refuse — and still be a people in spring.</p>
+<ul class="kod-seed__facts">
+<li><strong>Who</strong> — Related Border households on ground claimed by both English and Scottish lords.</li>
+<li><strong>Pressure</strong> — Both sides demand service and payment. The old middle-ground bargains are dead. Harvest was thin; winter is close.</li>
+<li><strong>Choose</strong> — Whom to serve, or refuse, and still be a people in spring.</li>
+</ul>
 </div>
 <div class="kod-seed kod-seed--hist">
 <p class="kod-seed__title">Iceland, late Commonwealth — after the burnings</p>
-<p>Two neighbouring chieftains’ followings share a valley of hay and driftwood rights. Last winter halls burned and men died. Partial settlements and unpaid blood-price leave killers still in the district. The Althing is weeks away. Neither side can afford open war before the hay is in; neither will walk into court unarmed.</p>
-<p class="kod-seed__hook">Hold the hay, settle the dead without finishing the kinship, or lose the following to stronger goðar before the court sits.</p>
+<ul class="kod-seed__facts">
+<li><strong>Who</strong> — Two neighbouring chieftains’ followings sharing a valley of hay and driftwood rights.</li>
+<li><strong>Pressure</strong> — Last winter halls burned and men died. Killers still in the district; blood-price unpaid. Althing in weeks. Hay must come in first.</li>
+<li><strong>Choose</strong> — Hold the hay, settle the dead without finishing the kinship, or lose the following to stronger goðar before court.</li>
+</ul>
 </div>
 </div>
 </div>
@@ -69,13 +75,21 @@ A good seed uses a **real or invented place name** (not a vague label like “ri
 <div class="kod-seed-grid">
 <div class="kod-seed kod-seed--semi">
 <p class="kod-seed__title">The Karadağ villages, after Manzikert (c. 1080s→)</p>
-<p><strong>Basis:</strong> Byzantine collapse in central Anatolia after Manzikert. <strong>Break:</strong> the related free villages along the Karadağ road were never fully absorbed into a stable beylik or restored theme. For a generation they have paid tax and forage to whichever armed band held the road that season. This year a Turkic lord means to settle permanent garrisons; a coastal Byzantine agent offers arms if they rise and hold the passes until “relief” that may never come. Grain is already short. Young men are leaving as hirelings.</p>
-<p class="kod-seed__hook">Take the garrison and keep the land under new masters, rise for a relief that may not arrive, or empty the hills and lose the name on the road to the coast.</p>
+<ul class="kod-seed__facts">
+<li><strong>Basis</strong> — Byzantine collapse in central Anatolia after Manzikert.</li>
+<li><strong>Break</strong> — Free villages on the Karadağ road never absorbed into a stable beylik or restored theme.</li>
+<li><strong>Pressure</strong> — A Turkic lord means permanent garrisons. A coastal Byzantine agent offers arms for a rising and a “relief” that may never come. Grain short; young men leaving as hirelings.</li>
+<li><strong>Choose</strong> — Take the garrison, rise for relief that may not arrive, or empty the hills and lose the name on the road to the coast.</li>
+</ul>
 </div>
 <div class="kod-seed kod-seed--semi">
 <p class="kod-seed__title">Straumfjǫrðr held (c. 1020→)</p>
-<p><strong>Basis:</strong> Norse landings in Vinland (saga place-name). <strong>Break:</strong> the settlement at Straumfjǫrðr did not fail. Three generations on, a thin coastal kin still holds timber halls and a few fields. Greenland ships come rarely; iron is scarce; winters have been hard. Relations with neighbouring peoples are uneasy after raids both ways. This spring a longship arrives from the east with a Christian magnate’s men who intend to claim the fort as a mission station and reorganise the freeholding under their law.</p>
-<p class="kod-seed__hook">Resist and risk isolation without iron, accept the newcomers and lose free status, or force a lasting settlement with the forest peoples that will make you strangers to Greenland.</p>
+<ul class="kod-seed__facts">
+<li><strong>Basis</strong> — Norse landings in Vinland (saga place-name).</li>
+<li><strong>Break</strong> — The settlement at Straumfjǫrðr did not fail; three generations of thin coastal freeholders remain.</li>
+<li><strong>Pressure</strong> — Iron scarce; Greenland rare; hard winters; uneasy neighbours after raids both ways. A Christian magnate’s longship arrives to claim the fort as a mission and reorganise freeholding under their law.</li>
+<li><strong>Choose</strong> — Resist without iron, accept and lose free status, or settle with the forest peoples and become strangers to Greenland.</li>
+</ul>
 </div>
 </div>
 </div>
@@ -84,18 +98,27 @@ A good seed uses a **real or invented place name** (not a vague label like “ri
 <div class="kod-seed-grid">
 <div class="kod-seed kod-seed--invented">
 <p class="kod-seed__title">Harrowden Vale, after the levy</p>
-<p>The freeholders of Harrowden Vale fought for the losing side of a short war. The victors hold the low road and the toll bridges at Longford and Millspan. They demand arms surrendered, a fixed grain levy, and hostages from the leading houses — not a massacre. Winter stores went into the campaign. The next levy is due before the seed can go in. Comply and live under their law, refuse and risk a second fight you cannot win alone, or trade hostages for time and accept what that does to the houses that give them up.</p>
-<p class="kod-seed__hook">Disarm under the levy, keep arms and face the next column, or buy months with hostages and live with the cost inside your own halls.</p>
+<ul class="kod-seed__facts">
+<li><strong>Who</strong> — Freeholders of Harrowden Vale who fought for the losing side.</li>
+<li><strong>Pressure</strong> — Victors hold Longford and Millspan. Arms to be surrendered, grain levy due before seed-in, hostages from leading houses. Winter stores spent in the campaign.</li>
+<li><strong>Choose</strong> — Disarm under the levy, keep arms and face the next column, or buy months with hostages and live with the cost inside your own halls.</li>
+</ul>
 </div>
 <div class="kod-seed kod-seed--invented">
 <p class="kod-seed__title">Ordmouth under siege, fifth month</p>
-<p>Ordmouth on the Greywater has been closed since harvest. The garrison is foreign and unpaid. The citizen houses still hold what remains of the granaries. Peace terms: open a gate, accept a new garrison, hand over named leaders for trial. A war party wants to hold until the ice breaks and river trade moves again. Sickness is in the poorer quarters. Both parties need the consent of the same few houses the players are tied to — and those houses do not agree.</p>
-<p class="kod-seed__hook">Open the gate, hold for the thaw, or force a third bargain before hunger and sickness decide for you.</p>
+<ul class="kod-seed__facts">
+<li><strong>Who</strong> — Citizen houses of Ordmouth on the Greywater; players tied to a few of them.</li>
+<li><strong>Pressure</strong> — Siege since harvest. Foreign unpaid garrison. Granaries still in citizen hands. Peace terms: open a gate, new garrison, named leaders for trial. Disease in the poorer quarters. Houses do not agree.</li>
+<li><strong>Choose</strong> — Open the gate, hold for the thaw, or force a third bargain before hunger and sickness decide.</li>
+</ul>
 </div>
 <div class="kod-seed kod-seed--invented">
 <p class="kod-seed__title">The Vardmark at Kelarn’s Bend</p>
-<p>The Vardmark are not farmers. Their home steppe and high country could no longer feed a growing war-following; they came down because they were stronger than the people who held the river, and they took part in the sack of Kelarn — burning, taking, and killing with the rest. The capital is a ruin. Its king is dead or fled. The Vardmark hold Kelarn’s Bend because they can still hold a ford with spears, not because they know how to work the black earth. Looted grain and cattle will not last the year. Survivors of Kelarn live in the reed-marshes and half-empty towns; some can be forced to work the fields, some will cut throats in the dark. Other war-bands from the same campaign are staking claims on the next bend. Winter is coming for people who know the raid better than the plough.</p>
-<p class="kod-seed__hook">Rule the conquered as masters, keep living only by the raid until someone stronger takes the Bend, or break trying to become what you destroyed.</p>
+<ul class="kod-seed__facts">
+<li><strong>Who</strong> — The Vardmark: a war-following from inhospitable steppe and high country. Conquerors, not farmers.</li>
+<li><strong>Pressure</strong> — They helped sack Kelarn and hold the ford with spears. Looted grain and cattle will not last the year. Survivors in marshes and half-empty towns. Rival war-bands on the next bend. Winter coming for people who know the raid better than the plough.</li>
+<li><strong>Choose</strong> — Rule the conquered as masters, live only by the raid until someone stronger takes the Bend, or break trying to become what you destroyed.</li>
+</ul>
 </div>
 </div>
 </div>
