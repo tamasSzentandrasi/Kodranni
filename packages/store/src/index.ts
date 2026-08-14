@@ -11,6 +11,7 @@ export * from './sqlite.js';
 export * from './seed.js';
 export * from './derived.js';
 export * from './hierarchy.js';
+export * from './port.js';
 
 // --- lightweight memory store (tests / early adapters) ---
 

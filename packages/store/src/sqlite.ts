@@ -13,24 +13,10 @@ import type {
 } from './types.js';
 import { refreshCharacterDerived } from './derived.js';
 import { completeMemberPlacements } from './hierarchy.js';
+import type { CommunityStorePort } from './port.js';
 
-export interface SqliteCommunityStore {
-  readonly path: string;
-  close(): void;
-  getCommunity(): CommunityRecord;
-  putCommunity(c: CommunityRecord): void;
-  listCharacters(): CharacterRecord[];
-  getCharacterBySlug(slug: string): CharacterRecord | undefined;
-  getCharacterById(id: string): CharacterRecord | undefined;
-  putCharacter(c: CharacterRecord): void;
-  listMembers(): MemberRecord[];
-  putMember(m: MemberRecord): void;
-  appendEvent(event: Omit<AuditEvent, 'id' | 'ts'> & { id?: string; ts?: string }): AuditEvent;
-  hasClientEvent(clientEventId: string): boolean;
-  insertRoll(roll: RollRecord): void;
-  getRoll(id: string): RollRecord | undefined;
-  toPublicSnapshot(): PublicSnapshot;
-}
+/** @deprecated Prefer CommunityStorePort — SQLite is one adapter. */
+export type SqliteCommunityStore = CommunityStorePort;
 
 function normalizeCommunity(raw: CommunityRecord): CommunityRecord {
   return {
@@ -72,7 +58,7 @@ function normalizeCharacter(raw: CharacterRecord): CharacterRecord {
   return refreshCharacterDerived(ch);
 }
 
-export function openSqliteStore(path: string): SqliteCommunityStore {
+export function openSqliteStore(path: string): CommunityStorePort {
   if (path !== ':memory:') {
     mkdirSync(dirname(path), { recursive: true });
   }

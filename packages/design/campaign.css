@@ -560,47 +560,95 @@ a:hover {
 }
 
 /* Fortunes strip */
-.kod-fortunes {
+/* Fortune chart: height + colour only (no numeric focus) */
+.kod-fortune-chart {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 0.65rem;
+  gap: 0.75rem;
   margin-bottom: 1.5rem;
+  align-items: end;
+  min-height: 11rem;
 }
 
 @media (max-width: 50rem) {
-  .kod-fortunes {
+  .kod-fortune-chart {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-.kod-fortune {
-  border: 1px solid #2a2222;
-  background: #0a0a0a;
-  padding: 0.75rem 0.85rem;
+.kod-fortune-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
   text-align: center;
 }
 
-.kod-fortune__name {
-  display: block;
-  font-size: 0.75rem;
+.kod-fortune-bar__track {
+  width: 100%;
+  max-width: 3.5rem;
+  height: 7.5rem;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  border: 1px solid #2a2222;
+  background: #0a0a0a;
+  padding: 0.25rem;
+}
+
+.kod-fortune-bar__fill {
+  width: 100%;
+  height: var(--h, 0%);
+  min-height: 0.35rem;
+  transition: height 0.2s ease;
+}
+
+.kod-fortune-bar[data-level='0'] .kod-fortune-bar__fill {
+  background: linear-gradient(180deg, #5a1010, #2a0808);
+  height: 12%;
+}
+.kod-fortune-bar[data-level='1'] .kod-fortune-bar__fill {
+  background: linear-gradient(180deg, #8a3a18, #4a1808);
+}
+.kod-fortune-bar[data-level='2'] .kod-fortune-bar__fill {
+  background: linear-gradient(180deg, #6a6a48, #2a2a18);
+}
+.kod-fortune-bar[data-level='3'] .kod-fortune-bar__fill {
+  background: linear-gradient(180deg, #5a7a4a, #1a2a14);
+}
+
+.kod-fortune-bar__name {
+  font-size: 0.72rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--kod-silver-dim);
-  margin-bottom: 0.25rem;
 }
 
-.kod-fortune__value {
-  display: block;
-  font-size: 1.75rem;
-  color: var(--kod-silver-bright);
-  line-height: 1.1;
-}
-
-.kod-fortune__state {
-  display: block;
+.kod-fortune-bar__state {
   font-size: 0.85rem;
+  color: var(--kod-silver);
+}
+
+.kod-fortune-bar[data-level='0'] .kod-fortune-bar__state {
   color: var(--kod-blood-bright);
-  margin-top: 0.15rem;
+}
+.kod-fortune-bar[data-level='3'] .kod-fortune-bar__state {
+  color: #a8b89a;
+}
+
+.kod-exertion {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.75rem 1.25rem;
+  align-items: center;
+}
+
+.kod-exertion__track-wrap {
+  grid-column: 1 / -1;
+}
+
+.kod-meter--exertion {
+  height: 0.75rem;
 }
 
 /* Hierarchy diagram */

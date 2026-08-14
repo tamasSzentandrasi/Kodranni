@@ -8,7 +8,7 @@ import { emptyCommunity } from '../src/sqlite.js';
 
 describe('completeMemberPlacements', () => {
   it('places every community character on every axis (default Outcast)', () => {
-    const community = emptyCommunity('broken-shore', 'Test');
+    const community = emptyCommunity('vardmark', 'Test');
     community.hierarchyAxes = ['Arms', 'Faith', 'Coin', 'Blood'];
     community.placements = [
       { name: 'Tomas', axis: 'Coin', tier: 'Acknowledged', characterSlug: 'tomas' },

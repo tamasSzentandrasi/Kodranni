@@ -24,7 +24,7 @@ describe('sqlite store', () => {
     dirs.push(dir);
     const path = join(dir, 'community.sqlite');
     const store = openSqliteStore(path);
-    seedDemoCampaign(store, 'broken-shore', 'Settlers on the broken shore');
+    seedDemoCampaign(store);
     store.putMember({
       platform: 'discord',
       accountId: '123456789012345678',
@@ -33,7 +33,7 @@ describe('sqlite store', () => {
     });
 
     const snap = store.toPublicSnapshot();
-    expect(snap.community.slug).toBe('broken-shore');
+    expect(snap.community.slug).toBe('vardmark');
     expect(snap.characters.length).toBeGreaterThanOrEqual(1);
     const tomas = snap.characters.find((c) => c.slug === 'tomas')!;
     expect(tomas.name).toBe('Tomas');
@@ -74,8 +74,8 @@ describe('campaign.toml', () => {
   it('round-trips fixed keys', () => {
     const text = serializeCampaignToml({
       schema: 1,
-      slug: 'broken-shore',
-      name: 'Settlers on the broken shore',
+      slug: 'vardmark',
+      name: 'The Vardmark at Kelarn’s Bend',
       storePath: '/tmp/x.sqlite',
       liveBind: '127.0.0.1:8742',
       liveBaseUrl: 'http://127.0.0.1:8742',
@@ -83,7 +83,7 @@ describe('campaign.toml', () => {
       platforms: ['discord', 'fluxer'],
     });
     const cfg = parseCampaignToml(text);
-    expect(cfg.slug).toBe('broken-shore');
+    expect(cfg.slug).toBe('vardmark');
     expect(cfg.platforms).toEqual(['discord', 'fluxer']);
     expect(cfg.storePath).toBe('/tmp/x.sqlite');
   });

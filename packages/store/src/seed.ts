@@ -1,10 +1,15 @@
 import { randomUUID } from 'node:crypto';
 import type { CharacterRecord, CommunityRecord } from './types.js';
-import type { SqliteCommunityStore } from './sqlite.js';
+import type { CommunityStorePort } from './port.js';
 import { emptyCommunity } from './sqlite.js';
 import { refreshCharacterDerived } from './derived.js';
 
-/** Tomas — Dice Mechanics carpenter example. */
+/** Demo identity: Guidebook seed “The Vardmark at Kelarn’s Bend”. */
+export const DEMO_SEED_ID = 'vardmark-kelarns-bend';
+export const DEMO_SLUG = 'vardmark';
+export const DEMO_NAME = 'The Vardmark at Kelarn’s Bend';
+
+/** Tomas — Dice Mechanics carpenter example, placed in the Vardmark. */
 export function demoTomas(): CharacterRecord {
   const ch: CharacterRecord = {
     id: randomUUID(),
@@ -13,7 +18,7 @@ export function demoTomas(): CharacterRecord {
     kind: 'pc',
     status: 'active',
     communityTie:
-      'Freeholder among the settlers on the burned river fields; owes labour on the grain store the kin still share.',
+      'Vardmark freeholder at Kelarn’s Bend; keeps the shared grain store the kin still use.',
     whoWeSee: 'A quiet man who measures twice and keeps his word when timber is scarce.',
     player: {
       platform: 'local',
@@ -96,7 +101,7 @@ export function demoCapacityProfile(name = 'Leif'): CharacterRecord {
     kind: 'pc',
     status: 'active',
     communityTie:
-      'Took part in the taking of this shore; holds a claim on the upper fields still black from last year’s fire.',
+      'Took part in the taking of Kelarn’s Bend; holds a claim on the upper fields still black from last year’s fire.',
     whoWeSee: 'A hard bargainer who still answers when the ford is threatened.',
     player: {
       platform: 'discord',
@@ -123,8 +128,8 @@ export function demoCapacityProfile(name = 'Leif'): CharacterRecord {
     traits: [{ name: 'Scarred knuckles', note: 'From the taking of the shore — not from sport.' }],
     exertion: { current: 5, max: 0 },
     echoes: [
-      { title: 'Hold the river ford until the hostages return', weight: 3 },
-      { title: 'Pact with the marsh folk for seed grain', weight: 2 },
+      { title: 'Hold Kelarn’s Bend ford until the hostages return', weight: 3 },
+      { title: 'Pact with the reed-marsh folk for seed grain', weight: 2 },
       { title: 'Mother’s knife under the floorboards', weight: 1 },
     ],
     echoCapacity: 0,
@@ -160,9 +165,9 @@ export const demoEira = demoTomas;
 export const demoLeif = () => demoCapacityProfile('Leif');
 
 export function seedDemoCampaign(
-  store: SqliteCommunityStore,
-  slug = 'broken-shore',
-  name = 'Settlers on the broken shore',
+  store: CommunityStorePort,
+  slug = DEMO_SLUG,
+  name = DEMO_NAME,
 ): { community: CommunityRecord; character: CharacterRecord } {
   const community = emptyCommunity(slug, name);
   community.fortunes = {
@@ -174,34 +179,34 @@ export function seedDemoCampaign(
   };
   community.myths = [
     {
-      title: 'The Shore Was Taken',
-      summary: 'The kin helped pull down the river empire and mean to plant here.',
+      title: 'Kelarn’s Fall',
+      summary: 'The Vardmark helped pull down the river empire and mean to plant at the Bend.',
       effects: [
         {
           kind: 'practice_mod',
-          label: '+Practice on Farming when on claimed fields',
-          detail: 'Matching rolls on the burned fields gain extra Practice when tagged.',
+          label: '+Practice on Farming on claimed Bend fields',
+          detail: 'When Myth is tagged on rolls working the burned fields.',
           amount: 1,
         },
         {
           kind: 'tide_mod',
-          label: 'Tide start +1 when defending the ford',
-          detail: 'When a Tide is opened to hold the river ford, start one step toward the settlers.',
+          label: 'Tide start +1 defending the Bend ford',
+          detail: 'When a Tide is opened to hold the ford at Kelarn’s Bend.',
         },
       ],
     },
     {
-      title: 'Hostage Winter',
-      summary: 'Houses that gave hostages still feel the empty seat at the fire.',
+      title: 'Reed-Marsh Compact',
+      summary: 'Seed grain bought from the marsh folk after the taking.',
       effects: [
         {
           kind: 'disadvantage',
-          label: 'Disadvantage on Coin bargains with the victors',
-          detail: 'When the levy-masters are party to the deal and Myth is tagged.',
+          label: 'Disadvantage if the Compact is broken in the scene',
+          detail: 'When Myth is tagged and the table rules the Compact is at stake.',
         },
         {
           kind: 'omen_faces',
-          label: 'Omen 4 = messenger from the hostages',
+          label: 'Omen 4 = marsh messenger',
           faces: [4],
         },
       ],
@@ -209,7 +214,6 @@ export function seedDemoCampaign(
   ];
   const tomas = demoTomas();
   const leif = demoCapacityProfile('Leif');
-  // Only non-default tiers need explicit rows; completeMemberPlacements fills Outcast.
   community.placements = [
     { name: tomas.name, axis: 'Coin', tier: 'Acknowledged', characterSlug: tomas.slug },
     { name: leif.name, axis: 'Arms', tier: 'Acknowledged', characterSlug: leif.slug },
@@ -217,17 +221,15 @@ export function seedDemoCampaign(
     { name: 'Halla', axis: 'Blood', tier: 'Acknowledged' },
     { name: 'Old Rurik', axis: 'Faith', tier: 'Honoured' },
     { name: 'Young Sten', axis: 'Arms', tier: 'Trusted' },
-    { name: 'Young Sten', axis: 'Blood', tier: 'Outcast' },
   ];
-  // Outsiders sit beside the diagram — not on any axis until inducted.
   community.outsiders = [
     {
-      name: 'Road-captain of the levy band',
-      note: 'A hard bargainer who still answers when the low road is closed.',
+      name: 'Reed-marsh traders',
+      note: 'Quiet people who measure grain twice and will not fight free for the Bend.',
     },
     {
-      name: 'Marsh traders',
-      note: 'Quiet people who measure grain twice and will not fight the victors free.',
+      name: 'War-band on the next bend',
+      note: 'Same campaign as the Vardmark; staking claims before the harvest.',
     },
   ];
   community.ruler = null;
@@ -237,7 +239,7 @@ export function seedDemoCampaign(
   store.putCharacter(leif);
   store.appendEvent({
     type: 'CampaignSeeded',
-    payload: { slug, seed: 'settlers-on-a-broken-shore' },
+    payload: { slug, seed: DEMO_SEED_ID },
   });
   return { community, character: tomas };
 }

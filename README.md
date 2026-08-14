@@ -4,136 +4,61 @@
 
 Kodranni is a tabletop role-playing system for campaigns where ordinary people face unforgiving pre-industrial conditions, the community is the true protagonist, and legacy outlives the individual.
 
-This repository holds the **Guidebook** (Astro + [Starlight](https://starlight.astro.build/)) and planning documents for **automation**: shared character sheets, a community tracker, and bots on **Fluxer** and **Discord** over a per-community backend.
+This repository holds the **Guidebook** (Astro + [Starlight](https://starlight.astro.build/)) and **automation** (local SoT, live campaign UI, CLI; Discord/Fluxer bots next).
 
 ## Guidebook (local)
 
 ```bash
+cd /path/to/Kodranni    # monorepo root required for npm scripts
 npm install
 npm run dev      # http://localhost:4321
 npm run build    # static site → dist/
-npm run preview  # serve production build
-npm test         # domain + chat-ui + store tests
+npm run preview
+npm test         # domain + store + app + chat-ui
 ```
 
-Content: `src/content/docs/`. Sidebar: `astro.config.mjs`. Theme: `src/styles/custom.css` (self-hosted **Bellefair** under `public/fonts/`, no Google Fonts CDN).
+Content: `src/content/docs/`. Theme: self-hosted Bellefair under `public/fonts/`.
 
-## Automation monorepo (in progress)
+## Automation (local Storyteller machine)
 
-| Path | Role |
-|------|------|
-| `packages/domain` | Pure rules + golden tests |
-| `packages/design` | Tokens + fonts + campaign CSS |
-| `packages/chat-port` / `chat-ui` | Dual-platform chat model |
-| `packages/store` | Local SoT (memory first; SQLite next) |
-| `apps/campaign-ui` | Astro live/archive sheets + tracker |
-| `adapters/discord` · `adapters/fluxer` | ChatPort adapters (skeletons) |
+**Always run CLI from the monorepo root** (or set `KODRANNI_REPO`). Running from `~` causes `ENOENT … /home/…/package.json`.
 
 ```bash
-npm run dev:campaign-ui   # http://localhost:8742 — fixture sheet/tracker
-npm run test:domain
-npm test
+cd /path/to/Kodranni
 
-# Local campaign SoT (Storyteller machine)
-# Demo seed: Guidebook “Settlers on a broken shore” + Tomas / capacity profile
-npm run kodranni -- campaign seed-demo --slug broken-shore
-npm run kodranni -- roll --slug broken-shore --character tomas \
-  --foundation Strength --skill "Carpentry & Masonry" --tier 8 --exertion 1 --seed 42
+# Fully reconstructible demo (Guidebook seed: The Vardmark at Kelarn’s Bend)
+npm run kodranni -- campaign destroy --slug vardmark --yes   # optional wipe
+npm run kodranni -- campaign seed-demo --force               # create/overwrite
 
-# Live pretty sheet/tracker (SSR, re-reads SQLite each request)
-npm run kodranni -- live --slug broken-shore
+# Player / ST rolls (crypto RNG; optional --debug-seed N for verification only)
+npm run kodranni -- roll --slug vardmark --character tomas \
+  --foundation Strength --skill "Carpentry & Masonry" --tier 8 --exertion 1
+npm run kodranni -- st-roll --slug vardmark \
+  --label "War-band scout" --foundation 2 --skill 1 --tier 8
+
+# Live sheet + community tracker (SSR, re-reads SQLite each request)
+npm run kodranni -- live --slug vardmark
 # → http://127.0.0.1:8742/community/
-#      Fortunes (pips) · Hierarchy (every member on every axis) · Outsiders rail · Myths
-# → http://127.0.0.1:8742/characters/    browse / status
-# → …/characters/tomas/                  core: player, who-we-see, foundations+harm, skill radials
-# → …/characters/tomas/burden/           echoes · inventory (armour + supplies + named items) · traits
-
-# Optional redacted export for archive builds
-npm run kodranni -- campaign export-json --slug broken-shore --out /tmp/broken-shore.json
+# → http://127.0.0.1:8742/characters/
+# → …/characters/tomas/  and  …/characters/tomas/burden/
 ```
 
-Private data lives under `~/.kodranni/campaigns/<slug>/` (gitignored).
+Private data: `~/.kodranni/campaigns/<slug>/` (gitignored). Override with `KODRANNI_HOME`.
 
-**Capacities (Guidebook):** Exertion max = Res+Con+Cha; Echo capacity = max(Str,Dex)+Int+Auth — independent.
-
-### What works today vs not yet
-
-| Capability | Status |
-|------------|--------|
-| Local campaign init / seed / roll / export (CLI) | **Yes** |
-| Live character sheet + community tracker (SSR page) | **Yes** (`kodranni live`) |
-| Dual capacities, Practice, audit events | **Yes** (domain + store) |
-| Discord / Fluxer bot on a real server | **Not yet** — adapters are skeletons only |
-| Tunnel hashed URL automation | **Not yet** (manual cloudflared possible later) |
-| ST approve buttons, oppose, Tide, Harm UI | **Not yet** in chat |
-
-Engineering direction: [docs/plans/automation-architecture.md](docs/plans/automation-architecture.md).
-
-## Hosting (GitHub Pages)
-
-Deploy is automatic on push to `main` (`.github/workflows/deploy.yml`).
-
-| URL | What you get |
-|-----|----------------|
-| [github.com/…/Kodranni](https://github.com/tamasszentandrasi/Kodranni) | **Repository** (source, issues, history) |
-| […github.io/Kodranni/](https://tamasszentandrasi.github.io/Kodranni/) | Project portal → repo + Guidebook links |
-| […github.io/Kodranni/Guidebook/](https://tamasszentandrasi.github.io/Kodranni/Guidebook/) | **Guidebook** (Starlight); starts at `/introduction/` |
-
-GitHub Pages cannot replace `github.io/Kodranni/` with the GitHub **repo UI** — those are different hosts. The portal at the Pages root points at both.
-
-Repo **Settings → Pages** must use **Source: GitHub Actions**.
-
-Build layout: Astro `base` is `/Kodranni/Guidebook`. CI copies `dist/` into `publish/Guidebook/` and adds `public-root/index.html` as the Pages root.
-
-### Custom domain (branded URL, e.g. kodranni.com)
-
-GitHub cannot invent a hostname for free beyond `*.github.io`. To drop the username from the URL:
-
-1. Register a domain (e.g. `kodranni.com` or `kodranni.game`).
-2. In the repo **Settings → Pages → Custom domain**, enter it and enable DNS HTTPS when available.
-3. At your registrar, point DNS as GitHub instructs (usually a `CNAME` to `tamasszentandrasi.github.io` for a `www` host, or `A` records for apex).
-4. In this repo:
-   - `astro.config.mjs`: set `site: 'https://YOUR.DOMAIN'` and `base: '/'` (or `/Guidebook` if you keep nesting)
-   - `scripts/prefix-base.mjs`: set `BASE` to match `base` (or `''` for root)
-   - adjust `.github/workflows/deploy.yml` publish layout if you no longer nest under `Guidebook/`
-   - add `public/CNAME` containing a single line: `YOUR.DOMAIN`
-5. Push; wait for DNS + certificate.
-
-Until then, the `github.io/Kodranni/Guidebook/` URL is the working docs host.
-
-## Documentation map
-
-| Area | Entry |
+| Area | Status |
 |------|--------|
-| Design intent | [Introduction](src/content/docs/introduction.md) |
-| Resolution | [Dice Mechanics](src/content/docs/dice-mechanics.md) |
-| Character capacity | [Human Potential](src/content/docs/human-potential.md) |
-| Continuity | [Echoes](src/content/docs/echoes.md) |
-| Injury | [Harm](src/content/docs/harm.md) |
-| Standing | [Hierarchies](src/content/docs/hierarchies.md) |
-| Gear | [Inventory](src/content/docs/inventory.md) |
-| ST prep | [Campaign Setup](src/content/docs/campaign-setup.md) |
-| PCs | [Character Creation](src/content/docs/character-creation.md) |
-| Shared sheets & bots | [Automation](src/content/docs/automation.md) |
-| Terms | [Glossary](src/content/docs/glossary.md) |
+| Domain + CLI rolls + export | **Yes** |
+| Live Community + Character UI | **Functional** (polish deferred) |
+| Reconstructible demo (`seed-demo --force` / `destroy`) | **Yes** |
+| Discord / Fluxer bot on a real server | **Not yet** |
 
-## Plans
+Capacities: **Exertion** = Res+Con+Cha; **Echo capacity** = max(Str,Dex)+Int+Auth. Over-capacity −1 only on Echo-involved rolls.
 
-| Plan | Purpose |
-|------|---------|
-| [docs/plans/starlight-guidebook.md](docs/plans/starlight-guidebook.md) | Finish and operate the Astro + Starlight guidebook |
-| [docs/plans/automation-architecture.md](docs/plans/automation-architecture.md) | Per-community backend, Fluxer + Discord, shared sheet/tracker |
-| [docs/plans/documentation-gaps.md](docs/plans/documentation-gaps.md) | Gaps (✅🚫❓) and locked design answers |
+Engineering: [docs/plans/automation-architecture.md](docs/plans/automation-architecture.md) · status: [docs/plans/automation-status.md](docs/plans/automation-status.md).
 
-## Design constraints (system)
+## Hosting (Guidebook — GitHub Pages)
 
-1. No magic or supernatural beings  
-2. Pre-industrial setting  
-3. Characters are ordinary human beings  
-4. If the community is destroyed, the campaign ends  
-5. Death is permanent; continuity runs through Echoes, Legacies, and Foundation Myths  
-6. **Advantage / Disadvantage** set die tier (Storyteller-declared; safe default **d8**)  
-7. One shared character record and community tracker per table — no duplicate sheets  
+Deploy on push to `main` (`.github/workflows/deploy.yml`). See earlier README notes for custom domain.
 
 ## License
 

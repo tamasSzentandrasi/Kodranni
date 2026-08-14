@@ -20,7 +20,8 @@ describe('refreshCharacterDerived', () => {
     expect(ch.echoWeight).toBe(0);
   });
 
-  it('over-cap when weight exceeds capacity', () => {
+  it('flags overCapacity when weight exceeds capacity (penalty only on Echo-involved rolls)', () => {
+    // Flag = load state. Dice −1 applies only when the roll involves an Echo (invoke/tag).
     const ch = demoTomas();
     ch.echoes = [
       { title: 'a', weight: 3 },
@@ -30,6 +31,11 @@ describe('refreshCharacterDerived', () => {
     expect(ch.echoWeight).toBe(6);
     expect(ch.echoCapacity).toBe(5);
     expect(ch.flags.overCapacity).toBe(true);
+    // At capacity (not over): flag false
+    ch.echoes = [{ title: 'a', weight: 5 }];
+    refreshCharacterDerived(ch);
+    expect(ch.flags.overCapacity).toBe(false);
   });
 });
+
 

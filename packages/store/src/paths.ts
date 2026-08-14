@@ -1,3 +1,4 @@
+import { rmSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { join } from 'node:path';
 
@@ -17,4 +18,9 @@ export function defaultStorePath(slug: string, env?: NodeJS.ProcessEnv): string 
 
 export function defaultCampaignTomlPath(slug: string, env?: NodeJS.ProcessEnv): string {
   return join(campaignDir(slug, env), 'campaign.toml');
+}
+
+/** Fully remove a campaign directory (SoT + config). Reconstruct with seed-demo. */
+export function destroyCampaignDir(slug: string, env?: NodeJS.ProcessEnv): void {
+  rmSync(campaignDir(slug, env), { recursive: true, force: true });
 }

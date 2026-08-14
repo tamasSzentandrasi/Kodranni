@@ -3,8 +3,6 @@ export const prerender = false;
 
 import CampaignLayout from '../../../layouts/CampaignLayout.astro';
 import { getCharacter, loadCommunity } from '../../../data/load';
-import { toRoman } from '../../../lib/format';
-
 const { slug } = Astro.params;
 const c = loadCommunity();
 const ch = getCharacter(slug!);
@@ -39,16 +37,26 @@ const armourLabel =
     <div class="kod-cap-box">
       <span class="kod-cap-box__label">Exertion (will)</span>
       <div class="kod-cap-box__value">
-        {toRoman(ch.exertion.current)} / {toRoman(ch.exertion.max)}
+        {ch.exertion.current} / {ch.exertion.max}
+      </div>
+      <div class="kod-meter kod-meter--exertion" style="margin-top:0.45rem">
+        <span
+          style={`width: ${ch.exertion.max ? (100 * ch.exertion.current) / ch.exertion.max : 0}%`}
+        ></span>
       </div>
       <span class="kod-cap-box__formula">Res + Con + Cha</span>
     </div>
     <div class="kod-cap-box">
       <span class="kod-cap-box__label">Echo load (burden)</span>
       <div class="kod-cap-box__value">
-        {toRoman(ch.echoWeight)} / {toRoman(ch.echoCapacity)}
+        {ch.echoWeight} / {ch.echoCapacity}
       </div>
-      <span class="kod-cap-box__formula">max(Str, Dex) + Int + Auth</span>
+      <div class="kod-meter" style="margin-top:0.45rem">
+        <span
+          style={`width: ${ch.echoCapacity ? Math.min(100, (100 * ch.echoWeight) / ch.echoCapacity) : 0}%`}
+        ></span>
+      </div>
+      <span class="kod-cap-box__formula">max(Str, Dex) + Int + Auth · over-cap −1 only on Echo rolls</span>
     </div>
   </div>
 
@@ -64,7 +72,7 @@ const armourLabel =
               ch.echoes.map((e) => (
                 <li class="kod-echo">
                   <span class="kod-echo__title">{e.title}</span>{' '}
-                  <span class="kod-echo__w">weight {toRoman(e.weight)}</span>
+                  <span class="kod-echo__w">weight {e.weight}</span>
                   {e.note && <span class="kod-item__note">{e.note}</span>}
                 </li>
               ))
@@ -111,12 +119,12 @@ const armourLabel =
         <div class="kod-supplies">
           <div class="kod-supply">
             <span class="kod-supply__label">Food</span>
-            <span class="kod-supply__value">{toRoman(ch.inventory.foodDays)}</span>
+            <span class="kod-supply__value">{ch.inventory.foodDays}</span>
             <span class="kod-supply__unit">days remaining</span>
           </div>
           <div class="kod-supply">
             <span class="kod-supply__label">Water</span>
-            <span class="kod-supply__value">{toRoman(ch.inventory.waterDays)}</span>
+            <span class="kod-supply__value">{ch.inventory.waterDays}</span>
             <span class="kod-supply__unit">days remaining</span>
           </div>
         </div>

@@ -9,8 +9,6 @@ import {
   MYTH_KIND_COLUMNS,
   whoWeSeeMap,
 } from '../../data/load';
-import { fortunePips } from '../../lib/format';
-
 const c = loadCommunity();
 const tiers = [...HIERARCHY_TIERS];
 const tips = whoWeSeeMap(c);
@@ -50,17 +48,15 @@ function tipFor(name: string, slug?: string): string {
     <p class="kod-section__lede">
       Ambient pressure on the whole community. Marks are states, not a second character sheet.
     </p>
-    <div class="kod-fortunes">
+    <div class="kod-fortune-chart" role="list">
       {
         Object.entries(c.fortunes).map(([k, v]) => (
-          <div class="kod-fortune" data-level={String(v)} title={`${k}: ${FORTUNE_LABELS[v] ?? v}`}>
-            <span class="kod-fortune__name">{k}</span>
-            <div class="kod-pips" aria-label={`${v} of 3`}>
-              {fortunePips(v).map((on) => (
-                <span class:list={['kod-pip', on && 'kod-pip--on']} />
-              ))}
+          <div class="kod-fortune-bar" data-level={String(v)} role="listitem" title={FORTUNE_LABELS[v] ?? ''}>
+            <div class="kod-fortune-bar__track" aria-hidden="true">
+              <div class="kod-fortune-bar__fill" style={`--h: ${(v / 3) * 100}%`} />
             </div>
-            <span class="kod-fortune__state">{FORTUNE_LABELS[v] ?? ''}</span>
+            <span class="kod-fortune-bar__name">{k}</span>
+            <span class="kod-fortune-bar__state">{FORTUNE_LABELS[v] ?? ''}</span>
           </div>
         ))
       }

@@ -4,7 +4,7 @@ export const prerender = false;
 import { ARCHETYPES, FOUNDATION_GROUPS, FOUNDATION_HARM } from '@kodranni/domain';
 import CampaignLayout from '../../../layouts/CampaignLayout.astro';
 import { getCharacter, loadCommunity } from '../../../data/load';
-import { harmPips, toRoman } from '../../../lib/format';
+import { harmPips } from '../../../lib/format';
 
 const { slug } = Astro.params;
 const c = loadCommunity();
@@ -37,32 +37,39 @@ function practiceFrac(practice: number, threshold: number): number {
   <div class="kod-sheet-grid">
     <div>
       <div class="kod-exertion" aria-label="Exertion">
-        <div>
+        <div class="kod-exertion__head">
           <span class="kod-exertion__label">Exertion</span>
           <div class="kod-exertion__value">
-            <span class="kod-roman">{toRoman(ch.exertion.current)}</span>
+            {ch.exertion.current}
             <span class="kod-slash">/</span>
-            <span class="kod-roman">{toRoman(ch.exertion.max)}</span>
+            {ch.exertion.max}
           </div>
           <span class="kod-meta" style="margin:0">Res + Con + Cha · empty → −2 dice</span>
         </div>
-        <div
-          class="kod-meter"
-          role="meter"
-          aria-valuenow={ch.exertion.current}
-          aria-valuemin={0}
-          aria-valuemax={ch.exertion.max}
-        >
-          <span
-            style={`width: ${ch.exertion.max ? (100 * ch.exertion.current) / ch.exertion.max : 0}%`}
-          ></span>
+        <div class="kod-exertion__track-wrap">
+          <div
+            class="kod-meter kod-meter--exertion"
+            role="meter"
+            aria-valuenow={ch.exertion.current}
+            aria-valuemin={0}
+            aria-valuemax={ch.exertion.max}
+            aria-label={`Exertion ${ch.exertion.current} of ${ch.exertion.max}`}
+          >
+            <span
+              style={`width: ${ch.exertion.max ? (100 * ch.exertion.current) / ch.exertion.max : 0}%`}
+            ></span>
+          </div>
         </div>
         {
           (ch.flags.decadence || ch.flags.overCapacity || ch.dying) && (
             <p style="margin:0">
               {ch.dying && <span class="kod-flag">Dying</span>}
               {ch.flags.decadence && <span class="kod-flag">Decadence</span>}
-              {ch.flags.overCapacity && <span class="kod-flag">Over capacity</span>}
+              {ch.flags.overCapacity && (
+                <span class="kod-flag" title="−1 die only on rolls that involve an Echo">
+                  Over capacity
+                </span>
+              )}
             </p>
           )
         }
@@ -71,8 +78,8 @@ function practiceFrac(practice: number, threshold: number): number {
       <section class="kod-panel kod-panel--flush">
         <h2 class="kod-panel__pad">Foundations · Harm</h2>
         <p class="kod-section__lede kod-panel__pad">
-          Physical / Mental / Social. Value in Roman numerals; Harm as blood pips (0–III) on the
-          paired track.
+          Physical / Mental / Social. Effective rating as Roman mark; Harm as blood pips on the paired
+          track (visual).
         </p>
         <div class="kod-found-groups kod-panel__pad-b">
           {
@@ -84,13 +91,15 @@ function practiceFrac(practice: number, threshold: number): number {
                   const eff = ch.foundationsEffective[fname] ?? raw;
                   const harmName = FOUNDATION_HARM[fname] ?? '';
                   const harmPts = ch.harm[harmName] ?? 0;
+                  const roman = ['∅', 'I', 'II', 'III', 'IV'][eff] ?? String(eff);
+                  const romanRaw = ['∅', 'I', 'II', 'III', 'IV'][raw] ?? String(raw);
                   return (
                     <div class="kod-found-row">
                       <span class="kod-found-row__name">{fname}</span>
                       <span class="kod-found-row__val" title={`raw ${raw}`}>
-                        {toRoman(eff)}
+                        {roman}
                         {eff !== raw ? (
-                          <span class="kod-found-row__raw">({toRoman(raw)})</span>
+                          <span class="kod-found-row__raw">({romanRaw})</span>
                         ) : null}
                       </span>
                       <span class="kod-found-row__harm" data-level={String(harmPts)}>
@@ -113,7 +122,8 @@ function practiceFrac(practice: number, threshold: number): number {
       <section class="kod-panel">
         <h2>Skills by Archetype</h2>
         <p class="kod-section__lede">
-          Full catalog. Centre = rating (Roman). Ring = Practice toward next rank. Hover for detail.
+          Full catalog. Centre = rating 0–3. Ring fill = Practice progress toward next rank. Hover for
+          Practice fraction.
         </p>
         <div class="kod-skill-wheel">
           {
@@ -129,7 +139,8 @@ function practiceFrac(practice: number, threshold: number): number {
                     const rating = prog?.rating ?? 0;
                     const practice = prog?.practice ?? 0;
                     const threshold = prog?.threshold ?? 24;
-                    const p = rating > 0 ? practiceFrac(practice, threshold) : 0;
+                    const p = rating > 0 && rating < 3 ? practiceFrac(practice, threshold) : rating >= 3 ? 1 : 0;
+                    const pct = Math.round(p * 100);
                     return (
                       <li
                         class="kod-skill"
@@ -138,12 +149,14 @@ function practiceFrac(practice: number, threshold: number): number {
                         style={`--p: ${p}`}
                       >
                         <span class="kod-skill__hint">
-                          {rating > 0
-                            ? `${toRoman(rating)} · Practice ${practice}/${threshold} · ${def.foundation}`
-                            : `∅ · ${def.foundation}`}
+                          {rating <= 0
+                            ? `Untrained · ${def.foundation}`
+                            : rating >= 3
+                              ? `Rating 3 (max) · ${def.foundation}`
+                              : `Rating ${rating} · Practice ${practice} / ${threshold} (${pct}% to next) · ${def.foundation}`}
                         </span>
                         <div class="kod-skill__ring">
-                          <div class="kod-skill__ring-inner">{toRoman(rating)}</div>
+                          <div class="kod-skill__ring-inner">{rating}</div>
                         </div>
                         <span class="kod-skill__name">{def.name}</span>
                       </li>

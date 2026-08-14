@@ -15,7 +15,7 @@ function demoStore() {
   const dir = mkdtempSync(join(tmpdir(), 'kodranni-app-'));
   dirs.push(dir);
   const store = openSqliteStore(join(dir, 'c.sqlite'));
-  seedDemoCampaign(store, 'broken-shore', 'Settlers on the broken shore');
+  seedDemoCampaign(store);
   return store;
 }
 

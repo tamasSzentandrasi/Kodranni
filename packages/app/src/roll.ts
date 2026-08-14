@@ -3,7 +3,7 @@ import { DEFAULT_DIE_TIER, type DieTier, cryptoRng, resolveRoll, type Rng } from
 import {
   refreshCharacterDerived,
   type CharacterRecord,
-  type SqliteCommunityStore,
+  type CommunityStorePort,
 } from '@kodranni/store';
 
 export interface PlayerRollCommand {
@@ -46,7 +46,7 @@ export interface PlayerRollResult {
 }
 
 export function executePlayerRoll(
-  store: SqliteCommunityStore,
+  store: CommunityStorePort,
   cmd: PlayerRollCommand,
 ): PlayerRollResult {
   if (cmd.clientEventId && store.hasClientEvent(cmd.clientEventId)) {
@@ -217,7 +217,7 @@ export interface StorytellerNpcRollCommand {
 }
 
 export function executeStorytellerNpcRoll(
-  store: SqliteCommunityStore,
+  store: CommunityStorePort,
   cmd: StorytellerNpcRollCommand,
 ) {
   const dieTier = cmd.dieTier ?? DEFAULT_DIE_TIER;

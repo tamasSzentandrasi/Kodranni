@@ -1,4 +1,4 @@
-/** Fixture when no live store is configured — broken-shore settlers demo. */
+/** Fixture when no live store is configured — Vardmark at Kelarn’s Bend demo. */
 
 export interface FixtureCharacter {
   slug: string;
@@ -54,8 +54,8 @@ export interface FixtureCommunity {
 }
 
 export const fixtureCommunity: FixtureCommunity = {
-  slug: 'broken-shore',
-  name: 'Settlers on the broken shore',
+  slug: 'vardmark',
+  name: 'The Vardmark at Kelarn’s Bend',
   generatedAt: new Date().toISOString(),
   fortunes: {
     vitality: 1,
@@ -66,31 +66,31 @@ export const fixtureCommunity: FixtureCommunity = {
   },
   myths: [
     {
-      title: 'The Shore Was Taken',
-      summary: 'The kin helped pull down the river empire and mean to plant here.',
+      title: 'Kelarn’s Fall',
+      summary: 'The Vardmark helped pull down the river empire and mean to plant at the Bend.',
       effects: [
         {
           kind: 'practice_mod',
-          label: '+Practice on Farming (claimed fields)',
+          label: '+Practice on Farming on claimed Bend fields',
           amount: 1,
         },
         {
           kind: 'tide_mod',
-          label: 'Tide start +1 defending the ford',
+          label: 'Tide start +1 defending the Bend ford',
         },
       ],
     },
     {
-      title: 'Hostage Winter',
-      summary: 'Houses that gave hostages still feel the empty seat.',
+      title: 'Reed-Marsh Compact',
+      summary: 'Seed grain bought from the marsh folk after the taking.',
       effects: [
         {
           kind: 'disadvantage',
-          label: 'Disadvantage vs victor Coin bargains',
+          label: 'Disadvantage if the Compact is broken in the scene',
         },
         {
           kind: 'omen_faces',
-          label: 'Face 4 = hostage messenger',
+          label: 'Omen 4 = marsh messenger',
           faces: [4],
         },
       ],
@@ -108,12 +108,12 @@ export const fixtureCommunity: FixtureCommunity = {
   ],
   outsiders: [
     {
-      name: 'Road-captain of the levy band',
-      note: 'A hard bargainer who still answers when the low road is closed.',
+      name: 'Reed-marsh traders',
+      note: 'Quiet people who measure grain twice and will not fight free for the Bend.',
     },
     {
-      name: 'Marsh traders',
-      note: 'Quiet people who measure grain twice and will not fight the victors free.',
+      name: 'War-band on the next bend',
+      note: 'Same campaign as the Vardmark; staking claims before the harvest.',
     },
   ],
   characters: [
@@ -121,7 +121,7 @@ export const fixtureCommunity: FixtureCommunity = {
       slug: 'tomas',
       name: 'Tomas',
       status: 'active',
-      communityTie: 'Freeholder; owes labour on the shared grain store.',
+      communityTie: 'Vardmark freeholder at Kelarn’s Bend; keeps the shared grain store.',
       whoWeSee: 'A quiet man who measures twice and keeps his word when timber is scarce.',
       player: { platform: 'local', displayName: 'Player (Tomas)', accountId: 'local-tomas' },
       foundations: {
@@ -190,7 +190,7 @@ export const fixtureCommunity: FixtureCommunity = {
       slug: 'leif',
       name: 'Leif',
       status: 'active',
-      communityTie: 'Claim on the upper fields still black from last year’s fire.',
+      communityTie: 'Claim on the upper fields at Kelarn’s Bend, still black from last year’s fire.',
       whoWeSee: 'A hard bargainer who still answers when the ford is threatened.',
       player: { platform: 'discord', displayName: 'Player (Leif)', accountId: 'demo-discord-leif' },
       foundations: {
@@ -223,8 +223,8 @@ export const fixtureCommunity: FixtureCommunity = {
       traits: [{ name: 'Scarred knuckles' }],
       exertion: { current: 5, max: 5 },
       echoes: [
-        { title: 'Hold the river ford until the hostages return', weight: 3 },
-        { title: 'Pact with the marsh folk for seed grain', weight: 2 },
+        { title: 'Hold Kelarn’s Bend ford until the hostages return', weight: 3 },
+        { title: 'Pact with the reed-marsh folk for seed grain', weight: 2 },
         { title: 'Mother’s knife under the floorboards', weight: 1 },
       ],
       echoCapacity: 6,

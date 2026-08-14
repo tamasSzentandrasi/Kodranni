@@ -3,7 +3,7 @@ import { createMemoryStore } from '../src/index.js';
 
 describe('memory store', () => {
   it('appends events and is idempotent on clientEventId', () => {
-    const store = createMemoryStore({ slug: 'broken-shore', name: 'Broken shore' });
+    const store = createMemoryStore({ slug: 'vardmark', name: 'Vardmark' });
     const a = store.append({
       type: 'RollResolved',
       clientEventId: 'c1',
