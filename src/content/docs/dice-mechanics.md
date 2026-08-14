@@ -327,13 +327,13 @@ Only **people** roll. When a roll is Tide-linked, its Marks margin (and sometime
 </div>
 
 <div class="kod-widget__panel" data-panel-id="t1" data-step-title="Open the Tide" data-tide-pos="6" data-tide-note="Position 6 / 17. Column opens at a disadvantage.">
-<p>Noon on the steppe road. Dust ahead. Zhao’s outriders report bows that will not close. Wei rides at the Emperor’s litter.</p>
+<p>Noon on the steppe road. Dust ahead. Zhao’s outriders report horse-archers who stay out of reach and shoot. Wei rides at the Emperor’s litter.</p>
 <p class="kod-tide-line"><strong>Setup</strong> — Track 17, start 6. Battle size. Tide Omens against the column: 1–5.</p>
 </div>
 
 <div class="kod-widget__panel" data-panel-id="t2" data-step-title="False retreat" data-tide-pos="5" data-tide-note="Margin 4 → 1 step. 6 → 5." hidden>
-<p>Half the horse-archers break and flee. Zhao’s young riders lean after them.</p>
-<p class="kod-tide-line"><strong>Zhao — Tide-linked</strong> · Stop the pursuit before the wing opens.</p>
+<p>Half the horse-archers break and flee. Zhao’s young riders start to chase.</p>
+<p class="kod-tide-line"><strong>Zhao — Tide-linked</strong> · Stop the pursuit before it opens a gap in the line.</p>
 <table>
 <thead><tr><th></th><th>Roll</th><th>Marks</th></tr></thead>
 <tbody>
@@ -344,11 +344,11 @@ Only **people** roll. When a roll is Tide-linked, its Marks margin (and sometime
 <tr><td>Tide</td><td></td><td><strong>6 → 5</strong></td></tr>
 </tbody>
 </table>
-<p>Most of the troop holds. Two lances still chase into the dust.</p>
+<p>Most of the troop holds. Two riders still chase into the dust.</p>
 </div>
 
 <div class="kod-widget__panel" data-panel-id="t3" data-step-title="Arrow storm" data-tide-pos="4" data-tide-note="Margin 3 → 1 step. 5 → 4." hidden>
-<p>Arrows hit the baggage and the left files. Wei puts his horse against the litter wheel and raises his shield over the Emperor.</p>
+<p>Arrows hit the baggage and the left ranks. Wei puts his horse against the litter wheel and raises his shield over the Emperor.</p>
 <p class="kod-tide-line"><strong>Wei — Tide-linked</strong> · Keep the litter from bolting under the first volley.</p>
 <table>
 <thead><tr><th></th><th>Roll</th><th>Marks</th></tr></thead>
@@ -380,8 +380,8 @@ Only **people** roll. When a roll is Tide-linked, its Marks margin (and sometime
 </div>
 
 <div class="kod-widget__panel" data-panel-id="t5" data-step-title="Ambush" data-tide-pos="1" data-tide-note="Margin 3 → 1 step (3→2). Omen 4: wash ambush + Tide step (2→1)." hidden>
-<p>On the ground, Zhao sees riders where the scrub should be empty — the left dry wash. He shouts.</p>
-<p class="kod-tide-line"><strong>Zhao — Tide-linked</strong> · Warn the line and force a face toward the wash.</p>
+<p>On the ground, Zhao sees riders where the scrub should be empty — hidden in the left dry wash. He shouts a warning.</p>
+<p class="kod-tide-line"><strong>Zhao — Tide-linked</strong> · Warn the column and turn it toward the wash.</p>
 <table>
 <thead><tr><th></th><th>Roll</th><th>Marks</th></tr></thead>
 <tbody>
@@ -391,12 +391,12 @@ Only **people** roll. When a roll is Tide-linked, its Marks margin (and sometime
 <tr><td>Omen</td><td><strong>4</strong></td><td>Scene face: <em>riders in the left dry wash</em> · also Tide-negative · Tide <strong>2 → 1</strong></td></tr>
 </tbody>
 </table>
-<p>The ambush is open. The bar and the fiction both show the flank is gone.</p>
+<p>The ambush springs. The Tide bar and the scene both show the flank is broken.</p>
 </div>
 
 <div class="kod-widget__panel" data-panel-id="t6" data-step-title="Zhao’s stand" data-tide-pos="1" data-tide-note="Local fight. Tide stays at 1." hidden>
-<p>Zhao seizes a riderless horse and meets the first men out of the wash. This is a fight for ground at the lip — not a push of the whole column.</p>
-<p class="kod-tide-line"><strong>Zhao — personal</strong> · Hold the wash lip for a few heartbeats.</p>
+<p>Zhao seizes a riderless horse and meets the first men out of the wash. This is a local fight at the edge of the gully — not a push for the whole column.</p>
+<p class="kod-tide-line"><strong>Zhao — personal</strong> · Hold the edge of the wash long enough for others to move.</p>
 <table>
 <thead><tr><th></th><th>Roll</th><th>Marks</th></tr></thead>
 <tbody>
@@ -410,8 +410,8 @@ Only **people** roll. When a roll is Tide-linked, its Marks margin (and sometime
 </div>
 
 <div class="kod-widget__panel" data-panel-id="t7" data-step-title="Wei takes the Emperor" data-tide-pos="1" data-tide-note="Personal extraction. Tide stays at 1." hidden>
-<p>Wei does not try to win the field. He cuts the litter straps, hauls the Emperor onto his saddle, and turns for the south road.</p>
-<p class="kod-tide-line"><strong>Wei — personal</strong> · The Emperor leaves this ground alive.</p>
+<p>Wei does not try to win the battle. He cuts the litter straps, hauls the Emperor onto his saddle, and turns for the south road.</p>
+<p class="kod-tide-line"><strong>Wei — personal</strong> · Get the Emperor off this field alive.</p>
 <table>
 <thead><tr><th></th><th>Roll</th><th>Marks</th></tr></thead>
 <tbody>
@@ -422,11 +422,11 @@ Only **people** roll. When a roll is Tide-linked, its Marks margin (and sometime
 <tr><td>Tide</td><td></td><td><strong>stays 1</strong></td></tr>
 </tbody>
 </table>
-<p>Zhao hears the shout for the south road — if he still can. The commander is late to the cut-off.</p>
+<p>Zhao hears the shout for the south road. The enemy commander is too late to block the escape.</p>
 </div>
 
 <div class="kod-widget__panel" data-panel-id="t8" data-step-title="Surrounded" data-tide-pos="0" data-tide-note="Margin 4 → 1 step (1→0). Omen 1: multi Harm + face of surrender. Zhao accepts captivity (narrative)." hidden>
-<p>The wash closes. Zhao is ringed. He tries to cut a lane south toward Wei’s dust.</p>
+<p>Riders from the wash close around Zhao. He tries to cut a path south, toward Wei.</p>
 <p class="kod-tide-line"><strong>Zhao — Tide-linked</strong> · Break the ring and ride free.</p>
 <table>
 <thead><tr><th></th><th>Roll</th><th>Marks</th></tr></thead>
@@ -434,10 +434,10 @@ Only **people** roll. When a roll is Tide-linked, its Marks margin (and sometime
 <tr><td>Zhao</td><td>Strength + Slash, <strong>d6</strong></td><td><strong>1</strong></td></tr>
 <tr><td>Surrounding riders (reply)</td><td>Strength + Slash, <strong>d12</strong></td><td><strong>5</strong></td></tr>
 <tr><td>Margin</td><td>4 → floor(4÷3)</td><td><strong>1</strong> step · Tide <strong>1 → 0</strong></td></tr>
-<tr><td>Omen</td><td><strong>1</strong></td><td>Tide-negative · Negative Consequence: <strong>Bleeding 2</strong>, <strong>Crushed 1</strong> · face: <em>ringed, blades at his throat, shouted to throw down steel</em></td></tr>
+<tr><td>Omen</td><td><strong>1</strong></td><td>Tide-negative · Negative Consequence: <strong>Bleeding 2</strong>, <strong>Crushed 1</strong> · face: <em>surrounded, blades at his throat, ordered to drop his weapon</em></td></tr>
 </tbody>
 </table>
-<p>Spears box him in. Someone with a commander’s voice offers life for surrender. Zhao does not want to die. He drops the blade — no roll; he is taken captive.</p>
+<p>Spears box him in. A commander’s voice offers life for surrender. Zhao does not want to die. He drops the blade — no roll; he is taken captive.</p>
 <p>The column routes. Wei still has a horse, the Emperor, and the south road.</p>
 </div>
 
