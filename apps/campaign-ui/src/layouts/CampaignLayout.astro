@@ -7,17 +7,9 @@ interface Props {
   generatedAt: string;
   primary: 'community' | 'characters';
   source?: string;
-  density?: string;
 }
 
-const {
-  title,
-  communityName,
-  generatedAt,
-  primary,
-  source = 'fixture',
-  density = 'normal',
-} = Astro.props;
+const { title, communityName, generatedAt, primary, source = 'fixture' } = Astro.props;
 
 const asOf = new Date(generatedAt).toLocaleString(undefined, {
   dateStyle: 'medium',
@@ -25,7 +17,7 @@ const asOf = new Date(generatedAt).toLocaleString(undefined, {
 });
 
 const sourceLabel =
-  source === 'live' ? 'live store' : source === 'snapshot' ? 'export snapshot' : 'fixture';
+  source === 'live' ? 'live store' : source === 'snapshot' ? 'export' : 'fixture';
 ---
 
 <!doctype html>
@@ -37,17 +29,17 @@ const sourceLabel =
     <meta name="robots" content="noindex" />
     <title>{title} · {communityName}</title>
   </head>
-  <body data-density={density}>
-    <div class="kod-shell kod-shell--wide">
-      <header class="kod-brand">
-        <span class="kod-brand__mark">Kodranni</span>
-        <h1 class="kod-brand__title">{communityName}</h1>
+  <body data-density="normal">
+    <div class="app">
+      <header class="app__brand">
+        <span class="app__mark">Kodranni</span>
+        <h1 class="app__title">{communityName}</h1>
       </header>
-      <p class="kod-meta">
-        As of {asOf} · read-only living record · <span class="kod-source">{sourceLabel}</span>
+      <p class="app__meta">
+        As of {asOf} · living record (read-only) · <span class="src">{sourceLabel}</span>
       </p>
 
-      <nav class="kod-primary-tabs" aria-label="Primary">
+      <nav class="tabs" aria-label="Primary">
         <a href="/community/" aria-current={primary === 'community' ? 'page' : undefined}
           >Community</a
         >
@@ -58,48 +50,76 @@ const sourceLabel =
 
       <slot />
     </div>
+
+    <div id="kod-tip" class="tip" role="tooltip" hidden></div>
+
     <script is:inline>
       (function () {
-        const key = 'kod-density';
-        const saved = localStorage.getItem(key);
+        const densKey = 'kod-density';
+        const saved = localStorage.getItem(densKey);
         if (saved) document.body.setAttribute('data-density', saved);
+        function syncDens() {
+          const d = document.body.getAttribute('data-density') || 'normal';
+          document.querySelectorAll('[data-density-btn]').forEach((b) => {
+            b.setAttribute(
+              'aria-pressed',
+              b.getAttribute('data-density-btn') === d ? 'true' : 'false',
+            );
+          });
+        }
+        syncDens();
         document.querySelectorAll('[data-density-btn]').forEach((btn) => {
           btn.addEventListener('click', () => {
             const d = btn.getAttribute('data-density-btn');
             document.body.setAttribute('data-density', d);
-            localStorage.setItem(key, d);
-            document.querySelectorAll('[data-density-btn]').forEach((b) => {
-              b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
-            });
+            localStorage.setItem(densKey, d);
+            syncDens();
           });
         });
         document.querySelectorAll('[data-axis-toggle]').forEach((head) => {
           head.addEventListener('click', () => {
-            const axis = head.closest('.kod-axis');
+            const axis = head.closest('.axis');
             if (!axis) return;
-            const collapsed = axis.getAttribute('data-collapsed') === 'true';
-            axis.setAttribute('data-collapsed', collapsed ? 'false' : 'true');
-            head.setAttribute('aria-expanded', collapsed ? 'true' : 'false');
+            const c = axis.getAttribute('data-collapsed') === 'true';
+            axis.setAttribute('data-collapsed', c ? 'false' : 'true');
+            head.setAttribute('aria-expanded', c ? 'true' : 'false');
           });
         });
-        // Sync density button pressed state from body
-        const dens = document.body.getAttribute('data-density') || 'normal';
-        document.querySelectorAll('[data-density-btn]').forEach((b) => {
-          b.setAttribute(
-            'aria-pressed',
-            b.getAttribute('data-density-btn') === dens ? 'true' : 'false',
-          );
+        document.querySelectorAll('[data-rung-expand]').forEach((btn) => {
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const rung = btn.closest('.rung');
+            if (!rung) return;
+            const open = rung.getAttribute('data-expanded') === 'true';
+            rung.setAttribute('data-expanded', open ? 'false' : 'true');
+            btn.textContent = open ? 'Show all' : 'Collapse';
+            rung.querySelectorAll('.chip--overflow').forEach((el) => {
+              if (open) el.setAttribute('hidden', '');
+              else el.removeAttribute('hidden');
+            });
+          });
         });
+        const tip = document.getElementById('kod-tip');
+        if (tip) {
+          function show(el, text) {
+            if (!text) return;
+            tip.textContent = text;
+            tip.hidden = false;
+            const r = el.getBoundingClientRect();
+            tip.style.left = Math.min(window.innerWidth - 240, Math.max(8, r.left)) + 'px';
+            tip.style.top = Math.min(window.innerHeight - 90, r.bottom + 6) + 'px';
+          }
+          function hide() {
+            tip.hidden = true;
+          }
+          document.querySelectorAll('[data-tip]').forEach((el) => {
+            el.addEventListener('mouseenter', () => show(el, el.getAttribute('data-tip') || ''));
+            el.addEventListener('mouseleave', hide);
+            el.addEventListener('focus', () => show(el, el.getAttribute('data-tip') || ''));
+            el.addEventListener('blur', hide);
+          });
+        }
       })();
     </script>
   </body>
 </html>
-
-<style is:global>
-  .kod-source {
-    color: var(--kod-silver-dim);
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    font-size: 0.8rem;
-  }
-</style>

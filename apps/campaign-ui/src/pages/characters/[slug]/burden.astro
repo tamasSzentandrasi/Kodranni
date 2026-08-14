@@ -3,6 +3,8 @@ export const prerender = false;
 
 import CampaignLayout from '../../../layouts/CampaignLayout.astro';
 import { getCharacter, loadCommunity } from '../../../data/load';
+import { ECHO_EFFECT_COLUMNS, segments } from '../../../lib/format';
+
 const { slug } = Astro.params;
 const c = loadCommunity();
 const ch = getCharacter(slug!);
@@ -11,11 +13,17 @@ if (!ch) {
 }
 
 const armourLabel =
-  ch.armour.kind === 'none'
-    ? 'None'
-    : ch.armour.kind === 'light'
-      ? 'Light'
-      : 'Heavy';
+  ch.armour.kind === 'none' ? 'None' : ch.armour.kind === 'light' ? 'Light' : 'Heavy';
+
+const echoSegs = segments(ch.echoWeight, ch.echoCapacity);
+const exSegs = segments(ch.exertion.current, ch.exertion.max);
+
+function fxFor(
+  effects: { kind: string; label: string; detail?: string }[] | undefined,
+  kind: string,
+) {
+  return (effects ?? []).filter((e) => e.kind === kind);
+}
 ---
 
 <CampaignLayout
@@ -25,132 +33,193 @@ const armourLabel =
   primary="characters"
   source={c.source}
 >
-  <nav class="kod-sheet-tabs" aria-label="Sheet sections">
+  <nav class="subtabs" aria-label="Sheet sections">
     <a href={`/characters/${ch.slug}/`}>Core</a>
     <a href={`/characters/${ch.slug}/burden/`} aria-current="page">Echoes · Inventory · Traits</a>
     <a href={`/characters/?sel=${ch.slug}`}>← Browse</a>
   </nav>
 
-  <h1 class="kod-sheet-title">{ch.name}</h1>
+  <h1 class="sheet__name">{ch.name}</h1>
 
-  <div class="kod-dual-cap">
-    <div class="kod-cap-box">
-      <span class="kod-cap-box__label">Exertion (will)</span>
-      <div class="kod-cap-box__value">
-        {ch.exertion.current} / {ch.exertion.max}
-      </div>
-      <div class="kod-meter kod-meter--exertion" style="margin-top:0.45rem">
-        <span
-          style={`width: ${ch.exertion.max ? (100 * ch.exertion.current) / ch.exertion.max : 0}%`}
-        ></span>
-      </div>
-      <span class="kod-cap-box__formula">Res + Con + Cha</span>
-    </div>
-    <div class="kod-cap-box">
-      <span class="kod-cap-box__label">Echo load (burden)</span>
-      <div class="kod-cap-box__value">
-        {ch.echoWeight} / {ch.echoCapacity}
-      </div>
-      <div class="kod-meter" style="margin-top:0.45rem">
-        <span
-          style={`width: ${ch.echoCapacity ? Math.min(100, (100 * ch.echoWeight) / ch.echoCapacity) : 0}%`}
-        ></span>
-      </div>
-      <span class="kod-cap-box__formula">max(Str, Dex) + Int + Auth · over-cap −1 only on Echo rolls</span>
-    </div>
-  </div>
-
-  <div class="kod-sheet-grid">
-    <div>
-      <section class="kod-panel">
-        <h2>Echoes</h2>
-        <ul class="kod-echo-list">
+  <section class="surface">
+    <h2>Load trackers</h2>
+    <div class="sheet" style="grid-template-columns:1fr 1fr">
+      <div class="track-block">
+        <span class="track-block__label">Exertion</span>
+        <div class="segbar" aria-label={`Exertion ${ch.exertion.current}/${ch.exertion.max}`}>
           {
-            ch.echoes.length === 0 ? (
-              <li class="kod-empty">None — Decadence if this stands.</li>
-            ) : (
-              ch.echoes.map((e) => (
-                <li class="kod-echo">
-                  <span class="kod-echo__title">{e.title}</span>{' '}
-                  <span class="kod-echo__w">weight {e.weight}</span>
-                  {e.note && <span class="kod-item__note">{e.note}</span>}
-                </li>
-              ))
-            )
+            exSegs.map((s) => (
+              <span
+                class:list={['segbar__seg', s.on && 'segbar__seg--on', s.over && 'segbar__seg--over']}
+              />
+            ))
           }
-        </ul>
-      </section>
-
-      <section class="kod-panel">
-        <h2>Traits</h2>
-        <ul class="kod-trait-list">
-          {
-            ch.traits.length === 0 ? (
-              <li class="kod-empty">None recorded.</li>
-            ) : (
-              ch.traits.map((t) => (
-                <li class="kod-trait">
-                  <span class="kod-trait__name">{t.name}</span>
-                  {t.note && <span class="kod-item__note">{t.note}</span>}
-                </li>
-              ))
-            )
-          }
-        </ul>
-      </section>
-    </div>
-
-    <div>
-      <!-- Single inventory box: armour + supplies + named items -->
-      <section class="kod-panel kod-inventory">
-        <h2>Inventory</h2>
-        <p class="kod-section__lede">
-          Explicit possession only. If it is not listed, the character does not have it.
-        </p>
-
-        <div class="kod-armour" data-kind={ch.armour.kind} data-donned={String(ch.armour.donned)}>
-          <span class="kod-armour__label">Armour</span>
-          <span class="kod-armour__value">{armourLabel}</span>
-          <span class="kod-armour__state">
-            {ch.armour.donned ? 'Donned — counts for physical Harm ratios' : 'Not donned — no armour ratio'}
+          <span class="segbar__readout">
+            {ch.exertion.current}/{ch.exertion.max}
           </span>
         </div>
-
-        <div class="kod-supplies">
-          <div class="kod-supply">
-            <span class="kod-supply__label">Food</span>
-            <span class="kod-supply__value">{ch.inventory.foodDays}</span>
-            <span class="kod-supply__unit">days remaining</span>
-          </div>
-          <div class="kod-supply">
-            <span class="kod-supply__label">Water</span>
-            <span class="kod-supply__value">{ch.inventory.waterDays}</span>
-            <span class="kod-supply__unit">days remaining</span>
-          </div>
-        </div>
-
-        <h3 class="kod-inventory__sub">Named items</h3>
-        <ul class="kod-item-list">
+        <span class="track-block__formula">Res + Con + Cha</span>
+      </div>
+      <div class="track-block">
+        <span class="track-block__label">Echo load</span>
+        <div
+          class="segbar segbar--echo"
+          aria-label={`Echo load ${ch.echoWeight}/${ch.echoCapacity}`}
+        >
           {
-            ch.inventory.items.length === 0 ? (
-              <li class="kod-empty">None declared.</li>
-            ) : (
-              ch.inventory.items.map((it) => (
-                <li class="kod-item">
-                  <span class="kod-item__name">{it.name}</span>
-                  {it.note ? (
-                    <span class="kod-item__note">{it.note}</span>
-                  ) : (
-                    <span class="kod-item__note kod-item__note--missing">
-                      No contextual note — add what matters for play (use, limit, condition).
-                    </span>
-                  )}
-                </li>
-              ))
-            )
+            echoSegs.map((s) => (
+              <span
+                class:list={['segbar__seg', s.on && 'segbar__seg--on', s.over && 'segbar__seg--over']}
+              />
+            ))
           }
-        </ul>
-      </section>
+          <span class="segbar__readout">
+            {ch.echoWeight}/{ch.echoCapacity}
+          </span>
+        </div>
+        <span class="track-block__formula">
+          max(Str,Dex)+Int+Auth · over-cap −1 only when an Echo is involved
+        </span>
+      </div>
     </div>
+  </section>
+
+  <section class="surface">
+    <h2>Echoes</h2>
+    <p class="lede">
+      Weight as discrete blocks (1–3). Mechanical inventory by type — same idea as Foundation Myths.
+      Hover a title for the short description.
+    </p>
+
+    {
+      ch.echoes.length === 0 ? (
+        <p class="empty">None — Decadence if this stands (−1 die on every roll).</p>
+      ) : (
+        <div class="scroll">
+          <table class="matrix">
+            <thead>
+              <tr>
+                <th>Echo</th>
+                <th>Weight</th>
+                {ECHO_EFFECT_COLUMNS.map((col) => (
+                  <th>{col.header}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {ch.echoes.map((e) => {
+                const w = (e.weight === 2 || e.weight === 3 ? e.weight : 1) as 1 | 2 | 3;
+                return (
+                  <tr>
+                    <td>
+                      <span class="matrix__name" title={e.note ?? ''}>
+                        {e.title}
+                      </span>
+                      {e.note && <span class="echo-row__note">{e.note}</span>}
+                    </td>
+                    <td>
+                      <span class="weight-segs" aria-label={`Weight ${w}`}>
+                        {[1, 2, 3].map((i) => (
+                          <i class={i <= w ? 'on' : ''} />
+                        ))}
+                      </span>
+                      <span style="margin-left:0.35rem;color:var(--kod-silver-dim);font-size:0.85rem">
+                        {w === 1 ? 'Individual' : w === 2 ? 'Group' : 'Pivotal'}
+                      </span>
+                    </td>
+                    {ECHO_EFFECT_COLUMNS.map((col) => {
+                      const cells = fxFor(e.effects, col.kind);
+                      return (
+                        <td>
+                          {cells.length === 0 ? (
+                            <span class="empty">—</span>
+                          ) : (
+                            cells.map((fx) => (
+                              <span class="fx" data-kind={fx.kind} title={fx.detail ?? fx.label}>
+                                {fx.label}
+                              </span>
+                            ))
+                          )}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      )
+    }
+  </section>
+
+  <div class="sheet">
+    <section class="surface">
+      <h2>Traits</h2>
+      <ul class="trait-list">
+        {
+          ch.traits.length === 0 ? (
+            <li class="empty">None recorded.</li>
+          ) : (
+            ch.traits.map((t) => (
+              <li class="trait">
+                <span class="trait__name">{t.name}</span>
+                {t.note && <span class="trait__note">{t.note}</span>}
+              </li>
+            ))
+          )
+        }
+      </ul>
+    </section>
+
+    <section class="surface">
+      <h2>Inventory</h2>
+      <p class="lede">Explicit possession. If it is not listed, they do not have it.</p>
+
+      <div class="armour" data-kind={ch.armour.kind} data-donned={String(ch.armour.donned)}>
+        <span class="armour__lab">Armour</span>
+        <span class="armour__val">{armourLabel}</span>
+        <span class="armour__state">
+          {ch.armour.donned
+            ? 'Donned — counts for physical Harm ratios'
+            : 'Not donned — no armour protection ratio'}
+        </span>
+      </div>
+
+      <div class="supplies">
+        <div class="supply">
+          <span class="supply__lab">Food</span>
+          <span class="supply__val">{ch.inventory.foodDays}</span>
+          <span class="app__meta" style="margin:0">days</span>
+        </div>
+        <div class="supply">
+          <span class="supply__lab">Water</span>
+          <span class="supply__val">{ch.inventory.waterDays}</span>
+          <span class="app__meta" style="margin:0">days</span>
+        </div>
+      </div>
+
+      <h3 style="font-size:1.05rem;margin:0.5rem 0 0.4rem">Named items</h3>
+      <ul class="item-list">
+        {
+          ch.inventory.items.length === 0 ? (
+            <li class="empty">None declared.</li>
+          ) : (
+            ch.inventory.items.map((it) => (
+              <li class="item">
+                <span class="item__name">{it.name}</span>
+                {it.note ? (
+                  <span class="item__note">{it.note}</span>
+                ) : (
+                  <span class="item__note" style="color:#6a5550;font-style:italic">
+                    No contextual note yet.
+                  </span>
+                )}
+              </li>
+            ))
+          )
+        }
+      </ul>
+    </section>
   </div>
 </CampaignLayout>

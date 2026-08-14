@@ -3,6 +3,7 @@ import type { CharacterRecord, CommunityRecord } from './types.js';
 import type { CommunityStorePort } from './port.js';
 import { emptyCommunity } from './sqlite.js';
 import { refreshCharacterDerived } from './derived.js';
+import { makeEcho } from './echo-effects.js';
 
 /** Demo identity: Guidebook seed “The Vardmark at Kelarn’s Bend”. */
 export const DEMO_SEED_ID = 'vardmark-kelarns-bend';
@@ -53,11 +54,11 @@ export function demoTomas(): CharacterRecord {
     ],
     exertion: { current: 4, max: 0 },
     echoes: [
-      {
-        title: 'Hold the seized grain store through the first winter of occupation',
-        weight: 2,
-        note: 'Patched after the taking — still the proof the Bend is theirs to keep or lose.',
-      },
+      makeEcho(
+        'Hold the seized grain store through the first winter of occupation',
+        2,
+        'Patched after the taking — still the proof the Bend is theirs to keep or lose.',
+      ),
     ],
     echoCapacity: 0,
     echoWeight: 0,
@@ -128,9 +129,21 @@ export function demoCapacityProfile(name = 'Leif'): CharacterRecord {
     traits: [{ name: 'Scarred knuckles', note: 'From the taking of the shore — not from sport.' }],
     exertion: { current: 5, max: 0 },
     echoes: [
-      { title: 'Hold Kelarn’s Bend ford until the hostages return', weight: 3 },
-      { title: 'Compact with the reed-marsh folk for grain taken or traded under the sword', weight: 2 },
-      { title: 'Mother’s knife under the floorboards', weight: 1 },
+      makeEcho(
+        'Hold Kelarn’s Bend ford until the hostages return',
+        3,
+        'The ford is the claim; lose it and the Bend is only ash and talk.',
+      ),
+      makeEcho(
+        'Compact with the reed-marsh folk for grain taken or traded under the sword',
+        2,
+        'Silence and grain under the warband’s shadow — trade that can turn to blood.',
+      ),
+      makeEcho(
+        'Mother’s knife under the floorboards',
+        1,
+        'Personal iron; not for the hall’s ledger.',
+      ),
     ],
     echoCapacity: 0,
     echoWeight: 0,

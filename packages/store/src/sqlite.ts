@@ -13,6 +13,7 @@ import type {
 } from './types.js';
 import { refreshCharacterDerived } from './derived.js';
 import { completeMemberPlacements } from './hierarchy.js';
+import { normalizeEcho } from './echo-effects.js';
 import type { CommunityStorePort } from './port.js';
 
 /** @deprecated Prefer CommunityStorePort — SQLite is one adapter. */
@@ -44,9 +45,11 @@ function normalizeCharacter(raw: CharacterRecord): CharacterRecord {
   const traits = (raw.traits ?? []).map((t) =>
     typeof t === 'string' ? { name: t } : t,
   );
+  const echoes = (raw.echoes ?? []).map((e) => normalizeEcho(e));
   const ch: CharacterRecord = {
     ...raw,
     traits,
+    echoes,
     inventory: {
       foodDays: inv?.foodDays ?? 0,
       waterDays: inv?.waterDays ?? 0,

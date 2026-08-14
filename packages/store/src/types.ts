@@ -97,6 +97,33 @@ export interface SkillProgress {
   foundation?: string;
 }
 
+/** Mechanical facets of a carried Echo (inventory for UI + future automation). */
+export type EchoEffectKind =
+  | 'invoke_second_exertion'
+  | 'weight_individual'
+  | 'weight_group'
+  | 'weight_pivotal'
+  | 'pivotal_fortune'
+  | 'pivotal_myth'
+  | 'persist_legacy'
+  | 'dies_with_bearer'
+  | 'custom';
+
+export interface EchoEffect {
+  kind: EchoEffectKind;
+  label: string;
+  detail?: string;
+}
+
+export interface EchoRecord {
+  title: string;
+  /** 1 Individual · 2 Group · 3 Pivotal */
+  weight: 1 | 2 | 3;
+  /** Short description — hover / secondary line. */
+  note?: string;
+  effects: EchoEffect[];
+}
+
 export interface CharacterRecord {
   id: string;
   slug: string;
@@ -115,7 +142,7 @@ export interface CharacterRecord {
   traits: TraitRecord[];
   /** Max = Resolve + Constitution + Charisma (raw Foundations). */
   exertion: { current: number; max: number };
-  echoes: { title: string; weight: number; note?: string }[];
+  echoes: EchoRecord[];
   /** max(Strength, Dexterity) + Intellect + Authority */
   echoCapacity: number;
   echoWeight: number;

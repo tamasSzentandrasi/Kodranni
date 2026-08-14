@@ -158,17 +158,25 @@ async function main(): Promise<void> {
     console.log(`  store: ${cfg.storePath}`);
     console.log(`  url:   ${cfg.liveBaseUrl}`);
     console.log(`  repo:  ${repoRoot}`);
-    const child = spawn('npm', ['run', 'dev', '-w', '@kodranni/campaign-ui'], {
-      cwd: repoRoot,
-      stdio: 'inherit',
-      env: {
-        ...process.env,
-        KODRANNI_STORE_PATH: cfg.storePath,
-        KODRANNI_CAMPAIGN_SLUG: cfg.slug,
-        NODE_OPTIONS: [process.env.NODE_OPTIONS, '--experimental-sqlite'].filter(Boolean).join(' '),
+    // shell:false avoids DEP0190 (args not escaped when shell concatenates)
+    const npmBin = process.platform === 'win32' ? 'npm.cmd' : 'npm';
+    const child = spawn(
+      npmBin,
+      ['run', 'dev', '-w', '@kodranni/campaign-ui'],
+      {
+        cwd: repoRoot,
+        stdio: 'inherit',
+        env: {
+          ...process.env,
+          KODRANNI_STORE_PATH: cfg.storePath,
+          KODRANNI_CAMPAIGN_SLUG: cfg.slug,
+          NODE_OPTIONS: [process.env.NODE_OPTIONS, '--experimental-sqlite']
+            .filter(Boolean)
+            .join(' '),
+        },
+        shell: false,
       },
-      shell: true,
-    });
+    );
     await new Promise<void>((resolve, reject) => {
       child.on('exit', (code) => {
         if (code === 0 || code === null) resolve();

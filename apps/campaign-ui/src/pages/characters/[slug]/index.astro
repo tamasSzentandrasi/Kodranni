@@ -4,7 +4,7 @@ export const prerender = false;
 import { ARCHETYPES, FOUNDATION_GROUPS, FOUNDATION_HARM } from '@kodranni/domain';
 import CampaignLayout from '../../../layouts/CampaignLayout.astro';
 import { getCharacter, loadCommunity } from '../../../data/load';
-import { harmPips } from '../../../lib/format';
+import { harmPips, segments } from '../../../lib/format';
 
 const { slug } = Astro.params;
 const c = loadCommunity();
@@ -14,11 +14,15 @@ if (!ch) {
 }
 
 const skillMap = new Map(ch.skills.map((s) => [s.name, s]));
+const exSegs = segments(ch.exertion.current, ch.exertion.max);
+const echoSegs = segments(ch.echoWeight, ch.echoCapacity);
 
 function practiceFrac(practice: number, threshold: number): number {
   if (threshold <= 0) return 0;
   return Math.min(1, Math.max(0, practice / threshold));
 }
+
+const roman = (n: number) => ['∅', 'I', 'II', 'III', 'IV'][n] ?? String(n);
 ---
 
 <CampaignLayout
@@ -28,85 +32,108 @@ function practiceFrac(practice: number, threshold: number): number {
   primary="characters"
   source={c.source}
 >
-  <nav class="kod-sheet-tabs" aria-label="Sheet sections">
+  <nav class="subtabs" aria-label="Sheet sections">
     <a href={`/characters/${ch.slug}/`} aria-current="page">Core</a>
     <a href={`/characters/${ch.slug}/burden/`}>Echoes · Inventory · Traits</a>
     <a href={`/characters/?sel=${ch.slug}`}>← Browse</a>
   </nav>
 
-  <div class="kod-sheet-grid">
+  <h1 class="sheet__name">{ch.name}</h1>
+
+  <div class="sheet">
     <div>
-      <div class="kod-exertion" aria-label="Exertion">
-        <div class="kod-exertion__head">
-          <span class="kod-exertion__label">Exertion</span>
-          <div class="kod-exertion__value">
-            {ch.exertion.current}
-            <span class="kod-slash">/</span>
-            {ch.exertion.max}
-          </div>
-          <span class="kod-meta" style="margin:0">Res + Con + Cha · empty → −2 dice</span>
-        </div>
-        <div class="kod-exertion__track-wrap">
+      <section class="surface">
+        <h2>Exertion</h2>
+        <div class="track-block">
           <div
-            class="kod-meter kod-meter--exertion"
-            role="meter"
-            aria-valuenow={ch.exertion.current}
-            aria-valuemin={0}
-            aria-valuemax={ch.exertion.max}
+            class="segbar"
             aria-label={`Exertion ${ch.exertion.current} of ${ch.exertion.max}`}
           >
-            <span
-              style={`width: ${ch.exertion.max ? (100 * ch.exertion.current) / ch.exertion.max : 0}%`}
-            ></span>
+            {
+              exSegs.map((s) => (
+                <span
+                  class:list={[
+                    'segbar__seg',
+                    s.on && 'segbar__seg--on',
+                    s.over && 'segbar__seg--over',
+                  ]}
+                />
+              ))
+            }
+            <span class="segbar__readout">
+              {ch.exertion.current} / {ch.exertion.max}
+            </span>
           </div>
+          <span class="track-block__formula">Res + Con + Cha · one segment = 1 · empty → −2 dice</span>
         </div>
         {
           (ch.flags.decadence || ch.flags.overCapacity || ch.dying) && (
-            <p style="margin:0">
-              {ch.dying && <span class="kod-flag">Dying</span>}
-              {ch.flags.decadence && <span class="kod-flag">Decadence</span>}
+            <p>
+              {ch.dying && <span class="flag">Dying</span>}
+              {ch.flags.decadence && <span class="flag">Decadence</span>}
               {ch.flags.overCapacity && (
-                <span class="kod-flag" title="−1 die only on rolls that involve an Echo">
+                <span class="flag" title="−1 die only on rolls that involve an Echo">
                   Over capacity
                 </span>
               )}
             </p>
           )
         }
-      </div>
 
-      <section class="kod-panel kod-panel--flush">
-        <h2 class="kod-panel__pad">Foundations · Harm</h2>
-        <p class="kod-section__lede kod-panel__pad">
-          Physical / Mental / Social. Effective rating as Roman mark; Harm as blood pips on the paired
-          track (visual).
+        <h2 style="margin-top:1.25rem">Echo load</h2>
+        <div class="track-block">
+          <div
+            class="segbar segbar--echo"
+            aria-label={`Echo load ${ch.echoWeight} of ${ch.echoCapacity}`}
+          >
+            {
+              echoSegs.map((s) => (
+                <span
+                  class:list={[
+                    'segbar__seg',
+                    s.on && 'segbar__seg--on',
+                    s.over && 'segbar__seg--over',
+                  ]}
+                />
+              ))
+            }
+            <span class="segbar__readout">
+              {ch.echoWeight} / {ch.echoCapacity}
+            </span>
+          </div>
+          <span class="track-block__formula">
+            max(Str, Dex) + Int + Auth · over-cap tax only on Echo-involved rolls
+          </span>
+        </div>
+      </section>
+
+      <section class="surface">
+        <h2>Foundations · Harm</h2>
+        <p class="lede">
+          Physical / Mental / Social. Rank as Roman mark; Harm as blood pips on the paired track.
         </p>
-        <div class="kod-found-groups kod-panel__pad-b">
+        <div class="found-groups">
           {
             Object.entries(FOUNDATION_GROUPS).map(([group, keys]) => (
-              <div class="kod-found-group">
-                <p class="kod-found-group__title">{group}</p>
+              <div class="found-group">
+                <p class="found-group__title">{group}</p>
                 {keys.map((fname) => {
                   const raw = ch.foundations[fname] ?? 0;
                   const eff = ch.foundationsEffective[fname] ?? raw;
                   const harmName = FOUNDATION_HARM[fname] ?? '';
                   const harmPts = ch.harm[harmName] ?? 0;
-                  const roman = ['∅', 'I', 'II', 'III', 'IV'][eff] ?? String(eff);
-                  const romanRaw = ['∅', 'I', 'II', 'III', 'IV'][raw] ?? String(raw);
                   return (
-                    <div class="kod-found-row">
-                      <span class="kod-found-row__name">{fname}</span>
-                      <span class="kod-found-row__val" title={`raw ${raw}`}>
-                        {roman}
-                        {eff !== raw ? (
-                          <span class="kod-found-row__raw">({romanRaw})</span>
-                        ) : null}
+                    <div class="found-row">
+                      <span class="found-row__name">{fname}</span>
+                      <span class="found-row__val" title={`raw ${raw}`}>
+                        {roman(eff)}
+                        {eff !== raw ? ` (${roman(raw)})` : ''}
                       </span>
-                      <span class="kod-found-row__harm" data-level={String(harmPts)}>
-                        <span class="kod-found-row__harm-name">{harmName}</span>
-                        <span class="kod-pips kod-pips--harm" aria-label={`${harmPts} of 3`}>
+                      <span class="found-row__harm" data-level={String(harmPts)}>
+                        <span class="found-row__harm-name">{harmName}</span>
+                        <span class="pips" aria-label={`${harmPts} of 3`}>
                           {harmPips(harmPts).map((on) => (
-                            <span class:list={['kod-pip', on && 'kod-pip--on']} />
+                            <span class:list={['pip', on && 'pip--on']} />
                           ))}
                         </span>
                       </span>
@@ -119,46 +146,51 @@ function practiceFrac(practice: number, threshold: number): number {
         </div>
       </section>
 
-      <section class="kod-panel">
+      <section class="surface">
         <h2>Skills by Archetype</h2>
-        <p class="kod-section__lede">
-          Full catalog. Centre = rating 0–3. Ring fill = Practice progress toward next rank. Hover for
-          Practice fraction.
+        <p class="lede">
+          Full catalog. Centre = rating. Ring = Practice toward next rank. Hover for Practice
+          progress.
         </p>
-        <div class="kod-skill-wheel">
+        <div class="skill-wheel">
           {
             ARCHETYPES.map((arch) => (
-              <div class={`kod-arch kod-arch--${arch.id}`}>
-                <div class="kod-arch__head">
-                  <span class="kod-arch__name">{arch.name}</span>
-                  <span class="kod-arch__tag">{arch.tag}</span>
+              <div class={`arch arch--${arch.id}`}>
+                <div class="arch__head">
+                  <span class="arch__name">{arch.name}</span>
+                  <span class="arch__tag">{arch.tag}</span>
                 </div>
-                <ul class="kod-arch__skills">
+                <ul class="arch__skills">
                   {arch.skills.map((def) => {
                     const prog = skillMap.get(def.name);
                     const rating = prog?.rating ?? 0;
                     const practice = prog?.practice ?? 0;
                     const threshold = prog?.threshold ?? 24;
-                    const p = rating > 0 && rating < 3 ? practiceFrac(practice, threshold) : rating >= 3 ? 1 : 0;
+                    const p =
+                      rating > 0 && rating < 3
+                        ? practiceFrac(practice, threshold)
+                        : rating >= 3
+                          ? 1
+                          : 0;
                     const pct = Math.round(p * 100);
                     return (
                       <li
-                        class="kod-skill"
+                        class="skill"
                         data-rating={String(rating)}
                         data-rated={rating > 0 ? 'true' : 'false'}
                         style={`--p: ${p}`}
                       >
-                        <span class="kod-skill__hint">
+                        <span class="skill__hint">
                           {rating <= 0
                             ? `Untrained · ${def.foundation}`
                             : rating >= 3
                               ? `Rating 3 (max) · ${def.foundation}`
-                              : `Rating ${rating} · Practice ${practice} / ${threshold} (${pct}% to next) · ${def.foundation}`}
+                              : `Rating ${rating} · Practice ${practice}/${threshold} (${pct}% to next) · ${def.foundation}`}
                         </span>
-                        <div class="kod-skill__ring">
-                          <div class="kod-skill__ring-inner">{rating}</div>
+                        <div class="skill__ring">
+                          <div class="skill__inner">{rating}</div>
                         </div>
-                        <span class="kod-skill__name">{def.name}</span>
+                        <span class="skill__name">{def.name}</span>
                       </li>
                     );
                   })}
@@ -170,44 +202,46 @@ function practiceFrac(practice: number, threshold: number): number {
       </section>
     </div>
 
-    <aside class="kod-sideblock">
-      <p class="kod-sideblock__label">Who do we see?</p>
+    <aside class="side">
+      <p class="side__lab">Who do we see?</p>
       {
         ch.whoWeSee ? (
-          <blockquote class="kod-quote">{ch.whoWeSee}</blockquote>
+          <blockquote class="quote">{ch.whoWeSee}</blockquote>
         ) : (
-          <p class="kod-empty">No claim recorded.</p>
+          <p class="empty">No claim recorded.</p>
         )
       }
 
-      <div class="kod-player-bind">
-        <p class="kod-sideblock__label">Player account</p>
+      <div class="side__block">
+        <p class="side__lab">Player account</p>
         {
           ch.player ? (
             <p style="margin:0">
-              <strong>{ch.player.displayName}</strong>
+              <strong style="font-weight:400;color:var(--kod-silver-bright)">
+                {ch.player.displayName}
+              </strong>
               <br />
-              <span class="kod-meta" style="margin:0">
+              <span class="app__meta" style="margin:0">
                 {ch.player.platform}
                 {ch.player.accountId ? ` · ${ch.player.accountId}` : ''}
               </span>
             </p>
           ) : (
-            <p class="kod-empty" style="margin:0">
+            <p class="empty" style="margin:0">
               No account mapped.
             </p>
           )
         }
       </div>
 
-      <div class="kod-player-bind">
-        <p class="kod-sideblock__label">Status</p>
+      <div class="side__block">
+        <p class="side__lab">Status</p>
         <p style="margin:0">
-          <span class="kod-char-card__status" data-status={ch.status}>{ch.status}</span>
+          <span class="char-card__status" data-status={ch.status}>{ch.status}</span>
           {ch.dying ? ' · Dying' : ''}
         </p>
-        <p class="kod-meta" style="margin-bottom:0">
-          Standing on hierarchies is shown only on the Community diagram — every member, every axis.
+        <p class="app__meta" style="margin-bottom:0">
+          Hierarchy placement is only on the Community diagram.
         </p>
       </div>
     </aside>

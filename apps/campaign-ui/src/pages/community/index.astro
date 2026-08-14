@@ -9,10 +9,11 @@ import {
   MYTH_KIND_COLUMNS,
   whoWeSeeMap,
 } from '../../data/load';
+
 const c = loadCommunity();
 const tiers = [...HIERARCHY_TIERS];
 const tips = whoWeSeeMap(c);
-const COLLAPSE_AT = 4; // show N chips then “+more” until expanded
+const COLLAPSE_AT = 4;
 
 function effectsForKind(
   effects: { kind: string; label: string; detail?: string; faces?: number[] }[],
@@ -34,117 +35,105 @@ function tipFor(name: string, slug?: string): string {
   primary="community"
   source={c.source}
 >
-  <div class="kod-toolbar">
-    <span class="kod-toolbar__label">Diagram scale</span>
-    <button type="button" data-density-btn="compact" aria-pressed="false">Compact</button>
-    <button type="button" data-density-btn="normal" aria-pressed="true">Normal</button>
-    <button type="button" data-density-btn="roomy" aria-pressed="false">Roomy</button>
-    <span class="kod-toolbar__hint">Collapse axis headers · expand crowded tiers</span>
+  <div class="toolbar">
+    <span class="toolbar__lab">Scale</span>
+    <button type="button" data-density-btn="compact">Compact</button>
+    <button type="button" data-density-btn="normal">Normal</button>
+    <button type="button" data-density-btn="roomy">Roomy</button>
   </div>
 
-  <!-- Fortunes: visual pips, not raw arabic focus -->
-  <section class="kod-section" aria-labelledby="fortunes-h">
-    <h2 id="fortunes-h" class="kod-section__title">Fortunes</h2>
-    <p class="kod-section__lede">
-      Ambient pressure on the whole community. Marks are states, not a second character sheet.
+  <section class="surface" aria-labelledby="f-h">
+    <h2 id="f-h">Fortunes</h2>
+    <p class="lede">
+      Community-wide pressure. Bars only — height and colour from Crisis to Abundance. Not a second
+      character sheet.
     </p>
-    <div class="kod-fortune-chart" role="list">
+    <div class="fortune-chart" role="list">
       {
         Object.entries(c.fortunes).map(([k, v]) => (
-          <div class="kod-fortune-bar" data-level={String(v)} role="listitem" title={FORTUNE_LABELS[v] ?? ''}>
-            <div class="kod-fortune-bar__track" aria-hidden="true">
-              <div class="kod-fortune-bar__fill" style={`--h: ${(v / 3) * 100}%`} />
+          <div class="fortune" data-level={String(v)} role="listitem" title={FORTUNE_LABELS[v] ?? ''}>
+            <div class="fortune__col" aria-hidden="true">
+              <div class="fortune__fill" style={`--h: ${Math.max(14, (v / 3) * 100)}%`} />
             </div>
-            <span class="kod-fortune-bar__name">{k}</span>
-            <span class="kod-fortune-bar__state">{FORTUNE_LABELS[v] ?? ''}</span>
+            <span class="fortune__name">{k}</span>
+            <span class="fortune__state">{FORTUNE_LABELS[v] ?? ''}</span>
           </div>
         ))
       }
     </div>
   </section>
 
-  <!-- Hierarchy board: axes + Outsiders side column -->
-  <section class="kod-panel kod-panel--diagram" aria-labelledby="hier-h">
-    <h2 id="hier-h">Hierarchy Diagram</h2>
-    <p class="kod-section__lede">
-      Every community member sits on <em>every</em> axis (usually Outcast). Outsiders stand
-      <strong>beside</strong> the ladders — not Outcast, not on any axis — until inducted into the
-      community. Hover a name for “Who do we see?”
+  <section class="surface" aria-labelledby="h-h">
+    <h2 id="h-h">Hierarchy</h2>
+    <p class="lede">
+      Every community member on every axis (default Outcast). Outsiders stand beside the ladders —
+      not Outcast, not on any axis. Hover a name for “Who do we see?”
     </p>
 
-    <div class="kod-ruler-seat">
-      <span class="kod-ruler-seat__label">Ruler</span>
+    <div class="ruler">
+      <span class="ruler__lab">Ruler</span>
       {
         c.ruler ? (
           c.rulerCharacterSlug ? (
             <a
-              class="kod-member kod-member--pc"
+              class="chip chip--pc"
               href={`/characters/${c.rulerCharacterSlug}/`}
               data-tip={tipFor(c.ruler, c.rulerCharacterSlug)}
             >
               {c.ruler}
             </a>
           ) : (
-            <span class="kod-member" data-tip={tipFor(c.ruler)}>{c.ruler}</span>
+            <span class="chip" data-tip={tipFor(c.ruler)}>
+              {c.ruler}
+            </span>
           )
         ) : (
-          <span class="kod-empty">— none claimed —</span>
+          <span class="empty">— none claimed —</span>
         )
       }
     </div>
 
-    <div class="kod-diagram-board">
-      <div class="kod-axes">
+    <div class="board">
+      <div class="axes">
         {
           c.hierarchyAxes.map((axis) => {
             const onAxis = c.placements.filter((p) => p.axis === axis);
             return (
-              <div class="kod-axis" data-collapsed="false">
-                <button
-                  type="button"
-                  class="kod-axis__head"
-                  data-axis-toggle
-                  aria-expanded="true"
-                >
-                  <span class="kod-axis__name">{axis}</span>
-                  <span class="kod-axis__count">{onAxis.length}</span>
+              <div class="axis" data-collapsed="false">
+                <button type="button" class="axis__head" data-axis-toggle aria-expanded="true">
+                  <span>{axis}</span>
+                  <span style="color:#6a625c;font-size:0.85rem">{onAxis.length}</span>
                 </button>
-                <div class="kod-axis__body">
+                <div class="axis__body">
                   {tiers.map((tier) => {
                     const members = onAxis.filter((p) => p.tier === tier);
                     const overflow = members.length > COLLAPSE_AT;
                     return (
                       <div
-                        class="kod-rung"
-                        data-tier={tier}
+                        class="rung"
                         data-expandable={overflow ? 'true' : 'false'}
                         data-expanded="false"
                       >
-                        <div class="kod-rung__head">
-                          <span class="kod-rung__tier">{tier}</span>
-                          <span class="kod-rung__n">{members.length}</span>
+                        <div class="rung__head">
+                          <span class="rung__tier">{tier}</span>
+                          <span class="rung__n">{members.length}</span>
                           {overflow && (
-                            <button
-                              type="button"
-                              class="kod-rung__expand"
-                              data-rung-expand
-                              aria-expanded="false"
-                            >
+                            <button type="button" class="rung__expand" data-rung-expand>
                               Show all
                             </button>
                           )}
                         </div>
-                        <div class="kod-rung__members">
+                        <div class="rung__members">
                           {members.length === 0 ? (
-                            <span class="kod-empty">—</span>
+                            <span class="empty">—</span>
                           ) : (
                             members.map((m, i) => {
                               const hidden = overflow && i >= COLLAPSE_AT;
                               const tip = tipFor(m.name, m.characterSlug);
                               const cls = [
-                                'kod-member',
-                                m.characterSlug && 'kod-member--pc',
-                                hidden && 'kod-member--overflow',
+                                'chip',
+                                m.characterSlug && 'chip--pc',
+                                hidden && 'chip--overflow',
                               ]
                                 .filter(Boolean)
                                 .join(' ');
@@ -175,25 +164,24 @@ function tipFor(name: string, slug?: string): string {
         }
       </div>
 
-      <!-- Outsiders: large side tier, not a hierarchy rung -->
-      <aside class="kod-outsiders-rail" aria-labelledby="outsiders-h">
-        <h3 id="outsiders-h" class="kod-outsiders-rail__title">Outsiders</h3>
-        <p class="kod-outsiders-rail__lede">
-          Not on any axis. No Outcast status until they enter the community.
+      <aside class="outsiders" aria-labelledby="o-h">
+        <h3 id="o-h">Outsiders</h3>
+        <p class="outsiders__lede">
+          Not on any hierarchy. No Outcast status until they enter the community.
         </p>
-        <ul class="kod-outsider-list">
+        <ul>
           {
             (c.outsiders ?? []).length === 0 ? (
-              <li class="kod-empty">None tracked.</li>
+              <li class="empty">None tracked.</li>
             ) : (
               (c.outsiders ?? []).map((o) => (
-                <li class="kod-outsider" data-tip={o.note ?? ''}>
+                <li class="outsider" data-tip={o.note ?? ''}>
                   {o.characterSlug ? (
                     <a href={`/characters/${o.characterSlug}/`}>{o.name}</a>
                   ) : (
                     <strong>{o.name}</strong>
                   )}
-                  {o.note && <span class="kod-outsider__note">{o.note}</span>}
+                  {o.note && <span>{o.note}</span>}
                 </li>
               ))
             )
@@ -203,14 +191,13 @@ function tipFor(name: string, slug?: string): string {
     </div>
   </section>
 
-  <section class="kod-panel" aria-labelledby="myths-h">
-    <h2 id="myths-h">Foundation Myths</h2>
-    <p class="kod-section__lede">
-      Effects by type. Hover a myth name for its short description. Fire only when a roll tags the
-      Myth.
+  <section class="surface" aria-labelledby="m-h">
+    <h2 id="m-h">Foundation Myths</h2>
+    <p class="lede">
+      Effects by type. Hover a name for short description. Fire only when a roll tags the Myth.
     </p>
-    <div class="kod-scroll">
-      <table class="kod-myths">
+    <div class="scroll">
+      <table class="matrix">
         <thead>
           <tr>
             <th>Myth</th>
@@ -221,7 +208,7 @@ function tipFor(name: string, slug?: string): string {
           {
             c.myths.length === 0 ? (
               <tr>
-                <td colspan={1 + MYTH_KIND_COLUMNS.length} class="kod-empty">
+                <td colspan={1 + MYTH_KIND_COLUMNS.length} class="empty">
                   No active Foundation Myths.
                 </td>
               </tr>
@@ -229,7 +216,7 @@ function tipFor(name: string, slug?: string): string {
               c.myths.map((m) => (
                 <tr>
                   <td>
-                    <span class="kod-myth-name" title={m.summary ?? ''}>
+                    <span class="matrix__name" title={m.summary ?? ''}>
                       {m.title}
                     </span>
                   </td>
@@ -238,10 +225,10 @@ function tipFor(name: string, slug?: string): string {
                     return (
                       <td>
                         {cells.length === 0 ? (
-                          <span class="kod-empty">—</span>
+                          <span class="empty">—</span>
                         ) : (
                           cells.map((e) => (
-                            <span class="kod-chip" data-kind={e.kind} title={e.detail ?? e.label}>
+                            <span class="fx" data-kind={e.kind} title={e.detail ?? e.label}>
                               {e.label}
                               {e.faces?.length ? ` (${e.faces.join(', ')})` : ''}
                             </span>
@@ -258,48 +245,4 @@ function tipFor(name: string, slug?: string): string {
       </table>
     </div>
   </section>
-
-  <div id="kod-tip" class="kod-tip" role="tooltip" hidden></div>
 </CampaignLayout>
-
-<script is:inline>
-  (function () {
-    // Rung expand
-    document.querySelectorAll('[data-rung-expand]').forEach((btn) => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const rung = btn.closest('.kod-rung');
-        if (!rung) return;
-        const open = rung.getAttribute('data-expanded') === 'true';
-        rung.setAttribute('data-expanded', open ? 'false' : 'true');
-        btn.setAttribute('aria-expanded', open ? 'false' : 'true');
-        btn.textContent = open ? 'Show all' : 'Collapse';
-        rung.querySelectorAll('.kod-member--overflow').forEach((el) => {
-          if (open) el.setAttribute('hidden', '');
-          else el.removeAttribute('hidden');
-        });
-      });
-    });
-
-    // Tooltip for data-tip
-    const tip = document.getElementById('kod-tip');
-    if (!tip) return;
-    function showTip(el, text) {
-      if (!text) return;
-      tip.textContent = text;
-      tip.hidden = false;
-      const r = el.getBoundingClientRect();
-      tip.style.left = Math.min(window.innerWidth - 220, Math.max(8, r.left)) + 'px';
-      tip.style.top = Math.min(window.innerHeight - 80, r.bottom + 6) + 'px';
-    }
-    function hideTip() {
-      tip.hidden = true;
-    }
-    document.querySelectorAll('[data-tip]').forEach((el) => {
-      el.addEventListener('mouseenter', () => showTip(el, el.getAttribute('data-tip') || ''));
-      el.addEventListener('mouseleave', hideTip);
-      el.addEventListener('focus', () => showTip(el, el.getAttribute('data-tip') || ''));
-      el.addEventListener('blur', hideTip);
-    });
-  })();
-</script>

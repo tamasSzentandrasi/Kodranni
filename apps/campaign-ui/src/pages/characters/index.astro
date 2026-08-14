@@ -3,6 +3,7 @@ export const prerender = false;
 
 import CampaignLayout from '../../layouts/CampaignLayout.astro';
 import { loadCommunity } from '../../data/load';
+import { segments } from '../../lib/format';
 
 const c = loadCommunity();
 const selected = Astro.url.searchParams.get('sel') ?? '';
@@ -15,33 +16,74 @@ const selected = Astro.url.searchParams.get('sel') ?? '';
   primary="characters"
   source={c.source}
 >
-  <p class="kod-meta">
-    Browse the living record. Status at a glance; open a panel for the full sheet. Hierarchy lives on
-    the Community page.
+  <p class="lede">
+    Status at a glance. Open a card for the sheet. Hierarchy lives on Community — every member on
+    every axis.
   </p>
 
-  <div class="kod-char-grid">
+  <div class="char-grid">
     {
-      c.characters.map((ch) => (
-        <a
-          class="kod-char-card"
-          href={`/characters/${ch.slug}/`}
-          data-selected={selected === ch.slug ? 'true' : 'false'}
-        >
-          <p class="kod-char-card__name">{ch.name}</p>
-          <span class="kod-char-card__status" data-status={ch.status}>
-            {ch.status}
-            {ch.dying ? ' · dying' : ''}
-          </span>
-          <p class="kod-char-card__meta">
-            {ch.player?.displayName ?? 'Unmapped player'}
-            <br />
-            Exertion {ch.exertion.current}/{ch.exertion.max} · Echo {ch.echoWeight}/{ch.echoCapacity}
-            {ch.flags.decadence ? ' · Decadence' : ''}
-            {ch.flags.overCapacity ? ' · Over-cap' : ''}
-          </p>
-        </a>
-      ))
+      c.characters.map((ch) => {
+        const ex = segments(ch.exertion.current, ch.exertion.max);
+        const ec = segments(ch.echoWeight, ch.echoCapacity);
+        return (
+          <a
+            class="char-card"
+            href={`/characters/${ch.slug}/`}
+            data-selected={selected === ch.slug ? 'true' : 'false'}
+          >
+            <p class="char-card__name">{ch.name}</p>
+            <span class="char-card__status" data-status={ch.status}>
+              {ch.status}
+              {ch.dying ? ' · dying' : ''}
+            </span>
+            <p class="char-card__meta">{ch.player?.displayName ?? 'Unmapped player'}</p>
+            <div class="track-block" style="margin-top:0.65rem;margin-bottom:0.35rem">
+              <span class="track-block__label">Exertion</span>
+              <div class="segbar" aria-label={`Exertion ${ch.exertion.current} of ${ch.exertion.max}`}>
+                {ex.map((s) => (
+                  <span
+                    class:list={[
+                      'segbar__seg',
+                      s.on && 'segbar__seg--on',
+                      s.over && 'segbar__seg--over',
+                    ]}
+                  />
+                ))}
+                <span class="segbar__readout">
+                  {ch.exertion.current}/{ch.exertion.max}
+                </span>
+              </div>
+            </div>
+            <div class="track-block" style="margin-bottom:0">
+              <span class="track-block__label">Echo load</span>
+              <div
+                class="segbar segbar--echo"
+                aria-label={`Echo load ${ch.echoWeight} of ${ch.echoCapacity}`}
+              >
+                {ec.map((s) => (
+                  <span
+                    class:list={[
+                      'segbar__seg',
+                      s.on && 'segbar__seg--on',
+                      s.over && 'segbar__seg--over',
+                    ]}
+                  />
+                ))}
+                <span class="segbar__readout">
+                  {ch.echoWeight}/{ch.echoCapacity}
+                </span>
+              </div>
+            </div>
+            {(ch.flags.decadence || ch.flags.overCapacity) && (
+              <p class="char-card__meta" style="margin-top:0.45rem">
+                {ch.flags.decadence ? 'Decadence · ' : ''}
+                {ch.flags.overCapacity ? 'Over capacity (tax on Echo rolls)' : ''}
+              </p>
+            )}
+          </a>
+        );
+      })
     }
   </div>
 </CampaignLayout>

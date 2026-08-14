@@ -12,6 +12,7 @@ export * from './seed.js';
 export * from './derived.js';
 export * from './hierarchy.js';
 export * from './port.js';
+export * from './echo-effects.js';
 
 // --- lightweight memory store (tests / early adapters) ---
 
