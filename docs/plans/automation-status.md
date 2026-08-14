@@ -9,8 +9,9 @@
 | Domain (pools, Practice, Harm, Tide, capacities) | Strong | Golden tests; dual capacity formulas |
 | Store port (hexagonal) | Improving | `CommunityStorePort`; SQLite is one adapter |
 | SQLite adapter | Working | Local SoT under `~/.kodranni/campaigns/<slug>/` |
-| CLI | Working | seed/destroy/roll/live/`emissary`; `live --tunnel`; reconstructible `--force` |
+| CLI | Working | seed/destroy/roll/live/`emissary`/`session`; `live --tunnel`; reconstructible `--force` |
 | Live campaign-ui | Functional enough | Community + character UX; polish later |
+| App services | Growing | rolls + **harm preview/apply** + ST resource events (exertion, fortune, supplies, inventory) |
 | Discord / Fluxer bots | Not started | Skeletons only; call **app** not CLI |
 | Campaign GitHub/Pages spawn | Not started | Designed only; force-publish on session end |
 
@@ -44,11 +45,10 @@ Default demo slug: **`vardmark`**. Characters: **torvald**, **leifr**.
 
 ## Known gaps / next
 
-1. Background `session start/end` + structured runtime logs  
-2. Bot runtime (Discord then Fluxer) over ChatPort → app  
-3. ST harm assign + resource event app commands  
-4. Publish/archive pipeline (force on session end)  
-5. Campaign geography map programme (deferred)  
+1. Bot runtime (Discord then Fluxer) over ChatPort → app (harm assign UI, ST events in chat)  
+2. Publish/archive pipeline (force on session end)  
+3. Session detach PID bookkeeping polish (process groups)  
+4. Campaign geography map programme (deferred)  
 
 ## Verify loop
 

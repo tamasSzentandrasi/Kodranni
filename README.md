@@ -44,6 +44,11 @@ npm run kodranni -- live --slug vardmark --tunnel
 
 # What to share / readiness (Emissary — not “doctor”)
 npm run kodranni -- emissary --slug vardmark
+
+# Session helpers (background live + tunnel)
+npm run kodranni -- session start --slug vardmark --tunnel --detach
+npm run kodranni -- session status --slug vardmark
+npm run kodranni -- session end --slug vardmark
 ```
 
 `npm run kodranni` resolves workspaces from this repo (or `KODRANNI_REPO` if the bin is invoked elsewhere).  

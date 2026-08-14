@@ -22,6 +22,7 @@ import {
 } from '@kodranni/store';
 import { printEmissaryReport, runEmissary } from './emissary.js';
 import { waitForHttp } from './http.js';
+import { printSessionStatus, sessionEnd, sessionStart } from './session.js';
 import {
   findCloudflared,
   localHttpUrlFromBind,
@@ -46,12 +47,17 @@ Usage:
   kodranni st-roll --slug <slug> --label <name> --foundation <n> --skill <n>
                 [--tier 6|8|12] [--exertion 0|1] [--debug-seed N]
   kodranni live --slug <slug> [--tunnel]
-      Live campaign-ui. --tunnel: Cloudflare quick tunnel → hashed HTTPS URL.
+      Live campaign-ui. --tunnel: Cloudflare quick tunnel (public mid-session URL).
+  kodranni session start --slug <slug> [--tunnel] [--detach] [--force]
+      Start live (+ optional tunnel). --detach runs in background.
+  kodranni session status --slug <slug>
+  kodranni session end --slug <slug>
   kodranni emissary [--slug <slug>]
-      Readiness + live/archive access (delivers what players should open).
+      Readiness + live/archive access (what players should open).
   kodranni help
 
 RNG: production rolls use crypto. --debug-seed is for verification only.
+Adapters/bots call packages/app in-process — not this CLI.
 `);
   process.exit(code);
 }
@@ -181,7 +187,38 @@ async function main(): Promise<void> {
     process.exit(report.ok ? 0 : 1);
   }
 
-  if (cmd === 'live') {
+  if (cmd === 'session' && args[1] === 'status') {
+    const slug = arg(args, '--slug') ?? DEMO_SLUG;
+    const cfg = await loadConfig(slug);
+    await printSessionStatus(slug, cfg);
+    return;
+  }
+
+  if (cmd === 'session' && args[1] === 'end') {
+    const slug = arg(args, '--slug') ?? DEMO_SLUG;
+    const cfg = await loadConfig(slug);
+    await sessionEnd(slug, cfg);
+    return;
+  }
+
+  if (cmd === 'session' && args[1] === 'start') {
+    const slug = arg(args, '--slug') ?? DEMO_SLUG;
+    const cfg = await loadConfig(slug);
+    const mode = await sessionStart({
+      slug,
+      cfg,
+      tunnel: has(args, '--tunnel'),
+      detach: has(args, '--detach'),
+      force: has(args, '--force'),
+    });
+    if (mode === 'detached') return;
+    // foreground: fall through to the same live block below
+  }
+
+  if (
+    cmd === 'live' ||
+    (cmd === 'session' && args[1] === 'start' && !has(args, '--detach'))
+  ) {
     const slug = arg(args, '--slug') ?? DEMO_SLUG;
     const useTunnel = has(args, '--tunnel');
     const cfg = await loadConfig(slug);
@@ -192,6 +229,7 @@ async function main(): Promise<void> {
     const communityUrl = localUrl.replace(/\/$/, '') + '/community/';
     const startedAt = new Date().toISOString();
 
+    // session start may have already checked force; live alone still replaces via --force on astro
     // Local until tunnel proves itself — avoid advertising a dead public URL
     writeLiveUrl(slug, localUrl);
     writeSessionState(slug, {
