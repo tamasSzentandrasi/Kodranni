@@ -36,11 +36,12 @@ npm run kodranni -- st-roll --slug vardmark \
 
 # Live sheet + community tracker (SSR, re-reads SQLite each request)
 npm run kodranni -- live --slug vardmark
-# optional public HTTPS via Cloudflare quick tunnel (requires cloudflared on PATH):
+# optional public HTTPS via Cloudflare tunnel (requires cloudflared on PATH):
 npm run kodranni -- live --slug vardmark --tunnel
 # → local  http://127.0.0.1:8742/community/
-# → public https://random-words.trycloudflare.com/  (while process runs;
-#    free Cloudflare names are word-salad, not hex; still unguessable capability URLs)
+# → public quick: https://random-words.trycloudflare.com/  (default)
+# → public named: https://live.yourdomain.com/  if campaign.toml tunnel_mode=named
+# See docs/plans/live-tunnel.md for ST domain setup.
 
 # What to share / readiness (Emissary — not “doctor”)
 npm run kodranni -- emissary --slug vardmark

@@ -3,10 +3,14 @@ import { createWriteStream, existsSync } from 'node:fs';
 import { access } from 'node:fs/promises';
 import { constants } from 'node:fs';
 import { delimiter, join } from 'node:path';
+import type { CampaignConfig, TunnelMode } from '@kodranni/store';
+import {
+  resolveNamedTunnelPublicUrl,
+  resolveTunnelMode,
+} from '@kodranni/store';
 
 /** Extract Cloudflare quick-tunnel HTTPS URL from cloudflared log lines. */
 export function parseCloudflaredUrl(chunk: string): string | undefined {
-  // https://<hash>.trycloudflare.com (optional trailing slash/path)
   const m = chunk.match(/https:\/\/[a-z0-9-]+\.trycloudflare\.com\/?/i);
   if (!m?.[0]) return undefined;
   return m[0].replace(/\/$/, '');
@@ -33,32 +37,40 @@ export async function findCloudflared(): Promise<string | undefined> {
 
 export interface TunnelHandle {
   child: ChildProcess;
-  /** Resolves when first public URL is seen (or rejects on early exit). */
+  mode: TunnelMode;
+  /** Resolves when the public URL is known (quick: parsed from logs; named: config). */
   url: Promise<string>;
 }
 
+function spawnCloudflared(
+  bin: string,
+  args: string[],
+  logPath: string,
+): { child: ChildProcess; log: ReturnType<typeof createWriteStream> } {
+  const log = createWriteStream(logPath, { flags: 'a' });
+  log.write(`\n--- ${new Date().toISOString()} cloudflared ${args.join(' ')} ---\n`);
+  const child = spawn(bin, args, {
+    stdio: ['ignore', 'pipe', 'pipe'],
+    shell: false,
+  });
+  return { child, log };
+}
+
 /**
- * Start Cloudflare quick tunnel to localUrl.
- * Free quick tunnels get a random *.trycloudflare.com name (Cloudflare-chosen words,
- * not a hex hash — that is their free product; custom hostnames need a named tunnel + domain).
- * --http-host-header keeps the origin Host as localhost for Vite/Astro.
+ * Free quick tunnel → random *.trycloudflare.com (Cloudflare word names).
+ * --http-host-header keeps origin Host as localhost for Vite/Astro.
  */
-export function startCloudflaredTunnel(opts: {
+export function startCloudflaredQuickTunnel(opts: {
   cloudflaredBin: string;
   localUrl: string;
   logPath: string;
-  /** Host header sent to origin (default localhost) */
   httpHostHeader?: string;
 }): TunnelHandle {
-  const log = createWriteStream(opts.logPath, { flags: 'a' });
   const hostHeader = opts.httpHostHeader ?? 'localhost';
-  const child = spawn(
+  const { child, log } = spawnCloudflared(
     opts.cloudflaredBin,
     ['tunnel', '--url', opts.localUrl, '--http-host-header', hostHeader],
-    {
-      stdio: ['ignore', 'pipe', 'pipe'],
-      shell: false,
-    },
+    opts.logPath,
   );
 
   let settled = false;
@@ -98,15 +110,123 @@ export function startCloudflaredTunnel(opts: {
     }
   });
 
-  return { child, url };
+  return { child, mode: 'quick', url };
+}
+
+/**
+ * Named tunnel bound to the Storyteller’s domain/subdomain (Cloudflare DNS).
+ * Public URL comes from campaign config, not from trycloudflare.com.
+ *
+ * Prefer token (dashboard install command): cloudflared tunnel run --token …
+ * Or: cloudflared tunnel run <name>  /  --config path run
+ */
+export function startCloudflaredNamedTunnel(opts: {
+  cloudflaredBin: string;
+  logPath: string;
+  publicUrl: string;
+  token?: string;
+  tunnelName?: string;
+  configPath?: string;
+}): TunnelHandle {
+  const args: string[] = ['tunnel'];
+  if (opts.configPath) {
+    args.push('--config', opts.configPath, 'run');
+  } else if (opts.token) {
+    args.push('run', '--token', opts.token);
+  } else if (opts.tunnelName) {
+    args.push('run', opts.tunnelName);
+  } else {
+    throw new Error(
+      'named tunnel needs cloudflare_tunnel_token, cloudflare_tunnel_name, or cloudflare_tunnel_config',
+    );
+  }
+
+  const { child, log } = spawnCloudflared(opts.cloudflaredBin, args, opts.logPath);
+
+  let settled = false;
+  let resolveUrl!: (u: string) => void;
+  let rejectUrl!: (e: Error) => void;
+  const url = new Promise<string>((resolve, reject) => {
+    resolveUrl = resolve;
+    rejectUrl = reject;
+  });
+
+  // Named tunnel URL is known a priori; resolve after process stays up briefly.
+  // Also stream logs; fail if process exits immediately.
+  const settleOk = () => {
+    if (settled) return;
+    settled = true;
+    resolveUrl(opts.publicUrl.replace(/\/$/, ''));
+  };
+  const timer = setTimeout(settleOk, 1500);
+
+  const onData = (buf: Buffer) => {
+    log.write(buf.toString('utf8'));
+  };
+  child.stdout?.on('data', onData);
+  child.stderr?.on('data', onData);
+  child.on('error', (err) => {
+    clearTimeout(timer);
+    log.write(`\n[error] ${err.message}\n`);
+    if (!settled) {
+      settled = true;
+      rejectUrl(err);
+    }
+  });
+  child.on('exit', (code) => {
+    clearTimeout(timer);
+    log.write(`\n[exit] code=${code}\n`);
+    log.end();
+    if (!settled) {
+      settled = true;
+      rejectUrl(
+        new Error(
+          `named cloudflared exited early (code ${code}). Check DNS route, tunnel credentials, and ingress → ${opts.publicUrl}`,
+        ),
+      );
+    }
+  });
+
+  return { child, mode: 'named', url };
+}
+
+/** @deprecated use startCloudflaredQuickTunnel */
+export function startCloudflaredTunnel(opts: {
+  cloudflaredBin: string;
+  localUrl: string;
+  logPath: string;
+  httpHostHeader?: string;
+}): TunnelHandle {
+  return startCloudflaredQuickTunnel(opts);
 }
 
 export function localHttpUrlFromBind(liveBind: string): string {
-  // live_bind is host:port
-  const host = liveBind.startsWith('127.0.0.1') || liveBind.startsWith('localhost')
-    ? liveBind
-    : liveBind.includes(':')
+  const host =
+    liveBind.startsWith('127.0.0.1') || liveBind.startsWith('localhost')
       ? liveBind
-      : `127.0.0.1:${liveBind}`;
+      : liveBind.includes(':')
+        ? liveBind
+        : `127.0.0.1:${liveBind}`;
   return `http://${host}`;
+}
+
+export function tunnelCredentialsFromConfig(
+  cfg: CampaignConfig,
+  env: NodeJS.ProcessEnv = process.env,
+): {
+  mode: TunnelMode;
+  token?: string;
+  tunnelName?: string;
+  configPath?: string;
+  publicUrl?: string;
+} {
+  const mode = resolveTunnelMode(cfg, env);
+  const token = env.KODRANNI_CF_TUNNEL_TOKEN ?? cfg.cloudflareTunnelToken;
+  const tunnelName = cfg.cloudflareTunnelName;
+  const configPath = cfg.cloudflareTunnelConfig;
+  let publicUrl: string | undefined;
+  if (mode === 'named') {
+    publicUrl = resolveNamedTunnelPublicUrl(cfg);
+  }
+  return { mode, token, tunnelName, configPath, publicUrl };
 }

@@ -40,7 +40,7 @@ Default demo slug: **`vardmark`**. Characters: **torvald**, **leifr**.
 | Hexagonal persistence | App → `CommunityStorePort`; SQLite implements it |
 | Campaign map | **Post-initial release** — ST editor + public viewer; Atlas/Ground modes; not VTT. Grok skill/MCP templates later (after hand editor) |
 | Layering | **Adapters → `packages/app` in-process**; CLI is ST orchestration only (never bot IPC) |
-| Live access | Optional **hashed Cloudflare quick tunnel** (`live --tunnel`); `emissary` reports URLs |
+| Live access | Cloudflare tunnel: **quick** (default) or **named** (ST domain); `live --tunnel`; `emissary`; see `docs/plans/live-tunnel.md` |
 | Naming | **`emissary`** (not doctor) — readiness + what to share mid-session |
 
 ## Known gaps / next

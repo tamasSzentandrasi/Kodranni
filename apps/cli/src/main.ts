@@ -26,7 +26,9 @@ import { printSessionStatus, sessionEnd, sessionStart } from './session.js';
 import {
   findCloudflared,
   localHttpUrlFromBind,
-  startCloudflaredTunnel,
+  startCloudflaredNamedTunnel,
+  startCloudflaredQuickTunnel,
+  tunnelCredentialsFromConfig,
 } from './tunnel.js';
 
 function usage(code = 1): never {
@@ -347,18 +349,29 @@ async function main(): Promise<void> {
       if (!bin) {
         console.error(
           'cloudflared not found on PATH.\n' +
-            '  Local UI is running; install cloudflared and re-run with --tunnel for a hashed URL.',
+            '  Local UI is running; install cloudflared and re-run with --tunnel.',
         );
       } else {
         const tunnelLog = join(logsDir, 'tunnel.log');
-        console.log(`  tunnel: starting (${bin})…`);
-        const tunnel = startCloudflaredTunnel({
-          cloudflaredBin: bin,
-          localUrl,
-          logPath: tunnelLog,
-        });
-        tunnelChild = tunnel.child;
+        const creds = tunnelCredentialsFromConfig(cfg);
+        console.log(`  tunnel: starting (${bin}, mode=${creds.mode})…`);
         try {
+          const tunnel =
+            creds.mode === 'named'
+              ? startCloudflaredNamedTunnel({
+                  cloudflaredBin: bin,
+                  logPath: tunnelLog,
+                  publicUrl: creds.publicUrl!,
+                  token: creds.token,
+                  tunnelName: creds.tunnelName,
+                  configPath: creds.configPath,
+                })
+              : startCloudflaredQuickTunnel({
+                  cloudflaredBin: bin,
+                  localUrl,
+                  logPath: tunnelLog,
+                });
+          tunnelChild = tunnel.child;
           const publicUrl = await Promise.race([
             tunnel.url,
             new Promise<string>((_, rej) =>
@@ -378,12 +391,18 @@ async function main(): Promise<void> {
             pids: { live: child.pid, tunnel: tunnelChild.pid },
           });
           console.log(`  public: ${publicUrl}`);
-          console.log(
-            '  (Cloudflare quick tunnel — random name, unguessable; share only while this process runs)',
-          );
-          console.log(
-            '  (not for the public repo; custom hostnames need a named tunnel + your domain later)',
-          );
+          if (creds.mode === 'named') {
+            console.log(
+              '  (named tunnel — your domain/subdomain; share only while this process runs)',
+            );
+          } else {
+            console.log(
+              '  (Cloudflare quick tunnel — random trycloudflare name; share only while this process runs)',
+            );
+            console.log(
+              '  (for your own domain: set tunnel_mode=named + token/hostname in campaign.toml)',
+            );
+          }
           console.log(`  log:    ${tunnelLog}`);
         } catch (e) {
           killChild(tunnelChild);

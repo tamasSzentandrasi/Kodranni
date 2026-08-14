@@ -87,4 +87,24 @@ describe('campaign.toml', () => {
     expect(cfg.platforms).toEqual(['discord', 'fluxer']);
     expect(cfg.storePath).toBe('/tmp/x.sqlite');
   });
+
+  it('round-trips named tunnel keys', () => {
+    const text = serializeCampaignToml({
+      schema: 1,
+      slug: 'vardmark',
+      name: 'Test',
+      storePath: '/tmp/x.sqlite',
+      liveBind: '127.0.0.1:8742',
+      liveBaseUrl: 'https://live.example.com',
+      publishDebounceMs: 45000,
+      platforms: [],
+      tunnelMode: 'named',
+      tunnelHostname: 'https://live.example.com',
+      cloudflareTunnelToken: 'tok',
+    });
+    const cfg = parseCampaignToml(text);
+    expect(cfg.tunnelMode).toBe('named');
+    expect(cfg.tunnelHostname).toBe('https://live.example.com');
+    expect(cfg.cloudflareTunnelToken).toBe('tok');
+  });
 });

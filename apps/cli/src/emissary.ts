@@ -12,7 +12,7 @@ import {
   type CampaignConfig,
 } from '@kodranni/store';
 import { probeHttp, processAlive } from './http.js';
-import { findCloudflared, localHttpUrlFromBind } from './tunnel.js';
+import { findCloudflared, localHttpUrlFromBind, tunnelCredentialsFromConfig } from './tunnel.js';
 
 export interface EmissaryReport {
   ok: boolean;
@@ -77,9 +77,34 @@ export async function runEmissary(opts: {
     check(
       'cloudflared',
       Boolean(cf),
-      cf ? cf : 'not on PATH — install for hashed live URL (live --tunnel)',
+      cf ? cf : 'not on PATH — install for live --tunnel',
     ),
   );
+
+  const tunnelCreds = tunnelCredentialsFromConfig(cfg);
+  if (tunnelCreds.mode === 'named') {
+    const hasCred =
+      Boolean(tunnelCreds.token) ||
+      Boolean(tunnelCreds.tunnelName) ||
+      Boolean(tunnelCreds.configPath);
+    checks.push(
+      check(
+        'named tunnel',
+        hasCred && Boolean(tunnelCreds.publicUrl),
+        hasCred
+          ? `mode=named · public ${tunnelCreds.publicUrl}${tunnelCreds.token ? ' · token set' : ''}${tunnelCreds.tunnelName ? ` · name ${tunnelCreds.tunnelName}` : ''}`
+          : 'tunnel_mode=named but missing token/name/config — see docs/plans/live-tunnel.md',
+      ),
+    );
+  } else {
+    checks.push(
+      check(
+        'tunnel mode',
+        true,
+        'quick (trycloudflare.com). Optional: named + your domain in campaign.toml',
+      ),
+    );
+  }
 
   let ghOk = false;
   let ghDetail = 'gh not found';

@@ -614,7 +614,7 @@ Use this as the pre-implementation gate. **Locked** = do not re-litigate without
 | O1 | **Language / monorepo layout** | TypeScript; `apps/*` + `packages/*` under this repo; Guidebook stays Astro+Starlight | One toolchain; Fluxer/Discord ecosystem |
 | O2 | **Local store engine** | SQLite (`better-sqlite3` or `libsql`) + events table | Single-writer, transactions, one file backup |
 | O3 | **Private data root** | `~/.kodranni/campaigns/<slug>/` (XDG on Linux) | Survives repo pulls; clear “not public” |
-| O4 | **Tunnel provider** | Cloudflare quick tunnel (`cloudflared`) first; pluggable | Free hashed HTTPS URL, no domain |
+| O4 | **Tunnel provider** | Cloudflare: **quick** (trycloudflare) default; **named** optional on ST domain | Free mid-session HTTPS; custom hostname needs domain on CF DNS — see `docs/plans/live-tunnel.md` |
 | O5 | **Live UI tech** | **LOCKED L18:** Astro app + shared design tokens/CSS with Guidebook; SSR/live from SoT; same components for static archive export. **Starlight stays Guidebook-only** (docs IA). Campaign UI is not a second docs site — it is an Astro **app shell** with the same *visual system*. | Same peak craft; dynamic SoT does not fit Starlight content collections |
 | O6 | **Public site model** | Astro static build/export of the same views fed by redacted snapshot (not a separate junk template) | One UI codebase |
 | O7 | **Discord library** | discord.js (interactions + gateway as needed) | Mature; components/buttons solid |
@@ -649,7 +649,7 @@ Use this as the pre-implementation gate. **Locked** = do not re-litigate without
 |----|-------|-------|
 | D1 | Packaged binary / installer | `npm`/clone fine for pilots |
 | D2 | Co-ST / handoff protocol | Single writer only until demanded |
-| D3 | Named stable tunnel hostname | Random hash URL enough |
+| D3 | Named stable tunnel hostname | Optional: ST domain via `tunnel_mode=named`; default remains quick tunnel |
 | D4 | Custom domain for campaign Pages | Optional ST concern |
 | D5 | Exhaustive Fluxer edge-case matrix beyond ChatPort | Both adapters ship P0; deep gap doc can grow |
 | D6 | Encrypted audit at rest | Optional later |
