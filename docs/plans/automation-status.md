@@ -12,7 +12,7 @@
 | CLI | Working | seed/destroy/roll/live/`emissary`/`session`; `live --tunnel`; reconstructible `--force` |
 | Live campaign-ui | Functional enough | Community + character UX; polish later |
 | App services | Growing | rolls + **harm preview/apply** + ST resource events (exertion, fortune, supplies, inventory) |
-| Discord / Fluxer bots | Not started | Skeletons only; call **app** not CLI |
+| Discord bot-runtime | **Vertical slice** | `/kod-map` `/kod-prompt` `/kod-roll` `/kod-st-roll` + Harm assign; Fluxer still skeleton |
 | Campaign GitHub/Pages spawn | Not started | Designed only; force-publish on session end |
 
 ## Reconstructible demo
@@ -45,9 +45,9 @@ Default demo slug: **`vardmark`**. Characters: **torvald**, **leifr**.
 
 ## Known gaps / next
 
-1. Bot runtime (Discord then Fluxer) over ChatPort → app (harm assign UI, ST events in chat)  
+1. Fluxer parity; oppose linking; multi-track harm; skill dual-spectrum menus  
 2. Publish/archive pipeline (force on session end)  
-3. Session detach PID bookkeeping polish (process groups)  
+3. `session start` auto-launch bot when Discord env present  
 4. Campaign geography map programme (deferred)  
 
 ## Verify loop

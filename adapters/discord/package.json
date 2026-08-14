@@ -6,8 +6,15 @@
   "exports": {
     ".": "./src/index.ts"
   },
+  "scripts": {
+    "test": "vitest run"
+  },
   "dependencies": {
     "@kodranni/chat-port": "*",
-    "@kodranni/chat-ui": "*"
+    "@kodranni/chat-ui": "*",
+    "discord.js": "^14.18.0"
+  },
+  "devDependencies": {
+    "vitest": "^3.0.9"
   }
 }

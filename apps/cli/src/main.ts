@@ -56,6 +56,8 @@ Usage:
   kodranni session end --slug <slug>
   kodranni emissary [--slug <slug>]
       Readiness + live/archive access (what players should open).
+  kodranni bot --slug <slug>
+      Discord bot-runtime (needs DISCORD_BOT_TOKEN + DISCORD_GUILD_ID).
   kodranni help
 
 RNG: production rolls use crypto. --debug-seed is for verification only.
@@ -187,6 +189,49 @@ async function main(): Promise<void> {
     const report = await runEmissary({ slug });
     printEmissaryReport(report, slug);
     process.exit(report.ok ? 0 : 1);
+  }
+
+  if (cmd === 'bot') {
+    const slug = arg(args, '--slug') ?? DEMO_SLUG;
+    const cfg = await loadConfig(slug);
+    const repoRoot = resolveRepoRoot();
+    ensureCampaignRuntime(slug);
+    const liveUrl = readLiveUrl(slug) ?? cfg.liveBaseUrl;
+    const npmBin = process.platform === 'win32' ? 'npm.cmd' : 'npm';
+    console.log(`Bot-runtime for ${slug}`);
+    console.log(`  store: ${cfg.storePath}`);
+    console.log(`  live:  ${liveUrl}`);
+    if (!process.env.DISCORD_BOT_TOKEN || !process.env.DISCORD_GUILD_ID) {
+      console.error('Set DISCORD_BOT_TOKEN and DISCORD_GUILD_ID in the environment.');
+      process.exit(1);
+    }
+    const child = spawn(
+      npmBin,
+      ['run', 'start', '-w', '@kodranni/bot-runtime'],
+      {
+        cwd: repoRoot,
+        stdio: 'inherit',
+        env: {
+          ...process.env,
+          KODRANNI_STORE_PATH: cfg.storePath,
+          KODRANNI_CAMPAIGN_SLUG: cfg.slug,
+          KODRANNI_LIVE_BASE_URL: liveUrl,
+          KODRANNI_PUBLIC_BASE_URL: cfg.publicBaseUrl ?? '',
+          NODE_OPTIONS: [process.env.NODE_OPTIONS, '--experimental-sqlite']
+            .filter(Boolean)
+            .join(' '),
+        },
+        shell: false,
+      },
+    );
+    await new Promise<void>((resolve, reject) => {
+      child.on('exit', (code) => {
+        if (code === 0 || code === null) resolve();
+        else reject(new Error(`bot-runtime exited ${code}`));
+      });
+      child.on('error', reject);
+    });
+    return;
   }
 
   if (cmd === 'session' && args[1] === 'status') {

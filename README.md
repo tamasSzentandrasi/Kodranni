@@ -50,6 +50,10 @@ npm run kodranni -- emissary --slug vardmark
 npm run kodranni -- session start --slug vardmark --tunnel --detach
 npm run kodranni -- session status --slug vardmark
 npm run kodranni -- session end --slug vardmark
+
+# Discord bot (separate terminal; needs DISCORD_BOT_TOKEN + DISCORD_GUILD_ID)
+npm run kodranni -- bot --slug vardmark
+# → /kod-map · /kod-prompt · /kod-roll · Harm button — docs/plans/bot-discord.md
 ```
 
 `npm run kodranni` resolves workspaces from this repo (or `KODRANNI_REPO` if the bin is invoked elsewhere).  
@@ -64,7 +68,8 @@ Runtime (live URL, logs): `~/.kodranni/campaigns/<slug>/runtime/`.
 | Live Community + Character UI | **Functional** (polish deferred) |
 | Reconstructible demo (`seed-demo --force` / `destroy`) | **Yes** |
 | Hashed live tunnel + emissary | **Yes** (`live --tunnel`, `emissary`) |
-| Discord / Fluxer bot on a real server | **Not yet** |
+| Discord bot vertical slice | **Yes** — see `docs/plans/bot-discord.md` |
+| Fluxer bot | **Not yet** |
 
 Capacities: **Exertion** = Res+Con+Cha; **Echo capacity** = max(Str,Dex)+Int+Auth. Over-capacity −1 only on Echo-involved rolls.
 

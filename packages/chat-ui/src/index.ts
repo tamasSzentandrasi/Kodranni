@@ -91,3 +91,69 @@ export function buildApprovalRequestCard(input: RequestCardInput): ChatCard {
     ],
   };
 }
+
+export interface RollPromptCardInput {
+  promptId: string;
+  foundation: string;
+  skill?: string;
+  dieTier: number;
+  characterName?: string;
+  stName: string;
+  liveSheetUrl?: string;
+}
+
+/** ST sets the fiction config; player presses Roll once. */
+export function buildRollPromptCard(input: RollPromptCardInput): ChatCard {
+  const intent = input.skill
+    ? `${input.foundation} + ${input.skill} · d${input.dieTier}`
+    : `${input.foundation} (Primitive) · d${input.dieTier}`;
+  return {
+    title: input.characterName ? `Roll · ${input.characterName}` : 'Roll when ready',
+    description: `**${input.stName}** sets the pool: ${intent}`,
+    accent: 'blood',
+    fields: [
+      { name: 'Foundation', value: input.foundation, inline: true },
+      { name: 'Skill', value: input.skill ?? 'Primitive', inline: true },
+      { name: 'Tier', value: `d${input.dieTier}`, inline: true },
+    ],
+    footer: 'Defaults: no Exertion, no Echo. Use /kod-roll for options.',
+    buttons: [
+      { id: `prompt-roll:${input.promptId}`, label: 'Roll', style: 'primary' },
+    ],
+    links: input.liveSheetUrl
+      ? [{ label: 'Live sheet', url: input.liveSheetUrl }]
+      : undefined,
+  };
+}
+
+export interface HarmAssignCardInput {
+  rollId: string;
+  characterName: string;
+  family: 'physical' | 'mental' | 'social';
+  points: number;
+  ratio: number;
+  tracks: string[];
+}
+
+/** ST assigns precalculated harm points to allowed tracks. */
+export function buildHarmAssignCard(input: HarmAssignCardInput): ChatCard {
+  const buttons = input.tracks.slice(0, 5).map((track) => ({
+    id: `harm-apply:${input.rollId}:${input.family}:${track}:${input.points}`,
+    label: `All → ${track}`,
+    style: 'secondary' as const,
+  }));
+  return {
+    title: `Harm · ${input.characterName}`,
+    description: `**${input.points}** point(s) available (${input.family}, ratio ${input.ratio}). Assign to one track, or cancel.`,
+    accent: 'blood',
+    fields: [
+      { name: 'Family', value: input.family, inline: true },
+      { name: 'Points', value: String(input.points), inline: true },
+    ],
+    footer: 'One family per infliction. Split across tracks comes later.',
+    buttons: [
+      ...buttons,
+      { id: `harm-cancel:${input.rollId}`, label: 'Cancel', style: 'danger' },
+    ],
+  };
+}

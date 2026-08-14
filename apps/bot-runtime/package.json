@@ -1,0 +1,22 @@
+{
+  "name": "@kodranni/bot-runtime",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node --experimental-sqlite --import tsx ./src/main.ts",
+    "test": "NODE_OPTIONS='--experimental-sqlite' vitest run"
+  },
+  "dependencies": {
+    "@kodranni/adapter-discord": "*",
+    "@kodranni/app": "*",
+    "@kodranni/chat-port": "*",
+    "@kodranni/chat-ui": "*",
+    "@kodranni/domain": "*",
+    "@kodranni/store": "*",
+    "tsx": "^4.19.3"
+  },
+  "devDependencies": {
+    "vitest": "^3.0.9"
+  }
+}
