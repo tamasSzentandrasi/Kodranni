@@ -336,6 +336,84 @@ const fontFacesCss = `
 		});
 	}
 
+	/**
+	 * Tide demo: step panels + live two-colour track.
+	 * Markup: [data-widget="tide-demo"] with [data-tab], panels [data-panel-id]
+	 * that carry data-tide-pos + data-tide-note, and [data-tide-visual] bar.
+	 * Track length defaults to 17 (imperial 6 vs mongol 12).
+	 */
+	function setupTideDemo() {
+		document.querySelectorAll('[data-widget="tide-demo"]').forEach((root) => {
+			if (root.dataset.ready) return;
+			root.dataset.ready = '1';
+			const scale = Number(root.dataset.tideScale || 17);
+			const buttons = [...root.querySelectorAll('[data-tab]')];
+			const panels = [...root.querySelectorAll('[data-panel-id]')];
+			const prev = root.querySelector('[data-step-prev]');
+			const next = root.querySelector('[data-step-next]');
+			const labelEl = root.querySelector('[data-step-label]');
+			const fillA = root.querySelector('[data-tide-fill-a]');
+			const fillB = root.querySelector('[data-tide-fill-b]');
+			const marker = root.querySelector('[data-tide-marker]');
+			const readout = root.querySelector('[data-tide-readout]');
+			if (!buttons.length || !panels.length) return;
+			const ids = buttons.map((b) => b.dataset.tab);
+			let index = 0;
+
+			function paint(pos, note) {
+				const p = Math.max(0, Math.min(scale, Number(pos)));
+				const pct = scale === 0 ? 0 : (p / scale) * 100;
+				if (fillA) fillA.style.width = pct + '%';
+				if (fillB) fillB.style.width = 100 - pct + '%';
+				if (marker) marker.style.left = pct + '%';
+				if (readout) {
+					const state =
+						p <= 0
+							? 'Imperial side routes (collective).'
+							: p >= scale
+								? 'Mongol side routes (collective).'
+								: 'Imperial footing remaining · Mongol pressure growing as crimson shrinks.';
+					readout.textContent = note
+						? note + ' — ' + state
+						: 'Position ' + p + ' / ' + scale + '. ' + state;
+				}
+				root.setAttribute('data-tide-at', String(p));
+			}
+
+			function setIndex(i) {
+				index = Math.max(0, Math.min(ids.length - 1, i));
+				const id = ids[index];
+				buttons.forEach((b, bi) =>
+					b.setAttribute('aria-pressed', bi === index ? 'true' : 'false'),
+				);
+				let active = panels[0];
+				panels.forEach((panel) => {
+					const show = panel.getAttribute('data-panel-id') === id;
+					if (show) {
+						panel.removeAttribute('hidden');
+						active = panel;
+					} else panel.setAttribute('hidden', '');
+				});
+				const pos = active?.getAttribute('data-tide-pos') ?? '6';
+				const note = active?.getAttribute('data-tide-note') || '';
+				paint(pos, note);
+				if (labelEl) {
+					const title = active?.getAttribute('data-step-title') || '';
+					labelEl.textContent = title
+						? `${index + 1} / ${ids.length} — ${title}`
+						: `${index + 1} / ${ids.length}`;
+				}
+				if (prev) prev.disabled = index === 0;
+				if (next) next.disabled = index === ids.length - 1;
+			}
+
+			buttons.forEach((b, bi) => b.addEventListener('click', () => setIndex(bi)));
+			if (prev) prev.addEventListener('click', () => setIndex(index - 1));
+			if (next) next.addEventListener('click', () => setIndex(index + 1));
+			setIndex(0);
+		});
+	}
+
 	function setupScrollReveal() {
 		const root = document.querySelector('.sl-markdown-content');
 		if (!root) return;
@@ -429,6 +507,7 @@ const fontFacesCss = `
 		setupTierDial();
 		setupContentTabs();
 		setupStepFlows();
+		setupTideDemo();
 		setupScrollReveal();
 		setupTableStrip();
 		// after layout + fonts

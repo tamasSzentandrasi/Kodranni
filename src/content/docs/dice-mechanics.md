@@ -237,19 +237,23 @@ Hints:
 
 ## The Tide
 
-The Tide is a **shared** progress tracker when a contest is larger than a clean 1v1 — a skirmish, a running fight, a hall-wide debate, a pursuit through hostile ground.
+The Tide is a **shared** pressure track for a whole side when the contest is larger than a clean 1v1 — a skirmish, a running fight, a hall-wide debate, a pursuit, a column under harassment.
+
+It is **not** a second character sheet and **not** the same as personal Advantage on one roll. Individual actions still resolve on their own. Some of those actions are **Tide-linked**: their Marks margin (and sometimes Omen) nudge a **single marker** on one shared bar. When the marker hits an end, that **collective** side routes. People can still stand, flee, die, or complete a personal objective in the rout.
 
 ### Setup
 
-The Tide is framed by the **general** Advantage / Disadvantage of the whole contest (not each individual blow). Both sides share **one** scale; the **position** of a marker is what they push.
+Both sides share **one** track. The Storyteller assigns each side a soft **weight** (numbers, ground, morale, who holds the better footing as a force — not a sum of Foundation scores).
 
-**How to read the examples:** each side is given a “weight” number (higher = more favourable footing for that side).  
+| Term | Meaning |
+|------|---------|
+| **Weight** | Soft ST read of each side’s collective footing (higher = stronger as a force) |
+| **Track length** | `weight_A + weight_B − 1` — how long the bar is |
+| **Start** | At `weight_A` counted from side A’s collapse end — A begins farther from collapse if heavier |
+| **Skirmish size** | How hard the bar is to move: Marks of difference needed per step (separate from track length) |
 
-- **Scale length** = weight_A + weight_B − 1  
-- **Starting position** = weight of the side you treat as the reference “home” end (commonly the players’ side), counted from that end  
-
-| Situation | Weights | Scale | Start (from side A) |
-|-----------|---------|-------|---------------------|
+| Situation | Weights (A vs B) | Track length | Start (from A’s end) |
+|-----------|------------------|--------------|----------------------|
 | Equal footing | 8 vs 8 | 15 | 8 |
 | Slight advantage (A) | 8 vs 6 | 13 | 8 |
 | A clearly superior | 8 vs 12 | 19 | 8 |
@@ -259,10 +263,10 @@ The Tide is framed by the **general** Advantage / Disadvantage of the whole cont
 
 ### Shifting by Marks
 
-How many Marks of difference are required to move the Tide one point depends on scale:
+On a Tide-linked opposed exchange, take the **Marks difference** (margin). Steps moved = `floor(margin ÷ Marks needed)`. Direction: toward the winner of that exchange.
 
-| Scale | Marks difference per Tide point |
-|-------|----------------------------------|
+| Skirmish size | Marks difference per Tide step |
+|---------------|--------------------------------|
 | Tiny skirmish | 1 |
 | Small skirmish | 2 |
 | Battle | 3 |
@@ -270,36 +274,120 @@ How many Marks of difference are required to move the Tide one point depends on 
 
 ### Omens on the Tide
 
-Omens on Tide-linked actions also move it. Threshold bands follow the same scale idea as Marks-difference requirements, then adjust for overall Advantage / Disadvantage.
+Omens on Tide-linked actions also move the marker. On **equal footing**:
 
-On **equal footing**:
-
-| Scale | Negative Omen faces | Positive Omen faces |
-|-------|---------------------|---------------------|
+| Skirmish size | Negative Omen faces | Positive Omen faces |
+|---------------|---------------------|---------------------|
 | Tiny skirmish | 1 | 20 |
 | Small skirmish | 1–2 | 19–20 |
 | Battle | 1–3 | 18–20 |
 
-Disadvantage lowers thresholds for the disadvantaged side (negative Omens more likely, positive less so). Severe disadvantage (the d6-versus-d12 equivalent) shifts thresholds by **two full levels**. Individual actions still get their own case-by-case Advantage; the macro adjustment applies only to Tide Omen thresholds.
+**Imbalance:** Disadvantage for a side lowers its thresholds (negative Omens more often, positive rarer). Severe disadvantage (the d6-versus-d12 equivalent) shifts Omen bands by **two full levels**. Personal Advantage on a single action is still judged case by case; the macro adjustment is for Tide Omen thresholds only.
 
-<aside class="kod-example">
-<p class="kod-example__scene">Raiders hit the mill yard at dusk. Two roughly matched bands — the mill households and the raiders. Equal footing, small-skirmish scale. One exchange is only a push on the shared Tide, not the whole fight.</p>
-<ol class="kod-example__steps">
-<li><strong>Setup:</strong> weights 8 vs 8 → scale 15, start 8. Shift every <strong>2</strong> Marks of difference on Tide-linked rolls.</li>
-<li><strong>Player:</strong> barks the line into place — Authority + Command, d8 → 4 Marks.</li>
-<li><strong>Reply (raider):</strong> tries to break their nerve — Resolve + Intimidate, d8 → 1 Mark.</li>
-<li><strong>Tide:</strong> difference 3 → floor(3÷2) = <strong>1</strong> step toward the players. Position 8 → 9.</li>
-<li><strong>Later:</strong> Omen 20 on a Tide-linked roll moves the Tide again (equal-footing small-skirmish band).</li>
-<li><strong>End of scale:</strong> that <em>side</em> routes as a group. Individuals may still stand, flee, or die on their own terms.</li>
-</ol>
-</aside>
+### Interactive example — column and horse-archers
+
+Unequal sides, battle-sized pressure, Omen bands under severe disadvantage, and **player agency that is not the same as winning the Tide**. Step through; the bar updates.
+
+**Scene:** An imperial marching column with the emperor in the centre. A Mongol horse-archer party harasses the flanks — bait, false retreats, arrow storms. **Side A (imperial, crimson)** weight **6**. **Side B (Mongol, teal)** weight **12**. Track length **17**. Start **6**. Skirmish size **battle** → **3** Marks per Tide step. Imperials are under severe collective Disadvantage for Tide Omens (negative faces **1–5**, positive only **20** in this demo).
+
+Players are bodyguards and officers of the imperial side: they can still act when the column is dying.
+
+<div class="kod-widget not-content" data-widget="tide-demo" aria-label="Tide interactive example">
+<p class="kod-widget__title">Tide demo — the emperor’s column</p>
+<p class="kod-widget__intro">Crimson = imperial footing remaining toward their collapse end. Teal = Mongol pressure. The marker is where the collective balance sits. Step through the harassment and the attempt to save the emperor.</p>
+
+<div class="kod-tide" data-tide-visual>
+  <div class="kod-tide__labels">
+    <span class="kod-tide__label kod-tide__label--a">Imperial collapse ←</span>
+    <span class="kod-tide__label kod-tide__label--b">→ Mongol collapse</span>
+  </div>
+  <div class="kod-tide__track" role="img" aria-label="Tide track">
+    <div class="kod-tide__fill kod-tide__fill--a" data-tide-fill-a></div>
+    <div class="kod-tide__fill kod-tide__fill--b" data-tide-fill-b></div>
+    <div class="kod-tide__marker" data-tide-marker></div>
+  </div>
+  <p class="kod-tide__readout" data-tide-readout></p>
+</div>
+
+<p class="kod-step-flow__label" data-step-label></p>
+<div class="kod-step-flow__track" role="group" aria-label="Tide demo steps">
+<button type="button" class="kod-widget__btn" data-tab="t1" aria-pressed="true">1</button>
+<button type="button" class="kod-widget__btn" data-tab="t2">2</button>
+<button type="button" class="kod-widget__btn" data-tab="t3">3</button>
+<button type="button" class="kod-widget__btn" data-tab="t4">4</button>
+<button type="button" class="kod-widget__btn" data-tab="t5">5</button>
+<button type="button" class="kod-widget__btn" data-tab="t6">6</button>
+</div>
+
+<div class="kod-widget__panel" data-panel-id="t1" data-step-title="Open the Tide" data-tide-pos="6" data-tide-note="Position 6 of 17. Imperial weight 6 · Mongol weight 12 · battle: 3 Marks per step.">
+<p><strong>Open the Tide.</strong> The column is already the weaker force: weight 6 vs 12 → track length 17, start 6 (near imperial collapse). Macro footing is severe Disadvantage for the imperials on Tide Omens — bad luck hits them more often.</p>
+<p>Personal rolls still use their own Advantage. The bar only moves when fiction ties an action to this collective struggle.</p>
+</div>
+
+<div class="kod-widget__panel" data-panel-id="t2" data-step-title="False retreat" data-tide-pos="5" data-tide-note="Margin 4 Marks → floor(4÷3) = 1 step against the column. 6 → 5." hidden>
+<p><strong>Bait.</strong> Horse-archers feign flight. An imperial wing pursues.</p>
+<ul>
+<li><strong>Imperial officer (NPC or PC):</strong> Authority + Command to hold the wing — d6 (bad ground, bait) → <strong>1 Mark</strong>.</li>
+<li><strong>Mongol reply:</strong> Perception + Archery (or Tactics) on the false retreat — d12 → <strong>5 Marks</strong>.</li>
+<li><strong>Margin:</strong> 4. Battle needs 3 per step → floor(4÷3) = <strong>1</strong> step toward Mongol pressure.</li>
+<li><strong>Tide:</strong> 6 → <strong>5</strong>. The crimson share of the bar shrinks.</li>
+</ul>
+</div>
+
+<div class="kod-widget__panel" data-panel-id="t3" data-step-title="Arrow storm + Omen" data-tide-pos="3" data-tide-note="Margin 5 → 1 step (5→4). Omen 2 (in expanded negative band) → another step (4→3)." hidden>
+<p><strong>Harassment.</strong> A Tide-linked volley into the column’s baggage and rear ranks.</p>
+<ul>
+<li><strong>Imperial shield line:</strong> Constitution + Deflection, d8 → <strong>2 Marks</strong>.</li>
+<li><strong>Mongol horse-archers:</strong> Perception + Archery, d12 → <strong>7 Marks</strong>.</li>
+<li><strong>Margin:</strong> 5 → floor(5÷3) = <strong>1</strong> step. Tide 5 → <strong>4</strong>.</li>
+<li><strong>Omen die:</strong> shows <strong>2</strong>. Under severe Disadvantage, battle negative faces stretch (demo: 1–5). A negative Omen on a Tide-linked action moves the Tide again → <strong>4 → 3</strong>.</li>
+</ul>
+<p>Two different engines hit the same bar: Marks margin, then Omen.</p>
+</div>
+
+<div class="kod-widget__panel" data-panel-id="t4" data-step-title="Flank and panic" data-tide-pos="1" data-tide-note="Margin 7 → floor(7÷3) = 2 steps. 3 → 1. One step from imperial route." hidden>
+<p><strong>Flank.</strong> Riders appear on the unguarded side; the false retreat has drawn the line thin.</p>
+<ul>
+<li><strong>Imperial centre:</strong> Resolve + Tactics to refuse the flank — d6 → <strong>1 Mark</strong>.</li>
+<li><strong>Mongol reply:</strong> Authority + Command to press the break — d12 → <strong>8 Marks</strong>.</li>
+<li><strong>Margin:</strong> 7 → floor(7÷3) = <strong>2</strong> steps. Tide 3 → <strong>1</strong>.</li>
+</ul>
+<p>The column is one push from collective route. Teal dominates the bar.</p>
+</div>
+
+<div class="kod-widget__panel" data-panel-id="t5" data-step-title="Save the emperor" data-tide-pos="1" data-tide-note="Personal success. Tide stays at 1 — individual agency is not the same as winning the collective track." hidden>
+<p><strong>Player agency — not the same as the Tide.</strong> A bodyguard PC cuts toward the emperor’s litter.</p>
+<ul>
+<li><strong>Intent:</strong> get the emperor mounted and off the killing ground.</li>
+<li><strong>Player:</strong> Strength + Footwork / Dexterity + Ride (as fits), d8 with Advantage (close, known ground of the litter) → <strong>4 Marks</strong>.</li>
+<li><strong>Reply (harassing archer):</strong> Perception + Archery, d8 → <strong>1 Mark</strong>.</li>
+<li><strong>Fiction:</strong> the emperor is on a horse, a knot of guards with him — a real personal win.</li>
+<li><strong>Tide:</strong> this action was not framed as restoring the whole column’s will. Marker stays at <strong>1</strong>. The bar does not reward heroism with automatic army victory.</li>
+</ul>
+<p>That is the point: you can still act when the side is dying. Tide tracks the host; you track the person.</p>
+</div>
+
+<div class="kod-widget__panel" data-panel-id="t6" data-step-title="Route" data-tide-pos="0" data-tide-note="Final Omen 1 on a Tide-linked press → imperial end. Side A routes. The emperor may still escape with the PCs." hidden>
+<p><strong>Route.</strong> Mongols press the broken wing. A Tide-linked action rolls Omen <strong>1</strong> (still in the expanded negative band for the imperials). The marker hits the imperial end.</p>
+<ul>
+<li><strong>Collective:</strong> the imperial side <strong>routes</strong> — ranks dissolve, standards fall, the host flees or is cut down in packs.</li>
+<li><strong>Personal:</strong> the bodyguard PC and whoever still answers them may still run with the emperor, form a last knot, die on the path, or vanish into dust. Tide does not erase those choices.</li>
+</ul>
+<p>Load Omen faces that matter. Let players leave the Tide when fiction allows — here, the objective was never “win the skirmish”; it was “the emperor lives.”</p>
+</div>
+
+<div class="kod-step-flow__nav">
+<button type="button" data-step-prev>← Back</button>
+<button type="button" data-step-next>Next →</button>
+</div>
+</div>
 
 ### Routing
 
-When the Tide reaches one end, that collective side **routes**. Morale breaks. The group crumbles or flees. Individuals may still stand, refuse, die heroically or foolishly, or take a major personal setback — the Tide breaks **collective** will, not personal agency.
+When the Tide reaches one end, that collective side **routes**. Morale breaks. The group crumbles or flees. Individuals may still stand, refuse, die heroically or foolishly, complete a personal objective, or take a major setback — the Tide breaks **collective** will, not personal agency.
 
 <aside class="kod-counsel" aria-label="Counsel">
-<p>You can do everything in your power; if the rest of your side is butchered, you will still find yourself flanked. Do not grind roll-battles for their own sake. Load Omen faces that matter. Let players leave the Tide when fiction allows (loot, disengage, personal objective).</p>
+<p>You can do everything in your power; if the rest of your side is butchered, you will still find yourself flanked. Do not grind roll-battles for their own sake. Load Omen faces that matter. Let players leave the Tide when fiction allows (loot, disengage, save the principal, personal objective).</p>
 </aside>
 
 Related: [Human Potential](/human-potential/), [Harm](/harm/), [Echoes](/echoes/), [Automation](/automation/).
