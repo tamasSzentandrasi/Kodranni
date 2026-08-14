@@ -1333,8 +1333,10 @@ a.member:hover {
 }
 
 .echo {
+  /* Fixed weight rail so Individual / Group / Pivotal never shift the body */
+  --echo-weight-w: 5.5rem;
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-columns: var(--echo-weight-w) minmax(0, 1fr);
   gap: 0.75rem 1rem;
   padding: 0.85rem 0.9rem;
   background: color-mix(in srgb, #0c0a0a 75%, transparent);
@@ -1352,15 +1354,20 @@ a.member:hover {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
   gap: 0.3rem;
-  min-width: 3.5rem;
-  padding-top: 0.15rem;
+  width: var(--echo-weight-w);
+  min-width: var(--echo-weight-w);
+  max-width: var(--echo-weight-w);
+  box-sizing: border-box;
+  padding: 0.15rem 0.15rem 0;
 }
 
 .weight-segs {
   display: flex;
   flex-direction: column-reverse;
   gap: 2px;
+  flex-shrink: 0;
 }
 
 .weight-segs i {
@@ -1382,12 +1389,17 @@ a.member:hover {
 }
 
 .weight-band {
-  font-size: 0.65rem;
-  letter-spacing: 0.08em;
+  display: block;
+  width: 100%;
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--kod-silver-dim);
   text-align: center;
-  line-height: 1.2;
+  line-height: 1.15;
+  /* Contain longer labels without growing the rail */
+  overflow-wrap: anywhere;
+  hyphens: auto;
 }
 
 .echo__title {
