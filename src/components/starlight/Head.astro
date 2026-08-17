@@ -136,6 +136,78 @@ const fontFacesCss = `
 		});
 	}
 
+	/** Ensure asides have accessible names; icons are CSS ::before on the aside */
+	function normalizeBoxes() {
+		document.querySelectorAll('aside.kod-example').forEach((el) => {
+			if (!el.getAttribute('aria-label')) el.setAttribute('aria-label', 'Example');
+			el.querySelectorAll('.kod-example__label').forEach((n) => n.remove());
+		});
+		document.querySelectorAll('aside.kod-note').forEach((el) => {
+			if (!el.getAttribute('aria-label')) el.setAttribute('aria-label', 'Note');
+			el.querySelectorAll('.kod-note__label').forEach((n) => n.remove());
+		});
+		document.querySelectorAll('aside.kod-counsel').forEach((el) => {
+			if (!el.getAttribute('aria-label')) el.setAttribute('aria-label', 'Counsel');
+			el.querySelectorAll('.kod-counsel__label').forEach((n) => n.remove());
+		});
+	}
+
+	/** Exclusive archetype focus: hide siblings, full row, small ← back */
+	function setupArchetypeFocus() {
+		const root = document.querySelector('.kod-archetypes');
+		if (!root || root.dataset.ready) return;
+		root.dataset.ready = '1';
+
+		let back = root.querySelector('.kod-archetypes__back');
+		if (!back) {
+			back = document.createElement('button');
+			back.type = 'button';
+			back.className = 'kod-archetypes__back';
+			back.setAttribute('aria-label', 'Back to all archetypes');
+			back.textContent = '← Back';
+			root.insertBefore(back, root.firstChild);
+		}
+
+		function exitFocus() {
+			root.querySelectorAll('details.kod-archetype').forEach((d) => {
+				d.open = false;
+			});
+			root.classList.remove('is-focus');
+			if (!prefersReduced) {
+				root.classList.add('is-exiting');
+				window.setTimeout(() => root.classList.remove('is-exiting'), 240);
+			}
+		}
+
+		back.addEventListener('click', (e) => {
+			e.preventDefault();
+			exitFocus();
+		});
+
+		root.querySelectorAll('details.kod-archetype').forEach((d) => {
+			d.addEventListener('toggle', () => {
+				if (d.open) {
+					root.querySelectorAll('details.kod-archetype').forEach((other) => {
+						if (other !== d) other.open = false;
+					});
+					root.classList.remove('is-exiting');
+					root.classList.add('is-focus');
+					if (!prefersReduced) {
+						requestAnimationFrame(() => {
+							d.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+						});
+					}
+				} else if (!root.querySelector('details.kod-archetype[open]')) {
+					root.classList.remove('is-focus');
+					if (!prefersReduced) {
+						root.classList.add('is-exiting');
+						window.setTimeout(() => root.classList.remove('is-exiting'), 240);
+					}
+				}
+			});
+		});
+	}
+
 	/**
 	 * Die icons: compact 3D-projection path data (no raw SVG markup in this file —
 	 * avoids HTML/script parsing hazards). Built via createElementNS at runtime.
