@@ -352,6 +352,7 @@ const fontFacesCss = `
 			if (root.dataset.ready) return;
 			root.dataset.ready = '1';
 			const panel = root.querySelector('[data-panel]');
+			const ladder = root.querySelector('.kod-tier-ladder');
 			const buttons = [...root.querySelectorAll('[data-tier]')];
 			// Single chip per mention — no bare icon + chipped label pair
 			const scenes = {
@@ -385,11 +386,18 @@ const fontFacesCss = `
 					'.</p>',
 			};
 			function set(t) {
+				const tier = t || 'd8';
 				buttons.forEach((b) =>
-					b.setAttribute('aria-pressed', b.dataset.tier === t ? 'true' : 'false'),
+					b.setAttribute('aria-pressed', b.dataset.tier === tier ? 'true' : 'false'),
 				);
+				if (ladder) {
+					ladder.setAttribute('data-active', tier);
+					ladder.querySelectorAll('[data-ladder]').forEach((seg) => {
+						seg.classList.toggle('is-active', seg.getAttribute('data-ladder') === tier);
+					});
+				}
 				if (panel) {
-					panel.innerHTML = scenes[t] || scenes.d8;
+					panel.innerHTML = scenes[tier] || scenes.d8;
 					fillDieHosts(panel);
 				}
 			}
