@@ -76,13 +76,13 @@ Players act under incomplete knowledge. The Storyteller scales reward, cost, and
 
 <div class="kod-widget not-content" data-widget="marks-ladder">
 <p class="kod-widget__title">Scenario: The Scout</p>
-<p class="kod-widget__intro"><strong>Scene:</strong> A young warrior is sent at night to observe an enemy camp. As he draws close, the Storyteller calls for Perception + Scouting — a pool of 4 dice. There is no hidden target number. If he rolls:</p>
+<p class="kod-widget__intro"><strong>Scene:</strong> A young warrior is sent at night to observe an enemy camp. As he draws close, the Storyteller calls for Perception + Scouting — a pool of 4 dice. There is no hidden target number. Depending on how many Marks he rolls:</p>
 <div class="kod-widget__controls" role="group" aria-label="Marks of Success">
-<button type="button" class="kod-widget__btn" data-marks="0">0 Marks</button>
-<button type="button" class="kod-widget__btn" data-marks="1">1 Mark</button>
-<button type="button" class="kod-widget__btn" data-marks="2">2 Marks</button>
-<button type="button" class="kod-widget__btn" data-marks="3">3 Marks</button>
-<button type="button" class="kod-widget__btn" data-marks="4">4 Marks</button>
+<button type="button" class="kod-widget__btn" data-marks="0">0</button>
+<button type="button" class="kod-widget__btn" data-marks="1">1</button>
+<button type="button" class="kod-widget__btn" data-marks="2">2</button>
+<button type="button" class="kod-widget__btn" data-marks="3">3</button>
+<button type="button" class="kod-widget__btn" data-marks="4">4</button>
 </div>
 <div class="kod-widget__panel" data-panel></div>
 </div>
@@ -95,40 +95,41 @@ Players act under incomplete knowledge. The Storyteller scales reward, cost, and
 
 ## Advantage and Disadvantage
 
-In any situation, factors that influence the odds of an action are often **innumerable**: weather, footing, numbers, tools, reputation, injuries, surprise, fatigue, favour, arms & armour, a trait that fits the moment, a tradition that gives an edge. Stacking those as discrete modifiers produces bookkeeping and heavy mechanics. Kodranni refuses that path.
+Context that affects a roll is often **innumerable** — weather, footing, numbers, tools, reputation, injury, surprise, a Trait that fits or hurts. Stacking those as pluses and minuses becomes bookkeeping. Kodranni refuses that path.
 
-Instead: in most cases it is **fairly easy to assess which side has the advantage**. That single judgment is enough. The system encodes it by shifting the **die tier** of the pool — not by piling pluses and minuses onto Marks.
+**Judge the edge once. Encode it as the die type.**
 
-**Different dice types are Advantage and Disadvantage.** They fold context into the roll without a modifier ledger.
-
-- **Advantage** — favourable situations (beneficial terrain, superior knowledge, support, numbers, tools, a Trait that truly applies). The die tier **upgrades** one step (for example **d8 → d12**).  
-  Example: a **trained hunter** who would normally roll **d8** tracks wounded prey with hounds → **d12**.
-- **Disadvantage** — challenging circumstances (poor weather, hostile ground, being surrounded, darkness, wrong tools, a Trait that hurts). The die tier **downgrades** one step (for example **d8 → d6**).  
-  Example: a **veteran soldier** who would otherwise roll **d8** is surrounded on multiple sides → **d6**.
+The Storyteller names a **die tier** for the pool. There is no automatic map from Skill rating to d6 / d8 / d12.
 
 <div class="kod-widget not-content" data-widget="tier-dial">
-<p class="kod-widget__title">Die tier</p>
-<p class="kod-widget__intro">The Storyteller names the tier for the roll. Select one:</p>
+<p class="kod-widget__title">Die tier ladder</p>
+<p class="kod-widget__intro">One judgment: who has the edge on <em>this</em> action? Select a tier to see odds and an example.</p>
+<div class="kod-tier-ladder" aria-hidden="true">
+<span class="kod-tier-ladder__end">Harder</span>
+<span class="kod-tier-ladder__arrow">← Disadvantage</span>
+<span class="kod-tier-ladder__mid">Ordinary</span>
+<span class="kod-tier-ladder__arrow">Advantage →</span>
+<span class="kod-tier-ladder__end">Easier</span>
+</div>
 <div class="kod-widget__controls" role="group" aria-label="Die tier">
 <button type="button" class="kod-widget__btn" data-tier="d6">d6</button>
-<button type="button" class="kod-widget__btn" data-tier="d8">d8</button>
+<button type="button" class="kod-widget__btn" data-tier="d8" aria-pressed="true">d8</button>
 <button type="button" class="kod-widget__btn" data-tier="d12">d12</button>
 </div>
 <div class="kod-widget__panel" data-panel></div>
 </div>
 
-[Traits](/traits/), terrain, numbers, reputation, weather, and armour-as-context all feed this judgment. They are **not** extra mechanical layers stacked on top of Marks. You do not add “+2 for height and +1 for cover”; you decide who has the **Advantage**, and you change the die.
+| | |
+|--|--|
+| **Default** | **d8** — competent attempt, nothing special pressing the odds |
+| **Advantage** | Upgrade **one step** (d6→d8, or d8→d12) |
+| **Disadvantage** | Downgrade **one step** (d12→d8, or d8→d6) |
+| **Who decides** | The **Storyteller**, every roll |
+| **Stacking** | How hard fiction pushes, whether edges cancel or climb two steps — ST call for that moment |
 
-### Declaring the tier
+[Traits](/traits/), terrain, numbers, armour-as-context, and reputation feed the judgment. They are **not** extra modifiers on Marks. You do not add “+2 for height and +1 for cover.”
 
-There is **no automatic map** from Skill rating to d6 / d8 / d12. The **Storyteller declares** the die tier for each roll.
-
-- **Safe default:** treat **d8** as the ordinary tier for a competent attempt when nothing special presses the odds.
-- From that baseline — or from any other tier the Storyteller names — **Advantage** upgrades and **Disadvantage** downgrades.
-
-**Stacking:** Whether several Advantages climb more than one step, whether Advantage and Disadvantage cancel, and how hard the fiction pushes the tier is the **Storyteller’s call** for that moment.
-
-In multi-party messes, **each action still stands alone**. Advantage and Disadvantage are read from **that** action’s context — not averaged across the field. The [Tide](#the-tide) holds collective pressure separately.
+In multi-party messes, **each action still stands alone**. Read Advantage and Disadvantage from **that** action’s context — not an average of the field. Collective pressure lives on the [Tide](#the-tide).
 
 ----------
 
@@ -274,15 +275,26 @@ On a Tide-linked opposed exchange, take the **Marks difference** (margin). Steps
 
 ### Omens on the Tide
 
-Omens on Tide-linked actions also move the marker. On **equal footing**:
+Omens on Tide-linked actions also move the marker. Direction depends on which end of the track a face pushes toward.
 
-| Skirmish size | Negative Omen faces | Positive Omen faces |
-|---------------|---------------------|---------------------|
-| Tiny skirmish | 1 | 20 |
-| Small skirmish | 1–2 | 19–20 |
-| Battle | 1–3 | 18–20 |
+On **equal footing** (battle size as the middle row):
 
-**Imbalance:** Disadvantage for a side lowers its thresholds (negative Omens more often, positive rarer). Severe disadvantage (the d6-versus-d12 equivalent) shifts Omen bands by **two full levels**. Personal Advantage on a single action is still judged case by case; the macro adjustment is for Tide Omen thresholds only.
+| Skirmish size | Faces toward side A collapse | Faces toward side B collapse |
+|---------------|------------------------------|------------------------------|
+| Tiny skirmish | **1** | **20** |
+| Small skirmish | **1–2** | **19–20** |
+| Battle | **1–3** | **18–20** |
+
+**Imbalance** adjusts those bands for the side under pressure — not personal Advantage on a single roll (that is still judged case by case). A side under **severe** collective disadvantage (weight gap like the d6-versus-d12 case) keeps the skirmish-size **bad** band for its end, and compresses the **good** band by **two full levels** on the table above.
+
+Worked example — **battle**, imperial weight 6 vs Mongol 12 (imperial severe disadvantage):
+
+| | Faces |
+|--|-------|
+| Against the imperial column (toward imperial collapse) | **1–3** |
+| For the imperial column (toward Mongol collapse) | **20** only |
+
+(If the Mongols were the ones under severe disadvantage, the bands would mirror: bad for them **18–20**, good for them **1** only.)
 
 ### Interactive example — two PCs on the imperial road
 
@@ -292,8 +304,8 @@ Omens on Tide-linked actions also move the marker. On **equal footing**:
 | **Wei** (PC) | Bodyguard of the Emperor |
 | **Tide** | Imperial weight **6** · Mongol weight **12** · track **17** · start **6** · **battle** (3 Marks per step) |
 | **Colours** | **Crimson** imperial footing · **Teal** Mongol pressure |
-| **Tide Omens** | Negative **1–5** (severe imbalance) · positive **20** only |
-| **Scene faces** | **4** = ambush in the left dry wash · **13** = Negative Consequence (side-effect only) · **1** = ring closes, surrender demand (Tide-negative) |
+| **Tide Omens** | Against column **1–3** · for column **20** only (severe imbalance, battle) |
+| **Scene faces** | **4** = ambush in the left dry wash (scene only) · **13** = Negative Consequence · **1** = ring closes, surrender (also Tide-negative) |
 
 Only **people** roll. When a roll is Tide-linked, its Marks margin (and sometimes Omen) moves the bar. Step through.
 
@@ -306,10 +318,16 @@ Only **people** roll. When a roll is Tide-linked, its Marks margin (and sometime
     <span class="kod-tide__label kod-tide__label--a">Imperial collapse ←</span>
     <span class="kod-tide__label kod-tide__label--b">→ Mongol collapse</span>
   </div>
-  <div class="kod-tide__track" role="img" aria-label="Tide track">
-    <div class="kod-tide__fill kod-tide__fill--a" data-tide-fill-a></div>
-    <div class="kod-tide__fill kod-tide__fill--b" data-tide-fill-b></div>
-    <div class="kod-tide__marker" data-tide-marker></div>
+  <div class="kod-tide__rail">
+    <div class="kod-tide__track" role="img" aria-label="Tide track">
+      <div class="kod-tide__fill kod-tide__fill--a" data-tide-fill-a></div>
+      <div class="kod-tide__fill kod-tide__fill--b" data-tide-fill-b></div>
+    </div>
+    <div class="kod-tide__marker" data-tide-marker aria-hidden="true">
+      <span class="kod-tide__marker-head"></span>
+      <span class="kod-tide__marker-stem"></span>
+      <span class="kod-tide__marker-foot"></span>
+    </div>
   </div>
   <p class="kod-tide__readout" data-tide-readout></p>
 </div>
@@ -328,7 +346,7 @@ Only **people** roll. When a roll is Tide-linked, its Marks margin (and sometime
 
 <div class="kod-widget__panel" data-panel-id="t1" data-step-title="Open the Tide" data-tide-pos="6" data-tide-note="Position 6 / 17. Column opens at a disadvantage.">
 <p>Noon on the steppe road. Dust ahead. Zhao’s outriders report horse-archers who stay out of reach and shoot. Wei rides at the Emperor’s litter.</p>
-<p class="kod-tide-line"><strong>Setup</strong> — Track 17, start 6. Battle size. Tide Omens against the column: 1–5.</p>
+<p class="kod-tide-line"><strong>Setup</strong> — Track 17, start 6. Battle size. Tide Omens against the column: 1–3; for the column: 20 only.</p>
 </div>
 
 <div class="kod-widget__panel" data-panel-id="t2" data-step-title="False retreat" data-tide-pos="5" data-tide-note="Margin 4 → 1 step. 6 → 5." hidden>
@@ -379,7 +397,7 @@ Only **people** roll. When a roll is Tide-linked, its Marks margin (and sometime
 <p>The Consequence hits Zhao’s body. It does not rewrite the Marks. The bar already moved from the margin.</p>
 </div>
 
-<div class="kod-widget__panel" data-panel-id="t5" data-step-title="Ambush" data-tide-pos="1" data-tide-note="Margin 3 → 1 step (3→2). Omen 4: wash ambush + Tide step (2→1)." hidden>
+<div class="kod-widget__panel" data-panel-id="t5" data-step-title="Ambush" data-tide-pos="2" data-tide-note="Margin 3 → 1 step (3→2). Omen 4: scene face only (not in 1–3 Tide band)." hidden>
 <p>On the ground, Zhao sees riders where the scrub should be empty — hidden in the left dry wash. He shouts a warning.</p>
 <p class="kod-tide-line"><strong>Zhao — Tide-linked</strong> · Warn the column and turn it toward the wash.</p>
 <table>
@@ -388,13 +406,13 @@ Only **people** roll. When a roll is Tide-linked, its Marks margin (and sometime
 <tr><td>Zhao</td><td>Perception + Combat Awareness, <strong>d8</strong></td><td><strong>2</strong></td></tr>
 <tr><td>Hidden archer (reply)</td><td>Guile + Ambush &amp; Camouflage, <strong>d12</strong></td><td><strong>5</strong></td></tr>
 <tr><td>Margin</td><td>3 → floor(3÷3)</td><td><strong>1</strong> step · Tide <strong>3 → 2</strong></td></tr>
-<tr><td>Omen</td><td><strong>4</strong></td><td>Scene face: <em>riders in the left dry wash</em> · also Tide-negative · Tide <strong>2 → 1</strong></td></tr>
+<tr><td>Omen</td><td><strong>4</strong></td><td>Scene face: <em>riders in the left dry wash</em> · not a Tide Omen (against-column band is 1–3)</td></tr>
 </tbody>
 </table>
-<p>The ambush springs. The Tide bar and the scene both show the flank is broken.</p>
+<p>The ambush springs. The scene face opens the wash; the margin already moved the bar.</p>
 </div>
 
-<div class="kod-widget__panel" data-panel-id="t6" data-step-title="Zhao’s stand" data-tide-pos="1" data-tide-note="Local fight. Tide stays at 1." hidden>
+<div class="kod-widget__panel" data-panel-id="t6" data-step-title="Zhao’s stand" data-tide-pos="2" data-tide-note="Local fight. Tide stays at 2." hidden>
 <p>Zhao seizes a riderless horse and meets the first men out of the wash. This is a local fight at the edge of the gully — not a push for the whole column.</p>
 <p class="kod-tide-line"><strong>Zhao — personal</strong> · Hold the edge of the wash long enough for others to move.</p>
 <table>
@@ -404,12 +422,12 @@ Only **people** roll. When a roll is Tide-linked, its Marks margin (and sometime
 <tr><td>Flank leader (reply)</td><td>Strength + Slash, <strong>d12</strong></td><td><strong>4</strong></td></tr>
 <tr><td>Margin</td><td>1</td><td>Forced back a horse-length; still standing</td></tr>
 <tr><td>Omen</td><td>16</td><td>—</td></tr>
-<tr><td>Tide</td><td></td><td><strong>stays 1</strong></td></tr>
+<tr><td>Tide</td><td></td><td><strong>stays 2</strong></td></tr>
 </tbody>
 </table>
 </div>
 
-<div class="kod-widget__panel" data-panel-id="t7" data-step-title="Wei takes the Emperor" data-tide-pos="1" data-tide-note="Personal extraction. Tide stays at 1." hidden>
+<div class="kod-widget__panel" data-panel-id="t7" data-step-title="Wei takes the Emperor" data-tide-pos="2" data-tide-note="Personal extraction. Tide stays at 2." hidden>
 <p>Wei does not try to win the battle. He cuts the litter straps, hauls the Emperor onto his saddle, and turns for the south road.</p>
 <p class="kod-tide-line"><strong>Wei — personal</strong> · Get the Emperor off this field alive.</p>
 <table>
@@ -419,13 +437,13 @@ Only **people** roll. When a roll is Tide-linked, its Marks margin (and sometime
 <tr><td>Enemy commander (reply)</td><td>Intellect + Strategy, <strong>d8</strong></td><td><strong>2</strong></td></tr>
 <tr><td>Margin</td><td>3</td><td>Emperor mounted; two household guards cling on</td></tr>
 <tr><td>Omen</td><td>12</td><td>—</td></tr>
-<tr><td>Tide</td><td></td><td><strong>stays 1</strong></td></tr>
+<tr><td>Tide</td><td></td><td><strong>stays 2</strong></td></tr>
 </tbody>
 </table>
 <p>Zhao hears the shout for the south road. The enemy commander is too late to block the escape.</p>
 </div>
 
-<div class="kod-widget__panel" data-panel-id="t8" data-step-title="Surrounded" data-tide-pos="0" data-tide-note="Margin 4 → 1 step (1→0). Omen 1: multi Harm + face of surrender. Zhao accepts captivity (narrative)." hidden>
+<div class="kod-widget__panel" data-panel-id="t8" data-step-title="Surrounded" data-tide-pos="0" data-tide-note="Margin 4 → 1 step (2→1). Omen 1 Tide-negative (1→0) + multi Harm + surrender face. Zhao accepts captivity (narrative)." hidden>
 <p>Riders from the wash close around Zhao. He tries to cut a path south, toward Wei.</p>
 <p class="kod-tide-line"><strong>Zhao — Tide-linked</strong> · Break the ring and ride free.</p>
 <table>
@@ -433,8 +451,8 @@ Only **people** roll. When a roll is Tide-linked, its Marks margin (and sometime
 <tbody>
 <tr><td>Zhao</td><td>Strength + Slash, <strong>d6</strong></td><td><strong>1</strong></td></tr>
 <tr><td>Surrounding riders (reply)</td><td>Strength + Slash, <strong>d12</strong></td><td><strong>5</strong></td></tr>
-<tr><td>Margin</td><td>4 → floor(4÷3)</td><td><strong>1</strong> step · Tide <strong>1 → 0</strong></td></tr>
-<tr><td>Omen</td><td><strong>1</strong></td><td>Tide-negative · Negative Consequence: <strong>Bleeding 2</strong>, <strong>Crushed 1</strong> · face: <em>surrounded, blades at his throat, ordered to drop his weapon</em></td></tr>
+<tr><td>Margin</td><td>4 → floor(4÷3)</td><td><strong>1</strong> step · Tide <strong>2 → 1</strong></td></tr>
+<tr><td>Omen</td><td><strong>1</strong></td><td>Tide-negative (in 1–3) · Tide <strong>1 → 0</strong> · Negative Consequence: <strong>Bleeding 2</strong>, <strong>Crushed 1</strong> · face: <em>surrounded, blades at his throat, ordered to drop his weapon</em></td></tr>
 </tbody>
 </table>
 <p>Spears box him in. A commander’s voice offers life for surrender. Zhao does not want to die. He drops the blade — no roll; he is taken captive.</p>

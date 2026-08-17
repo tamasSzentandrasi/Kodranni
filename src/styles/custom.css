@@ -312,6 +312,7 @@ site-title {
   border-left: 4px solid var(--kod-blood);
   background: color-mix(in srgb, var(--kod-blood-deep) 32%, #0c0c0c);
   color: var(--kod-silver);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, #f2efe9 4%, transparent);
 }
 
 .kod-example::before {
@@ -406,6 +407,7 @@ site-title {
   border-left: 4px solid #4a9a8a;
   background: color-mix(in srgb, #0a1414 92%, #1a2e2a);
   color: #cfd8d6;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, #f2efe9 4%, transparent);
 }
 
 .kod-note::before {
@@ -434,6 +436,7 @@ site-title {
   border-left: 4px solid #6a5ab8;
   background: color-mix(in srgb, #100e1c 90%, #2a2450);
   color: #d0cce0;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, #f2efe9 4%, transparent);
 }
 
 .kod-counsel::before {
@@ -456,7 +459,8 @@ site-title {
   color: #b0a4e8;
 }
 
-/* Tables — guidebook card style (override Starlight block table defaults) */
+/* Tables — guidebook card style (override Starlight block table defaults)
+   Restrained double frame: outer hairline + inner blood edge — not full ornament. */
 .sl-markdown-content table:not(:where(.not-content *)) {
   display: table;
   width: 100%;
@@ -465,11 +469,14 @@ site-title {
   border-spacing: 0;
   margin: 1.25rem 0 1.5rem;
   overflow: hidden;
-  border: 1px solid color-mix(in srgb, var(--kod-blood) 35%, #333);
-  border-radius: 3px;
+  border: 1px solid color-mix(in srgb, var(--kod-blood) 42%, #3a3030);
+  border-radius: 2px;
   background: #0c0a0a;
   font-size: 0.98em;
   line-height: 1.5;
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, #f2efe9 5%, transparent),
+    0 0 0 1px color-mix(in srgb, #000 50%, transparent);
 }
 
 .sl-markdown-content table:not(:where(.not-content *)) thead {
@@ -1247,10 +1254,13 @@ site-title img,
 .kod-widget {
   margin: 1.35rem 0 1.6rem;
   padding: 1rem 1.1rem 1.15rem;
-  border: 1px solid color-mix(in srgb, var(--kod-blood) 40%, #333);
+  border: 1px solid color-mix(in srgb, var(--kod-blood) 42%, #3a3030);
   border-radius: 2px;
   background: #0b0a0a;
   text-align: center;
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, #f2efe9 5%, transparent),
+    0 0 0 1px color-mix(in srgb, #000 50%, transparent);
 }
 
 .kod-widget__title {
@@ -1285,7 +1295,6 @@ site-title img,
   -webkit-appearance: none;
   box-sizing: border-box;
   flex: 0 0 auto;
-  /* Fixed equal footprint — stops “0 Marks” looking larger */
   width: 5.75rem;
   height: 2.5rem;
   min-width: 5.75rem;
@@ -1311,11 +1320,86 @@ site-title img,
   transition: border-color 0.12s ease, background 0.12s ease, color 0.12s ease;
 }
 
-/* Tier dial buttons slightly wider for d6/d8/d12 */
+/* Scout Marks: number-only chips */
+.kod-widget[data-widget='marks-ladder'] .kod-widget__btn {
+  width: 2.65rem;
+  min-width: 2.65rem;
+  max-width: 2.65rem;
+  height: 2.65rem;
+  min-height: 2.65rem;
+  max-height: 2.65rem;
+  font-family: var(--kod-font-display);
+  font-size: 1.15rem;
+  letter-spacing: 0.02em;
+  color: var(--kod-silver-bright);
+}
+
+/* Tier dial: d6 / d8 / d12 */
 .kod-widget[data-widget='tier-dial'] .kod-widget__btn {
-  width: 4.25rem;
-  min-width: 4.25rem;
-  max-width: 4.25rem;
+  width: 4.5rem;
+  min-width: 4.5rem;
+  max-width: 4.5rem;
+  font-family: var(--kod-font-display);
+  font-size: 1.05rem;
+  letter-spacing: 0.03em;
+}
+
+/* Visual ladder above the tier buttons */
+.kod-tier-ladder {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.35rem 0.55rem;
+  margin: 0 auto 0.75rem;
+  max-width: 32rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--kod-silver-dim);
+}
+
+.kod-tier-ladder__arrow {
+  color: color-mix(in srgb, var(--kod-blood-bright) 70%, var(--kod-silver));
+  font-family: var(--kod-font-display);
+  letter-spacing: 0.03em;
+}
+
+.kod-tier-ladder__mid {
+  color: var(--kod-silver-bright);
+  font-family: var(--kod-font-display);
+  padding: 0 0.25rem;
+}
+
+.kod-tier-ladder__end {
+  opacity: 0.85;
+}
+
+.kod-widget[data-widget='tier-dial'] .kod-widget__panel {
+  text-align: left;
+  max-width: 34rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.kod-widget[data-widget='tier-dial'] .kod-widget__panel p {
+  margin: 0.35rem 0;
+}
+
+.kod-widget[data-widget='tier-dial'] .kod-tier-stat {
+  font-family: var(--kod-font-display);
+  font-size: 1.05em;
+  letter-spacing: 0.03em;
+  color: var(--kod-silver-bright);
+  margin-bottom: 0.5rem !important;
+}
+
+.kod-widget[data-widget='tier-dial'] .kod-tier-ex {
+  color: var(--kod-silver-dim);
+  font-size: 0.95em;
+  border-top: 1px solid color-mix(in srgb, #f2efe9 8%, transparent);
+  padding-top: 0.45rem;
+  margin-top: 0.55rem !important;
 }
 
 /* --- Tide demo track ------------------------------------------------------- */
@@ -1336,17 +1420,20 @@ site-title img,
 
 .kod-tide {
   margin: 0.75rem 0 1.1rem;
-  padding: 0.75rem 0.85rem 0.9rem;
+  padding: 0.75rem 0.85rem 1rem;
   border: 1px solid color-mix(in srgb, var(--kod-blood) 30%, #333);
   border-radius: 2px;
   background: #0a0909;
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, #f2efe9 4%, transparent),
+    0 0 0 1px color-mix(in srgb, #000 55%, transparent);
 }
 
 .kod-tide__labels {
   display: flex;
   justify-content: space-between;
   gap: 0.5rem;
-  margin-bottom: 0.45rem;
+  margin-bottom: 0.55rem;
   font-size: 0.78rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -1363,16 +1450,25 @@ site-title img,
   text-align: right;
 }
 
+/* Outer rail: room for the pivot above/below the bar */
+.kod-tide__rail {
+  position: relative;
+  width: 100%;
+  padding: 0.85rem 0;
+}
+
 .kod-tide__track {
   position: relative;
   display: flex;
   width: 100%;
-  height: 1.65rem;
+  height: 1.75rem;
   border-radius: 2px;
   overflow: hidden;
-  border: 1px solid #2a2424;
+  border: 1px solid #3a3230;
   background: #121010;
-  box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.55);
+  box-shadow:
+    inset 0 0 14px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(242, 239, 233, 0.06);
 }
 
 .kod-tide__fill {
@@ -1401,26 +1497,64 @@ site-title img,
   box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.35);
 }
 
+/* Pivot marker: diamond head + stem + foot — reads as a balance needle */
 .kod-tide__marker {
   position: absolute;
-  top: 50%;
-  width: 0.55rem;
-  height: 1.9rem;
-  margin-left: -0.28rem;
-  transform: translateY(-50%);
-  border-radius: 1px;
-  background: var(--kod-silver-bright);
-  border: 1px solid #0a0a0a;
-  box-shadow:
-    0 0 0 1px rgba(250, 246, 239, 0.35),
-    0 0 10px rgba(0, 0, 0, 0.65);
-  transition: left 0.35s ease;
-  z-index: 2;
+  top: 0;
+  bottom: 0;
+  width: 1.1rem;
+  margin-left: -0.55rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 3;
   pointer-events: none;
+  transition: left 0.35s ease;
+  filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.85));
+}
+
+.kod-tide__marker-head {
+  width: 0.72rem;
+  height: 0.72rem;
+  background: linear-gradient(145deg, #faf6ef 0%, #c8c0b4 55%, #8a8580 100%);
+  border: 1px solid #1a1512;
+  transform: rotate(45deg);
+  border-radius: 1px;
+  box-shadow:
+    0 0 0 1px rgba(250, 246, 239, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  flex-shrink: 0;
+}
+
+.kod-tide__marker-stem {
+  flex: 1 1 auto;
+  width: 0.2rem;
+  min-height: 0.4rem;
+  margin: -0.12rem 0;
+  background: linear-gradient(
+    180deg,
+    #f2efe9 0%,
+    #d4cfc6 40%,
+    #9a948c 100%
+  );
+  border-left: 1px solid rgba(0, 0, 0, 0.45);
+  border-right: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 1px;
+}
+
+.kod-tide__marker-foot {
+  width: 0;
+  height: 0;
+  border-left: 0.38rem solid transparent;
+  border-right: 0.38rem solid transparent;
+  border-top: 0.48rem solid #e8e2d8;
+  filter: drop-shadow(0 1px 0 #1a1512);
+  flex-shrink: 0;
 }
 
 .kod-tide__readout {
-  margin: 0.55rem 0 0;
+  margin: 0.35rem 0 0;
   font-size: 0.9em;
   line-height: 1.5;
   color: var(--kod-silver-dim);

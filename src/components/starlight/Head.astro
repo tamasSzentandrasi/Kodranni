@@ -240,9 +240,18 @@ const fontFacesCss = `
 			const panel = root.querySelector('[data-panel]');
 			const buttons = [...root.querySelectorAll('[data-tier]')];
 			const scenes = {
-				d6: '<strong>d6 — Disadvantage</strong> — Odds against: surrounded, wrong tools, hostile ground, a Trait that hurts. Marks rarer.',
-				d8: '<strong>d8 — Ordinary</strong> — Default for a competent attempt when nothing special presses the odds.',
-				d12: '<strong>d12 — Advantage</strong> — Odds with: good ground, support, tools, a Trait that fits. Marks come easier.',
+				d6:
+					'<p class="kod-tier-stat"><strong>d6</strong> · Mark on 5–6 · ~33% per die</p>' +
+					'<p><strong>Disadvantage</strong> — odds against: surrounded, wrong tools, hostile ground, darkness, a Trait that hurts.</p>' +
+					'<p class="kod-tier-ex">Example: a veteran who would roll d8 is ringed on three sides → <strong>d6</strong>.</p>',
+				d8:
+					'<p class="kod-tier-stat"><strong>d8</strong> · Mark on 5–8 · ~50% per die</p>' +
+					'<p><strong>Ordinary</strong> — safe default for a competent attempt when nothing special presses the odds.</p>' +
+					'<p class="kod-tier-ex">Example: a carpenter patches a roof in fair weather with dry timber → <strong>d8</strong>.</p>',
+				d12:
+					'<p class="kod-tier-stat"><strong>d12</strong> · Mark on 5–12 · ~67% per die</p>' +
+					'<p><strong>Advantage</strong> — odds with: good ground, support, tools, numbers, a Trait that fits.</p>' +
+					'<p class="kod-tier-ex">Example: a hunter who would roll d8 tracks wounded prey with hounds → <strong>d12</strong>.</p>',
 			};
 			function set(t) {
 				buttons.forEach((b) =>
