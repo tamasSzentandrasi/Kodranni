@@ -1314,12 +1314,6 @@ site-title img,
   vertical-align: middle;
 }
 
-/* Inline chips: slightly larger icons so polyhedra stay readable */
-.kod-die-chip .kod-die {
-  width: 1.15em;
-  height: 1.15em;
-}
-
 /* Inline chip: icon + label (replaces bare **d6** in prose)
    Sit on the text baseline — avoid “floating” above the line. */
 .kod-die-chip {
@@ -1365,8 +1359,8 @@ site-title img,
 }
 
 .kod-die-chip .kod-die {
-  width: 1em;
-  height: 1em;
+  width: 1.15em;
+  height: 1.15em;
   vertical-align: 0;
   color: inherit;
   position: relative;
