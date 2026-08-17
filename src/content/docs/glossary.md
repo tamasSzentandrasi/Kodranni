@@ -7,7 +7,8 @@ Quick reference. Each entry links to the chapter that owns the full rule.
 
 | Term | Definition |
 |------|------------|
-| **Advantage / Disadvantage** | Core context rule: judge who has the edge instead of stacking modifiers; upgrade or downgrade die tier (d6 ↔ d8 ↔ d12). Safe default **d8**. → [Dice Mechanics](/dice-mechanics/#advantage-and-disadvantage) |
+| **Advantage / Disadvantage** | Core context rule: judge who has the edge instead of stacking modifiers; upgrade or downgrade die tier (**d6** ↔ **d8** ↔ **d12**). Safe default **d8**. → [Dice Mechanics](/dice-mechanics/#advantage-and-disadvantage) |
+| **Die tier** | Which action die the pool uses: **d6** (harder), **d8** (ordinary default), or **d12** (easier). Set by Advantage / Disadvantage — not by Skill rating. → [Dice Mechanics](/dice-mechanics/#dice-types-and-pools) |
 | **Archetype** | One of six named groups of related Skills (Warrior, Wayfarer, Artisan, Mother, Sage, Trickster). Not a class. → [Skills](/skills/) |
 | **Authority** | Social Foundation: natural command, gravitas. Part of Echo capacity. → [Foundations](/foundations/) |
 | **Automation** | Bot or tool layer that rolls dice, tracks state, and enforces approval workflows. → [Automation](/automation/) |

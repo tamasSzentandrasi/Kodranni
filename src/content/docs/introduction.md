@@ -55,7 +55,7 @@ Whether the campaign is semi-historical or invented fantasy, if those three cond
 
 - **Immersion**: Mechanics are meant to be non-intrusive and intuitive. ***Role-play takes precedence over mechanics***.
 - **The Story of Life**: Characters are **mortal human beings**. Magic, supernatural strength, and similar elements are neither supported nor encouraged. Motivations, struggles, hopes, and dreams form the campaign. **Death** — whether of old age or in battle — **will come**.
-- **Advantage over modifiers**: Context is often innumerable. Rather than stack modifiers, the table judges who holds **[Advantage or Disadvantage](/dice-mechanics/#advantage-and-disadvantage)** and shifts die tier where it matters.
+- **Advantage over modifiers**: Context is often innumerable. Rather than stack modifiers, the table judges who holds **[Advantage or Disadvantage](/dice-mechanics/#advantage-and-disadvantage)** and shifts the **die tier** (**d6** · **d8** · **d12**) where it matters.
 
 > _"All we have to decide is what to do with the time that is given us."_ - _Gandalf the Grey_
 

@@ -1250,6 +1250,228 @@ site-title img,
   margin: 0.2rem 0;
 }
 
+/* --- Die tier icons (d6 cube · d8 diamond · d12 hex) ---------------------- */
+.kod-die {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.15em;
+  height: 1.15em;
+  vertical-align: -0.15em;
+  flex-shrink: 0;
+  line-height: 0;
+  color: var(--kod-silver);
+}
+
+.kod-die__svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.kod-die--d6 {
+  color: #9aa0a8;
+}
+
+.kod-die--d8 {
+  color: #d4cfc6;
+}
+
+.kod-die--d12 {
+  color: #d8c48a;
+}
+
+.kod-die--lg {
+  width: 2.75rem;
+  height: 2.75rem;
+}
+
+/* Inline chip: icon + label (replaces bare **d6** in prose) */
+.kod-die-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2em;
+  padding: 0.05em 0.35em 0.08em 0.28em;
+  margin: 0 0.08em;
+  border-radius: 3px;
+  border: 1px solid color-mix(in srgb, currentColor 28%, #333);
+  background: color-mix(in srgb, currentColor 8%, #121010);
+  vertical-align: baseline;
+  white-space: nowrap;
+  line-height: 1.2;
+  font-weight: 400;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, #f2efe9 4%, transparent);
+}
+
+.kod-die-chip--d6 {
+  color: #b0b6be;
+  border-color: color-mix(in srgb, #8a9098 45%, #333);
+  background: color-mix(in srgb, #3a4048 28%, #0e0e0e);
+}
+
+.kod-die-chip--d8 {
+  color: #e8e2d8;
+  border-color: color-mix(in srgb, #c8c0b4 40%, #333);
+  background: color-mix(in srgb, #4a4540 22%, #0e0e0e);
+}
+
+.kod-die-chip--d12 {
+  color: #f0e0b0;
+  border-color: color-mix(in srgb, #c4a035 45%, #333);
+  background: color-mix(in srgb, #5a4820 28%, #0e0e0e);
+}
+
+.kod-die-chip .kod-die {
+  width: 1.05em;
+  height: 1.05em;
+  vertical-align: 0;
+  color: inherit;
+}
+
+.kod-die-chip__label {
+  font-family: var(--kod-font-display);
+  font-size: 0.92em;
+  letter-spacing: 0.03em;
+  color: inherit;
+}
+
+.kod-die-chip__count {
+  font-family: var(--kod-font-display);
+  font-size: 0.92em;
+  letter-spacing: 0.02em;
+  opacity: 0.9;
+}
+
+/* Showcase row — Dice Types section */
+.kod-die-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+  margin: 1.25rem 0 1.5rem;
+}
+
+@media (min-width: 42rem) {
+  .kod-die-row {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.kod-die-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.2rem;
+  padding: 1rem 0.75rem 0.95rem;
+  border-radius: 2px;
+  border: 1px solid #3a3330;
+  background: #0c0a0a;
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, #f2efe9 5%, transparent),
+    0 0 0 1px color-mix(in srgb, #000 50%, transparent);
+}
+
+.kod-die-card--d6 {
+  border-color: color-mix(in srgb, #6a7078 50%, #333);
+  background: linear-gradient(180deg, color-mix(in srgb, #2a3038 55%, #0a0a0a), #0a0a0a 75%);
+}
+
+.kod-die-card--d8 {
+  border-color: color-mix(in srgb, #a09890 40%, #333);
+  background: linear-gradient(180deg, color-mix(in srgb, #3a3530 45%, #0a0a0a), #0a0a0a 75%);
+}
+
+.kod-die-card--d12 {
+  border-color: color-mix(in srgb, #c4a035 40%, #333);
+  background: linear-gradient(180deg, color-mix(in srgb, #4a3a18 40%, #0a0a0a), #0a0a0a 75%);
+}
+
+.kod-die-card__name {
+  margin: 0.45rem 0 0 !important;
+  font-family: var(--kod-font-display);
+  font-size: 1.25rem;
+  letter-spacing: 0.04em;
+  color: var(--kod-silver-bright);
+}
+
+.kod-die-card__name .kod-die-chip {
+  margin: 0;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+  font-size: 1.15em;
+}
+
+.kod-die-card__role {
+  margin: 0.15rem 0 0 !important;
+  font-size: 0.88em;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--kod-silver-dim);
+}
+
+.kod-die-card__meta {
+  margin: 0.35rem 0 0 !important;
+  font-size: 0.9em;
+  color: var(--kod-silver);
+  line-height: 1.4;
+}
+
+.kod-die-card--d6 .kod-die-card__role {
+  color: #9aa0a8;
+}
+
+.kod-die-card--d12 .kod-die-card__role {
+  color: #d4b86a;
+}
+
+/* Tier dial buttons with embedded die icons */
+.kod-widget__btn--die {
+  width: auto !important;
+  min-width: 5.25rem !important;
+  max-width: none !important;
+  gap: 0.35rem;
+  padding: 0 0.55rem !important;
+  font-family: var(--kod-font-display);
+  font-size: 1rem !important;
+}
+
+.kod-widget__btn--die .kod-die {
+  width: 1.35rem;
+  height: 1.35rem;
+}
+
+.kod-widget[data-widget='tier-dial'] .kod-tier-stat {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.5rem;
+}
+
+.kod-widget[data-widget='tier-dial'] .kod-tier-stat .kod-die {
+  width: 1.45rem;
+  height: 1.45rem;
+}
+
+.kod-table-strip__tier {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.kod-table-strip .kod-die {
+  width: 1.05rem;
+  height: 1.05rem;
+  vertical-align: -0.12em;
+}
+
+.kod-table-strip .kod-die-chip {
+  margin: 0;
+  padding: 0.05em 0.3em;
+  font-size: 0.95em;
+}
+
 /* --- Teaching widgets ------------------------------------------------------ */
 .kod-widget {
   margin: 1.35rem 0 1.6rem;

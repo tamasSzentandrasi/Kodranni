@@ -36,29 +36,42 @@ The Storyteller always chooses which [Foundation](/foundations/) and (if any) [S
 
 ## Dice Types and Pools
 
-Kodranni uses **three** action dice:
+Kodranni uses **three** action dice. A given roll uses **only one** type for the whole pool — pure **d6**, **d8**, or **d12** (plus the separate [Omen](#the-omen-die-and-consequences) d20).
 
-| Die | Shorthand |
-|-----|-----------|
-| 6-sided | **d6** |
-| 8-sided | **d8** |
-| 12-sided | **d12** |
+<div class="kod-die-row not-content" aria-label="The three action dice">
+<div class="kod-die-card kod-die-card--d6">
+<span class="kod-die kod-die--d6 kod-die--lg" data-die="d6" aria-hidden="true"></span>
+<p class="kod-die-card__name">d6</p>
+<p class="kod-die-card__role">Harder · Disadvantage</p>
+<p class="kod-die-card__meta">6-sided · Mark on 5–6 · ~33%</p>
+</div>
+<div class="kod-die-card kod-die-card--d8">
+<span class="kod-die kod-die--d8 kod-die--lg" data-die="d8" aria-hidden="true"></span>
+<p class="kod-die-card__name">d8</p>
+<p class="kod-die-card__role">Ordinary · default</p>
+<p class="kod-die-card__meta">8-sided · Mark on 5–8 · ~50%</p>
+</div>
+<div class="kod-die-card kod-die-card--d12">
+<span class="kod-die kod-die--d12 kod-die--lg" data-die="d12" aria-hidden="true"></span>
+<p class="kod-die-card__name">d12</p>
+<p class="kod-die-card__role">Easier · Advantage</p>
+<p class="kod-die-card__meta">12-sided · Mark on 5–12 · ~67%</p>
+</div>
+</div>
 
-A given roll uses **only one** of these types — a pure d6, d8, or d12 pool (plus the separate [Omen](#the-omen-die-and-consequences) die).
+These three are the **die tiers**. Context does not add modifiers to Marks — it moves you up or down this ladder (see [Advantage and Disadvantage](#advantage-and-disadvantage)).
 
 ----------
 
 ## Marks of Success
 
-Any die that lands on **5 or higher** is a <span class="kod-term" data-tip="Any die face of 5 or higher. Count of Marks is information the Storyteller interprets — not a pass/fail target.">**Mark of Success**</span>, or simply a **Mark**.
+Any die that lands on **5 or higher** is a <span class="kod-term" data-tip="Any die face of 5 or higher. Count of Marks is information the Storyteller interprets — not a pass/fail target.">**Mark of Success**</span>, or simply a **Mark**. Higher tiers make Marks more common; they do not change the “5 or higher” rule.
 
-Approximate chance a single die is a Mark:
-
-| Die | P(Mark) |
-|-----|---------|
-| **d6** | ~33% |
-| **d8** | ~50% |
-| **d12** | ~66% |
+| Die | Faces that Mark | P(Mark) |
+|-----|-----------------|---------|
+| **d6** | 5–6 | ~33% |
+| **d8** | 5–8 | ~50% |
+| **d12** | 5–12 | ~67% |
 
 ### Target numbers vs Marks — a change of mindset
 
@@ -112,9 +125,9 @@ The Storyteller names a **die tier** for the pool. There is no automatic map fro
 <span class="kod-tier-ladder__end">Easier</span>
 </div>
 <div class="kod-widget__controls" role="group" aria-label="Die tier">
-<button type="button" class="kod-widget__btn" data-tier="d6">d6</button>
-<button type="button" class="kod-widget__btn" data-tier="d8" aria-pressed="true">d8</button>
-<button type="button" class="kod-widget__btn" data-tier="d12">d12</button>
+<button type="button" class="kod-widget__btn kod-widget__btn--die" data-tier="d6"><span class="kod-die kod-die--d6" data-die="d6" aria-hidden="true"></span><span>d6</span></button>
+<button type="button" class="kod-widget__btn kod-widget__btn--die" data-tier="d8" aria-pressed="true"><span class="kod-die kod-die--d8" data-die="d8" aria-hidden="true"></span><span>d8</span></button>
+<button type="button" class="kod-widget__btn kod-widget__btn--die" data-tier="d12"><span class="kod-die kod-die--d12" data-die="d12" aria-hidden="true"></span><span>d12</span></button>
 </div>
 <div class="kod-widget__panel" data-panel></div>
 </div>

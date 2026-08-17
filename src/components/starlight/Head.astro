@@ -208,6 +208,95 @@ const fontFacesCss = `
 		});
 	}
 
+	/** Die tier icons: d6 cube · d8 diamond · d12 pentagon */
+	const DIE_SVG = {
+		d6:
+			'<svg class="kod-die__svg" viewBox="0 0 32 32" aria-hidden="true" focusable="false">' +
+			'<rect x="5" y="5" width="18" height="18" rx="2.2" fill="currentColor" opacity="0.22"/>' +
+			'<rect x="9" y="9" width="18" height="18" rx="2.2" fill="none" stroke="currentColor" stroke-width="1.6"/>' +
+			'<rect x="9" y="9" width="18" height="18" rx="2.2" fill="currentColor" opacity="0.12"/>' +
+			'<circle cx="14" cy="14" r="1.35" fill="currentColor"/>' +
+			'<circle cx="22" cy="14" r="1.35" fill="currentColor"/>' +
+			'<circle cx="18" cy="18" r="1.35" fill="currentColor"/>' +
+			'<circle cx="14" cy="22" r="1.35" fill="currentColor"/>' +
+			'<circle cx="22" cy="22" r="1.35" fill="currentColor"/>' +
+			'</svg>',
+		d8:
+			'<svg class="kod-die__svg" viewBox="0 0 32 32" aria-hidden="true" focusable="false">' +
+			'<path d="M16 3.5 L28 16 L16 28.5 L4 16 Z" fill="currentColor" opacity="0.14"/>' +
+			'<path d="M16 3.5 L28 16 L16 28.5 L4 16 Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>' +
+			'<path d="M16 3.5 L16 28.5 M4 16 L28 16" stroke="currentColor" stroke-width="1" opacity="0.45"/>' +
+			'<circle cx="16" cy="16" r="1.5" fill="currentColor"/>' +
+			'</svg>',
+		d12:
+			'<svg class="kod-die__svg" viewBox="0 0 32 32" aria-hidden="true" focusable="false">' +
+			'<path d="M16 3.2 L26.5 9.2 L26.5 20.8 L16 26.8 L5.5 20.8 L5.5 9.2 Z" fill="currentColor" opacity="0.14"/>' +
+			'<path d="M16 3.2 L26.5 9.2 L26.5 20.8 L16 26.8 L5.5 20.8 L5.5 9.2 Z" fill="none" stroke="currentColor" stroke-width="1.55" stroke-linejoin="round"/>' +
+			'<path d="M16 3.2 L16 26.8 M5.5 9.2 L26.5 20.8 M26.5 9.2 L5.5 20.8" stroke="currentColor" stroke-width="0.9" opacity="0.35"/>' +
+			'<circle cx="16" cy="16" r="1.45" fill="currentColor"/>' +
+			'</svg>',
+	};
+
+	function fillDieHosts(root) {
+		const scope = root || document;
+		scope.querySelectorAll('.kod-die[data-die]').forEach((el) => {
+			if (el.dataset.dieReady) return;
+			const tier = el.getAttribute('data-die');
+			if (!DIE_SVG[tier]) return;
+			el.dataset.dieReady = '1';
+			el.classList.add('kod-die--' + tier);
+			el.innerHTML = DIE_SVG[tier];
+		});
+	}
+
+	/**
+	 * Wrap standalone **d6** / **d8** / **d12** (and Nd6-style pools) in die chips
+	 * so tiers stay visual across the guidebook without hand-editing every line.
+	 */
+	function setupDieChips() {
+		const main = document.querySelector('.sl-markdown-content');
+		if (!main) {
+			fillDieHosts(document);
+			return;
+		}
+
+		const wrapStrong = (el) => {
+			if (el.closest('.kod-die-chip, .kod-die, button')) return;
+			const raw = (el.textContent || '').trim();
+			const pool = raw.match(/^(\d+)(d6|d8|d12)$/i);
+			const bare = raw.match(/^(d6|d8|d12)$/i);
+			if (!pool && !bare) return;
+			const tier = (pool ? pool[2] : bare[1]).toLowerCase();
+			const chip = document.createElement('span');
+			chip.className = 'kod-die-chip kod-die-chip--' + tier;
+			chip.title =
+				tier === 'd6'
+					? 'd6 — harder (Disadvantage)'
+					: tier === 'd12'
+						? 'd12 — easier (Advantage)'
+						: 'd8 — ordinary default';
+			if (pool) {
+				const count = document.createElement('span');
+				count.className = 'kod-die-chip__count';
+				count.textContent = pool[1];
+				chip.appendChild(count);
+			}
+			const icon = document.createElement('span');
+			icon.className = 'kod-die kod-die--' + tier;
+			icon.setAttribute('data-die', tier);
+			icon.setAttribute('aria-hidden', 'true');
+			chip.appendChild(icon);
+			const label = document.createElement('span');
+			label.className = 'kod-die-chip__label';
+			label.textContent = tier;
+			chip.appendChild(label);
+			el.replaceWith(chip);
+		};
+
+		main.querySelectorAll('strong').forEach(wrapStrong);
+		fillDieHosts(document);
+	}
+
 	function setupMarksLadder() {
 		document.querySelectorAll('[data-widget="marks-ladder"]').forEach((root) => {
 			if (root.dataset.ready) return;
@@ -241,15 +330,15 @@ const fontFacesCss = `
 			const buttons = [...root.querySelectorAll('[data-tier]')];
 			const scenes = {
 				d6:
-					'<p class="kod-tier-stat"><strong>d6</strong> · Mark on 5–6 · ~33% per die</p>' +
+					'<p class="kod-tier-stat"><span class="kod-die kod-die--d6" data-die="d6" aria-hidden="true"></span> <strong>d6</strong> · Mark on 5–6 · ~33% per die</p>' +
 					'<p><strong>Disadvantage</strong> — odds against: surrounded, wrong tools, hostile ground, darkness, a Trait that hurts.</p>' +
 					'<p class="kod-tier-ex">Example: a veteran who would roll d8 is ringed on three sides → <strong>d6</strong>.</p>',
 				d8:
-					'<p class="kod-tier-stat"><strong>d8</strong> · Mark on 5–8 · ~50% per die</p>' +
+					'<p class="kod-tier-stat"><span class="kod-die kod-die--d8" data-die="d8" aria-hidden="true"></span> <strong>d8</strong> · Mark on 5–8 · ~50% per die</p>' +
 					'<p><strong>Ordinary</strong> — safe default for a competent attempt when nothing special presses the odds.</p>' +
 					'<p class="kod-tier-ex">Example: a carpenter patches a roof in fair weather with dry timber → <strong>d8</strong>.</p>',
 				d12:
-					'<p class="kod-tier-stat"><strong>d12</strong> · Mark on 5–12 · ~67% per die</p>' +
+					'<p class="kod-tier-stat"><span class="kod-die kod-die--d12" data-die="d12" aria-hidden="true"></span> <strong>d12</strong> · Mark on 5–12 · ~67% per die</p>' +
 					'<p><strong>Advantage</strong> — odds with: good ground, support, tools, numbers, a Trait that fits.</p>' +
 					'<p class="kod-tier-ex">Example: a hunter who would roll d8 tracks wounded prey with hounds → <strong>d12</strong>.</p>',
 			};
@@ -257,7 +346,36 @@ const fontFacesCss = `
 				buttons.forEach((b) =>
 					b.setAttribute('aria-pressed', b.dataset.tier === t ? 'true' : 'false'),
 				);
-				if (panel) panel.innerHTML = scenes[t] || scenes.d8;
+				if (panel) {
+					panel.innerHTML = scenes[t] || scenes.d8;
+					fillDieHosts(panel);
+					// re-chip any strong tiers injected in the panel
+					panel.querySelectorAll('strong').forEach((el) => {
+						const raw = (el.textContent || '').trim();
+						if (!/^(d6|d8|d12)$/i.test(raw)) return;
+						if (el.closest('.kod-die-chip')) return;
+						const tier = raw.toLowerCase();
+						const chip = document.createElement('span');
+						chip.className = 'kod-die-chip kod-die-chip--' + tier;
+						chip.title =
+							tier === 'd6'
+								? 'd6 — harder (Disadvantage)'
+								: tier === 'd12'
+									? 'd12 — easier (Advantage)'
+									: 'd8 — ordinary default';
+						const icon = document.createElement('span');
+						icon.className = 'kod-die kod-die--' + tier;
+						icon.setAttribute('data-die', tier);
+						icon.setAttribute('aria-hidden', 'true');
+						chip.appendChild(icon);
+						const label = document.createElement('span');
+						label.className = 'kod-die-chip__label';
+						label.textContent = tier;
+						chip.appendChild(label);
+						el.replaceWith(chip);
+						fillDieHosts(chip);
+					});
+				}
 			}
 			buttons.forEach((b) => b.addEventListener('click', () => set(b.dataset.tier)));
 			set('d8');
@@ -472,11 +590,16 @@ const fontFacesCss = `
 		strip.innerHTML =
 			'<div class="kod-table-strip__rules">' +
 			'<span><strong>Mark</strong> ≥ 5</span>' +
-			'<span>Default tier <strong>d8</strong></span>' +
-			'<span><strong>Advantage</strong> upgrades · <strong>Disadvantage</strong> downgrades</span>' +
+			'<span class="kod-table-strip__tier">Default ' +
+			'<span class="kod-die-chip kod-die-chip--d8" title="d8 — ordinary default">' +
+			'<span class="kod-die kod-die--d8" data-die="d8" aria-hidden="true"></span>' +
+			'<span class="kod-die-chip__label">d8</span></span></span>' +
+			'<span><span class="kod-die kod-die--d6" data-die="d6" aria-hidden="true"></span> Disadv · ' +
+			'<span class="kod-die kod-die--d12" data-die="d12" aria-hidden="true"></span> Adv</span>' +
 			'<span>ST names pair + tier</span>' +
 			'</div>';
 		main.appendChild(strip);
+		fillDieHosts(strip);
 	}
 
 	/** Equalize heights of grid children that should match (lanes, brick rows) */
@@ -512,6 +635,7 @@ const fontFacesCss = `
 		decorateDividers();
 		normalizeBoxes();
 		setupArchetypeFocus();
+		setupDieChips();
 		setupMarksLadder();
 		setupTierDial();
 		setupContentTabs();
