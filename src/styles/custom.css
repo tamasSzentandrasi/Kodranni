@@ -1251,13 +1251,12 @@ site-title img,
 }
 
 /* --- Die tier icons (d6 cube · d8 diamond · d12 hex) ---------------------- */
+/* Colours deliberately separated: cool slate / warm silver / gold */
 .kod-die {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.15em;
-  height: 1.15em;
-  vertical-align: -0.15em;
+  display: inline-block;
+  width: 1.1em;
+  height: 1.1em;
+  vertical-align: -0.12em;
   flex-shrink: 0;
   line-height: 0;
   color: var(--kod-silver);
@@ -1270,76 +1269,85 @@ site-title img,
 }
 
 .kod-die--d6 {
-  color: #9aa0a8;
+  color: #6a9bb8; /* cool steel-blue — harder */
 }
 
 .kod-die--d8 {
-  color: #d4cfc6;
+  color: #e6e0d4; /* warm bone-silver — ordinary */
 }
 
 .kod-die--d12 {
-  color: #d8c48a;
+  color: #e0b44a; /* amber gold — easier */
 }
 
 .kod-die--lg {
   width: 2.75rem;
   height: 2.75rem;
+  vertical-align: middle;
 }
 
-/* Inline chip: icon + label (replaces bare **d6** in prose) */
+/* Inline chip: icon + label (replaces bare **d6** in prose)
+   Sit on the text baseline — avoid “floating” above the line. */
 .kod-die-chip {
   display: inline-flex;
   align-items: center;
-  gap: 0.2em;
-  padding: 0.05em 0.35em 0.08em 0.28em;
-  margin: 0 0.08em;
+  gap: 0.22em;
+  padding: 0.12em 0.38em 0.14em 0.3em;
+  margin: 0 0.06em;
   border-radius: 3px;
   border: 1px solid color-mix(in srgb, currentColor 28%, #333);
   background: color-mix(in srgb, currentColor 8%, #121010);
-  vertical-align: baseline;
+  vertical-align: middle;
   white-space: nowrap;
-  line-height: 1.2;
+  line-height: 1;
   font-weight: 400;
   box-shadow: inset 0 0 0 1px color-mix(in srgb, #f2efe9 4%, transparent);
+  position: relative;
+  top: -0.02em; /* optical centre with Bellefair body */
 }
 
 .kod-die-chip--d6 {
-  color: #b0b6be;
-  border-color: color-mix(in srgb, #8a9098 45%, #333);
-  background: color-mix(in srgb, #3a4048 28%, #0e0e0e);
+  color: #8eb8d0;
+  border-color: color-mix(in srgb, #4a7a96 55%, #333);
+  background: color-mix(in srgb, #1a3548 55%, #0a0c0e);
 }
 
 .kod-die-chip--d8 {
-  color: #e8e2d8;
-  border-color: color-mix(in srgb, #c8c0b4 40%, #333);
-  background: color-mix(in srgb, #4a4540 22%, #0e0e0e);
+  color: #f0ebe3;
+  border-color: color-mix(in srgb, #c4b8a8 50%, #333);
+  background: color-mix(in srgb, #3a3530 35%, #0e0c0a);
 }
 
 .kod-die-chip--d12 {
-  color: #f0e0b0;
-  border-color: color-mix(in srgb, #c4a035 45%, #333);
-  background: color-mix(in srgb, #5a4820 28%, #0e0e0e);
+  color: #f2d078;
+  border-color: color-mix(in srgb, #c4a035 55%, #333);
+  background: color-mix(in srgb, #4a3810 45%, #0e0c08);
 }
 
 .kod-die-chip .kod-die {
-  width: 1.05em;
-  height: 1.05em;
+  width: 1em;
+  height: 1em;
   vertical-align: 0;
   color: inherit;
+  position: relative;
+  top: 0;
 }
 
 .kod-die-chip__label {
   font-family: var(--kod-font-display);
-  font-size: 0.92em;
+  font-size: 0.95em;
   letter-spacing: 0.03em;
   color: inherit;
+  line-height: 1;
+  display: inline-block;
 }
 
 .kod-die-chip__count {
   font-family: var(--kod-font-display);
-  font-size: 0.92em;
+  font-size: 0.95em;
   letter-spacing: 0.02em;
   opacity: 0.9;
+  line-height: 1;
 }
 
 /* Showcase row — Dice Types section */
@@ -1372,18 +1380,18 @@ site-title img,
 }
 
 .kod-die-card--d6 {
-  border-color: color-mix(in srgb, #6a7078 50%, #333);
-  background: linear-gradient(180deg, color-mix(in srgb, #2a3038 55%, #0a0a0a), #0a0a0a 75%);
+  border-color: color-mix(in srgb, #4a7a96 55%, #333);
+  background: linear-gradient(180deg, color-mix(in srgb, #1a3548 50%, #0a0a0a), #0a0a0a 75%);
 }
 
 .kod-die-card--d8 {
-  border-color: color-mix(in srgb, #a09890 40%, #333);
-  background: linear-gradient(180deg, color-mix(in srgb, #3a3530 45%, #0a0a0a), #0a0a0a 75%);
+  border-color: color-mix(in srgb, #c4b8a8 45%, #333);
+  background: linear-gradient(180deg, color-mix(in srgb, #3a3530 50%, #0a0a0a), #0a0a0a 75%);
 }
 
 .kod-die-card--d12 {
-  border-color: color-mix(in srgb, #c4a035 40%, #333);
-  background: linear-gradient(180deg, color-mix(in srgb, #4a3a18 40%, #0a0a0a), #0a0a0a 75%);
+  border-color: color-mix(in srgb, #c4a035 50%, #333);
+  background: linear-gradient(180deg, color-mix(in srgb, #4a3810 48%, #0a0a0a), #0a0a0a 75%);
 }
 
 .kod-die-card__name {
@@ -1419,11 +1427,15 @@ site-title img,
 }
 
 .kod-die-card--d6 .kod-die-card__role {
-  color: #9aa0a8;
+  color: #7aafc8;
+}
+
+.kod-die-card--d8 .kod-die-card__role {
+  color: #d4cec4;
 }
 
 .kod-die-card--d12 .kod-die-card__role {
-  color: #d4b86a;
+  color: #e0b84a;
 }
 
 /* Tier dial buttons with embedded die icons */
@@ -1442,17 +1454,7 @@ site-title img,
   height: 1.35rem;
 }
 
-.kod-widget[data-widget='tier-dial'] .kod-tier-stat {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.4rem 0.5rem;
-}
 
-.kod-widget[data-widget='tier-dial'] .kod-tier-stat .kod-die {
-  width: 1.45rem;
-  height: 1.45rem;
-}
 
 .kod-table-strip__tier {
   display: inline-flex;
@@ -1606,14 +1608,34 @@ site-title img,
 
 .kod-widget[data-widget='tier-dial'] .kod-widget__panel p {
   margin: 0.35rem 0;
+  line-height: 1.65;
 }
 
 .kod-widget[data-widget='tier-dial'] .kod-tier-stat {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem 0.55rem;
   font-family: var(--kod-font-display);
   font-size: 1.05em;
   letter-spacing: 0.03em;
   color: var(--kod-silver-bright);
-  margin-bottom: 0.5rem !important;
+  margin: 0 0 0.5rem !important;
+  line-height: 1.35;
+}
+
+.kod-widget[data-widget='tier-dial'] .kod-tier-stat__meta {
+  color: var(--kod-silver);
+  line-height: 1.4;
+  font-family: var(--kod-font-body);
+  font-size: 0.95em;
+  letter-spacing: 0.02em;
+}
+
+.kod-widget[data-widget='tier-dial'] .kod-tier-stat .kod-die-chip,
+.kod-widget[data-widget='tier-dial'] .kod-tier-ex .kod-die-chip {
+  vertical-align: middle;
+  top: 0;
 }
 
 .kod-widget[data-widget='tier-dial'] .kod-tier-ex {
