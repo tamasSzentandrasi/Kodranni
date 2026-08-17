@@ -36,7 +36,7 @@ The Storyteller always chooses which [Foundation](/foundations/) and (if any) [S
 
 ## Dice Types and Pools
 
-Kodranni uses **three** action dice. A given roll uses **only one** type for the whole pool — pure **d6**, **d8**, or **d12** (plus the separate [Omen](#the-omen-die-and-consequences) d20).
+Kodranni uses **three** action dice. A given roll uses **only one** type for the whole pool — pure **d6**, **d8**, or **d12** (plus the separate [Omen](#the-omen-die-and-consequences) **d20**).
 
 <div class="kod-die-row not-content" aria-label="The three action dice">
 <div class="kod-die-card kod-die-card--d6">
@@ -190,7 +190,7 @@ Additional effects that **shrink pools** (these are not die-tier shifts; they ch
 
 ## The Omen Die and Consequences
 
-**Every roll** includes one extra die: the **Omen** die — a **d20**, independent of Marks, Traits, and Exertion. It never changes the primary success reading. It may introduce a side event: a **Consequence**.
+**Every roll** includes one extra die: the **Omen** die — a **d20**. It is independent of Marks, Traits, and Exertion. It never changes the primary success reading. It may introduce a side event: a **Consequence**.
 
 | Face | Default |
 |------|---------|

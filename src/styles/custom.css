@@ -1304,6 +1304,10 @@ site-title img,
   color: #e0b44a; /* amber gold — easier */
 }
 
+.kod-die--d20 {
+  color: #b8a0d8; /* soft plum — Omen / fate, not an action tier */
+}
+
 .kod-die--lg {
   width: 2.75rem;
   height: 2.75rem;
@@ -1346,6 +1350,12 @@ site-title img,
   color: #f2d078;
   border-color: color-mix(in srgb, #c4a035 55%, #333);
   background: color-mix(in srgb, #4a3810 45%, #0e0c08);
+}
+
+.kod-die-chip--d20 {
+  color: #d4c0f0;
+  border-color: color-mix(in srgb, #7a5ab0 50%, #333);
+  background: color-mix(in srgb, #2a1a40 50%, #0c0a0e);
 }
 
 .kod-die-chip .kod-die {

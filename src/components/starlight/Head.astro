@@ -208,7 +208,7 @@ const fontFacesCss = `
 		});
 	}
 
-	/** Die tier icons: d6 cube · d8 diamond · d12 pentagon */
+	/** Die icons: d6 cube · d8 octahedron · d12 dodecahedron (pentagon) · d20 icosahedron */
 	const DIE_SVG = {
 		d6:
 			'<svg class="kod-die__svg" viewBox="0 0 32 32" aria-hidden="true" focusable="false">' +
@@ -228,12 +228,22 @@ const fontFacesCss = `
 			'<path d="M16 3.5 L16 28.5 M4 16 L28 16" stroke="currentColor" stroke-width="1" opacity="0.45"/>' +
 			'<circle cx="16" cy="16" r="1.5" fill="currentColor"/>' +
 			'</svg>',
+		// Regular pentagon (one face of a dodecahedron) — point-up
 		d12:
 			'<svg class="kod-die__svg" viewBox="0 0 32 32" aria-hidden="true" focusable="false">' +
-			'<path d="M16 3.2 L26.5 9.2 L26.5 20.8 L16 26.8 L5.5 20.8 L5.5 9.2 Z" fill="currentColor" opacity="0.14"/>' +
-			'<path d="M16 3.2 L26.5 9.2 L26.5 20.8 L16 26.8 L5.5 20.8 L5.5 9.2 Z" fill="none" stroke="currentColor" stroke-width="1.55" stroke-linejoin="round"/>' +
-			'<path d="M16 3.2 L16 26.8 M5.5 9.2 L26.5 20.8 M26.5 9.2 L5.5 20.8" stroke="currentColor" stroke-width="0.9" opacity="0.35"/>' +
-			'<circle cx="16" cy="16" r="1.45" fill="currentColor"/>' +
+			'<path d="M16 3.4 L27.4 11.7 L23.1 25.1 L8.9 25.1 L4.6 11.7 Z" fill="currentColor" opacity="0.14"/>' +
+			'<path d="M16 3.4 L27.4 11.7 L23.1 25.1 L8.9 25.1 L4.6 11.7 Z" fill="none" stroke="currentColor" stroke-width="1.55" stroke-linejoin="round"/>' +
+			// subtle inner face: smaller pentagon
+			'<path d="M16 9.2 L22.4 13.8 L20 21.3 L12 21.3 L9.6 13.8 Z" fill="none" stroke="currentColor" stroke-width="0.85" opacity="0.4" stroke-linejoin="round"/>' +
+			'<circle cx="16" cy="16" r="1.35" fill="currentColor"/>' +
+			'</svg>',
+		// Icosahedron cue: triangular face (Omen die)
+		d20:
+			'<svg class="kod-die__svg" viewBox="0 0 32 32" aria-hidden="true" focusable="false">' +
+			'<path d="M16 3.6 L28.2 26.2 L3.8 26.2 Z" fill="currentColor" opacity="0.14"/>' +
+			'<path d="M16 3.6 L28.2 26.2 L3.8 26.2 Z" fill="none" stroke="currentColor" stroke-width="1.55" stroke-linejoin="round"/>' +
+			'<path d="M16 3.6 L16 26.2 M16 3.6 L10 26.2 M16 3.6 L22 26.2" stroke="currentColor" stroke-width="0.85" opacity="0.4"/>' +
+			'<circle cx="16" cy="17.5" r="1.35" fill="currentColor"/>' +
 			'</svg>',
 	};
 
@@ -263,8 +273,8 @@ const fontFacesCss = `
 		const wrapStrong = (el) => {
 			if (el.closest('.kod-die-chip, .kod-die, button')) return;
 			const raw = (el.textContent || '').trim();
-			const pool = raw.match(/^(\d+)(d6|d8|d12)$/i);
-			const bare = raw.match(/^(d6|d8|d12)$/i);
+			const pool = raw.match(/^(\d+)(d6|d8|d12|d20)$/i);
+			const bare = raw.match(/^(d6|d8|d12|d20)$/i);
 			if (!pool && !bare) return;
 			const tier = (pool ? pool[2] : bare[1]).toLowerCase();
 			const chip = document.createElement('span');
@@ -274,7 +284,9 @@ const fontFacesCss = `
 					? 'd6 — harder (Disadvantage)'
 					: tier === 'd12'
 						? 'd12 — easier (Advantage)'
-						: 'd8 — ordinary default';
+						: tier === 'd20'
+							? 'd20 — Omen die'
+							: 'd8 — ordinary default';
 			if (pool) {
 				const count = document.createElement('span');
 				count.className = 'kod-die-chip__count';
