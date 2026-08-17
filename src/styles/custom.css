@@ -1277,19 +1277,23 @@ site-title img,
 /* --- Die tier icons (d6 cube · d8 diamond · d12 hex) ---------------------- */
 /* Colours deliberately separated: cool slate / warm silver / gold */
 .kod-die {
-  display: inline-block;
-  width: 1.1em;
-  height: 1.1em;
-  vertical-align: -0.12em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.2em;
+  height: 1.2em;
+  vertical-align: -0.2em;
   flex-shrink: 0;
   line-height: 0;
   color: var(--kod-silver);
+  overflow: visible;
 }
 
 .kod-die__svg {
   width: 100%;
   height: 100%;
   display: block;
+  overflow: visible;
 }
 
 .kod-die--d6 {

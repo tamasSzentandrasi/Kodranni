@@ -137,28 +137,56 @@ const fontFacesCss = `
 	}
 
 	/**
-	 * Die icons from mathematical 3D polyhedra (isometric / orthographic).
+	 * Die icons: compact 3D-projection path data (no raw SVG markup in this file —
+	 * avoids HTML/script parsing hazards). Built via createElementNS at runtime.
 	 * d6 cube · d8 octahedron · d12 dodecahedron · d20 icosahedron (+ Omen eye).
-	 * Shape language follows diceshapes.webp + classic d20 hex mesh; colour is ours.
 	 */
-	const DIE_SVG = {
-		d6: '<svg class="kod-die__svg" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M 16.00 3.20 L 28.80 9.60 L 16.00 16.00 L 3.20 9.60 Z" fill="currentColor" fill-opacity="0.22" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M 3.20 22.40 L 16.00 28.80 L 16.00 16.00 L 3.20 9.60 Z" fill="currentColor" fill-opacity="0.10" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M 28.80 22.40 L 16.00 28.80 L 16.00 16.00 L 28.80 9.60 Z" fill="currentColor" fill-opacity="0.15" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>',
-		d8: '<svg class="kod-die__svg" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M 16.00 28.45 L 22.25 16.94 L 26.83 15.46 Z" fill="currentColor" fill-opacity="0.09" stroke="currentColor" stroke-width="1.25" stroke-linejoin="round"/><path d="M 16.00 3.55 L 26.83 15.46 L 22.25 16.94 Z" fill="currentColor" fill-opacity="0.11" stroke="currentColor" stroke-width="1.25" stroke-linejoin="round"/><path d="M 16.00 28.45 L 5.17 16.54 L 22.25 16.94 Z" fill="currentColor" fill-opacity="0.14" stroke="currentColor" stroke-width="1.25" stroke-linejoin="round"/><path d="M 16.00 3.55 L 22.25 16.94 L 5.17 16.54 Z" fill="currentColor" fill-opacity="0.12" stroke="currentColor" stroke-width="1.25" stroke-linejoin="round"/></svg>',
-		d12: '<svg class="kod-die__svg" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M 3.18 14.26 L 7.71 6.23 L 12.60 4.74 L 21.60 4.74 L 25.65 11.85 L 28.82 17.74 L 24.29 25.77 L 19.40 27.26 L 10.40 27.26 L 6.35 20.15 Z" fill="currentColor" fill-opacity="0.08" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M 21.60 4.74 L 25.65 11.85 L 19.14 16.25 L 11.08 11.85 L 12.60 4.74 Z" fill="currentColor" fill-opacity="0.050" stroke="none"/><path d="M 9.72 25.77 L 10.40 27.26 L 6.35 20.15 L 3.18 14.26 L 5.26 17.74 Z" fill="currentColor" fill-opacity="0.065" stroke="none"/><path d="M 19.40 27.26 L 24.29 25.77 L 18.30 24.85 L 9.72 25.77 L 10.40 27.26 Z" fill="currentColor" fill-opacity="0.080" stroke="none"/><path d="M 19.14 16.25 L 18.30 24.85 L 9.72 25.77 L 5.26 17.74 L 11.08 11.85 Z" fill="currentColor" fill-opacity="0.095" stroke="none"/><path d="M 24.29 25.77 L 28.82 17.74 L 25.65 11.85 L 19.14 16.25 L 18.30 24.85 Z" fill="currentColor" fill-opacity="0.050" stroke="none"/><path d="M 11.08 11.85 L 12.60 4.74 L 7.71 6.23 L 3.18 14.26 L 5.26 17.74 Z" fill="currentColor" fill-opacity="0.065" stroke="none"/><path d="M 6.35 20.15 L 10.40 27.26" fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round"/><path d="M 6.35 20.15 L 3.18 14.26" fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round"/><path d="M 9.72 25.77 L 18.30 24.85" fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round"/><path d="M 9.72 25.77 L 10.40 27.26" fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round"/><path d="M 9.72 25.77 L 5.26 17.74" fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round"/><path d="M 7.71 6.23 L 12.60 4.74" fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round"/><path d="M 7.71 6.23 L 3.18 14.26" fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round"/><path d="M 11.08 11.85 L 19.14 16.25" fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round"/><path d="M 11.08 11.85 L 12.60 4.74" fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round"/><path d="M 11.08 11.85 L 5.26 17.74" fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round"/><path d="M 24.29 25.77 L 18.30 24.85" fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round"/><path d="M 24.29 25.77 L 19.40 27.26" fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round"/><path d="M 24.29 25.77 L 28.82 17.74" fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round"/><path d="M 25.65 11.85 L 19.14 16.25" fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round"/><path d="M 25.65 11.85 L 21.60 4.74" fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round"/><path d="M 25.65 11.85 L 28.82 17.74" fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round"/><path d="M 18.30 24.85 L 19.14 16.25" fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round"/><path d="M 10.40 27.26 L 19.40 27.26" fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round"/><path d="M 12.60 4.74 L 21.60 4.74" fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round"/><path d="M 3.18 14.26 L 5.26 17.74" fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round"/></svg>',
-		d20: '<svg class="kod-die__svg" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M 4.77 9.06 L 16.00 4.77 L 27.23 9.06 L 27.23 22.94 L 16.00 27.23 L 4.77 22.94 Z" fill="currentColor" fill-opacity="0.08" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round"/><path d="M 16.00 27.23 L 9.06 16.00 L 22.94 16.00 Z" fill="currentColor" fill-opacity="0.05" stroke="none"/><path d="M 16.00 27.23 L 9.06 16.00 L 4.77 22.94 Z" fill="currentColor" fill-opacity="0.05" stroke="none"/><path d="M 16.00 27.23 L 22.94 16.00 L 27.23 22.94 Z" fill="currentColor" fill-opacity="0.05" stroke="none"/><path d="M 16.00 4.77 L 9.06 16.00 L 22.94 16.00 Z" fill="currentColor" fill-opacity="0.05" stroke="none"/><path d="M 16.00 4.77 L 9.06 16.00 L 4.77 9.06 Z" fill="currentColor" fill-opacity="0.05" stroke="none"/><path d="M 16.00 4.77 L 22.94 16.00 L 27.23 9.06 Z" fill="currentColor" fill-opacity="0.05" stroke="none"/><path d="M 9.06 16.00 L 4.77 22.94 L 4.77 9.06 Z" fill="currentColor" fill-opacity="0.05" stroke="none"/><path d="M 22.94 16.00 L 27.23 22.94 L 27.23 9.06 Z" fill="currentColor" fill-opacity="0.05" stroke="none"/><path d="M 16.00 27.23 L 9.06 16.00" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M 16.00 27.23 L 22.94 16.00" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M 16.00 27.23 L 4.77 22.94" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M 16.00 27.23 L 27.23 22.94" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M 16.00 4.77 L 9.06 16.00" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M 16.00 4.77 L 22.94 16.00" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M 16.00 4.77 L 4.77 9.06" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M 16.00 4.77 L 27.23 9.06" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M 9.06 16.00 L 22.94 16.00" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M 9.06 16.00 L 4.77 22.94" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M 9.06 16.00 L 4.77 9.06" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M 22.94 16.00 L 27.23 22.94" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M 22.94 16.00 L 27.23 9.06" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M 4.77 22.94 L 4.77 9.06" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M 27.23 22.94 L 27.23 9.06" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M 12.70 19.74 Q 16.00 17.64 19.30 19.74 Q 16.00 21.84 12.70 19.74 Z" fill="currentColor" fill-opacity="0.14" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/><circle cx="16.00" cy="19.74" r="1.15" fill="currentColor"/></svg>',
-	};
+	const DIE_ICON_DATA = {"d6":[{"t":"path","d":"M 16.00 3.20 L 28.80 9.60 L 16.00 16.00 L 3.20 9.60 Z","f":"c","fo":"0.22","s":"c","sw":"1.37","sj":"round"},{"t":"path","d":"M 3.20 22.40 L 16.00 28.80 L 16.00 16.00 L 3.20 9.60 Z","f":"c","fo":"0.18","s":"c","sw":"1.37","sj":"round"},{"t":"path","d":"M 28.80 22.40 L 16.00 28.80 L 16.00 16.00 L 28.80 9.60 Z","f":"c","fo":"0.15","s":"c","sw":"1.37","sj":"round"}],"d8":[{"t":"path","d":"M 16.00 28.45 L 22.25 16.94 L 26.83 15.46 Z","f":"c","fo":"0.16","s":"c","sw":"1.31","sj":"round"},{"t":"path","d":"M 16.00 3.55 L 26.83 15.46 L 22.25 16.94 Z","f":"c","fo":"0.2","s":"c","sw":"1.31","sj":"round"},{"t":"path","d":"M 16.00 28.45 L 5.17 16.54 L 22.25 16.94 Z","f":"c","fo":"0.14","s":"c","sw":"1.31","sj":"round"},{"t":"path","d":"M 16.00 3.55 L 22.25 16.94 L 5.17 16.54 Z","f":"c","fo":"0.12","s":"c","sw":"1.31","sj":"round"}],"d12":[{"t":"path","d":"M 3.18 14.26 L 7.71 6.23 L 12.60 4.74 L 21.60 4.74 L 25.65 11.85 L 28.82 17.74 L 24.29 25.77 L 19.40 27.26 L 10.40 27.26 L 6.35 20.15 Z","f":"c","fo":"0.14","s":"c","sw":"1.37","sj":"round"},{"t":"path","d":"M 21.60 4.74 L 25.65 11.85 L 19.14 16.25 L 11.08 11.85 L 12.60 4.74 Z","f":"c","fo":"0.12","s":"n"},{"t":"path","d":"M 9.72 25.77 L 10.40 27.26 L 6.35 20.15 L 3.18 14.26 L 5.26 17.74 Z","f":"c","fo":"0.12","s":"n"},{"t":"path","d":"M 19.40 27.26 L 24.29 25.77 L 18.30 24.85 L 9.72 25.77 L 10.40 27.26 Z","f":"c","fo":"0.12","s":"n"},{"t":"path","d":"M 19.14 16.25 L 18.30 24.85 L 9.72 25.77 L 5.26 17.74 L 11.08 11.85 Z","f":"c","fo":"0.12","s":"n"},{"t":"path","d":"M 24.29 25.77 L 28.82 17.74 L 25.65 11.85 L 19.14 16.25 L 18.30 24.85 Z","f":"c","fo":"0.12","s":"n"},{"t":"path","d":"M 11.08 11.85 L 12.60 4.74 L 7.71 6.23 L 3.18 14.26 L 5.26 17.74 Z","f":"c","fo":"0.12","s":"n"},{"t":"path","d":"M 6.35 20.15 L 10.40 27.26","f":"n","s":"c","sw":"1.21","sc":"round"},{"t":"path","d":"M 6.35 20.15 L 3.18 14.26","f":"n","s":"c","sw":"1.21","sc":"round"},{"t":"path","d":"M 9.72 25.77 L 18.30 24.85","f":"n","s":"c","sw":"1.21","sc":"round"},{"t":"path","d":"M 9.72 25.77 L 10.40 27.26","f":"n","s":"c","sw":"1.21","sc":"round"},{"t":"path","d":"M 9.72 25.77 L 5.26 17.74","f":"n","s":"c","sw":"1.21","sc":"round"},{"t":"path","d":"M 7.71 6.23 L 12.60 4.74","f":"n","s":"c","sw":"1.21","sc":"round"},{"t":"path","d":"M 7.71 6.23 L 3.18 14.26","f":"n","s":"c","sw":"1.21","sc":"round"},{"t":"path","d":"M 11.08 11.85 L 19.14 16.25","f":"n","s":"c","sw":"1.21","sc":"round"},{"t":"path","d":"M 11.08 11.85 L 12.60 4.74","f":"n","s":"c","sw":"1.21","sc":"round"},{"t":"path","d":"M 11.08 11.85 L 5.26 17.74","f":"n","s":"c","sw":"1.21","sc":"round"},{"t":"path","d":"M 24.29 25.77 L 18.30 24.85","f":"n","s":"c","sw":"1.21","sc":"round"},{"t":"path","d":"M 24.29 25.77 L 19.40 27.26","f":"n","s":"c","sw":"1.21","sc":"round"},{"t":"path","d":"M 24.29 25.77 L 28.82 17.74","f":"n","s":"c","sw":"1.21","sc":"round"},{"t":"path","d":"M 25.65 11.85 L 19.14 16.25","f":"n","s":"c","sw":"1.21","sc":"round"},{"t":"path","d":"M 25.65 11.85 L 21.60 4.74","f":"n","s":"c","sw":"1.21","sc":"round"},{"t":"path","d":"M 25.65 11.85 L 28.82 17.74","f":"n","s":"c","sw":"1.21","sc":"round"},{"t":"path","d":"M 18.30 24.85 L 19.14 16.25","f":"n","s":"c","sw":"1.21","sc":"round"},{"t":"path","d":"M 10.40 27.26 L 19.40 27.26","f":"n","s":"c","sw":"1.21","sc":"round"},{"t":"path","d":"M 12.60 4.74 L 21.60 4.74","f":"n","s":"c","sw":"1.21","sc":"round"},{"t":"path","d":"M 3.18 14.26 L 5.26 17.74","f":"n","s":"c","sw":"1.21","sc":"round"}],"d20":[{"t":"path","d":"M 4.77 9.06 L 16.00 4.77 L 27.23 9.06 L 27.23 22.94 L 16.00 27.23 L 4.77 22.94 Z","f":"c","fo":"0.14","s":"c","sw":"1.42","sj":"round"},{"t":"path","d":"M 16.00 27.23 L 9.06 16.00 L 22.94 16.00 Z","f":"c","fo":"0.12","s":"n"},{"t":"path","d":"M 16.00 27.23 L 9.06 16.00 L 4.77 22.94 Z","f":"c","fo":"0.12","s":"n"},{"t":"path","d":"M 16.00 27.23 L 22.94 16.00 L 27.23 22.94 Z","f":"c","fo":"0.12","s":"n"},{"t":"path","d":"M 16.00 4.77 L 9.06 16.00 L 22.94 16.00 Z","f":"c","fo":"0.12","s":"n"},{"t":"path","d":"M 16.00 4.77 L 9.06 16.00 L 4.77 9.06 Z","f":"c","fo":"0.12","s":"n"},{"t":"path","d":"M 16.00 4.77 L 22.94 16.00 L 27.23 9.06 Z","f":"c","fo":"0.12","s":"n"},{"t":"path","d":"M 9.06 16.00 L 4.77 22.94 L 4.77 9.06 Z","f":"c","fo":"0.12","s":"n"},{"t":"path","d":"M 22.94 16.00 L 27.23 22.94 L 27.23 9.06 Z","f":"c","fo":"0.12","s":"n"},{"t":"path","d":"M 16.00 27.23 L 9.06 16.00","f":"n","s":"c","sw":"1.26","sc":"round"},{"t":"path","d":"M 16.00 27.23 L 22.94 16.00","f":"n","s":"c","sw":"1.26","sc":"round"},{"t":"path","d":"M 16.00 27.23 L 4.77 22.94","f":"n","s":"c","sw":"1.26","sc":"round"},{"t":"path","d":"M 16.00 27.23 L 27.23 22.94","f":"n","s":"c","sw":"1.26","sc":"round"},{"t":"path","d":"M 16.00 4.77 L 9.06 16.00","f":"n","s":"c","sw":"1.26","sc":"round"},{"t":"path","d":"M 16.00 4.77 L 22.94 16.00","f":"n","s":"c","sw":"1.26","sc":"round"},{"t":"path","d":"M 16.00 4.77 L 4.77 9.06","f":"n","s":"c","sw":"1.26","sc":"round"},{"t":"path","d":"M 16.00 4.77 L 27.23 9.06","f":"n","s":"c","sw":"1.26","sc":"round"},{"t":"path","d":"M 9.06 16.00 L 22.94 16.00","f":"n","s":"c","sw":"1.26","sc":"round"},{"t":"path","d":"M 9.06 16.00 L 4.77 22.94","f":"n","s":"c","sw":"1.26","sc":"round"},{"t":"path","d":"M 9.06 16.00 L 4.77 9.06","f":"n","s":"c","sw":"1.26","sc":"round"},{"t":"path","d":"M 22.94 16.00 L 27.23 22.94","f":"n","s":"c","sw":"1.26","sc":"round"},{"t":"path","d":"M 22.94 16.00 L 27.23 9.06","f":"n","s":"c","sw":"1.26","sc":"round"},{"t":"path","d":"M 4.77 22.94 L 4.77 9.06","f":"n","s":"c","sw":"1.26","sc":"round"},{"t":"path","d":"M 27.23 22.94 L 27.23 9.06","f":"n","s":"c","sw":"1.26","sc":"round"},{"t":"path","d":"M 12.70 19.74 Q 16.00 17.64 19.30 19.74 Q 16.00 21.84 12.70 19.74 Z","f":"c","fo":"0.14","s":"c","sw":"1.16","sj":"round"},{"t":"circle","cx":"16.00","cy":"19.74","r":"1.15","f":"c"}]};
+
+	function renderDieSvg(tier) {
+		const els = DIE_ICON_DATA[tier];
+		if (!els) return null;
+		const ns = 'http://www.w3.org/2000/svg';
+		const svg = document.createElementNS(ns, 'svg');
+		svg.setAttribute('class', 'kod-die__svg');
+		svg.setAttribute('viewBox', '0 0 32 32');
+		svg.setAttribute('aria-hidden', 'true');
+		svg.setAttribute('focusable', 'false');
+		for (const spec of els) {
+			const node = document.createElementNS(ns, spec.t === 'circle' ? 'circle' : 'path');
+			if (spec.t === 'circle') {
+				if (spec.cx != null) node.setAttribute('cx', spec.cx);
+				if (spec.cy != null) node.setAttribute('cy', spec.cy);
+				if (spec.r != null) node.setAttribute('r', spec.r);
+			} else if (spec.d) {
+				node.setAttribute('d', spec.d);
+			}
+			const fill = spec.f === 'c' ? 'currentColor' : spec.f === 'n' ? 'none' : spec.f;
+			const stroke = spec.s === 'c' ? 'currentColor' : spec.s === 'n' ? 'none' : spec.s;
+			if (fill) node.setAttribute('fill', fill);
+			if (spec.fo != null) node.setAttribute('fill-opacity', spec.fo);
+			if (stroke) node.setAttribute('stroke', stroke);
+			if (spec.sw != null) node.setAttribute('stroke-width', spec.sw);
+			if (spec.sj) node.setAttribute('stroke-linejoin', spec.sj);
+			if (spec.sc) node.setAttribute('stroke-linecap', spec.sc);
+			svg.appendChild(node);
+		}
+		return svg;
+	}
 
 	function fillDieHosts(root) {
 		const scope = root || document;
 		scope.querySelectorAll('.kod-die[data-die]').forEach((el) => {
 			if (el.dataset.dieReady) return;
 			const tier = el.getAttribute('data-die');
-			if (!DIE_SVG[tier]) return;
+			const svg = renderDieSvg(tier);
+			if (!svg) return;
 			el.dataset.dieReady = '1';
 			el.classList.add('kod-die--' + tier);
-			el.innerHTML = DIE_SVG[tier];
+			el.replaceChildren(svg);
 		});
 	}
+
 
 	/**
 	 * Wrap standalone **d6** / **d8** / **d12** (and Nd6-style pools) in die chips
@@ -569,18 +597,27 @@ const fontFacesCss = `
 	}
 
 	function enhance() {
-		injectSidebarIcons();
-		decorateDividers();
-		normalizeBoxes();
-		setupArchetypeFocus();
-		setupDieChips();
-		setupMarksLadder();
-		setupTierDial();
-		setupContentTabs();
-		setupStepFlows();
-		setupTideDemo();
-		setupScrollReveal();
-		setupTableStrip();
+		const steps = [
+			injectSidebarIcons,
+			decorateDividers,
+			normalizeBoxes,
+			setupArchetypeFocus,
+			setupDieChips,
+			setupMarksLadder,
+			setupTierDial,
+			setupContentTabs,
+			setupStepFlows,
+			setupTideDemo,
+			setupScrollReveal,
+			setupTableStrip,
+		];
+		for (const step of steps) {
+			try {
+				step();
+			} catch (err) {
+				console.error('[kodranni] enhance step failed:', step.name, err);
+			}
+		}
 		// after layout + fonts
 		requestAnimationFrame(() => {
 			layoutEqualizers();
