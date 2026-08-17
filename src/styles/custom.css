@@ -545,69 +545,34 @@ site-title {
   }
 }
 
-/* --- Lists: thematic markers (blood diamond / roman numerals) ------------- */
-/* Skip widgets and other .not-content shells that manage their own bullets. */
+/* --- Lists: quiet colour on native markers (keep scroll-reveal intact) ---- */
 .sl-markdown-content ul:not(:where(.not-content *)) {
-  list-style: none;
-  padding-inline-start: 1.45rem;
-  margin: 0.85rem 0 1.15rem;
+  list-style-type: disc;
+  padding-inline-start: 1.5rem;
 }
 
-.sl-markdown-content ul:not(:where(.not-content *)) > li {
-  position: relative;
-  margin: 0.45em 0;
-  padding-inline-start: 0.2rem;
+.sl-markdown-content ul:not(:where(.not-content *)) > li::marker {
+  color: color-mix(in srgb, var(--kod-blood-bright) 75%, #8a7070);
+  font-size: 0.85em;
 }
 
-/* Small forged diamond — blood core, silver edge */
-.sl-markdown-content ul:not(:where(.not-content *)) > li::before {
-  content: '';
-  position: absolute;
-  left: -1.2rem;
-  top: 0.62em;
-  width: 0.42rem;
-  height: 0.42rem;
-  box-sizing: border-box;
-  background: linear-gradient(
-    145deg,
-    var(--kod-blood-bright) 0%,
-    var(--kod-blood) 55%,
-    var(--kod-blood-deep) 100%
-  );
-  border: 1px solid color-mix(in srgb, #f2efe9 35%, var(--kod-blood));
-  transform: rotate(45deg);
-  box-shadow:
-    0 0 0 1px color-mix(in srgb, #000 55%, transparent),
-    inset 0 1px 0 color-mix(in srgb, #f2efe9 18%, transparent);
+.sl-markdown-content ul:not(:where(.not-content *)) ul {
+  list-style-type: circle;
 }
 
-/* Nested bullets: smaller, cooler silver */
-.sl-markdown-content ul:not(:where(.not-content *)) ul > li::before {
-  width: 0.32rem;
-  height: 0.32rem;
-  top: 0.68em;
-  left: -1.1rem;
-  background: linear-gradient(145deg, #c8c0b4 0%, #6a655c 100%);
-  border-color: color-mix(in srgb, #f2efe9 25%, #5a5550);
+.sl-markdown-content ul:not(:where(.not-content *)) ul > li::marker {
+  color: var(--kod-silver-dim);
 }
 
 .sl-markdown-content > ol,
 .sl-markdown-content ol:not(:where(.not-content *)) {
   list-style-type: upper-roman;
-  padding-inline-start: 1.85rem;
-  margin: 0.85rem 0 1.15rem;
-}
-
-.sl-markdown-content ol:not(:where(.not-content *)) > li {
-  margin: 0.45em 0;
-  padding-inline-start: 0.15rem;
+  padding-inline-start: 1.75rem;
 }
 
 .sl-markdown-content ol:not(:where(.not-content *)) > li::marker {
   color: var(--kod-blood-bright);
   font-family: var(--kod-font-display);
-  font-weight: 400;
-  letter-spacing: 0.04em;
 }
 
 .sl-markdown-content ol ol:not(:where(.not-content *)) {
@@ -1627,87 +1592,56 @@ site-title img,
   letter-spacing: 0.03em;
 }
 
-/* Visual ladder above the tier buttons — highlight follows selected die */
+/* Ladder caption — pure text; only the active tier phrase lights faintly */
 .kod-tier-ladder {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  align-items: stretch;
-  gap: 0.35rem;
-  margin: 0 auto 0.85rem;
-  max-width: 36rem;
+  align-items: center;
+  gap: 0.35rem 0.55rem;
+  margin: 0 auto 0.75rem;
+  max-width: 32rem;
   font-size: 0.78rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--kod-silver-dim);
+  pointer-events: none; /* not interactive — die buttons below are the control */
+  user-select: none;
 }
 
-.kod-tier-ladder__seg {
-  display: inline-flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 0.3rem 0.4rem;
-  padding: 0.4rem 0.55rem;
-  border-radius: 2px;
-  border: 1px solid transparent;
-  opacity: 0.48;
-  transition:
-    opacity 0.18s ease,
-    border-color 0.18s ease,
-    background 0.18s ease,
-    color 0.18s ease,
-    box-shadow 0.18s ease;
+.kod-tier-ladder [data-ladder] {
+  opacity: 0.38;
+  transition: opacity 0.18s ease, color 0.18s ease;
+  font-family: var(--kod-font-display);
+  letter-spacing: 0.03em;
 }
 
-.kod-tier-ladder__seg.is-active {
+/* Active phrase only — no border, no fill (must not look clickable) */
+.kod-tier-ladder[data-active='d6'] [data-ladder='d6'] {
   opacity: 1;
-  border-color: color-mix(in srgb, currentColor 45%, #333);
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, #f2efe9 6%, transparent);
-}
-
-.kod-tier-ladder__seg[data-ladder='d6'].is-active {
   color: #8eb8d0;
-  background: color-mix(in srgb, #1a3548 50%, #0a0c0e);
-  border-color: color-mix(in srgb, #4a7a96 55%, #333);
 }
 
-.kod-tier-ladder__seg[data-ladder='d8'].is-active {
-  color: #f0ebe3;
-  background: color-mix(in srgb, #3a3530 40%, #0e0c0a);
-  border-color: color-mix(in srgb, #c4b8a8 50%, #333);
+.kod-tier-ladder[data-active='d8'] [data-ladder='d8'] {
+  opacity: 1;
+  color: var(--kod-silver-bright);
 }
 
-.kod-tier-ladder__seg[data-ladder='d12'].is-active {
-  color: #f2d078;
-  background: color-mix(in srgb, #4a3810 48%, #0e0c08);
-  border-color: color-mix(in srgb, #c4a035 55%, #333);
+.kod-tier-ladder[data-active='d12'] [data-ladder='d12'] {
+  opacity: 1;
+  color: #e8c86a;
 }
 
 .kod-tier-ladder__arrow {
-  font-family: var(--kod-font-display);
   letter-spacing: 0.03em;
-  color: inherit;
 }
 
 .kod-tier-ladder__mid {
-  font-family: var(--kod-font-display);
-  letter-spacing: 0.04em;
-  color: inherit;
   padding: 0 0.15rem;
 }
 
 .kod-tier-ladder__end {
-  font-family: var(--kod-font-display);
   letter-spacing: 0.04em;
-  color: inherit;
-  opacity: 0.9;
-}
-
-.kod-tier-ladder__seg:not(.is-active) .kod-tier-ladder__arrow,
-.kod-tier-ladder__seg:not(.is-active) .kod-tier-ladder__mid,
-.kod-tier-ladder__seg:not(.is-active) .kod-tier-ladder__end {
-  color: var(--kod-silver-dim);
 }
 
 .kod-widget[data-widget='tier-dial'] .kod-widget__panel {

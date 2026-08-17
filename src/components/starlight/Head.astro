@@ -390,12 +390,8 @@ const fontFacesCss = `
 				buttons.forEach((b) =>
 					b.setAttribute('aria-pressed', b.dataset.tier === tier ? 'true' : 'false'),
 				);
-				if (ladder) {
-					ladder.setAttribute('data-active', tier);
-					ladder.querySelectorAll('[data-ladder]').forEach((seg) => {
-						seg.classList.toggle('is-active', seg.getAttribute('data-ladder') === tier);
-					});
-				}
+				// Text-only ladder highlight (not clickable segments)
+				if (ladder) ladder.setAttribute('data-active', tier);
 				if (panel) {
 					panel.innerHTML = scenes[tier] || scenes.d8;
 					fillDieHosts(panel);
@@ -573,9 +569,14 @@ const fontFacesCss = `
 			bq.classList.add('kod-reveal', 'kod-type');
 		});
 
-		root.querySelectorAll(':scope > ul > li, :scope > ol > li').forEach((li) => {
-			li.classList.add('kod-reveal-item');
-		});
+		// Top-level and nested prose lists (skip widget / not-content shells)
+		root
+			.querySelectorAll(
+				':scope > ul > li, :scope > ol > li, ul:not(:where(.not-content *)) > li, ol:not(:where(.not-content *)) > li',
+			)
+			.forEach((li) => {
+				if (!li.classList.contains('kod-reveal-item')) li.classList.add('kod-reveal-item');
+			});
 
 		const targets = root.querySelectorAll('blockquote.kod-reveal, .kod-reveal-item');
 		if (!targets.length) return;

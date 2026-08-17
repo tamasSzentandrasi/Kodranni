@@ -118,17 +118,11 @@ The Storyteller names a **die tier** for the pool. There is no automatic map fro
 <p class="kod-widget__title">Die tier ladder</p>
 <p class="kod-widget__intro">One judgment: who has the edge on <em>this</em> action? Select a tier to see odds and an example.</p>
 <div class="kod-tier-ladder" data-active="d8" aria-hidden="true">
-<span class="kod-tier-ladder__seg" data-ladder="d6">
-<span class="kod-tier-ladder__end">Harder</span>
-<span class="kod-tier-ladder__arrow">← Disadvantage</span>
-</span>
-<span class="kod-tier-ladder__seg" data-ladder="d8">
-<span class="kod-tier-ladder__mid">Ordinary</span>
-</span>
-<span class="kod-tier-ladder__seg" data-ladder="d12">
-<span class="kod-tier-ladder__arrow">Advantage →</span>
-<span class="kod-tier-ladder__end">Easier</span>
-</span>
+<span class="kod-tier-ladder__end" data-ladder="d6">Harder</span>
+<span class="kod-tier-ladder__arrow" data-ladder="d6">← Disadvantage</span>
+<span class="kod-tier-ladder__mid" data-ladder="d8">Ordinary</span>
+<span class="kod-tier-ladder__arrow" data-ladder="d12">Advantage →</span>
+<span class="kod-tier-ladder__end" data-ladder="d12">Easier</span>
 </div>
 <div class="kod-widget__controls" role="group" aria-label="Die tier">
 <button type="button" class="kod-widget__btn kod-widget__btn--die" data-tier="d6"><span class="kod-die kod-die--d6" data-die="d6" aria-hidden="true"></span><span>d6</span></button>
