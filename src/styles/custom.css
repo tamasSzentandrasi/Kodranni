@@ -1309,9 +1309,15 @@ site-title img,
 }
 
 .kod-die--lg {
-  width: 2.75rem;
-  height: 2.75rem;
+  width: 3.1rem;
+  height: 3.1rem;
   vertical-align: middle;
+}
+
+/* Inline chips: slightly larger icons so polyhedra stay readable */
+.kod-die-chip .kod-die {
+  width: 1.15em;
+  height: 1.15em;
 }
 
 /* Inline chip: icon + label (replaces bare **d6** in prose)
