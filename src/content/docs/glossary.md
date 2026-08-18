@@ -3,7 +3,7 @@ title: Glossary
 description: Quick definitions of every major Kodranni term, grouped by system.
 ---
 
-Quick reference. Each entry links to the chapter that owns the full rule. Exact Practice numbers live on the live sheet, not in chat.
+Quick reference. Each entry links to the chapter that owns the full rule.
 
 ----------
 
