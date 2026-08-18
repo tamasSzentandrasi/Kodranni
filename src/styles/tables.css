@@ -1,0 +1,88 @@
+/* --- from custom.css 468-553 --- */
+/* Tables — guidebook card style (override Starlight block table defaults)
+   Restrained double frame: outer hairline + inner blood edge — not full ornament. */
+.sl-markdown-content table:not(:where(.not-content *)) {
+  display: table;
+  width: 100%;
+  max-width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 1.25rem 0 1.5rem;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--kod-blood) 42%, #3a3030);
+  border-radius: 2px;
+  background: #0c0a0a;
+  font-size: 0.98em;
+  line-height: 1.5;
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, #f2efe9 5%, transparent),
+    0 0 0 1px color-mix(in srgb, #000 50%, transparent);
+}
+
+.sl-markdown-content table:not(:where(.not-content *)) thead {
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--kod-blood-deep) 55%, #121010),
+    color-mix(in srgb, #141010 90%, #000)
+  );
+}
+
+.sl-markdown-content th {
+  font-family: var(--kod-font-display);
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-size: 0.82em;
+  color: #f2efe9 !important;
+  border-bottom: 1px solid color-mix(in srgb, var(--kod-blood) 55%, #333) !important;
+  padding: 0.65rem 0.85rem !important;
+  vertical-align: middle;
+  text-align: start;
+}
+
+.sl-markdown-content th:first-child,
+.sl-markdown-content td:first-child {
+  padding-inline-start: 0.9rem !important;
+}
+
+.sl-markdown-content th:last-child,
+.sl-markdown-content td:last-child {
+  padding-inline-end: 0.9rem !important;
+}
+
+.sl-markdown-content td {
+  border-bottom: 1px solid color-mix(in srgb, #f2efe9 8%, #2a2222) !important;
+  padding: 0.6rem 0.85rem !important;
+  vertical-align: top;
+  color: var(--kod-silver);
+}
+
+.sl-markdown-content tbody tr:last-child td {
+  border-bottom: none !important;
+}
+
+.sl-markdown-content tbody tr:nth-child(even) td {
+  background: color-mix(in srgb, #f2efe9 3%, transparent);
+}
+
+.sl-markdown-content tbody tr:hover td {
+  background: color-mix(in srgb, var(--kod-blood-deep) 28%, transparent);
+}
+
+.sl-markdown-content td strong,
+.sl-markdown-content th strong {
+  background: none !important;
+  color: #fff8f0;
+}
+
+@media (max-width: 40rem) {
+  .sl-markdown-content table:not(:where(.not-content *)) {
+    font-size: 0.92em;
+  }
+  .sl-markdown-content th,
+  .sl-markdown-content td {
+    padding: 0.5rem 0.55rem !important;
+  }
+}
+
+

@@ -1,0 +1,89 @@
+/* --- from custom.css 1-87 --- */
+/* Kodranni Guidebook — Bellefair, black/silver/blood
+   Boxes: example · quote · note · chapter icons */
+
+/* Fonts: @font-face with BASE_URL injected in Head.astro (Project Pages base path). */
+
+:root {
+  --kod-black: #050505;
+  --kod-silver: #c6c1b8;
+  --kod-silver-dim: #8a8580;
+  --kod-silver-bright: #f2efe9;
+  --kod-blood: #8a1515;
+  --kod-blood-bright: #b01c1c;
+  --kod-blood-deep: #4a0c0c;
+
+  --kod-font-display: 'Bellefair', 'Times New Roman', Times, serif;
+  --kod-font-body: 'Bellefair', 'Times New Roman', Times, serif;
+
+  --sl-font: var(--kod-font-body);
+  --sl-font-system: var(--kod-font-body);
+
+  --sl-color-accent-low: var(--kod-blood-deep);
+  --sl-color-accent: var(--kod-blood);
+  --sl-color-accent-high: #e8a0a0;
+
+  --sl-text-h1: 2.55rem;
+  --sl-text-h2: 1.85rem;
+  --sl-text-h3: 1.4rem;
+}
+
+/* Global scale + Bellefair Chromium safeguards */
+html {
+  font-size: 118.75%; /* ~19px from 16px root — second slight lift */
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: geometricPrecision;
+}
+
+body,
+.sl-markdown-content,
+.sidebar-content,
+site-title,
+.kod-page-title h1 {
+  font-synthesis: none;
+  -webkit-text-stroke: 0;
+  -webkit-text-fill-color: currentColor;
+  text-shadow: none;
+}
+
+:root,
+:root[data-theme='dark'],
+:root[data-theme='light'],
+:root:not([data-theme]) {
+  color-scheme: dark;
+  --sl-color-bg: var(--kod-black);
+  --sl-color-bg-nav: #030303;
+  --sl-color-bg-sidebar: #0a0a0a;
+  --sl-color-bg-inline-code: #1a1414;
+  --sl-color-hairline: #2a2222;
+  --sl-color-text: var(--kod-silver);
+  --sl-color-text-accent: var(--kod-silver-bright);
+  --sl-color-gray-1: var(--kod-silver-bright);
+  --sl-color-gray-2: var(--kod-silver);
+  --sl-color-gray-3: var(--kod-silver-dim);
+  --sl-color-gray-4: #5c5550;
+  --sl-color-gray-5: #2e2826;
+  --sl-color-gray-6: #141010;
+  --sl-color-black: #000;
+  --sl-color-white: var(--kod-silver-bright);
+}
+
+/* Dark only — hide Starlight theme control if it ever reappears */
+starlight-theme-select,
+.social-icons starlight-theme-select,
+header starlight-theme-select {
+  display: none !important;
+}
+
+body {
+  background-color: var(--kod-black);
+  background-image:
+    radial-gradient(ellipse 120% 80% at 50% -10%, rgba(74, 12, 12, 0.14), transparent 55%),
+    radial-gradient(ellipse 90% 60% at 100% 100%, rgba(0, 0, 0, 0.55), transparent 50%),
+    radial-gradient(ellipse 70% 50% at 0% 80%, rgba(0, 0, 0, 0.4), transparent 45%);
+  background-attachment: fixed;
+}
+
+

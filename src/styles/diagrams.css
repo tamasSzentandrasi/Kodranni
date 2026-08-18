@@ -1,0 +1,704 @@
+/* --- from custom.css 856-1179 --- */
+/* --- Foundation domain lanes ----------------------------------------------- */
+.kod-domain-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  margin: 1.1rem 0 1.5rem;
+}
+
+.kod-domain-lane {
+  border-radius: 3px;
+  padding: 0.75rem 0.9rem 0.9rem;
+  border: 1px solid #2a2424;
+  box-sizing: border-box;
+}
+
+.kod-domain-lane--physical {
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--kod-blood) 38%, #0a0a0a),
+    color-mix(in srgb, var(--kod-blood-deep) 22%, #0a0a0a) 55%,
+    #0a0a0a
+  );
+  border-color: color-mix(in srgb, var(--kod-blood) 40%, #333);
+}
+
+.kod-domain-lane--mental {
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, #3a2a8a 45%, #0a0a0a),
+    color-mix(in srgb, #1a1440 35%, #0a0a0a) 55%,
+    #0a0a0a
+  );
+  border-color: color-mix(in srgb, #5a4ab0 40%, #333);
+}
+
+.kod-domain-lane--social {
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, #b8860b 38%, #0a0a0a),
+    color-mix(in srgb, #5c4010 30%, #0a0a0a) 55%,
+    #0a0a0a
+  );
+  border-color: color-mix(in srgb, #c4a035 40%, #333);
+}
+
+.kod-domain-lane__label {
+  font-family: var(--kod-font-display);
+  font-size: 0.9rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin: 0 0 0.55rem;
+  color: var(--kod-silver-bright);
+}
+
+.kod-domain-lane--physical .kod-domain-lane__label {
+  color: #e8a0a0;
+}
+
+.kod-domain-lane--mental .kod-domain-lane__label {
+  color: #b0a4e8;
+}
+
+.kod-domain-lane--social .kod-domain-lane__label {
+  color: #e0c56a;
+}
+
+.kod-domain-lane__bricks {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.55rem;
+  align-items: stretch;
+  grid-auto-rows: 1fr;
+}
+
+@media (max-width: 40rem) {
+  .kod-domain-lane__bricks {
+    grid-template-columns: 1fr;
+  }
+}
+
+.kod-brick {
+  box-sizing: border-box;
+  min-width: 0;
+  min-height: 5.5rem;
+  height: 100%;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid color-mix(in srgb, #f2efe9 12%, #333);
+  border-radius: 2px;
+  background: color-mix(in srgb, #0c0c0c 75%, transparent);
+  display: flex;
+  flex-direction: column;
+}
+
+.kod-brick > * {
+  margin-top: 0 !important;
+}
+
+.kod-brick strong {
+  background: none !important;
+  color: #fff8f0;
+  letter-spacing: 0.03em;
+  font-size: 1em;
+  line-height: 1.25;
+  display: block;
+}
+
+.kod-brick p {
+  margin: 0.35rem 0 0 !important;
+  font-size: 0.9em;
+  color: var(--kod-silver-dim);
+  line-height: 1.4;
+  flex: 1;
+}
+
+/* --- Archetype stained-glass cards (2-col → exclusive focus) -------------- */
+.sl-markdown-content .kod-archetypes {
+  display: grid !important;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin: 1.25rem 0 2rem;
+  position: relative;
+  transition: gap 0.2s ease;
+}
+
+@media (min-width: 50rem) {
+  .sl-markdown-content .kod-archetypes:not(.is-focus) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Focus mode: single full-width card; others hidden */
+.sl-markdown-content .kod-archetypes.is-focus {
+  grid-template-columns: 1fr;
+  gap: 0.65rem;
+}
+
+.sl-markdown-content .kod-archetypes.is-focus .kod-archetype:not([open]) {
+  display: none;
+}
+
+.sl-markdown-content .kod-archetypes.is-focus .kod-archetype[open] {
+  animation: kod-archetype-focus-in 0.28s ease both;
+}
+
+@keyframes kod-archetype-focus-in {
+  from {
+    opacity: 0.55;
+    transform: translateY(0.4rem) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes kod-archetype-grid-in {
+  from {
+    opacity: 0.4;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.sl-markdown-content .kod-archetypes.is-exiting .kod-archetype {
+  animation: kod-archetype-grid-in 0.22s ease both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sl-markdown-content .kod-archetypes.is-focus .kod-archetype[open],
+  .sl-markdown-content .kod-archetypes.is-exiting .kod-archetype {
+    animation: none;
+  }
+}
+
+/* Small back control — only in focus mode */
+.sl-markdown-content .kod-archetypes__back {
+  appearance: none;
+  display: none;
+  align-items: center;
+  gap: 0.35rem;
+  width: fit-content;
+  margin: 0 0 0.15rem;
+  padding: 0.28rem 0.55rem;
+  border: 1px solid color-mix(in srgb, #f2efe9 18%, #333);
+  border-radius: 2px;
+  background: #121010;
+  color: var(--kod-silver-dim);
+  font-family: var(--kod-font-body);
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  cursor: pointer;
+  transition: border-color 0.12s ease, color 0.12s ease, background 0.12s ease;
+}
+
+.sl-markdown-content .kod-archetypes.is-focus .kod-archetypes__back {
+  display: inline-flex;
+}
+
+.sl-markdown-content .kod-archetypes__back:hover,
+.sl-markdown-content .kod-archetypes__back:focus-visible {
+  border-color: var(--kod-blood-bright);
+  color: var(--kod-silver-bright);
+  outline: none;
+  background: color-mix(in srgb, var(--kod-blood-deep) 35%, #121010);
+}
+
+.sl-markdown-content .kod-archetype {
+  border: 1px solid #3a3030;
+  border-radius: 4px;
+  overflow: hidden;
+  list-style: none;
+  margin: 0;
+  min-width: 0;
+}
+
+/* Per-archetype colour wash */
+.sl-markdown-content .kod-archetype--warrior {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--kod-blood) 28%, #0a0808), #0a0808 70%);
+  border-color: color-mix(in srgb, var(--kod-blood) 45%, #333);
+}
+.sl-markdown-content .kod-archetype--wayfarer {
+  background: linear-gradient(180deg, color-mix(in srgb, #1a5c38 32%, #0a0808), #0a0808 70%);
+  border-color: color-mix(in srgb, #2a8a55 40%, #333);
+}
+.sl-markdown-content .kod-archetype--artisan {
+  background: linear-gradient(180deg, color-mix(in srgb, #5a5048 35%, #0a0808), #0a0808 70%);
+  border-color: color-mix(in srgb, #8a7a6a 40%, #333);
+}
+.sl-markdown-content .kod-archetype--mother {
+  background: linear-gradient(180deg, color-mix(in srgb, #8a6a18 32%, #0a0808), #0a0808 70%);
+  border-color: color-mix(in srgb, #c4a035 40%, #333);
+}
+.sl-markdown-content .kod-archetype--sage {
+  background: linear-gradient(180deg, color-mix(in srgb, #2a2a7a 35%, #0a0808), #0a0808 70%);
+  border-color: color-mix(in srgb, #5a5ab8 40%, #333);
+}
+.sl-markdown-content .kod-archetype--trickster {
+  background: linear-gradient(180deg, color-mix(in srgb, #3a1a4a 38%, #0a0808), #0a0808 70%);
+  border-color: color-mix(in srgb, #6a3a7a 45%, #333);
+}
+
+.sl-markdown-content .kod-archetype__summary {
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.55rem;
+  padding: 1rem 1rem 1.1rem;
+  user-select: none;
+}
+
+/* Kill native + custom markers completely */
+.sl-markdown-content .kod-archetype__summary::-webkit-details-marker,
+.sl-markdown-content .kod-archetype > summary::-webkit-details-marker {
+  display: none !important;
+}
+.sl-markdown-content .kod-archetype__summary::marker,
+.sl-markdown-content .kod-archetype > summary::marker {
+  content: none !important;
+  display: none !important;
+  font-size: 0 !important;
+}
+.sl-markdown-content .kod-archetype__summary::before,
+.sl-markdown-content .kod-archetype__summary::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* Full circular stained-glass face */
+.sl-markdown-content .kod-archetype__panel {
+  display: block;
+  width: min(100%, 11.5rem);
+  aspect-ratio: 1;
+  height: auto;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid color-mix(in srgb, #f2efe9 18%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, #000 60%, transparent), 0 6px 18px rgba(0, 0, 0, 0.45);
+  margin: 0 auto;
+}
+
+.sl-markdown-content .kod-archetype__name {
+  font-family: var(--kod-font-display);
+  font-size: 1.4rem;
+  letter-spacing: 0.04em;
+  color: var(--kod-silver-bright);
+  margin: 0.15rem 0 0;
+  line-height: 1.2;
+}
+
+.sl-markdown-content .kod-archetype__tag {
+  margin: 0;
+  font-size: 0.95em;
+  color: var(--kod-silver-dim);
+  line-height: 1.35;
+  max-width: 18rem;
+}
+
+.sl-markdown-content .kod-archetype__body {
+  padding: 0 1.1rem 1.15rem;
+  border-top: 1px solid color-mix(in srgb, #f2efe9 10%, transparent);
+  text-align: left;
+}
+
+.sl-markdown-content .kod-archetype__body > p:first-child {
+  margin-top: 0.85rem;
+  color: #d8d2c8;
+}
+
+.sl-markdown-content .kod-archetype__body ol {
+  margin: 0.65rem 0 0;
+  padding-inline-start: 1.2rem;
+}
+
+.sl-markdown-content .kod-archetype__body li {
+  margin: 0.2rem 0;
+}
+
+
+/* --- from custom.css 2118-2486 --- */
+/* --- Fortune hall: five vertical pillars ----------------------------------- */
+.kod-fortune-hall {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.55rem;
+  margin: 1.35rem 0 1.6rem;
+  align-items: stretch;
+}
+@media (max-width: 60rem) {
+  .kod-fortune-hall {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (max-width: 40rem) {
+  .kod-fortune-hall {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 28rem) {
+  .kod-fortune-hall {
+    grid-template-columns: 1fr;
+  }
+}
+
+.kod-fortune-pillar {
+  box-sizing: border-box;
+  margin: 0 !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  min-height: 14.5rem;
+  padding: 1rem 0.65rem 1.05rem;
+  border-radius: 3px 3px 2px 2px;
+  border: 1px solid #2a2424;
+  border-top-width: 4px;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--kod-fortune-accent, var(--kod-blood)) 22%, #0c0a0a) 0%,
+    #0a0808 55%,
+    #080606 100%
+  );
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--kod-fortune-accent, #fff) 18%, transparent);
+  transition: box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.kod-fortune-pillar:hover {
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--kod-fortune-accent, #fff) 28%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--kod-fortune-accent, #666) 35%, transparent);
+}
+
+.kod-fortune-pillar__icon {
+  display: block;
+  width: 2.65rem;
+  height: 2.65rem;
+  margin: 0.15rem 0 0.85rem;
+  background-color: var(--kod-fortune-accent, var(--kod-blood-bright));
+  -webkit-mask: center / contain no-repeat;
+  mask: center / contain no-repeat;
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 8px color-mix(in srgb, var(--kod-fortune-accent) 40%, transparent));
+}
+
+.kod-fortune-pillar__name {
+  font-family: var(--kod-font-display);
+  font-size: 1.05rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fff8f0;
+  margin: 0 0 0.55rem;
+  line-height: 1.2;
+}
+
+.kod-fortune-pillar__blurb {
+  margin: 0;
+  font-size: 0.88em;
+  line-height: 1.45;
+  color: var(--kod-silver);
+  flex: 1 1 auto;
+}
+
+/*
+ * Fortune icons (mask fill), as specified:
+ * Vitality  — drop of blood
+ * Cohesion  — dots in a circle
+ * Surplus   — stacked grain / sheaf
+ * Standing  — Roman helmet
+ * Tradition — Greek column capital (Doric/Ionic head)
+ */
+.kod-fortune-pillar--vitality {
+  --kod-fortune-accent: #c45a6a;
+  border-top-color: #c45a6a;
+}
+.kod-fortune-pillar--vitality .kod-fortune-pillar__icon {
+  /* blood drop */
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M16 2.5c.4 0 1.1.8 2.2 2.4 1.5 2.2 3.6 5.6 5 9.1 1.2 3 1.8 5.7 1.8 7.5 0 5-3.8 8.5-9 8.5s-9-3.5-9-8.5c0-1.8.6-4.5 1.8-7.5 1.4-3.5 3.5-6.9 5-9.1C14.9 3.3 15.6 2.5 16 2.5zm0 3.2c-1.2 1.7-3.1 4.8-4.4 8-1.1 2.8-1.6 5.2-1.6 6.8 0 3.8 2.8 6.5 6 6.5s6-2.7 6-6.5c0-1.6-.5-4-1.6-6.8-1.3-3.2-3.2-6.3-4.4-8z'/%3E%3Cpath fill='black' d='M13.2 18.2c0-2.2 1.4-4 3.2-4.6.3 1 .5 2.1.5 3.2 0 1.8-.7 3.3-1.8 4.3-1.1-.8-1.9-2.2-1.9-3.9z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M16 2.5c.4 0 1.1.8 2.2 2.4 1.5 2.2 3.6 5.6 5 9.1 1.2 3 1.8 5.7 1.8 7.5 0 5-3.8 8.5-9 8.5s-9-3.5-9-8.5c0-1.8.6-4.5 1.8-7.5 1.4-3.5 3.5-6.9 5-9.1C14.9 3.3 15.6 2.5 16 2.5zm0 3.2c-1.2 1.7-3.1 4.8-4.4 8-1.1 2.8-1.6 5.2-1.6 6.8 0 3.8 2.8 6.5 6 6.5s6-2.7 6-6.5c0-1.6-.5-4-1.6-6.8-1.3-3.2-3.2-6.3-4.4-8z'/%3E%3Cpath fill='black' d='M13.2 18.2c0-2.2 1.4-4 3.2-4.6.3 1 .5 2.1.5 3.2 0 1.8-.7 3.3-1.8 4.3-1.1-.8-1.9-2.2-1.9-3.9z'/%3E%3C/svg%3E");
+}
+
+.kod-fortune-pillar--cohesion {
+  --kod-fortune-accent: #6a9fd4;
+  border-top-color: #6a9fd4;
+}
+.kod-fortune-pillar--cohesion .kod-fortune-pillar__icon {
+  /* eight dots on a circle + centre */
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='2.2' fill='black'/%3E%3Ccircle cx='16' cy='5.2' r='2' fill='black'/%3E%3Ccircle cx='16' cy='26.8' r='2' fill='black'/%3E%3Ccircle cx='5.2' cy='16' r='2' fill='black'/%3E%3Ccircle cx='26.8' cy='16' r='2' fill='black'/%3E%3Ccircle cx='8.4' cy='8.4' r='2' fill='black'/%3E%3Ccircle cx='23.6' cy='8.4' r='2' fill='black'/%3E%3Ccircle cx='8.4' cy='23.6' r='2' fill='black'/%3E%3Ccircle cx='23.6' cy='23.6' r='2' fill='black'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='2.2' fill='black'/%3E%3Ccircle cx='16' cy='5.2' r='2' fill='black'/%3E%3Ccircle cx='16' cy='26.8' r='2' fill='black'/%3E%3Ccircle cx='5.2' cy='16' r='2' fill='black'/%3E%3Ccircle cx='26.8' cy='16' r='2' fill='black'/%3E%3Ccircle cx='8.4' cy='8.4' r='2' fill='black'/%3E%3Ccircle cx='23.6' cy='8.4' r='2' fill='black'/%3E%3Ccircle cx='8.4' cy='23.6' r='2' fill='black'/%3E%3Ccircle cx='23.6' cy='23.6' r='2' fill='black'/%3E%3C/svg%3E");
+}
+
+.kod-fortune-pillar--surplus {
+  --kod-fortune-accent: #c4a035;
+  border-top-color: #c4a035;
+}
+.kod-fortune-pillar--surplus .kod-fortune-pillar__icon {
+  /* stacked grain / wheat sheaf */
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M15.1 29h1.8V17.2c1.9.3 3.3 1.2 4.2 2.6l1.4-1c-1.1-1.8-2.9-2.9-5.1-3.3V12c2.2-.3 3.9-1.6 4.8-3.5l-1.5-.8c-.7 1.4-1.9 2.3-3.5 2.6V7.5c1.4-.3 2.5-1.2 3.1-2.5l-1.6-.8c-.4.9-1.2 1.5-2.2 1.7V2.8h-1.8v3.1c-1-.2-1.8-.8-2.2-1.7l-1.6.8c.6 1.3 1.7 2.2 3.1 2.5v2.8c-1.6-.3-2.8-1.2-3.5-2.6l-1.5.8c.9 1.9 2.6 3.2 4.8 3.5v3.5c-2.2.4-4 1.5-5.1 3.3l1.4 1c.9-1.4 2.3-2.3 4.2-2.6V29z'/%3E%3Cpath fill='black' d='M12.2 19.2c-.9 1.3-.9 2.7 0 4 .9-1.3.9-2.7 0-4zm7.6 0c.9 1.3.9 2.7 0 4-.9-1.3-.9-2.7 0-4zM10.6 14.5c-.7 1.1-.7 2.2 0 3.3.7-1.1.7-2.2 0-3.3zm10.8 0c.7 1.1.7 2.2 0 3.3-.7-1.1-.7-2.2 0-3.3zM9.8 10.2c-.6.9-.6 1.9 0 2.8.6-.9.6-1.9 0-2.8zm12.4 0c.6.9.6 1.9 0 2.8-.6-.9-.6-1.9 0-2.8z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M15.1 29h1.8V17.2c1.9.3 3.3 1.2 4.2 2.6l1.4-1c-1.1-1.8-2.9-2.9-5.1-3.3V12c2.2-.3 3.9-1.6 4.8-3.5l-1.5-.8c-.7 1.4-1.9 2.3-3.5 2.6V7.5c1.4-.3 2.5-1.2 3.1-2.5l-1.6-.8c-.4.9-1.2 1.5-2.2 1.7V2.8h-1.8v3.1c-1-.2-1.8-.8-2.2-1.7l-1.6.8c.6 1.3 1.7 2.2 3.1 2.5v2.8c-1.6-.3-2.8-1.2-3.5-2.6l-1.5.8c.9 1.9 2.6 3.2 4.8 3.5v3.5c-2.2.4-4 1.5-5.1 3.3l1.4 1c.9-1.4 2.3-2.3 4.2-2.6V29z'/%3E%3Cpath fill='black' d='M12.2 19.2c-.9 1.3-.9 2.7 0 4 .9-1.3.9-2.7 0-4zm7.6 0c.9 1.3.9 2.7 0 4-.9-1.3-.9-2.7 0-4zM10.6 14.5c-.7 1.1-.7 2.2 0 3.3.7-1.1.7-2.2 0-3.3zm10.8 0c.7 1.1.7 2.2 0 3.3-.7-1.1-.7-2.2 0-3.3zM9.8 10.2c-.6.9-.6 1.9 0 2.8.6-.9.6-1.9 0-2.8zm12.4 0c.6.9.6 1.9 0 2.8-.6-.9-.6-1.9 0-2.8z'/%3E%3C/svg%3E");
+}
+
+.kod-fortune-pillar--standing {
+  --kod-fortune-accent: #9b8fd4;
+  border-top-color: #9b8fd4;
+}
+.kod-fortune-pillar--standing .kod-fortune-pillar__icon {
+  /* Imperial Roman galea: brush crest, brow, cheek guards, neck guard, face opening */
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M15.2 1.8h1.6v2.4c3.2.4 5.7 2.4 6.6 5.4.5 1.7.5 3.5.1 5.1l1.6.4c.5-1.9.5-4-.1-6.1C23.8 5.1 20.5 2.6 16.8 2.2V1.8h-1.6v.4c-3.7.4-7 2.9-8.2 6.8-.6 2.1-.6 4.2-.1 6.1l1.6-.4c-.4-1.6-.4-3.4.1-5.1.9-3 3.4-5 6.6-5.4V1.8z'/%3E%3Cpath fill='black' d='M9.2 13.2c0-3.6 3-6.5 6.8-6.5s6.8 2.9 6.8 6.5v2.8c0 1.1-.3 2.1-.8 3l1.6 1.1c.4-.4.7-.9.9-1.5.3-.9.5-1.8.5-2.8V13c0-1.2-.2-2.3-.6-3.4C23.4 6.2 20 3.8 16 3.8S8.6 6.2 7.6 9.6c-.4 1.1-.6 2.2-.6 3.4v2.4c0 1 .2 1.9.5 2.8.2.6.5 1.1.9 1.5l1.6-1.1c-.5-.9-.8-1.9-.8-3v-2.8z'/%3E%3Cpath fill='black' d='M10.4 16.8v4.6c0 1.2.7 2.3 1.8 2.8l.9-1.5c-.4-.2-.7-.7-.7-1.3v-3.2c0-1.8 1.2-3.3 2.8-3.8v-1.7c-2.7.5-4.8 2.8-4.8 5.6v-.5zm11.2 0c0-2.8-2.1-5.1-4.8-5.6v1.7c1.6.5 2.8 2 2.8 3.8v3.2c0 .6-.3 1.1-.7 1.3l.9 1.5c1.1-.5 1.8-1.6 1.8-2.8v-4.6z'/%3E%3Cpath fill='black' d='M11.6 24.2h8.8c1.4 0 2.6 1 2.9 2.4l.3 1.4H8.4l.3-1.4c.3-1.4 1.5-2.4 2.9-2.4zm1.2 1.7c-.3.3-.5.7-.5 1.1h7.4c0-.4-.2-.8-.5-1.1H12.8z'/%3E%3Cpath fill='black' d='M14.4 8.6h3.2v1.6h-3.2V8.6zM13.6 11.2h4.8v1.3h-4.8v-1.3z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M15.2 1.8h1.6v2.4c3.2.4 5.7 2.4 6.6 5.4.5 1.7.5 3.5.1 5.1l1.6.4c.5-1.9.5-4-.1-6.1C23.8 5.1 20.5 2.6 16.8 2.2V1.8h-1.6v.4c-3.7.4-7 2.9-8.2 6.8-.6 2.1-.6 4.2-.1 6.1l1.6-.4c-.4-1.6-.4-3.4.1-5.1.9-3 3.4-5 6.6-5.4V1.8z'/%3E%3Cpath fill='black' d='M9.2 13.2c0-3.6 3-6.5 6.8-6.5s6.8 2.9 6.8 6.5v2.8c0 1.1-.3 2.1-.8 3l1.6 1.1c.4-.4.7-.9.9-1.5.3-.9.5-1.8.5-2.8V13c0-1.2-.2-2.3-.6-3.4C23.4 6.2 20 3.8 16 3.8S8.6 6.2 7.6 9.6c-.4 1.1-.6 2.2-.6 3.4v2.4c0 1 .2 1.9.5 2.8.2.6.5 1.1.9 1.5l1.6-1.1c-.5-.9-.8-1.9-.8-3v-2.8z'/%3E%3Cpath fill='black' d='M10.4 16.8v4.6c0 1.2.7 2.3 1.8 2.8l.9-1.5c-.4-.2-.7-.7-.7-1.3v-3.2c0-1.8 1.2-3.3 2.8-3.8v-1.7c-2.7.5-4.8 2.8-4.8 5.6v-.5zm11.2 0c0-2.8-2.1-5.1-4.8-5.6v1.7c1.6.5 2.8 2 2.8 3.8v3.2c0 .6-.3 1.1-.7 1.3l.9 1.5c1.1-.5 1.8-1.6 1.8-2.8v-4.6z'/%3E%3Cpath fill='black' d='M11.6 24.2h8.8c1.4 0 2.6 1 2.9 2.4l.3 1.4H8.4l.3-1.4c.3-1.4 1.5-2.4 2.9-2.4zm1.2 1.7c-.3.3-.5.7-.5 1.1h7.4c0-.4-.2-.8-.5-1.1H12.8z'/%3E%3Cpath fill='black' d='M14.4 8.6h3.2v1.6h-3.2V8.6zM13.6 11.2h4.8v1.3h-4.8v-1.3z'/%3E%3C/svg%3E");
+}
+
+.kod-fortune-pillar--tradition {
+  --kod-fortune-accent: #6fc4b0;
+  border-top-color: #6fc4b0;
+}
+.kod-fortune-pillar--tradition .kod-fortune-pillar__icon {
+  /* Greek column: capital (echinus + abacus) + fluted shaft + base */
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M5.5 4.2h21v2.2H5.5V4.2zm1.5 2.8h18c0 1.1-.5 2-1.3 2.7-.5.4-1.1.8-1.6 1.3H9.9c-.5-.5-1.1-.9-1.6-1.3-.8-.7-1.3-1.6-1.3-2.7zm3.6 5.2h11.8v14.2h-2V14.4h-2.2v11.8h-2.2V14.4h-2.2v11.8H12V14.4H9.8v11.8H7.8V12.2h2.8zM6.2 27.2h19.6v1.6H6.2v-1.6zm1.4 2.2h16.8V31H7.6v-1.6z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M5.5 4.2h21v2.2H5.5V4.2zm1.5 2.8h18c0 1.1-.5 2-1.3 2.7-.5.4-1.1.8-1.6 1.3H9.9c-.5-.5-1.1-.9-1.6-1.3-.8-.7-1.3-1.6-1.3-2.7zm3.6 5.2h11.8v14.2h-2V14.4h-2.2v11.8h-2.2V14.4h-2.2v11.8H12V14.4H9.8v11.8H7.8V12.2h2.8zM6.2 27.2h19.6v1.6H6.2v-1.6zm1.4 2.2h16.8V31H7.6v-1.6z'/%3E%3C/svg%3E");
+}
+
+.sl-markdown-content .kod-fortune-hall > * {
+  margin-top: 0 !important;
+}
+
+/* --- Hierarchy diagram: parallel axis ladders + Ruler crown -------------- */
+.kod-hier-diagram {
+  margin: 1.25rem 0 1.55rem;
+  padding: 0.85rem 0.75rem 1rem;
+  border: 1px solid color-mix(in srgb, var(--kod-blood) 30%, #333);
+  border-radius: 3px;
+  background: #0a0808;
+}
+.kod-hier-ruler {
+  box-sizing: border-box;
+  margin: 0 0 0.85rem !important;
+  padding: 0.7rem 0.9rem;
+  text-align: center;
+  border: 1px solid color-mix(in srgb, var(--kod-blood) 55%, #444);
+  border-radius: 2px;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--kod-blood-deep) 65%, #1a0c0c),
+    #100808 80%
+  );
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--kod-blood) 20%, transparent);
+}
+.kod-hier-ruler__title {
+  font-family: var(--kod-font-display);
+  font-size: 1.15rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #f0c0c0;
+  margin: 0 0 0.25rem;
+}
+.kod-hier-ruler__note {
+  margin: 0;
+  font-size: 0.9em;
+  line-height: 1.45;
+  color: #d0b0b0;
+}
+.kod-hier-join {
+  display: flex;
+  justify-content: center;
+  gap: 0.35rem;
+  margin: 0 0 0.55rem;
+  color: color-mix(in srgb, var(--kod-blood-bright) 70%, #666);
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  opacity: 0.85;
+}
+.kod-hier-axes {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.5rem;
+  align-items: stretch;
+}
+@media (max-width: 50rem) {
+  .kod-hier-axes {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 28rem) {
+  .kod-hier-axes {
+    grid-template-columns: 1fr;
+  }
+}
+.kod-hier-axis {
+  box-sizing: border-box;
+  margin: 0 !important;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  border: 1px solid #2a2424;
+  border-top: 3px solid var(--kod-hier-accent, #666);
+  border-radius: 2px;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--kod-hier-accent, #444) 14%, #0c0a0a),
+    #0a0808 70%
+  );
+  overflow: hidden;
+}
+.kod-hier-axis--arms {
+  --kod-hier-accent: #b85a4a;
+}
+.kod-hier-axis--faith {
+  --kod-hier-accent: #7a8fd4;
+}
+.kod-hier-axis--coin {
+  --kod-hier-accent: #c4a035;
+}
+.kod-hier-axis--blood {
+  --kod-hier-accent: #8a5a9a;
+}
+.kod-hier-axis__head {
+  /* Fixed head band so every axis ladder starts on the same baseline */
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  min-height: 5.35rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 0.55rem 0.5rem 0.55rem;
+  text-align: center;
+  border-bottom: 1px solid color-mix(in srgb, #f2efe9 8%, #2a2222);
+}
+.kod-hier-axis__name {
+  font-family: var(--kod-font-display);
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #fff8f0;
+  margin: 0 0 0.35rem;
+  flex: 0 0 auto;
+}
+.kod-hier-axis__domain {
+  margin: 0;
+  font-size: 0.78em;
+  line-height: 1.35;
+  color: var(--kod-silver-dim);
+  flex: 1 1 auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+.kod-hier-rungs {
+  list-style: none;
+  margin: 0;
+  padding: 0.35rem 0.4rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.28rem;
+  flex: 1 1 auto;
+}
+.kod-hier-rungs li {
+  margin: 0 !important;
+  padding: 0.35rem 0.4rem;
+  text-align: center;
+  font-size: 0.82em;
+  letter-spacing: 0.04em;
+  color: var(--kod-silver);
+  border: 1px solid color-mix(in srgb, var(--kod-hier-accent, #666) 25%, #333);
+  border-radius: 2px;
+  background: color-mix(in srgb, #0c0a0a 70%, transparent);
+}
+.kod-hier-rungs li strong {
+  display: block;
+  background: none !important;
+  color: #fff8f0;
+  font-size: 0.95em;
+  margin-bottom: 0.1rem;
+  font-family: var(--kod-font-display);
+  letter-spacing: 0.06em;
+}
+/* Top of ladder (Honoured) slightly emphasised */
+.kod-hier-rungs li:first-child {
+  border-color: color-mix(in srgb, var(--kod-hier-accent, #666) 55%, #444);
+  background: color-mix(in srgb, var(--kod-hier-accent, #444) 18%, #0c0a0a);
+}
+/* Bottom (Outcast) quieter */
+.kod-hier-rungs li:last-child {
+  opacity: 0.88;
+  color: var(--kod-silver-dim);
+}
+.kod-hier-caption {
+  margin: 0.75rem 0 0 !important;
+  text-align: center;
+  font-size: 0.92em;
+  line-height: 1.5;
+  color: var(--kod-silver-dim);
+}
+.sl-markdown-content .kod-hier-diagram > *,
+.sl-markdown-content .kod-hier-axes > * {
+  margin-top: 0 !important;
+}
+
+/* Harm track pairing as compact grid */
+.kod-harm-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+  margin: 1rem 0 1.25rem;
+}
+@media (max-width: 45rem) {
+  .kod-harm-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.kod-harm-col {
+  margin: 0 !important;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid #2a2424;
+  border-radius: 2px;
+}
+.kod-harm-col--phys {
+  border-left: 3px solid var(--kod-blood);
+  background: color-mix(in srgb, var(--kod-blood-deep) 28%, #0c0c0c);
+}
+.kod-harm-col--ment {
+  border-left: 3px solid #5a4ab0;
+  background: color-mix(in srgb, #1a1440 40%, #0c0c0c);
+}
+.kod-harm-col--soc {
+  border-left: 3px solid #c4a035;
+  background: color-mix(in srgb, #3a2a10 40%, #0c0c0c);
+}
+.kod-harm-col__label {
+  font-family: var(--kod-font-display);
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin: 0 0 0.4rem;
+  color: var(--kod-silver-bright);
+}
+.kod-harm-col ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.kod-harm-col li {
+  margin: 0.2rem 0 !important;
+  font-size: 0.92em;
+  color: var(--kod-silver);
+}
+.kod-harm-col li strong {
+  background: none !important;
+  color: #fff8f0;
+}
+
+.sl-markdown-content .kod-seed-grid > *,
+.sl-markdown-content .kod-phases > *,
+.sl-markdown-content .kod-tier-ladder > *,
+.sl-markdown-content .kod-harm-grid > * {
+  margin-top: 0 !important;
+}
+
+

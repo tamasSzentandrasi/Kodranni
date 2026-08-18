@@ -1,0 +1,1114 @@
+/* --- from custom.css 786-855 --- */
+/* --- Two lanes (player / ST) — forced equal height ------------------------- */
+.sl-markdown-content .kod-lanes {
+  display: grid !important;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+  margin: 1.25rem 0 1.5rem;
+  align-items: stretch;
+  /* equal row tracks when multi-column */
+  grid-auto-rows: 1fr;
+}
+
+@media (min-width: 50rem) {
+  .sl-markdown-content .kod-lanes {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Kill Starlight sibling margin-top inside layout shells */
+.sl-markdown-content .kod-lanes > *,
+.sl-markdown-content .kod-domain-stack > *,
+.sl-markdown-content .kod-domain-lane__bricks > *,
+.sl-markdown-content .kod-widget__controls > *,
+.sl-markdown-content .kod-archetypes > * {
+  margin-top: 0 !important;
+}
+
+.sl-markdown-content .kod-lane {
+  display: flex !important;
+  flex-direction: column;
+  box-sizing: border-box;
+  min-height: 0;
+  height: 100%;
+  align-self: stretch;
+  padding: 0.9rem 1.05rem;
+  border-radius: 2px;
+  border: 1px solid #2a2424;
+}
+
+.sl-markdown-content .kod-lane--player {
+  border-left: 3px solid #1f8a4c;
+  background: linear-gradient(160deg, color-mix(in srgb, #0f6b38 42%, #0c0c0c), #0c0c0c 72%);
+}
+
+.sl-markdown-content .kod-lane--st {
+  border-left: 3px solid var(--kod-blood);
+  background: linear-gradient(160deg, color-mix(in srgb, var(--kod-blood-deep) 50%, #0c0c0c), #0c0c0c 72%);
+}
+
+.sl-markdown-content .kod-lane__title {
+  font-family: var(--kod-font-display);
+  font-size: 0.95rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin: 0 0 0.45rem;
+  color: var(--kod-silver-bright);
+  flex: 0 0 auto;
+}
+
+.sl-markdown-content .kod-lane--player .kod-lane__title {
+  color: #6fd99a;
+}
+
+.sl-markdown-content .kod-lane p {
+  margin: 0;
+  flex: 1 1 auto;
+  font-size: 0.98em;
+  line-height: 1.55;
+  color: var(--kod-silver);
+}
+
+
+/* --- from custom.css 1180-1866 --- */
+/* --- Die tier icons (d6 cube · d8 diamond · d12 hex) ---------------------- */
+/* Colours deliberately separated: cool slate / warm silver / gold */
+.kod-die {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.2em;
+  height: 1.2em;
+  vertical-align: -0.2em;
+  flex-shrink: 0;
+  line-height: 0;
+  color: var(--kod-silver);
+  overflow: visible;
+}
+
+.kod-die__svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+}
+
+.kod-die--d6 {
+  color: #6a9bb8; /* cool steel-blue — harder */
+}
+
+.kod-die--d8 {
+  color: #e6e0d4; /* warm bone-silver — ordinary */
+}
+
+.kod-die--d12 {
+  color: #e0b44a; /* amber gold — easier */
+}
+
+.kod-die--d20 {
+  color: #b8a0d8; /* soft plum — Omen / fate, not an action tier */
+}
+
+.kod-die--lg {
+  width: 3.1rem;
+  height: 3.1rem;
+  vertical-align: middle;
+}
+
+/* Inline chip: icon + label (replaces bare **d6** in prose)
+   Sit on the text baseline — avoid “floating” above the line. */
+.kod-die-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.22em;
+  padding: 0.12em 0.38em 0.14em 0.3em;
+  margin: 0 0.06em;
+  border-radius: 3px;
+  border: 1px solid color-mix(in srgb, currentColor 28%, #333);
+  background: color-mix(in srgb, currentColor 8%, #121010);
+  vertical-align: middle;
+  white-space: nowrap;
+  line-height: 1;
+  font-weight: 400;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, #f2efe9 4%, transparent);
+  position: relative;
+  top: -0.02em; /* optical centre with Bellefair body */
+}
+
+.kod-die-chip--d6 {
+  color: #8eb8d0;
+  border-color: color-mix(in srgb, #4a7a96 55%, #333);
+  background: color-mix(in srgb, #1a3548 55%, #0a0c0e);
+}
+
+.kod-die-chip--d8 {
+  color: #f0ebe3;
+  border-color: color-mix(in srgb, #c4b8a8 50%, #333);
+  background: color-mix(in srgb, #3a3530 35%, #0e0c0a);
+}
+
+.kod-die-chip--d12 {
+  color: #f2d078;
+  border-color: color-mix(in srgb, #c4a035 55%, #333);
+  background: color-mix(in srgb, #4a3810 45%, #0e0c08);
+}
+
+.kod-die-chip--d20 {
+  color: #d4c0f0;
+  border-color: color-mix(in srgb, #7a5ab0 50%, #333);
+  background: color-mix(in srgb, #2a1a40 50%, #0c0a0e);
+}
+
+.kod-die-chip .kod-die {
+  width: 1.15em;
+  height: 1.15em;
+  vertical-align: 0;
+  color: inherit;
+  position: relative;
+  top: 0;
+}
+
+.kod-die-chip__label {
+  font-family: var(--kod-font-display);
+  font-size: 0.95em;
+  letter-spacing: 0.03em;
+  color: inherit;
+  line-height: 1;
+  display: inline-block;
+}
+
+.kod-die-chip__count {
+  font-family: var(--kod-font-display);
+  font-size: 0.95em;
+  letter-spacing: 0.02em;
+  opacity: 0.9;
+  line-height: 1;
+}
+
+/* Showcase row — Dice Types section */
+.kod-die-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+  margin: 1.25rem 0 1.5rem;
+}
+
+@media (min-width: 42rem) {
+  .kod-die-row {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.kod-die-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.2rem;
+  padding: 1rem 0.75rem 0.95rem;
+  border-radius: 2px;
+  border: 1px solid #3a3330;
+  background: #0c0a0a;
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, #f2efe9 5%, transparent),
+    0 0 0 1px color-mix(in srgb, #000 50%, transparent);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.kod-die-card--d6 {
+  border-color: color-mix(in srgb, #4a7a96 55%, #333);
+  background: linear-gradient(180deg, color-mix(in srgb, #1a3548 50%, #0a0a0a), #0a0a0a 75%);
+}
+
+.kod-die-card--d8 {
+  border-color: color-mix(in srgb, #c4b8a8 45%, #333);
+  background: linear-gradient(180deg, color-mix(in srgb, #3a3530 50%, #0a0a0a), #0a0a0a 75%);
+}
+
+.kod-die-card--d12 {
+  border-color: color-mix(in srgb, #c4a035 50%, #333);
+  background: linear-gradient(180deg, color-mix(in srgb, #4a3810 48%, #0a0a0a), #0a0a0a 75%);
+}
+
+.kod-die-card__name {
+  margin: 0.45rem 0 0 !important;
+  font-family: var(--kod-font-display);
+  font-size: 1.25rem;
+  letter-spacing: 0.04em;
+  color: var(--kod-silver-bright);
+}
+
+.kod-die-card__name .kod-die-chip {
+  margin: 0;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+  font-size: 1.15em;
+}
+
+.kod-die-card__role {
+  margin: 0.15rem 0 0 !important;
+  font-size: 0.88em;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--kod-silver-dim);
+}
+
+.kod-die-card__meta {
+  margin: 0.35rem 0 0 !important;
+  font-size: 0.9em;
+  color: var(--kod-silver);
+  line-height: 1.4;
+}
+
+.kod-die-card--d6 .kod-die-card__role {
+  color: #7aafc8;
+}
+
+.kod-die-card--d8 .kod-die-card__role {
+  color: #d4cec4;
+}
+
+.kod-die-card--d12 .kod-die-card__role {
+  color: #e0b84a;
+}
+
+/* Tier dial buttons with embedded die icons */
+.kod-widget__btn--die {
+  width: auto !important;
+  min-width: 5.25rem !important;
+  max-width: none !important;
+  gap: 0.35rem;
+  padding: 0 0.55rem !important;
+  font-family: var(--kod-font-display);
+  font-size: 1rem !important;
+}
+
+.kod-widget__btn--die .kod-die {
+  width: 1.35rem;
+  height: 1.35rem;
+}
+
+
+
+.kod-table-strip__tier {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.kod-table-strip .kod-die {
+  width: 1.05rem;
+  height: 1.05rem;
+  vertical-align: -0.12em;
+}
+
+.kod-table-strip .kod-die-chip {
+  margin: 0;
+  padding: 0.05em 0.3em;
+  font-size: 0.95em;
+}
+
+/* --- Teaching widgets ------------------------------------------------------ */
+.kod-widget {
+  margin: 1.35rem 0 1.6rem;
+  padding: 1rem 1.1rem 1.15rem;
+  border: 1px solid color-mix(in srgb, var(--kod-blood) 42%, #3a3030);
+  border-radius: 2px;
+  background: #0b0a0a;
+  text-align: center;
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, #f2efe9 5%, transparent),
+    0 0 0 1px color-mix(in srgb, #000 50%, transparent);
+}
+
+.kod-widget__title {
+  font-family: var(--kod-font-display);
+  font-size: 1.15rem;
+  letter-spacing: 0.04em;
+  color: var(--kod-silver-bright);
+  margin: 0 0 0.55rem;
+}
+
+.kod-widget__intro {
+  margin: 0 auto 0.85rem;
+  max-width: 40rem;
+  color: var(--kod-silver-dim);
+  font-size: 0.98em;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.kod-widget__controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center; /* same baseline — never stretch-first / margin-second */
+  align-content: center;
+  gap: 0.45rem;
+  margin: 0 auto 0.9rem;
+}
+
+.kod-widget__btn {
+  appearance: none;
+  -webkit-appearance: none;
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  width: 5.75rem;
+  height: 2.5rem;
+  min-width: 5.75rem;
+  min-height: 2.5rem;
+  max-width: 5.75rem;
+  max-height: 2.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #3a3330;
+  background: #141010;
+  color: var(--kod-silver);
+  font-family: var(--kod-font-body);
+  font-size: 0.82rem;
+  line-height: 1;
+  margin: 0 !important; /* Starlight sibling gap would lift the first button */
+  padding: 0;
+  border-radius: 2px;
+  cursor: pointer;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  vertical-align: middle;
+  transition: border-color 0.12s ease, background 0.12s ease, color 0.12s ease;
+}
+
+/* Scout Marks: number-only chips */
+.kod-widget[data-widget='marks-ladder'] .kod-widget__btn {
+  width: 2.65rem;
+  min-width: 2.65rem;
+  max-width: 2.65rem;
+  height: 2.65rem;
+  min-height: 2.65rem;
+  max-height: 2.65rem;
+  font-family: var(--kod-font-display);
+  font-size: 1.15rem;
+  letter-spacing: 0.02em;
+  color: var(--kod-silver-bright);
+}
+
+/* Tier dial: d6 / d8 / d12 */
+.kod-widget[data-widget='tier-dial'] .kod-widget__btn {
+  width: 4.5rem;
+  min-width: 4.5rem;
+  max-width: 4.5rem;
+  font-family: var(--kod-font-display);
+  font-size: 1.05rem;
+  letter-spacing: 0.03em;
+}
+
+/* Ladder caption — pure text; only the active tier phrase lights faintly */
+.kod-tier-ladder {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.35rem 0.55rem;
+  margin: 0 auto 0.75rem;
+  max-width: 32rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--kod-silver-dim);
+  pointer-events: none; /* not interactive — die buttons below are the control */
+  user-select: none;
+}
+
+.kod-tier-ladder [data-ladder] {
+  opacity: 0.38;
+  transition: opacity 0.18s ease, color 0.18s ease;
+  font-family: var(--kod-font-display);
+  letter-spacing: 0.03em;
+}
+
+/* Active phrase only — no border, no fill (must not look clickable) */
+.kod-tier-ladder[data-active='d6'] [data-ladder='d6'] {
+  opacity: 1;
+  color: #8eb8d0;
+}
+
+.kod-tier-ladder[data-active='d8'] [data-ladder='d8'] {
+  opacity: 1;
+  color: var(--kod-silver-bright);
+}
+
+.kod-tier-ladder[data-active='d12'] [data-ladder='d12'] {
+  opacity: 1;
+  color: #e8c86a;
+}
+
+.kod-tier-ladder__arrow {
+  letter-spacing: 0.03em;
+}
+
+.kod-tier-ladder__mid {
+  padding: 0 0.15rem;
+}
+
+.kod-tier-ladder__end {
+  letter-spacing: 0.04em;
+}
+
+.kod-widget[data-widget='tier-dial'] .kod-widget__panel {
+  text-align: left;
+  max-width: 34rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.kod-widget[data-widget='tier-dial'] .kod-widget__panel p {
+  margin: 0.35rem 0;
+  line-height: 1.65;
+}
+
+.kod-widget[data-widget='tier-dial'] .kod-tier-stat {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem 0.55rem;
+  font-family: var(--kod-font-display);
+  font-size: 1.05em;
+  letter-spacing: 0.03em;
+  color: var(--kod-silver-bright);
+  margin: 0 0 0.5rem !important;
+  line-height: 1.35;
+}
+
+.kod-widget[data-widget='tier-dial'] .kod-tier-stat__meta {
+  color: var(--kod-silver);
+  line-height: 1.4;
+  font-family: var(--kod-font-body);
+  font-size: 0.95em;
+  letter-spacing: 0.02em;
+}
+
+.kod-widget[data-widget='tier-dial'] .kod-tier-stat .kod-die-chip,
+.kod-widget[data-widget='tier-dial'] .kod-tier-ex .kod-die-chip {
+  vertical-align: middle;
+  top: 0;
+}
+
+.kod-widget[data-widget='tier-dial'] .kod-tier-ex {
+  color: var(--kod-silver-dim);
+  font-size: 0.95em;
+  border-top: 1px solid color-mix(in srgb, #f2efe9 8%, transparent);
+  padding-top: 0.45rem;
+  margin-top: 0.55rem !important;
+}
+
+/* --- Tide demo track ------------------------------------------------------- */
+.kod-widget[data-widget='tide-demo'] {
+  text-align: left;
+}
+
+.kod-widget[data-widget='tide-demo'] .kod-widget__title,
+.kod-widget[data-widget='tide-demo'] .kod-widget__intro {
+  text-align: center;
+}
+
+.kod-widget[data-widget='tide-demo'] .kod-step-flow__track .kod-widget__btn {
+  width: 2.5rem;
+  min-width: 2.5rem;
+  max-width: 2.5rem;
+}
+
+.kod-tide {
+  margin: 0.75rem 0 1.1rem;
+  padding: 0.75rem 0.85rem 1rem;
+  border: 1px solid color-mix(in srgb, var(--kod-blood) 30%, #333);
+  border-radius: 2px;
+  background: #0a0909;
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, #f2efe9 4%, transparent),
+    0 0 0 1px color-mix(in srgb, #000 55%, transparent);
+}
+
+.kod-tide__labels {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.55rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.kod-tide__label--a {
+  color: #e8a090;
+  font-family: var(--kod-font-display);
+}
+
+.kod-tide__label--b {
+  color: #7ec4c0;
+  font-family: var(--kod-font-display);
+  text-align: right;
+}
+
+/* Outer rail: room for the pivot above/below the bar */
+.kod-tide__rail {
+  position: relative;
+  width: 100%;
+  padding: 0.85rem 0;
+}
+
+.kod-tide__track {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 1.75rem;
+  border-radius: 2px;
+  overflow: hidden;
+  border: 1px solid #3a3230;
+  background: #121010;
+  box-shadow:
+    inset 0 0 14px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(242, 239, 233, 0.06);
+}
+
+.kod-tide__fill {
+  height: 100%;
+  transition: width 0.35s ease;
+  min-width: 0;
+}
+
+.kod-tide__fill--a {
+  background: linear-gradient(
+    90deg,
+    #5a1818 0%,
+    #a02828 55%,
+    #c45a4a 100%
+  );
+  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.35);
+}
+
+.kod-tide__fill--b {
+  background: linear-gradient(
+    90deg,
+    #2a6a68 0%,
+    #3d8f8a 50%,
+    #1a4544 100%
+  );
+  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.35);
+}
+
+/* Pivot marker: diamond head + stem + foot — reads as a balance needle */
+.kod-tide__marker {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1.1rem;
+  margin-left: -0.55rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 3;
+  pointer-events: none;
+  transition: left 0.35s ease;
+  filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.85));
+}
+
+.kod-tide__marker-head {
+  width: 0.72rem;
+  height: 0.72rem;
+  background: linear-gradient(145deg, #faf6ef 0%, #c8c0b4 55%, #8a8580 100%);
+  border: 1px solid #1a1512;
+  transform: rotate(45deg);
+  border-radius: 1px;
+  box-shadow:
+    0 0 0 1px rgba(250, 246, 239, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  flex-shrink: 0;
+}
+
+.kod-tide__marker-stem {
+  flex: 1 1 auto;
+  width: 0.2rem;
+  min-height: 0.4rem;
+  margin: -0.12rem 0;
+  background: linear-gradient(
+    180deg,
+    #f2efe9 0%,
+    #d4cfc6 40%,
+    #9a948c 100%
+  );
+  border-left: 1px solid rgba(0, 0, 0, 0.45);
+  border-right: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 1px;
+}
+
+.kod-tide__marker-foot {
+  width: 0;
+  height: 0;
+  border-left: 0.38rem solid transparent;
+  border-right: 0.38rem solid transparent;
+  border-top: 0.48rem solid #e8e2d8;
+  filter: drop-shadow(0 1px 0 #1a1512);
+  flex-shrink: 0;
+}
+
+.kod-tide__readout {
+  margin: 0.35rem 0 0;
+  font-size: 0.9em;
+  line-height: 1.5;
+  color: var(--kod-silver-dim);
+  text-align: center;
+}
+
+.kod-widget[data-widget='tide-demo'] .kod-widget__panel {
+  text-align: left;
+  margin-top: 0.35rem;
+  padding: 0.65rem 0.15rem 0.25rem;
+  color: var(--kod-silver);
+  font-size: 0.98em;
+  line-height: 1.65;
+}
+
+.kod-widget[data-widget='tide-demo'] .kod-widget__panel[hidden] {
+  display: none;
+}
+
+.kod-widget[data-widget='tide-demo'] .kod-widget__panel ul {
+  margin: 0.45rem 0 0;
+  padding-inline-start: 1.2rem;
+}
+
+.kod-widget[data-widget='tide-demo'] .kod-widget__panel li {
+  margin: 0.3rem 0;
+}
+
+.kod-widget[data-widget='tide-demo'][data-tide-at='0'] .kod-tide__fill--a {
+  filter: brightness(0.65);
+}
+
+.kod-widget[data-widget='tide-demo'][data-tide-at='0'] .kod-tide__readout {
+  color: #e8a090;
+}
+
+.kod-widget__btn:hover,
+.kod-widget__btn:focus-visible {
+  border-color: var(--kod-blood-bright);
+  outline: none;
+}
+
+.kod-widget__btn[aria-pressed='true'] {
+  border-color: var(--kod-blood-bright);
+  background: color-mix(in srgb, var(--kod-blood-deep) 55%, #141010);
+  color: #fff8f0;
+}
+
+.kod-widget__panel {
+  min-height: 4.5rem;
+  padding: 0.75rem 0.85rem;
+  border-left: 3px solid var(--kod-blood);
+  background: color-mix(in srgb, var(--kod-blood-deep) 25%, transparent);
+  color: #e4dfd6;
+  line-height: 1.6;
+  text-align: left;
+  font-size: 1em;
+}
+
+.kod-widget__panel strong {
+  background: none;
+  color: #fff8f0;
+}
+
+/* --- Glossary terms -------------------------------------------------------- */
+.kod-term {
+  border-bottom: 1px dotted color-mix(in srgb, var(--kod-blood-bright) 55%, transparent);
+  cursor: help;
+  position: relative;
+}
+
+.kod-term:hover,
+.kod-term:focus-visible {
+  color: #fff8f0;
+}
+
+.kod-term::after {
+  content: attr(data-tip);
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 0.4rem);
+  transform: translateX(-50%) translateY(0.15rem);
+  width: max(12rem, min(18rem, 70vw));
+  padding: 0.5rem 0.65rem;
+  background: #121010;
+  border: 1px solid color-mix(in srgb, var(--kod-blood) 45%, #444);
+  color: #e8e2d8;
+  font-size: 0.88rem;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.12s ease, transform 0.12s ease;
+  z-index: 40;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+}
+
+.kod-term:hover::after,
+.kod-term:focus-visible::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+
+/* --- from custom.css 1941-2117 --- */
+/* --- Generic lane accents (reuse Player/ST shell) -------------------------- */
+.sl-markdown-content .kod-lane--amber {
+  border-left: 3px solid #c4a035;
+  background: linear-gradient(160deg, color-mix(in srgb, #5c4010 42%, #0c0c0c), #0c0c0c 72%);
+}
+.sl-markdown-content .kod-lane--amber .kod-lane__title {
+  color: #e0c56a;
+}
+.sl-markdown-content .kod-lane--violet {
+  border-left: 3px solid #6a5ab8;
+  background: linear-gradient(160deg, color-mix(in srgb, #2a2450 48%, #0c0c0c), #0c0c0c 72%);
+}
+.sl-markdown-content .kod-lane--violet .kod-lane__title {
+  color: #b0a4e8;
+}
+.sl-markdown-content .kod-lane--teal {
+  border-left: 3px solid #4a9a8a;
+  background: linear-gradient(160deg, color-mix(in srgb, #0a2a28 55%, #0c0c0c), #0c0c0c 72%);
+}
+.sl-markdown-content .kod-lane--teal .kod-lane__title {
+  color: #6fc4b0;
+}
+
+/* --- Content tabs (HTML panels, not JS scene maps) ------------------------- */
+.kod-widget[data-widget='content-tabs'] {
+  text-align: left;
+}
+.kod-widget[data-widget='content-tabs'] .kod-widget__title,
+.kod-widget[data-widget='content-tabs'] .kod-widget__intro {
+  text-align: center;
+}
+.kod-widget[data-widget='content-tabs'] .kod-widget__btn {
+  width: auto;
+  min-width: 6.25rem;
+  max-width: none;
+  height: auto;
+  min-height: 2.5rem;
+  max-height: none;
+  padding: 0.4rem 0.85rem;
+  white-space: normal;
+  line-height: 1.25;
+}
+.kod-widget[data-widget='content-tabs'] .kod-widget__panel {
+  min-height: 0;
+  margin: 0;
+}
+.kod-widget[data-widget='content-tabs'] .kod-widget__panel[hidden] {
+  display: none !important;
+}
+.kod-widget[data-widget='content-tabs'] .kod-widget__panel > *:first-child {
+  margin-top: 0;
+}
+
+/* --- Campaign seed cards --------------------------------------------------- */
+.kod-seed-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+  margin: 0;
+}
+@media (min-width: 50rem) {
+  .kod-seed-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.kod-seed {
+  box-sizing: border-box;
+  margin: 0 !important;
+  padding: 0.85rem 0.95rem;
+  border: 1px solid #3a3030;
+  border-radius: 3px;
+  background: color-mix(in srgb, #0c0c0c 70%, transparent);
+  height: 100%;
+}
+.kod-seed--hist {
+  border-left: 3px solid #8a8078;
+  background: linear-gradient(160deg, color-mix(in srgb, #2a2420 55%, #0c0c0c), #0c0c0c 75%);
+}
+.kod-seed--semi {
+  border-left: 3px solid #c4a035;
+  background: linear-gradient(160deg, color-mix(in srgb, #3a2a10 50%, #0c0c0c), #0c0c0c 75%);
+}
+.kod-seed--invented {
+  border-left: 3px solid var(--kod-blood);
+  background: linear-gradient(160deg, color-mix(in srgb, var(--kod-blood-deep) 45%, #0c0c0c), #0c0c0c 75%);
+}
+.kod-seed__title {
+  font-family: var(--kod-font-display);
+  font-size: 1.05rem;
+  letter-spacing: 0.03em;
+  color: #fff8f0;
+  margin: 0 0 0.55rem;
+  line-height: 1.3;
+}
+.kod-seed p {
+  margin: 0;
+  font-size: 0.95em;
+  line-height: 1.55;
+  color: var(--kod-silver);
+}
+.kod-seed__facts {
+  list-style: none;
+  margin: 0 !important;
+  padding: 0 !important;
+  text-align: left;
+}
+.kod-seed__facts li {
+  margin: 0 0 0.45rem !important;
+  padding: 0;
+  font-size: 0.92em;
+  line-height: 1.5;
+  color: var(--kod-silver);
+}
+.kod-seed__facts li:last-child {
+  margin-bottom: 0 !important;
+}
+.kod-seed__facts strong {
+  color: #e8a0a0;
+  letter-spacing: 0.04em;
+  font-size: 0.88em;
+  text-transform: uppercase;
+  background: none !important;
+}
+.kod-seed__hook {
+  margin-top: 0.55rem !important;
+  color: #d8d2c8;
+  font-style: italic;
+}
+
+.kod-tide-line {
+  margin: 0.55rem 0 0.65rem !important;
+  padding: 0.4rem 0.55rem;
+  border-left: 3px solid var(--kod-blood);
+  background: color-mix(in srgb, var(--kod-blood-deep) 25%, #0c0a0a);
+  font-size: 0.95em;
+  color: #e4dfd6;
+}
+
+/* --- Phase / step cards ---------------------------------------------------- */
+.kod-phases {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin: 1.1rem 0 1.4rem;
+}
+.kod-phase {
+  box-sizing: border-box;
+  margin: 0 !important;
+  padding: 0.75rem 0.95rem;
+  border: 1px solid #2a2424;
+  border-left: 3px solid var(--kod-blood);
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--kod-blood-deep) 22%, #0c0c0c);
+}
+.kod-phase__n {
+  display: inline-block;
+  font-family: var(--kod-font-display);
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--kod-blood-bright);
+  margin: 0 0 0.25rem;
+}
+.kod-phase__title {
+  font-family: var(--kod-font-display);
+  font-size: 1.1rem;
+  letter-spacing: 0.03em;
+  color: var(--kod-silver-bright);
+  margin: 0 0 0.35rem;
+}
+.kod-phase p {
+  margin: 0;
+  font-size: 0.98em;
+  line-height: 1.55;
+  color: var(--kod-silver);
+}
+
+
+/* --- from custom.css 2487-2633 --- */
+/* --- Step flow (click-through wizard) -------------------------------------- */
+.kod-widget[data-widget='step-flow'] {
+  text-align: left;
+  padding-bottom: 1.25rem;
+}
+.kod-widget[data-widget='step-flow'] .kod-widget__title,
+.kod-widget[data-widget='step-flow'] .kod-widget__intro {
+  text-align: center;
+}
+.kod-step-flow__track {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.35rem;
+  margin: 0 0 1rem;
+}
+.kod-step-flow__track .kod-widget__btn {
+  width: 2.35rem;
+  min-width: 2.35rem;
+  max-width: 2.35rem;
+  height: 2.35rem;
+  min-height: 2.35rem;
+  max-height: 2.35rem;
+  border-radius: 50%;
+  font-family: var(--kod-font-display);
+  font-size: 0.95rem;
+  padding: 0;
+}
+.kod-step-flow__label {
+  text-align: center;
+  font-family: var(--kod-font-display);
+  font-size: 1.05rem;
+  letter-spacing: 0.04em;
+  color: var(--kod-silver-bright);
+  margin: 0 0 0.75rem;
+}
+.kod-widget[data-widget='step-flow'] .kod-widget__panel {
+  min-height: 8rem;
+  border-left-color: color-mix(in srgb, var(--kod-blood) 70%, #666);
+}
+.kod-widget[data-widget='step-flow'] .kod-widget__panel[hidden] {
+  display: none !important;
+}
+.kod-step-flow__nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.9rem;
+}
+.kod-step-flow__nav button {
+  appearance: none;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0.4rem 0.85rem;
+  border: 1px solid #3a3330;
+  border-radius: 2px;
+  background: #141010;
+  color: var(--kod-silver);
+  font-family: var(--kod-font-body);
+  font-size: 0.9rem;
+  cursor: pointer;
+  letter-spacing: 0.03em;
+}
+.kod-step-flow__nav button:hover:not(:disabled),
+.kod-step-flow__nav button:focus-visible:not(:disabled) {
+  border-color: var(--kod-blood-bright);
+  color: #fff8f0;
+  outline: none;
+}
+.kod-step-flow__nav button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+.kod-step-best {
+  margin: 0.85rem 0 0;
+  padding: 0.65rem 0.8rem;
+  border-left: 3px solid #4a9a8a;
+  background: color-mix(in srgb, #0a1414 85%, #1a2e2a);
+  color: #cfd8d6;
+  font-size: 0.95em;
+  line-height: 1.55;
+}
+.kod-step-best strong {
+  background: none !important;
+  color: #8fd4c0;
+  display: block;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.3rem;
+}
+.kod-step-example {
+  margin: 0.75rem 0 0;
+  padding: 0.65rem 0.8rem;
+  border-left: 3px solid var(--kod-blood);
+  background: color-mix(in srgb, var(--kod-blood-deep) 28%, transparent);
+  color: #e4dfd6;
+  font-size: 0.95em;
+  line-height: 1.55;
+}
+.kod-step-example strong {
+  background: none !important;
+  color: var(--kod-blood-bright);
+  display: block;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.3rem;
+}
+.kod-menu-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.55rem;
+  margin: 0.75rem 0 0;
+}
+@media (min-width: 45rem) {
+  .kod-menu-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.kod-menu-item {
+  box-sizing: border-box;
+  margin: 0 !important;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid #3a3030;
+  border-radius: 2px;
+  background: #100e0e;
+}
+.kod-menu-item__buy {
+  font-family: var(--kod-font-display);
+  font-size: 1rem;
+  color: #fff8f0;
+  margin: 0 0 0.3rem;
+  letter-spacing: 0.02em;
+}
+.kod-menu-item__cost {
+  margin: 0;
+  font-size: 0.9em;
+  color: var(--kod-silver-dim);
+  line-height: 1.45;
+}
+.kod-menu-item__cost strong {
+  background: none !important;
+  color: #e8a0a0;
+}
+
+/* Walked steps on a stepper / Tide demo */
+.kod-step-flow__track .kod-widget__btn.is-done,
+.kod-widget[data-widget='tide-demo'] .kod-widget__btn.is-done {
+  border-color: color-mix(in srgb, var(--kod-blood) 35%, #444);
+  color: var(--kod-silver-dim);
+  background: color-mix(in srgb, var(--kod-blood-deep) 18%, #141010);
+}
+
+.kod-widget[data-widget='step-flow']:focus-visible,
+.kod-widget[data-widget='tide-demo']:focus-visible {
+  outline: 1px solid var(--kod-blood-bright);
+  outline-offset: 3px;
+}
+
+.kod-die-card:hover {
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, #f2efe9 8%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--kod-blood) 35%, transparent);
+}
+
+.kod-widget__panel {
+  transition: background 0.18s ease;
+}
+
+

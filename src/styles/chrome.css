@@ -1,0 +1,255 @@
+/* --- from custom.css 178-279 --- */
+/* -------------------------------------------------------------------------- */
+/* Chapter title icon                                                          */
+/* -------------------------------------------------------------------------- */
+
+.kod-page-title {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin-top: 1rem;
+  padding-bottom: 0.45em;
+  border-bottom: 1px solid color-mix(in srgb, var(--kod-blood) 45%, var(--sl-color-hairline));
+}
+
+.kod-page-title h1 {
+  margin: 0 !important;
+  font-size: var(--sl-text-h1);
+  line-height: var(--sl-line-height-headings);
+  color: var(--sl-color-white);
+}
+
+.kod-page-title__icon {
+  flex-shrink: 0;
+  width: 3.25rem;
+  height: 3.25rem;
+  object-fit: contain;
+  filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.45));
+}
+
+@media (min-width: 50rem) {
+  .kod-page-title__icon {
+    width: 3.75rem;
+    height: 3.75rem;
+  }
+}
+
+/* Sidebar chapter icons */
+.sidebar-content a[href] {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.sidebar-content a[href] img.kod-sidebar-icon {
+  flex-shrink: 0;
+  width: 1.15rem;
+  height: 1.15rem;
+  object-fit: contain;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.sidebar-content summary {
+  font-family: var(--kod-font-display);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Dividers — real vertical space + visible ornament (hr::after alone is flaky) */
+/* -------------------------------------------------------------------------- */
+
+.sl-markdown-content hr {
+  border: none;
+  margin: 2.5rem auto;
+  max-width: 16rem;
+  height: 1.75rem;
+  display: block;
+  position: relative;
+  overflow: visible;
+  background: linear-gradient(
+    to right,
+    transparent,
+    color-mix(in srgb, var(--kod-blood) 70%, #444) 20%,
+    color-mix(in srgb, var(--kod-blood) 70%, #444) 80%,
+    transparent
+  );
+  background-size: 100% 1px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Rune triad set by Head.astro (data-runes). Fallback until JS runs. */
+.sl-markdown-content hr::after {
+  content: 'ᚱ · ᚢ · ᚾ';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  padding: 0 0.85rem;
+  background: var(--kod-black);
+  color: var(--kod-blood-bright);
+  font-family: 'Noto Sans Runic', 'Segoe UI Historic', 'Noto Sans', sans-serif;
+  font-size: 0.95rem;
+  letter-spacing: 0.28em;
+  line-height: 1;
+  white-space: nowrap;
+  font-weight: 400;
+  font-synthesis: none;
+}
+
+.sl-markdown-content hr[data-runes]::after {
+  content: attr(data-runes);
+}
+
+
+/* --- from custom.css 592-648 --- */
+/* -------------------------------------------------------------------------- */
+/* Pagination (prev / next)                                                    */
+/* -------------------------------------------------------------------------- */
+
+.pagination-links {
+  gap: 0.75rem !important;
+}
+
+.pagination-links a {
+  border: 1px solid color-mix(in srgb, var(--kod-blood) 40%, #333) !important;
+  background: #0e0c0c !important;
+  border-radius: 2px !important;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.pagination-links a:hover {
+  border-color: var(--kod-blood-bright) !important;
+  background: color-mix(in srgb, var(--kod-blood-deep) 40%, #0e0c0c) !important;
+}
+
+.pagination-links .link-title {
+  font-family: var(--kod-font-display) !important;
+  color: var(--kod-silver-bright) !important;
+  letter-spacing: 0.03em;
+}
+
+.pagination-links .link-label {
+  color: var(--kod-silver-dim) !important;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.75rem !important;
+}
+
+.card {
+  border-color: color-mix(in srgb, var(--kod-blood) 25%, #333) !important;
+  background: #121212 !important;
+}
+
+.starlight-aside__title {
+  font-family: var(--kod-font-display);
+  letter-spacing: 0.03em;
+}
+
+.starlight-aside--tip .starlight-aside__icon {
+  display: none !important;
+}
+
+/* Site logo — user falcon mark (square PNG with circular composition) */
+site-title img,
+.site-title img {
+  height: 2.15rem !important;
+  width: 2.15rem !important;
+  object-fit: cover !important;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--kod-blood) 55%, transparent);
+}
+
+
+/* --- from custom.css 1909-1940 --- */
+/* --- Sticky “at the table” strip ------------------------------------------- */
+.kod-table-strip {
+  position: sticky;
+  bottom: 0;
+  z-index: 30;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem 1rem;
+  margin: 2rem -0.25rem 0;
+  padding: 0.55rem 0.85rem;
+  background: color-mix(in srgb, #050505 88%, var(--kod-blood-deep));
+  border-top: 1px solid color-mix(in srgb, var(--kod-blood) 45%, #333);
+  backdrop-filter: blur(6px);
+  font-size: 0.92rem;
+  color: var(--kod-silver);
+}
+
+.kod-table-strip__rules {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.35rem 0.85rem;
+  letter-spacing: 0.03em;
+}
+
+.kod-table-strip__rules span strong {
+  background: none;
+  color: #fff8f0;
+}
+
+
+/* --- from custom.css 2675-2730 --- */
+
+/* Sidebar: blood accent on current page */
+.sidebar-content a[aria-current='page'],
+.sidebar-content [aria-current='page'] {
+  color: var(--kod-silver-bright) !important;
+  border-inline-start: 2px solid var(--kod-blood-bright);
+  padding-inline-start: 0.45rem;
+  background: color-mix(in srgb, var(--kod-blood-deep) 35%, transparent);
+}
+
+/* Right TOC */
+.right-sidebar a {
+  color: var(--kod-silver-dim);
+}
+
+.right-sidebar a:hover,
+.right-sidebar a[aria-current='true'] {
+  color: var(--kod-silver-bright);
+}
+
+/* Header bar */
+header.header {
+  border-bottom: 1px solid color-mix(in srgb, var(--kod-blood) 35%, #1a1414);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+}
+
+/* Site logo mark */
+site-title img,
+.site-title img {
+  filter: drop-shadow(0 0 8px rgba(138, 21, 21, 0.35));
+}
+
+/* Content images in markdown (non-breath) */
+.sl-markdown-content img:not(.kod-page-title__icon):not(.kod-sidebar-icon):not(.kod-archetype__panel) {
+  border-radius: 1px;
+}
+
+/* Focus: blood ring, no browser default blue */
+:focus-visible {
+  outline: 1px solid var(--kod-blood-bright);
+  outline-offset: 2px;
+}
+
+/* Mobile menu button chrome */
+starlight-menu-button button,
+.menu-toggle {
+  border-color: color-mix(in srgb, var(--kod-blood) 40%, #333) !important;
+}
+
+/* Last updated / edit meta — quiet */
+.sl-markdown-content .meta,
+.last-updated {
+  color: var(--kod-silver-dim);
+  font-size: 0.85em;
+  letter-spacing: 0.04em;
+}
+

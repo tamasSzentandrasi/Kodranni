@@ -1,0 +1,243 @@
+/* --- from custom.css 88-177 --- */
+/* Typography */
+.sl-markdown-content,
+.sidebar-content {
+  font-family: var(--kod-font-body);
+}
+
+.sl-markdown-content {
+  font-size: 1.22rem;
+  line-height: 1.82;
+  letter-spacing: 0.02em;
+  color: var(--kod-silver);
+}
+
+.sl-markdown-content h1,
+.sl-markdown-content h2,
+.sl-markdown-content h3,
+.sl-markdown-content h4,
+.kod-page-title h1,
+[data-has-hero] .hero h1.title,
+site-title,
+.sidebar-content .large,
+.right-sidebar h2 {
+  font-family: var(--kod-font-display);
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  color: var(--kod-silver-bright);
+}
+
+.sl-markdown-content h1,
+.kod-page-title h1 {
+  border-bottom: none;
+}
+
+.sl-markdown-content h2 {
+  margin-top: 2em;
+  border-bottom: 1px solid var(--sl-color-hairline);
+  padding-bottom: 0.2em;
+}
+
+/* Core terms: bright register — Bellefair has no bold cut */
+.sl-markdown-content strong {
+  color: var(--kod-silver-bright);
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  background: none;
+}
+
+.sl-markdown-content .kod-term,
+.sl-markdown-content dfn {
+  font-variant: small-caps;
+  letter-spacing: 0.06em;
+}
+
+.sl-markdown-content em,
+.sl-markdown-content i {
+  color: #e4dfd6;
+  font-style: italic;
+}
+
+.sl-markdown-content a:not(.sl-link-button) {
+  color: #e06060;
+  text-decoration: none;
+}
+
+.sl-markdown-content a:not(.sl-link-button):hover {
+  color: #ff8a8a;
+}
+
+.sidebar-content a {
+  text-decoration: none;
+}
+
+site-title {
+  font-family: var(--kod-font-display) !important;
+  letter-spacing: 0.06em !important;
+  font-size: 1.5rem !important;
+}
+
+[data-has-hero] .tagline {
+  font-family: var(--kod-font-body);
+  letter-spacing: 0.06em;
+  color: var(--kod-silver-dim);
+  font-size: 1.25rem;
+}
+
+[data-has-hero] .hero h1.title {
+  font-family: var(--kod-font-display);
+  letter-spacing: 0.04em;
+}
+
+
+/* --- from custom.css 554-591 --- */
+/* --- Lists: quiet colour on native markers (keep scroll-reveal intact) ---- */
+.sl-markdown-content ul:not(:where(.not-content *)) {
+  list-style-type: disc;
+  padding-inline-start: 1.5rem;
+}
+
+.sl-markdown-content ul:not(:where(.not-content *)) > li::marker {
+  color: color-mix(in srgb, var(--kod-blood-bright) 75%, #8a7070);
+  font-size: 0.85em;
+}
+
+.sl-markdown-content ul:not(:where(.not-content *)) ul {
+  list-style-type: circle;
+}
+
+.sl-markdown-content ul:not(:where(.not-content *)) ul > li::marker {
+  color: var(--kod-silver-dim);
+}
+
+.sl-markdown-content > ol,
+.sl-markdown-content ol:not(:where(.not-content *)) {
+  list-style-type: upper-roman;
+  padding-inline-start: 1.75rem;
+}
+
+.sl-markdown-content ol:not(:where(.not-content *)) > li::marker {
+  color: var(--kod-blood-bright);
+  font-family: var(--kod-font-display);
+}
+
+.sl-markdown-content ol ol:not(:where(.not-content *)) {
+  list-style-type: lower-alpha;
+}
+
+.sl-markdown-content ol ol:not(:where(.not-content *)) > li::marker {
+  color: var(--kod-silver-dim);
+}
+
+
+/* --- from custom.css 649-670 --- */
+/* Chapter body rhythm — slightly more air after H2/H3 */
+.sl-markdown-content h2 {
+  margin-top: 2.35em;
+}
+
+.sl-markdown-content h3 {
+  margin-top: 1.65em;
+  letter-spacing: 0.04em;
+  color: #ebe6de;
+}
+
+.sl-markdown-content h4 {
+  margin-top: 1.35em;
+  color: #ddd8d0;
+}
+
+/* Body copy — keep even; do not enlarge “lead” paragraphs */
+.sl-markdown-content > p {
+  font-size: 1em;
+  line-height: 1.82;
+}
+
+
+/* --- from custom.css 1867-1908 --- */
+/* --- Scroll reveal / quote ink --------------------------------------------- */
+.sl-markdown-content blockquote.kod-reveal,
+.sl-markdown-content .kod-reveal-item {
+  opacity: 0;
+  transform: translateY(0.45rem);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+
+.sl-markdown-content blockquote.kod-reveal.is-in,
+.sl-markdown-content .kod-reveal-item.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+.sl-markdown-content blockquote.kod-type.is-in {
+  /* soft “written” feel without full typewriter on all chars */
+  animation: kod-ink 0.7s ease both;
+}
+
+@keyframes kod-ink {
+  from {
+    opacity: 0;
+    filter: blur(1.5px);
+  }
+  to {
+    opacity: 1;
+    filter: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sl-markdown-content blockquote.kod-reveal,
+  .sl-markdown-content .kod-reveal-item,
+  .sl-markdown-content blockquote.kod-type.is-in {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+    filter: none !important;
+    transition: none !important;
+  }
+}
+
+
+/* --- from custom.css 2634-2674 --- */
+/* ========================================================================== */
+/* Aesthetic finish pass — dark-only grim register                             */
+/* ========================================================================== */
+
+/* Main content panel: slight inset depth */
+.main-frame,
+.sl-container {
+  isolation: isolate;
+}
+
+.sl-markdown-content {
+  max-width: 43rem;
+}
+
+/* Quotes & tables: keep the established card styles above (do not override).
+   The display:block table rule broke short tables (border full-width, columns narrow). */
+
+/* Code / inline — grim tablet, not terminal candy */
+.sl-markdown-content code:not(pre code) {
+  border: 1px solid #2a2222;
+  border-radius: 2px;
+  padding: 0.08em 0.35em;
+  font-size: 0.86em;
+  font-family: ui-monospace, 'Cascadia Code', 'Segoe UI Mono', monospace;
+  color: #d4cec4;
+  background: #121010;
+}
+
+.sl-markdown-content pre {
+  border: 1px solid color-mix(in srgb, var(--kod-blood) 28%, #333);
+  border-radius: 2px;
+  background: #0c0a0a !important;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, #f2efe9 4%, transparent);
+}
+
+.sl-markdown-content pre code {
+  font-family: ui-monospace, 'Cascadia Code', 'Segoe UI Mono', monospace;
+  font-size: 0.82em;
+  line-height: 1.55;
+  color: #c8c2b8 !important;
+}
+
