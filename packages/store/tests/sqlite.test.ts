@@ -68,6 +68,26 @@ describe('sqlite store', () => {
     expect(again.getCharacterBySlug('torvald')?.exertion.current).toBe(4);
     again.close();
   });
+
+  it('keeps drafts in listCharacters but omits them from the public snapshot', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'kodranni-store-'));
+    dirs.push(dir);
+    const store = openSqliteStore(join(dir, 'community.sqlite'));
+    seedDemoCampaign(store);
+    const torvald = store.getCharacterBySlug('torvald')!;
+    store.putCharacter({
+      ...torvald,
+      id: 'draft-1',
+      slug: 'mara-reed',
+      name: 'Mara Reed',
+      status: 'draft',
+    });
+    expect(store.listCharacters().some((c) => c.slug === 'mara-reed')).toBe(true);
+    expect(store.toPublicSnapshot().characters.some((c) => c.slug === 'mara-reed')).toBe(
+      false,
+    );
+    store.close();
+  });
 });
 
 describe('campaign.toml', () => {

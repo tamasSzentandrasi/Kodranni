@@ -3,12 +3,18 @@ import type {
   CommunityStorePort,
   MemberRecord,
 } from '@kodranni/store';
+import {
+  listCharactersForAccount,
+  resolveFocusedCharacter,
+} from './creation.js';
 
 export function resolveCharacterByAccount(
   store: CommunityStorePort,
   platform: string,
   accountId: string,
 ): CharacterRecord | undefined {
+  const focused = resolveFocusedCharacter(store, platform, accountId);
+  if (focused) return focused;
   const members = store.listMembers();
   const m = members.find(
     (x) => x.platform === platform && x.accountId === accountId && x.characterId,
@@ -17,9 +23,20 @@ export function resolveCharacterByAccount(
     const byId = store.getCharacterById(m.characterId);
     if (byId) return byId;
   }
+  const bound = listCharactersForAccount(store, platform, accountId);
+  if (bound.length === 1) return bound[0];
   return store.listCharacters().find(
     (c) => c.player?.platform === platform && c.player?.accountId === accountId,
   );
+}
+
+/** All non-dead characters tied to this platform account. */
+export function resolveCharactersByAccount(
+  store: CommunityStorePort,
+  platform: string,
+  accountId: string,
+): CharacterRecord[] {
+  return listCharactersForAccount(store, platform, accountId);
 }
 
 export function resolveRoleByAccount(
@@ -49,6 +66,7 @@ export function mapMember(store: CommunityStorePort, cmd: MapMemberCommand): Mem
     platform: cmd.platform,
     accountId: cmd.accountId,
     characterId: ch.id,
+    focusedCharacterId: ch.id,
     role: cmd.role ?? 'player',
     displayName: cmd.displayName,
   };

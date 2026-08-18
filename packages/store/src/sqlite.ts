@@ -127,13 +127,14 @@ export function openSqliteStore(path: string): CommunityStorePort {
     listMembers: () => {
       const rows = db
         .prepare(
-          `SELECT platform, account_id, display_name, character_id, role FROM members`,
+          `SELECT platform, account_id, display_name, character_id, focused_character_id, role FROM members`,
         )
         .all() as {
         platform: string;
         account_id: string;
         display_name: string | null;
         character_id: string | null;
+        focused_character_id: string | null;
         role: string;
       }[];
       return rows.map((r) => ({
@@ -141,22 +142,25 @@ export function openSqliteStore(path: string): CommunityStorePort {
         accountId: r.account_id,
         displayName: r.display_name ?? undefined,
         characterId: r.character_id ?? undefined,
+        focusedCharacterId: r.focused_character_id ?? undefined,
         role: r.role as MemberRecord['role'],
       }));
     },
     putMember: (m) => {
       db.prepare(
-        `INSERT INTO members (platform, account_id, display_name, character_id, role)
-         VALUES (?, ?, ?, ?, ?)
+        `INSERT INTO members (platform, account_id, display_name, character_id, focused_character_id, role)
+         VALUES (?, ?, ?, ?, ?, ?)
          ON CONFLICT(platform, account_id) DO UPDATE SET
            display_name = excluded.display_name,
            character_id = excluded.character_id,
+           focused_character_id = excluded.focused_character_id,
            role = excluded.role`,
       ).run(
         m.platform,
         m.accountId,
         m.displayName ?? null,
         m.characterId ?? null,
+        m.focusedCharacterId ?? null,
         m.role,
       );
     },
@@ -258,6 +262,8 @@ export function openSqliteStore(path: string): CommunityStorePort {
           ).data,
         ) as CommunityRecord,
       );
+      // Archive/public only — unfinished drafts stay off the published snapshot.
+      // Live campaign-ui must use listCharacters() so /create sheets resolve.
       const characters = (
         db.prepare(`SELECT data FROM characters WHERE status != 'draft' ORDER BY name`).all() as {
           data: string;

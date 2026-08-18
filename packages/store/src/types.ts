@@ -94,6 +94,30 @@ export interface PlayerBinding {
   accountId?: string;
 }
 
+/**
+ * Creation / Weighing budgets on a character sheet.
+ * Dice for Birth Omen / Guiding Hand are rolled on the bot; points land here.
+ */
+export interface CreationState {
+  /** Remaining Foundation points to spend. */
+  foundationPoints: number;
+  /** Remaining Skill points to spend. */
+  skillPoints: number;
+  /** Remaining Words for The Wanting (own sheet only). */
+  words: number;
+  /** True after bot grants Birth Omen points. */
+  birthOmenGranted: boolean;
+  /** True after bot grants Guiding Hand points. */
+  guidingHandGranted: boolean;
+  /**
+   * When true, free creation spends are blocked (living record).
+   * ST unlock re-opens spends; drafts start unlocked.
+   */
+  locked: boolean;
+  /** ST prebuilt open for player claim. */
+  claimable?: boolean;
+}
+
 export interface SkillProgress {
   name: string;
   rating: number;
@@ -172,9 +196,17 @@ export interface CharacterRecord {
   slug: string;
   name: string;
   kind: 'pc' | 'npc' | 'notable';
-  status: 'active' | 'dead' | 'draft';
+  /**
+   * draft — private prep / Weighing
+   * pending_review — player confirmed; awaiting ST Approve
+   * active — living campaign record
+   * dead — retired
+   */
+  status: 'active' | 'dead' | 'draft' | 'pending_review';
   /** Binding claim to the community (creation tie). */
   communityTie: string;
+  /** Longer concept prose (2–5 sentences); optional alongside communityTie. */
+  concept?: string;
   /** “Who do we see?” — short claim, shown as quote. */
   whoWeSee?: string;
   /**
@@ -184,6 +216,13 @@ export interface CharacterRecord {
   avatar?: string;
   /** Player account mapped to this character (display on sheet). */
   player?: PlayerBinding;
+  /**
+   * Platform user who started create/claim on the bot.
+   * Confirm uses this for @mention; Approve binds player from it.
+   */
+  initiator?: PlayerBinding & { accountId: string };
+  /** Budgets + lock; absent on legacy seed sheets means locked living record. */
+  creation?: CreationState;
   foundations: Record<string, number>;
   foundationsEffective: Record<string, number>;
   skills: SkillProgress[];
@@ -211,7 +250,10 @@ export interface MemberRecord {
   platform: 'discord' | 'fluxer';
   accountId: string;
   displayName?: string;
+  /** Primary / last-focused character id (soft default). */
   characterId?: string;
+  /** When multiple alive PCs are bound, which one acts by default. */
+  focusedCharacterId?: string;
   role: 'player' | 'storyteller';
 }
 

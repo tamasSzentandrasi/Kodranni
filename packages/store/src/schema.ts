@@ -1,5 +1,5 @@
 /** schema_version in meta table */
-export const SCHEMA_VERSION = 1;
+export const SCHEMA_VERSION = 2;
 
 export const MIGRATIONS: { version: number; sql: string }[] = [
   {
@@ -49,6 +49,12 @@ CREATE TABLE IF NOT EXISTS rolls (
   parent_roll_id TEXT,
   data TEXT NOT NULL
 );
+`,
+  },
+  {
+    version: 2,
+    sql: `
+ALTER TABLE members ADD COLUMN focused_character_id TEXT;
 `,
   },
 ];
