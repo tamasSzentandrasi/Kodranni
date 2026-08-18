@@ -2,7 +2,9 @@
 
 Living checklist. Author marks: **✅** pursue · **🚫** do not pursue · **❓** maybe / caution.
 
-**Status:** how-to-play removed; Dice Mechanics first after Introduction; design questions C1–C10 resolved into rules/architecture from author notes (2026-08).
+**Status:** Guidebook harden-and-raise programme (2026-08-18). C1–C10 remain locked. New locks from that session are in §C11.
+
+Architecture and IA: [starlight-guidebook.md](./starlight-guidebook.md).
 
 ---
 
@@ -10,91 +12,111 @@ Living checklist. Author marks: **✅** pursue · **🚫** do not pursue · **�
 
 | Gap | Priority | Notes | Mark |
 |-----|----------|--------|------|
-| Worked examples (full roll walkthroughs) | High | Incorporate **inline** at the relevant mechanic — not a separate examples chapter | ✅ |
-| Storyteller chapter (pitfalls, pacing, when not to roll) | High | Intro + “when to roll” in Dice Mechanics may suffice | ❓ |
-| Character sheet reference | Medium | Empty structure OK; real product is high-visual **shared sheet** (automation), not a long rules page | 🚫 |
-| Community sheet reference | Medium | Same — Community Tracker product surface | 🚫 |
-| Examples of Echo wording | Medium | — | 🚫 |
-| Foundation Myth examples | Medium | Craft UI + toggle effects matter more than prose catalogue | 🚫 |
-| Trait catalogue (optional, non-normative) | Low | Keep custom-first | 🚫 |
-| Aging / trauma Foundation shifts | Medium | Mentioned as possible; no procedure | ❓ |
-| Skill degrade procedure | Medium | **Locked** in Skills (prompted Omen procedure) | ✅ done |
-| Multi-character / downtime montage rules | Low | — | 🚫 |
+| Worked examples inline | High | Pattern established; Tide / Practice / Myth / Dying still to raise | ✅ |
+| Storyteller chapter | High | Intro + Dice “when to roll” + Campaign Setup carry this | ❓ not a standalone page |
+| Character / community sheet pages | Medium | Product surfaces, not rules pages | 🚫 |
+| Echo wording catalogue | Medium | Custom-first | 🚫 |
+| Foundation Myth examples | High | One high-effect teaching Myth (bounty hunter) in Echoes | ✅ |
+| Trait catalogue | Low | Keep custom-first | 🚫 |
+| Aging / trauma Foundation shifts | Medium | Mentioned; no procedure | ❓ |
+| Skill degrade procedure | Medium | Equal d20 bands locked (C11) | ✅ |
+| Multi-character / downtime montage | Low | — | 🚫 |
 | Solo strand guidance | Low | — | 🚫 |
-| Language / literacy | Low | Trait-only for now | ❓ |
-| README deploy / hosting | Medium | Starlight plan | ✅ |
-| Visual identity | Low | High ceiling: imagery, possible motion, roman list cues — simple wins count too | ❓ |
-| Non-English / accessibility pass | Low | Later | 🚫 |
-| How-to-play chapter | — | **Rejected** — unnecessary; examples + when-to-roll rule suffice | 🚫 removed |
+| Language / literacy | Low | Trait-only | ❓ |
+| Visual identity | — | Language locked; evenness in progress | ✅ |
+| Splash page | — | **Rejected** | 🚫 |
+| How-to-play chapter | — | **Rejected** | 🚫 |
+| Print CSS | Low | Later; not this programme | 🚫 |
+| Automation chapter rewrite | — | Frozen until the product is documentable | 🚫 |
+
+### Chapter status (honest)
+
+| Chapter | Status |
+|---------|--------|
+| Introduction | Stable; humour kept |
+| Dice hub / Marks / Omens / Tide | Split + Tide rewrite in this programme |
+| Human Potential | Four pillars only (Echoes out) |
+| Foundations / Traits / Exertion | Stable; quote/example hygiene |
+| Skills | Practice visibility + Practice widget + equal degrade |
+| Echoes | First in Resolution & Continuity; Myth teaching case |
+| Harm | Dying scenario (Healing is not a superpower) |
+| Hierarchies / Inventory | Stable; anchor hygiene |
+| Campaign Setup | Worldbuilding rewrite in this programme |
+| Character Creation | Almost perfect — light touch |
+| Automation | Frozen except rules one-liners + repo-path + `code`/`pre` CSS |
+| Glossary | Rebuild as Reference companion |
 
 ---
 
 ## B. Cross-reference integrity
 
-**Current IA**
+**IA (target)**
 
-- Start here: Introduction → **Dice Mechanics** → Glossary  
-- Human Potential · Resolution & Continuity · Getting Started · Automation  
+- Start here: Introduction
+- Dice Mechanics: Overview → Marks & Tiers → Omens & Consequences → Tide
+- Human Potential · Resolution & Continuity (**Echoes first**) · Getting Started · Automation · **Reference: Glossary**
 
-**Still to verify after each edit**
+**Verify after each edit**
 
-- Anchor IDs match Starlight’s slugger  
-- No orphan pages (how-to-play fully gone)  
-- Splash `index.mdx` actions stay current  
+- Anchor IDs match Starlight’s slugger and land on **visible** headings (not hidden widget panels)
+- No orphan pages
+- No `` `docs/plans/…` `` on player-facing pages
+- Inbound Dice anchors updated after the split
 
 ---
 
-## C. Open design questions
+## C. Locked design questions
 
-Author positions integrated as below. Rules/architecture updated accordingly.
+### C1–C10 (unchanged from author notes, 2026-08)
 
-### C1. Base dice tier
+**C1. Base dice tier** — ST declares every time; safe default **d8**. Encoded as Advantage / Disadvantage (die tier), not a Skill→die map.
 
-**Decision:** Storyteller declares every time (**option 3**), with **safe default d8** (**option 1** as default only). Encoded through **Advantage / Disadvantage** (die tier), not a Skill→die map.  
-**Guide:** [Dice Mechanics — Advantage and Disadvantage](../../src/content/docs/dice-mechanics.md).
+**C2. Advantage stacking** — ST call for that moment. Automation stores the declared tier.
 
-### C2. Advantage stacking
+**C3. Tide arithmetic** — Descriptive + worked example (not a full grind). See C11 for footing.
 
-**Decision:** Storyteller’s decision for that moment (how hard fiction pushes tier; cancel vs stack). Automation stores the final declared tier.
+**C4. Opposed 1vMany / ManyvMany** — Each action is individual; Tide holds collective pressure.
 
-### C3. Tide arithmetic completeness
+**C5. Practice edge cases** — Margin 0 → no forced award. Primitive → no Practice. Degrade prompted only; five lowest-progress Skills; Omen selects how many (bands in C11).
 
-**Decision:** Interpret current function with a **descriptive** example (not a full grind).  
-**Guide:** Tide setup formula + short mill-raid example in Dice Mechanics.
+**C6. Harm & protection** — ST chooses track; no mixed physical+social events; floor rounding.
 
-### C4. Opposed 1vMany / ManyvMany
+**C7. Foundation Myths** — Toggleable, compoundable; ST-only craft; trigger by **explicit tag** on the roll.
 
-**Decision:** Each action is individual; Advantage/Disadvantage from that action’s context. Tide holds collective pressure.
+**C8. Weighing automation** — Created at Concept with budgets; Omen rolls automated; Words spent on the **speaker’s** sheet; ST marks the **target**.
 
-### C5. Practice edge cases
+**C9. Rest & food** — Separate commands for Exertion reclaim and Harm heal. Narrative first.
 
-**Decision:**
+**C10. Maximum Hierarchies** — Hard cap **five**. Diagram on Community Tracker.
 
-- Margin 0 → no forced formula award; fiction/ST.  
-- Primitive → **no Practice**.  
-- Degrade → prompted only; five lowest-progress Skills; Omen selects 0/1/2/3 to degrade (bands 0–4, 5–9, 10–14, 15–20); short leap 0–1 on (0–9, 10–20).
+### C11. Locks from the 2026-08-18 programme
 
-**Guide:** Skills — Improvement / Degradation.
+| Lock | Decision |
+|------|----------|
+| Practice visibility | Exact progress on the **live sheet only**. Adapters (Discord / Fluxer / bot rolls) do **not** print Practice amounts. |
+| Degrade bands (d20 faces 1–20) | Standard: **1–5 → 0**, **6–10 → 1**, **11–15 → 2**, **16–20 → 3**. Short: **1–10 → 0**, **11–20 → 1**. |
+| Tide sizes | **Tiny skirmish**, **Small skirmish**, **Battle** only. No Large / Omen-only size. |
+| Tide imbalance | Same ladder as die tiers. Disadvantaged side keeps its **bad** band; **good** band is taken from N sizes smaller (slight N=1, severe N=2). Omen and Marks move independently. |
+| HP pillars | Four: Foundations, Skills, Traits, Exertion. Echoes is continuity. |
+| Echoes placement | First chapter of Resolution & Continuity. |
+| Glossary | Last group, **Reference**. |
+| Dice split | Hub · Marks & Tiers (incl. pool makeup) · Omens · Tide. |
+| lastUpdated | Off. |
+| Splash | Rejected. Portal is a landing, not a splash. |
+| Humour | Keep the two authorial lines. |
+| Automation chapter | Frozen except game-rule contradictions, repo paths, code CSS. |
+| Foundation Myth example | Bounty hunter / slavers (community Myth). Free extra Exertion vs slavers; Streetwise Practice as if ruling Foundation were maxed. |
+| Healing / Dying | Healing is not a superpower. Without Herbalism, bandages, Handcrafting (splint), etc., the attempt is **Disadvantage**. Best care can still fail. No plot armour. |
+| Portal actions | Guidebook and GitHub are the **same tier**. |
+| Bellefair | Display **and** body. |
 
-### C6. Harm & protection
+### Still open (not blockers for packages 0–3)
 
-**Decision:** Storyteller chooses track; **no mixed** physical+social events; floor rounding confirmed.
-
-### C7. Foundation Myths application
-
-**Decision:** Effects toggleable and compoundable; ST-only craft; trigger by **explicit tag on the roll** (Echo-like).
-
-### C8. Weighing automation depth
-
-**Decision:** Character created at Concept with budgets; Omen rolls automated; Word/Wanting boons = ST instruction for target character option.
-
-### C9. Rest & food double-dipping
-
-**Decision:** **Separate** commands for Exertion reclaim and Harm heal. Narrative first; automation updates state only.
-
-### C10. Maximum Hierarchies
-
-**Decision:** Hard cap **five** — Diagram lives on Community Tracker.
+| Item | Lean |
+|------|------|
+| Tide Tiny-skirmish good-band floor | Good band cannot shrink below one face |
+| Campaign Setup rewrite quality | Author cuts anything that is not the table |
+| Artisan / Trickster / Sage remakes | Brief locked; images not yet supplied |
 
 ---
 
@@ -102,40 +124,31 @@ Author positions integrated as below. Rules/architecture updated accordingly.
 
 | Issue | Action |
 |-------|--------|
-| Heading depth | Prefer H2 for chapter sections |
-| Dash consistency | Editorial pass when touching files |
-| “bot” vs “automation” | Prefer **automation** in player text; platform **bots** in technical pages |
-| Inline examples | Add at mechanic sites over time (✅) |
+| Heading depth | H2 for chapter sections; H3 scannable |
+| Quote markup | One shape (see starlight plan) |
+| “bot” vs “automation” | **automation** in player text |
+| Inline examples | At the mechanic, not a separate chapter |
+| Bold | Term or number, not the clause |
 
 ---
 
-## E. Suggested next content work
-
-1. More **inline** examples (Primitive roll, Dying stabilisation, Echo invoke) where those rules sit.  
-2. Keep C1–C10 as locked unless rules change.  
-3. Sheet/tracker: empty structural wireframes in product repo — **highest visual requirement** long-term.  
-4. Guidebook visual theme pass (high ceiling; roman numerals / small craft wins allowed).  
-5. **No** standalone examples.md or storyteller.md unless ❓ items reopen.
-
----
-
-## F. Capability ↔ doc coverage matrix
+## E. Capability ↔ doc coverage
 
 | Capability | Rules home | Automation page | Architecture plan | Notes |
 |------------|------------|-----------------|-------------------|--------|
-| Dice pools & Marks | dice-mechanics | Yes | Yes | Tier ST-declared + d8 default |
-| Omen / Consequences | dice-mechanics | Yes | Yes | |
-| Opposed margins | dice-mechanics | Yes | Yes | Per-action |
-| Tide | dice-mechanics | Yes | Yes | Example + formula |
-| Practice / level-up / degrade | skills | Yes | Yes | C5 locked |
+| Dice pools & Marks | marks-and-tiers | Yes | Yes | Tier ST-declared + d8 default |
+| Omen / Consequences | omens | Yes | Yes | |
+| Opposed margins | marks-and-tiers | Yes | Yes | Per-action |
+| Tide | tide | Yes | Yes | Three sizes; footing = die-tier ladder |
+| Practice / level-up / degrade | skills | Yes | Yes | Sheet-visible; adapters silent |
 | Exertion | exertion | Yes | Yes | Separate from Harm heal |
 | Echoes / Decadence | echoes | Yes | Yes | |
-| Fortunes | echoes | Yes | Yes | Tracker |
-| Foundation Myths | echoes | Yes | Yes | Tag + craft UI |
-| Harm / Dying | harm | Yes | Yes | ST track; no mix |
+| Fortunes | echoes | Yes | Yes | Ambient community weather |
+| Foundation Myths | echoes | Yes | Yes | Tag + craft UI; bounty-hunter example |
+| Harm / Dying | harm | Yes | Yes | ST track; no mix; Healing not a superpower |
 | Hierarchies / Legacy | hierarchies | Yes | Yes | Max 5 |
 | Inventory | inventory | Yes | Yes | |
-| Character creation / Weighing | character-creation | Yes | Yes | C8 |
-| Campaign / community | campaign-setup | Yes | Yes | Per-community backend |
-| Shared sheet / tracker | automation | Yes | Yes | SSOT |
-| Fluxer + Discord | automation | Yes | Yes | Dual adapters |
+| Character creation / Weighing | character-creation | Yes (one-liner) | Yes | Words on speaker; mark on target |
+| Campaign / community | campaign-setup | Yes | Yes | |
+| Shared sheet / tracker | automation | Yes | Yes | Practice on sheet |
+| Fluxer + Discord | automation | Yes | Yes | Dual adapters; no Practice in chat |
