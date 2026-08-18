@@ -21,12 +21,12 @@ Living checklist. Author marks: **✅** pursue · **🚫** do not pursue · **�
 | Multi-character / downtime montage | Low | — | 🚫 |
 | Solo strand guidance | Low | — | 🚫 |
 | Language / literacy | Low | Trait-only | ❓ |
-| Visual identity | — | Language locked. **Evenness not done** (portal chrome, three medallions, tables vs widgets). | ✅ residual |
+| Visual identity | — | Triad locked (blood / silver / black). Medallions accepted. Tables and identity chrome stay blood. Scrollbar silver. | ✅ done |
 | Splash page | — | **Rejected** | 🚫 |
 | How-to-play chapter | — | **Rejected** | 🚫 |
 | Print CSS | Low | Later; not this programme | 🚫 |
 | Automation chapter rewrite | — | Frozen until the product is documentable | 🚫 |
-| Intro “How the Guide is organised” | High | Still lists Harm before Echoes | ✅ residual |
+| Intro “How the Guide is organised” | High | Echoes before Harm; Automation before Glossary — matches sidebar | ✅ done |
 | CI runs domain tests | High | Pages workflow builds only | ✅ residual |
 | Glossary second-tier Tide terms | Low | Weight, skirmish size, Marks difference | ❓ |
 
@@ -34,7 +34,7 @@ Living checklist. Author marks: **✅** pursue · **🚫** do not pursue · **�
 
 | Chapter | Status |
 |---------|--------|
-| Introduction | Stable; humour kept. Organisation table **out of date** (Harm before Echoes). |
+| Introduction | Stable; humour kept. Organisation table matches sidebar. |
 | Dice hub | Door page. Fine. |
 | Marks & Tiers | Strong. Ladder + tier dial. |
 | Omens | Clear. Consequence = genuine side-effect. Theatrical night-copy stripped. |
@@ -127,18 +127,21 @@ Living checklist. Author marks: **✅** pursue · **🚫** do not pursue · **�
 | Scrollbar | Simple fuller + lozenge. Pewter hover. Never pink / blood. |
 | Prev / next | Folio plates, corner ticks, silver hover. |
 | Heading IDs | Auto slug only. No `{#slug}` in source. |
+| Medallions | Artisan / Trickster / Sage remakes **accepted**. |
+| Identity chrome | Tables, example boxes, `hr` runes, ST lanes stay **blood**. Interactive widgets stay iron-silver. |
+| Social thumbnail | Site-wide `og.jpg` (1200×630 falcon card) on Guidebook pages and the portal. |
 
 ### Still open
 
 | Item | Lean |
 |------|------|
 | Campaign Setup further cut | Author only. Do not invent worldbuilding. |
-| Artisan / Trickster / Sage glass | Remade; still below Warrior. Reopen only with the same brief (medieval, no perspective, high shard count; Sage: no occult glyphs). |
-| Portal chrome parity | Should join the iron-silver lock. |
-| Tables as identity blood vs iron | Undecided. Do not flip without looking at every chapter. |
+| Artisan / Trickster / Sage glass | **Accepted.** Do not remake unless asked. |
+| Tables / identity chrome | **Stay blood.** Locked triad. |
+| Guidebook scrollbar | **Silver.** Fine as shipped. |
 | Glossary Tide second-tier | Optional. Do not bloat. |
 | CI test gate | Should run `test:domain` (at least) before Pages deploy. |
-| Intro organisation table | Must match sidebar (Echoes before Harm). |
+| Social link thumbnail | Shipped: `public/og.jpg` on Guidebook + portal. |
 
 ---
 

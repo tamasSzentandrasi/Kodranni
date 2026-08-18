@@ -74,14 +74,14 @@ Whether the campaign is semi-historical or invented fantasy, if those three cond
 |---------|----------------|
 | [Dice Mechanics](/dice-mechanics/) | When to roll; then [Marks & Tiers](/marks-and-tiers/), [Omens](/omens/), [Tide](/tide/) |
 | [Human Potential](/human-potential/) | [Foundations](/foundations/), [Skills](/skills/), [Traits](/traits/), [Exertion](/exertion/) |
-| [Harm](/harm/) | Injury, Dying, recovery |
 | [Echoes](/echoes/) | Personal stakes, Fortunes, Foundation Myths |
+| [Harm](/harm/) | Injury, Dying, recovery |
 | [Hierarchies](/hierarchies/) | Standing, Reputation, Legacies, the Diagram |
 | [Inventory](/inventory/) | Explicit possession, armour, food, water |
 | [Campaign Setup](/campaign-setup/) | Storyteller work before characters exist |
 | [Character Creation](/character-creation/) | Concept, Foundations, Skills, The Weighing |
-| [Glossary](/glossary/) | Quick definitions of every major term |
 | [Automation](/automation/) | Shared sheets, bots, table workflow |
+| [Glossary](/glossary/) | Quick definitions of every major term |
 
 ----------
 

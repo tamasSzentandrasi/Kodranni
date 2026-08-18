@@ -30,11 +30,11 @@ What is true:
 
 What is not true, and must not be dressed up:
 
-- **Evenness failed.** Warrior stained glass is the bar. Artisan, Sage, and (less so) Trickster are painted figures in glass frames. Portal still uses the old blood scrollbar and blood card-hover. Tables, example boxes, chapter `hr` runes, and ST lanes still speak blood — some of that is identity, some is leftover chrome. The book does not yet feel like one object from portal to last page.
+- **Evenness is not pinnacle, and several items are now closed by the author.** Artisan / Sage / Trickster medallions are **accepted**. Tables and identity chrome stay **blood** (the locked triad: blood, silver, black). Guidebook scrollbar is silver and stays. Portal card-hover is still blood (portal is not on the widget chrome lock). The book is closer to one object than the first verdict said; it is still not even from portal to last page.
 - **Process leaked.** `{#the-weighing}` printed as text. Practice domain awarded only +2 on an opposed loss with Exertion (Marks did not convert). Worldbuilding method prose shipped doubled. Omen copy used theatrical “night brought” language. Each was caught by the author, not by us.
 - **Plans were stale while we shipped.** This file still described packages 0–8 as the work, and a widget file-tree that was never created (`src/scripts/guidebook/widgets/*.ts`). `enhance.ts` is still one client file.
 - **CI builds the book and does not run domain tests.** The Practice stacking bug would have deployed.
-- **Introduction “How the Guide is organised” still lists Harm before Echoes.** Sidebar is correct; the intro table is not.
+- **Introduction organisation table** listed Harm before Echoes; **fixed** (now matches sidebar, including Automation before Glossary).
 - **Campaign Setup** is the weakest chapter relative to Character Creation. Seeds and the nine-step method exist; the weather is thinner.
 - **Bellefair** remains a locked taste risk. Mitigated (measure, contrast, no fake-bold). Not solved. Long Tide and Practice tables still tax the eye.
 - Visual claims in this session were not browser-verified here (no browser tools). Build + CSS inspection is not the same as using the book.
@@ -222,7 +222,7 @@ You generate. We agree the slate, then place under `public/scenes/` and wire `ko
 | Glossary / Automation | — | no plate |
 | Portal | reuse `falconer.jpg` | enormous field + breath fade |
 
-**Stained glass:** Warrior and Mother remain the bar (lead cames, high shard count, colour fields). Artisan / Trickster / Sage were remade 2026-08-18 and are **still more painted than glass**. Residual, highest care if we touch imagery again. Sage: no occult glyphs (held).
+**Stained glass:** Warrior and Mother set the language. Artisan / Trickster / Sage remakes (2026-08-18) are **accepted** — do not remake again unless the author asks. Sage: no occult glyphs (held).
 
 ---
 
@@ -232,7 +232,7 @@ You generate. We agree the slate, then place under `public/scenes/` and wire `ko
 
 Shipped: falconer field, breath fade, wordmark + falcon, three-word tag, succinct lede, three constraints, **Guidebook and Source same tier**.
 
-Residual: scrollbar still blood (`#4a0c0c`); card hover still blood. Not on the Guidebook chrome lock.
+Guidebook scrollbar is silver (locked). Portal still has its own inline CSS (blood card-hover is fine as identity). Social thumbnail: `public/og.jpg` (1200×630 falcon card) on Guidebook pages and the portal.
 
 ---
 
@@ -248,7 +248,7 @@ Residual: scrollbar still blood (`#4a0c0c`); card hover still blood. Not on the 
 | 5 | Campaign Setup worldbuilding | Doubled prose removed. Chapter still the softest. | Partial |
 | 6 | Glossary rebuild | Grouped Reference companion. Anchors work if we do not invent `{#id}`. | Done |
 | 7 | Portal lift | Landing exists; chrome not unified. | Partial |
-| 8 | Plates + remakes | Plates placed. Three medallions below bar. | Partial |
+| 8 | Plates + remakes | Plates placed. Three medallions **accepted**. | Done |
 
 **Not in that programme (still not):** Automation chapter rewrite; campaign-ui / Discord polish; print CSS; new ornament class; replacing Bellefair.
 
@@ -268,9 +268,7 @@ Residual: scrollbar still blood (`#4a0c0c`); card hover still blood. Not on the 
 
 Not a new numbered programme unless one is opened. In priority order:
 
-1. **Evenness** — portal scrollbar + card hover onto iron-silver; decide whether tables stay blood (identity) or join iron; Artisan/Sage/Trickster to Warrior’s glass language if imagery is reopened.
-2. **Process** — run `npm test` (or at least `test:domain`) in CI; never `{#slug}` in Markdown; verify glossary anchors after heading edits; browser-verify UI work.
-3. **Intro IA table** — Echoes before Harm, matching the sidebar.
-4. **Campaign Setup** — only if the author wants another cut. Do not invent worldbuilding.
-5. **Glossary second-tier** — Tide weight, skirmish size, Marks difference. Do not bloat it.
-6. Leave frozen: Automation chapter, Bellefair, closed ornament set, humour lines.
+1. **Process** — run `npm test` (or at least `test:domain`) in CI; never `{#slug}` in Markdown; verify glossary anchors after heading edits; browser-verify UI work.
+2. **Campaign Setup** — only if the author wants another cut. Do not invent worldbuilding.
+3. **Glossary second-tier** — Tide weight, skirmish size, Marks difference. Do not bloat it.
+4. Leave frozen: Automation chapter, Bellefair, closed ornament set, humour lines, accepted medallions, blood identity chrome, silver scrollbar.

@@ -8,6 +8,9 @@ const icon = (name: string) => `${base}${name}`;
 const fontBellefairLatin = icon('fonts/bellefair/bellefair-latin-400-normal.woff2');
 const fontBellefairLatinExt = icon('fonts/bellefair/bellefair-latin-ext-400-normal.woff2');
 const fontRunic = icon('fonts/noto-sans-runic/noto-sans-runic-400-normal.woff2');
+const ogImage = Astro.site
+	? new URL(`${base}og.jpg`, Astro.site).href
+	: icon('og.jpg');
 const fontFacesCss = `
 @font-face {
   font-family: 'Bellefair';
@@ -46,6 +49,13 @@ const fontFacesCss = `
 <link rel="icon" type="image/png" sizes="16x16" href={icon('favicon-16x16.png')} />
 <link rel="apple-touch-icon" sizes="180x180" href={icon('apple-touch-icon.png')} />
 <meta name="theme-color" content="#8a1515" />
+<meta property="og:image" content={ogImage} />
+<meta property="og:image:type" content="image/jpeg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Kodranni — the white falcon on a blood disc. Pre-industrial. Human. Grim." />
+<meta name="twitter:image" content={ogImage} />
+<meta name="twitter:image:alt" content="Kodranni — the white falcon on a blood disc. Pre-industrial. Human. Grim." />
 
 <script>
 	import { chapterIcons, hrefSegmentToSlug } from '../../lib/chapter-icons';
