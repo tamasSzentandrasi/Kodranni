@@ -14,14 +14,20 @@ import hierarchies from '../assets/icons/hierarchies.svg?url';
 import humanPotential from '../assets/icons/human-potential.svg?url';
 import introduction from '../assets/icons/introduction.svg?url';
 import inventory from '../assets/icons/inventory.svg?url';
+import marksAndTiers from '../assets/icons/marks-and-tiers.svg?url';
+import omens from '../assets/icons/omens.svg?url';
 import skills from '../assets/icons/skills.svg?url';
+import tide from '../assets/icons/tide.svg?url';
 import traits from '../assets/icons/traits.svg?url';
 
 /** slug → resolved asset URL (includes base path when built) */
 export const chapterIcons: Record<string, string> = {
-	index: introduction, // Guidebook root redirects to Introduction
+	index: introduction,
 	introduction,
 	'dice-mechanics': diceMechanics,
+	'marks-and-tiers': marksAndTiers,
+	omens,
+	tide,
 	glossary,
 	'human-potential': humanPotential,
 	foundations,
@@ -39,9 +45,12 @@ export const chapterIcons: Record<string, string> = {
 
 /** path segment used in sidebar hrefs → slug */
 export const hrefSegmentToSlug: Record<string, string> = {
-	'': 'index', // /Kodranni/Guidebook/ or /
+	'': 'index',
 	introduction: 'introduction',
 	'dice-mechanics': 'dice-mechanics',
+	'marks-and-tiers': 'marks-and-tiers',
+	omens: 'omens',
+	tide: 'tide',
 	glossary: 'glossary',
 	'human-potential': 'human-potential',
 	foundations: 'foundations',
