@@ -108,32 +108,70 @@
 /* -------------------------------------------------------------------------- */
 
 .pagination-links {
-  gap: 0.75rem !important;
+  gap: 1.5rem !important;
+  border-top: none !important;
+  padding-top: 0.35rem !important;
 }
 
 .pagination-links a {
-  border: 1px solid color-mix(in srgb, var(--kod-blood) 40%, #333) !important;
-  background: #0e0c0c !important;
-  border-radius: 2px !important;
-  transition: border-color 0.15s ease, background 0.15s ease;
+  border: none !important;
+  background: transparent !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 0.85rem 0.15rem 0.35rem !important;
+  position: relative;
+  transition: color 0.15s ease;
 }
 
-.pagination-links a:hover {
-  border-color: var(--kod-blood-bright) !important;
-  background: color-mix(in srgb, var(--kod-blood-deep) 40%, #0e0c0c) !important;
+.pagination-links a::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    color-mix(in srgb, var(--kod-blood) 70%, #444) 22%,
+    color-mix(in srgb, var(--kod-blood) 70%, #444) 78%,
+    transparent
+  );
+}
+
+.pagination-links a:hover,
+.pagination-links a:focus-visible {
+  background: transparent !important;
+  outline: none;
+}
+
+.pagination-links a:hover::before,
+.pagination-links a:focus-visible::before {
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--kod-blood-bright) 20%,
+    var(--kod-blood-bright) 80%,
+    transparent
+  );
 }
 
 .pagination-links .link-title {
   font-family: var(--kod-font-display) !important;
   color: var(--kod-silver-bright) !important;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.04em;
+  font-size: 1.15rem !important;
 }
 
 .pagination-links .link-label {
   color: var(--kod-silver-dim) !important;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-size: 0.75rem !important;
+  letter-spacing: 0.12em;
+  font-size: 0.68rem !important;
+}
+
+.pagination-links a:hover .link-title {
+  color: #fff8f0 !important;
 }
 
 .card {

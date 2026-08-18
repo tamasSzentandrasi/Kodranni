@@ -19,44 +19,88 @@
 		}
 		:root {
 			color-scheme: dark;
-			--bg: #050505;
 			--fg: #c6c1b8;
 			--muted: #8a8580;
 			--blood: #8a1515;
 			--silver: #f2efe9;
 		}
 		* { box-sizing: border-box; }
+		html, body { margin: 0; min-height: 100%; }
 		html {
 			font-synthesis: none;
 			-webkit-font-smoothing: antialiased;
 			text-rendering: geometricPrecision;
+			scrollbar-width: thin;
+			scrollbar-color: #4a0c0c #050505;
 		}
 		body {
-			margin: 0;
 			min-height: 100vh;
-			padding: 0 1.25rem 3rem;
-			background: #050505;
 			color: var(--fg);
 			font-family: "Bellefair", Georgia, serif;
 			font-size: 1.25rem;
 			line-height: 1.7;
 			letter-spacing: 0.02em;
+			background: #050505;
+		}
+		.bg {
+			position: fixed;
+			inset: 0;
+			z-index: 0;
+			pointer-events: none;
+			-webkit-mask-image:
+				radial-gradient(ellipse 92% 88% at 50% 42%, #000 18%, #000 42%, rgba(0,0,0,0.55) 68%, transparent 92%),
+				linear-gradient(to bottom, transparent 0%, #000 8%, #000 88%, transparent 100%),
+				linear-gradient(to right, transparent 0%, #000 6%, #000 94%, transparent 100%);
+			mask-image:
+				radial-gradient(ellipse 92% 88% at 50% 42%, #000 18%, #000 42%, rgba(0,0,0,0.55) 68%, transparent 92%),
+				linear-gradient(to bottom, transparent 0%, #000 8%, #000 88%, transparent 100%),
+				linear-gradient(to right, transparent 0%, #000 6%, #000 94%, transparent 100%);
+			-webkit-mask-composite: source-in, source-in;
+			mask-composite: intersect, intersect;
+		}
+		.bg img {
+			display: block;
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			object-position: 46% 42%;
+			filter: saturate(0.88) contrast(1.08) brightness(0.72);
+		}
+		.bg::after {
+			content: "";
+			position: absolute;
+			inset: 0;
+			background:
+				radial-gradient(ellipse 80% 70% at 50% 40%, transparent 20%, rgba(0,0,0,0.35) 58%, rgba(0,0,0,0.82) 100%),
+				linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.2) 28%, rgba(0,0,0,0.35) 62%, rgba(0,0,0,0.88) 100%);
 		}
 		main {
-			width: min(40rem, 100%);
+			position: relative;
+			z-index: 1;
+			width: min(38rem, calc(100% - 2.4rem));
 			margin: 0 auto;
-			padding-top: 1.5rem;
+			padding: 14vh 0 4rem;
+			text-align: center;
+		}
+		.scrim {
+			padding: 1.35rem 1.15rem 1.6rem;
+			background: linear-gradient(
+				180deg,
+				rgba(5, 5, 5, 0.42) 0%,
+				rgba(5, 5, 5, 0.62) 45%,
+				rgba(5, 5, 5, 0.55) 100%
+			);
+			box-shadow: 0 0 48px 28px rgba(5, 5, 5, 0.45);
 		}
 		.brand {
 			display: flex;
 			flex-direction: column;
 			align-items: center;
-			gap: 0.55rem;
-			text-align: center;
+			gap: 0.5rem;
 		}
 		.brand img.logo {
-			width: 5rem;
-			height: 5rem;
+			width: 4.6rem;
+			height: 4.6rem;
 			object-fit: contain;
 			border-radius: 50%;
 			box-shadow: 0 0 0 2px color-mix(in srgb, var(--blood) 55%, transparent);
@@ -64,58 +108,30 @@
 		h1 {
 			margin: 0;
 			font-weight: 400;
-			font-size: clamp(2.75rem, 10vw, 4rem);
+			font-size: clamp(2.75rem, 10vw, 4.2rem);
 			color: var(--silver);
 			letter-spacing: 0.04em;
+			text-shadow: 0 2px 18px rgba(0, 0, 0, 0.75);
 		}
 		.tag {
-			margin: 0 0 1.25rem;
-			color: var(--muted);
+			margin: 0 0 1rem;
+			color: #b8b3ab;
 			letter-spacing: 0.08em;
 		}
-		.breath {
-			position: relative;
-			margin: 0.5rem 0 1.75rem;
-			line-height: 0;
-			-webkit-mask-image:
-				radial-gradient(ellipse 108% 96% at 46% 42%, #000 28%, #000 52%, rgba(0,0,0,0.55) 72%, transparent 92%),
-				linear-gradient(to bottom, transparent 0%, #000 7%, #000 88%, transparent 100%);
-			mask-image:
-				radial-gradient(ellipse 108% 96% at 46% 42%, #000 28%, #000 52%, rgba(0,0,0,0.55) 72%, transparent 92%),
-				linear-gradient(to bottom, transparent 0%, #000 7%, #000 88%, transparent 100%);
-			-webkit-mask-composite: source-in;
-			mask-composite: intersect;
-		}
-		.breath::after {
-			content: "";
-			position: absolute;
-			inset: 0;
-			pointer-events: none;
-			background:
-				radial-gradient(ellipse 95% 85% at 52% 48%, transparent 42%, rgba(0,0,0,0.22) 68%, rgba(0,0,0,0.72) 100%),
-				linear-gradient(185deg, rgba(0,0,0,0.7) 0%, transparent 28%, transparent 72%, rgba(0,0,0,0.85) 100%);
-			mix-blend-mode: multiply;
-		}
-		.breath img {
-			display: block;
-			width: 100%;
-			height: auto;
-			filter: saturate(0.92) contrast(1.06) brightness(0.94);
-		}
 		.lede {
-			margin: 0 0 1.25rem;
-			text-align: center;
-			color: #d4cec4;
+			margin: 0 0 1.15rem;
+			color: #e4dfd6;
+			text-shadow: 0 1px 12px rgba(0, 0, 0, 0.7);
 		}
 		.constraints {
 			display: flex;
 			flex-wrap: wrap;
 			justify-content: center;
 			gap: 0.45rem 1.1rem;
-			margin: 0 0 1.75rem;
+			margin: 0 0 1.5rem;
 			padding: 0;
 			list-style: none;
-			color: var(--muted);
+			color: #b0aaa2;
 			font-size: 0.95rem;
 			letter-spacing: 0.06em;
 			text-transform: uppercase;
@@ -124,17 +140,17 @@
 		.cards {
 			display: grid;
 			grid-template-columns: 1fr;
-			gap: 0.85rem;
+			gap: 0.75rem;
 		}
 		@media (min-width: 36rem) {
 			.cards { grid-template-columns: 1fr 1fr; }
 		}
 		a.card {
 			display: block;
-			padding: 1.15rem 1.2rem;
-			border: 1px solid #2a2222;
+			padding: 1.05rem 1.1rem;
+			border: 1px solid color-mix(in srgb, #8a1515 40%, #3a3030);
 			border-radius: 2px;
-			background: #0c0a0a;
+			background: rgba(8, 6, 6, 0.72);
 			color: inherit;
 			text-decoration: none;
 			box-shadow: inset 0 0 0 1px color-mix(in srgb, #f2efe9 5%, transparent);
@@ -143,7 +159,7 @@
 		a.card:hover,
 		a.card:focus-visible {
 			border-color: var(--blood);
-			background: #141010;
+			background: rgba(18, 10, 10, 0.82);
 			outline: none;
 		}
 		a.card strong {
@@ -156,36 +172,38 @@
 		}
 		a.card span {
 			display: block;
-			color: var(--muted);
+			color: #9a948c;
 			font-size: 0.95rem;
 		}
 	</style>
 </head>
 <body>
+	<div class="bg" aria-hidden="true">
+		<img src="./Guidebook/scenes/falconer.jpg" width="1168" height="784" alt="" />
+	</div>
 	<main>
-		<div class="brand">
-			<img class="logo" src="./Guidebook/falcon-logo.png" width="80" height="80" alt="Kodranni falcon" />
-			<h1>Kodranni</h1>
-			<p class="tag">Pre-industrial. Human. Grim.</p>
-		</div>
-		<figure class="breath">
-			<img src="./Guidebook/scenes/falconer.jpg" width="1168" height="784" alt="" />
-		</figure>
-		<p class="lede">A tabletop system for campaigns where ordinary people face unforgiving pre-industrial conditions, the community is the true protagonist, and legacy outlives the individual.</p>
-		<ul class="constraints">
-			<li>No magic</li>
-			<li>Pre-industrial</li>
-			<li>Ordinary humans</li>
-		</ul>
-		<div class="cards">
-			<a class="card" href="./Guidebook/introduction/">
-				<strong>Guidebook</strong>
-				<span>Rules and procedures — start at the Introduction.</span>
-			</a>
-			<a class="card" href="https://github.com/tamasszentandrasi/Kodranni">
-				<strong>Source</strong>
-				<span>Repository, issues, plans, and history.</span>
-			</a>
+		<div class="scrim">
+			<div class="brand">
+				<img class="logo" src="./Guidebook/falcon-logo.png" width="80" height="80" alt="Kodranni falcon" />
+				<h1>Kodranni</h1>
+				<p class="tag">Pre-industrial. Human. Grim.</p>
+			</div>
+			<p class="lede">A tabletop system for campaigns where ordinary people face unforgiving pre-industrial conditions, the community is the true protagonist, and legacy outlives the individual.</p>
+			<ul class="constraints">
+				<li>No magic</li>
+				<li>Pre-industrial</li>
+				<li>Ordinary humans</li>
+			</ul>
+			<div class="cards">
+				<a class="card" href="./Guidebook/introduction/">
+					<strong>Guidebook</strong>
+					<span>Rules and procedures — start at the Introduction.</span>
+				</a>
+				<a class="card" href="https://github.com/tamasszentandrasi/Kodranni">
+					<strong>Source</strong>
+					<span>Repository, issues, plans, and history.</span>
+				</a>
+			</div>
 		</div>
 	</main>
 </body>
