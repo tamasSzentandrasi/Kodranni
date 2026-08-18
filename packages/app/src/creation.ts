@@ -24,6 +24,8 @@ import {
   birthOmenPoints,
   foundationStepCost,
   guidingHandPoints,
+  refundFoundationCost,
+  refundSkillCost,
   skillStepCost,
 } from './costs.js';
 
@@ -552,6 +554,78 @@ export function spendSkill(
     type: 'SkillSpent',
     actor: cmd.actor,
     payload: { characterSlug: ch.slug, skill: cmd.skill, from, to, cost },
+  });
+  return store.getCharacterBySlug(ch.slug)!;
+}
+
+/** Lower Foundation one rank (min 1) and refund the step cost. */
+export function refundFoundation(
+  store: CommunityStorePort,
+  cmd: {
+    characterSlug: string;
+    foundation: string;
+    actor?: string;
+  },
+): CharacterRecord {
+  const ch = store.getCharacterBySlug(cmd.characterSlug);
+  if (!ch) throw new Error(`unknown character: ${cmd.characterSlug}`);
+  if (isCreationLocked(ch)) throw new Error('character is locked; unlock to refund');
+  const creation = ensureCreation(ch);
+  const name = cmd.foundation;
+  if (!(name in ch.foundations) && !FOUNDATION_NAMES.includes(name as (typeof FOUNDATION_NAMES)[number])) {
+    throw new Error(`unknown foundation: ${name}`);
+  }
+  const from = ch.foundations[name] ?? 1;
+  const refund = refundFoundationCost(from);
+  if (refund == null) throw new Error('cannot lower Foundation below 1');
+  const to = from - 1;
+  creation.foundationPoints += refund;
+  ch.foundations[name] = to;
+  store.putCharacter(ch);
+  store.appendEvent({
+    type: 'FoundationRefunded',
+    actor: cmd.actor,
+    payload: { characterSlug: ch.slug, foundation: name, from, to, refund },
+  });
+  return store.getCharacterBySlug(ch.slug)!;
+}
+
+/** Lower Skill one rank (min 0) and refund the step cost; remove row at 0. */
+export function refundSkill(
+  store: CommunityStorePort,
+  cmd: {
+    characterSlug: string;
+    skill: string;
+    actor?: string;
+  },
+): CharacterRecord {
+  const ch = store.getCharacterBySlug(cmd.characterSlug);
+  if (!ch) throw new Error(`unknown character: ${cmd.characterSlug}`);
+  if (isCreationLocked(ch)) throw new Error('character is locked; unlock to refund');
+  const creation = ensureCreation(ch);
+  const def = skillByName(cmd.skill);
+  if (!def) throw new Error(`unknown skill: ${cmd.skill}`);
+  const skill = ch.skills.find((s) => s.name === cmd.skill);
+  const from = skill?.rating ?? 0;
+  const refund = refundSkillCost(from);
+  if (refund == null) throw new Error('cannot lower Skill below 0');
+  const to = from - 1;
+  creation.skillPoints += refund;
+  if (!skill || to <= 0) {
+    ch.skills = ch.skills.filter((s) => s.name !== cmd.skill);
+  } else {
+    const foundationRating = ch.foundations[def.foundation] ?? 1;
+    skill.rating = to;
+    skill.threshold = practiceThreshold(
+      Math.min(2, to === 3 ? 2 : to) as 0 | 1 | 2,
+      foundationRating,
+    );
+  }
+  store.putCharacter(ch);
+  store.appendEvent({
+    type: 'SkillRefunded',
+    actor: cmd.actor,
+    payload: { characterSlug: ch.slug, skill: cmd.skill, from, to, refund },
   });
   return store.getCharacterBySlug(ch.slug)!;
 }

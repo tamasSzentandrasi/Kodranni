@@ -1,0 +1,50 @@
+---
+export const prerender = false;
+
+import CampaignLayout from '../../../layouts/CampaignLayout.astro';
+import DraftPanel from '../../../components/DraftPanel.astro';
+import SheetChrome from '../../../components/SheetChrome.astro';
+import { getCharacter, loadCommunity } from '../../../data/load';
+import { editCookieHeader, resolveSheetEdit } from '../../../lib/sheet-auth';
+
+const { slug } = Astro.params;
+const c = loadCommunity();
+const ch = getCharacter(slug!);
+if (!ch) {
+  return new Response('Character not found', { status: 404, statusText: 'Not Found' });
+}
+
+const live = c.source === 'live';
+const unlocked = Boolean(live && ch.creation && !ch.creation.locked);
+const auth = resolveSheetEdit(Astro.request, Astro.url, ch.slug);
+if (auth.canEdit && auth.token && Astro.url.searchParams.has('edit')) {
+  Astro.response.headers.append('Set-Cookie', editCookieHeader(auth.token));
+}
+const canEdit = unlocked && auth.canEdit;
+if (!canEdit) {
+  return Astro.redirect(`/characters/${slug}/`);
+}
+---
+
+<CampaignLayout
+  title={`${ch.name} · Draft`}
+  communityName={c.name}
+  generatedAt={c.generatedAt}
+  primary="characters"
+  source={c.source}
+>
+  <SheetChrome
+    slug={ch.slug}
+    name={ch.name}
+    playerDisplay={ch.player?.displayName}
+    playerPlatform={ch.player?.platform}
+    avatar={ch.avatar}
+    status={ch.status}
+    dying={ch.dying}
+    live={live}
+    tab="draft"
+    showDraftTab={true}
+  />
+
+  <DraftPanel character={ch} live={live} />
+</CampaignLayout>

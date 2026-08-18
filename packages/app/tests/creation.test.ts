@@ -12,6 +12,8 @@ import {
   guidingHandPoints,
   nextFoundationCost,
   nextSkillCost,
+  refundFoundationCost,
+  refundSkillCost,
   skillStepCost,
 } from '../src/costs.js';
 import {
@@ -26,6 +28,8 @@ import {
   resolveFocusedCharacter,
   rollAndGrantBirthOmen,
   setFocusedCharacter,
+  refundFoundation,
+  refundSkill,
   spendFoundation,
   spendSkill,
   spendWordWanting,
@@ -59,6 +63,13 @@ describe('costs', () => {
     expect(skillStepCost(2)).toBe(3);
     expect(nextFoundationCost(3)).toBeNull();
     expect(nextSkillCost(3)).toBeNull();
+    expect(refundFoundationCost(1)).toBeNull();
+    expect(refundFoundationCost(2)).toBe(1);
+    expect(refundFoundationCost(3)).toBe(2);
+    expect(refundSkillCost(0)).toBeNull();
+    expect(refundSkillCost(1)).toBe(1);
+    expect(refundSkillCost(2)).toBe(2);
+    expect(refundSkillCost(3)).toBe(3);
   });
 
   it('maps Omen and Hand faces to points', () => {
@@ -128,6 +139,41 @@ describe('startCreateFromBot → confirm → approve', () => {
       spendFoundation(store, { characterSlug: character.slug, foundation: 'Guile' }),
     ).toThrow(/locked/);
 
+    store.close();
+  });
+
+  it('refunds Foundation and Skill spends one step at a time', () => {
+    const store = emptyStore();
+    const { character } = startCreateFromBot(store, {
+      platform: 'discord',
+      accountId: 'u-refund',
+      displayName: 'R',
+      name: 'Refund Test',
+    });
+    spendFoundation(store, { characterSlug: character.slug, foundation: 'Resolve' });
+    spendFoundation(store, { characterSlug: character.slug, foundation: 'Resolve' });
+    expect(store.getCharacterBySlug(character.slug)!.foundations.Resolve).toBe(3);
+    const afterFound = refundFoundation(store, {
+      characterSlug: character.slug,
+      foundation: 'Resolve',
+    });
+    expect(afterFound.foundations.Resolve).toBe(2);
+    expect(afterFound.creation!.foundationPoints).toBe(PREP_FOUNDATION_POINTS - 1);
+
+    spendSkill(store, { characterSlug: character.slug, skill: 'Negotiation' });
+    spendSkill(store, { characterSlug: character.slug, skill: 'Negotiation' });
+    const afterSkill = refundSkill(store, {
+      characterSlug: character.slug,
+      skill: 'Negotiation',
+    });
+    expect(afterSkill.skills.find((s) => s.name === 'Negotiation')?.rating).toBe(1);
+    refundSkill(store, { characterSlug: character.slug, skill: 'Negotiation' });
+    expect(
+      store.getCharacterBySlug(character.slug)!.skills.find((s) => s.name === 'Negotiation'),
+    ).toBeUndefined();
+    expect(() =>
+      refundFoundation(store, { characterSlug: character.slug, foundation: 'Guile' }),
+    ).toThrow(/below 1/);
     store.close();
   });
 

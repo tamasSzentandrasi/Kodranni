@@ -1,12 +1,16 @@
 ---
 export const prerender = false;
 
+import { nextFoundationCost, nextSkillCost } from '@kodranni/app';
 import { ARCHETYPES, FOUNDATION_GROUPS, FOUNDATION_HARM } from '@kodranni/domain';
+import BudgetDock from '../../../components/BudgetDock.astro';
 import CampaignLayout from '../../../layouts/CampaignLayout.astro';
-import DraftPanel from '../../../components/DraftPanel.astro';
+import ConfirmDock from '../../../components/ConfirmDock.astro';
 import SheetChrome from '../../../components/SheetChrome.astro';
+import WantingPanel from '../../../components/WantingPanel.astro';
 import { getCharacter, loadCommunity } from '../../../data/load';
 import { harmPips, segments } from '../../../lib/format';
+import { editCookieHeader, resolveSheetEdit } from '../../../lib/sheet-auth';
 
 const { slug } = Astro.params;
 const c = loadCommunity();
@@ -19,6 +23,15 @@ const skillMap = new Map(ch.skills.map((s) => [s.name, s]));
 const exSegs = segments(ch.exertion.current, ch.exertion.max);
 const echoSegs = segments(ch.echoWeight, ch.echoCapacity);
 const live = c.source === 'live';
+const unlocked = Boolean(live && ch.creation && !ch.creation.locked);
+const auth = resolveSheetEdit(Astro.request, Astro.url, ch.slug);
+if (auth.canEdit && auth.token && Astro.url.searchParams.has('edit')) {
+  Astro.response.headers.append('Set-Cookie', editCookieHeader(auth.token));
+}
+/** Unlocked sheet + valid bot-signed edit token. */
+const canEdit = unlocked && auth.canEdit;
+const foundationPts = ch.creation?.foundationPoints ?? 0;
+const skillPts = ch.creation?.skillPoints ?? 0;
 
 function practiceFrac(practice: number, threshold: number): number {
   if (threshold <= 0) return 0;
@@ -45,9 +58,22 @@ const roman = (n: number) => ['∅', 'I', 'II', 'III', 'IV'][n] ?? String(n);
     dying={ch.dying}
     live={live}
     tab="core"
+    showDraftTab={canEdit}
   />
 
-  <DraftPanel character={ch} live={live} />
+  {
+    unlocked && !canEdit && live && (
+      <p class="app__meta" style="margin:0.5rem 0 0.75rem">
+        Sheet is unlocked but <strong>read-only</strong> here — open the link from the table bot
+        (<code>/create</code> or review) to edit.
+      </p>
+    )
+  }
+
+  <BudgetDock character={ch} live={live} canEdit={canEdit} />
+  <WantingPanel character={ch} live={live} canEdit={canEdit} />
+  <ConfirmDock character={ch} live={live} canEdit={canEdit} />
+  {canEdit && <script is:inline src="/creation-client.js"></script>}
 
   <div class="core-grid">
     <aside
@@ -116,13 +142,17 @@ const roman = (n: number) => ['∅', 'I', 'II', 'III', 'IV'][n] ?? String(n);
         )
       }
 
-      <section class="smoke">
+      <section class="smoke" id="section-foundations">
         <div class="section-head">
           <h2>Foundations · Harm</h2>
           <button
             type="button"
             class="info"
-            data-tip="Physical / Mental / Social. Rank as Roman mark; Harm as blood pips on the paired track (max 3)."
+            data-tip={
+              canEdit
+                ? 'Left-click raise · right-click lower (refund). Harm pips stay on the right.'
+                : 'Physical / Mental / Social. Rank as Roman mark; Harm as blood pips on the paired track (max 3).'
+            }
             aria-label="About Foundations"
           >
             i
@@ -138,19 +168,56 @@ const roman = (n: number) => ['∅', 'I', 'II', 'III', 'IV'][n] ?? String(n);
                   const eff = ch.foundationsEffective[fname] ?? raw;
                   const harmName = FOUNDATION_HARM[fname] ?? '';
                   const harmPts = ch.harm[harmName] ?? 0;
+                  const nextCost = canEdit ? nextFoundationCost(raw) : null;
+                  const canRaise =
+                    canEdit && nextCost != null && foundationPts >= nextCost;
+                  const canLower = canEdit && raw > 1;
+                  const tipBase =
+                    eff !== raw
+                      ? `Effective ${roman(eff)} · raw ${roman(raw)}`
+                      : `Rank ${roman(eff)}`;
+                  const tip = canEdit
+                    ? `${tipBase} · left-click raise · right-click lower`
+                    : tipBase;
                   return (
                     <div class="found-row">
                       <span class="found-row__name">{fname}</span>
-                      <span
-                        class="found-row__val"
-                        data-tip={
-                          eff !== raw
-                            ? `Effective ${roman(eff)} · raw ${roman(raw)}`
-                            : `Rank ${roman(eff)}`
+                      <span class="found-row__val">
+                        {
+                          canEdit ? (
+                            <button
+                              type="button"
+                              class:list={[
+                                'found-row__spend',
+                                canEdit && !canRaise && nextCost != null && 'found-row__spend--blocked',
+                              ]}
+                              data-spend-foundation={fname}
+                              data-rating={String(raw)}
+                              disabled={!canRaise && !canLower}
+                              data-unaffordable={
+                                canEdit && !canRaise && nextCost != null ? '1' : undefined
+                              }
+                              data-tip={tip}
+                              aria-label={
+                                canRaise
+                                  ? `Raise ${fname} (costs ${nextCost})`
+                                  : canLower
+                                    ? `Lower ${fname} with right-click`
+                                    : `${fname} at minimum`
+                              }
+                            >
+                              <span data-roman>{roman(raw)}</span>
+                              <span class="found-row__cost">
+                                {nextCost != null ? `−${nextCost}` : 'max'}
+                              </span>
+                            </button>
+                          ) : (
+                            <span data-tip={tip}>
+                              {roman(eff)}
+                              {eff !== raw ? `*` : ''}
+                            </span>
+                          )
                         }
-                      >
-                        {roman(eff)}
-                        {eff !== raw ? `*` : ''}
                       </span>
                       <span class="found-row__harm">
                         <span class="found-row__harm-name">{harmName}</span>
@@ -169,13 +236,17 @@ const roman = (n: number) => ['∅', 'I', 'II', 'III', 'IV'][n] ?? String(n);
         </div>
       </section>
 
-      <section class="smoke">
+      <section class="smoke" id="section-skills">
         <div class="section-head">
           <h2>Skills by Archetype</h2>
           <button
             type="button"
             class="info"
-            data-tip="Centre = rating. Ring = Practice toward next rank. Hover a skill for Practice and Foundation."
+            data-tip={
+              canEdit
+                ? 'Left-click raise · right-click lower (refund). Centre = rating · ring = Practice.'
+                : 'Centre = rating. Ring = Practice toward next rank. Hover a skill for Practice and Foundation.'
+            }
             aria-label="About Skills"
           >
             i
@@ -196,8 +267,10 @@ const roman = (n: number) => ['∅', 'I', 'II', 'III', 'IV'][n] ?? String(n);
                   />
                 </div>
                 <div class="arch__body">
-                  <span class="arch__name">{arch.name}</span>
-                  <span class="arch__tag">{arch.tag}</span>
+                  <div class="arch__head">
+                    <span class="arch__name">{arch.name}</span>
+                    <span class="arch__tag">{arch.tag}</span>
+                  </div>
                   <ul class="arch__skills">
                     {arch.skills.map((def) => {
                       const prog = skillMap.get(def.name);
@@ -211,17 +284,29 @@ const roman = (n: number) => ['∅', 'I', 'II', 'III', 'IV'][n] ?? String(n);
                             ? 1
                             : 0;
                       const pct = Math.round(p * 100);
-                      const tip =
+                      const nextCost = canEdit ? nextSkillCost(rating) : null;
+                      const canRaise =
+                        canEdit && nextCost != null && skillPts >= nextCost;
+                      const tipBase =
                         rating <= 0
                           ? `Untrained · ${def.foundation}`
                           : rating >= 3
                             ? `Rating 3 (max) · ${def.foundation}`
                             : `Rating ${rating} · Practice ${practice}/${threshold} (${pct}% to next) · ${def.foundation}`;
+                      const tip = canEdit
+                        ? `${tipBase} · left-click raise · right-click lower`
+                        : tipBase;
                       return (
                         <li
-                          class="skill"
+                          class:list={[
+                            'skill',
+                            canEdit && canRaise && 'skill--spendable',
+                            canEdit && nextCost != null && !canRaise && 'skill--unaffordable',
+                            canEdit && nextCost == null && 'skill--unaffordable',
+                          ]}
                           data-rating={String(rating)}
                           data-rated={rating > 0 ? 'true' : 'false'}
+                          data-spend-skill={canEdit ? def.name : undefined}
                           style={`--p: ${p}`}
                           data-tip={tip}
                           tabindex="0"
@@ -230,6 +315,13 @@ const roman = (n: number) => ['∅', 'I', 'II', 'III', 'IV'][n] ?? String(n);
                             <div class="skill__inner">{rating}</div>
                           </div>
                           <span class="skill__name">{def.name}</span>
+                          {
+                            canEdit && (
+                              <span class="skill__cost">
+                                {nextCost != null ? `−${nextCost}` : 'max'}
+                              </span>
+                            )
+                          }
                         </li>
                       );
                     })}

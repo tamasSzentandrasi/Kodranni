@@ -1,0 +1,293 @@
+---
+import { ARCHETYPES, FOUNDATION_GROUPS } from '@kodranni/domain';
+import type { FixtureCharacter } from '../data/fixture';
+
+interface Props {
+  character: FixtureCharacter;
+  live: boolean;
+  canEdit?: boolean;
+}
+
+const { character: ch, live, canEdit = false } = Astro.props;
+const creation = ch.creation;
+const unlocked = canEdit && live && creation && !creation.locked;
+const foundations = Object.values(FOUNDATION_GROUPS).flat();
+const skillNames = ARCHETYPES.flatMap((a) => a.skills.map((s) => s.name));
+---
+
+{
+  unlocked && (
+    <aside
+      class="wanting-panel"
+      id="wanting-panel"
+      hidden
+      aria-label="The Wanting"
+      data-slug={ch.slug}
+    >
+      <header class="wanting-panel__head">
+        <div>
+          <p class="wanting-panel__kicker">The Wanting</p>
+          <h2 class="wanting-panel__title">Spend Words</h2>
+        </div>
+        <button type="button" class="wanting-panel__close" data-wanting-close aria-label="Close">
+          ×
+        </button>
+      </header>
+
+      <p class="wanting-panel__lead">
+        While this panel is open, Foundation and Skill spends are locked. Stage purchases, undo
+        freely, then <strong>Confirm Wanting</strong> to commit — or Cancel to discard.
+      </p>
+
+      <p class="wanting-panel__words">
+        Words available: <strong data-field="words-open">{creation?.words ?? 0}</strong>
+        · staged: <strong data-field="words-staged">0</strong>
+      </p>
+
+      <div class="wanting-menu" role="list">
+        <button type="button" class="wanting-menu__item" data-wanting-menu="plus_one_foundation">
+          <span class="wanting-menu__buy">+1 to one Foundation</span>
+          <span class="wanting-menu__cost">Pay: remove 3 skill ranks</span>
+        </button>
+        <button type="button" class="wanting-menu__item" data-wanting-menu="plus_two_foundation_split">
+          <span class="wanting-menu__buy">+2 Foundation points (split)</span>
+          <span class="wanting-menu__cost">Two different Founds · pay 5 skill ranks or a Negative Trait</span>
+        </button>
+        <button type="button" class="wanting-menu__item" data-wanting-menu="plus_five_skill">
+          <span class="wanting-menu__buy">+5 skill points</span>
+          <span class="wanting-menu__cost">Pay: −1 from one Foundation</span>
+        </button>
+        <button type="button" class="wanting-menu__item" data-wanting-menu="positive_trait">
+          <span class="wanting-menu__buy">One Positive Trait</span>
+          <span class="wanting-menu__cost">Pay: remove 3 skill ranks</span>
+        </button>
+      </div>
+
+      <form class="wanting-form" id="wanting-form" hidden>
+        <p class="wanting-form__title" data-wanting-form-title></p>
+        <div class="wanting-form__fields" data-wanting-form-fields></div>
+        <div class="wanting-form__actions">
+          <button type="submit" class="draft-btn draft-btn--primary">Stage this Word</button>
+          <button type="button" class="draft-btn" data-wanting-form-cancel>Back</button>
+        </div>
+      </form>
+
+      <section class="wanting-staged">
+        <h3>Staged</h3>
+        <ul class="wanting-staged__list" data-wanting-staged></ul>
+        <p class="wanting-staged__empty" data-wanting-empty>Nothing staged yet.</p>
+      </section>
+
+      <div class="wanting-panel__footer">
+        <button type="button" class="draft-btn draft-btn--primary" data-wanting-confirm>
+          Confirm Wanting
+        </button>
+        <button type="button" class="draft-btn" data-wanting-cancel>
+          Cancel · discard
+        </button>
+      </div>
+      <p class="wanting-panel__msg" data-msg="wanting" hidden></p>
+
+      <template id="wanting-field-catalog" hidden>
+        <select data-foundations>
+          {foundations.map((f) => <option value={f}>{f}</option>)}
+        </select>
+        <select data-skills multiple size="6">
+          {skillNames.map((s) => <option value={s}>{s}</option>)}
+        </select>
+      </template>
+    </aside>
+  )
+}
+
+<style>
+  .wanting-panel {
+    position: fixed;
+    right: 0.35rem;
+    top: 4.5rem;
+    z-index: 60;
+    width: min(16.5rem, calc(100vw - 1rem));
+    max-height: calc(100vh - 5.25rem);
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    padding: 0.55rem 0.55rem 0.65rem;
+    overflow: auto;
+    background: color-mix(in srgb, #080606 95%, var(--kod-silver, #b8b3ab) 5%);
+    border: 1px solid color-mix(in srgb, var(--kod-silver, #b8b3ab) 32%, transparent);
+    border-right: 3px solid var(--kod-silver, #b8b3ab);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5);
+  }
+  .wanting-panel[hidden] {
+    display: none !important;
+  }
+  .wanting-panel__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  .wanting-panel__kicker {
+    margin: 0;
+    font-size: 0.65rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--kod-silver-dim, #8a8580);
+  }
+  .wanting-panel__title {
+    margin: 0.1rem 0 0;
+    font-size: 1.2rem;
+    font-weight: 400;
+  }
+  .wanting-panel__close {
+    font: inherit;
+    font-size: 1.4rem;
+    line-height: 1;
+    padding: 0.1rem 0.35rem;
+    color: var(--kod-silver, #b8b3ab);
+    background: transparent;
+    border: 1px solid transparent;
+    cursor: pointer;
+  }
+  .wanting-panel__close:hover {
+    border-color: var(--kod-silver, #b8b3ab);
+  }
+  .wanting-panel__lead {
+    margin: 0;
+    font-size: 0.75rem;
+    line-height: 1.35;
+    color: var(--kod-silver, #b8b3ab);
+  }
+  .wanting-panel__words {
+    margin: 0;
+    font-size: 0.9rem;
+  }
+  .wanting-panel__words strong {
+    color: var(--kod-silver-bright, #f2efe9);
+  }
+  .wanting-menu {
+    display: grid;
+    gap: 0.4rem;
+  }
+  .wanting-menu__item {
+    display: grid;
+    gap: 0.15rem;
+    margin: 0;
+    padding: 0.4rem 0.45rem;
+    text-align: left;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+    background: #0c0a0a;
+    border: 1px solid color-mix(in srgb, var(--kod-silver, #b8b3ab) 25%, transparent);
+  }
+  .wanting-menu__item:hover {
+    border-color: var(--kod-silver, #b8b3ab);
+  }
+  .wanting-menu__buy {
+    font-size: 0.84rem;
+    color: var(--kod-silver-bright, #f2efe9);
+  }
+  .wanting-menu__cost {
+    font-size: 0.7rem;
+    line-height: 1.3;
+    color: var(--kod-silver-dim, #8a8580);
+  }
+  .wanting-form {
+    display: grid;
+    gap: 0.45rem;
+    padding: 0.55rem;
+    border: 1px solid color-mix(in srgb, var(--kod-blood, #8a1515) 40%, transparent);
+    background: color-mix(in srgb, #0a0808 92%, var(--kod-blood, #8a1515) 8%);
+  }
+  .wanting-form[hidden] {
+    display: none !important;
+  }
+  .wanting-form__title {
+    margin: 0;
+    font-size: 0.9rem;
+  }
+  .wanting-form__fields {
+    display: grid;
+    gap: 0.4rem;
+  }
+  .wanting-form__fields label {
+    display: grid;
+    gap: 0.2rem;
+    font-size: 0.78rem;
+  }
+  .wanting-form__fields select,
+  .wanting-form__fields input {
+    font: inherit;
+    padding: 0.3rem 0.4rem;
+    color: inherit;
+    background: #080606;
+    border: 1px solid color-mix(in srgb, var(--kod-silver, #b8b3ab) 30%, transparent);
+  }
+  .wanting-form__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .wanting-staged h3 {
+    margin: 0;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--kod-silver-dim, #8a8580);
+  }
+  .wanting-staged__list {
+    list-style: none;
+    margin: 0.35rem 0 0;
+    padding: 0;
+    display: grid;
+    gap: 0.35rem;
+  }
+  .wanting-staged__list li {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+    align-items: flex-start;
+    padding: 0.4rem 0.45rem;
+    border: 1px solid #2a2222;
+    font-size: 0.82rem;
+  }
+  .wanting-staged__list button {
+    font: inherit;
+    font-size: 0.75rem;
+    padding: 0.15rem 0.35rem;
+    cursor: pointer;
+    color: inherit;
+    background: transparent;
+    border: 1px solid color-mix(in srgb, var(--kod-silver, #b8b3ab) 35%, transparent);
+  }
+  .wanting-staged__empty {
+    margin: 0.35rem 0 0;
+    font-size: 0.8rem;
+    color: var(--kod-silver-dim, #8a8580);
+  }
+  .wanting-panel__footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    padding-top: 0.25rem;
+  }
+  .wanting-panel__msg {
+    margin: 0;
+    font-size: 0.82rem;
+  }
+  .draft-btn {
+    font: inherit;
+    cursor: pointer;
+    padding: 0.4rem 0.75rem;
+    border: 1px solid color-mix(in srgb, var(--kod-silver, #b8b3ab) 40%, transparent);
+    background: transparent;
+    color: inherit;
+    border-radius: 2px;
+  }
+  .draft-btn--primary {
+    border-color: color-mix(in srgb, var(--kod-blood, #8a1515) 65%, transparent);
+    background: color-mix(in srgb, var(--kod-blood, #8a1515) 22%, transparent);
+  }
+</style>

@@ -85,8 +85,9 @@ Cloudflare still serves it; the name is yours.
 ## Security
 
 - Tunnel URL (quick or named) is a **capability**: anyone with the link can **read** the live UI while the ST process is up.
-- Named hostnames are guessable if short; use long random labels or Cloudflare Access if you need a gate.
-- Do not put tunnel tokens in a public git repo; `~/.kodranni` is private on the ST machine.
+- **Writes** (creation spends, Confirm, Wanting) require a **bot-signed edit token** (`?edit=` → cookie). Issued by `/create`, `/claim`, and ST `/review` links. Secret: `KODRANNI_SHEET_TOKEN_SECRET` or `~/.kodranni/secrets/sheet-token-secret` (mode `600`).
+- Named hostnames are guessable if short; prefer long labels. Sheet tokens gate mutations without Cloudflare Access.
+- Do not put tunnel or sheet secrets in a public git repo; `~/.kodranni` is private on the ST machine.
 
 ## Archive vs live
 

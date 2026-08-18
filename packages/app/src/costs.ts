@@ -53,6 +53,31 @@ export function nextSkillCost(rating: number): number | null {
   }
 }
 
+/**
+ * Points refunded when lowering Foundation by one rank (to ≥ 1).
+ * Mirrors the cost that was paid for the step just undone.
+ */
+export function refundFoundationCost(rating: number): number | null {
+  if (rating <= 1) return null;
+  if (rating > 3) return null;
+  try {
+    return foundationStepCost(rating - 1);
+  } catch {
+    return null;
+  }
+}
+
+/** Points refunded when lowering Skill by one rank (to ≥ 0). */
+export function refundSkillCost(rating: number): number | null {
+  if (rating <= 0) return null;
+  if (rating > 3) return null;
+  try {
+    return skillStepCost(rating - 1);
+  } catch {
+    return null;
+  }
+}
+
 /** Birth Omen: d20 face → Foundation points (⌈n/2⌉, range 1–10). */
 export function birthOmenPoints(face: number): number {
   if (!Number.isInteger(face) || face < 1 || face > 20) {

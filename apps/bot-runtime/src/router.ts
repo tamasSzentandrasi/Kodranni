@@ -20,6 +20,9 @@ import {
   startClaimFromBot,
   startCreateFromBot,
   stReviewCharacter,
+  issueSheetToken,
+  sheetTokenSecret,
+  withEditToken,
 } from '@kodranni/app';
 import {
   buildHarmAssignCard,
@@ -52,8 +55,24 @@ export interface BotContext {
   log: (line: string) => void;
 }
 
-function sheetUrl(base: string, slug: string): string {
-  return `${base.replace(/\/$/, '')}/characters/${slug}/`;
+function sheetUrl(
+  base: string,
+  slug: string,
+  edit?: { platform: string; accountId: string; role?: 'player' | 'storyteller' },
+): string {
+  const url = `${base.replace(/\/$/, '')}/characters/${slug}/`;
+  if (!edit || !sheetTokenSecret()) return url;
+  try {
+    const token = issueSheetToken({
+      platform: edit.platform,
+      accountId: edit.accountId,
+      characterSlug: slug,
+      role: edit.role ?? 'player',
+    });
+    return withEditToken(url, token);
+  } catch {
+    return url;
+  }
 }
 
 function isSt(ctx: BotContext, accountId: string): boolean {
@@ -171,26 +190,30 @@ async function handleCommand(
       name: nameOpt,
       actor: user.accountId,
     });
-    const url = sheetUrl(ctx.liveBaseUrl, character.slug);
+    const url = sheetUrl(ctx.liveBaseUrl, character.slug, {
+      platform: 'discord',
+      accountId: user.accountId,
+      role: 'player',
+    });
     await ctx.port.replyEphemeral(
       i,
       [
         `Draft **${character.name}** started.`,
-        `Edit your sheet: ${url}`,
-        'Spend Foundation/Skill points on the sheet. When ready: **Confirm · return to table**.',
+        `Edit your sheet (personal link): ${url}`,
+        'Spend on Core · concept on Draft tab · **Confirm** on Core when ready.',
         'Birth Omen / Guiding Hand dice are rolled here at the table (not on the sheet).',
       ].join('\n'),
     );
     await ctx.port.sendCard(channelId, {
       title: 'Character draft',
-      description: `<@${user.accountId}> opened a draft.`,
+      description: `<@${user.accountId}> opened a draft. Use your **ephemeral** sheet link to edit.`,
       accent: 'blood',
       fields: [
         { name: 'Name', value: character.name, inline: true },
         { name: 'Slug', value: character.slug, inline: true },
       ],
-      links: [{ label: 'Live sheet', url }],
-      footer: 'Player edits on the sheet · Confirm returns here for ST review',
+      links: [{ label: 'Live sheet (read)', url: sheetUrl(ctx.liveBaseUrl, character.slug) }],
+      footer: 'Edit link is in your private reply · Confirm on Core returns here for ST review',
     });
     return;
   }
@@ -208,10 +231,14 @@ async function handleCommand(
       characterSlug,
       actor: user.accountId,
     });
-    const url = sheetUrl(ctx.liveBaseUrl, ch.slug);
+    const url = sheetUrl(ctx.liveBaseUrl, ch.slug, {
+      platform: 'discord',
+      accountId: user.accountId,
+      role: 'player',
+    });
     await ctx.port.replyEphemeral(
       i,
-      `Claim started on **${ch.name}**. Open the sheet, then Confirm: ${url}`,
+      `Claim started on **${ch.name}**. Open your edit link, then Confirm on Core: ${url}`,
     );
     return;
   }
@@ -307,13 +334,18 @@ async function handleCommand(
     }
     for (const ch of pending) {
       const accountId = ch.initiator?.accountId ?? ch.player?.accountId ?? '';
+      const stUrl = sheetUrl(ctx.liveBaseUrl, ch.slug, {
+        platform: 'discord',
+        accountId: user.accountId,
+        role: 'storyteller',
+      });
       await ctx.port.sendCard(
         channelId,
         buildDraftReviewCard({
           characterName: ch.name,
           characterSlug: ch.slug,
           mentionAccountId: accountId,
-          liveSheetUrl: sheetUrl(ctx.liveBaseUrl, ch.slug),
+          liveSheetUrl: stUrl,
         }),
       );
     }

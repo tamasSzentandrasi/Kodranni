@@ -1,12 +1,4 @@
 ---
-import {
-  FOUNDATION_GROUPS,
-  ARCHETYPES,
-} from '@kodranni/domain';
-import {
-  nextFoundationCost,
-  nextSkillCost,
-} from '@kodranni/app';
 import type { FixtureCharacter } from '../data/fixture';
 
 interface Props {
@@ -17,62 +9,29 @@ interface Props {
 const { character: ch, live } = Astro.props;
 const creation = ch.creation;
 const unlocked = live && creation && !creation.locked;
-const awaitingReview = unlocked && ch.status === 'pending_review';
-const canConfirm =
-  unlocked && ch.status === 'draft' && Boolean(ch.initiator?.accountId);
-const skillMap = new Map(ch.skills.map((s) => [s.name, s.rating]));
 ---
 
 {
-  unlocked && (
-    <section class="smoke draft-panel" id="draft-panel" data-slug={ch.slug}>
+  unlocked && creation && (
+    <section
+      class="smoke draft-panel"
+      id="draft-panel"
+      data-slug={ch.slug}
+      data-foundation-points={String(creation.foundationPoints)}
+      data-skill-points={String(creation.skillPoints)}
+      data-words={String(creation.words)}
+    >
       <div class="section-head">
-        <h2>Creation · unlocked</h2>
+        <h2>Concept</h2>
         <button
           type="button"
           class="info"
-          data-tip="Point costs from the Guidebook. Birth Omen and Guiding Hand dice are rolled at the table bot — points appear here."
-          aria-label="About creation"
+          data-tip="Private prep stays on this tab. Raise Foundations and Skills on Core; Confirm is on Core as well."
+          aria-label="About draft concept"
         >
           i
         </button>
       </div>
-
-      <div class="draft-budgets" aria-live="polite">
-        <span class="draft-budget">
-          <strong data-field="foundationPoints">{creation.foundationPoints}</strong>
-          Foundation pts
-        </span>
-        <span class="draft-budget">
-          <strong data-field="skillPoints">{creation.skillPoints}</strong>
-          Skill pts
-        </span>
-        <span class="draft-budget">
-          <strong data-field="words">{creation.words}</strong>
-          Words
-        </span>
-      </div>
-      <p class="draft-hint">
-        Wanting spends (1 Word) are not on the sheet yet — ST awards Words at the table; the menu
-        comes later.
-      </p>
-
-      <p class="draft-weighing-status">
-        {
-          !creation.birthOmenGranted ? (
-            <span class="flag">Birth Omen pending from table</span>
-          ) : (
-            <span class="flag flag--ok">Birth Omen granted</span>
-          )
-        }
-        {
-          !creation.guidingHandGranted ? (
-            <span class="flag">Guiding Hand pending from table</span>
-          ) : (
-            <span class="flag flag--ok">Guiding Hand granted</span>
-          )
-        }
-      </p>
 
       <div class="draft-concept">
         <label class="draft-label">
@@ -81,13 +40,15 @@ const skillMap = new Map(ch.skills.map((s) => [s.name, s.rating]));
         </label>
         <label class="draft-label">
           Concept
-          <textarea name="concept" rows="3" data-field="concept">{ch.concept ?? ''}</textarea>
+          <textarea name="concept" rows="4" data-field="concept">{ch.concept ?? ''}</textarea>
         </label>
         <label class="draft-label">
           Community tie
-          <textarea name="communityTie" rows="2" data-field="communityTie">
-            {ch.communityTie}
-          </textarea>
+          <textarea name="communityTie" rows="3" data-field="communityTie">{ch.communityTie}</textarea>
+        </label>
+        <label class="draft-label">
+          Who do we see?
+          <textarea name="whoWeSee" rows="3" data-field="whoWeSee">{ch.whoWeSee ?? ''}</textarea>
         </label>
         <button type="button" class="draft-btn" data-action="save-concept">
           Save concept
@@ -95,241 +56,26 @@ const skillMap = new Map(ch.skills.map((s) => [s.name, s.rating]));
         <p class="draft-msg" data-msg="concept" hidden></p>
       </div>
 
-      <div class="draft-spends">
-        <h3>Foundations</h3>
-        <ul class="draft-spend-list">
-          {
-            Object.values(FOUNDATION_GROUPS)
-              .flat()
-              .map((fname) => {
-                const rating = ch.foundations[fname] ?? 1;
-                const cost = nextFoundationCost(rating);
-                return (
-                  <li class="draft-spend-row">
-                    <span>
-                      {fname} · {rating}
-                      {cost != null ? ` → +1 for ${cost}` : ' (max)'}
-                    </span>
-                    {cost != null && (
-                      <button
-                        type="button"
-                        class="draft-btn draft-btn--sm"
-                        data-action="spend-foundation"
-                        data-foundation={fname}
-                        disabled={creation.foundationPoints < cost}
-                      >
-                        Spend {cost}
-                      </button>
-                    )}
-                  </li>
-                );
-              })
-          }
-        </ul>
-
-        <h3>Skills</h3>
-        <p class="draft-hint">Raise one rank at a time. Cost: 0→1=1, 1→2=2, 2→3=3.</p>
-        <div class="draft-skill-pick">
-          <select data-field="skill-pick">
-            <option value="">Choose skill…</option>
-            {
-              ARCHETYPES.map((arch) => (
-                <optgroup label={arch.name}>
-                  {arch.skills.map((s) => {
-                    const r = skillMap.get(s.name) ?? 0;
-                    const cost = nextSkillCost(r);
-                    return (
-                      <option value={s.name} disabled={cost == null}>
-                        {s.name} ({r}
-                        {cost != null ? ` · next ${cost}` : ' max'})
-                      </option>
-                    );
-                  })}
-                </optgroup>
-              ))
-            }
-          </select>
-          <button type="button" class="draft-btn" data-action="spend-skill">
-            Spend on skill
-          </button>
-        </div>
-        <p class="draft-msg" data-msg="spend" hidden></p>
-      </div>
-
-      {
-        awaitingReview ? (
-          <div class="draft-confirm" id="draft-confirm">
-            <p class="flag flag--ok">Returned to table · awaiting Storyteller review</p>
-            <p class="draft-hint">
-              The table bot posts an Approve / Changes / Deny card (or the ST runs{' '}
-              <code>/review</code>). This sheet stays unlocked until Approve.
-            </p>
-          </div>
-        ) : canConfirm ? (
-          <div class="draft-confirm" id="draft-confirm">
-            <button type="button" class="draft-btn draft-btn--primary" data-action="confirm">
-              Confirm · return to table
-            </button>
-            <p class="draft-hint">
-              Sends this draft to the table (mentions{' '}
-              <strong>{ch.initiator?.displayName ?? 'you'}</strong>) for Approve / Request
-              changes / Deny.
-            </p>
-            <p class="draft-msg" data-msg="confirm" hidden></p>
-          </div>
-        ) : !ch.initiator?.accountId ? (
-          <p class="draft-hint">
-            Start this character from the table bot (<code>/create</code>) so Confirm can mention
-            you.
-          </p>
-        ) : null
-      }
+      <p class="draft-hint">
+        When ready, return to <a href={`/characters/${ch.slug}/`}>Core</a> and use{' '}
+        <strong>Confirm draft</strong> at the bottom.
+      </p>
     </section>
   )
 }
 
 {
-  unlocked && (
-    <script is:inline>
-      (function () {
-        const root = document.getElementById('draft-panel');
-        if (!root) return;
-        const slug = root.getAttribute('data-slug');
-        if (!slug) return;
-
-        function msg(key, text, ok) {
-          const el = root.querySelector('[data-msg="' + key + '"]');
-          if (!el) return;
-          el.hidden = !text;
-          el.textContent = text || '';
-          el.classList.toggle('draft-msg--err', !ok && !!text);
-          el.classList.toggle('draft-msg--ok', ok && !!text);
-        }
-
-        async function post(body) {
-          const res = await fetch('/api/character/' + encodeURIComponent(slug), {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(body),
-          });
-          const data = await res.json().catch(function () {
-            return { error: 'Bad response' };
-          });
-          if (!res.ok) throw new Error(data.error || res.statusText);
-          return data;
-        }
-
-        function setBudget(data) {
-          if (!data.creation) return;
-          const fp = root.querySelector('[data-field="foundationPoints"]');
-          const sp = root.querySelector('[data-field="skillPoints"]');
-          const w = root.querySelector('[data-field="words"]');
-          if (fp) fp.textContent = String(data.creation.foundationPoints);
-          if (sp) sp.textContent = String(data.creation.skillPoints);
-          if (w) w.textContent = String(data.creation.words);
-        }
-
-        root.addEventListener('click', async function (ev) {
-          const t = ev.target;
-          if (!(t instanceof HTMLElement)) return;
-          const action = t.getAttribute('data-action');
-          if (!action) return;
-          t.setAttribute('disabled', 'true');
-          try {
-            if (action === 'save-concept') {
-              const name = root.querySelector('[data-field="name"]');
-              const concept = root.querySelector('[data-field="concept"]');
-              const communityTie = root.querySelector('[data-field="communityTie"]');
-              await post({
-                action: 'update-concept',
-                name: name && 'value' in name ? name.value : undefined,
-                concept: concept && 'value' in concept ? concept.value : undefined,
-                communityTie:
-                  communityTie && 'value' in communityTie ? communityTie.value : undefined,
-              });
-              msg('concept', 'Saved.', true);
-            } else if (action === 'spend-foundation') {
-              const foundation = t.getAttribute('data-foundation');
-              const data = await post({ action: 'spend-foundation', foundation: foundation });
-              setBudget(data);
-              msg('spend', 'Spent on ' + foundation + '. Reload for ranks.', true);
-              setTimeout(function () {
-                location.reload();
-              }, 600);
-            } else if (action === 'spend-skill') {
-              const sel = root.querySelector('[data-field="skill-pick"]');
-              const skill = sel && 'value' in sel ? String(sel.value) : '';
-              if (!skill) {
-                msg('spend', 'Choose a skill first.', false);
-                return;
-              }
-              const data = await post({ action: 'spend-skill', skill: skill });
-              setBudget(data);
-              msg('spend', 'Spent on ' + skill + '.', true);
-              setTimeout(function () {
-                location.reload();
-              }, 600);
-            } else if (action === 'confirm') {
-              const data = await post({ action: 'confirm' });
-              const box = document.getElementById('draft-confirm');
-              if (box) {
-                box.innerHTML =
-                  '<p class="flag flag--ok">Returned to table · awaiting Storyteller review</p>' +
-                  '<p class="draft-hint">A review card should appear in the play channel. If not, ST: <code>/review</code>.</p>';
-              }
-              msg(
-                'confirm',
-                'Returned to table for ST review' +
-                  (data.mention ? ' (@' + data.mention.displayName + ')' : '') +
-                  '.',
-                true,
-              );
-              setTimeout(function () {
-                location.reload();
-              }, 1200);
-            }
-          } catch (e) {
-            const m = e instanceof Error ? e.message : String(e);
-            if (action === 'save-concept') msg('concept', m, false);
-            else if (action === 'confirm') msg('confirm', m, false);
-            else msg('spend', m, false);
-          } finally {
-            t.removeAttribute('disabled');
-          }
-        });
-      })();
-    </script>
-  )
+  unlocked && <script is:inline src="/creation-client.js"></script>
 }
 
 <style>
   .draft-panel {
     margin-bottom: 1.25rem;
   }
-  .draft-budgets {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem 1.25rem;
-    margin: 0.5rem 0 0.75rem;
-  }
-  .draft-budget strong {
-    color: var(--kod-blood, #a33);
-    font-size: 1.15em;
-    margin-right: 0.25rem;
-  }
-  .draft-weighing-status {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    margin: 0 0 0.85rem;
-  }
-  .flag--ok {
-    opacity: 0.85;
-  }
   .draft-concept {
     display: grid;
     gap: 0.55rem;
-    margin-bottom: 1rem;
+    margin: 0.35rem 0 0;
   }
   .draft-label {
     display: grid;
@@ -338,13 +84,12 @@ const skillMap = new Map(ch.skills.map((s) => [s.name, s.rating]));
     letter-spacing: 0.02em;
   }
   .draft-label input,
-  .draft-label textarea,
-  .draft-skill-pick select {
+  .draft-label textarea {
     font: inherit;
     padding: 0.4rem 0.5rem;
-    border: 1px solid color-mix(in srgb, var(--kod-ink, #ccc) 25%, transparent);
+    border: 1px solid color-mix(in srgb, var(--kod-silver, #b8b3ab) 28%, transparent);
     border-radius: 2px;
-    background: color-mix(in srgb, var(--kod-bg, #111) 92%, #fff 8%);
+    background: color-mix(in srgb, #080606 92%, #fff 8%);
     color: inherit;
     width: 100%;
     max-width: 40rem;
@@ -353,52 +98,23 @@ const skillMap = new Map(ch.skills.map((s) => [s.name, s.rating]));
     font: inherit;
     cursor: pointer;
     padding: 0.4rem 0.85rem;
-    border: 1px solid color-mix(in srgb, var(--kod-blood, #8a1515) 55%, transparent);
+    border: 1px solid color-mix(in srgb, var(--kod-silver, #b8b3ab) 40%, transparent);
     background: transparent;
     color: inherit;
     border-radius: 2px;
+    justify-self: start;
   }
   .draft-btn:hover:not(:disabled) {
-    background: color-mix(in srgb, var(--kod-blood, #8a1515) 18%, transparent);
-  }
-  .draft-btn:disabled {
-    opacity: 0.45;
-    cursor: not-allowed;
-  }
-  .draft-btn--sm {
-    padding: 0.2rem 0.5rem;
-    font-size: 0.85em;
-  }
-  .draft-btn--primary {
-    background: color-mix(in srgb, var(--kod-blood, #8a1515) 28%, transparent);
-    font-weight: 600;
-  }
-  .draft-spend-list {
-    list-style: none;
-    margin: 0 0 1rem;
-    padding: 0;
-    display: grid;
-    gap: 0.35rem;
-  }
-  .draft-spend-row {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.5rem;
-    max-width: 28rem;
-  }
-  .draft-skill-pick {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    align-items: center;
-    margin-bottom: 0.5rem;
+    border-color: var(--kod-silver, #b8b3ab);
+    background: color-mix(in srgb, var(--kod-silver, #b8b3ab) 12%, transparent);
   }
   .draft-hint {
     font-size: 0.9rem;
     opacity: 0.85;
-    margin: 0.35rem 0 0.75rem;
+    margin: 1rem 0 0;
+  }
+  .draft-hint a {
+    color: var(--kod-silver-bright, #f2efe9);
   }
   .draft-msg {
     font-size: 0.9rem;
@@ -409,10 +125,5 @@ const skillMap = new Map(ch.skills.map((s) => [s.name, s.rating]));
   }
   .draft-msg--ok {
     opacity: 0.9;
-  }
-  .draft-confirm {
-    margin-top: 1rem;
-    padding-top: 0.85rem;
-    border-top: 1px solid color-mix(in srgb, var(--kod-ink, #ccc) 15%, transparent);
   }
 </style>

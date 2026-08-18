@@ -10,11 +10,23 @@ interface Props {
   status: string;
   dying?: boolean;
   live?: boolean;
-  tab: 'core' | 'echoes' | 'inventory';
+  tab: 'core' | 'echoes' | 'inventory' | 'draft';
+  /** Show Draft tab only when the sheet is unlocked for creation. */
+  showDraftTab?: boolean;
 }
 
-const { slug, name, playerDisplay, playerPlatform, avatar, status, dying, live, tab } =
-  Astro.props;
+const {
+  slug,
+  name,
+  playerDisplay,
+  playerPlatform,
+  avatar,
+  status,
+  dying,
+  live,
+  tab,
+  showDraftTab = false,
+} = Astro.props;
 const av = avatarUrl(slug, avatar);
 ---
 
@@ -46,6 +58,16 @@ const av = avatarUrl(slug, avatar);
   >
     Inventory
   </a>
+  {
+    showDraftTab && (
+      <a
+        href={`/characters/${slug}/draft/`}
+        aria-current={tab === 'draft' ? 'page' : undefined}
+      >
+        Draft
+      </a>
+    )
+  }
 </nav>
 
 <div class="sheet-identity">

@@ -19,6 +19,7 @@ export const SECRET_FILE_TO_ENV = {
   'fluxer-appID': 'FLUXER_APP_ID',
   'fluxer-clientSecret': 'FLUXER_CLIENT_SECRET',
   'cf-tunnel-token': 'KODRANNI_CF_TUNNEL_TOKEN',
+  'sheet-token-secret': 'KODRANNI_SHEET_TOKEN_SECRET',
 } as const;
 
 export type SecretFileName = keyof typeof SECRET_FILE_TO_ENV;

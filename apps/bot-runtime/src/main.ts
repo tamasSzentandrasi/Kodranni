@@ -8,6 +8,7 @@
  *   DISCORD_PLAY_CHANNEL_ID (optional — post live link on start)
  *   FLUXER_BOT_TOKEN, FLUXER_GUILD_ID, FLUXER_PLAY_CHANNEL_ID (loaded; adapter pending)
  *   KODRANNI_LIVE_BASE_URL, KODRANNI_PUBLIC_BASE_URL (optional)
+ *   KODRANNI_SHEET_TOKEN_SECRET (or secrets/sheet-token-secret) for sheet edit links
  */
 import { appendFileSync, mkdirSync } from 'node:fs';
 import { dirname } from 'node:path';
@@ -24,6 +25,7 @@ import {
   readCampaignConfig,
   readLiveUrl,
 } from '@kodranni/store';
+import { issueSheetToken, sheetTokenSecret, withEditToken } from '@kodranni/app';
 import {
   buildDraftReviewCard,
   handleInteraction,
@@ -136,8 +138,28 @@ async function main(): Promise<void> {
   }
 
   const announcedReviews = new Set<string>();
-  const sheetUrl = (characterSlug: string) =>
-    `${liveBase.replace(/\/$/, '')}/characters/${characterSlug}/`;
+  const sheetUrl = (
+    characterSlug: string,
+    edit?: { accountId: string; role?: 'player' | 'storyteller' },
+  ) => {
+    let url = `${liveBase.replace(/\/$/, '')}/characters/${characterSlug}/`;
+    if (edit && sheetTokenSecret()) {
+      try {
+        url = withEditToken(
+          url,
+          issueSheetToken({
+            platform: 'discord',
+            accountId: edit.accountId,
+            characterSlug,
+            role: edit.role ?? 'player',
+          }),
+        );
+      } catch {
+        /* leave bare */
+      }
+    }
+    return url;
+  };
   const announcePendingReviews = async () => {
     if (!play) return;
     const pending = store.listCharacters().filter((c) => c.status === 'pending_review');
@@ -149,13 +171,16 @@ async function main(): Promise<void> {
       const ch = pending.find((c) => c.slug === characterSlug);
       if (!ch) continue;
       try {
+        const ownerId = ch.initiator?.accountId ?? '';
         await port.sendCard(
           play,
           buildDraftReviewCard({
             characterName: ch.name,
             characterSlug: ch.slug,
-            mentionAccountId: ch.initiator?.accountId ?? '',
-            liveSheetUrl: sheetUrl(ch.slug),
+            mentionAccountId: ownerId,
+            liveSheetUrl: ownerId
+              ? sheetUrl(ch.slug, { accountId: ownerId, role: 'player' })
+              : sheetUrl(ch.slug),
           }),
         );
         announcedReviews.add(ch.slug);

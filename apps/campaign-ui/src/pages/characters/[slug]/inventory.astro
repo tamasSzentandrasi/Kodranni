@@ -4,6 +4,7 @@ export const prerender = false;
 import CampaignLayout from '../../../layouts/CampaignLayout.astro';
 import SheetChrome from '../../../components/SheetChrome.astro';
 import { getCharacter, loadCommunity } from '../../../data/load';
+import { editCookieHeader, resolveSheetEdit } from '../../../lib/sheet-auth';
 
 const { slug } = Astro.params;
 const c = loadCommunity();
@@ -13,6 +14,12 @@ if (!ch) {
 }
 
 const live = c.source === 'live';
+const unlocked = Boolean(live && ch.creation && !ch.creation.locked);
+const auth = resolveSheetEdit(Astro.request, Astro.url, ch.slug);
+if (auth.canEdit && auth.token && Astro.url.searchParams.has('edit')) {
+  Astro.response.headers.append('Set-Cookie', editCookieHeader(auth.token));
+}
+const canEdit = unlocked && auth.canEdit;
 const armourLabel =
   ch.armour.kind === 'none' ? 'None' : ch.armour.kind === 'light' ? 'Light' : 'Heavy';
 ---
@@ -34,6 +41,7 @@ const armourLabel =
     dying={ch.dying}
     live={live}
     tab="inventory"
+    showDraftTab={canEdit}
   />
 
   <section class="smoke">
