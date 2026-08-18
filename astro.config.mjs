@@ -77,6 +77,7 @@ export default defineConfig({
       components: {
         Head: './src/components/starlight/Head.astro',
         PageTitle: './src/components/starlight/PageTitle.astro',
+        SiteTitle: './src/components/starlight/SiteTitle.astro',
         ThemeSelect: './src/components/starlight/ThemeSelect.astro',
         ThemeProvider: './src/components/starlight/ThemeProvider.astro',
       },
