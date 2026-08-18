@@ -11,8 +11,8 @@
 | SQLite adapter | Working | Local SoT under `~/.kodranni/campaigns/<slug>/` |
 | CLI | Working | seed/destroy/roll/live/`emissary`/`session`; `live --tunnel`; reconstructible `--force` |
 | Live campaign-ui | Functional enough | Community + character UX; polish later |
-| App services | Growing | rolls + **harm preview/apply** + ST resource events (exertion, fortune, supplies, inventory) |
-| Discord bot-runtime | **Vertical slice** | `/kod-map` `/kod-prompt` `/kod-roll` `/kod-st-roll` + Harm assign; Fluxer still skeleton |
+| App services | Growing | rolls + harm + **creation lifecycle** (draft/claim/spend/Weighing pts/Wanting/ST edit/focus) |
+| Discord bot-runtime | **Redesign in progress** | `/create` `/roll` `/intent` `/review` + Birth Omen/Hand; sheet Confirm; Harm on result; kod-* legacy aliases |
 | Campaign GitHub/Pages spawn | Not started | Designed only; force-publish on session end |
 
 ## Reconstructible demo
@@ -45,10 +45,12 @@ Default demo slug: **`vardmark`**. Characters: **torvald**, **leifr**.
 
 ## Known gaps / next
 
-1. Fluxer parity; oppose linking; multi-track harm; skill dual-spectrum menus  
-2. Publish/archive pipeline (force on session end)  
-3. `session start` auto-launch bot when Discord env present  
-4. Campaign geography map programme (deferred)  
+1. Fluxer prefix path; auto-post review card on Confirm (event bus); true Intent DM  
+2. Oppose linking; multi-track / multi-family harm; Discord multi-step skill selects  
+3. Publish/archive pipeline (force on session end)  
+4. `session start` auto-launch bot when Discord env present  
+5. Campaign geography map programme (deferred)  
+6. ST full edit UI on sheet (API exists: `stEditCharacter`)
 
 ## Verify loop
 

@@ -51,9 +51,9 @@ npm run kodranni -- session start --slug vardmark --tunnel --detach
 npm run kodranni -- session status --slug vardmark
 npm run kodranni -- session end --slug vardmark
 
-# Discord bot (separate terminal; needs DISCORD_BOT_TOKEN + DISCORD_GUILD_ID)
+# Discord bot (separate terminal). Loads ~/.kodranni/secrets/ into env.
 npm run kodranni -- bot --slug vardmark
-# → /kod-map · /kod-prompt · /kod-roll · Harm button — docs/plans/bot-discord.md
+# → /create · /roll · /intent · Harm — docs/plans/bot-discord.md
 ```
 
 `npm run kodranni` resolves workspaces from this repo (or `KODRANNI_REPO` if the bin is invoked elsewhere).  

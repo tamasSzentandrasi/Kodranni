@@ -96,10 +96,126 @@ function selectToRow(sel: ChatSelect): ActionRowBuilder<StringSelectMenuBuilder>
   return new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(menu);
 }
 
+const dieTier = (o: {
+  setName: (n: string) => typeof o;
+  setDescription: (d: string) => typeof o;
+  addChoices: (...c: { name: string; value: number }[]) => typeof o;
+}) =>
+  o
+    .setName('tier')
+    .setDescription('Die tier')
+    .addChoices(
+      { name: 'd6', value: 6 },
+      { name: 'd8', value: 8 },
+      { name: 'd12', value: 12 },
+    );
+
 const SLASH = [
   new SlashCommandBuilder()
-    .setName('kod-map')
-    .setDescription('Map a Discord user to a character (ST)')
+    .setName('roll')
+    .setDescription('Roll for your focused character')
+    .addStringOption((o) => o.setName('skill').setDescription('Skill name (omit for Primitive)'))
+    .addStringOption((o) =>
+      o.setName('foundation').setDescription('Override foundation (default: skill guiding)'),
+    )
+    .addIntegerOption((o) => dieTier(o))
+    .addIntegerOption((o) =>
+      o
+        .setName('exertion')
+        .setDescription('0–2 (2 needs Echo)')
+        .setMinValue(0)
+        .setMaxValue(2),
+    )
+    .addBooleanOption((o) => o.setName('echo').setDescription('Invoke a matching Echo'))
+    .addStringOption((o) =>
+      o.setName('character').setDescription('Character slug if you have more than one'),
+    ),
+  new SlashCommandBuilder()
+    .setName('intent')
+    .setDescription('ST: whisper a prefilled roll to a named player')
+    .addUserOption((o) =>
+      o.setName('player').setDescription('Player who should roll').setRequired(true),
+    )
+    .addStringOption((o) => o.setName('skill').setDescription('Skill name'))
+    .addStringOption((o) =>
+      o.setName('foundation').setDescription('Foundation (default: skill guiding)'),
+    )
+    .addIntegerOption((o) => dieTier(o))
+    .addStringOption((o) =>
+      o.setName('character').setDescription('Optional character slug for the player'),
+    ),
+  new SlashCommandBuilder()
+    .setName('create')
+    .setDescription('Start a character draft bound to you (edit on the live sheet)')
+    .addStringOption((o) => o.setName('name').setDescription('Provisional character name')),
+  new SlashCommandBuilder()
+    .setName('claim')
+    .setDescription('Claim an ST prebuilt / guest character')
+    .addStringOption((o) =>
+      o.setName('character').setDescription('Claimable character slug').setRequired(true),
+    ),
+  new SlashCommandBuilder()
+    .setName('focus')
+    .setDescription('Set which of your characters is active for rolls')
+    .addStringOption((o) =>
+      o.setName('character').setDescription('Character slug').setRequired(true),
+    ),
+  new SlashCommandBuilder()
+    .setName('birth-omen')
+    .setDescription('Weighing: private Birth Omen d20 → Foundation points on sheet')
+    .addStringOption((o) =>
+      o.setName('character').setDescription('Draft character slug').setRequired(true),
+    )
+    .addIntegerOption((o) =>
+      o
+        .setName('face')
+        .setDescription('Optional fixed face 1–20 (tests); omit to roll')
+        .setMinValue(1)
+        .setMaxValue(20),
+    ),
+  new SlashCommandBuilder()
+    .setName('guiding-hand')
+    .setDescription('Weighing: private Guiding Hand d20 → Skill points on sheet')
+    .addStringOption((o) =>
+      o.setName('character').setDescription('Draft character slug').setRequired(true),
+    )
+    .addIntegerOption((o) =>
+      o
+        .setName('face')
+        .setDescription('Optional fixed face 1–20; omit to roll')
+        .setMinValue(1)
+        .setMaxValue(20),
+    ),
+  new SlashCommandBuilder()
+    .setName('award-word')
+    .setDescription('ST: award 1 Word to a speaker after an accepted claim')
+    .addStringOption((o) =>
+      o.setName('character').setDescription('Speaker character slug').setRequired(true),
+    ),
+  new SlashCommandBuilder()
+    .setName('review')
+    .setDescription('ST: post Approve/Changes/Deny cards for pending drafts')
+    .addStringOption((o) =>
+      o.setName('character').setDescription('Optional slug; omit to post all pending'),
+    ),
+  new SlashCommandBuilder()
+    .setName('st-roll')
+    .setDescription('ST NPC roll (numeric pool, no PC sheet)')
+    .addIntegerOption((o) =>
+      o.setName('foundation').setDescription('Foundation dice').setRequired(true),
+    )
+    .addIntegerOption((o) =>
+      o.setName('skill').setDescription('Skill dice').setRequired(true),
+    )
+    .addStringOption((o) => o.setName('label').setDescription('NPC label'))
+    .addIntegerOption((o) => dieTier(o)),
+  new SlashCommandBuilder()
+    .setName('live')
+    .setDescription('Show live / archive sheet URLs'),
+  // Emergency / legacy aliases (still registered so old docs work)
+  new SlashCommandBuilder()
+    .setName('map')
+    .setDescription('Emergency: map user → character (prefer /create + Confirm)')
     .addUserOption((o) => o.setName('user').setDescription('Discord user').setRequired(true))
     .addStringOption((o) =>
       o.setName('character').setDescription('Character slug').setRequired(true),
@@ -114,53 +230,48 @@ const SLASH = [
         ),
     ),
   new SlashCommandBuilder()
-    .setName('kod-prompt')
-    .setDescription('ST: set roll config; player presses Roll')
-    .addStringOption((o) =>
-      o.setName('foundation').setDescription('e.g. Authority').setRequired(true),
-    )
-    .addStringOption((o) => o.setName('skill').setDescription('Skill name (omit for Primitive)'))
-    .addIntegerOption((o) =>
-      o
-        .setName('tier')
-        .setDescription('Die tier 6|8|12')
-        .addChoices(
-          { name: 'd6', value: 6 },
-          { name: 'd8', value: 8 },
-          { name: 'd12', value: 12 },
-        ),
-    )
-    .addStringOption((o) =>
-      o.setName('character').setDescription('Optional character slug for the card'),
-    ),
-  new SlashCommandBuilder()
     .setName('kod-roll')
-    .setDescription('Player roll from your mapped character')
+    .setDescription('[Legacy] Use /roll')
     .addStringOption((o) =>
       o.setName('foundation').setDescription('e.g. Strength').setRequired(true),
     )
     .addStringOption((o) => o.setName('skill').setDescription('Skill name'))
+    .addIntegerOption((o) => dieTier(o))
     .addIntegerOption((o) =>
+      o.setName('exertion').setDescription('0–2').setMinValue(0).setMaxValue(2),
+    )
+    .addBooleanOption((o) => o.setName('echo').setDescription('Invoke Echo')),
+  new SlashCommandBuilder()
+    .setName('kod-live')
+    .setDescription('[Legacy] Use /live'),
+  new SlashCommandBuilder()
+    .setName('kod-map')
+    .setDescription('[Legacy] Use /map')
+    .addUserOption((o) => o.setName('user').setDescription('Discord user').setRequired(true))
+    .addStringOption((o) =>
+      o.setName('character').setDescription('Character slug').setRequired(true),
+    )
+    .addStringOption((o) =>
       o
-        .setName('tier')
-        .setDescription('Die tier')
+        .setName('role')
+        .setDescription('role')
         .addChoices(
-          { name: 'd6', value: 6 },
-          { name: 'd8', value: 8 },
-          { name: 'd12', value: 12 },
+          { name: 'player', value: 'player' },
+          { name: 'storyteller', value: 'storyteller' },
         ),
+    ),
+  new SlashCommandBuilder()
+    .setName('kod-prompt')
+    .setDescription('[Legacy] Use /intent')
+    .addStringOption((o) =>
+      o.setName('foundation').setDescription('Foundation').setRequired(true),
     )
-    .addIntegerOption((o) =>
-      o
-        .setName('exertion')
-        .setDescription('0–2 (2 needs Echo)')
-        .setMinValue(0)
-        .setMaxValue(2),
-    )
-    .addBooleanOption((o) => o.setName('echo').setDescription('Invoke a matching Echo')),
+    .addStringOption((o) => o.setName('skill').setDescription('Skill'))
+    .addIntegerOption((o) => dieTier(o))
+    .addStringOption((o) => o.setName('character').setDescription('Character slug')),
   new SlashCommandBuilder()
     .setName('kod-st-roll')
-    .setDescription('ST NPC roll (no PC sheet)')
+    .setDescription('[Legacy] Use /st-roll')
     .addIntegerOption((o) =>
       o.setName('foundation').setDescription('Foundation dice').setRequired(true),
     )
@@ -168,19 +279,7 @@ const SLASH = [
       o.setName('skill').setDescription('Skill dice').setRequired(true),
     )
     .addStringOption((o) => o.setName('label').setDescription('NPC label'))
-    .addIntegerOption((o) =>
-      o
-        .setName('tier')
-        .setDescription('Die tier')
-        .addChoices(
-          { name: 'd6', value: 6 },
-          { name: 'd8', value: 8 },
-          { name: 'd12', value: 12 },
-        ),
-    ),
-  new SlashCommandBuilder()
-    .setName('kod-live')
-    .setDescription('Post live / archive sheet links'),
+    .addIntegerOption((o) => dieTier(o)),
 ].map((c) => c.toJSON());
 
 export function createDiscordAdapter(opts: {
@@ -337,9 +436,11 @@ function mapSlash(ix: ChatInputCommandInteraction): CommandInteraction {
   for (const opt of ix.options.data) {
     options[opt.name] = opt.value as string | number | boolean | undefined;
   }
-  // Flatten user option to id
-  const user = ix.options.getUser('user');
-  if (user) options.user = user.id;
+  // Flatten user options to account ids
+  const userOpt = ix.options.getUser('user');
+  if (userOpt) options.user = userOpt.id;
+  const playerOpt = ix.options.getUser('player');
+  if (playerOpt) options.player = playerOpt.id;
   return {
     type: 'command',
     id: ix.id,

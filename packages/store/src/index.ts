@@ -14,6 +14,7 @@ export * from './hierarchy.js';
 export * from './port.js';
 export * from './echo-effects.js';
 export * from './runtime.js';
+export * from './secrets.js';
 
 // --- lightweight memory store (tests / early adapters) ---
 

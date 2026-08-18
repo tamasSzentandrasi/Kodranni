@@ -116,7 +116,7 @@ export function buildRollPromptCard(input: RollPromptCardInput): ChatCard {
       { name: 'Skill', value: input.skill ?? 'Primitive', inline: true },
       { name: 'Tier', value: `d${input.dieTier}`, inline: true },
     ],
-    footer: 'Defaults: no Exertion, no Echo. Use /kod-roll for options.',
+    footer: 'Defaults: no Exertion, no Echo. Only the named player may press Roll.',
     buttons: [
       { id: `prompt-roll:${input.promptId}`, label: 'Roll', style: 'primary' },
     ],

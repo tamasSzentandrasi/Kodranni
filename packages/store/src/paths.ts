@@ -12,6 +12,12 @@ export function campaignDir(slug: string, env?: NodeJS.ProcessEnv): string {
   return join(kodranniHome(env), 'campaigns', slug);
 }
 
+/** ST-machine secrets: one file per value. Never in the public campaign repo. */
+export function secretsDir(env: NodeJS.ProcessEnv = process.env): string {
+  if (env.KODRANNI_SECRETS_DIR) return env.KODRANNI_SECRETS_DIR;
+  return join(kodranniHome(env), 'secrets');
+}
+
 export function defaultStorePath(slug: string, env?: NodeJS.ProcessEnv): string {
   return join(campaignDir(slug, env), 'data', 'community.sqlite');
 }

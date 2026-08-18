@@ -4,7 +4,9 @@ import {
   defaultCampaignTomlPath,
   defaultStorePath,
   liveUrlPath,
+  loadSecretsIntoEnv,
   openSqliteStore,
+  platformCredentialStatus,
   readCampaignConfig,
   readLiveUrl,
   readSessionState,
@@ -34,6 +36,39 @@ export async function runEmissary(opts: {
   const nodeV = process.versions.node;
   checks.push(
     check('node', true, `v${nodeV} (experimental-sqlite required for store)`),
+  );
+
+  const secrets = loadSecretsIntoEnv();
+  const creds = platformCredentialStatus();
+  checks.push(
+    check(
+      'discord secrets',
+      creds.discord.ready,
+      creds.discord.ready
+        ? `token+guild${creds.discord.playChannel ? '+play-channel' : ''} · ${secrets.dir}`
+        : `missing token/guild under ${secrets.dir} (discord-botToken, discord-serverID)`,
+    ),
+  );
+  const fluxerPartial = creds.fluxer.token !== creds.fluxer.guild;
+  checks.push(
+    check(
+      'fluxer secrets',
+      !fluxerPartial,
+      creds.fluxer.ready
+        ? `token+guild${creds.fluxer.playChannel ? '+play-channel' : ''} loaded · adapter pending`
+        : fluxerPartial
+          ? 'partial — need both fluxer-botToken and fluxer-serverID'
+          : `none under ${secrets.dir} (optional until Fluxer adapter ships)`,
+    ),
+  );
+  checks.push(
+    check(
+      'tunnel token',
+      true,
+      creds.tunnelToken
+        ? 'KODRANNI_CF_TUNNEL_TOKEN set (named tunnel)'
+        : 'unset — quick tunnel does not need it',
+    ),
   );
 
   let cfg = opts.cfg;

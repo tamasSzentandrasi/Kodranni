@@ -12,7 +12,10 @@ import {
   destroyCampaignDir,
   ensureCampaignLayout,
   ensureCampaignRuntime,
+  formatCredentialStatus,
+  loadSecretsIntoEnv,
   openSqliteStore,
+  platformCredentialStatus,
   readCampaignConfig,
   readLiveUrl,
   seedDemoCampaign,
@@ -57,7 +60,7 @@ Usage:
   kodranni emissary [--slug <slug>]
       Readiness + live/archive access (what players should open).
   kodranni bot --slug <slug>
-      Discord bot-runtime (needs DISCORD_BOT_TOKEN + DISCORD_GUILD_ID).
+      Discord bot-runtime. Loads ~/.kodranni/secrets/ into env (existing env wins).
   kodranni help
 
 RNG: production rolls use crypto. --debug-seed is for verification only.
@@ -114,6 +117,7 @@ function killChild(child: ChildProcess | undefined): void {
 }
 
 async function main(): Promise<void> {
+  loadSecretsIntoEnv();
   const args = process.argv.slice(2);
   const cmd = args[0];
   if (!cmd || cmd === 'help' || cmd === '-h' || cmd === '--help') usage(0);
@@ -201,8 +205,13 @@ async function main(): Promise<void> {
     console.log(`Bot-runtime for ${slug}`);
     console.log(`  store: ${cfg.storePath}`);
     console.log(`  live:  ${liveUrl}`);
+    console.log(`  creds: ${formatCredentialStatus(platformCredentialStatus())}`);
     if (!process.env.DISCORD_BOT_TOKEN || !process.env.DISCORD_GUILD_ID) {
-      console.error('Set DISCORD_BOT_TOKEN and DISCORD_GUILD_ID in the environment.');
+      console.error(
+        'Discord is not ready. Add ~/.kodranni/secrets/discord-botToken and discord-serverID\n' +
+          '  (or export DISCORD_BOT_TOKEN and DISCORD_GUILD_ID). Fluxer creds load the same way\n' +
+          '  but that adapter is not connected yet.',
+      );
       process.exit(1);
     }
     const child = spawn(
