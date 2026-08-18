@@ -56,7 +56,7 @@ export default defineConfig({
           ],
         },
         {
-          label: 'Getting Started',
+          label: 'Campaign & Character Creation',
           items: [
             { label: 'Campaign Setup', link: '/campaign-setup/' },
             { label: 'Character Creation', link: '/character-creation/' },

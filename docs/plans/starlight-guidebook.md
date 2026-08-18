@@ -86,7 +86,7 @@ Old English / Hávamál: original line, then translation, then source.
 2. **Dice Mechanics** — Overview · Marks & Tiers · Omens & Consequences · Tide
 3. **Human Potential** — Overview · Foundations · Skills · Traits · Exertion
 4. **Resolution & Continuity** — **Echoes** · Harm · Hierarchies · Inventory
-5. **Getting Started** — Campaign Setup · Character Creation
+5. **Campaign & Character Creation** — Campaign Setup · Character Creation
 6. **Automation** — At the Table
 7. **Reference** — Glossary
 

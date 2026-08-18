@@ -20,7 +20,7 @@ Default action die is **d8**. A **Mark** is any face of **5 or higher**.
 | **Consequence** | Side event from the Omen die; must not rewrite the primary roll outcome. → [Omens](/omens/#the-omen-die-and-consequences) |
 | **Opposed roll** | Contested action; compare Marks difference via reply chain. → [Tide](/tide/#situational-dice-resolution) |
 | **Primitive action** | Foundation-only pool (no Skill). → [Marks & Tiers](/marks-and-tiers/#the-makeup-of-the-dice-pool) |
-| **Tide** | Shared tracker for multi-party contests. Three sizes: Tiny skirmish, Small skirmish, Battle. → [Tide](/tide/) |
+| **Tide** | Shared tracker for multi-party contests. Three sizes: Small skirmish, Skirmish, Battle. → [Tide](/tide/) |
 
 ----------
 

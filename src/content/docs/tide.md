@@ -113,10 +113,10 @@ The Zhao/Wei column later in this chapter uses the last row. Imperial **6**, Mon
 
 There are **three** sizes. There is no larger scale than Battle.
 
-| Skirmish size | Marks difference per Tide step |
-|---------------|--------------------------------|
-| Tiny skirmish | 1 |
-| Small skirmish | 2 |
+| Size | Marks difference per Tide step |
+|------|--------------------------------|
+| Small skirmish | 1 |
+| Skirmish | 2 |
 | Battle | 3 |
 
 ### Shifting by Marks
@@ -246,11 +246,31 @@ Zhao’s last cut, boxed in at the wash: margin 4 → one step (**2 → 1**). Om
 
 On **equal footing**:
 
-| Skirmish size | Faces toward A collapse | Faces toward B collapse |
-|---------------|-------------------------|-------------------------|
-| Tiny skirmish | **1** | **20** |
-| Small skirmish | **1–2** | **19–20** |
+| Size | Faces toward A collapse | Faces toward B collapse |
+|------|-------------------------|-------------------------|
+| Small skirmish | **1** | **20** |
+| Skirmish | **1–2** | **19–20** |
 | Battle | **1–3** | **18–20** |
+
+<div class="kod-omen-legend not-content" aria-hidden="true">
+<span class="kod-omen-legend__a">Crimson — toward A collapse</span>
+<span class="kod-omen-legend__mid">blank</span>
+<span class="kod-omen-legend__b">Teal — toward B collapse</span>
+</div>
+<div class="kod-omen-stack not-content" aria-label="Equal-footing Omen faces">
+<div class="kod-omen-row">
+<span class="kod-omen-row__lab">Small skirmish</span>
+<ol class="kod-omen-faces" data-a="1-1" data-b="20-20"></ol>
+</div>
+<div class="kod-omen-row">
+<span class="kod-omen-row__lab">Skirmish</span>
+<ol class="kod-omen-faces" data-a="1-2" data-b="19-20"></ol>
+</div>
+<div class="kod-omen-row">
+<span class="kod-omen-row__lab">Battle</span>
+<ol class="kod-omen-faces" data-a="1-3" data-b="18-20"></ol>
+</div>
+</div>
 
 ### Imbalance — the same ladder as die tiers
 
@@ -264,43 +284,43 @@ Treat collective footing as the die-tier ladder:
 
 **Procedure.** The side under pressure **keeps its bad band** at the current skirmish size. Its **good band is taken from N sizes smaller** on the equal-footing table (slight N=1, severe N=2).
 
-There is no size below Tiny skirmish. A good band **cannot shrink below one face**.
+There is no size below Small skirmish. A good band **cannot shrink below one face**.
 
-Battle examples:
-
-| Footing | Faces |
-|---------|-------|
-| Slight, A disadvantaged | **1–3** / **19–20** |
-| Slight, B disadvantaged | **1–2** / **18–20** |
-| Severe, A disadvantaged | **1–3** / **20** only |
-| Severe, B disadvantaged | **1** only / **18–20** |
-
-<div class="kod-widget not-content" data-widget="content-tabs" data-tide-footing>
-<p class="kod-widget__title">Tide footing — Omen bands</p>
-<p class="kod-widget__intro">Pick a size, then a collective footing. The disadvantaged side keeps its bad band; its good band comes from a smaller size on the table above.</p>
-<div class="kod-widget__controls" role="group" aria-label="Skirmish size">
-<button type="button" class="kod-widget__btn" data-tab="tiny">Tiny skirmish</button>
+<div class="kod-widget not-content" data-widget="content-tabs">
+<p class="kod-widget__title">Tide footing — which faces move the bar</p>
+<p class="kod-widget__intro">Pick a size. Each row is a collective footing. Crimson faces push toward A’s collapse; teal toward B’s. The middle is blank. The Zhao column is Battle, severe, A disadvantaged — only <strong>1–3</strong> and <strong>20</strong> light up.</p>
+<div class="kod-widget__controls" role="group" aria-label="Size">
 <button type="button" class="kod-widget__btn" data-tab="small">Small skirmish</button>
+<button type="button" class="kod-widget__btn" data-tab="skirmish">Skirmish</button>
 <button type="button" class="kod-widget__btn" data-tab="battle" aria-pressed="true">Battle</button>
 </div>
-<div class="kod-widget__panel" data-panel-id="tiny" hidden>
-<p><strong>Tiny skirmish</strong> — equal footing <strong>1</strong> / <strong>20</strong>. There is no narrower good band. Slight and severe do not shrink the faces further.</p>
-<p>Slight or severe, A disadvantaged: <strong>1</strong> / <strong>20</strong>.</p>
-<p>Slight or severe, B disadvantaged: <strong>1</strong> / <strong>20</strong>.</p>
-</div>
 <div class="kod-widget__panel" data-panel-id="small" hidden>
-<p><strong>Small skirmish</strong> — equal footing <strong>1–2</strong> / <strong>19–20</strong>.</p>
-<p>Slight, A disadvantaged: <strong>1–2</strong> / <strong>20</strong> (good band from Tiny skirmish).</p>
-<p>Slight, B disadvantaged: <strong>1</strong> / <strong>19–20</strong>.</p>
-<p>Severe, A disadvantaged: <strong>1–2</strong> / <strong>20</strong> (floor — one face).</p>
-<p>Severe, B disadvantaged: <strong>1</strong> / <strong>19–20</strong> (floor).</p>
+<div class="kod-omen-stack">
+<div class="kod-omen-row"><span class="kod-omen-row__lab">Equal</span><ol class="kod-omen-faces" data-a="1-1" data-b="20-20"></ol></div>
+<div class="kod-omen-row"><span class="kod-omen-row__lab">Slight A</span><ol class="kod-omen-faces" data-a="1-1" data-b="20-20"></ol></div>
+<div class="kod-omen-row"><span class="kod-omen-row__lab">Slight B</span><ol class="kod-omen-faces" data-a="1-1" data-b="20-20"></ol></div>
+<div class="kod-omen-row"><span class="kod-omen-row__lab">Severe A</span><ol class="kod-omen-faces" data-a="1-1" data-b="20-20"></ol></div>
+<div class="kod-omen-row"><span class="kod-omen-row__lab">Severe B</span><ol class="kod-omen-faces" data-a="1-1" data-b="20-20"></ol></div>
+</div>
+<p class="kod-omen-note">Floor: nothing narrower than one face at each end.</p>
+</div>
+<div class="kod-widget__panel" data-panel-id="skirmish" hidden>
+<div class="kod-omen-stack">
+<div class="kod-omen-row"><span class="kod-omen-row__lab">Equal</span><ol class="kod-omen-faces" data-a="1-2" data-b="19-20"></ol></div>
+<div class="kod-omen-row"><span class="kod-omen-row__lab">Slight A</span><ol class="kod-omen-faces" data-a="1-2" data-b="20-20"></ol></div>
+<div class="kod-omen-row"><span class="kod-omen-row__lab">Slight B</span><ol class="kod-omen-faces" data-a="1-1" data-b="19-20"></ol></div>
+<div class="kod-omen-row"><span class="kod-omen-row__lab">Severe A</span><ol class="kod-omen-faces" data-a="1-2" data-b="20-20"></ol></div>
+<div class="kod-omen-row"><span class="kod-omen-row__lab">Severe B</span><ol class="kod-omen-faces" data-a="1-1" data-b="19-20"></ol></div>
+</div>
 </div>
 <div class="kod-widget__panel" data-panel-id="battle">
-<p><strong>Battle</strong> — equal footing <strong>1–3</strong> / <strong>18–20</strong>.</p>
-<p>Slight, A disadvantaged: <strong>1–3</strong> / <strong>19–20</strong>.</p>
-<p>Slight, B disadvantaged: <strong>1–2</strong> / <strong>18–20</strong>.</p>
-<p>Severe, A disadvantaged: <strong>1–3</strong> / <strong>20</strong> only.</p>
-<p>Severe, B disadvantaged: <strong>1</strong> only / <strong>18–20</strong>.</p>
+<div class="kod-omen-stack">
+<div class="kod-omen-row"><span class="kod-omen-row__lab">Equal</span><ol class="kod-omen-faces" data-a="1-3" data-b="18-20"></ol></div>
+<div class="kod-omen-row"><span class="kod-omen-row__lab">Slight A</span><ol class="kod-omen-faces" data-a="1-3" data-b="19-20"></ol></div>
+<div class="kod-omen-row"><span class="kod-omen-row__lab">Slight B</span><ol class="kod-omen-faces" data-a="1-2" data-b="18-20"></ol></div>
+<div class="kod-omen-row"><span class="kod-omen-row__lab">Severe A</span><ol class="kod-omen-faces" data-a="1-3" data-b="20-20"></ol></div>
+<div class="kod-omen-row"><span class="kod-omen-row__lab">Severe B</span><ol class="kod-omen-faces" data-a="1-1" data-b="18-20"></ol></div>
+</div>
 </div>
 </div>
 

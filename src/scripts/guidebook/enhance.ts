@@ -587,6 +587,29 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 		equalizeHeights('.kod-hier-axes', '.kod-hier-axis__head');
 	}
 
+	function setupOmenFaces() {
+		document.querySelectorAll('ol.kod-omen-faces[data-a]').forEach((ol) => {
+			if (ol.dataset.ready) return;
+			ol.dataset.ready = '1';
+			const parse = (s) => {
+				const m = String(s || '').match(/^(\d+)\s*-\s*(\d+)$/);
+				if (!m) return [0, -1];
+				return [Number(m[1]), Number(m[2])];
+			};
+			const [a0, a1] = parse(ol.getAttribute('data-a'));
+			const [b0, b1] = parse(ol.getAttribute('data-b'));
+			const frag = document.createDocumentFragment();
+			for (let i = 1; i <= 20; i++) {
+				const li = document.createElement('li');
+				li.textContent = String(i);
+				if (i >= a0 && i <= a1) li.className = 'is-a';
+				else if (i >= b0 && i <= b1) li.className = 'is-b';
+				frag.appendChild(li);
+			}
+			ol.replaceChildren(frag);
+		});
+	}
+
 	function enhance() {
 		const steps = [
 			injectSidebarIcons,
@@ -599,6 +622,7 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 			setupContentTabs,
 			setupStepFlows,
 			setupTideDemo,
+			setupOmenFaces,
 			setupScrollReveal,
 			setupTableStrip,
 		];

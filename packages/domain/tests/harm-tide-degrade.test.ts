@@ -28,8 +28,8 @@ describe('tide', () => {
     expect(tideStartFromA(8)).toBe(8);
   });
 
-  it('small skirmish: margin 3 → floor(3/2)=1 step', () => {
-    expect(tideStepsFromMargin(3, 'small')).toBe(1);
+  it('skirmish: margin 3 → floor(3/2)=1 step', () => {
+    expect(tideStepsFromMargin(3, 'skirmish')).toBe(1);
   });
 
   it('omen bands: battle slight / severe match the Guidebook', () => {
@@ -51,8 +51,8 @@ describe('tide', () => {
     });
   });
 
-  it('tiny floor: imbalance does not shrink below one face', () => {
-    expect(omenBandForFooting('tiny', 'severeA')).toEqual({
+  it('small-skirmish floor: imbalance does not shrink below one face', () => {
+    expect(omenBandForFooting('small', 'severeA')).toEqual({
       towardA: [1, 1],
       towardB: [20, 20],
     });

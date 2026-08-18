@@ -63,28 +63,28 @@ High inborn potential accelerates learning. Low potential slows it. Automation h
 </figure>
 
 <div class="kod-widget not-content" data-widget="step-flow" id="practice-track">
-<p class="kod-widget__title">Practice — Odd and the storehouse lock</p>
-<p class="kod-widget__intro">One Skill, from 0 toward 1. Ruling Foundation 2 → threshold <strong>24</strong>. If the Foundation were 3, the same work would count against <strong>12</strong>.</p>
+<p class="kod-widget__title">Practice — the recurve on the steppe</p>
+<p class="kod-widget__intro"><strong>Temur</strong>, young bowyer, Constitution 2, Bowyer &amp; Fletcher 0 → 1 (threshold <strong>24</strong>). <strong>Qara</strong>, old bowyer of the same orda, Charisma 2, Mentoring 1 → 2 (threshold <strong>48</strong>). Hunnic camp. Horn, sinew, and a stubborn belly.</p>
 <p class="kod-step-flow__label" data-step-label></p>
 <div class="kod-step-flow__track" role="group" aria-label="Practice steps">
 <button type="button" class="kod-widget__btn" data-tab="p1" aria-pressed="true">1</button>
 <button type="button" class="kod-widget__btn" data-tab="p2">2</button>
 <button type="button" class="kod-widget__btn" data-tab="p3">3</button>
 </div>
-<div class="kod-widget__panel" data-panel-id="p1" data-step-title="Messy first attempt">
-<p>After dark Odd works the lock. More failures than Marks. He does not spend Exertion.</p>
-<p><strong>Unopposed</strong> · more failures than Marks · no Exertion → <strong>+2 Practice</strong>.</p>
-<p>Running total: <strong>2 / 24</strong> (Foundation 2). Against Foundation 3 it would already be <strong>2 / 12</strong>.</p>
+<div class="kod-widget__panel" data-panel-id="p1" data-step-title="The first bend">
+<p>Temur steams the horn and tries the first reflex of a recurve. The belly fights him. More failures than Marks. He does not spend Exertion.</p>
+<p><strong>Temur</strong> · unopposed Constitution + Bowyer &amp; Fletcher · more failures than Marks · no Exertion → <strong>+2 Practice</strong> (Bowyer).</p>
+<p>Temur: <strong>2 / 24</strong>. Qara has not rolled.</p>
 </div>
-<div class="kod-widget__panel" data-panel-id="p2" data-step-title="He pushes" hidden>
-<p>Later the same night he spends Exertion and lands 4 Marks.</p>
-<p><strong>Unopposed</strong> · Exertion spent · floor(4 ÷ 2) → <strong>+2 Practice</strong>.</p>
-<p>Running total: <strong>4 / 24</strong>.</p>
+<div class="kod-widget__panel" data-panel-id="p2" data-step-title="The old man sits down" hidden>
+<p>Qara sits. He names the fault in the last fold and makes Temur feel it in the wood. Resolve + Mentoring, <strong>d8</strong>. He spends Exertion. <strong>3 Marks</strong>.</p>
+<p><strong>Qara</strong> · unopposed · Exertion spent · floor(3 ÷ 2) → <strong>+1 Practice</strong> (Mentoring). Qara: <strong>1 / 48</strong>.</p>
+<p>Temur tries the belly again the same evening, now spending Exertion. <strong>4 Marks</strong> → <strong>+2 Practice</strong> (Bowyer). Temur: <strong>4 / 24</strong>.</p>
 </div>
-<div class="kod-widget__panel" data-panel-id="p3" data-step-title="An opposed loss" hidden>
-<p>A week later a rival lock-man contests him. Odd spends Exertion, loses by 1 Mark.</p>
-<p><strong>Opposed loss</strong> → <strong>+2 Practice</strong> (the loss award; no margin award because he did not win).</p>
-<p>Running total: <strong>6 / 24</strong>. Struggle taught more than the clean night did.</p>
+<div class="kod-widget__panel" data-panel-id="p3" data-step-title="String it" hidden>
+<p>Qara will not praise until the bow shoots. “String it. The reed by the wagon.” Temur spends Exertion and is still beaten by the horn-set — opposed loss by 1 Mark.</p>
+<p><strong>Temur</strong> · opposed loss · <strong>+2 Practice</strong> (Bowyer; the loss award). Temur: <strong>6 / 24</strong>.</p>
+<p>Qara watches and corrects the grip — another Mentoring roll, Exertion, 2 Marks → <strong>+1 Practice</strong>. Qara: <strong>2 / 48</strong>. Both learned. The youth learned more from the loss.</p>
 </div>
 <div class="kod-step-flow__nav">
 <button type="button" data-step-prev>← Back</button>
@@ -125,10 +125,10 @@ Same five-skill pool, but only:
 Fiction still decides *why* rust set in; automation only applies the prompted procedure.
 
 <aside class="kod-example">
-<p class="kod-example__scene">Odd needs grain the storehouse master will not release. After dark he works the lock on the side door. First attempt is messy. Later the same night he pushes with Exertion and lands clean Marks. Months later, after a quiet winter, the Storyteller prompts automation for a short time leap on neglected Skills.</p>
+<p class="kod-example__scene">Temur’s first bend is messy. Qara teaches. After a quiet winter on the same pastures, the Storyteller prompts automation for a short time leap on neglected Skills.</p>
 <ol class="kod-example__steps">
-<li><strong>Unopposed Lockpicking:</strong> more failures than Marks, no Exertion → <strong>+2 Practice</strong>.</li>
-<li><strong>Same Skill, later that night:</strong> Exertion spent, 4 Marks → <strong>+2 Practice</strong> (floor of 4÷2).</li>
+<li><strong>Temur, unopposed Bowyer:</strong> more failures than Marks, no Exertion → <strong>+2 Practice</strong>.</li>
+<li><strong>Qara, Mentoring with Exertion, 3 Marks:</strong> <strong>+1 Practice</strong> (floor of 3÷2). Temur later the same evening, Exertion, 4 Marks → <strong>+2 Practice</strong>.</li>
 <li><strong>Short time leap (ST prompts):</strong> take the five Skills with lowest progress; Omen 1–10 → degrade none; Omen 11–20 → degrade one of those five at random.</li>
 </ol>
 </aside>

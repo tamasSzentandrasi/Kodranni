@@ -54,7 +54,7 @@ Architecture and IA: [starlight-guidebook.md](./starlight-guidebook.md).
 
 - Start here: Introduction
 - Dice Mechanics: Overview → Marks & Tiers → Omens & Consequences → Tide
-- Human Potential · Resolution & Continuity (**Echoes first**) · Getting Started · Automation · **Reference: Glossary**
+- Human Potential · Resolution & Continuity (**Echoes first**) · Campaign & Character Creation · Automation · **Reference: Glossary**
 
 **Verify after each edit**
 
@@ -95,7 +95,7 @@ Architecture and IA: [starlight-guidebook.md](./starlight-guidebook.md).
 |------|----------|
 | Practice visibility | Exact progress on the **live sheet only**. Adapters (Discord / Fluxer / bot rolls) do **not** print Practice amounts. |
 | Degrade bands (d20 faces 1–20) | Standard: **1–5 → 0**, **6–10 → 1**, **11–15 → 2**, **16–20 → 3**. Short: **1–10 → 0**, **11–20 → 1**. |
-| Tide sizes | **Tiny skirmish**, **Small skirmish**, **Battle** only. No Large / Omen-only size. |
+| Tide sizes | **Small skirmish**, **Skirmish**, **Battle** only. No Large / Omen-only size. |
 | Tide imbalance | Same ladder as die tiers. Disadvantaged side keeps its **bad** band; **good** band is taken from N sizes smaller (slight N=1, severe N=2). Omen and Marks move independently. |
 | HP pillars | Four: Foundations, Skills, Traits, Exertion. Echoes is continuity. |
 | Echoes placement | First chapter of Resolution & Continuity. |
