@@ -20,7 +20,7 @@ This chapter is the door. The stack itself lives in the three that follow:
 | Chapter | What it teaches |
 |---------|-----------------|
 | [Marks & Tiers](/marks-and-tiers/) | Die types, Marks as information, Advantage / Disadvantage, how the pool is built |
-| [Omens & Consequences](/omens/) | The Omen **d20**, side-events, how opposed and Primitive rolls are read |
+| [Omens & Consequences](/omens/) | The Omen **d20** and side-events, independent of Marks |
 | [Tide](/tide/) | Collective pressure when a contest is larger than a clean 1v1 |
 
 <div class="kod-lanes not-content">

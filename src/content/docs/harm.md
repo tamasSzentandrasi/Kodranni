@@ -58,7 +58,7 @@ Harm arises only when the fiction **and** the dice justify lasting damage.
 
 | Roll type | Harm points |
 |-----------|-------------|
-| **[Opposed](/omens/#situational-dice-resolution)** | Marks difference ÷ protection ratio (**always floor**) |
+| **[Opposed](/tide/#situational-dice-resolution)** | Marks difference ÷ protection ratio (**always floor**) |
 | **Unopposed** (falls, environment, dangerous acts) | (failures − Marks) ÷ protection ratio (**always floor**, minimum 0) |
 
 **Protection ratios**

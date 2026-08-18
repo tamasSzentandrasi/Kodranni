@@ -12,6 +12,44 @@ description: Shared pressure for contests larger than a clean 1v1 — setup, Mar
 
 ----------
 
+## Situational Dice Resolution
+
+Before a shared bar exists, each action still stands alone. Primitive, unopposed, and opposed rolls use the same Marks reading. The Tide is what you open when the *collective* contest is larger than a clean 1v1.
+
+| Mode | When | Reading |
+|------|------|---------|
+| **Primitive** | Animal-tier action | Foundation-only pool; Marks give incremental benefit; no Practice |
+| **Unopposed** | No opposing character | Full pool; Marks give incremental benefit |
+| **Opposed** | Wills collide (1v1 or many actors) | Full pools (pairs need not match); each action is resolved **individually**; compare **Marks difference** on the reply chain |
+| **Tide** | Larger than clean 1v1 as a *collective* contest | Individual opposed resolutions also move a shared tracker |
+
+Hints:
+
+- Opposed rolls are handled as **replies** to a prior roll so automation can compute margins.
+- In a 1vMany or ManyvMany mess, **each action still stands alone**. Advantage and Disadvantage are read from that action’s context — not averaged across the field.
+- Treat intent and context when reading the margin: conditions, injuries, insight — all valid Storyteller levers.
+- Social, mental, and physical contests use the **same** resolution shape.
+- Armour, reputation, favours, numbers, and terrain are **context** for Advantage / Disadvantage and for interpreting the margin — not separate subsystems — except where [Harm](/harm/) uses armour **or** Reputation **protection ratios** (not both on the same event; the Storyteller picks the contest type).
+
+<aside class="kod-example" aria-label="Example">
+<p class="kod-example__scene">A landowner has barred his hall after dark. A traveller must get a sick child to the healer who lives within. Not a fight — will and words. The landowner has the door and his household; the traveller has a clear errand and a steady voice. Neither side holds clear Advantage. Ordinary tier for both.</p>
+<ol class="kod-example__steps">
+<li><strong>Intent:</strong> persuade the landowner to open the hall.</li>
+<li><strong>Player:</strong> Charisma + Negotiation, <strong>d8</strong> → 3 Marks.</li>
+<li><strong>Reply (landowner):</strong> Resolve + Insight, <strong>d8</strong> → 1 Mark. (Pairs need not match.)</li>
+<li><strong>Margin:</strong> 3 − 1 = <strong>2</strong> for the player.</li>
+<li><strong>Outcome:</strong> the door opens; the landowner is convinced, not humiliated. <a href="/harm/">Harm</a> only if the Storyteller later rules lasting damage to standing or body.</li>
+</ol>
+</aside>
+
+<aside class="kod-counsel" aria-label="Counsel">
+<p><strong>Focus on the roleplay, not the roll-play.</strong> Dice outcomes should <strong>never</strong> replace conversations, decisions, and planning. Rolls inform the <strong>effect</strong> of an action, never its content.</p>
+</aside>
+
+When many wills push at once — a column under harassment, a hall-wide debate — those individual opposed readings are not enough. That is the Tide.
+
+----------
+
 ## The Tide
 
 The Tide is a **shared** pressure track for a whole side when the contest is larger than a clean 1v1 — a skirmish, a running fight, a hall-wide debate, a pursuit, a column under harassment.
@@ -38,6 +76,41 @@ Both sides share **one** track. The Storyteller assigns each side a soft **weigh
 
 (The last row starts at 6 because side A’s weight is 6 — they begin closer to collapse.)
 
+The Zhao/Wei column later in this chapter uses the last row. Imperial **6**, Mongol **12**, track **17**, marker opens at **6** — already closer to collapse.
+
+<div class="kod-teach-row not-content" aria-label="Column weights">
+<div class="kod-weight">
+<p class="kod-weight__name kod-weight__name--a">Imperial</p>
+<div class="kod-weight__col"><span class="kod-weight__fill kod-weight__fill--a" style="--w: 6"></span></div>
+<p class="kod-weight__n">weight 6</p>
+</div>
+<div class="kod-weight">
+<p class="kod-weight__name kod-weight__name--b">Mongol</p>
+<div class="kod-weight__col"><span class="kod-weight__fill kod-weight__fill--b" style="--w: 12"></span></div>
+<p class="kod-weight__n">weight 12</p>
+</div>
+</div>
+
+<div class="kod-tide kod-tide--teach not-content" style="--tide-at: 35.3%" aria-label="Tide opens at 6 of 17">
+  <div class="kod-tide__labels">
+    <span class="kod-tide__label kod-tide__label--a">Imperial collapse 0</span>
+    <span class="kod-tide__label kod-tide__label--mid">start 6</span>
+    <span class="kod-tide__label kod-tide__label--b">17 Mongol collapse</span>
+  </div>
+  <div class="kod-tide__rail">
+    <div class="kod-tide__track">
+      <div class="kod-tide__fill kod-tide__fill--a"></div>
+      <div class="kod-tide__fill kod-tide__fill--b"></div>
+    </div>
+    <div class="kod-tide__marker" aria-hidden="true">
+      <span class="kod-tide__marker-head"></span>
+      <span class="kod-tide__marker-stem"></span>
+      <span class="kod-tide__marker-foot"></span>
+    </div>
+  </div>
+  <p class="kod-tide__readout">Crimson is imperial footing. It already looks thin. That is the setup — no one has rolled yet.</p>
+</div>
+
 There are **three** sizes. There is no larger scale than Battle.
 
 | Skirmish size | Marks difference per Tide step |
@@ -52,9 +125,124 @@ On a Tide-linked opposed exchange, take the **Marks difference** (margin). Steps
 
 A roll that is **not** Tide-linked (a local fight, an extraction, a personal objective) does not move the bar.
 
+On the imperial road: Zhao’s first order is Tide-linked — the pursuit would open the line — and the bar moves **6 → 5**. His later stand at the wash is personal. The bar stays at **2**.
+
+<div class="kod-teach-pair not-content">
+<div class="kod-tide kod-tide--teach" style="--tide-at: 29.4%" aria-label="Tide-linked: 6 to 5">
+  <p class="kod-tide__caption">Tide-linked — Zhao stops the chase</p>
+  <div class="kod-tide__labels">
+    <span class="kod-tide__label kod-tide__label--a">6 → 5</span>
+    <span class="kod-tide__label kod-tide__label--b">margin 4 · Battle</span>
+  </div>
+  <div class="kod-tide__rail">
+    <div class="kod-tide__track">
+      <div class="kod-tide__fill kod-tide__fill--a"></div>
+      <div class="kod-tide__fill kod-tide__fill--b"></div>
+    </div>
+    <div class="kod-tide__marker" aria-hidden="true">
+      <span class="kod-tide__marker-head"></span>
+      <span class="kod-tide__marker-stem"></span>
+      <span class="kod-tide__marker-foot"></span>
+    </div>
+  </div>
+  <p class="kod-tide__readout">floor(4 ÷ 3) = 1 step against the column. The collective bar moves.</p>
+</div>
+<div class="kod-tide kod-tide--teach" style="--tide-at: 11.8%" aria-label="Personal: stays at 2">
+  <p class="kod-tide__caption">Personal — Zhao holds the wash</p>
+  <div class="kod-tide__labels">
+    <span class="kod-tide__label kod-tide__label--a">stays 2</span>
+    <span class="kod-tide__label kod-tide__label--b">local fight</span>
+  </div>
+  <div class="kod-tide__rail">
+    <div class="kod-tide__track">
+      <div class="kod-tide__fill kod-tide__fill--a"></div>
+      <div class="kod-tide__fill kod-tide__fill--b"></div>
+    </div>
+    <div class="kod-tide__marker" aria-hidden="true">
+      <span class="kod-tide__marker-head"></span>
+      <span class="kod-tide__marker-stem"></span>
+      <span class="kod-tide__marker-foot"></span>
+    </div>
+  </div>
+  <p class="kod-tide__readout">He is forced back a horse-length. The column’s bar does not care.</p>
+</div>
+</div>
+
 ### Omens on the Tide
 
 Omens on Tide-linked actions also move the marker. Direction depends on which end of the track a face pushes toward. **Marks and Omen are independent** — the same roll can step the bar from the margin *and* from an Omen face.
+
+Zhao’s last cut, boxed in at the wash: margin 4 → one step (**2 → 1**). Omen **1** is also Tide-negative for the column (severe Battle band 1–3) → another step (**1 → 0**). Two motions, one throw.
+
+<div class="kod-widget not-content" data-widget="content-tabs">
+<p class="kod-widget__title">One throw, two motions</p>
+<p class="kod-widget__intro">Zhao, surrounded. Strength + Slash, <strong>d6</strong>, 1 Mark against a reply of 5. Walk the bar.</p>
+<div class="kod-widget__controls" role="group" aria-label="Bar after each motion">
+<button type="button" class="kod-widget__btn" data-tab="before" aria-pressed="true">Before</button>
+<button type="button" class="kod-widget__btn" data-tab="margin">After Marks</button>
+<button type="button" class="kod-widget__btn" data-tab="omen">After Omen</button>
+</div>
+<div class="kod-widget__panel" data-panel-id="before">
+<div class="kod-tide kod-tide--teach" style="--tide-at: 11.8%">
+  <div class="kod-tide__labels">
+    <span class="kod-tide__label kod-tide__label--a">at 2</span>
+    <span class="kod-tide__label kod-tide__label--b">not yet thrown</span>
+  </div>
+  <div class="kod-tide__rail">
+    <div class="kod-tide__track">
+      <div class="kod-tide__fill kod-tide__fill--a"></div>
+      <div class="kod-tide__fill kod-tide__fill--b"></div>
+    </div>
+    <div class="kod-tide__marker" aria-hidden="true">
+      <span class="kod-tide__marker-head"></span>
+      <span class="kod-tide__marker-stem"></span>
+      <span class="kod-tide__marker-foot"></span>
+    </div>
+  </div>
+  <p class="kod-tide__readout">The wash fight is over. The ring has not closed on the bar.</p>
+</div>
+</div>
+<div class="kod-widget__panel" data-panel-id="margin" hidden>
+<div class="kod-tide kod-tide--teach" style="--tide-at: 5.9%">
+  <div class="kod-tide__labels">
+    <span class="kod-tide__label kod-tide__label--a">2 → 1</span>
+    <span class="kod-tide__label kod-tide__label--b">floor(4 ÷ 3)</span>
+  </div>
+  <div class="kod-tide__rail">
+    <div class="kod-tide__track">
+      <div class="kod-tide__fill kod-tide__fill--a"></div>
+      <div class="kod-tide__fill kod-tide__fill--b"></div>
+    </div>
+    <div class="kod-tide__marker" aria-hidden="true">
+      <span class="kod-tide__marker-head"></span>
+      <span class="kod-tide__marker-stem"></span>
+      <span class="kod-tide__marker-foot"></span>
+    </div>
+  </div>
+  <p class="kod-tide__readout">The Marks already moved the bar. The Omen has not spoken.</p>
+</div>
+</div>
+<div class="kod-widget__panel" data-panel-id="omen" hidden>
+<div class="kod-tide kod-tide--teach" style="--tide-at: 0%">
+  <div class="kod-tide__labels">
+    <span class="kod-tide__label kod-tide__label--a">1 → 0</span>
+    <span class="kod-tide__label kod-tide__label--b">Omen 1 in 1–3</span>
+  </div>
+  <div class="kod-tide__rail">
+    <div class="kod-tide__track">
+      <div class="kod-tide__fill kod-tide__fill--a"></div>
+      <div class="kod-tide__fill kod-tide__fill--b"></div>
+    </div>
+    <div class="kod-tide__marker" aria-hidden="true">
+      <span class="kod-tide__marker-head"></span>
+      <span class="kod-tide__marker-stem"></span>
+      <span class="kod-tide__marker-foot"></span>
+    </div>
+  </div>
+  <p class="kod-tide__readout">The column routes. Zhao’s surrender is narration after the bar is already dead.</p>
+</div>
+</div>
+</div>
 
 On **equal footing**:
 
