@@ -108,69 +108,122 @@
 /* -------------------------------------------------------------------------- */
 
 .pagination-links {
-  gap: 1.5rem !important;
+  gap: 1.75rem !important;
   border-top: none !important;
-  padding-top: 0.35rem !important;
-}
-
-.pagination-links a {
-  border: none !important;
-  background: transparent !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-  padding: 0.85rem 0.15rem 0.35rem !important;
+  padding-top: 1.35rem !important;
   position: relative;
-  transition: color 0.15s ease;
 }
 
-.pagination-links a::before {
+.pagination-links::before {
+  content: '◆';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -45%);
+  font-size: 0.55rem;
+  color: #8a8580;
+  background: var(--kod-black);
+  padding: 0 0.55rem;
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+.pagination-links::after {
   content: '';
   position: absolute;
   top: 0;
-  left: 0;
-  right: 0;
+  left: 8%;
+  right: 8%;
   height: 1px;
   background: linear-gradient(
     to right,
     transparent,
-    color-mix(in srgb, var(--kod-blood) 70%, #444) 22%,
-    color-mix(in srgb, var(--kod-blood) 70%, #444) 78%,
+    #3a3330 12%,
+    #6a6560 50%,
+    #3a3330 88%,
     transparent
   );
+  z-index: -1;
+}
+
+.pagination-links a {
+  --kod-folio-tick: #6a6560;
+  border: 1px solid #2e2a28 !important;
+  border-radius: 0 !important;
+  background:
+    linear-gradient(var(--kod-folio-tick), var(--kod-folio-tick)) 0 0 / 0.7rem 1px no-repeat,
+    linear-gradient(var(--kod-folio-tick), var(--kod-folio-tick)) 0 0 / 1px 0.7rem no-repeat,
+    linear-gradient(var(--kod-folio-tick), var(--kod-folio-tick)) 100% 0 / 0.7rem 1px no-repeat,
+    linear-gradient(var(--kod-folio-tick), var(--kod-folio-tick)) 100% 0 / 1px 0.7rem no-repeat,
+    linear-gradient(var(--kod-folio-tick), var(--kod-folio-tick)) 0 100% / 0.7rem 1px no-repeat,
+    linear-gradient(var(--kod-folio-tick), var(--kod-folio-tick)) 0 100% / 1px 0.7rem no-repeat,
+    linear-gradient(var(--kod-folio-tick), var(--kod-folio-tick)) 100% 100% / 0.7rem 1px no-repeat,
+    linear-gradient(var(--kod-folio-tick), var(--kod-folio-tick)) 100% 100% / 1px 0.7rem no-repeat,
+    linear-gradient(180deg, rgba(242, 239, 233, 0.05), transparent 42%),
+    #0c0a09 !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(242, 239, 233, 0.04),
+    0 0 0 1px #141010 !important;
+  padding: 0.95rem 0.9rem !important;
+  position: relative;
+  color: var(--kod-silver-dim) !important;
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transition: border-color 0.18s ease, color 0.18s ease;
 }
 
 .pagination-links a:hover,
 .pagination-links a:focus-visible {
-  background: transparent !important;
+  --kod-folio-tick: #c4bfb6;
+  border-color: #6a6560 !important;
+  background:
+    linear-gradient(var(--kod-folio-tick), var(--kod-folio-tick)) 0 0 / 0.7rem 1px no-repeat,
+    linear-gradient(var(--kod-folio-tick), var(--kod-folio-tick)) 0 0 / 1px 0.7rem no-repeat,
+    linear-gradient(var(--kod-folio-tick), var(--kod-folio-tick)) 100% 0 / 0.7rem 1px no-repeat,
+    linear-gradient(var(--kod-folio-tick), var(--kod-folio-tick)) 100% 0 / 1px 0.7rem no-repeat,
+    linear-gradient(var(--kod-folio-tick), var(--kod-folio-tick)) 0 100% / 0.7rem 1px no-repeat,
+    linear-gradient(var(--kod-folio-tick), var(--kod-folio-tick)) 0 100% / 1px 0.7rem no-repeat,
+    linear-gradient(var(--kod-folio-tick), var(--kod-folio-tick)) 100% 100% / 0.7rem 1px no-repeat,
+    linear-gradient(var(--kod-folio-tick), var(--kod-folio-tick)) 100% 100% / 1px 0.7rem no-repeat,
+    linear-gradient(180deg, rgba(242, 239, 233, 0.1), transparent 48%),
+    #12100e !important;
   outline: none;
+  color: #b8b2aa !important;
 }
 
-.pagination-links a:hover::before,
-.pagination-links a:focus-visible::before {
-  background: linear-gradient(
-    to right,
-    transparent,
-    var(--kod-blood-bright) 20%,
-    var(--kod-blood-bright) 80%,
-    transparent
-  );
+.pagination-links a svg {
+  color: #8a8580 !important;
+  width: 1.15rem !important;
+  height: 1.15rem !important;
+  flex-shrink: 0;
+  transition: color 0.18s ease, transform 0.18s ease;
+}
+
+.pagination-links a[rel='prev']:hover svg,
+.pagination-links a[rel='prev']:focus-visible svg {
+  color: #c4bfb6 !important;
+  transform: translateX(-0.18rem);
+}
+
+.pagination-links a[rel='next']:hover svg,
+.pagination-links a[rel='next']:focus-visible svg {
+  color: #c4bfb6 !important;
+  transform: translateX(0.18rem);
 }
 
 .pagination-links .link-title {
+  display: block;
+  margin-top: 0.18rem;
   font-family: var(--kod-font-display) !important;
   color: var(--kod-silver-bright) !important;
-  letter-spacing: 0.04em;
-  font-size: 1.15rem !important;
+  letter-spacing: 0.05em;
+  text-transform: none;
+  font-size: 1.2rem !important;
 }
 
-.pagination-links .link-label {
-  color: var(--kod-silver-dim) !important;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  font-size: 0.68rem !important;
-}
-
-.pagination-links a:hover .link-title {
+.pagination-links a:hover .link-title,
+.pagination-links a:focus-visible .link-title {
   color: #fff8f0 !important;
 }
 

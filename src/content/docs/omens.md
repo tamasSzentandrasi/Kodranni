@@ -11,7 +11,7 @@ description: The Omen die and side-events — independent of Marks.
 
 ## The Omen Die and Consequences
 
-**Every roll** includes one extra die: the **Omen** die — a **d20**. It is independent of Marks, Traits, and Exertion. It never changes the primary success reading. It may introduce a side event: a **Consequence**.
+**Every roll** includes one extra die: the **Omen** die — a **d20**. It is independent of Marks, Traits, and Exertion. It never changes the primary success reading. It may introduce a **Consequence** — a genuine side-effect.
 
 | Face | Default |
 |------|---------|
@@ -29,7 +29,7 @@ In multi-party contests, Omens also feed **[The Tide](/tide/)**. How Primitive, 
 
 ## Worked scene — the sword
 
-Same roll. Same Marks. The blade is true. Only the Omen face changes what else happens.
+Same roll. Same Marks. The blade is true. Only the Omen face can add a Consequence.
 
 <div class="kod-widget not-content" data-widget="content-tabs">
 <p class="kod-widget__title">Tomas at the forge</p>
@@ -45,7 +45,7 @@ Same roll. Same Marks. The blade is true. Only the Omen face changes what else h
 </div>
 <div class="kod-widget__panel" data-panel-id="seven" hidden>
 <p><strong>Marks:</strong> still 2 — the sword is the same blade.</p>
-<p><strong>Omen 7 — Positive Consequence.</strong> While the steel is still warm he sees how the last fold sat. He knows how to find that grain again. A new technique — a <a href="/traits/">Trait</a>, or easier Practice on the next like piece. The Storyteller names the boon. The Marks did not improve. The night gave him something extra.</p>
+<p><strong>Omen 7 — Positive Consequence.</strong> While the steel is still warm he sees how the last fold sat. He knows how to find that grain again. A new technique — a <a href="/traits/">Trait</a>, or easier Practice on the next like piece. The Storyteller names the boon. The Marks did not improve.</p>
 </div>
 <div class="kod-widget__panel" data-panel-id="thirteen" hidden>
 <p><strong>Marks:</strong> still 2 — the sword is the same blade. It did not fail.</p>
@@ -54,7 +54,7 @@ Same roll. Same Marks. The blade is true. Only the Omen face changes what else h
 </div>
 
 <aside class="kod-counsel" aria-label="Counsel">
-<p>Do not let a Consequence steal the roll. If the Marks say the work succeeded, it succeeded. The Omen only says what else the night brought.</p>
+<p>Do not let a Consequence rewrite the roll. If the Marks say the work succeeded, it succeeded. A Consequence is a genuine side-effect.</p>
 </aside>
 
 Related: [Dice Mechanics](/dice-mechanics/), [Marks & Tiers](/marks-and-tiers/), [Tide](/tide/).

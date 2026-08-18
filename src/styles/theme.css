@@ -36,7 +36,7 @@ html {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: geometricPrecision;
   scrollbar-width: thin;
-  scrollbar-color: #4a0c0c #050505;
+  scrollbar-color: #5c5550 #080606;
 }
 
 body,
@@ -90,29 +90,48 @@ body {
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: #4a0c0c #0a0808;
+  scrollbar-color: #5c5550 #080606;
 }
 
 ::-webkit-scrollbar {
-  width: 0.65rem;
-  height: 0.65rem;
+  width: 0.72rem;
+  height: 0.72rem;
 }
 
 ::-webkit-scrollbar-track {
-  background: #050505;
+  background:
+    linear-gradient(90deg, transparent 47%, #1c1816 47%, #1c1816 53%, transparent 53%),
+    #080606;
+  box-shadow: inset 1px 0 0 #1a1614, inset -1px 0 0 #2a2422;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #5a1818, #4a0c0c);
-  border: 1px solid #1a1212;
+  background-color: #2a2624;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 10'%3E%3Cpath fill='%238a8580' d='M4 0.4 7.4 5 4 9.6.6 5Z'/%3E%3C/svg%3E"),
+    linear-gradient(90deg, transparent 46%, #8a8580 46%, #8a8580 54%, transparent 54%),
+    linear-gradient(180deg, #3a3530 0%, #2a2624 100%);
+  background-repeat: no-repeat;
+  background-position: center, center, 0 0;
+  background-size: 7px 9px, 100% 100%, 100% 100%;
+  border: 1px solid #4a4540;
+  box-shadow: inset 0 0 0 1px #141210;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #8a1515, #5a1818);
+  background-color: #3a3530;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 10'%3E%3Cpath fill='%23c4bfb6' d='M4 0.4 7.4 5 4 9.6.6 5Z'/%3E%3C/svg%3E"),
+    linear-gradient(90deg, transparent 46%, #c4bfb6 46%, #c4bfb6 54%, transparent 54%),
+    linear-gradient(180deg, #5c5550 0%, #3a3530 100%);
+  background-repeat: no-repeat;
+  background-position: center, center, 0 0;
+  background-size: 7px 9px, 100% 100%, 100% 100%;
+  border-color: #8a8580;
 }
 
 ::-webkit-scrollbar-corner {
-  background: #050505;
+  background: #080606;
 }
 
 

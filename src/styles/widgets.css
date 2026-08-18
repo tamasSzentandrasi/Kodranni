@@ -312,23 +312,43 @@
 
 /* --- Teaching widgets ------------------------------------------------------ */
 .kod-widget {
+  --kod-frame-tick: #6a6560;
   margin: 1.35rem 0 1.6rem;
-  padding: 1rem 1.1rem 1.15rem;
-  border: 1px solid color-mix(in srgb, var(--kod-blood) 42%, #3a3030);
-  border-radius: 2px;
-  background: #0b0a0a;
+  padding: 1.15rem 1.15rem 1.2rem;
+  border: 1px solid #3a3330;
+  border-radius: 0;
+  background:
+    linear-gradient(var(--kod-frame-tick), var(--kod-frame-tick)) 0 0 / 0.75rem 1px no-repeat,
+    linear-gradient(var(--kod-frame-tick), var(--kod-frame-tick)) 0 0 / 1px 0.75rem no-repeat,
+    linear-gradient(var(--kod-frame-tick), var(--kod-frame-tick)) 100% 0 / 0.75rem 1px no-repeat,
+    linear-gradient(var(--kod-frame-tick), var(--kod-frame-tick)) 100% 0 / 1px 0.75rem no-repeat,
+    linear-gradient(var(--kod-frame-tick), var(--kod-frame-tick)) 0 100% / 0.75rem 1px no-repeat,
+    linear-gradient(var(--kod-frame-tick), var(--kod-frame-tick)) 0 100% / 1px 0.75rem no-repeat,
+    linear-gradient(var(--kod-frame-tick), var(--kod-frame-tick)) 100% 100% / 0.75rem 1px no-repeat,
+    linear-gradient(var(--kod-frame-tick), var(--kod-frame-tick)) 100% 100% / 1px 0.75rem no-repeat,
+    linear-gradient(180deg, rgba(242, 239, 233, 0.03), transparent 2.2rem),
+    #0b0a0a;
   text-align: center;
   box-shadow:
-    inset 0 0 0 1px color-mix(in srgb, #f2efe9 5%, transparent),
-    0 0 0 1px color-mix(in srgb, #000 50%, transparent);
+    inset 0 0 0 1px color-mix(in srgb, #f2efe9 6%, transparent),
+    0 0 0 1px #141010;
 }
 
 .kod-widget__title {
   font-family: var(--kod-font-display);
-  font-size: 1.15rem;
-  letter-spacing: 0.04em;
+  font-size: 1.18rem;
+  letter-spacing: 0.05em;
   color: var(--kod-silver-bright);
-  margin: 0 0 0.55rem;
+  margin: 0 0 0.7rem;
+}
+
+.kod-widget__title::after {
+  content: '';
+  display: block;
+  width: 4.5rem;
+  height: 1px;
+  margin: 0.45rem auto 0;
+  background: linear-gradient(to right, transparent, #8a8580 30%, #8a8580 70%, transparent);
 }
 
 .kod-widget__intro {
@@ -364,19 +384,24 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid #3a3330;
-  background: #141010;
+  border: 1px solid #4a4540;
+  background:
+    linear-gradient(180deg, rgba(242, 239, 233, 0.1), transparent 48%),
+    #161412;
   color: var(--kod-silver);
   font-family: var(--kod-font-body);
   font-size: 0.82rem;
   line-height: 1;
   margin: 0 !important; /* Starlight sibling gap would lift the first button */
   padding: 0;
-  border-radius: 2px;
+  border-radius: 1px;
   cursor: pointer;
   letter-spacing: 0.01em;
   white-space: nowrap;
   vertical-align: middle;
+  box-shadow:
+    inset 0 1px 0 rgba(242, 239, 233, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.35);
   transition: border-color 0.12s ease, background 0.12s ease, color 0.12s ease;
 }
 
@@ -522,12 +547,12 @@
 .kod-tide {
   margin: 0.75rem 0 1.1rem;
   padding: 0.75rem 0.85rem 1rem;
-  border: 1px solid color-mix(in srgb, var(--kod-blood) 30%, #333);
-  border-radius: 2px;
+  border: 1px solid #3a3330;
+  border-radius: 0;
   background: #0a0909;
   box-shadow:
-    inset 0 0 0 1px color-mix(in srgb, #f2efe9 4%, transparent),
-    0 0 0 1px color-mix(in srgb, #000 55%, transparent);
+    inset 0 0 0 1px color-mix(in srgb, #f2efe9 5%, transparent),
+    0 0 0 1px #141010;
 }
 
 .kod-tide__labels {
@@ -892,25 +917,35 @@
 
 .kod-widget__btn:hover,
 .kod-widget__btn:focus-visible {
-  border-color: var(--kod-blood-bright);
+  border-color: #8a8580;
   outline: none;
+  color: #fff8f0;
 }
 
 .kod-widget__btn[aria-pressed='true'] {
-  border-color: var(--kod-blood-bright);
-  background: color-mix(in srgb, var(--kod-blood-deep) 55%, #141010);
+  border-color: #c4bfb6;
+  background:
+    linear-gradient(180deg, rgba(242, 239, 233, 0.16), transparent 48%),
+    #2a2622;
   color: #fff8f0;
+  box-shadow:
+    inset 0 1px 0 rgba(242, 239, 233, 0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.3);
 }
 
 .kod-widget__panel {
   min-height: 4.5rem;
-  padding: 0.75rem 0.85rem;
-  border-left: 3px solid var(--kod-blood);
-  background: color-mix(in srgb, var(--kod-blood-deep) 25%, transparent);
+  padding: 0.8rem 0.95rem;
+  border: 1px solid #2e2a28;
+  border-left: 2px solid #8a8580;
+  background:
+    linear-gradient(90deg, rgba(138, 133, 128, 0.08), transparent 0.7rem),
+    #0e0c0b;
   color: #e4dfd6;
   line-height: 1.6;
   text-align: left;
   font-size: 1em;
+  box-shadow: inset 0 0 0 1px rgba(242, 239, 233, 0.03);
 }
 
 .kod-widget__panel strong {
@@ -920,7 +955,7 @@
 
 /* --- Glossary terms -------------------------------------------------------- */
 .kod-term {
-  border-bottom: 1px dotted color-mix(in srgb, var(--kod-blood-bright) 55%, transparent);
+  border-bottom: 1px dotted #8a8580;
   cursor: help;
   position: relative;
 }
@@ -939,7 +974,7 @@
   width: max(12rem, min(18rem, 70vw));
   padding: 0.5rem 0.65rem;
   background: #121010;
-  border: 1px solid color-mix(in srgb, var(--kod-blood) 45%, #444);
+  border: 1px solid #4a4540;
   color: #e8e2d8;
   font-size: 0.88rem;
   line-height: 1.4;
@@ -1091,8 +1126,8 @@
 .kod-tide-line {
   margin: 0.55rem 0 0.65rem !important;
   padding: 0.4rem 0.55rem;
-  border-left: 3px solid var(--kod-blood);
-  background: color-mix(in srgb, var(--kod-blood-deep) 25%, #0c0a0a);
+  border-left: 2px solid #8a8580;
+  background: #121010;
   font-size: 0.95em;
   color: #e4dfd6;
 }
@@ -1176,7 +1211,7 @@
 }
 .kod-widget[data-widget='step-flow'] .kod-widget__panel {
   min-height: 8rem;
-  border-left-color: color-mix(in srgb, var(--kod-blood) 70%, #666);
+  border-left-color: #8a8580;
 }
 .kod-widget[data-widget='step-flow'] .kod-widget__panel[hidden] {
   display: none !important;
@@ -1193,18 +1228,23 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0.4rem 0.85rem;
-  border: 1px solid #3a3330;
-  border-radius: 2px;
-  background: #141010;
+  border: 1px solid #4a4540;
+  border-radius: 1px;
+  background:
+    linear-gradient(180deg, rgba(242, 239, 233, 0.08), transparent 55%),
+    #161412;
   color: var(--kod-silver);
   font-family: var(--kod-font-body);
   font-size: 0.9rem;
   cursor: pointer;
   letter-spacing: 0.03em;
+  box-shadow:
+    inset 0 1px 0 rgba(242, 239, 233, 0.08),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.3);
 }
 .kod-step-flow__nav button:hover:not(:disabled),
 .kod-step-flow__nav button:focus-visible:not(:disabled) {
-  border-color: var(--kod-blood-bright);
+  border-color: #8a8580;
   color: #fff8f0;
   outline: none;
 }
@@ -1233,15 +1273,15 @@
 .kod-step-example {
   margin: 0.75rem 0 0;
   padding: 0.65rem 0.8rem;
-  border-left: 3px solid var(--kod-blood);
-  background: color-mix(in srgb, var(--kod-blood-deep) 28%, transparent);
+  border-left: 2px solid #8a8580;
+  background: #121010;
   color: #e4dfd6;
   font-size: 0.95em;
   line-height: 1.55;
 }
 .kod-step-example strong {
   background: none !important;
-  color: var(--kod-blood-bright);
+  color: #c4bfb6;
   display: block;
   font-size: 0.78rem;
   letter-spacing: 0.1em;
@@ -1263,9 +1303,10 @@
   box-sizing: border-box;
   margin: 0 !important;
   padding: 0.7rem 0.8rem;
-  border: 1px solid #3a3030;
-  border-radius: 2px;
+  border: 1px solid #3a3330;
+  border-radius: 0;
   background: #100e0e;
+  box-shadow: inset 0 0 0 1px rgba(242, 239, 233, 0.04);
 }
 .kod-menu-item__buy {
   font-family: var(--kod-font-display);
@@ -1282,27 +1323,27 @@
 }
 .kod-menu-item__cost strong {
   background: none !important;
-  color: #e8a0a0;
+  color: #c4bfb6;
 }
 
 /* Walked steps on a stepper / Tide demo */
 .kod-step-flow__track .kod-widget__btn.is-done,
 .kod-widget[data-widget='tide-demo'] .kod-widget__btn.is-done {
-  border-color: color-mix(in srgb, var(--kod-blood) 35%, #444);
+  border-color: #4a4540;
   color: var(--kod-silver-dim);
-  background: color-mix(in srgb, var(--kod-blood-deep) 18%, #141010);
+  background: #1a1816;
 }
 
 .kod-widget[data-widget='step-flow']:focus-visible,
 .kod-widget[data-widget='tide-demo']:focus-visible {
-  outline: 1px solid var(--kod-blood-bright);
+  outline: 1px solid #8a8580;
   outline-offset: 3px;
 }
 
 .kod-die-card:hover {
   box-shadow:
-    inset 0 0 0 1px color-mix(in srgb, #f2efe9 8%, transparent),
-    0 0 0 1px color-mix(in srgb, var(--kod-blood) 35%, transparent);
+    inset 0 0 0 1px color-mix(in srgb, #f2efe9 10%, transparent),
+    0 0 0 1px #6a6560;
 }
 
 .kod-widget__panel {
