@@ -80,7 +80,10 @@ const armourLabel =
         <ul class="item-list">
           {
             ch.inventory.items.length === 0 ? (
-              <li class="empty">None declared.</li>
+              <li class="empty">
+                None declared. Adding items / food / water on the sheet is not built yet (later:
+                request + ST approve).
+              </li>
             ) : (
               ch.inventory.items.map((it) => (
                 <li class="item">

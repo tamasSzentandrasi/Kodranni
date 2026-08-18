@@ -1,13 +1,26 @@
 /** Fixture when no live store is configured — Vardmark at Kelarn’s Bend demo. */
 
+export interface FixtureCreation {
+  foundationPoints: number;
+  skillPoints: number;
+  words: number;
+  birthOmenGranted: boolean;
+  guidingHandGranted: boolean;
+  locked: boolean;
+  claimable?: boolean;
+}
+
 export interface FixtureCharacter {
   slug: string;
   name: string;
-  status: 'active' | 'dead' | 'draft';
+  status: 'active' | 'dead' | 'draft' | 'pending_review';
   communityTie: string;
+  concept?: string;
   whoWeSee?: string;
   avatar?: string;
   player?: { platform: string; displayName: string; accountId?: string };
+  initiator?: { platform: string; displayName: string; accountId: string };
+  creation?: FixtureCreation;
   foundations: Record<string, number>;
   foundationsEffective: Record<string, number>;
   skills: { name: string; rating: number; practice: number; threshold: number; foundation?: string }[];

@@ -21,10 +21,10 @@ const av = avatarUrl(slug, avatar);
 <div class="sheet-top">
   <a class="sheet-back" href={`/characters/?sel=${slug}`}>← Character roster</a>
   {
-    (status === 'dead' || dying) && (
+    (status === 'dead' || status === 'draft' || status === 'pending_review' || dying) && (
       <p class="app__meta" style="margin:0">
         <span class="char-card__status" data-status={status}>
-          {status}
+          {status === 'pending_review' ? 'pending review' : status}
           {dying ? ' · dying' : ''}
         </span>
       </p>

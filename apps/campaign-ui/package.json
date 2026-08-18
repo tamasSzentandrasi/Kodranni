@@ -10,7 +10,9 @@
   },
   "dependencies": {
     "@astrojs/node": "^11.1.1",
+    "@kodranni/app": "*",
     "@kodranni/design": "*",
+    "@kodranni/domain": "*",
     "@kodranni/store": "*",
     "astro": "^7.0.0"
   }

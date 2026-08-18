@@ -52,7 +52,10 @@ const resolved = (ch.echoes ?? []).filter((e) => e.resolved);
 
     {
       active.length === 0 ? (
-        <p class="empty">None active — Decadence if this stands (−1 die on every roll).</p>
+        <p class="empty">
+          None active — Decadence if this stands (−1 die on every roll). Creating Echoes on the
+          sheet is not built yet (later: request + ST approve).
+        </p>
       ) : (
         <div class="echo-list">
           {active.map((e) => {

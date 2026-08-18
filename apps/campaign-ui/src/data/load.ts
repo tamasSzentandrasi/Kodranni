@@ -1,5 +1,6 @@
 import { existsSync, readFileSync } from 'node:fs';
 import {
+  SCHEMA_VERSION,
   completeMemberPlacements,
   defaultCampaignTomlPath,
   openSqliteStore,
@@ -15,14 +16,35 @@ export type ViewCommunity = FixtureCommunity & {
 };
 
 function characterToView(ch: CharacterRecord): FixtureCommunity['characters'][number] {
+  const status: FixtureCommunity['characters'][number]['status'] =
+    ch.status === 'dead'
+      ? 'dead'
+      : ch.status === 'draft'
+        ? 'draft'
+        : ch.status === 'pending_review'
+          ? 'pending_review'
+          : 'active';
   return {
     slug: ch.slug,
     name: ch.name,
-    status: ch.status === 'dead' ? 'dead' : ch.status === 'draft' ? 'draft' : 'active',
+    status,
     communityTie: ch.communityTie,
+    concept: ch.concept,
     whoWeSee: ch.whoWeSee,
     avatar: ch.avatar,
     player: ch.player,
+    initiator: ch.initiator,
+    creation: ch.creation
+      ? {
+          foundationPoints: ch.creation.foundationPoints,
+          skillPoints: ch.creation.skillPoints,
+          words: ch.creation.words,
+          birthOmenGranted: ch.creation.birthOmenGranted,
+          guidingHandGranted: ch.creation.guidingHandGranted,
+          locked: ch.creation.locked,
+          claimable: ch.creation.claimable,
+        }
+      : undefined,
     foundations: ch.foundations,
     foundationsEffective: ch.foundationsEffective,
     skills: ch.skills,
@@ -75,7 +97,17 @@ function fromSnapshot(
 function fromLiveStore(storePath: string): ViewCommunity {
   const store = openSqliteStore(storePath);
   try {
-    return fromSnapshot(store.toPublicSnapshot(), 'live', storePath);
+    // Full SoT — including drafts. toPublicSnapshot() hides drafts for the archive.
+    return fromSnapshot(
+      {
+        generatedAt: new Date().toISOString(),
+        schemaVersion: SCHEMA_VERSION,
+        community: store.getCommunity(),
+        characters: store.listCharacters(),
+      },
+      'live',
+      storePath,
+    );
   } finally {
     store.close();
   }

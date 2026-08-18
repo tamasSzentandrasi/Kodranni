@@ -3,6 +3,7 @@ export const prerender = false;
 
 import { ARCHETYPES, FOUNDATION_GROUPS, FOUNDATION_HARM } from '@kodranni/domain';
 import CampaignLayout from '../../../layouts/CampaignLayout.astro';
+import DraftPanel from '../../../components/DraftPanel.astro';
 import SheetChrome from '../../../components/SheetChrome.astro';
 import { getCharacter, loadCommunity } from '../../../data/load';
 import { harmPips, segments } from '../../../lib/format';
@@ -45,6 +46,8 @@ const roman = (n: number) => ['∅', 'I', 'II', 'III', 'IV'][n] ?? String(n);
     live={live}
     tab="core"
   />
+
+  <DraftPanel character={ch} live={live} />
 
   <div class="core-grid">
     <aside
