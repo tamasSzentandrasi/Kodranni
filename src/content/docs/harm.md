@@ -58,7 +58,7 @@ Harm arises only when the fiction **and** the dice justify lasting damage.
 
 | Roll type | Harm points |
 |-----------|-------------|
-| **[Opposed](/dice-mechanics/#situational-dice-resolution)** | Marks difference ÷ protection ratio (**always floor**) |
+| **[Opposed](/omens/#situational-dice-resolution)** | Marks difference ÷ protection ratio (**always floor**) |
 | **Unopposed** (falls, environment, dangerous acts) | (failures − Marks) ÷ protection ratio (**always floor**, minimum 0) |
 
 **Protection ratios**
@@ -94,7 +94,38 @@ When any Harm track reaches **3**, the character is **Dying**.
 - While Dying, **every roll requires [Exertion](/exertion/)**.  
 - When Exertion reaches **0**, the character **dies**.
 
-This window allows final actions, last words, or desperate stabilisation. Stabilisation requires a successful **[Healing](/skills/#mother-12)** attempt and removes the Dying state; the track remains at 3 until further recovery, and almost always leaves a permanent **[Trait](/traits/)**.
+This window allows final actions, last words, or desperate stabilisation. Stabilisation requires a successful **[Healing](/skills/#healing)** attempt and removes the Dying state; the track remains at 3 until further recovery, and almost always leaves a permanent **[Trait](/traits/)**.
+
+Healing is not a superpower. Without the right knowledge and material — **[Herbalism](/skills/#herbalism)**, bandages, **[Handcrafting](/skills/#handcrafting)** for a splint, and whatever else the wound actually needs — treat the attempt as **[Disadvantage](/marks-and-tiers/#advantage-and-disadvantage)**. Even with the best care, sometimes there is nothing left to do. Fight on. Save who you can. There is no plot armour. Death takes everyone in the end.
+
+<div class="kod-widget not-content" data-widget="step-flow" id="dying-demo">
+<p class="kod-widget__title">Dying — the fever on the road</p>
+<p class="kod-widget__intro">A companion tries to keep them. Healing is a Skill, not a miracle.</p>
+<p class="kod-step-flow__label" data-step-label></p>
+<div class="kod-step-flow__track" role="group" aria-label="Dying steps">
+<button type="button" class="kod-widget__btn" data-tab="d1" aria-pressed="true">1</button>
+<button type="button" class="kod-widget__btn" data-tab="d2">2</button>
+<button type="button" class="kod-widget__btn" data-tab="d3">3</button>
+<button type="button" class="kod-widget__btn" data-tab="d4">4</button>
+</div>
+<div class="kod-widget__panel" data-panel-id="d1" data-step-title="Fever 3">
+<p>The wound went bad. <strong>Fever</strong> hits 3. The character is <strong>Dying</strong>. They can still speak. Every roll now costs Exertion. At Exertion 0 they die.</p>
+</div>
+<div class="kod-widget__panel" data-panel-id="d2" data-step-title="What they have" hidden>
+<p>The companion has herbs and clean cloth — Herbalism, bandages. No forge, no splint needed for fever. The Storyteller names Resolve + Healing, <strong>d8</strong> (ordinary: they have the knowledge and the material).</p>
+<p>If they had neither herbs nor the Skill, the same intent would be <strong>d6</strong>. Wishing is not medicine.</p>
+</div>
+<div class="kod-widget__panel" data-panel-id="d3" data-step-title="The attempt" hidden>
+<p>They spend the night. Marks come thin — 1. The fever breaks enough to lift Dying. The track stays at 3 until recovery work clears points. A permanent Trait remains (weakened chest). They live. They are not well.</p>
+</div>
+<div class="kod-widget__panel" data-panel-id="d4" data-step-title="If it fails" hidden>
+<p>Zero Marks, or no one able to attempt Healing before Exertion runs out: death. The companion did not fail a video-game check. Sometimes the body is done. Play continues. Echoes and Legacies remain.</p>
+</div>
+<div class="kod-step-flow__nav">
+<button type="button" data-step-prev>← Back</button>
+<button type="button" data-step-next>Next →</button>
+</div>
+</div>
 
 After death: remove the character from the [Hierarchy Diagram](/hierarchies/#the-hierarchy-diagram). Continuity continues through [Echoes](/echoes/) and [Legacies](/hierarchies/#legacies). Play does not stop mid-session for full character replacement.
 
@@ -128,7 +159,7 @@ Recovery is slow and depends on rest, care, and nourishment.
 
 All Harm can worsen.
 
-The Storyteller may load custom [Omen](/dice-mechanics/#the-omen-die-and-consequences) faces for infection, secondary bleeding, spreading fever, growing shame, and similar deterioration. When those faces appear, additional Harm applies. Positive Consequences may reduce or prevent Harm.
+The Storyteller may load custom [Omen](/omens/#the-omen-die-and-consequences) faces for infection, secondary bleeding, spreading fever, growing shame, and similar deterioration. When those faces appear, additional Harm applies. Positive Consequences may reduce or prevent Harm.
 
 Ordinary faces **7** and **13** remain available for the same purpose at the Storyteller’s discretion.
 

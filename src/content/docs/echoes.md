@@ -49,7 +49,7 @@ The **player** elevates a moment into an Echo. The Storyteller may veto only for
 
 ### Invocation
 
-When a roll’s context matches one of the character’s Echoes, the player may spend **one extra [Exertion](/exertion/) die** beyond the normal limit of one. See [dice pool makeup](/dice-mechanics/#the-makeup-of-the-dice-pool).
+When a roll’s context matches one of the character’s Echoes, the player may spend **one extra [Exertion](/exertion/) die** beyond the normal limit of one. See [dice pool makeup](/marks-and-tiers/#the-makeup-of-the-dice-pool).
 
 <aside class="kod-example">
 <p class="kod-example__scene">Last harvest Leif swore before the hall that the spring above the ash-hill would not fall to the upper tribe. That vow is an Echo. Tonight raiders are at the spring. The Storyteller agrees the scene matches. Leif may put more of himself into the roll than Exertion normally allows.</p>
@@ -139,13 +139,43 @@ The three most recent **resolved Pivotal Echoes** become the community’s activ
 A Foundation Myth exerts a substantial, **narrow** effect on a defined set of actions. Effects are **toggleable and compoundable**: the Storyteller crafts a Myth by combining mechanical hooks (Storyteller-only tooling in automation). Possible effect ingredients include:
 
 - free extra Exertion spend, or forced extra Exertion cost, on matching rolls  
-- situational [Advantage or Disadvantage](/dice-mechanics/#advantage-and-disadvantage)  
-- one or more specific faces locked onto the [Omen](/dice-mechanics/#the-omen-die-and-consequences) die for community-relevant rolls  
+- situational [Advantage or Disadvantage](/marks-and-tiers/#advantage-and-disadvantage)  
+- one or more specific faces locked onto the [Omen](/omens/#the-omen-die-and-consequences) die for community-relevant rolls  
 - extra or reduced [Practice](/skills/#improvement) gain on matching Skills  
-- influence on [Tide](/dice-mechanics/#the-tide) starting point and shift thresholds  
+- influence on [Tide](/tide/) starting point and shift thresholds  
 - a temporary or permanent [Trait](/traits/) available (or denied) to all community members  
 
 **Triggering:** like [Echo invocation](#invocation), a roll must **explicitly mark** that a Foundation Myth applies (Storyteller or automation roll flow). Free prose alone does not fire effects.
+
+<figure class="kod-breath not-content">
+<img src="/scenes/price-we-paid.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+</figure>
+
+### Worked Myth — The Price We Paid
+
+A veteran who was taken as a child by slavers — parents killed, years in chains — hunted the man who did it. The hunt was not his alone. The community that hid him, fed him, and buried the dead made the deed a **Pivotal Echo**. When it resolved, it became a Foundation Myth.
+
+**The Price We Paid** (active Myth):
+
+- On a roll **tagged** against slavers or the slave-take: the actor may spend a **free extra Exertion** die (does not draw from the pool).
+- **Streetwise** Practice on matching work is counted as if the ruling Foundation were **3** (threshold halved), even if the character’s Guile is 1 or 2.
+
+<div class="kod-widget not-content" data-widget="content-tabs">
+<p class="kod-widget__title">Same roll — Myth off / on</p>
+<p class="kod-widget__intro">A community member reads a slaver camp from the town’s alleys. Streetwise, Guile 2. Tagged against slavers only when the Myth is on.</p>
+<div class="kod-widget__controls" role="group" aria-label="Myth toggle">
+<button type="button" class="kod-widget__btn" data-tab="myth-off" aria-pressed="true">Myth off</button>
+<button type="button" class="kod-widget__btn" data-tab="myth-on">Myth on</button>
+</div>
+<div class="kod-widget__panel" data-panel-id="myth-off">
+<p><strong>Tag:</strong> none. Ordinary Streetwise. Exertion if they spend from the pool. Practice against the Foundation-2 threshold (base 24 or 48, depending on current rank).</p>
+<p>The camp is just another dangerous alley. Nothing in the community’s memory helps the dice.</p>
+</div>
+<div class="kod-widget__panel" data-panel-id="myth-on" hidden>
+<p><strong>Tag:</strong> The Price We Paid. Free extra Exertion die (pool untouched). Streetwise Practice this roll uses the Foundation-3 threshold.</p>
+<p>They still have to walk the alley. The Myth does not find the slaver for them. It only lets the living spend more of themselves, and learn faster, when the work matches the dead.</p>
+</div>
+</div>
 
 Myths are living. They can be reinforced, corrupted, or overwritten by later events. They are the concrete way a character’s greatest deeds outlive the character and reshape the community that remains.
 

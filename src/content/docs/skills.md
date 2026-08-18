@@ -25,13 +25,13 @@ Each Skill has a single ruling **[Foundation](/foundations/)** that governs its 
 
 Specific techniques, regional styles, named tools, or binary capabilities remain **[Traits](/traits/)** — not Skills. You either have the technique, the tool-aptitude, or the condition, or you do not.
 
-At the table, the Storyteller selects the Skill that best matches the player’s described intent when building a [dice pool](/dice-mechanics/#the-makeup-of-the-dice-pool).
+At the table, the Storyteller selects the Skill that best matches the player’s described intent when building a [dice pool](/marks-and-tiers/#the-makeup-of-the-dice-pool).
 
 ----------
 
 ## Improvement
 
-Every time a **Skill** is used in a roll it may generate **Practice** (tracked by [automation](/automation/)). [Primitive](/dice-mechanics/#the-makeup-of-the-dice-pool) actions grant **no** Practice — no Skill is involved.
+Every time a **Skill** is used in a roll it may generate **Practice** (tracked by [automation](/automation/)). [Primitive](/marks-and-tiers/#the-makeup-of-the-dice-pool) actions grant **no** Practice — no Skill is involved.
 
 Practice is deeply tied to **[Exertion](/exertion/)**. **Marks of Success** only grant Practice when Exertion was spent. Struggle and effort teach; grinding without risk does not.
 
@@ -56,7 +56,41 @@ These thresholds are modified by the Skill’s ruling **Foundation**:
 | **2** (average) | Base values |
 | **1** (below average) | Doubled |
 
-High inborn potential accelerates learning. Low potential slows it. Automation handles accumulation and level-ups. Players never see raw Practice numbers unless they ask.
+High inborn potential accelerates learning. Low potential slows it. Automation handles accumulation and level-ups. Exact Practice progress is visible on the **live character sheet**. Chat adapters do not print Practice amounts — look at the sheet.
+
+<figure class="kod-breath not-content">
+<img src="/scenes/practice.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+</figure>
+
+<div class="kod-widget not-content" data-widget="step-flow" id="practice-track">
+<p class="kod-widget__title">Practice — Odd and the storehouse lock</p>
+<p class="kod-widget__intro">One Skill, from 0 toward 1. Ruling Foundation 2 → threshold <strong>24</strong>. If the Foundation were 3, the same work would count against <strong>12</strong>.</p>
+<p class="kod-step-flow__label" data-step-label></p>
+<div class="kod-step-flow__track" role="group" aria-label="Practice steps">
+<button type="button" class="kod-widget__btn" data-tab="p1" aria-pressed="true">1</button>
+<button type="button" class="kod-widget__btn" data-tab="p2">2</button>
+<button type="button" class="kod-widget__btn" data-tab="p3">3</button>
+</div>
+<div class="kod-widget__panel" data-panel-id="p1" data-step-title="Messy first attempt">
+<p>After dark Odd works the lock. More failures than Marks. He does not spend Exertion.</p>
+<p><strong>Unopposed</strong> · more failures than Marks · no Exertion → <strong>+2 Practice</strong>.</p>
+<p>Running total: <strong>2 / 24</strong> (Foundation 2). Against Foundation 3 it would already be <strong>2 / 12</strong>.</p>
+</div>
+<div class="kod-widget__panel" data-panel-id="p2" data-step-title="He pushes" hidden>
+<p>Later the same night he spends Exertion and lands 4 Marks.</p>
+<p><strong>Unopposed</strong> · Exertion spent · floor(4 ÷ 2) → <strong>+2 Practice</strong>.</p>
+<p>Running total: <strong>4 / 24</strong>.</p>
+</div>
+<div class="kod-widget__panel" data-panel-id="p3" data-step-title="An opposed loss" hidden>
+<p>A week later a rival lock-man contests him. Odd spends Exertion, loses by 1 Mark.</p>
+<p><strong>Opposed loss</strong> → <strong>+2 Practice</strong> (the loss award; no margin award because he did not win).</p>
+<p>Running total: <strong>6 / 24</strong>. Struggle taught more than the clean night did.</p>
+</div>
+<div class="kod-step-flow__nav">
+<button type="button" data-step-prev>← Back</button>
+<button type="button" data-step-next>Next →</button>
+</div>
+</div>
 
 <aside class="kod-counsel" aria-label="Counsel">
 <p>Struggle teaches. Effort is taken into account. Doing something ad infinitum without hardship counts for naught.</p>
@@ -74,10 +108,10 @@ Skills can lose progress when the Storyteller asks automation to evaluate a time
 
 | Omen | Skills degraded (from the five) |
 |------|----------------------------------|
-| 0–4 | 0 |
-| 5–9 | 1 |
-| 10–14 | 2 |
-| 15–20 | 3 |
+| 1–5 | 0 |
+| 6–10 | 1 |
+| 11–15 | 2 |
+| 16–20 | 3 |
 
 **Short time leap (alternate)**
 
@@ -85,8 +119,8 @@ Same five-skill pool, but only:
 
 | Omen | Skills degraded |
 |------|-----------------|
-| 0–9 | 0 |
-| 10–20 | 1 |
+| 1–10 | 0 |
+| 11–20 | 1 |
 
 Fiction still decides *why* rust set in; automation only applies the prompted procedure.
 
@@ -95,7 +129,7 @@ Fiction still decides *why* rust set in; automation only applies the prompted pr
 <ol class="kod-example__steps">
 <li><strong>Unopposed Lockpicking:</strong> more failures than Marks, no Exertion → <strong>+2 Practice</strong>.</li>
 <li><strong>Same Skill, later that night:</strong> Exertion spent, 4 Marks → <strong>+2 Practice</strong> (floor of 4÷2).</li>
-<li><strong>Short time leap (ST prompts):</strong> take the five Skills with lowest progress; Omen 0–9 → degrade none; Omen 10–20 → degrade one of those five at random.</li>
+<li><strong>Short time leap (ST prompts):</strong> take the five Skills with lowest progress; Omen 1–10 → degrade none; Omen 11–20 → degrade one of those five at random.</li>
 </ol>
 </aside>
 
@@ -175,7 +209,7 @@ Each Archetype names a role and lists the Skills that belong to it. Characters a
 <li><strong>Engineering &amp; Design</strong> (Intellect) — simple machines, structural planning, and mechanisms</li>
 <li><strong>Bowyer &amp; Fletcher</strong> (Constitution) — bows, arrows, and related equipment</li>
 <li><strong>Appraisal</strong> (Perception) — judging value, authenticity, and quality of objects and materials</li>
-<li><strong>Handcrafting</strong> (Dexterity) — improvised tools and objects from bone, wood, sinew, stone, and available materials</li>
+<li id="handcrafting"><strong>Handcrafting</strong> (Dexterity) — improvised tools and objects from bone, wood, sinew, stone, and available materials</li>
 <li><strong>Oversight</strong> (Authority) — directing and coordinating groups of workers</li>
 <li><strong>Tinkering &amp; Repair</strong> (Constitution) — diagnosing, adjusting, and restoring existing tools, mechanisms, and objects</li>
 </ol>
@@ -192,13 +226,13 @@ Each Archetype names a role and lists the Skills that belong to it. Characters a
 <p>The Mother covers household life and the care of people: food, healing, children, farming, domestic animals, and personal influence within kin and home. It is not a gender and not limited to parents — it is the Skills of keeping a household and its people alive and bound together.</p>
 <ol>
 <li><strong>Cooking &amp; Preserving</strong> (Resolve) — preparation and preservation of food</li>
-<li><strong>Herbalism</strong> (Intellect) — medicinal plants and poisons</li>
+<li id="herbalism"><strong>Herbalism</strong> (Intellect) — medicinal plants and poisons</li>
 <li><strong>Childcare</strong> (Resolve) — raising children and midwifery</li>
 <li><strong>Animal Husbandry</strong> (Resolve) — breeding, care, and management of domestic animals</li>
 <li><strong>Farming</strong> (Strength) — soil, crops, and field management</li>
 <li><strong>Empathy</strong> (Charisma) — reading emotional states and offering personal support</li>
 <li><strong>Performance</strong> (Charisma) — expression through voice (singing), body (dancing), and presence (acting)</li>
-<li><strong>Healing</strong> (Resolve) — physical treatment of the body, wounds, and injury (critical for <a href="/harm/#dying">Dying</a> stabilisation)</li>
+<li id="healing"><strong>Healing</strong> (Resolve) — physical treatment of the body, wounds, and injury (critical for <a href="/harm/#dying">Dying</a> stabilisation)</li>
 <li><strong>Etiquette</strong> (Resolve) — proper forms, manners, and social conduct in domestic and relational settings</li>
 <li><strong>Seduction</strong> (Charisma) — intimate influence, charm, and emotional leverage in personal relationships</li>
 <li><strong>Influence</strong> (Authority) — using relational position, obligations, and family hooks</li>
