@@ -1,7 +1,9 @@
 /**
  * Practice rules (Skills chapter).
  * - Primitive → no Practice (caller must not invoke Skill practice).
- * - Marks Practice only when Exertion was spent (with stated exceptions).
+ * - Marks convert only when Exertion was spent — win or loss.
+ * - Opposed loss always adds +2 (stacks with any Marks award).
+ * - Opposed margin 0 is not a loss and grants no automatic Practice.
  */
 
 export type PracticeRollKind = 'unopposed' | 'opposed';
@@ -35,14 +37,14 @@ export function practiceGain(input: PracticeInput): PracticeResult {
 
   if (input.kind === 'opposed') {
     const margin = input.margin ?? 0;
+    const lost = input.lostOpposed === true;
     if (margin === 0) {
-      // No automatic margin Practice; fiction/ST may award separately.
       reasons.push('margin_zero_no_auto');
-    } else if (input.exertionSpent && margin > 0) {
-      gained += margin;
+    } else if (input.exertionSpent) {
+      gained += Math.abs(margin);
       reasons.push('opposed_margin_with_exertion');
     }
-    if (input.lostOpposed) {
+    if (lost) {
       gained += 2;
       reasons.push('opposed_loss_plus_2');
     }

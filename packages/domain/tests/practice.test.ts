@@ -62,7 +62,7 @@ describe('practiceGain', () => {
     expect(r.gained).toBe(0);
   });
 
-  it('opposed loss → +2 regardless of Exertion', () => {
+  it('opposed loss without Exertion → +2 only', () => {
     const r = practiceGain({
       kind: 'opposed',
       usedSkill: true,
@@ -73,6 +73,33 @@ describe('practiceGain', () => {
       lostOpposed: true,
     });
     expect(r.gained).toBe(2);
+  });
+
+  it('opposed loss with Exertion → Marks difference + 2', () => {
+    const r = practiceGain({
+      kind: 'opposed',
+      usedSkill: true,
+      exertionSpent: true,
+      marks: 2,
+      failures: 2,
+      margin: -2,
+      lostOpposed: true,
+    });
+    expect(r.gained).toBe(4);
+    expect(r.reasons).toEqual(['opposed_margin_with_exertion', 'opposed_loss_plus_2']);
+  });
+
+  it('opposed win without Exertion → 0', () => {
+    const r = practiceGain({
+      kind: 'opposed',
+      usedSkill: true,
+      exertionSpent: false,
+      marks: 4,
+      failures: 0,
+      margin: 3,
+      lostOpposed: false,
+    });
+    expect(r.gained).toBe(0);
   });
 });
 

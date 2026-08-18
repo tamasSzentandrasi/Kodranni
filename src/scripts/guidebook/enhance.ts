@@ -313,6 +313,78 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 	}
 
 	/** Generic tab panels: buttons [data-tab], panels [data-panel-id] in the same widget */
+	function setupPracticeAward() {
+		document.querySelectorAll('[data-widget="practice-award"]').forEach((root) => {
+			if (root.dataset.ready) return;
+			root.dataset.ready = '1';
+			const kindBtns = [...root.querySelectorAll('[data-practice-kind]')];
+			const resultGroups = [...root.querySelectorAll('[data-practice-results]')];
+			const exertBtns = [...root.querySelectorAll('[data-practice-exert]')];
+			const panels = [...root.querySelectorAll('[data-panel-id]')];
+			if (!kindBtns.length || !exertBtns.length || !panels.length) return;
+
+			let kind = kindBtns.find((b) => b.getAttribute('aria-pressed') === 'true')?.dataset
+				.practiceKind || 'opposed';
+			let result = { opposed: 'won', unopposed: 'struggle' };
+			let exert = exertBtns.find((b) => b.getAttribute('aria-pressed') === 'true')?.dataset
+				.practiceExert || 'no';
+
+			function resultBtns() {
+				const group = resultGroups.find((g) => g.getAttribute('data-practice-results') === kind);
+				return group ? [...group.querySelectorAll('[data-practice-result]')] : [];
+			}
+
+			function paint() {
+				kindBtns.forEach((b) =>
+					b.setAttribute('aria-pressed', b.dataset.practiceKind === kind ? 'true' : 'false'),
+				);
+				resultGroups.forEach((g) => {
+					const show = g.getAttribute('data-practice-results') === kind;
+					if (show) g.removeAttribute('hidden');
+					else g.setAttribute('hidden', '');
+				});
+				resultBtns().forEach((b) =>
+					b.setAttribute(
+						'aria-pressed',
+						b.dataset.practiceResult === result[kind] ? 'true' : 'false',
+					),
+				);
+				exertBtns.forEach((b) =>
+					b.setAttribute('aria-pressed', b.dataset.practiceExert === exert ? 'true' : 'false'),
+				);
+				const id = kind + '-' + result[kind] + '-' + exert;
+				panels.forEach((p) => {
+					const show = p.getAttribute('data-panel-id') === id;
+					if (show) p.removeAttribute('hidden');
+					else p.setAttribute('hidden', '');
+				});
+			}
+
+			kindBtns.forEach((b) =>
+				b.addEventListener('click', () => {
+					kind = b.dataset.practiceKind || 'opposed';
+					paint();
+				}),
+			);
+			resultGroups.forEach((g) => {
+				g.querySelectorAll('[data-practice-result]').forEach((b) => {
+					b.addEventListener('click', () => {
+						const k = g.getAttribute('data-practice-results');
+						if (k) result[k] = b.dataset.practiceResult;
+						paint();
+					});
+				});
+			});
+			exertBtns.forEach((b) =>
+				b.addEventListener('click', () => {
+					exert = b.dataset.practiceExert || 'no';
+					paint();
+				}),
+			);
+			paint();
+		});
+	}
+
 	function setupContentTabs() {
 		document.querySelectorAll('[data-widget="content-tabs"]').forEach((root) => {
 			if (root.dataset.ready) return;
@@ -619,6 +691,7 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 			setupDieChips,
 			setupMarksLadder,
 			setupTierDial,
+			setupPracticeAward,
 			setupContentTabs,
 			setupStepFlows,
 			setupTideDemo,

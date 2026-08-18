@@ -63,7 +63,7 @@ Exertion can also be depleted by pure narrative events — lack of food or water
 
 ### Practice link
 
-[Practice](/skills/#improvement) from Marks of Success on Skills accrues only when Exertion was spent on that roll (with stated exceptions for failure and opposed losses). Effort is part of learning.
+[Practice](/skills/#improvement) from Marks on Skills accrues only when Exertion was spent — win or loss. An opposed loss also adds **+2**, which stacks with that Marks award. Effort is part of learning.
 
 Related: [Human Potential](/human-potential/), [Dice Mechanics](/dice-mechanics/), [Automation](/automation/).
 

@@ -40,7 +40,7 @@ Default action die is **d8**. A **Mark** is any face of **5 or higher**.
 | **Authority** | Social Foundation: natural command, gravitas. Part of Echo capacity. → [Foundations](/foundations/) |
 | **Skill** | Rated 0–3 practiced ability under an Archetype. → [Skills](/skills/) |
 | **Archetype** | One of six named groups of related Skills (Warrior, Wayfarer, Artisan, Mother, Sage, Trickster). Not a class. → [Skills](/skills/) |
-| **Practice** | Progress toward Skill level-up. Exact numbers live on the live sheet; adapters do not print them. → [Skills](/skills/#improvement) |
+| **Practice** | Progress toward Skill level-up. Marks convert only with Exertion (win or loss); an opposed loss also adds +2. Exact numbers live on the live sheet; adapters do not print them. → [Skills](/skills/#improvement) |
 | **Trait** | Binary custom feature; positive or negative by context. → [Traits](/traits/) |
 | **Exertion** | Spendable pool for extra dice; also fatigue/hunger/thirst ledger. Max = Resolve + Constitution + Charisma. → [Exertion](/exertion/) |
 

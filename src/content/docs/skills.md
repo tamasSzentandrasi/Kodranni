@@ -33,12 +33,84 @@ At the table, the Storyteller selects the Skill that best matches the player’s
 
 Every time a **Skill** is used in a roll it may generate **Practice** (tracked by [automation](/automation/)). [Primitive](/marks-and-tiers/#the-makeup-of-the-dice-pool) actions grant **no** Practice — no Skill is involved.
 
-Practice is deeply tied to **[Exertion](/exertion/)**. **Marks of Success** only grant Practice when Exertion was spent. Struggle and effort teach; grinding without risk does not.
+Practice is deeply tied to **[Exertion](/exertion/)**. **Marks** convert to Practice only when Exertion was spent — on a win **and** on a loss. A loss also adds **+2**. The two awards stack. Struggle and effort teach; grinding without risk does not.
 
-| Roll type | Practice rule |
-|-----------|----------------|
-| **Opposed** | Practice = Marks difference when Exertion was spent. If the character *lost* the contest, add **+2** (regardless of Exertion). A **0** margin counts as not lost. |
-| **Unopposed** | **+2** Practice if the roll contained more failures than Marks (Exertion free), **plus** **+1** Practice for every two Marks of Success (rounded down) when Exertion was spent. |
+**Opposed** — Practice uses the **Marks difference** (your Marks minus theirs). A **0** margin is a tie: not a loss, and no automatic award.
+
+| Result | No Exertion | Exertion spent |
+|--------|-------------|----------------|
+| **Won** | — | + Marks difference |
+| **Lost** | +2 | + Marks difference **and** +2 |
+| **Tied** | — | — |
+
+**Unopposed**
+
+| Result | No Exertion | Exertion spent |
+|--------|-------------|----------------|
+| **More failures than Marks** | +2 | +2 **and** +1 per two Marks (floor) |
+| **Marks ≥ failures** | — | +1 per two Marks (floor) |
+
+<div class="kod-widget not-content" data-widget="practice-award">
+<p class="kod-widget__title">What this roll is worth</p>
+<p class="kod-widget__intro">Pick the roll and whether Exertion was spent. Primitive actions are not here — they grant nothing.</p>
+<div class="kod-widget__controls" role="group" aria-label="Roll type">
+<button type="button" class="kod-widget__btn" data-practice-kind="opposed" aria-pressed="true">Opposed</button>
+<button type="button" class="kod-widget__btn" data-practice-kind="unopposed">Unopposed</button>
+</div>
+<div class="kod-widget__controls" role="group" aria-label="Result" data-practice-results="opposed">
+<button type="button" class="kod-widget__btn" data-practice-result="won" aria-pressed="true">Won</button>
+<button type="button" class="kod-widget__btn" data-practice-result="lost">Lost</button>
+<button type="button" class="kod-widget__btn" data-practice-result="tie">Tied</button>
+</div>
+<div class="kod-widget__controls" role="group" aria-label="Result" data-practice-results="unopposed" hidden>
+<button type="button" class="kod-widget__btn" data-practice-result="struggle" aria-pressed="true">More failures</button>
+<button type="button" class="kod-widget__btn" data-practice-result="held">Marks ≥ failures</button>
+</div>
+<div class="kod-widget__controls" role="group" aria-label="Exertion">
+<button type="button" class="kod-widget__btn" data-practice-exert="no" aria-pressed="true">No Exertion</button>
+<button type="button" class="kod-widget__btn" data-practice-exert="yes">Exertion spent</button>
+</div>
+<div class="kod-widget__panel" data-panel-id="opposed-won-no">
+<p class="kod-practice-award__total"><strong>+0</strong></p>
+<p>You beat them 4 Marks to 1 — difference <strong>3</strong>. No Exertion. Marks do not convert. Nothing from the win itself.</p>
+</div>
+<div class="kod-widget__panel" data-panel-id="opposed-won-yes" hidden>
+<p class="kod-practice-award__total"><strong>+3</strong></p>
+<p>Same 4–1 win. Exertion was spent. Marks difference <strong>3</strong> becomes Practice. You did not lose, so there is no +2.</p>
+</div>
+<div class="kod-widget__panel" data-panel-id="opposed-lost-no" hidden>
+<p class="kod-practice-award__total"><strong>+2</strong></p>
+<p>They beat you 4 Marks to 2 — difference <strong>2</strong>. No Exertion. Marks stay off the ledger. The loss still adds <strong>+2</strong>.</p>
+</div>
+<div class="kod-widget__panel" data-panel-id="opposed-lost-yes" hidden>
+<p class="kod-practice-award__total"><strong>+4</strong></p>
+<p>Same 2–4 loss. Exertion was spent, so the Marks difference <strong>2</strong> converts. The loss adds <strong>+2</strong>. They stack: <strong>2 + 2 = 4</strong>.</p>
+</div>
+<div class="kod-widget__panel" data-panel-id="opposed-tie-no" hidden>
+<p class="kod-practice-award__total"><strong>+0</strong></p>
+<p>Margin <strong>0</strong>. A tie is not a loss. No +2. No Exertion, so Marks do not convert either.</p>
+</div>
+<div class="kod-widget__panel" data-panel-id="opposed-tie-yes" hidden>
+<p class="kod-practice-award__total"><strong>+0</strong></p>
+<p>Margin <strong>0</strong>. Exertion does not change a tie. No Marks difference to convert. No +2.</p>
+</div>
+<div class="kod-widget__panel" data-panel-id="unopposed-struggle-no" hidden>
+<p class="kod-practice-award__total"><strong>+2</strong></p>
+<p>More failures than Marks (1 Mark, 3 failures). No Exertion. The struggle award is <strong>+2</strong>. Marks stay off the ledger.</p>
+</div>
+<div class="kod-widget__panel" data-panel-id="unopposed-struggle-yes" hidden>
+<p class="kod-practice-award__total"><strong>+3</strong></p>
+<p>More failures than Marks, and Exertion spent. Struggle <strong>+2</strong>, plus floor(3 Marks ÷ 2) = <strong>+1</strong>. They stack: <strong>2 + 1 = 3</strong>.</p>
+</div>
+<div class="kod-widget__panel" data-panel-id="unopposed-held-no" hidden>
+<p class="kod-practice-award__total"><strong>+0</strong></p>
+<p>4 Marks, 1 failure — Marks win the count. No struggle award. No Exertion, so those Marks do not convert.</p>
+</div>
+<div class="kod-widget__panel" data-panel-id="unopposed-held-yes" hidden>
+<p class="kod-practice-award__total"><strong>+2</strong></p>
+<p>Same 4 Marks. Exertion was spent. floor(4 ÷ 2) = <strong>+2</strong>. No struggle award — Marks already beat failures.</p>
+</div>
+</div>
 
 Practice accumulates against thresholds:
 
@@ -83,7 +155,7 @@ High inborn potential accelerates learning. Low potential slows it. Automation h
 </div>
 <div class="kod-widget__panel" data-panel-id="p3" data-step-title="String it" hidden>
 <p>Qara will not praise until the bow shoots. “String it. The reed by the wagon.” Temur spends Exertion and is still beaten by the horn-set — opposed loss by 1 Mark.</p>
-<p><strong>Temur</strong> · opposed loss · <strong>+2 Practice</strong> (Bowyer; the loss award). Temur: <strong>6 / 24</strong>.</p>
+<p><strong>Temur</strong> · opposed loss · Exertion spent · Marks difference <strong>1</strong> + loss <strong>+2</strong> → <strong>+3 Practice</strong> (Bowyer). Temur: <strong>7 / 24</strong>.</p>
 <p>Qara watches and corrects the grip — another Mentoring roll, Exertion, 2 Marks → <strong>+1 Practice</strong>. Qara: <strong>2 / 48</strong>. Both learned. The youth learned more from the loss.</p>
 </div>
 <div class="kod-step-flow__nav">

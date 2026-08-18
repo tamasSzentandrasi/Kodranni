@@ -1017,6 +1017,45 @@
   color: #6fc4b0;
 }
 
+/* --- Practice award (result × Exertion) ----------------------------------- */
+.kod-widget[data-widget='practice-award'] {
+  text-align: left;
+}
+.kod-widget[data-widget='practice-award'] .kod-widget__title,
+.kod-widget[data-widget='practice-award'] .kod-widget__intro {
+  text-align: center;
+}
+.kod-widget[data-widget='practice-award'] .kod-widget__btn {
+  width: auto;
+  min-width: 6.25rem;
+  max-width: none;
+  height: auto;
+  min-height: 2.5rem;
+  max-height: none;
+  padding: 0.4rem 0.85rem;
+  white-space: normal;
+  line-height: 1.25;
+}
+.kod-widget[data-widget='practice-award'] .kod-widget__panel {
+  min-height: 0;
+}
+.kod-widget[data-widget='practice-award'] .kod-widget__panel[hidden],
+.kod-widget[data-widget='practice-award'] .kod-widget__controls[hidden] {
+  display: none !important;
+}
+.kod-practice-award__total {
+  margin: 0 0 0.45rem !important;
+  font-family: var(--kod-font-display);
+  font-size: 1.55rem;
+  letter-spacing: 0.04em;
+  color: var(--kod-silver-bright);
+  text-align: center;
+}
+.kod-practice-award__total strong {
+  background: none;
+  color: #fff8f0;
+}
+
 /* --- Content tabs (HTML panels, not JS scene maps) ------------------------- */
 .kod-widget[data-widget='content-tabs'] {
   text-align: left;

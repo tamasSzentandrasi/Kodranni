@@ -76,7 +76,7 @@ Rank 3 in one Skill therefore costs **6**. Possible; expensive.
 
 ----------
 
-## The Weighing {#the-weighing}
+## The Weighing
 
 Four steps. Walk them **in order**. Private rolls first; then the table speaks; then you spend what you earned — or lose it.
 
