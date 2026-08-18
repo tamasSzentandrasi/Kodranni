@@ -1,6 +1,8 @@
 # Plan: Astro + Starlight Guidebook
 
-Living architecture for the Kodranni Guidebook. Replaces the August 2026 scaffold plan. Status of rules and open gaps lives in [documentation-gaps.md](./documentation-gaps.md).
+Living architecture for the Kodranni Guidebook. Rules locks and residual gaps live in [documentation-gaps.md](./documentation-gaps.md).
+
+**Status (2026-08-18, evening):** Harden-and-raise packages 0–8 are **shipped**. This file no longer describes upcoming work as if it were unstarted. The book is a coherent grim Guidebook. It is **not** at the pinnacle-peak look or the process standard we set. Verdict is in §Verdict.
 
 ---
 
@@ -8,29 +10,60 @@ Living architecture for the Kodranni Guidebook. Replaces the August 2026 scaffol
 
 Ship Kodranni’s rules as a **maintainable, navigable guidebook** on [Astro](https://astro.build/) + [Starlight](https://starlight.astro.build/). Starlight is the product frame (header, search, sidebar, right-hand TOC, prev/next). We skin those surfaces and teach *into* them. We do not hide the shell or rebuild a splash.
 
+Pinnacle, for this book, means: a new Storyteller can learn the system from the pages alone; every major procedure is taught at the point of use; the weather of the book is even (grim, pre-industrial, human); chrome does not fight the text; nothing theatrical stands in for a rule.
+
 ---
 
-## Current stack (2026-08)
+## Verdict (2026-08-18)
+
+**Did the recent changes reach pinnacle-peak?** No.
+
+**Did they meet the high standard we set for this programme?** Mostly on structure and teaching. Not on evenness, process, or finish.
+
+What is true:
+
+- The IA is the teaching order. Dice is four pages. Echoes is first in Resolution. Glossary is Reference at the end. Pagination follows the sidebar.
+- Teaching is now at the bar for the procedures that used to be unreadable: Marks ladder, die-tier dial, Omen faces, Tide (Zhao/Wei + footing faces), Practice (matrix + award widget + Hunnic track), Dying, Foundation Myth, Weighing stepper.
+- Widget copy lives in Markdown. JS hydrates. That contract held.
+- Interactive chrome was pulled off blood-red hover (iron-silver plates, folio prev/next, pewter scrollbar). That was the right move. It is a lift, not a finished ornament language.
+- Plates are in place. Portal exists as a landing, not a splash. Humour lines were kept. Automation chapter stayed frozen.
+
+What is not true, and must not be dressed up:
+
+- **Evenness failed.** Warrior stained glass is the bar. Artisan, Sage, and (less so) Trickster are painted figures in glass frames. Portal still uses the old blood scrollbar and blood card-hover. Tables, example boxes, chapter `hr` runes, and ST lanes still speak blood — some of that is identity, some is leftover chrome. The book does not yet feel like one object from portal to last page.
+- **Process leaked.** `{#the-weighing}` printed as text. Practice domain awarded only +2 on an opposed loss with Exertion (Marks did not convert). Worldbuilding method prose shipped doubled. Omen copy used theatrical “night brought” language. Each was caught by the author, not by us.
+- **Plans were stale while we shipped.** This file still described packages 0–8 as the work, and a widget file-tree that was never created (`src/scripts/guidebook/widgets/*.ts`). `enhance.ts` is still one client file.
+- **CI builds the book and does not run domain tests.** The Practice stacking bug would have deployed.
+- **Introduction “How the Guide is organised” still lists Harm before Echoes.** Sidebar is correct; the intro table is not.
+- **Campaign Setup** is the weakest chapter relative to Character Creation. Seeds and the nine-step method exist; the weather is thinner.
+- **Bellefair** remains a locked taste risk. Mitigated (measure, contrast, no fake-bold). Not solved. Long Tide and Practice tables still tax the eye.
+- Visual claims in this session were not browser-verified here (no browser tools). Build + CSS inspection is not the same as using the book.
+
+Author note from the same day — “I’m impressed so far” — is about register, not arrival. The book now has a voice. Pinnacle is evenness plus no leaked process. We have neither.
+
+---
+
+## Current stack (2026-08-18)
 
 | Asset | State |
 |-------|--------|
 | `package.json` | Astro 7 + `@astrojs/starlight` 0.41 |
-| `astro.config.mjs` | `site` + `base: '/Kodranni/Guidebook'`; sidebar groups; `lastUpdated` **off** (this programme) |
+| `astro.config.mjs` | `site` + `base: '/Kodranni/Guidebook'`; sidebar groups; `lastUpdated` **off** |
 | `src/content.config.ts` | `docsLoader()` + `docsSchema()` |
-| `src/content/docs/` | Flat Markdown chapters (Dice split in this programme) |
-| `src/styles/` | Theme files imported from `custom.css` (split in this programme) |
-| `src/scripts/guidebook/` | Client enhance (split out of `Head.astro` in this programme) |
+| `src/content/docs/` | Flat Markdown. Dice is four routes. |
+| `src/styles/` | Theme files imported from `custom.css` (split shipped) |
+| `src/scripts/guidebook/enhance.ts` | Single client hydrator (extracted from `Head.astro`). **Not** split into `widgets/*.ts`. |
 | Theme | Dark-only; self-hosted Bellefair + Noto Sans Runic |
-| Deploy | GitHub Pages: portal at `/Kodranni/`, book at `/Kodranni/Guidebook/` (`.github/workflows/deploy.yml` + `scripts/prefix-base.mjs`) |
+| Deploy | GitHub Pages: portal `/Kodranni/`, book `/Kodranni/Guidebook/`. Workflow builds; **does not run `npm test`**. |
 | Search | Pagefind on production build |
 
 **Out of Starlight:** bot/DB/Discord code, ADRs in `docs/plans/`, private campaign data, product sheet UI (`apps/campaign-ui`).
 
 ---
 
-## What shipped after the original plan
+## What shipped
 
-Short log, not a novel. Original plan (`7c1882e`, 2026-08-09) assumed placeholder CSS, no deploy, a splash `index.mdx`, and “add examples later.”
+Short log. Original scaffold (`7c1882e`, 2026-08-09) assumed placeholder CSS, no deploy, a splash, and “add examples later.”
 
 | When | What landed |
 |------|-------------|
@@ -42,7 +75,8 @@ Short log, not a novel. Original plan (`7c1882e`, 2026-08-09) assumed placeholde
 | 2026-08-13 | Dark-only lock; dual capacities (Exertion vs Echo) documented |
 | 2026-08-14 | Tide demo (Zhao/Wei); die-tier visual language started |
 | 2026-08-17 | Polyhedral die icons + chips; widget harden (isolated enhance steps) |
-| 2026-08-18 | This programme: plans rewritten; truth, architecture, IA, teaching, portal |
+| 2026-08-18 (programme) | Plans rewritten; truth pass; CSS/Head split; Dice 4-page split; Echoes first; Glossary rebuild; portal lift; plates placed; Artisan/Trickster/Sage remade (still below Warrior) |
+| 2026-08-18 (evening) | Situational resolution → Tide; Omen as side-effect; Tide names Small/Skirmish/Battle; Hunnic Practice; iron-silver interactive chrome; Practice matrix + domain stack fix; Weighing heading leak removed |
 
 ---
 
@@ -50,7 +84,8 @@ Short log, not a novel. Original plan (`7c1882e`, 2026-08-09) assumed placeholde
 
 - **Type:** Bellefair for titles *and* body. No second body face. Mitigate with contrast, shorter measure (~42–44rem), emphasis register, boxes, widgets — not a new family. Bellefair has only weight 400; do not fake-bold (`font-synthesis: none`).
 - **Colour:** iron / silver / blood. Dark only. No theme toggle.
-- **Ornament (closed, ascetic):** Elder Futhark on `hr`; list scroll-reveal; breath-masked plates; example / note / counsel boxes; teaching widgets. Do not add a new flourish class.
+- **Interactive chrome (2026-08-18 lock):** widgets, prev/next, scrollbar, term tips, step examples, Tide callouts use **iron-silver**. Blood stays on identity surfaces: chapter `hr` runes, example boxes, ST lanes, current-page sidebar, invented-seed category, portal falcon ring. Do not put blood on button hover.
+- **Ornament (closed, ascetic):** Elder Futhark on `hr`; list scroll-reveal; breath-masked plates; example / note / counsel boxes; teaching widgets; simple scrollbar fuller + lozenge; folio corner-ticks on pagination and widget frames. Do not add a new flourish class.
 - **ST humour (authorial, keep):** Introduction *“It's Fiiiine”*; Harm *“Don't worry. I'll kill you eventually.”* Do not add more gags by default.
 - **Plates:** `figure.kod-breath` after the first divider. Empty `alt` (decorative). Glossary and Automation have no start plate.
 - **Quotes:**
@@ -62,6 +97,8 @@ Short log, not a novel. Original plan (`7c1882e`, 2026-08-09) assumed placeholde
 
 Old English / Hávamál: original line, then translation, then source.
 
+- **Wording:** grim and clear. A Consequence is a genuine side-effect. Do not theatricalise rules.
+
 ---
 
 ## Starlight surfaces we keep
@@ -71,7 +108,7 @@ Old English / Hávamál: original line, then translation, then source.
 | Header | Wordmark + falcon + search |
 | Sidebar groups | Teaching order (see IA) |
 | Right-hand TOC | In-chapter scan |
-| Prev / next | Linear first-time path — **must match sidebar order** |
+| Prev / next | Linear first-time path — **must match sidebar order**. Folio plates, iron-silver, not blood hover. |
 | Pagefind | Lookup; Glossary is a companion, not the search engine |
 
 `lastUpdated` is off. Rules are not edition-dated that way.
@@ -80,7 +117,7 @@ Old English / Hávamál: original line, then translation, then source.
 
 ## Information architecture
 
-### Sidebar (target)
+### Sidebar (shipped)
 
 1. **Start here** — Introduction
 2. **Dice Mechanics** — Overview · Marks & Tiers · Omens & Consequences · Tide
@@ -94,9 +131,13 @@ Pagination follows that list. Glossary is never in the middle of a first-time re
 
 `/Guidebook/` remains a one-way JS redirect to Introduction. No splash.
 
+**Known mismatch:** Introduction “How the Guide is organised” still lists Harm before Echoes. Residual.
+
 ### URL policy
 
-Flat routes. New Dice children: `/marks-and-tiers/`, `/omens/`, `/tide/`. Root-absolute links in Markdown (`/foundations/#…`).
+Flat routes. Dice children: `/marks-and-tiers/`, `/omens/`, `/tide/`. Root-absolute links in Markdown (`/foundations/#…`).
+
+Custom heading IDs: **do not** write `{#slug}` in Markdown — Starlight prints it. Use the auto slug, or a visible `<span id="…">` on a heading that stays on screen (never on a `hidden` widget panel).
 
 ---
 
@@ -105,29 +146,12 @@ Flat routes. New Dice children: `/marks-and-tiers/`, `/omens/`, `/tide/`. Root-a
 **Markdown owns every word the reader sees. JS never contains scene prose.**
 
 - Markup: `div.kod-widget.not-content[data-widget="…"]` with buttons + panels in the `.md` file.
-- JS: generic hydrators in `src/scripts/guidebook/widgets/`.
+- JS: hydrators in `src/scripts/guidebook/enhance.ts` (one file). Isolated `try` per setup. Do not invent a `widgets/` tree unless `enhance.ts` becomes painful to edit.
 - Stay on `.md` + HTML shells. No MDX migration unless a later widget cannot be panels.
 
-`Head.astro`: fonts, favicon, theme-color, one import of `enhance.ts`.
+Shipped hydrators: `content-tabs`, `step-flow`, `marks-ladder`, `tier-dial`, `tide-demo`, `practice-award`, plus chrome (sidebar icons, Futhark `hr`, die chips, omen faces, scroll-reveal).
 
-```
-src/scripts/guidebook/
-  enhance.ts
-  sidebar-icons.ts
-  dividers.ts
-  die-icons.ts
-  equalize.ts
-  widgets/
-    tabs.ts
-    step-flow.ts
-    marks-ladder.ts
-    tier-dial.ts
-    tide-demo.ts
-    tide-footing.ts
-    practice-track.ts
-    myth-demo.ts
-    dying-demo.ts
-```
+`Head.astro`: fonts, favicon, theme-color, one import of `enhance.ts`.
 
 One sidebar icon map: `src/lib/chapter-icons.ts`.
 
@@ -140,9 +164,9 @@ One sidebar icon map: `src/lib/chapter-icons.ts`.
 ```
 src/styles/
   custom.css      # imports
-  theme.css       # tokens, dark lock, Starlight vars
+  theme.css       # tokens, dark lock, Starlight vars, scrollbar
   type.css        # Bellefair, emphasis, lists, quotes, code, measure
-  chrome.css      # header, sidebar, TOC, pagination, page-title, hr, search
+  chrome.css      # header, sidebar, TOC, pagination, page-title, hr
   boxes.css       # example, note, counsel, blockquote
   tables.css
   breath.css      # plates
@@ -151,6 +175,8 @@ src/styles/
 ```
 
 Unused experiments deleted: `.kod-disclose*`, `.kod-breath--side*`, `.kod-chip` / `.kod-chip-row`. Keep `.kod-lane--amber/violet/teal`.
+
+Portal CSS lives inline in `public-root/index.html` and is **not** on this map. It still uses the older blood scrollbar and blood card-hover.
 
 ---
 
@@ -161,6 +187,7 @@ Unused experiments deleted: `.kod-disclose*`, `.kod-breath--side*`, `.kod-chip` 
 - Bold is for the term or the number, not the clause. First-use game terms may be small-caps.
 - Character Creation is nearly done — light touch only.
 - Automation **chapter content is frozen** except game-rule contradictions, repo-path removal, and CSS on `code`/`pre`.
+- After each edit: confirm glossary anchors hit **visible** headings; `npm run test:domain` when Practice / Tide / Harm / degrade change; `npm run build`.
 
 ---
 
@@ -168,34 +195,34 @@ Unused experiments deleted: `.kod-disclose*`, `.kod-breath--side*`, `.kod-chip` 
 
 You generate. We agree the slate, then place under `public/scenes/` and wire `kod-breath`.
 
-### Plate slate (accepted 2026-08-18)
+### Plate slate (accepted and placed)
 
 | Slot | File | Status |
 |------|------|--------|
 | Introduction start | `falconer.jpg` | keep |
-| Dice hub start | `gambling.jpg` | **accepted** (supplied) |
-| Marks & Tiers start | `quenching.jpg` | **accepted** (supplied; not scout-night) |
-| Marks mid (Scout) | `scout-night.jpg` | keep as concept plate on Marks |
-| Omens start | `eclipse.jpg` | **accepted** (supplied) |
+| Dice hub start | `gambling.jpg` | placed |
+| Marks & Tiers start | `quenching.jpg` | placed |
+| Marks mid (Scout) | `scout-night.jpg` | keep |
+| Omens start | `eclipse.jpg` | placed |
 | Tide start / concept | `hattin.jpg` | keep |
 | Human Potential | `reeds.jpg` | keep |
 | Foundations | `peasantkid.jpg` | keep |
 | Skills start | `vineyard.jpg` | keep |
-| Practice concept | `practice.jpg` | **accepted** (supplied) |
+| Practice concept | `practice.jpg` | placed |
 | Traits | `manuscript.jpg` | keep |
 | Exertion | `ford-cart.jpg` | keep |
-| Harm start / Dying | `wound-care.jpg` | keep (no separate Dying oil) |
+| Harm start / Dying | `wound-care.jpg` | keep |
 | Echoes start | `cominghome.jpg` | keep |
-| Foundation Myths | `price-we-paid.jpg` | **accepted** (supplied) |
+| Foundation Myths | `price-we-paid.jpg` | placed |
 | Hierarchies | `emissaries.jpg` | keep |
 | Legacies | `death.jpg` | keep |
 | Inventory | `storeroom.jpg` | keep |
 | Campaign Setup | `settlers.jpg` | keep |
 | Character Creation | `soothsayer.jpg` | keep |
 | Glossary / Automation | — | no plate |
-| Portal | reuse `falconer.jpg` | same breath fade as pages |
+| Portal | reuse `falconer.jpg` | enormous field + breath fade |
 
-**Still to remake (highest care):** Artisan, Trickster, Sage stained glass — medieval, no perspective, high shard count, colour-themed. Sage: no occult glyphs. Warrior/Mother are the bar.
+**Stained glass:** Warrior and Mother remain the bar (lead cames, high shard count, colour fields). Artisan / Trickster / Sage were remade 2026-08-18 and are **still more painted than glass**. Residual, highest care if we touch imagery again. Sage: no occult glyphs (held).
 
 ---
 
@@ -203,36 +230,47 @@ You generate. We agree the slate, then place under `public/scenes/` and wire `ko
 
 `public-root/index.html` — same register as the book, not a splash.
 
-- Falconer plate, breath fade, well placed.
-- Wordmark + falcon + three words.
-- Succinct description of what Kodranni is, in Guidebook tone.
-- Three constraints as a quiet strip.
-- **Guidebook and GitHub are the same tier** (two equal actions).
+Shipped: falconer field, breath fade, wordmark + falcon, three-word tag, succinct lede, three constraints, **Guidebook and Source same tier**.
+
+Residual: scrollbar still blood (`#4a0c0c`); card hover still blood. Not on the Guidebook chrome lock.
 
 ---
 
-## Work packages (this programme)
+## Work packages (2026-08-18 programme) — closed
 
-| # | Package | Outcome |
-|---|---------|---------|
-| 0 | Rewrite this file + documentation-gaps | Plans match the repo |
-| 1 | Truth pass, equal degrade, `lastUpdated` off | Book and code agree |
-| 2 | CSS split, type, Head → scripts, widget contract | Presentation is a system |
-| 3 | Dice 4-page split; Echoes first; Glossary → Reference | IA matches teaching |
-| 4 | Tide / Practice / Myth / Dying widgets; harden existing | Teaching at the bar |
-| 5 | Campaign Setup worldbuilding rewrite | ST prep that teaches |
-| 6 | Glossary rebuild | Reference companion |
-| 7 | Portal lift | Root landing |
-| 8 | Place accepted plates; remakes when supplied | Even weather |
+| # | Package | Outcome | Score |
+|---|---------|---------|-------|
+| 0 | Rewrite plans | Done at open; **went stale by evening** | Partial |
+| 1 | Truth pass, equal degrade, `lastUpdated` off | Degrade bands, Tide sizes, Practice stack (fixed late) | Done, with a late domain miss |
+| 2 | CSS split, Head → `enhance.ts` | Files exist; widget tree in the old plan was fiction | Done enough |
+| 3 | Dice 4-page; Echoes first; Glossary → Reference | Shipped. Intro table still wrong-order. | Done, one leftover |
+| 4 | Tide / Practice / Myth / Dying widgets | All present. Practice matrix + award widget shipped last. | Done |
+| 5 | Campaign Setup worldbuilding | Doubled prose removed. Chapter still the softest. | Partial |
+| 6 | Glossary rebuild | Grouped Reference companion. Anchors work if we do not invent `{#id}`. | Done |
+| 7 | Portal lift | Landing exists; chrome not unified. | Partial |
+| 8 | Plates + remakes | Plates placed. Three medallions below bar. | Partial |
 
-**Not in this programme:** Automation chapter rewrite; campaign-ui / Discord polish; print CSS (later gap); new ornament; replacing Bellefair.
+**Not in that programme (still not):** Automation chapter rewrite; campaign-ui / Discord polish; print CSS; new ornament class; replacing Bellefair.
 
 ---
 
-## Success criteria
+## Success criteria — scored
 
-1. A new Storyteller can go Introduction → Dice (hub → Marks → Omens → Tide) → Human Potential → Echoes → … → Campaign Setup → Character Creation without external notes.
-2. Every major term is in the Glossary with a working **visible** heading link.
-3. Widget copy is reviewable in git (no scene prose in JS).
-4. `npm run build` is CI-gated on `main`.
-5. Visual tone is grim pre-industrial human, even across chapters, without harming readability.
+1. A new Storyteller can go Introduction → Dice (hub → Marks → Omens → Tide) → Human Potential → Echoes → … → Campaign Setup → Character Creation without external notes. **Mostly.** Teaching widgets carry the hard procedures. Campaign Setup is the soft spot.
+2. Every major term is in the Glossary with a working **visible** heading link. **Mostly.** Second-tier Tide terms (weight, skirmish size) are missing. Weighing leak showed we were not checking.
+3. Widget copy is reviewable in git (no scene prose in JS). **Yes.**
+4. `npm run build` is CI-gated on `main`. **Build yes. Tests no.**
+5. Visual tone is grim pre-industrial human, even across chapters, without harming readability. **Tone yes. Evenness no. Readability still a tax.**
+
+---
+
+## Residual (next, if we continue)
+
+Not a new numbered programme unless one is opened. In priority order:
+
+1. **Evenness** — portal scrollbar + card hover onto iron-silver; decide whether tables stay blood (identity) or join iron; Artisan/Sage/Trickster to Warrior’s glass language if imagery is reopened.
+2. **Process** — run `npm test` (or at least `test:domain`) in CI; never `{#slug}` in Markdown; verify glossary anchors after heading edits; browser-verify UI work.
+3. **Intro IA table** — Echoes before Harm, matching the sidebar.
+4. **Campaign Setup** — only if the author wants another cut. Do not invent worldbuilding.
+5. **Glossary second-tier** — Tide weight, skirmish size, Marks difference. Do not bloat it.
+6. Leave frozen: Automation chapter, Bellefair, closed ornament set, humour lines.
