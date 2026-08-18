@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { armourToRatio, harmFromOpposed, harmFromUnopposed } from '../src/harm.js';
 import { degradeCountFromOmen } from '../src/degrade.js';
-import { tideScale, tideStartFromA, tideStepsFromMargin } from '../src/tide.js';
+import { omenBandForFooting, tideScale, tideStartFromA, tideStepsFromMargin } from '../src/tide.js';
 import { echoCapacity, exertionMax, isDecadent, isOverCapacity } from '../src/echoes.js';
 import { countMarks } from '../src/marks.js';
 
@@ -31,21 +31,50 @@ describe('tide', () => {
   it('small skirmish: margin 3 → floor(3/2)=1 step', () => {
     expect(tideStepsFromMargin(3, 'small')).toBe(1);
   });
+
+  it('omen bands: battle slight / severe match the Guidebook', () => {
+    expect(omenBandForFooting('battle', 'slightA')).toEqual({
+      towardA: [1, 3],
+      towardB: [19, 20],
+    });
+    expect(omenBandForFooting('battle', 'slightB')).toEqual({
+      towardA: [1, 2],
+      towardB: [18, 20],
+    });
+    expect(omenBandForFooting('battle', 'severeA')).toEqual({
+      towardA: [1, 3],
+      towardB: [20, 20],
+    });
+    expect(omenBandForFooting('battle', 'severeB')).toEqual({
+      towardA: [1, 1],
+      towardB: [18, 20],
+    });
+  });
+
+  it('tiny floor: imbalance does not shrink below one face', () => {
+    expect(omenBandForFooting('tiny', 'severeA')).toEqual({
+      towardA: [1, 1],
+      towardB: [20, 20],
+    });
+  });
 });
 
 describe('degrade', () => {
   it('standard bands', () => {
     expect(degradeCountFromOmen(1, 'standard')).toBe(0);
-    expect(degradeCountFromOmen(4, 'standard')).toBe(0);
-    expect(degradeCountFromOmen(5, 'standard')).toBe(1);
-    expect(degradeCountFromOmen(10, 'standard')).toBe(2);
-    expect(degradeCountFromOmen(15, 'standard')).toBe(3);
+    expect(degradeCountFromOmen(5, 'standard')).toBe(0);
+    expect(degradeCountFromOmen(6, 'standard')).toBe(1);
+    expect(degradeCountFromOmen(10, 'standard')).toBe(1);
+    expect(degradeCountFromOmen(11, 'standard')).toBe(2);
+    expect(degradeCountFromOmen(15, 'standard')).toBe(2);
+    expect(degradeCountFromOmen(16, 'standard')).toBe(3);
     expect(degradeCountFromOmen(20, 'standard')).toBe(3);
   });
 
   it('short leap', () => {
-    expect(degradeCountFromOmen(9, 'short')).toBe(0);
-    expect(degradeCountFromOmen(10, 'short')).toBe(1);
+    expect(degradeCountFromOmen(1, 'short')).toBe(0);
+    expect(degradeCountFromOmen(10, 'short')).toBe(0);
+    expect(degradeCountFromOmen(11, 'short')).toBe(1);
     expect(degradeCountFromOmen(20, 'short')).toBe(1);
   });
 });

@@ -16,7 +16,7 @@ Kodranni is a **hybrid** tabletop system: storytelling first, software as ledger
 - **State at the moment of action** — who is rolling, Exertion left, Echoes, Myths — without retyping sheets into chat.
 - **Online continuity** between sessions on shared sheets and a community tracker.
 
-This page is the **table-facing** contract. Engineering direction lives in `docs/plans/automation-architecture.md` and will change as the product UI is defined.
+This page is the **table-facing** contract. Engineering direction lives with the project source and will change as the product UI is defined.
 
 ----------
 
@@ -60,7 +60,7 @@ Between and during sessions, players also use a **pretty shared view** of sheets
 
 1. **Storyteller authority** — Lasting mutations require Storyteller approval where the rules say so (Hierarchy, inventory, and similar). Approvals use **Storyteller-role buttons** (approve / deny) on the request message.  
 2. **Fiction first, then instruction** — In narration the Storyteller names Foundation and Skill (or Foundation alone for Primitive). The **player** initiates the roll instruction with that agreed configuration. Automation already knows the mapped user, their character, Exertion, Echoes (selectable), and community Myths that can be tagged.  
-3. **Die tier is declared** — Safe default **d8**; ultimate choice is the Storyteller’s via [Advantage and Disadvantage](/dice-mechanics/#advantage-and-disadvantage).  
+3. **Die tier is declared** — Safe default **d8**; ultimate choice is the Storyteller’s via [Advantage and Disadvantage](/marks-and-tiers/#advantage-and-disadvantage).  
 4. **Infer when safe; field when narrative** — States such as Decadence or over-capacity can be inferred during interactions to cut admin overhead. **Armour** and **Reputation** still need explicit fields: their presence is resolved in fiction before any ratio is applied. Hierarchy **tiers** are full ladders, not only Outsider/Ruler; relative tier difference is established narratively, then applied in instructions.  
 5. **Reply chains** — An opposed roll is simply a **roll sent in reply** to a prior roll message (any Foundation + Skill pair; player or Storyteller NPC roll). Tide contribution comes from replies to a Tide event or to a roll already tied to that Tide.  
 6. **Minimum pool floor** — No pool drops below 1 die.  
@@ -87,7 +87,7 @@ Between and during sessions, players also use a **pretty shared view** of sheets
 | **Harm / Dying** | — | Chooses track; applies; heals (separate) | Tracks; Dying; death flow |
 | **Hierarchy Diagram** | Request move | Approve (button) | ≤5 axes on tracker |
 | **Inventory** | Request changes; restock food/water | Approve (button) | Shared sheet loadout |
-| **Character / Weighing** | Concept onward | Finalises; Word boons to **target** | Budgets; private Omen rolls; sheet updates |
+| **Character / Weighing** | Concept onward | Finalises; Word spent on the **speaker’s** sheet; ST marks the **target** | Budgets; private Omen rolls; sheet updates |
 | **Legacy** | Crafted as an Echo with the ST (not a special bot path) | Same as other Echo outcomes | Ordinary Echo / sheet changes |
 
 ----------
@@ -128,7 +128,7 @@ If lasting state needs approval (loot, rank…):
 
 - Character record is created at **Character Concept**, with initial Foundation and Skill budgets granted.  
 - **Birth Omen** and **Guiding Hand**: automation rolls; points land on the draft sheet.  
-- **Words / Wanting**: Storyteller grants a boon as an instruction for a **target** character (option + target). Theatre stays human; arithmetic and persistence do not.
+- **Words / Wanting**: speaker spends a Word on **their own** sheet (menu option). The Storyteller marks the **target** of the accepted claim. Theatre stays human; arithmetic and persistence do not.
 
 ----------
 
@@ -147,7 +147,7 @@ Command **families** (names follow UX design):
 - Inventory request + approve · restock  
 - Character sheet · Community tracker · Practice degrade (prompted) · **Revert last roll**
 
-See `docs/plans/automation-architecture.md`.
+Engineering notes live with the project source, not on this page.
 
 Related: [Dice Mechanics](/dice-mechanics/), [Character Creation](/character-creation/), [Hierarchies](/hierarchies/).
 

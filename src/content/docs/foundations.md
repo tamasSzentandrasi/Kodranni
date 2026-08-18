@@ -61,7 +61,7 @@ Values of **0** or **4** are *technically possible* — rarities for extreme cas
 
 | System | Interaction |
 |--------|-------------|
-| [Dice pools](/dice-mechanics/#the-makeup-of-the-dice-pool) | Foundation is always part of pool size (Skills too, except Primitive actions). |
+| [Dice pools](/marks-and-tiers/#the-makeup-of-the-dice-pool) | Foundation is always part of pool size (Skills too, except Primitive actions). |
 | [Skills / Practice](/skills/#improvement) | Each Skill has a ruling Foundation. Foundation 3 halves Practice thresholds; Foundation 1 doubles them. |
 | [Exertion](/exertion/) | Maximum pool = **Resolve + Constitution + Charisma**. |
 | [Echo capacity](/echoes/#weight-and-capacity) | **max(Strength, Dexterity) + Intellect + Authority**. |

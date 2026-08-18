@@ -76,7 +76,7 @@ Rank 3 in one Skill therefore costs **6**. Possible; expensive.
 
 ----------
 
-## The Weighing
+## The Weighing {#the-weighing}
 
 Four steps. Walk them **in order**. Private rolls first; then the table speaks; then you spend what you earned — or lose it.
 
@@ -84,10 +84,10 @@ Four steps. Walk them **in order**. Private rolls first; then the table speaks; 
 |------|----------------|-------------|
 | **1. Birth Omen** | d20 → Foundation points | You + Storyteller only |
 | **2. Guiding Hand** | d20 → Skill points | You + Storyteller only |
-| **3. Who do we see?** | You speak; others may claim; marks and Words | Whole table |
-| **4. The Wanting** | Spend Words on **your** sheet | Whole table |
+| **3. <span id="who-do-we-see">Who do we see?</span>** | You speak; others may claim; marks and Words | Whole table |
+| **4. <span id="the-wanting">The Wanting</span>** | Spend Words on **your** sheet | Whole table |
 
-<div class="kod-widget not-content" data-widget="step-flow" id="the-weighing">
+<div class="kod-widget not-content" data-widget="step-flow">
 <p class="kod-widget__title">The Weighing</p>
 <p class="kod-widget__intro">Private points first. Then claims. Then Words spent on yourself — or lost.</p>
 <p class="kod-step-flow__label" data-step-label></p>
@@ -99,7 +99,7 @@ Four steps. Walk them **in order**. Private rolls first; then the table speaks; 
 </div>
 
 <div class="kod-widget__panel" data-panel-id="w1" data-step-title="Birth Omen">
-<p><strong>What:</strong> Roll a <strong>d20</strong> (<a href="/dice-mechanics/#the-omen-die-and-consequences">Omen</a>). Only you and the Storyteller see it.</p>
+<p><strong>What:</strong> Roll a <strong>d20</strong> (<a href="/omens/">Omen</a>). Only you and the Storyteller see it.</p>
 <p><strong>Points:</strong> result halved and rounded up → <strong>1–10</strong> Foundation points. Spend them on Foundations at the normal costs (1→2 costs 1; 2→3 costs 2).</p>
 <p><strong>Why:</strong> private luck for the character’s inborn range. Not a public prophecy. Do not discuss the number at the table.</p>
 <div class="kod-step-example"><strong>Example</strong>Die shows 11 → 6 Foundation points. Mara spends 2 to raise Resolve 1→2, 2 for Guile 1→2, 2 for Intellect 1→2. No one else hears the roll.</div>
@@ -113,7 +113,7 @@ Four steps. Walk them **in order**. Private rolls first; then the table speaks; 
 <div class="kod-step-best"><strong>Best practice</strong>Fuel the same concept. Guiding Hand is not a second draft of who the character is.</div>
 </div>
 
-<div class="kod-widget__panel" data-panel-id="w3" data-step-title="Who do we see?" id="who-do-we-see" hidden>
+<div class="kod-widget__panel" data-panel-id="w3" data-step-title="Who do we see?" hidden>
 <p>This is the public half of creation. One character at a time.</p>
 <p><strong>1. Self-claim.</strong> The Storyteller asks: <strong>“Who do we see?”</strong> The player answers in <strong>two to four spoken sentences</strong>. No monologue.</p>
 <p><strong>2. Others claim.</strong> Each other player may offer one short claim: <strong>“I see ___.”</strong> — an adjective or phrase <em>not</em> already in the written concept or the self-claim.</p>
@@ -143,7 +143,7 @@ Four steps. Walk them **in order**. Private rolls first; then the table speaks; 
 <div class="kod-step-best"><strong>Best practice</strong>Claim things that fit what you already heard in concept and prep — not jokes. Accepted claims stick for the campaign.</div>
 </div>
 
-<div class="kod-widget__panel" data-panel-id="w4" data-step-title="The Wanting" id="the-wanting" hidden>
+<div class="kod-widget__panel" data-panel-id="w4" data-step-title="The Wanting" hidden>
 <p><strong>Words</strong> come only from claims you made about <strong>other people</strong> in step 3. You spend them here on <strong>your own character</strong> — or leave them unspent and <strong>lose them</strong>.</p>
 <p>The person you spoke about was already marked when the claim was accepted. The Wanting does not touch their sheet. It reshapes <strong>yours</strong>.</p>
 <p>Each Word buys <strong>one</strong> menu option. You name the Foundations or Skills on <strong>your</strong> sheet. The Storyteller approves or denies. If a Negative Trait is required, the Storyteller chooses it.</p>

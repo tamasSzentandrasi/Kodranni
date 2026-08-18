@@ -25,10 +25,15 @@ export default defineConfig({
       sidebar: [
         {
           label: 'Start here',
+          items: [{ label: 'Introduction', link: '/introduction/' }],
+        },
+        {
+          label: 'Dice Mechanics',
           items: [
-            { label: 'Introduction', link: '/introduction/' },
-            { label: 'Dice Mechanics', link: '/dice-mechanics/' },
-            { label: 'Glossary', link: '/glossary/' },
+            { label: 'Overview', link: '/dice-mechanics/' },
+            { label: 'Marks & Tiers', link: '/marks-and-tiers/' },
+            { label: 'Omens & Consequences', link: '/omens/' },
+            { label: 'Tide', link: '/tide/' },
           ],
         },
         {
@@ -44,8 +49,8 @@ export default defineConfig({
         {
           label: 'Resolution & Continuity',
           items: [
-            { label: 'Harm', link: '/harm/' },
             { label: 'Echoes', link: '/echoes/' },
+            { label: 'Harm', link: '/harm/' },
             { label: 'Hierarchies', link: '/hierarchies/' },
             { label: 'Inventory', link: '/inventory/' },
           ],
@@ -59,13 +64,15 @@ export default defineConfig({
         },
         {
           label: 'Automation',
-          items: [
-            { label: 'At the Table', link: '/automation/' },
-          ],
+          items: [{ label: 'At the Table', link: '/automation/' }],
+        },
+        {
+          label: 'Reference',
+          items: [{ label: 'Glossary', link: '/glossary/' }],
         },
       ],
       customCss: ['./src/styles/custom.css'],
-      lastUpdated: true,
+      lastUpdated: false,
       pagination: true,
       components: {
         Head: './src/components/starlight/Head.astro',

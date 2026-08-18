@@ -22,6 +22,8 @@ One person may hold a tier on **several** axes at once (Honoured on Coin, Acknow
 
 During [Campaign Setup](/campaign-setup/), leave axes empty of names; standing is discovered and claimed in play.
 
+### Tiers
+
 ### The shape of the Diagram
 
 Read the diagram top-down: one crown, then parallel ladders. Each column is a separate Hierarchy. Each ladder uses the **same four tiers** (top of column = Honoured, bottom = Outcast).

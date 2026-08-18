@@ -15,7 +15,7 @@ description: Binary traits that make a character specific.
 
 There are **two broad polarities**: **Positive** and **Negative** — but polarity is contextual.
 
-- A **positive** use of a Trait grants **narrative permission**. Actions ordinary for someone with that Trait may succeed without a roll, or receive [Advantage](/dice-mechanics/#advantage-and-disadvantage) when a roll is still required.
+- A **positive** use of a Trait grants **narrative permission**. Actions ordinary for someone with that Trait may succeed without a roll, or receive [Advantage](/marks-and-tiers/#advantage-and-disadvantage) when a roll is still required.
 - A **negative** use creates complication, imposes **Disadvantage**, or in extreme cases rules an action out entirely.
 
 Examples:

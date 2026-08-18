@@ -3,9 +3,7 @@ title: Human Potential
 description: Foundations, Skills, Traits, and Exertion — the representation of human capacity.
 ---
 
-<aside class="kod-counsel" aria-label="Counsel">
-<p><em>“What…defines a person as a unique individual? A natural disposition? A face? A vocabulary of gestures? Are we born individuals…or do we mold ourselves into unique creatures through our experiences and accomplishments?“</em></p>
-</aside>
+> *“What…defines a person as a unique individual? A natural disposition? A face? A vocabulary of gestures? Are we born individuals…or do we mold ourselves into unique creatures through our experiences and accomplishments?”*
 
 ----------
 
@@ -25,18 +23,19 @@ Kodranni separates that into four interlocking measures:
 | **[Skills](/skills/)** | Improvable practiced ability, grouped under six Archetypes (not classes). Improved through Practice. | Full skill lists |
 | **[Traits](/traits/)** | Binary specifics — techniques, conditions, languages, disabilities. You have it, or you do not. | Custom, not rated |
 | **[Exertion](/exertion/)** | Will to push beyond the ordinary. Also the ledger for fatigue, hunger, and thirst. | Max = Resolve + Constitution + Charisma |
-| **[Echoes](/echoes/)** | Carried deeds and burdens. | Capacity = max(Strength, Dexterity) + Intellect + Authority |
 
 ----------
 
 ### How They Meet the Dice
 
-When a character acts, the Storyteller selects the best-fitting **Foundation + Skill** pair from the player’s described intent (see [Dice Mechanics](/dice-mechanics/#the-makeup-of-the-dice-pool)).
+When a character acts, the Storyteller selects the best-fitting **Foundation + Skill** pair from the player’s described intent (see [Marks & Tiers](/marks-and-tiers/#the-makeup-of-the-dice-pool)).
 
-- **[Advantage / Disadvantage](/dice-mechanics/#advantage-and-disadvantage)** set the die tier (**d6** / **d8** / **d12**) from context — not a stack of modifiers.
+- **[Advantage / Disadvantage](/marks-and-tiers/#advantage-and-disadvantage)** set the die tier (**d6** / **d8** / **d12**) from context — not a stack of modifiers.
 - **Traits** may short-circuit the roll entirely, or force Advantage / Disadvantage.
 - **Exertion** may add one extra die (two when an [Echo](/echoes/#invocation) matches the moment).
 - **Harm** reduces effective Foundations track by track ([Harm](/harm/)).
+
+[Echoes](/echoes/) are continuity — deeds carried forward — not a fifth measure of potential.
 
 Primitive animal-tier actions (run, jump, haul, notice, recall, hold composure) use **Foundation only**, plus optional Exertion.
 
@@ -44,7 +43,7 @@ Primitive animal-tier actions (run, jump, haul, notice, recall, hold composure) 
 
 ### Reading Order
 
-If you have not yet: start with [Dice Mechanics](/dice-mechanics/) (when to roll, pools, Marks, **Advantage and Disadvantage**, Omen, Tide).
+If you have not yet: start with [Dice Mechanics](/dice-mechanics/) (when to roll), then [Marks & Tiers](/marks-and-tiers/), [Omens](/omens/), and [Tide](/tide/).
 
 Then:
 
