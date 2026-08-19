@@ -11,7 +11,8 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro build && node scripts/prefix-base.mjs",
+    "test:guidebook": "npm run test:domain && node scripts/guidebook-integrity.mjs",
+    "build": "npm run test:guidebook && astro build && node scripts/prefix-base.mjs",
     "preview": "astro preview",
     "astro": "astro",
     "test": "npm run test --workspaces --if-present",

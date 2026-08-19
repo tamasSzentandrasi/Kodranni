@@ -6,11 +6,11 @@ description: Shared pressure for contests larger than a clean 1v1 — setup, Mar
 > *“In battle, momentum means riding on the force of the tide of events.”*
 > — *Sun Tzu*
 
+----------
+
 <figure class="kod-breath not-content">
 <img src="/scenes/hattin.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
 </figure>
-
-----------
 
 ## Situational Dice Resolution
 

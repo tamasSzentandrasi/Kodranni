@@ -3,8 +3,8 @@ title: Skills
 description: Skills organised under six Archetypes, with Practice and improvement rules.
 ---
 
-> _*“People pretend not to like grapes when the vines are too high for them to reach.”*_  
-> _Marguerite de Navarre_
+> *“People pretend not to like grapes when the vines are too high for them to reach.”*
+> — *Marguerite de Navarre*
 
 ----------
 

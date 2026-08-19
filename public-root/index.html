@@ -14,11 +14,11 @@
 	<meta property="og:image:type" content="image/jpeg" />
 	<meta property="og:image:width" content="1200" />
 	<meta property="og:image:height" content="630" />
-	<meta property="og:image:alt" content="Kodranni — the white falcon on a blood disc. Pre-industrial. Human. Grim." />
+	<meta property="og:image:alt" content="The Kodranni falcon on a blood disc." />
 	<meta property="og:site_name" content="Kodranni" />
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:image" content="https://tamasszentandrasi.github.io/Kodranni/Guidebook/og.jpg" />
-	<meta name="twitter:image:alt" content="Kodranni — the white falcon on a blood disc. Pre-industrial. Human. Grim." />
+	<meta name="twitter:image:alt" content="The Kodranni falcon on a blood disc." />
 	<link rel="icon" href="./Guidebook/favicon.ico" sizes="any" />
 	<link rel="icon" type="image/png" sizes="32x32" href="./Guidebook/favicon-32x32.png" />
 	<link rel="apple-touch-icon" sizes="180x180" href="./Guidebook/apple-touch-icon.png" />
@@ -45,7 +45,7 @@
 			-webkit-font-smoothing: antialiased;
 			text-rendering: geometricPrecision;
 			scrollbar-width: thin;
-			scrollbar-color: #4a0c0c #050505;
+			scrollbar-color: #5c5550 #080606;
 		}
 		body {
 			min-height: 100vh;
@@ -151,43 +151,73 @@
 			text-transform: uppercase;
 		}
 		.constraints li { margin: 0; }
-		.cards {
+		.folios {
 			display: grid;
 			grid-template-columns: 1fr;
-			gap: 0.75rem;
+			gap: 1.1rem;
 		}
 		@media (min-width: 36rem) {
-			.cards { grid-template-columns: 1fr 1fr; }
+			.folios { grid-template-columns: 1fr 1fr; }
 		}
-		a.card {
+		a.folio {
+			--tick: #6a6560;
 			display: block;
-			padding: 1.05rem 1.1rem;
-			border: 1px solid color-mix(in srgb, #8a1515 40%, #3a3030);
-			border-radius: 2px;
-			background: rgba(8, 6, 6, 0.72);
-			color: inherit;
+			padding: 0.95rem 0.9rem;
+			border: 1px solid #2e2a28;
+			border-radius: 0;
+			background:
+				linear-gradient(var(--tick), var(--tick)) 0 0 / 0.7rem 1px no-repeat,
+				linear-gradient(var(--tick), var(--tick)) 0 0 / 1px 0.7rem no-repeat,
+				linear-gradient(var(--tick), var(--tick)) 100% 0 / 0.7rem 1px no-repeat,
+				linear-gradient(var(--tick), var(--tick)) 100% 0 / 1px 0.7rem no-repeat,
+				linear-gradient(var(--tick), var(--tick)) 0 100% / 0.7rem 1px no-repeat,
+				linear-gradient(var(--tick), var(--tick)) 0 100% / 1px 0.7rem no-repeat,
+				linear-gradient(var(--tick), var(--tick)) 100% 100% / 0.7rem 1px no-repeat,
+				linear-gradient(var(--tick), var(--tick)) 100% 100% / 1px 0.7rem no-repeat,
+				linear-gradient(180deg, rgba(242, 239, 233, 0.05), transparent 42%),
+				rgba(12, 10, 9, 0.82);
+			color: #8a8580;
 			text-decoration: none;
-			box-shadow: inset 0 0 0 1px color-mix(in srgb, #f2efe9 5%, transparent);
-			transition: border-color 0.15s ease, background 0.15s ease;
+			text-align: start;
+			box-shadow:
+				inset 0 0 0 1px rgba(242, 239, 233, 0.04),
+				0 0 0 1px #141010;
+			transition: border-color 0.18s ease, color 0.18s ease;
 		}
-		a.card:hover,
-		a.card:focus-visible {
-			border-color: var(--blood);
-			background: rgba(18, 10, 10, 0.82);
+		a.folio:hover,
+		a.folio:focus-visible {
+			--tick: #c4bfb6;
+			border-color: #6a6560;
+			color: #b8b2aa;
+			background:
+				linear-gradient(var(--tick), var(--tick)) 0 0 / 0.7rem 1px no-repeat,
+				linear-gradient(var(--tick), var(--tick)) 0 0 / 1px 0.7rem no-repeat,
+				linear-gradient(var(--tick), var(--tick)) 100% 0 / 0.7rem 1px no-repeat,
+				linear-gradient(var(--tick), var(--tick)) 100% 0 / 1px 0.7rem no-repeat,
+				linear-gradient(var(--tick), var(--tick)) 0 100% / 0.7rem 1px no-repeat,
+				linear-gradient(var(--tick), var(--tick)) 0 100% / 1px 0.7rem no-repeat,
+				linear-gradient(var(--tick), var(--tick)) 100% 100% / 0.7rem 1px no-repeat,
+				linear-gradient(var(--tick), var(--tick)) 100% 100% / 1px 0.7rem no-repeat,
+				linear-gradient(180deg, rgba(242, 239, 233, 0.1), transparent 48%),
+				rgba(18, 16, 14, 0.88);
 			outline: none;
 		}
-		a.card strong {
+		.folio__label {
 			display: block;
-			margin-bottom: 0.3rem;
-			font-size: 1.3rem;
-			font-weight: 400;
-			letter-spacing: 0.04em;
+			font-size: 0.66rem;
+			letter-spacing: 0.14em;
+			text-transform: uppercase;
+		}
+		.folio__title {
+			display: block;
+			margin-top: 0.18rem;
+			font-size: 1.2rem;
+			letter-spacing: 0.05em;
 			color: var(--silver);
 		}
-		a.card span {
-			display: block;
-			color: #9a948c;
-			font-size: 0.95rem;
+		a.folio:hover .folio__title,
+		a.folio:focus-visible .folio__title {
+			color: #fff8f0;
 		}
 	</style>
 </head>
@@ -208,16 +238,16 @@
 				<li>Pre-industrial</li>
 				<li>Ordinary humans</li>
 			</ul>
-			<div class="cards">
-				<a class="card" href="./Guidebook/introduction/">
-					<strong>Guidebook</strong>
-					<span>Rules and procedures — start at the Introduction.</span>
+			<nav class="folios" aria-label="Kodranni">
+				<a class="folio" href="./Guidebook/introduction/">
+					<span class="folio__label">Start here</span>
+					<span class="folio__title">Guidebook</span>
 				</a>
-				<a class="card" href="https://github.com/tamasszentandrasi/Kodranni">
-					<strong>Source</strong>
-					<span>Repository, issues, plans, and history.</span>
+				<a class="folio" href="https://github.com/tamasszentandrasi/Kodranni">
+					<span class="folio__label">The source</span>
+					<span class="folio__title">Repository</span>
 				</a>
-			</div>
+			</nav>
 		</div>
 	</main>
 </body>

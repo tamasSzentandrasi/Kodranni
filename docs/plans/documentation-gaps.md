@@ -27,8 +27,8 @@ Living checklist. Author marks: **✅** pursue · **🚫** do not pursue · **�
 | Print CSS | Low | Later; not this programme | 🚫 |
 | Automation chapter rewrite | — | Frozen until the product is documentable | 🚫 |
 | Intro “How the Guide is organised” | High | Echoes before Harm; Automation before Glossary — matches sidebar | ✅ done |
-| CI runs domain tests | High | Pages workflow builds only | ✅ residual |
-| Glossary second-tier Tide terms | Low | Weight, skirmish size, Marks difference | ❓ |
+| CI / build tests | High | `npm run build` runs domain tests + guidebook integrity | ✅ done |
+| Glossary second-tier Tide terms | Low | **Rejected** — do not bloat | 🚫 |
 
 ### Chapter status (honest, evening 2026-08-18)
 
@@ -45,7 +45,7 @@ Living checklist. Author marks: **✅** pursue · **🚫** do not pursue · **�
 | Echoes | First in Resolution & Continuity. Myth teaching case in place. |
 | Harm | Dying scenario; Healing is not a superpower. Humour kept. |
 | Hierarchies / Inventory | Stable; anchor hygiene. |
-| Campaign Setup | Seeds + nine-step method. Doubled worldbuilding removed. Still the softest chapter. |
+| Campaign Setup | **Ready.** Author accepted after a master worldbuilder reading. |
 | Character Creation | Still the strongest chapter. Weighing heading leak fixed (`#the-weighing` is the auto slug). |
 | Automation | Frozen except rules one-liners + repo-path + `code`/`pre` CSS. |
 | Glossary | Grouped Reference companion. Working. Not exhaustive. |
@@ -135,13 +135,13 @@ Living checklist. Author marks: **✅** pursue · **🚫** do not pursue · **�
 
 | Item | Lean |
 |------|------|
-| Campaign Setup further cut | Author only. Do not invent worldbuilding. |
+| Campaign Setup further cut | **Closed.** Ready. |
 | Artisan / Trickster / Sage glass | **Accepted.** Do not remake unless asked. |
 | Tables / identity chrome | **Stay blood.** Locked triad. |
 | Guidebook scrollbar | **Silver.** Fine as shipped. |
-| Glossary Tide second-tier | Optional. Do not bloat. |
-| CI test gate | Should run `test:domain` (at least) before Pages deploy. |
-| Social link thumbnail | Shipped: `public/og.jpg` on Guidebook + portal. |
+| Glossary Tide second-tier | **Rejected.** |
+| CI / build tests | Domain + integrity in `npm run build`. |
+| Social link thumbnail | Falcon + wordmark only (no slogan on the card). |
 
 ---
 

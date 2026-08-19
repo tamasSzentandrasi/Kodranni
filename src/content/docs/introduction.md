@@ -3,7 +3,7 @@ title: Introduction
 description: Welcome to Kodranni — a pre-industrial grim human TTRPG system.
 ---
 
-> _*"It's Fiiiine" - a Storyteller describing something definitely not fine*_
+> *“It's Fiiiine” — a Storyteller describing something definitely not fine*
 
 ----------
 
@@ -11,21 +11,21 @@ description: Welcome to Kodranni — a pre-industrial grim human TTRPG system.
 <img src="/scenes/falconer.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
 </figure>
 
-> _*"The sunsets and sunrises of civilization are inevitably separated by intervals of isolated darkness.*_
+> *“The sunsets and sunrises of civilization are inevitably separated by intervals of isolated darkness.*
 >
-> _*The night that followed the Roman sunset was long and uncertain, and the turmoil it brought **consumed countless men**.*_
+> *The night that followed the Roman sunset was long and uncertain, and the turmoil it brought **consumed countless men**.*
 >
-> _*But mankind itself did not yield. With its gaze fixed on a distant future, it **persevered**.*_
+> *But mankind itself did not yield. With its gaze fixed on a distant future, it **persevered**.*
 >
-> _*Until the first rays of a **new dawn** at long last penetrated the horizon."*_
+> *Until the first rays of a **new dawn** at long last penetrated the horizon.”*
 >
-> _*A Study of History: Arnold J. Toynbee*_
+> — *Arnold J. Toynbee, A Study of History*
 
 ----------
 
 ## Welcome
 
-This Guide provides the concepts, procedures, and context needed to run and play **Kodranni** — an online tabletop role-playing game system.
+This Guide provides the concepts, procedures, and context needed to run and play **Kodranni** — a tabletop role-playing game system.
 
 Many concepts interconnect. The Guide is ordered so that each chapter builds on the previous ones; when something is introduced early and resolved later, links point you forward.
 
@@ -49,7 +49,8 @@ Whether the campaign is semi-historical or invented fantasy, if those three cond
 
 ## Core ideas
 
-> _"Whatever you do will be insignificant, but it is very important that you do it."_ — _Mahatma Gandhi_
+> *“Whatever you do will be insignificant, but it is very important that you do it.”*
+> — *Mahatma Gandhi*
 
 ----------
 
@@ -57,14 +58,15 @@ Whether the campaign is semi-historical or invented fantasy, if those three cond
 - **The Story of Life**: Characters are **mortal human beings**. Magic, supernatural strength, and similar elements are neither supported nor encouraged. Motivations, struggles, hopes, and dreams form the campaign. **Death** — whether of old age or in battle — **will come**.
 - **Advantage over modifiers**: Context is often innumerable. Rather than stack modifiers, the table judges who holds **[Advantage or Disadvantage](/marks-and-tiers/#advantage-and-disadvantage)** and shifts the **die tier** (**d6** · **d8** · **d12**) where it matters.
 
-> _"All we have to decide is what to do with the time that is given us."_ - _Gandalf the Grey_
+> *“All we have to decide is what to do with the time that is given us.”*
+> — *Gandalf the Grey*
 
 ----------
 
 - **Player Agency**: The system is permissive. Creativity, desperate attempts, and bold ideas are encouraged. The system will not stand in your way, but **how you handle risk is your responsibility**.
 - **Cooperative Struggle**: Campaigns centre on a **community** — a tribe, village, noble house — which the players must nurture. Actions, honourable or otherwise, shape that community’s future. **If the community is destroyed, the campaign ends.**
 - **Death and Continuity**: A player’s actions can outlive their character. Heroic deeds, wise counsel, and pivotal events may define the community. [**Echoes**](/echoes/) of those actions strengthen and guide future characters. [**Legacies**](/hierarchies/#legacies) and [**Foundation Myths**](/echoes/#foundation-myths) carry the accomplishments of earlier deeds.
-- **Automation Support**: Bookkeeping and an intricate roll stack are made playable by **automation**. See [Automation](/automation/) for the table-facing contract. That material will evolve as the product UI is defined.
+- **Automation Support**: Bookkeeping and an intricate roll stack are made playable by **automation**. See [Automation](/automation/) for the table-facing contract.
 
 ----------
 

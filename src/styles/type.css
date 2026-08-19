@@ -8,8 +8,12 @@
 .sl-markdown-content {
   font-size: 1.22rem;
   line-height: 1.82;
-  letter-spacing: 0.02em;
-  color: var(--kod-silver);
+  letter-spacing: 0.012em;
+  color: #d4cfc6;
+  font-kerning: normal;
+  hyphens: none;
+  hanging-punctuation: first;
+  text-wrap: pretty;
 }
 
 .sl-markdown-content h1,
@@ -36,6 +40,7 @@ site-title,
   margin-top: 2em;
   border-bottom: 1px solid var(--sl-color-hairline);
   padding-bottom: 0.2em;
+  text-wrap: balance;
 }
 
 /* Core terms: bright register — Bellefair has no bold cut */
@@ -140,6 +145,7 @@ site-title {
   margin-top: 1.65em;
   letter-spacing: 0.04em;
   color: #ebe6de;
+  text-wrap: balance;
 }
 
 .sl-markdown-content h4 {

@@ -24,6 +24,8 @@ During [Campaign Setup](/campaign-setup/), leave axes empty of names; standing i
 
 ### Tiers
 
+Each axis uses the same four rungs, top to bottom: **Honoured**, **Trusted**, **Acknowledged**, **Outcast**. The **Ruler** sits above them, not on them.
+
 ### The shape of the Diagram
 
 Read the diagram top-down: one crown, then parallel ladders. Each column is a separate Hierarchy. Each ladder uses the **same four tiers** (top of column = Honoured, bottom = Outcast).

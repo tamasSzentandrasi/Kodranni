@@ -35,7 +35,7 @@ What is not true, and must not be dressed up:
 - **Plans were stale while we shipped.** This file still described packages 0–8 as the work, and a widget file-tree that was never created (`src/scripts/guidebook/widgets/*.ts`). `enhance.ts` is still one client file.
 - **CI builds the book and does not run domain tests.** The Practice stacking bug would have deployed.
 - **Introduction organisation table** listed Harm before Echoes; **fixed** (now matches sidebar, including Automation before Glossary).
-- **Campaign Setup** is the weakest chapter relative to Character Creation. Seeds and the nine-step method exist; the weather is thinner.
+- **Campaign Setup** is **accepted** (author, after a master worldbuilder reading). Ready.
 - **Bellefair** remains a locked taste risk. Mitigated (measure, contrast, no fake-bold). Not solved. Long Tide and Practice tables still tax the eye.
 - Visual claims in this session were not browser-verified here (no browser tools). Build + CSS inspection is not the same as using the book.
 
@@ -268,7 +268,7 @@ Guidebook scrollbar is silver (locked). Portal still has its own inline CSS (blo
 
 Not a new numbered programme unless one is opened. In priority order:
 
-1. **Process** — run `npm test` (or at least `test:domain`) in CI; never `{#slug}` in Markdown; verify glossary anchors after heading edits; browser-verify UI work.
-2. **Campaign Setup** — only if the author wants another cut. Do not invent worldbuilding.
-3. **Glossary second-tier** — Tide weight, skirmish size, Marks difference. Do not bloat it.
-4. Leave frozen: Automation chapter, Bellefair, closed ornament set, humour lines, accepted medallions, blood identity chrome, silver scrollbar.
+1. **Automation chapter** — frozen until the product is documentable. Last remaining *chapter*.
+2. Leave frozen: Bellefair, closed ornament set, humour lines, accepted medallions, blood identity chrome, silver scrollbar, Campaign Setup, no second-tier Glossary.
+
+`npm run build` now runs domain tests and `scripts/guidebook-integrity.mjs` (no `{#id}`, no plan paths, Intro Echoes-before-Harm) before Astro.
