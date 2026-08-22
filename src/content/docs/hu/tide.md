@@ -15,12 +15,12 @@ description: Közös nyomás, ha az összecsapás nagyobb, mint tiszta 1v1 — f
 
 ## Helyzeti kockafeloldás
 
-Közös sáv előtt minden akció magában áll. A primitív, a nem ellendobott és az ellendobás ugyanazt a jelolvasatot használja. A **sodrás** (Tide) az, amit akkor nyitsz, ha a *közös* összecsapás nagyobb, mint tiszta 1v1.
+Közös sáv előtt minden akció magában áll. A primitív, az ellendobás nélküli és az ellendobás ugyanazt a jelolvasatot használja. A **sodrás** (Tide) az, amit akkor nyitsz, ha a *közös* összecsapás nagyobb, mint tiszta 1v1.
 
 | Mód | Mikor | Olvasat |
 |------|------|---------|
 | **Primitív** | Állati szintű akció | Csak adottságból álló készlet; a jelek fokozatos hasznot adnak; nincs gyakorlat |
-| **Nem ellendobott** | Nincs ellentétes karakter | Teljes készlet; a jelek fokozatos hasznot adnak |
+| **Ellendobás nélkül** | Nincs ellentétes karakter | Teljes készlet; a jelek fokozatos hasznot adnak |
 | **Ellendobás** | Akaratok ütköznek (1v1 vagy sok szereplő) | Teljes készletek (a pároknak nem kell illeszkedniük); minden akció **egyénileg** oldódik; a **jelek különbségét** a válaszláncon hasonlítjátok |
 | **Sodrás** | Nagyobb, mint tiszta 1v1, mint *közös* összecsapás | Az egyéni ellendobások egy közös sávot is mozdítanak |
 
@@ -59,16 +59,16 @@ A sodrás **közös** nyomássáv egy egész oldalnak, ha az összecsapás nagyo
 
 ### Felállítás
 
-Mindkét oldal **egy** sávot oszt. A mesélő mindkét oldalnak lágy **súlyt** ad (létszám, talaj, morál, kinek jobb a talaja mint erőnek — nem az adottságértékek összege).
+Mindkét oldal **egy** sávot oszt. A mesélő mindkét oldalnak lágy **súlyt** ad (létszám, talaj, morál, kinek jobb a talaja mint erő — nem az adottságértékek összege).
 
 | Fogalom | Jelentés |
 |------|---------|
 | **Súly** | Lágy mesélői olvasat az oldal közös talajáról (magasabb = erősebb mint erő) |
-| **Követő hossza** | `weight_A + weight_B − 1` — milyen hosszú a sáv |
+| **Sáv hossza** | `weight_A + weight_B − 1` — milyen hosszú a sáv |
 | **Kezdés** | `weight_A`-nál, A oldal összeomlási végétől számolva — A távolabb kezd az összeomlástól, ha nehezebb |
 | **Csetepaté mérete** | Mennyire nehéz a sávot mozdítani: jelkülönbség lépésenként (külön a sáv hosszától) |
 
-| Helyzet | Súlyok (A vs B) | Követő hossza | Kezdés (A végétől) |
+| Helyzet | Súlyok (A vs B) | Sáv hossza | Kezdés (A végétől) |
 |-----------|------------------|--------------|----------------------|
 | Egyenlő talaj | 8 vs 8 | 15 | 8 |
 | Enyhe előny (A) | 8 vs 6 | 13 | 8 |
@@ -377,7 +377,7 @@ Csak **emberek** dobnak. Ha a dobás sodráshoz kötött, a jelek különbsége 
 
 <div class="kod-widget__panel" data-panel-id="t1" data-step-title="A sodrás nyitása" data-tide-pos="6" data-tide-note="Pozíció 6 / 17. Az oszlop hátránnyal nyit.">
 <p>Dél a sztyeppei úton. Por elöl. Zhao előőrei lovasíjászokat jelentenek, akik lőtávolon kívül maradnak és lőnek. Wei a császár hordszékénél lovagol.</p>
-<p class="kod-tide-line"><strong>Felállítás</strong> — Követő 17, kezdés 6. Csata. Sodrásómenek az oszlop ellen: 1–3; az oszlopnak: csak 20.</p>
+<p class="kod-tide-line"><strong>Felállítás</strong> — Sáv 17, kezdés 6. Csata. Sodrásómenek az oszlop ellen: 1–3; az oszlopnak: csak 20.</p>
 </div>
 
 <div class="kod-widget__panel" data-panel-id="t2" data-step-title="Tettetett visszavonulás" data-tide-pos="5" data-tide-note="Különbség 4 → 1 lépés. 6 → 5." hidden>

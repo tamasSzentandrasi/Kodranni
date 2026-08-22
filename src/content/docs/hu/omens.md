@@ -41,11 +41,11 @@ Ugyanaz a dobás. Ugyanazok a jelek. A penge egyenes. Csak az ómenlap adhat kö
 </div>
 <div class="kod-widget__panel" data-panel-id="blank">
 <p><strong>Jelek:</strong> 2 — a kard jó munka. Nem remekmű, nem kudarc.</p>
-<p><strong>Ómen:</strong> sem 7, sem 13, és nincs jelenetlap betöltve. Semmi más nem érkezik. Tomas hüvelybe teszi, és alszik.</p>
+<p><strong>Ómen:</strong> sem 7, sem 13, és nincs jelenetlap betöltve. Semmi más nem érkezik. Tomas hüvelybe teszi a kardot, és alszik.</p>
 </div>
 <div class="kod-widget__panel" data-panel-id="seven" hidden>
 <p><strong>Jelek:</strong> továbbra is 2 — a kard ugyanaz a penge.</p>
-<p><strong>Ómen 7 — pozitív következmény.</strong> Amíg az acél még meleg, látja, hogyan ült az utolsó hajtás. Tudja, hogyan találja meg azt a szálat újra. Új technika — [vonás](/hu/traits/), vagy könnyebb gyakorlat a következő hasonló darabon. A mesélő nevezi meg az ajándékot. A jelek nem javultak.</p>
+<p><strong>Ómen 7 — pozitív következmény.</strong> Amíg az acél még meleg, látja, hogyan ült az utolsó hajtás. Tudja, hogyan találja meg azt a szálat újra. Új technika — <a href="/hu/traits/">vonás</a>, vagy könnyebb gyakorlat a következő hasonló darabon. A mesélő nevezi meg az ajándékot. A jelek nem javultak.</p>
 </div>
 <div class="kod-widget__panel" data-panel-id="thirteen" hidden>
 <p><strong>Jelek:</strong> továbbra is 2 — a kard ugyanaz a penge. Nem vallott kudarcot.</p>

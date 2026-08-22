@@ -21,7 +21,7 @@ A Kodranni ezt négy egymásba kapcsolódó mértékre bontja:
 |--------|--------|---------|
 | **[Adottságok](/hu/foundations/)** | Veleszületett lehetőség. Majdnem állandó (öregedés és trauma elmozdíthatja). Megszabja, mi megy könnyen vagy nehezen — beleértve a [gyakorlat](/hu/skills/#fejlődés) küszöbeit. | A kilenc teljes listája |
 | **[Jártasságok](/hu/skills/)** | Fejleszthető, gyakorolt képesség, hat őstípus alá rendezve (nem kasztok). Gyakorlattal javul. | Teljes jártasságlisták |
-| **[Vonások](/hu/traits/)** | Kétértékű részletek — technikák, állapotok, nyelvek, fogyatékosságok. Vagy megvan, vagy nincs. | Egyedi, nincs foka |
+| **[Vonások](/hu/traits/)** | Igen-nem részletek — technikák, állapotok, nyelvek, fogyatékosságok. Vagy megvan, vagy nincs. | Egyedi, nincs foka |
 | **[Erőfeszítés](/hu/exertion/)** | Akarat, hogy a hétköznapin túlra tolsza magát. Egyben a fáradtság, éhség és szomjúság könyve. | Maximum = akarat + állóképesség + karizma |
 
 ----------

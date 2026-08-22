@@ -126,7 +126,7 @@ Négy lépés. Járjátok végig **sorrendben**. Először magán dobások; azt�
 <p><strong>4. Amikor egy állítást elfogadnak, két dolog történik egyszerre:</strong></p>
 <ol>
 <li>A <strong>beszélő</strong> kap egy <strong>szót</strong> (Word) — később A Kívánásban *a saját* karakterére teszi, nem a célpontra.</li>
-<li>A <strong>mesélő</strong> <strong>jegyet tesz a célpontra most</strong>: jártasságpontokat illő <a href="/hu/skills/">őstípusban</a>, kis adottságeltolást, vonást, kiinduló <a href="/hu/harm/">sérülést</a>, vagy más következményt, amely élesíti, ki ő. A cél a <strong>meghatározás</strong>, nem a büntetés. A beszélő <strong>nem</strong> választja a jegyet.</li>
+<li>A <strong>mesélő</strong> <strong>jegyet tesz a célpontra most</strong>: jártasságpontokat illő <a href="/hu/skills/">őstípusban</a>, kis adottságeltolást, vonást, kiinduló <a href="/hu/harm/">sérülést</a>, vagy más következményt, amely élesíti, hogy ki ő. A cél a <strong>meghatározás</strong>, nem a büntetés. A beszélő <strong>nem</strong> választja a jegyet.</li>
 </ol>
 <p>A mesélő akkor zár, amikor a kör teljes fordulója semmi további elfogadhatót nem hoz.</p>
 <div class="kod-lanes not-content" style="margin-top:0.85rem">
@@ -140,7 +140,7 @@ Négy lépés. Járjátok végig **sorrendben**. Először magán dobások; azt�
 </div>
 </div>
 <div class="kod-step-example"><strong>Példa</strong>Mara elmondta, ki ő. Cal: „Kemény alkudozót látok.” Valaki támogatja. Mara és a mesélő elfogadják. Cal 1 szót tesz félre. A mesélő most jegyzi Marát (+2 tárgyalás, vagy vonás „Kemény alkudozó”). Cal nem Mara lapjára tesz.</div>
-<div class="kod-step-best"><strong>Jó gyakorlat</strong>Olyat állíts, ami illik ahhoz, amit már hallottál a koncepcióban és az előkészítésben — ne viccet. Az elfogadott állítások a kampányra ragadnak.</div>
+<div class="kod-step-best"><strong>Jó gyakorlat</strong>Olyat állíts, ami illik ahhoz, amit már hallottál a koncepcióban és az előkészítésben — ne viccet. Az elfogadott állítások beépülnek a kampányba.</div>
 </div>
 
 <div class="kod-widget__panel" data-panel-id="w4" data-step-title="A Kívánás" hidden>
@@ -166,8 +166,8 @@ Négy lépés. Járjátok végig **sorrendben**. Először magán dobások; azt�
 </div>
 </div>
 <p style="margin-top:0.75rem">Ez a teljes menü. Semmi más.</p>
-<div class="kod-step-example"><strong>Példa</strong>Calnak egy szava van. A „+5 jártasságpontot” veszi, fizetségként −1 állóképességet a saját lapján, és megnevez jártasságokat, amelyeket a mesélő megerősít. Mara lapja ebben a tételben nem változik — már jegyezték, amikor az állítás megállt.</div>
-<div class="kod-step-best"><strong>Jó gyakorlat</strong>Minden szót tedd. A fel nem tett szavak elvesznek. Ne találj ki vásárlást, ami nincs a menün.</div>
+<div class="kod-step-example"><strong>Példa</strong>Calnak egy szava van. A „+5 jártasságpont” sort veszi, fizetségként −1 állóképességet a saját lapján, és megnevez jártasságokat, amelyeket a mesélő megerősít. Mara lapja ebben a tételben nem változik — már jegyezték, amikor az állítás megállt.</div>
+<div class="kod-step-best"><strong>Jó gyakorlat</strong>Minden szót használd. A fel nem tett szavak elvesznek. Ne találj ki vásárlást, ami nincs a menün.</div>
 </div>
 
 <div class="kod-step-flow__nav">
@@ -199,7 +199,7 @@ Ez az alkotás nyilvános fele. Egy karakterenként.
 **4. Amikor egy állítást elfogadnak, két dolog történik egyszerre:**
 
 1. A **beszélő** kap egy **szót** — később A Kívánásban *a saját* karakterére teszi, nem a célpontra.
-2. A **mesélő** **jegyet tesz a célpontra most**: jártasságpontokat illő [őstípusban](/hu/skills/), kis adottságeltolást, vonást, kiinduló [sérülést](/hu/harm/), vagy más következményt, amely élesíti, ki ő. A cél a **meghatározás**, nem a büntetés. A beszélő **nem** választja a jegyet.
+2. A **mesélő** **jegyet tesz a célpontra most**: jártasságpontokat illő [őstípusban](/hu/skills/), kis adottságeltolást, vonást, kiinduló [sérülést](/hu/harm/), vagy más következményt, amely élesíti, hogy ki ő. A cél a **meghatározás**, nem a büntetés. A beszélő **nem** választja a jegyet.
 
 A mesélő akkor zár, amikor a kör teljes fordulója semmi további elfogadhatót nem hoz.
 
@@ -215,7 +215,7 @@ A mesélő akkor zár, amikor a kör teljes fordulója semmi további elfogadhat
 </div>
 
 <div class="kod-step-example"><strong>Példa</strong>Mara elmondta, ki ő. Cal: „Kemény alkudozót látok.” Valaki támogatja. Mara és a mesélő elfogadják. Cal 1 szót tesz félre. A mesélő most jegyzi Marát (+2 tárgyalás, vagy vonás „Kemény alkudozó”). Cal nem Mara lapjára tesz.</div>
-<div class="kod-step-best"><strong>Jó gyakorlat</strong>Olyat állíts, ami illik ahhoz, amit már hallottál a koncepcióban és az előkészítésben — ne viccet. Az elfogadott állítások a kampányra ragadnak.</div>
+<div class="kod-step-best"><strong>Jó gyakorlat</strong>Olyat állíts, ami illik ahhoz, amit már hallottál a koncepcióban és az előkészítésben — ne viccet. Az elfogadott állítások beépülnek a kampányba.</div>
 
 ----------
 
@@ -248,8 +248,8 @@ Minden szó **egy** menüpontot vesz. Te nevezed meg az adottságokat vagy járt
 
 Ez a teljes menü. Semmi más.
 
-<div class="kod-step-example"><strong>Példa</strong>Calnak egy szava van. A „+5 jártasságpontot” veszi, fizetségként −1 állóképességet a saját lapján, és megnevez jártasságokat, amelyeket a mesélő megerősít. Mara lapja ebben a tételben nem változik — már jegyezték, amikor az állítás megállt.</div>
-<div class="kod-step-best"><strong>Jó gyakorlat</strong>Minden szót tedd. A fel nem tett szavak elvesznek. Ne találj ki vásárlást, ami nincs a menün.</div>
+<div class="kod-step-example"><strong>Példa</strong>Calnak egy szava van. A „+5 jártasságpont” sort veszi, fizetségként −1 állóképességet a saját lapján, és megnevez jártasságokat, amelyeket a mesélő megerősít. Mara lapja ebben a tételben nem változik — már jegyezték, amikor az állítás megállt.</div>
+<div class="kod-step-best"><strong>Jó gyakorlat</strong>Minden szót használd. A fel nem tett szavak elvesznek. Ne találj ki vásárlást, ami nincs a menün.</div>
 
 ----------
 

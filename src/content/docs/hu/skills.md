@@ -55,7 +55,7 @@ A gyakorlat szorosan az **[erőfeszítéshez](/hu/exertion/)** kötött. A **jel
 <p class="kod-widget__intro">Válaszd a dobást, és hogy fektettél-e bele erőfeszítést. A primitív akciók nincsenek itt — semmit sem adnak.</p>
 <div class="kod-widget__controls" role="group" aria-label="Dobás típusa">
 <button type="button" class="kod-widget__btn" data-practice-kind="opposed" aria-pressed="true">Ellendobás</button>
-<button type="button" class="kod-widget__btn" data-practice-kind="unopposed">Szembenállás nélkül</button>
+<button type="button" class="kod-widget__btn" data-practice-kind="unopposed">Ellendobás nélkül</button>
 </div>
 <div class="kod-widget__controls" role="group" aria-label="Eredmény" data-practice-results="opposed">
 <button type="button" class="kod-widget__btn" data-practice-result="won" aria-pressed="true">Nyert</button>
@@ -72,7 +72,7 @@ A gyakorlat szorosan az **[erőfeszítéshez](/hu/exertion/)** kötött. A **jel
 </div>
 <div class="kod-widget__panel" data-panel-id="opposed-won-no">
 <p class="kod-practice-award__total"><strong>+0</strong></p>
-<p>4 jelre 1 ellen győztél — különbség <strong>3</strong>. Nincs erőfeszítés. A jelek nem válnak gyakorlattá. A győzelemből semmi.</p>
+<p>4–1-re győztél — különbség <strong>3</strong>. Nincs erőfeszítés. A jelek nem válnak gyakorlattá. A győzelemből semmi.</p>
 </div>
 <div class="kod-widget__panel" data-panel-id="opposed-won-yes" hidden>
 <p class="kod-practice-award__total"><strong>+3</strong></p>
@@ -80,7 +80,7 @@ A gyakorlat szorosan az **[erőfeszítéshez](/hu/exertion/)** kötött. A **jel
 </div>
 <div class="kod-widget__panel" data-panel-id="opposed-lost-no" hidden>
 <p class="kod-practice-award__total"><strong>+2</strong></p>
-<p>4 jelre 2 ellen levertek — különbség <strong>2</strong>. Nincs erőfeszítés. A jelek kimaradnak a könyvből. A vereség így is <strong>+2</strong>-t ad.</p>
+<p>4–2-re levertek — különbség <strong>2</strong>. Nincs erőfeszítés. A jelek nem válnak gyakorlattá. A vereség így is <strong>+2</strong>-t ad.</p>
 </div>
 <div class="kod-widget__panel" data-panel-id="opposed-lost-yes" hidden>
 <p class="kod-practice-award__total"><strong>+4</strong></p>
@@ -88,7 +88,7 @@ A gyakorlat szorosan az **[erőfeszítéshez](/hu/exertion/)** kötött. A **jel
 </div>
 <div class="kod-widget__panel" data-panel-id="opposed-tie-no" hidden>
 <p class="kod-practice-award__total"><strong>+0</strong></p>
-<p>Különbség <strong>0</strong>. A döntetlen nem vereség. Nincs +2. Nincs erőfeszítés, a jelek sem válnak át.</p>
+<p>Különbség <strong>0</strong>. A döntetlen nem vereség. Nincs +2. Nincs erőfeszítés, a jelek sem válnak gyakorlattá.</p>
 </div>
 <div class="kod-widget__panel" data-panel-id="opposed-tie-yes" hidden>
 <p class="kod-practice-award__total"><strong>+0</strong></p>
@@ -96,7 +96,7 @@ A gyakorlat szorosan az **[erőfeszítéshez](/hu/exertion/)** kötött. A **jel
 </div>
 <div class="kod-widget__panel" data-panel-id="unopposed-struggle-no" hidden>
 <p class="kod-practice-award__total"><strong>+2</strong></p>
-<p>Több kudarc, mint jel (1 jel, 3 kudarc). Nincs erőfeszítés. A küzdelem <strong>+2</strong>-t ad. A jelek kimaradnak a könyvből.</p>
+<p>Több kudarc, mint jel (1 jel, 3 kudarc). Nincs erőfeszítés. A küzdelem <strong>+2</strong>-t ad. A jelek nem válnak gyakorlattá.</p>
 </div>
 <div class="kod-widget__panel" data-panel-id="unopposed-struggle-yes" hidden>
 <p class="kod-practice-award__total"><strong>+3</strong></p>
@@ -104,7 +104,7 @@ A gyakorlat szorosan az **[erőfeszítéshez](/hu/exertion/)** kötött. A **jel
 </div>
 <div class="kod-widget__panel" data-panel-id="unopposed-held-no" hidden>
 <p class="kod-practice-award__total"><strong>+0</strong></p>
-<p>4 jel, 1 kudarc — a jelek nyerik a számolást. Nincs küzdelmi jutalom. Nincs erőfeszítés, ezek a jelek nem válnak át.</p>
+<p>4 jel, 1 kudarc — a jelek nyerik a számolást. Nincs küzdelmi jutalom. Nincs erőfeszítés, ezek a jelek nem válnak gyakorlattá.</p>
 </div>
 <div class="kod-widget__panel" data-panel-id="unopposed-held-yes" hidden>
 <p class="kod-practice-award__total"><strong>+2</strong></p>

@@ -26,6 +26,13 @@ for (const file of files) {
 	if (/docs\/plans\//.test(text)) {
 		errors.push(`${file}: player-facing path to docs/plans/.`);
 	}
+	for (const [i, line] of text.split('\n').entries()) {
+		if (/^\s*</.test(line) && /\[[^\]]+\]\(\/[^)]+\)/.test(line)) {
+			errors.push(
+				`${file}:${i + 1}: Markdown link inside HTML — Starlight prints it. Use <a href>.`,
+			);
+		}
+	}
 }
 
 const english = files
