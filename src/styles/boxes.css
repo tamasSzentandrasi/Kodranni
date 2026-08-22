@@ -37,11 +37,13 @@
 
 /* Example — eye (worked scene / what was seen) */
 .kod-example {
-  border: 1px solid color-mix(in srgb, var(--kod-blood) 45%, #333);
+  --kod-texture: var(--kod-tex-vine);
+  --kod-soot-size: 1.1rem;
+  border: 1px solid color-mix(in srgb, var(--kod-blood) 62%, #333);
   border-left: 4px solid var(--kod-blood);
   background:
     var(--kod-plate-wash),
-    color-mix(in srgb, var(--kod-blood-deep) 32%, #0c0c0c);
+    color-mix(in srgb, var(--kod-blood-deep) 44%, #0c0c0c);
   color: var(--kod-silver);
   box-shadow: var(--kod-smoke);
 }
@@ -85,7 +87,7 @@
 }
 
 .kod-example a {
-  color: #e06060;
+  color: #ed6a6a;
   text-decoration: underline;
   text-underline-offset: 0.12em;
 }
@@ -96,6 +98,7 @@
 
 /* Quote — literary / epigraph */
 .sl-markdown-content blockquote {
+  --kod-texture: var(--kod-tex-laid);
   border: 1px solid color-mix(in srgb, #6a6058 55%, #222);
   border-left: 4px solid #8a8078;
   background:
@@ -137,6 +140,7 @@
 
 /* Note — factual (teal) — feather pen */
 .kod-note {
+  --kod-texture: var(--kod-tex-laid);
   border: 1px solid color-mix(in srgb, #3d6a6a 55%, #333);
   border-left: 4px solid #4a9a8a;
   background:
@@ -168,6 +172,7 @@
 
 /* Counsel — ST wisdom (violet) — scales of justice */
 .kod-counsel {
+  --kod-texture: var(--kod-tex-lattice);
   border: 1px solid color-mix(in srgb, #4a3a8a 55%, #333);
   border-left: 4px solid #6a5ab8;
   background:

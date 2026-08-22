@@ -9,9 +9,9 @@
   --kod-silver: #c6c1b8;
   --kod-silver-dim: #8a8580;
   --kod-silver-bright: #f2efe9;
-  --kod-blood: #8a1515;
-  --kod-blood-bright: #b01c1c;
-  --kod-blood-deep: #4a0c0c;
+  --kod-blood: #a01818;
+  --kod-blood-bright: #c92222;
+  --kod-blood-deep: #5a1010;
 
   /* Plate grammar — tooled iron in soot, not corner brackets */
   --kod-frame: #3a3330;
@@ -20,12 +20,25 @@
   --kod-plate: #0b0a0a;
   --kod-inset: rgba(242, 239, 233, 0.05);
   --kod-soot-size: 1.35rem;
+  --kod-corner-size: 1.05rem;
   --kod-tool: linear-gradient(180deg, rgba(242, 239, 233, 0.08), transparent 34%);
   --kod-smoke:
     inset 0 1px 0 rgba(242, 239, 233, 0.08),
     inset 0 -14px 22px -16px rgba(0, 0, 0, 0.55),
     0 12px 28px -12px rgba(0, 0, 0, 0.68),
     0 2px 5px rgba(0, 0, 0, 0.35);
+
+  /* Banner terminals — diamond + short arms. Pewter default; identity swaps blood. */
+  --kod-c-tl: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cg fill='%23b8b2aa' stroke='%23b8b2aa' stroke-width='1.15' stroke-linecap='round' opacity='.5'%3E%3Cpath stroke='none' d='M4.4 1.8l2.6 2.6-2.6 2.6-2.6-2.6z'/%3E%3Cpath fill='none' d='M7 4.4h12.2M4.4 7v12.2'/%3E%3C/g%3E%3C/svg%3E");
+  --kod-c-tr: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cg fill='%23b8b2aa' stroke='%23b8b2aa' stroke-width='1.15' stroke-linecap='round' opacity='.5'%3E%3Cpath stroke='none' d='M27.6 1.8l2.6 2.6-2.6 2.6-2.6-2.6z'/%3E%3Cpath fill='none' d='M25 4.4H12.8M27.6 7v12.2'/%3E%3C/g%3E%3C/svg%3E");
+  --kod-c-bl: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cg fill='%23b8b2aa' stroke='%23b8b2aa' stroke-width='1.15' stroke-linecap='round' opacity='.5'%3E%3Cpath stroke='none' d='M4.4 25l2.6 2.6-2.6 2.6-2.6-2.6z'/%3E%3Cpath fill='none' d='M7 27.6h12.2M4.4 25V12.8'/%3E%3C/g%3E%3C/svg%3E");
+  --kod-c-br: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cg fill='%23b8b2aa' stroke='%23b8b2aa' stroke-width='1.15' stroke-linecap='round' opacity='.5'%3E%3Cpath stroke='none' d='M27.6 25l2.6 2.6-2.6 2.6-2.6-2.6z'/%3E%3Cpath fill='none' d='M25 27.6H12.8M27.6 25V12.8'/%3E%3C/g%3E%3C/svg%3E");
+
+  --kod-tex-vine: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='28'%3E%3Cpath fill='none' stroke='%23c4bfb6' stroke-width='0.8' opacity='.13' d='M0 16c8-12 14-2 18 2 5 6 10-10 16-2 5 7 12-8 18 1 4 6 8-4 12 1'/%3E%3C/svg%3E") 0 0 / 5.2rem 2.25rem repeat;
+  --kod-tex-lozenge: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='8'%3E%3Cpath fill='none' stroke='%23c4bfb6' stroke-width='0.65' opacity='.16' d='M7 .8 12.2 4 7 7.2 1.8 4Z'/%3E%3C/svg%3E") 0 0 / 14px 8px repeat;
+  --kod-tex-laid: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='10'%3E%3Cpath stroke='%23c4bfb6' stroke-width='0.6' opacity='.14' d='M0 5h8'/%3E%3C/svg%3E") 0 0 / 8px 10px repeat;
+  --kod-tex-lattice: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14'%3E%3Cpath fill='none' stroke='%23c4bfb6' stroke-width='0.6' opacity='.14' d='M7 1.6 12.4 7 7 12.4 1.6 7Z'/%3E%3C/svg%3E") 0 0 / 14px 14px repeat;
+  --kod-texture: none;
 
   --kod-font-display: 'Bellefair', 'Times New Roman', Times, serif;
   --kod-font-body: 'Bellefair', 'Times New Roman', Times, serif;
@@ -96,7 +109,7 @@ header starlight-theme-select {
 body {
   background-color: var(--kod-black);
   background-image:
-    radial-gradient(ellipse 120% 80% at 50% -10%, rgba(74, 12, 12, 0.14), transparent 55%),
+    radial-gradient(ellipse 120% 80% at 50% -10%, rgba(160, 24, 24, 0.2), transparent 55%),
     radial-gradient(ellipse 90% 60% at 100% 100%, rgba(0, 0, 0, 0.55), transparent 50%),
     radial-gradient(ellipse 70% 50% at 0% 80%, rgba(0, 0, 0, 0.4), transparent 45%);
   background-attachment: fixed;
@@ -149,9 +162,8 @@ body {
 }
 
 /*
- * Plate wash: lamp-soot in the corners + a tooled top highlight.
- * Defined on the plate selectors so --kod-soot-size / --kod-tool resolve
- * on the element. Use as the first background layers:
+ * Plate wash: diamond terminals, lamp-soot, tooled highlight, faint type texture.
+ * Defined on the plate selectors so sizes resolve on the element.
  *   background: var(--kod-plate-wash), <fill>;
  * Shadow: box-shadow: var(--kod-smoke);
  */
@@ -178,19 +190,39 @@ body {
 .kod-widget__btn,
 .kod-step-flow__nav button {
   --kod-soot:
-    radial-gradient(var(--kod-soot-size) var(--kod-soot-size) at 0 0, rgba(0, 0, 0, 0.42), transparent 72%),
-    radial-gradient(var(--kod-soot-size) var(--kod-soot-size) at 100% 0, rgba(0, 0, 0, 0.42), transparent 72%),
+    radial-gradient(var(--kod-soot-size) var(--kod-soot-size) at 0 0, rgba(0, 0, 0, 0.38), transparent 72%),
+    radial-gradient(var(--kod-soot-size) var(--kod-soot-size) at 100% 0, rgba(0, 0, 0, 0.38), transparent 72%),
     radial-gradient(
       calc(var(--kod-soot-size) + 0.15rem) calc(var(--kod-soot-size) + 0.1rem) at 0 100%,
-      rgba(0, 0, 0, 0.52),
+      rgba(0, 0, 0, 0.48),
       transparent 74%
     ),
     radial-gradient(
       calc(var(--kod-soot-size) + 0.15rem) calc(var(--kod-soot-size) + 0.1rem) at 100% 100%,
-      rgba(0, 0, 0, 0.52),
+      rgba(0, 0, 0, 0.48),
       transparent 74%
     );
-  --kod-plate-wash: var(--kod-soot), var(--kod-tool);
+  --kod-corners:
+    var(--kod-c-tl) 0 0 / var(--kod-corner-size) var(--kod-corner-size) no-repeat,
+    var(--kod-c-tr) 100% 0 / var(--kod-corner-size) var(--kod-corner-size) no-repeat,
+    var(--kod-c-bl) 0 100% / var(--kod-corner-size) var(--kod-corner-size) no-repeat,
+    var(--kod-c-br) 100% 100% / var(--kod-corner-size) var(--kod-corner-size) no-repeat;
+  --kod-plate-wash: var(--kod-corners), var(--kod-soot), var(--kod-tool), var(--kod-texture);
+}
+
+/* Identity plates — blood terminals (banner medallions, not HUD ticks). */
+.kod-example,
+.sl-markdown-content table:not(:where(.not-content *)),
+.kod-lane--st,
+.kod-seed--invented,
+.kod-phase,
+.kod-harm-col--phys,
+.kod-hier-ruler,
+.kod-page-title__mark {
+  --kod-c-tl: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cg fill='%23c43030' stroke='%23c43030' stroke-width='1.15' stroke-linecap='round' opacity='.55'%3E%3Cpath stroke='none' d='M4.4 1.8l2.6 2.6-2.6 2.6-2.6-2.6z'/%3E%3Cpath fill='none' d='M7 4.4h12.2M4.4 7v12.2'/%3E%3C/g%3E%3C/svg%3E");
+  --kod-c-tr: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cg fill='%23c43030' stroke='%23c43030' stroke-width='1.15' stroke-linecap='round' opacity='.55'%3E%3Cpath stroke='none' d='M27.6 1.8l2.6 2.6-2.6 2.6-2.6-2.6z'/%3E%3Cpath fill='none' d='M25 4.4H12.8M27.6 7v12.2'/%3E%3C/g%3E%3C/svg%3E");
+  --kod-c-bl: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cg fill='%23c43030' stroke='%23c43030' stroke-width='1.15' stroke-linecap='round' opacity='.55'%3E%3Cpath stroke='none' d='M4.4 25l2.6 2.6-2.6 2.6-2.6-2.6z'/%3E%3Cpath fill='none' d='M7 27.6h12.2M4.4 25V12.8'/%3E%3C/g%3E%3C/svg%3E");
+  --kod-c-br: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cg fill='%23c43030' stroke='%23c43030' stroke-width='1.15' stroke-linecap='round' opacity='.55'%3E%3Cpath stroke='none' d='M27.6 25l2.6 2.6-2.6 2.6-2.6-2.6z'/%3E%3Cpath fill='none' d='M25 27.6H12.8M27.6 25V12.8'/%3E%3C/g%3E%3C/svg%3E");
 }
 
 

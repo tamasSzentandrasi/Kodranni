@@ -61,6 +61,8 @@
 }
 
 .kod-page-title__mark {
+  --kod-corner-size: 0.72rem;
+  --kod-texture: none;
   flex-shrink: 0;
   box-sizing: border-box;
   margin-top: 0.12rem;
@@ -310,6 +312,8 @@
 
 .pagination-links a {
   --kod-soot-size: 0.85rem;
+  --kod-corner-size: 0.8rem;
+  --kod-texture: var(--kod-tex-lozenge);
   border: 1px solid #2e2a28 !important;
   border-radius: 0 !important;
   background:
