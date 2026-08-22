@@ -1,6 +1,6 @@
 ---
 title: Felszerelés
-description: Nyílt birtoklás, páncél, étel, víz és megnevezett tárgyak.
+description: Kimondott birtoklás, páncél, étel, víz és megnevezett tárgyak.
 ---
 
 ----------
@@ -13,7 +13,7 @@ description: Nyílt birtoklás, páncél, étel, víz és megnevezett tárgyak.
 
 A felszerelés könnyű marad. Csak az létezik, ami **ki van mondva és követve**.
 
-**A birtoklás nyílt.** Ha nincs kimondva, hogy a karakter visz egy tárgyat, a karakternek **nincs meg**. Nincs visszamenőleges hozzáadás, ha a jelenet már elindult.
+**A birtoklás kimondott.** Ha nincs kimondva, hogy a karakter visz egy tárgyat, a karakternek **nincs meg**. Nincs visszamenőleges hozzáadás, ha a jelenet már elindult.
 
 A [karakteralkotásnál](/hu/character-creation/#a-megmérettetés-után) csak azok a megnevezett tárgyak kerülnek listára, amelyek a koncepcióhoz már illenek. Nincs ingyen ellátmánycsomag. Minden más játék közben telik meg.
 
@@ -22,9 +22,9 @@ A [karakteralkotásnál](/hu/character-creation/#a-megmérettetés-után) csak a
 | Elem | Részletek |
 |------|-----------|
 | **Páncél** | Nincs / könnyű / nehéz. Csak akkor számít, ha **fel van véve**. A [sérülés](/hu/harm/#sérülés-okozása) védelmi arányait táplálja. |
-| **Étel** | Hátralévő napok. Az [erőfeszítés](/hu/exertion/) pihenőadományaival és a sérülés gyógyulásával kapcsolódik. |
+| **Étel** | Hátralévő napok. Az [erőfeszítés](/hu/exertion/) pihenő-visszatöltésével és a sérülés gyógyulásával kapcsolódik. |
 | **Víz** | Hátralévő napok. Ugyanazok a kapcsolatok, mint az ételnél. |
-| **Megnevezett tárgyak** | Csak jellegzetes vagy fontos objektumok. |
+| **Megnevezett tárgyak** | Csak jellegzetes vagy fontos tárgyak. |
 
 A hétköznapi, mellékes felszerelés nincs listázva.
 

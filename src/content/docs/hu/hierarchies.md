@@ -18,9 +18,9 @@ A hierarchiák (Hierarchy) azok, ahol a közösség látja a sajátjait — elhi
 
 A hierarchia a közösségen belüli hatalom **egy tengelye** — nem a teljes társadalmi térkép. Minden kampány alapból négy tengellyel indul. A mesélő átnevezheti, hozzáadhatja vagy elveheti őket — kemény **maximum öt**.
 
-Egy ember **több** tengelyen is tarthat szintet egyszerre (**tisztelt** (Honoured) a **pénzen** (Coin), **elismert** (Acknowledged) a **fegyveren** (Arms)). Az emelkedés **tengelyenként** megy. Az **uralkodó** (Ruler) nem az ötödik fok egyik létrán sem — **egyetlen közös ülés minden tengely fölött**. Csak egy ember ülhet rajta, bármelyik tengelyen emelkedett is.
+Egy ember **több** tengelyen is tarthat szintet egyszerre (**tisztelt** (Honoured) a **pénzen** (Coin), **elismert** (Acknowledged) a **fegyveren** (Arms)). Az emelkedés **tengelyenként** megy. Az **uralkodó** (Ruler) nem az ötödik fok egyik létrán sem — **egyetlen közös hely minden tengely fölött**. Csak egy ember ülhet rajta, bármelyik tengelyen emelkedett is.
 
-A [Kampányelőkészítésben](/hu/campaign-setup/) a tengelyeket nevektől üresen hagyjátok; az állás játékban derül ki és igényeltetik.
+A [Kampányelőkészítésben](/hu/campaign-setup/) a tengelyeket nevektől üresen hagyjátok; az állás játékban derül ki, és akkor igényled.
 
 ### Szintek
 
@@ -33,7 +33,7 @@ Az ábrát (Diagram) fentről lefelé olvasd: egy korona, aztán párhuzamos lé
 <div class="kod-hier-diagram not-content" aria-label="Hierarchiaábra">
 <div class="kod-hier-ruler">
 <p class="kod-hier-ruler__title">Uralkodó</p>
-<p class="kod-hier-ruler__note">Egy ülés az egész közösségnek — minden tengely fölött, nem a Fegyver, Hit (Faith), Pénz vagy Vér (Blood) teteje.</p>
+<p class="kod-hier-ruler__note">Egy hely az egész közösségnek — minden tengely fölött, nem a Fegyver, Hit (Faith), Pénz vagy Vér (Blood) teteje.</p>
 </div>
 <p class="kod-hier-join" aria-hidden="true">↓ · ↓ · ↓ · ↓</p>
 <div class="kod-hier-axes">
@@ -86,7 +86,7 @@ Az ábrát (Diagram) fentről lefelé olvasd: egy korona, aztán párhuzamos lé
 </ol>
 </div>
 </div>
-<p class="kod-hier-caption">Ugyanaz a négy fok minden tengelyen. Egy karakter állhat magasan az egyiken és alacsonyan a másikon. Az uralkodóülés egyetlen, és az egész készlet fölött ül.</p>
+<p class="kod-hier-caption">Ugyanaz a négy fok minden tengelyen. Egy karakter állhat magasan az egyiken és alacsonyan a másikon. Az uralkodói hely egyetlen, és az egész készlet fölött ül.</p>
 </div>
 
 Akik soha nem tartoztak a közösséghez, **kívülállók** (Outsider). Az ábrán **külön** ülnek (egyik tengelyen sem), amíg belépnek; akkor **kitaszítottként** indulnak a rájuk illő tengelyeken.
@@ -111,7 +111,7 @@ Az emelkedés általában **pártfogással** vagy **horoggal** indul.
 
 Egy magasabb szintű karakter kitüntetést, szerepet, feladatot vagy nyilvános szívességet ad. Ez az adomány **[visszhang](/hu/echoes/)** lesz. A visszhang lezárása dönti el, hogy a karakter emelkedik, marad, vagy esik.
 
-A játékosok NPC-k emelkedését is indíthatják így. Óvatosan: a becsvágyó alárendelt a pártfogót fenyegeti; a gyenge alárendelt kiüregesíti a közösséget. Senki sem uralkodik jól megbízás nélkül.
+A játékosok NPC-k emelkedését is indíthatják így. Óvatosan: a becsvágyó alárendelt a pártfogót fenyegeti; a gyenge alárendelt kiüresíti a közösséget. Senki sem uralkodik jól megbízás nélkül.
 
 A pártfogás a legtisztább út, nem az egyetlen. Nyilvános tettek, erő, egy fölöttes halála, vagy üres hely elfoglalása is mozgathat karaktert. Az asztal dönti el, mit bír el a fikció.
 

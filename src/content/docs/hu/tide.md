@@ -22,7 +22,7 @@ Közös sáv előtt minden akció magában áll. A primitív, a nem ellendobott 
 | **Primitív** | Állati szintű akció | Csak adottságból álló készlet; a jelek fokozatos hasznot adnak; nincs gyakorlat |
 | **Nem ellendobott** | Nincs ellentétes karakter | Teljes készlet; a jelek fokozatos hasznot adnak |
 | **Ellendobás** | Akaratok ütköznek (1v1 vagy sok szereplő) | Teljes készletek (a pároknak nem kell illeszkedniük); minden akció **egyénileg** oldódik; a **jelek különbségét** a válaszláncon hasonlítjátok |
-| **Sodrás** | Nagyobb, mint tiszta 1v1, mint *közös* összecsapás | Az egyéni ellendobások egy közös követőt is mozdítanak |
+| **Sodrás** | Nagyobb, mint tiszta 1v1, mint *közös* összecsapás | Az egyéni ellendobások egy közös sávot is mozdítanak |
 
 Támpontok:
 
@@ -53,20 +53,20 @@ Ha sok akarat tol egyszerre — zaklatott oszlop, teremnyi vita — az egyéni e
 
 ## A sodrás
 
-A sodrás **közös** nyomáskövető egy egész oldalnak, ha az összecsapás nagyobb, mint tiszta 1v1 — csetepaté, futó harc, teremnyi vita, üldözés, zaklatott oszlop.
+A sodrás **közös** nyomássáv egy egész oldalnak, ha az összecsapás nagyobb, mint tiszta 1v1 — csetepaté, futó harc, teremnyi vita, üldözés, zaklatott oszlop.
 
 **Nem** második karakterlap, és **nem** ugyanaz, mint személyes előny egy dobáson. Az egyéni akciók továbbra is magukban oldódnak. Ezek közül némelyik **sodráshoz kötött**: a jelek különbsége (és néha az ómen) egy **egyetlen jelölőt** mozdít egy közös sávon. Ha a jelölő végét éri, az a **közös** oldal fut. Emberek még állhatnak, menekülhetnek, meghalhatnak, vagy személyes célt teljesíthetnek a futásban.
 
 ### Felállítás
 
-Mindkét oldal **egy** követőt oszt. A mesélő mindkét oldalnak lágy **súlyt** ad (létszám, talaj, morál, kinek jobb a talaja mint erőnek — nem az adottságértékek összege).
+Mindkét oldal **egy** sávot oszt. A mesélő mindkét oldalnak lágy **súlyt** ad (létszám, talaj, morál, kinek jobb a talaja mint erőnek — nem az adottságértékek összege).
 
 | Fogalom | Jelentés |
 |------|---------|
 | **Súly** | Lágy mesélői olvasat az oldal közös talajáról (magasabb = erősebb mint erő) |
 | **Követő hossza** | `weight_A + weight_B − 1` — milyen hosszú a sáv |
 | **Kezdés** | `weight_A`-nál, A oldal összeomlási végétől számolva — A távolabb kezd az összeomlástól, ha nehezebb |
-| **Csetepaté mérete** | Mennyire nehéz a sávot mozdítani: jelkülönbség lépésenként (külön a követő hosszától) |
+| **Csetepaté mérete** | Mennyire nehéz a sávot mozdítani: jelkülönbség lépésenként (külön a sáv hosszától) |
 
 | Helyzet | Súlyok (A vs B) | Követő hossza | Kezdés (A végétől) |
 |-----------|------------------|--------------|----------------------|
@@ -77,7 +77,7 @@ Mindkét oldal **egy** követőt oszt. A mesélő mindkét oldalnak lágy **súl
 
 (Az utolsó sor 6-nál kezd, mert A oldal súlya 6 — közelebb kezdik az összeomláshoz.)
 
-A Zhao/Wei oszlop később ebben a fejezetben az utolsó sort használja. Birodalmi **6**, mongol **12**, követő **17**, a jelölő **6**-nál nyílik — már közelebb az összeomláshoz.
+A Zhao/Wei oszlop később ebben a fejezetben az utolsó sort használja. Birodalmi **6**, mongol **12**, sáv **17**, a jelölő **6**-nál nyílik — már közelebb az összeomláshoz.
 
 <div class="kod-teach-row not-content" aria-label="Oszlop súlyai">
 <div class="kod-weight">
@@ -171,7 +171,7 @@ A birodalmi úton: Zhao első parancsa sodráshoz kötött — az üldözés ny�
 
 ### Ómenek a sodráson
 
-A sodráshoz kötött akciók ómenjei a jelölőt is mozdítják. Az irány attól függ, a követő melyik vége felé tol egy lap. **A jelek és az ómen függetlenek** — ugyanaz a dobás léphet a sávon a különbségből *és* egy ómenlapból.
+A sodráshoz kötött akciók ómenjei a jelölőt is mozdítják. Az irány attól függ, a sáv melyik vége felé tol egy lap. **A jelek és az ómen függetlenek** — ugyanaz a dobás léphet a sávon a különbségből *és* egy ómenlapból.
 
 Zhao utolsó vágása, bekerítve a medernél: különbség 4 → egy lépés (**2 → 1**). Az ómen **1** is sodrás-negatív az oszlopnak (súlyos csata sáv 1–3) → még egy lépés (**1 → 0**). Két mozgás, egy dobás.
 
@@ -333,7 +333,7 @@ Nincs méret a kis csetepaté alatt. A jó sáv **nem zsugorodhat egy lap alá**
 |--|--|
 | **Zhao** (játékos) | Az előőrs lovas őrmestere |
 | **Wei** (játékos) | A császár testőre |
-| **Sodrás** | Birodalmi súly **6** · mongol súly **12** · követő **17** · kezdés **6** · **csata** (3 jel lépésenként) |
+| **Sodrás** | Birodalmi súly **6** · mongol súly **12** · sáv **17** · kezdés **6** · **csata** (3 jel lépésenként) |
 | **Színek** | **Karmazsin** birodalmi talaj · **türkiz** mongol nyomás |
 | **Sodrásómenek** | Az oszlop ellen **1–3** · az oszlopnak csak **20** (súlyos egyensúlytalanság, csata) |
 | **Jelenetlapok** | **4** = lesállás a bal száraz mederben (csak jelenet) · **13** = negatív következmény · **1** = a gyűrű zárul, megadás (sodrás-negatív is) |
@@ -350,7 +350,7 @@ Csak **emberek** dobnak. Ha a dobás sodráshoz kötött, a jelek különbsége 
     <span class="kod-tide__label kod-tide__label--b">→ mongol összeomlás</span>
   </div>
   <div class="kod-tide__rail">
-    <div class="kod-tide__track" role="img" aria-label="Sodráskövető">
+    <div class="kod-tide__track" role="img" aria-label="Sodrássáv">
       <div class="kod-tide__fill kod-tide__fill--a" data-tide-fill-a></div>
       <div class="kod-tide__fill kod-tide__fill--b" data-tide-fill-b></div>
     </div>

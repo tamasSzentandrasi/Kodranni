@@ -16,7 +16,7 @@ description: Visszhangok, sorsok és alapítómítoszok.
 
 A **visszhang** (Echo) tett, döntés vagy esemény, amit a karakter **hordozni választ**. Ez annak a kézzelfogható nyoma, hogy mi számít neki — személyes, közös, vagy közösséget formáló —, és a **folytonosság** sarokköve, amikor az egyének elbuknak.
 
-A **játékos** emel pillanatot visszhanggá. A mesélő csak hangnem vagy nyílt ostobaság miatt vétózhat. Egy vagy két visszhang a [karakteralkotásnál](/hu/character-creation/#a-megmérettetés-után) kimondható; újak akkor születnek, amikor egy tett megérdemli.
+A **játékos** kiemel egy pillanatot visszhanggá. A mesélő csak hangnem vagy nyílt ostobaság miatt vétózhat. Egy vagy két visszhang a [karakteralkotásnál](/hu/character-creation/#a-megmérettetés-után) kimondható; újak akkor születnek, amikor egy tett megérdemli.
 
 ### Súly és teherbírás
 
@@ -121,14 +121,14 @@ A sorsok **nem** második karakterlap. Öt van: **életerő** (Vitality), **öss
 
 Mind az öt sors **ugyanazt** a lágy skálát használja. A fenti oszlopok a *mit* mérik; a skála a *milyen magasan* áll. Az értékelés benyomás, nem könyv.
 
-| Érték | Állapot | Hogyan ül az asztalon |
+| Érték | Állapot | Hogyan hat az asztalon |
 |-------|---------|------------------------|
 | **0** | Válság | A hiány látható és állandó — szinte minden jelenetet nyomjon, ami azt a sorsot érinti. |
 | **1** | Szűkös | Vékony tartalék; az emberek érzik; a hétköznapi terv több ideget és több gondot kíván. |
 | **2** | Tartós | Ennél a népnél a rendes — sem lakoma, sem zuhanás. |
 | **3** | Bőséges | Van levegő; kívülálló és tag egyaránt többletet, magabiztosságot vagy erőt olvas abban a tartományban. |
 
-A kezdő sorsokat lágy benyomásként szabjátok meg a [Kampányelőkészítésben](/hu/campaign-setup/#világépítési-gyakorlatok). A korai játék megerősíti vagy javítja őket. Az automatizálás tárolja az öt értéket az aktív közösséghez.
+A kezdő sorsokat lágy benyomásként szabjátok meg a [Kampányelőkészítésben](/hu/campaign-setup/#világépítési-eljárások). A korai játék megerősíti vagy javítja őket. Az automatizálás tárolja az öt értéket az aktív közösséghez.
 
 ----------
 
@@ -140,7 +140,7 @@ Az alapítómítosz lényeges, **szűk** hatást gyakorol egy meghatározott tet
 
 - ingyen extra erőfeszítés-kocka, vagy kényszerített extra erőfeszítés, illő dobásokon  
 - helyzeti [előny vagy hátrány](/hu/marks-and-tiers/#előny-és-hátrány)  
-- egy vagy több konkrét lap rögzítve az [ómen](/hu/omens/#az-ómenkocka-és-a-következmények)kockára közösségre illő dobásokon  
+- egy vagy több konkrét lap rögzítve az [ómenkockára](/hu/omens/#az-ómenkocka-és-a-következmények) közösségre illő dobásokon  
 - extra vagy csökkentett [gyakorlat](/hu/skills/#fejlődés) (Practice) illő jártasságokon  
 - hatás a [sodrás](/hu/tide/) kiindulópontjára és váltási küszöbeire  
 - ideiglenes vagy állandó [vonás](/hu/traits/), ami a közösség minden tagjának jár (vagy tilos)  
@@ -158,7 +158,7 @@ Egy veterán, akit gyerekként rabszolgatartók vittek el — szülei megölve, 
 **Az ár, amit fizettünk** (aktív mítosz):
 
 - Illő, **jelölt** dobáson rabszolgatartók vagy rabszolgaszedés ellen: a cselekvő **ingyen extra erőfeszítés**-kockát fektethet bele (nem a készletből jön).
-- Az **utcai tájékozódás** gyakorlata illő munkán úgy számít, mintha az uralkodó adottság **3** lenne (küszöb felezve), még ha a karakter ravaszsága 1 vagy 2.
+- Az **utcai tájékozódás** gyakorlata illő munkán úgy számít, mintha az irányító adottság **3** lenne (küszöb felezve), még ha a karakter ravaszsága 1 vagy 2.
 
 <div class="kod-widget not-content" data-widget="content-tabs">
 <p class="kod-widget__title">Ugyanaz a dobás — mítosz ki / be</p>

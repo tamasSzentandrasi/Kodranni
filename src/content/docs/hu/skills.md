@@ -21,9 +21,9 @@ A **jártasságok** (Skills) hat **őstípus** (Archetype) alá vannak rendezve.
 | **0** | Nincs érdemi gyakorlottság abban a konkrét jártasságban |
 | **3** | Rendkívül gyakorlott abban a területen |
 
-Minden jártasságnak egy uralkodó **[adottsága](/hu/foundations/)** van, ami a [gyakorlat](#fejlődés) küszöbeit szabja.
+Minden jártasságnak egy irányító **[adottsága](/hu/foundations/)** van, ami a [gyakorlat](#fejlődés) küszöbeit szabja.
 
-A konkrét technikák, tájegységi stílusok, megnevezett eszközök és kétértékű képességek **[vonások](/hu/traits/)** maradnak — nem jártasságok. Vagy megvan a technika, az eszközhajlam, az állapot — vagy nincs.
+A konkrét technikák, tájegységi stílusok, megnevezett eszközök és igen-nem képességek **[vonások](/hu/traits/)** maradnak — nem jártasságok. Vagy megvan a technika, a szerszámhoz való kéz, az állapot — vagy nincs.
 
 Az asztalnál a mesélő azt a jártasságot választja, ami a játékos leírt szándékához a legjobban illik, amikor a [kockakészletet](/hu/marks-and-tiers/#a-kockakészlet-felépítése) építi.
 
@@ -33,9 +33,9 @@ Az asztalnál a mesélő azt a jártasságot választja, ami a játékos leírt 
 
 Minden alkalommal, amikor egy **jártasság** dobáson szerepel, **gyakorlatot** (Practice) hozhat (az [automatizálás](/hu/automation/) követi). A [primitív](/hu/marks-and-tiers/#a-kockakészlet-felépítése) akciók **nem** adnak gyakorlatot — nincs jártasság.
 
-A gyakorlat szorosan az **[erőfeszítéshez](/hu/exertion/)** kötött. A **jelek** csak akkor válnak gyakorlattá, ha erőfeszítést fektettél bele — győzelemkor **és** vereségkor. A vereség **+2**-t is ad. A két adomány összeadódik. A küzdelem és a befektetett erő tanít; a kockázat nélküli őrlés nem.
+A gyakorlat szorosan az **[erőfeszítéshez](/hu/exertion/)** kötött. A **jelek** csak akkor válnak gyakorlattá, ha erőfeszítést fektettél bele — győzelemkor **és** vereségkor. A vereség **+2**-t is ad. A kettő összeadódik. A küzdelem és a befektetett erő tanít; a kockázat nélküli őrlés nem.
 
-**Ellendobás** — a gyakorlat a **jelek különbségét** használja (a te jeleid mínusz az övék). A **0** különbség döntetlen: nem vereség, és nincs automatikus adomány.
+**Ellendobás** — a gyakorlat a **jelek különbségét** használja (a te jeleid mínusz az övék). A **0** különbség döntetlen: nem vereség, és nincs automatikus jutalom.
 
 | Eredmény | Nincs erőfeszítés | Erőfeszítés belefektetve |
 |----------|-------------------|--------------------------|
@@ -43,7 +43,7 @@ A gyakorlat szorosan az **[erőfeszítéshez](/hu/exertion/)** kötött. A **jel
 | **Vesztett** | +2 | + jelek különbsége **és** +2 |
 | **Döntetlen** | — | — |
 
-**Szembenállás nélkül**
+**Ellendobás nélkül**
 
 | Eredmény | Nincs erőfeszítés | Erőfeszítés belefektetve |
 |----------|-------------------|--------------------------|
@@ -104,11 +104,11 @@ A gyakorlat szorosan az **[erőfeszítéshez](/hu/exertion/)** kötött. A **jel
 </div>
 <div class="kod-widget__panel" data-panel-id="unopposed-held-no" hidden>
 <p class="kod-practice-award__total"><strong>+0</strong></p>
-<p>4 jel, 1 kudarc — a jelek nyerik a számolást. Nincs küzdelmi adomány. Nincs erőfeszítés, ezek a jelek nem válnak át.</p>
+<p>4 jel, 1 kudarc — a jelek nyerik a számolást. Nincs küzdelmi jutalom. Nincs erőfeszítés, ezek a jelek nem válnak át.</p>
 </div>
 <div class="kod-widget__panel" data-panel-id="unopposed-held-yes" hidden>
 <p class="kod-practice-award__total"><strong>+2</strong></p>
-<p>Ugyanaz a 4 jel. Erőfeszítés belefektetve. floor(4 ÷ 2) = <strong>+2</strong>. Nincs küzdelmi adomány — a jelek már verték a kudarcokat.</p>
+<p>Ugyanaz a 4 jel. Erőfeszítés belefektetve. floor(4 ÷ 2) = <strong>+2</strong>. Nincs küzdelmi jutalom — a jelek már verték a kudarcokat.</p>
 </div>
 </div>
 
@@ -209,7 +209,7 @@ A fikció dönti el, *miért* ült rá a rozsda; az automatizálás csak a kért
 
 ## A hat őstípus
 
-Minden őstípus egy szerepet nevez meg, és listázza a hozzá tartozó jártasságokat. A karakterek nincsenek egy őstípusra korlátozva. Minden jártasság mutatja az uralkodó adottságát és egy rövid meghatározást.
+Minden őstípus egy szerepet nevez meg, és listázza a hozzá tartozó jártasságokat. A karakterek nincsenek egy őstípusra korlátozva. Minden jártasság mutatja az irányító adottságát és egy rövid meghatározást.
 
 <div class="kod-archetypes not-content">
 

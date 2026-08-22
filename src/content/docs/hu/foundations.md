@@ -14,25 +14,25 @@ description: A kilenc veleszületett adottság, amely a karaktert formálja.
 
 ## Adottságok
 
-Az **adottságok** (Foundations) minden karakter **veleszületett lehetősége**. Öregedést, traumát vagy ritka mesélői eseményt leszámítva nem úsznak el ülésről ülésre. Minden **kockakészletet** táplálnak, és megszabják, milyen gyorsan javulnak a jártasságok [gyakorlattal](/hu/skills/#fejlődés).
+Az **adottságok** (Foundations) minden karakter **veleszületett lehetősége**. Öregedést, traumát vagy ritka mesélői eseményt leszámítva nem mozdulnak ülésről ülésre. Minden **kockakészletet** táplálnak, és megszabják, milyen gyorsan javulnak a jártasságok [gyakorlattal](/hu/skills/#fejlődés).
 
-Kilenc adottság van, tartomány szerint csoportosítva:
+Kilenc adottság van, három körre osztva:
 
 <div class="kod-domain-stack not-content">
 <div class="kod-domain-lane kod-domain-lane--physical">
 <p class="kod-domain-lane__label">Testi</p>
 <div class="kod-domain-lane__bricks">
 <div class="kod-brick"><strong>Erő</strong><p>Nyers erő, emelés, ütőerő, testi fölény</p></div>
-<div class="kod-brick"><strong>Ügyesség</strong><p>Gyorsaság, pontosság, egyensúly, finom motorika</p></div>
+<div class="kod-brick"><strong>Ügyesség</strong><p>Gyorsaság, pontosság, egyensúly, finom kézmozgás</p></div>
 <div class="kod-brick"><strong>Állóképesség</strong><p>Kitartás, szívósság, ellenállás a fáradtságnak és a viszontagságnak</p></div>
 </div>
 </div>
 <div class="kod-domain-lane kod-domain-lane--mental">
 <p class="kod-domain-lane__label">Szellemi</p>
 <div class="kod-domain-lane__bricks">
-<div class="kod-brick"><strong>Értelem</strong><p>Okoskodás, tanulás, emlékezet, problémamegoldás</p></div>
-<div class="kod-brick"><strong>Észlelés</strong><p>Figyelem, megfigyelés, a rejtett vagy idegen észrevétele</p></div>
-<div class="kod-brick"><strong>Akarat</strong><p>Akaraterő, szellemi tartás, a továbbmenés kapacitása</p></div>
+<div class="kod-brick"><strong>Értelem</strong><p>Gondolkodás, tanulás, emlékezet, problémamegoldás</p></div>
+<div class="kod-brick"><strong>Észlelés</strong><p>Figyelem, megfigyelés, a rejtett vagy ide nem illő észrevétele</p></div>
+<div class="kod-brick"><strong>Akarat</strong><p>Akaraterő, szellemi tartás, hogy továbbmenjen</p></div>
 </div>
 </div>
 <div class="kod-domain-lane kod-domain-lane--social">
@@ -40,7 +40,7 @@ Kilenc adottság van, tartomány szerint csoportosítva:
 <div class="kod-domain-lane__bricks">
 <div class="kod-brick"><strong>Karizma</strong><p>Jelenlét, személyiség ereje, mások odavonása</p></div>
 <div class="kod-brick"><strong>Ravaszság</strong><p>Fondorlat, félrevezetés, megtévesztés</p></div>
-<div class="kod-brick"><strong>Tekintély</strong><p>Természetes parancs, súly</p></div>
+<div class="kod-brick"><strong>Tekintély</strong><p>Természetes parancsoló erő, súly</p></div>
 </div>
 </div>
 </div>
@@ -53,7 +53,7 @@ Minden adottság szűk skálán van értékelve:
 | **2** | Átlagos |
 | **3** | Átlag fölötti |
 
-A **0** vagy **4** *technikailag lehetséges* — ritkaság szélső esetekre (súlyos fogyatékosság vagy legendás természeti csoda), és csak mesélői engedéllyel plusz illő [vonással](/hu/traits/).
+A **0** vagy **4** *technikailag lehetséges* — ritkaság szélső esetekre (súlyos fogyatékosság vagy legendásan ritka termet), és csak mesélői engedéllyel plusz illő [vonással](/hu/traits/).
 
 ----------
 
@@ -62,7 +62,7 @@ A **0** vagy **4** *technikailag lehetséges* — ritkaság szélső esetekre (s
 | Rendszer | Kapcsolat |
 |----------|-----------|
 | [Kockakészletek](/hu/marks-and-tiers/#a-kockakészlet-felépítése) | Az adottság mindig a készlet méretének része (a jártasság is, kivéve a primitív akciókat). |
-| [Jártasságok / gyakorlat](/hu/skills/#fejlődés) | Minden jártasságnak van uralkodó adottsága. Adottság 3 felezi a gyakorlatküszöböket; adottság 1 megduplázza. |
+| [Jártasságok / gyakorlat](/hu/skills/#fejlődés) | Minden jártasságnak van irányító adottsága. Adottság 3 felezi a gyakorlatküszöböket; adottság 1 megduplázza. |
 | [Erőfeszítés](/hu/exertion/) | Maximum készlet = **akarat + állóképesség + karizma**. |
 | [Visszhang teherbírás](/hu/echoes/#súly-és-teherbírás) | **max(erő, ügyesség) + értelem + tekintély**. |
 | [Sérülés](/hu/harm/) | Minden adottságnak párosított sérüléssávja van; a sérülés a *hatékony* adottságot csökkenti. |
@@ -80,6 +80,6 @@ A **0** vagy **4** *technikailag lehetséges* — ritkaság szélső esetekre (s
 </ol>
 </aside>
 
-Lásd még: [Emberi adottságok](/hu/human-potential/) — hogyan ülnek az adottságok a jártasságok, vonások és erőfeszítés mellett.
+Lásd még: [Emberi adottságok](/hu/human-potential/) — hogyan állnak az adottságok a jártasságok, vonások és erőfeszítés mellett.
 
 ----------

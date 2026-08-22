@@ -25,7 +25,7 @@ description: Üdv a Kodranniban — iparosodás előtti, komor, emberi TTRPG-ren
 
 ## Üdv
 
-Ez a Guidebook adja a fogalmakat, eljárásokat és a közeget, amivel a **Kodrannit** — egy asztali szerepjáték-rendszert — futtatni és játszani lehet.
+Ez a Guidebook adja a fogalmakat, eljárásokat és a közeget, amivel a **Kodrannit** — egy asztali szerepjáték-rendszert — vezetni és játszani lehet.
 
 Sok fogalom összekapcsolódik. A Guidebook úgy van rendezve, hogy minden fejezet az előzőekre épül; ha valami korán előkerül és később oldódik meg, a linkek előre mutatnak.
 
@@ -54,7 +54,7 @@ Akár félig történelmi a kampány, akár kitalált fantasy, ha ez a három fe
 
 ----------
 
-- **Elmélyülés**: A mechanika nem tolakodó, és ösztönösnek kell lennie. ***A szerepjáték megelőzi a mechanikát***.
+- **Elmélyülés**: A mechanika nem tolakodó, és magától értetődő. ***A szerepjáték megelőzi a mechanikát***.
 - **Az élet története**: A karakterek **halandó emberek**. Mágia, természetfeletti erő és hasonlók sem támogatottak, sem bátorítottak. A kampányt indítékok, küzdelmek, remények és álmok alkotják. A **halál** — akár öregségtől, akár csatában — **el fog jönni**.
 - **Előny a módosítók helyett**: A kontextus gyakran megszámlálhatatlan. Ahelyett, hogy módosítókat halmoznátok, az asztal megítéli, kinél van **[előny vagy hátrány](/hu/marks-and-tiers/#előny-és-hátrány)**, és ott tolja a **kockafokot** (**d6** · **d8** · **d12**), ahol számít.
 
@@ -70,7 +70,7 @@ Akár félig történelmi a kampány, akár kitalált fantasy, ha ez a három fe
 
 ----------
 
-## Hogyan van a Guide rendezve
+## Hogyan van a Guidebook rendezve
 
 | Szakasz | Miről szól |
 |---------|------------|
@@ -79,7 +79,7 @@ Akár félig történelmi a kampány, akár kitalált fantasy, ha ez a három fe
 | [Visszhangok](/hu/echoes/) | Személyes tétek, sorsok, alapítómítoszok |
 | [Sérülés](/hu/harm/) | Sebesülés, haldoklás, felépülés |
 | [Hierarchiák](/hu/hierarchies/) | Ismertség, hírnév, örökségek, az ábra |
-| [Felszerelés](/hu/inventory/) | Nyílt birtoklás, páncél, étel, víz |
+| [Felszerelés](/hu/inventory/) | Kimondott birtoklás, páncél, étel, víz |
 | [Kampányelőkészítés](/hu/campaign-setup/) | Mesélői munka, mielőtt karakterek léteznének |
 | [Karakteralkotás](/hu/character-creation/) | Koncepció, adottságok, jártasságok, A Megmérettetés |
 | [Automatizálás](/hu/automation/) | Közös lapok, botok, asztali menet |
@@ -89,9 +89,9 @@ Akár félig történelmi a kampány, akár kitalált fantasy, ha ez a három fe
 
 ## Komor valóság és a szórakozás
 
-Ez kulcs: enélkül a kampányok nem működnek ezzel a rendszerrel. A Kodranni ***nem*** horror TTRPG, és nem óv a következményektől, sem páncélzatot nem ad a történetnek. Az iparosodás előtti társadalmak **komor valóságát** utánozza.
+Ez kulcs: enélkül a kampányok nem működnek ezzel a rendszerrel. A Kodranni ***nem*** horror TTRPG, nem óvja a játékosokat a következményektől, és nem ad **történetpáncélt**. Az iparosodás előtti társadalmak **komor valóságát** utánozza.
 
-A szórakozás a kihívásban és az elértben van. Az esélyek a karakterek **ellen vannak halmozva**, a rendszer mégis azokat a lépéseket jutalmazza, amelyek **a kampányban maradnak**, függetlenül attól, mi történik az egyes karakterekkel.
+A szórakozás a kihívásban van, és abban, amit kiharcoltok. Az esélyek a karakterek **ellen szólnak**, a rendszer mégis azokat a lépéseket jutalmazza, amelyek **a kampányban maradnak**, függetlenül attól, mi történik az egyes karakterekkel.
 
 Mindenki akar időnként **hős** lenni, vagy a főszereplő. A Kodranni ezt nem tiltja. Azt biztosítja, hogy **ha elestél**, **folytathatod**, anélkül, hogy elveszne a kampányba már beépült **eredmények** értelme.
 
@@ -111,6 +111,6 @@ _Miért fektess bele egy karakterbe, akit a mesélő csak megöl?_
 <p>Nem kell túltolnod a komort — a rendszer már úgyis azt csinálja; általában te is olyan megkönnyebbült leszel, mint a játékosok, ha egy kockázat bejön; ha ellenfélként viselkedsz, ők ellened játszanak, nem a játékbeli ellenségek ellen.</p>
 </aside>
 
-Röviden: **Fogadd el a kontrasztot**. Ne óvd őket. Engedd a kreativitást. Olyan történeteket faragj, amelyek komorak, de jelentéssel teltek.
+Röviden: **Vállald a kontrasztot**. Ne óvd őket. Engedd a kreativitást. Olyan történeteket faragj, amelyek komorak, de jelentéssel teltek.
 
 ----------

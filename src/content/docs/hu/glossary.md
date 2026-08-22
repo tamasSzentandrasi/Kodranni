@@ -3,7 +3,7 @@ title: Fogalomtár
 description: Minden fontosabb Kodranni-fogalom röviden, rendszer szerint csoportosítva.
 ---
 
-Gyors hivatkozás. Minden tétel a teljes szabályt birtokló fejezetre mutat.
+Gyors hivatkozás. Minden tétel arra a fejezetre mutat, ahol a teljes szabály él.
 
 ----------
 
@@ -16,9 +16,9 @@ Gyors hivatkozás. Minden tétel a teljes szabályt birtokló fejezetre mutat.
 | **Sikerjel (jel)** | Kocka, amely 5+-t mutat. → [Jelek és kockafokok](/hu/marks-and-tiers/#sikerjelek) |
 | **Ómenkocka** | **d20** minden dobáson; következmények és a sodrás bemenete. → [Ómenek](/hu/omens/#az-ómenkocka-és-a-következmények) |
 | **Következmény** | Valódi mellékhatás az ómenkockából; nem írhatja felül az elsődleges dobást. → [Ómenek](/hu/omens/#az-ómenkocka-és-a-következmények) |
-| **Ellendobás** | Ütköző akció; a jelek különbségét a válaszláncon hasonlítjátok. → [Sodrás](/hu/tide/#helyzeti-kockafeloldás) |
+| **Ellendobás** | Ha akaratok ütköznek; a jelek különbségét a válaszláncon hasonlítjátok. → [Sodrás](/hu/tide/#helyzeti-kockafeloldás) |
 | **Primitív akció** | Csak adottságból álló készlet (nincs jártasság). → [Jelek és kockafokok](/hu/marks-and-tiers/#a-kockakészlet-felépítése) |
-| **Sodrás** | Közös követő többoldalú összecsapásokhoz. Három méret: kis csetepaté, csetepaté, csata. → [Sodrás](/hu/tide/) |
+| **Sodrás** | Közös nyomássáv többoldalú összecsapásokhoz. Három méret: kis csetepaté, csetepaté, csata. → [Sodrás](/hu/tide/) |
 
 ----------
 
@@ -30,17 +30,17 @@ Gyors hivatkozás. Minden tétel a teljes szabályt birtokló fejezetre mutat.
 | **Erő** | Testi adottság: nyers erő. A visszhang teherbírásának része (ügyességgel, a nagyobbat veszed). → [Adottságok](/hu/foundations/) |
 | **Ügyesség** | Testi adottság: gyorsaság, pontosság, egyensúly. A visszhang teherbírásának része (erővel, a nagyobbat veszed). → [Adottságok](/hu/foundations/) |
 | **Állóképesség** | Testi adottság: kitartás és szívósság. Az erőfeszítés maximumának része. → [Adottságok](/hu/foundations/) |
-| **Értelem** | Szellemi adottság: okoskodás és tanulás. A visszhang teherbírásának része. → [Adottságok](/hu/foundations/) |
+| **Értelem** | Szellemi adottság: gondolkodás és tanulás. A visszhang teherbírásának része. → [Adottságok](/hu/foundations/) |
 | **Észlelés** | Szellemi adottság: figyelem és megfigyelés. → [Adottságok](/hu/foundations/) |
 | **Akarat** | Szellemi adottság: akaraterő. Az erőfeszítés maximumának része. → [Adottságok](/hu/foundations/) |
 | **Karizma** | Társas adottság: jelenlét és személyiség ereje. → [Adottságok](/hu/foundations/) |
 | **Ravaszság** | Társas adottság: fondorlat és megtévesztés. → [Adottságok](/hu/foundations/) |
-| **Tekintély** | Társas adottság: természetes parancs, súly. A visszhang teherbírásának része. → [Adottságok](/hu/foundations/) |
+| **Tekintély** | Társas adottság: természetes parancsoló erő, súly. A visszhang teherbírásának része. → [Adottságok](/hu/foundations/) |
 | **Jártasság** | 0–3-ig értékelt, gyakorolt képesség egy őstípus alatt. → [Jártasságok](/hu/skills/) |
 | **Őstípus** | Hat elnevezett, rokon jártasságcsoport egyike (harcos, vándor, kézműves, anya, bölcs, cselszövő). Nem kaszt. → [Jártasságok](/hu/skills/) |
 | **Gyakorlat** | Haladás a jártasság emeléséhez. Jelek csak erőfeszítéssel válnak gyakorlattá (győzelem vagy vereség); ellendobásos vereség még +2-t ad. A pontos számok az élő lapon élnek; az adapterek nem írják ki őket. → [Jártasságok](/hu/skills/#fejlődés) |
-| **Vonás** | Kétértékű, egyedi jelleg; a kontextus szerint pozitív vagy negatív. → [Vonások](/hu/traits/) |
-| **Erőfeszítés** | Extra kockára fordítható készlet; egyben fáradtság/éhség/szomjúság-könyv. Maximum = akarat + állóképesség + karizma. → [Erőfeszítés](/hu/exertion/) |
+| **Vonás** | Egyedi jelleg: vagy megvan, vagy nincs; a kontextus szerint pozitív vagy negatív. → [Vonások](/hu/traits/) |
+| **Erőfeszítés** | Extra kockára belefektethető készlet; egyben fáradtság/éhség/szomjúság-könyv. Maximum = akarat + állóképesség + karizma. → [Erőfeszítés](/hu/exertion/) |
 
 ----------
 
@@ -61,14 +61,14 @@ Gyors hivatkozás. Minden tétel a teljes szabályt birtokló fejezetre mutat.
 | **Bőség** | Sors: anyagi tartalék. → [Visszhangok](/hu/echoes/#sorsok) |
 | **Ismertség** (sors) | A *közösség* külső híre. → [Visszhangok](/hu/echoes/#sorsok) |
 | **Hagyomány** | Sors: közös emlékezet és önhit. → [Visszhangok](/hu/echoes/#sorsok) |
-| **Sérülés** | Kár egy adottság megnevezett sávján (0–3). → [Sérülés](/hu/harm/) |
+| **Sérülés** | Pont egy adottság megnevezett sávján (0–3). → [Sérülés](/hu/harm/) |
 | **Haldoklás** | Bármely sérüléssáv 3-on; minden dobás erőfeszítést kíván; halál, ha az erőfeszítés 0. A gyógyítás nem szuperképesség. → [Sérülés](/hu/harm/#haldoklás) |
 | **Védelmi arány** | ÷1 / ÷2 / ÷3 páncéltól vagy hírnévtől, amikor a különbség sérüléssé válik. → [Sérülés](/hu/harm/#sérülés-okozása) |
 | **Hierarchia** | Állás tengelye (alapból fegyver, hit, pénz, vér). → [Hierarchiák](/hu/hierarchies/) |
 | **Tisztelt / Megbízott / Elismert / Kitaszított** | Hierarchiaszintek. → [Hierarchiák](/hu/hierarchies/#szintek) |
 | **Kívülálló** | Még nem a közösségé; az ábrán külön ül. → [Hierarchiák](/hu/hierarchies/#szintek) |
-| **Uralkodó** | Egyetlen közös csúcsülés minden hierarchia fölött. → [Hierarchiák](/hu/hierarchies/#szintek) |
-| **Hírnév** | Relatív hierarchiahely; társas/szellemi páncél-analóg. → [Hierarchiák](/hu/hierarchies/#hírnév) |
+| **Uralkodó** | Egyetlen közös csúcshely minden hierarchia fölött. → [Hierarchiák](/hu/hierarchies/#szintek) |
+| **Hírnév** | Relatív hierarchiahely; társas és szellemi páncél. → [Hierarchiák](/hu/hierarchies/#hírnév) |
 | **Ábra** | A követett karakterek közös hierarchia-feljegyzése. → [Hierarchiák](/hu/hierarchies/#a-hierarchiaábra) |
 | **Örökség** | Halál után utódkarakter által igényelt visszhang. Nincs ingyen rang. → [Hierarchiák](/hu/hierarchies/#örökségek) |
 

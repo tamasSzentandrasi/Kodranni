@@ -11,9 +11,9 @@ description: A kapacitás, hogy a hétköznapi határokon túlra tolj.
 
 ## Erőfeszítés
 
-Az **erőfeszítés** (Exertion) a karakter kapacitása, hogy **a hétköznapi határokon túlra toljon**. Fáradtság, éhség és szomjúság mind ebbe az egy mértékbe fut, ha a gazdálkodás elromlik.
+Az **erőfeszítés** (Exertion) a karakter kapacitása, hogy **a hétköznapi határokon túlra tolsza magát**. Fáradtság, éhség és szomjúság mind ebbe az egy mértékbe fut, ha nem viseled.
 
-**Elsősorban játékos-kezelt**: mikor tolod, mikor pihensz, és hová fekteted az akaratot. Narratív események (éhezés, kényszermenet, elhúzódó harc) is apaszthatják, önkéntes beletenni nélkül.
+**Elsősorban a játékos kezében van**: mikor tolod, mikor pihensz, és hová fekteted az akaratot. Narratív események (éhezés, kényszermenet, elhúzódó harc) is apaszthatják, önkéntes belefektetés nélkül.
 
 ### Készlet mérete
 
@@ -40,20 +40,20 @@ Az **erőfeszítés** (Exertion) a karakter kapacitása, hogy **a hétköznapi h
 
 Az automatizálás követi a készletet, és akkor tölt vissza pontokat, ha a mesélő a fikció lezárása után utasítja. Az **erőfeszítés-visszavétel** és a **[sérülés](/hu/harm/) gyógyulása** **külön** frissítés — előbb a narratíva, aztán az állapot.
 
-Javasolt adományok:
+Javasolt visszatöltés:
 
 | Feltétel | Hatás |
 |----------|-------|
 | Rövid pihenő | +1 |
 | Hosszú pihenő | +2 |
-| Bőséges étkezés | +1 a pihenőadományok tetejére |
-| Nincs étel vagy víz | −1 a pihenőadományból |
+| Bőséges étkezés | +1 a pihenő-visszatöltés tetejére |
+| Nincs étel vagy víz | −1 a pihenő-visszatöltésből |
 
-A [felszerelés](/hu/inventory/) étel- és víz-napjai mondják meg, ezek az adományok tisztán járnak-e.
+A [felszerelés](/hu/inventory/) étel- és víz-napjai mondják meg, ez a visszatöltés tisztán jár-e.
 
 ### Kimerülés
 
-Ha a készlet **nullára** esik, a karakter álló **–2**-t szenved minden kockakészlet méretén. Ez a büntetés soha nem visz készletet **1** kocka alá. A karakter még cselekedhet; minden tett egyszerűen többe kerül, mint kellene, amíg fel nem épül.
+Ha a készlet **nullára** esik, a karakter tartós **–2**-t szenved minden kockakészlet méretén. Ez a büntetés soha nem visz készletet **1** kocka alá. A karakter még cselekedhet; minden tett egyszerűen többe kerül, mint kellene, amíg fel nem épül.
 
 <aside class="kod-counsel" aria-label="Tanács">
 <p>Az üres erőfeszítés nem eszméletvesztés. Az a pont, ahol minden tett többe kerül, mint kellene. Aki üresen is tol tovább, már csak idegből és makacsságból él.</p>
@@ -61,9 +61,9 @@ Ha a készlet **nullára** esik, a karakter álló **–2**-t szenved minden koc
 
 Az erőfeszítést tiszta narratív esemény is apaszthatja — étel vagy víz hiánya, vagy elhúzódó csetepaté. Ne tedd fel, hogy a készlet tele van, ha a fikció mást mond.
 
-### Gyakorlat-kötés
+### Gyakorlat
 
-A jártasságokon a jelekből [gyakorlat](/hu/skills/#fejlődés) csak akkor gyűlik, ha erőfeszítést fektettél bele — győzelem vagy vereség. Ellendobásos vereség **+2**-t is ad, ami ehhez a jel-adományhoz adódik. Szembenállás nélküli küzdelem (több kudarc, mint jel) továbbra is **+2**-t ad erőfeszítés nélkül. A tanuláshoz hozzátartozik a befektetett erő.
+A jártasságokon a jelekből [gyakorlat](/hu/skills/#fejlődés) csak akkor gyűlik, ha erőfeszítést fektettél bele — győzelem vagy vereség. Ellendobásos vereség **+2**-t is ad, ami ehhez a jel-jutalomhoz adódik. Ellendobás nélküli küzdelem (több kudarc, mint jel) továbbra is **+2**-t ad erőfeszítés nélkül. A tanuláshoz hozzátartozik a befektetett erő.
 
 Kapcsolódó: [Emberi adottságok](/hu/human-potential/), [Kockamechanika](/hu/dice-mechanics/), [Automatizálás](/hu/automation/).
 

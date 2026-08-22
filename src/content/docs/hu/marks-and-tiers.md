@@ -3,7 +3,7 @@ title: Jelek és kockafokok
 description: Kockatípusok, sikerjelek, előny és hátrány, és hogyan épül a készlet.
 ---
 
-> *„Visszatértem, és láttam a nap alatt, hogy nem a gyorsaké a futás, sem az erőseké a harc, sem a bölcseké a kenyér, sem az értőké a gazdagság, sem a jártasaké a kegy; hanem idő és véletlen történik mindőjükkel.”*
+> *„Visszatértem, és láttam a nap alatt, hogy nem a gyorsaké a futás, sem az erőseké a harc, sem a bölcseké a kenyér, sem az értőké a gazdagság, sem a jártasaké a kegy; hanem idő és véletlen történik mindnyájukkal.”*
 > — *Prédikátor 9:11*
 
 ----------
@@ -31,7 +31,7 @@ A Kodranni **három** akciókockát használ. Egy adott dobás a készlet egész
 <span class="kod-die kod-die--d12 kod-die--lg" data-die="d12" aria-hidden="true"></span>
 <p class="kod-die-card__name">d12</p>
 <p class="kod-die-card__role">Könnyebb · Előny</p>
-<p class="kod-die-card__meta">12 oldalú · Jel 5–12-n · ~67%</p>
+<p class="kod-die-card__meta">12 oldalú · Jel 5–12-ön · ~67%</p>
 </div>
 </div>
 
@@ -130,7 +130,7 @@ A mesélő **kockafokot** nevez a készletnek. Nincs automatikus leképezés a j
 <p class="kod-tier-ex">Példa: egy ács tetőt foltoz derült időben, száraz fával → <strong>d8</strong>.</p>
 </div>
 <div class="kod-widget__panel" data-panel-id="d12" hidden>
-<p class="kod-tier-stat"><strong>d12</strong> <span class="kod-tier-stat__meta">Jel 5–12-n · ~67% kockánként</span></p>
+<p class="kod-tier-stat"><strong>d12</strong> <span class="kod-tier-stat__meta">Jel 5–12-ön · ~67% kockánként</span></p>
 <p><strong>Előny</strong> — esély vele: jó talaj, támogatás, szerszám, létszám, illő vonás.</p>
 <p class="kod-tier-ex">Példa: egy vadász, aki <strong>d8</strong>-at dobna, sebesült préda nyomát követi kutyákkal → <strong>d12</strong>.</p>
 </div>
@@ -165,7 +165,7 @@ A készletek három forrásból állnak össze:
 A **primitív akciók** (primitive action) — futás, ugrás, cipelés, észrevétel, visszaemlékezés, tartás és hasonló állati szintű tettek — **csak adottságot** használnak (+ opcionális erőfeszítés). Jártasságkocka nem jár. A primitív dobás **nem ad [gyakorlatot](/hu/skills/#fejlődés)** (Practice).
 
 <aside class="kod-counsel" aria-label="Tanács">
-<p>Ki dönti el, <em>melyik</em> adottság és <em>melyik</em> jártasság? <strong>A mesélő.</strong> Mindig. A játékos szabadon írja le a szándékot. A mesélő a legjobb párt választja. A játékosok javasolhatnak jobb párt; a mesélő hívása a végső.</p>
+<p>Ki dönti el, <em>melyik</em> adottság és <em>melyik</em> jártasság? <strong>A mesélő.</strong> Mindig. A játékos szabadon írja le a szándékot. A mesélő a legjobb párt választja. A játékosok javasolhatnak jobb párt; a mesélő döntése a végső.</p>
 </aside>
 
 <aside class="kod-example" aria-label="Példa">

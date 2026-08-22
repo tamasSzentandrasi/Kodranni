@@ -14,7 +14,7 @@ A Kodranni **hibrid** asztali rendszer: először a történet, alatta a szoftve
 - **Egy élő feljegyzés** karakterenként és közösségenként — nincsenek szétágazó füzetek.
 - **Gyors feloldás** a készleteknél, ómeneknél, különbségeknél, **Practice**, **Exertion**, **Harm** és **Tide** mezőknél — hogy a fikciót ne állítsa meg a számolás.
 - **Állapot a tett pillanatában** — ki dob, mennyi **Exertion** maradt, **Echoes**, **Myths** — anélkül, hogy a lapokat chatbe gépelnéd.
-- **Online folytonosság** ülések között a közös lapokon és a közösségkövetőn.
+- **Online folytonosság** ülések között a közös lapokon és a közösségi lapon.
 
 Ez a lap az **asztal felőli** szerződés. A mérnöki irány a projekt forrásában él, és változik, ahogy a termék UI-ja kialakul.
 

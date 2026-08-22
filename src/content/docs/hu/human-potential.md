@@ -3,7 +3,7 @@ title: Emberi adottságok
 description: Adottságok, jártasságok, vonások és erőfeszítés — az emberi kapacitás ábrázolása.
 ---
 
-> *„Mi…tesz valakit egyedi egyénné? Természetes hajlam? Egy arc? Egy gesztus-szótár? Egyénnek születünk…vagy magunkat formáljuk egyedi lénnyé a tapasztalatainkkal és az elértjeinkkel?”*
+> *„Mi…tesz valakit egyedi egyénné? Természetes hajlam? Egy arc? A gesztusok nyelve? Egyénnek születünk…vagy magunkat formáljuk egyedi lénnyé a tapasztalatainkkal és azzal, amit elértünk?”*
 
 ----------
 
@@ -17,12 +17,12 @@ Az emberi kapacitást ábrázolni kényes. Korlátozottak vagyunk, mégis alkalm
 
 A Kodranni ezt négy egymásba kapcsolódó mértékre bontja:
 
-| Oszlop | Szerep | Fejezet |
+| Mérték | Szerep | Fejezet |
 |--------|--------|---------|
 | **[Adottságok](/hu/foundations/)** | Veleszületett lehetőség. Majdnem állandó (öregedés és trauma elmozdíthatja). Megszabja, mi megy könnyen vagy nehezen — beleértve a [gyakorlat](/hu/skills/#fejlődés) küszöbeit. | A kilenc teljes listája |
 | **[Jártasságok](/hu/skills/)** | Fejleszthető, gyakorolt képesség, hat őstípus alá rendezve (nem kasztok). Gyakorlattal javul. | Teljes jártasságlisták |
 | **[Vonások](/hu/traits/)** | Kétértékű részletek — technikák, állapotok, nyelvek, fogyatékosságok. Vagy megvan, vagy nincs. | Egyedi, nincs foka |
-| **[Erőfeszítés](/hu/exertion/)** | Akarat a hétköznapon túlra tolni. Egyben a fáradtság, éhség és szomjúság könyve. | Maximum = akarat + állóképesség + karizma |
+| **[Erőfeszítés](/hu/exertion/)** | Akarat, hogy a hétköznapin túlra tolsza magát. Egyben a fáradtság, éhség és szomjúság könyve. | Maximum = akarat + állóképesség + karizma |
 
 ----------
 
@@ -49,7 +49,7 @@ Aztán:
 
 1. [Adottságok](/hu/foundations/) — a kilenc veleszületett érték  
 2. [Jártasságok](/hu/skills/) — őstípusok, gyakorlat, teljes listák  
-3. [Vonások](/hu/traits/) — kétértékű szín és engedély  
-4. [Erőfeszítés](/hu/exertion/) — beletenni, visszatölteni, üres készlet büntetése
+3. [Vonások](/hu/traits/) — szín és engedély: vagy megvan, vagy nincs  
+4. [Erőfeszítés](/hu/exertion/) — belefektetni, visszatölteni, üres készlet büntetése
 
 ----------

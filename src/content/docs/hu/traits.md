@@ -1,6 +1,6 @@
 ---
 title: Vonások
-description: Kétértékű vonások, amelyek a karaktert konkréttá teszik.
+description: Vonások, amelyek a karaktert konkréttá teszik — vagy megvannak, vagy nincsenek.
 ---
 
 ----------
@@ -11,11 +11,11 @@ description: Kétértékű vonások, amelyek a karaktert konkréttá teszik.
 
 ## Vonások
 
-A **vonások** **kétértékűek** és teljesen egyediek. Ezek a részletek teszik a karaktert **konkréttá**, nem általánossá.
+A **vonások** **vagy megvannak, vagy nincsenek**, és teljesen egyediek. Ezek a részletek teszik a karaktert **konkréttá**, nem általánossá.
 
 **Két tág polaritás** van: **pozitív** és **negatív** — de a polaritás kontextuális.
 
-- A vonás **pozitív** használata **narratív engedélyt** ad. Ami annak a vonásnak hétköznapi, dobás nélkül is sikerülhet, vagy [előnyt](/hu/marks-and-tiers/#előny-és-hátrány) kap, ha mégis dobni kell.
+- A vonás **pozitív** használata **narratív engedélyt** ad. Ami annak, akinek megvan, hétköznapi, dobás nélkül is sikerülhet, vagy [előnyt](/hu/marks-and-tiers/#előny-és-hátrány) kap, ha mégis dobni kell.
 - A **negatív** használat bonyodalmat szül, **hátrányt** kényszerít, vagy szélső esetben teljesen kizár egy tettet.
 
 Példák:
@@ -51,7 +51,7 @@ A vonásoknak **nincs foka**. Vagy érvényesek, vagy nem. A mesélő a játéko
 | [Alapítómítoszok](/hu/echoes/#alapítómítoszok) | Ideiglenes vagy állandó vonást adhatnak vagy tilthatnak a közösség minden tagjának. |
 | Szélső adottságok (0 vagy 4) | Mesélői engedély **és** illő vonás kell. |
 
-Konkrét technikák, tájegységi stílusok, megnevezett eszközök és kétértékű képességek ide tartoznak — nem a [jártasságok](/hu/skills/) listájára.
+Konkrét technikák, tájegységi stílusok, megnevezett eszközök és igen-nem képességek ide tartoznak — nem a [jártasságok](/hu/skills/) listájára.
 
 Kapcsolódó: [Emberi adottságok](/hu/human-potential/), [Kockamechanika](/hu/dice-mechanics/).
 

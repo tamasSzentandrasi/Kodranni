@@ -15,7 +15,7 @@ description: A kilenc sérüléssáv, a haldoklás, a felépülés és a védelm
 
 A Kodranni **nem** követ találati pontot. A kilenc [adottság](/hu/foundations/) foszlását követi.
 
-A **sérülés** (Harm) kilenc megnevezett sávon van feljegyezve. Minden sáv állandóan egy adottsághoz van párosítva. Minden sérüléspont eggyel csökkenti azt az adottságot a kocka szempontjából.
+A **sérülés** (Harm) kilenc megnevezett sávon van feljegyezve. Minden sáv egy adottsághoz van párosítva. Minden sérüléspont eggyel csökkenti azt az adottságot a kocka szempontjából.
 
 <div class="kod-harm-grid not-content">
 <div class="kod-harm-col kod-harm-col--phys">
@@ -94,9 +94,9 @@ Ha bármely sérüléssáv **3**-ra ér, a karakter **haldokló** (Dying).
 - Haldoklás közben **minden dobás [erőfeszítést](/hu/exertion/) kíván**.  
 - Ha az erőfeszítés **0**-ra ér, a karakter **meghal**.
 
-Ez az ablak utolsó tetteket, utolsó szavakat vagy kétségbeesett stabilizálást enged. A stabilizálás sikeres **[gyógyítás](/hu/skills/#gyógyítás)** próbát kíván, és leveszi a haldoklást; a sáv 3-on marad a további felépülésig, és szinte mindig állandó **[vonást](/hu/traits/)** hagy.
+Ez az ablak utolsó tetteket, utolsó szavakat vagy kétségbeesett stabilizálást enged. A stabilizálás sikeres **[gyógyítás](/hu/skills/#healing)** próbát kíván, és leveszi a haldoklást; a sáv 3-on marad a további felépülésig, és szinte mindig állandó **[vonást](/hu/traits/)** hagy.
 
-A gyógyítás nem szuperképesség. A kellő tudás és anyag nélkül — **[füvészet](/hu/skills/#füvészet)**, kötszer, **[kézi készítés](/hu/skills/#kézi-készítés)** sínhez, és ami a sebnek tényleg kell — a próbát **[hátránynak](/hu/marks-and-tiers/#előny-és-hátrány)** vedd. A legjobb gondozással is van, hogy nincs mit tenni. Harcolj tovább. Mentsd, akit tudsz. Nincs történetpáncél. A halál mindenkit elvisz a végén.
+A gyógyítás nem szuperképesség. A kellő tudás és anyag nélkül — **[füvészet](/hu/skills/#herbalism)**, kötszer, **[kézi készítés](/hu/skills/#handcrafting)** sínhez, és ami a sebnek tényleg kell — a próbát **[hátránynak](/hu/marks-and-tiers/#előny-és-hátrány)** vedd. A legjobb gondozással is van, hogy nincs mit tenni. Harcolj tovább. Mentsd, akit tudsz. Nincs történetpáncél. A halál mindenkit elvisz a végén.
 
 <div class="kod-widget not-content" data-widget="step-flow" id="dying-demo">
 <p class="kod-widget__title">Haldoklás — láz az úton</p>

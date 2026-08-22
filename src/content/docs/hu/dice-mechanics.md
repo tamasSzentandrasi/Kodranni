@@ -13,9 +13,9 @@ description: Mikor dobj — és hogyan van rendezve a többi réteg.
 <img src="/scenes/gambling.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
 </figure>
 
-Más TTRPG-khez hasonlóan a tettek feloldása kockával megy. Ha egy **játékos** vagy **mesélő** tettet kell feloldania, tisztázzák a szándékot, aztán dobják a megfelelő kockákat. Nagyon szokványos — *eddig*.
+Más TTRPG-khez hasonlóan a tettek feloldása kockával megy. Ha egy **játékosnak** vagy **mesélőnek** tettet kell feloldania, tisztázzák a szándékot, aztán dobják a megfelelő kockákat. Nagyon szokványos — *eddig*.
 
-Ez a fejezet az ajtó. Maga a köteg a háromban él, ami következik:
+Ez a fejezet az ajtó. A köteg a következő három fejezetben él:
 
 | Fejezet | Amit tanít |
 |---------|------------|
