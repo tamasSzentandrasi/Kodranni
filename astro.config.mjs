@@ -15,6 +15,11 @@ export default defineConfig({
     starlight({
       title: 'Kodranni',
       description: 'A pre-industrial grim human TTRPG system.',
+      defaultLocale: 'root',
+      locales: {
+        root: { label: 'English', lang: 'en' },
+        hu: { label: 'Magyar', lang: 'hu' },
+      },
       logo: {
         src: './src/assets/falcon-logo.png',
         alt: 'Kodranni',
@@ -25,50 +30,63 @@ export default defineConfig({
       sidebar: [
         {
           label: 'Start here',
-          items: [{ label: 'Introduction', link: '/introduction/' }],
+          translations: { hu: 'Itt kezdődik' },
+          items: [
+            {
+              label: 'Introduction',
+              translations: { hu: 'Bevezetés' },
+              link: '/introduction/',
+            },
+          ],
         },
         {
           label: 'Dice Mechanics',
+          translations: { hu: 'Kockamechanika' },
           items: [
-            { label: 'Overview', link: '/dice-mechanics/' },
-            { label: 'Marks & Tiers', link: '/marks-and-tiers/' },
-            { label: 'Omens & Consequences', link: '/omens/' },
-            { label: 'Tide', link: '/tide/' },
+            { label: 'Overview', translations: { hu: 'Áttekintés' }, link: '/dice-mechanics/' },
+            { label: 'Marks & Tiers', translations: { hu: 'Jelek és kockafokok' }, link: '/marks-and-tiers/' },
+            { label: 'Omens & Consequences', translations: { hu: 'Ómenek és következmények' }, link: '/omens/' },
+            { label: 'Tide', translations: { hu: 'Sodrás' }, link: '/tide/' },
           ],
         },
         {
           label: 'Human Potential',
+          translations: { hu: 'Emberi adottságok' },
           items: [
-            { label: 'Overview', link: '/human-potential/' },
-            { label: 'Foundations', link: '/foundations/' },
-            { label: 'Skills', link: '/skills/' },
-            { label: 'Traits', link: '/traits/' },
-            { label: 'Exertion', link: '/exertion/' },
+            { label: 'Overview', translations: { hu: 'Áttekintés' }, link: '/human-potential/' },
+            { label: 'Foundations', translations: { hu: 'Adottságok' }, link: '/foundations/' },
+            { label: 'Skills', translations: { hu: 'Jártasságok' }, link: '/skills/' },
+            { label: 'Traits', translations: { hu: 'Vonások' }, link: '/traits/' },
+            { label: 'Exertion', translations: { hu: 'Erőfeszítés' }, link: '/exertion/' },
           ],
         },
         {
           label: 'Resolution & Continuity',
+          translations: { hu: 'Feloldás és folytonosság' },
           items: [
-            { label: 'Echoes', link: '/echoes/' },
-            { label: 'Harm', link: '/harm/' },
-            { label: 'Hierarchies', link: '/hierarchies/' },
-            { label: 'Inventory', link: '/inventory/' },
+            { label: 'Echoes', translations: { hu: 'Visszhangok' }, link: '/echoes/' },
+            { label: 'Harm', translations: { hu: 'Sérülés' }, link: '/harm/' },
+            { label: 'Hierarchies', translations: { hu: 'Hierarchiák' }, link: '/hierarchies/' },
+            { label: 'Inventory', translations: { hu: 'Felszerelés' }, link: '/inventory/' },
           ],
         },
         {
           label: 'Campaign & Character Creation',
+          translations: { hu: 'Kampány és karakteralkotás' },
           items: [
-            { label: 'Campaign Setup', link: '/campaign-setup/' },
-            { label: 'Character Creation', link: '/character-creation/' },
+            { label: 'Campaign Setup', translations: { hu: 'Kampányelőkészítés' }, link: '/campaign-setup/' },
+            { label: 'Character Creation', translations: { hu: 'Karakteralkotás' }, link: '/character-creation/' },
           ],
         },
         {
           label: 'Automation',
-          items: [{ label: 'At the Table', link: '/automation/' }],
+          translations: { hu: 'Automatizálás' },
+          items: [{ label: 'At the Table', translations: { hu: 'Az asztalnál' }, link: '/automation/' }],
         },
         {
           label: 'Reference',
-          items: [{ label: 'Glossary', link: '/glossary/' }],
+          translations: { hu: 'Névtár' },
+          items: [{ label: 'Glossary', translations: { hu: 'Fogalomtár' }, link: '/glossary/' }],
         },
       ],
       customCss: ['./src/styles/custom.css'],
@@ -80,6 +98,7 @@ export default defineConfig({
         SiteTitle: './src/components/starlight/SiteTitle.astro',
         ThemeSelect: './src/components/starlight/ThemeSelect.astro',
         ThemeProvider: './src/components/starlight/ThemeProvider.astro',
+        LanguageSelect: './src/components/starlight/LanguageSelect.astro',
       },
     }),
   ],

@@ -2,8 +2,8 @@
  * Objective Guidebook checks — the leaks we have already shipped once.
  * No visual guesses. Fail the build if they return.
  */
-import { readdirSync, readFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { readdirSync, readFileSync, existsSync } from 'node:fs';
+import { join, relative } from 'node:path';
 
 const docs = 'src/content/docs';
 const errors = [];
@@ -28,12 +28,34 @@ for (const file of files) {
 	}
 }
 
-const intro = readFileSync(join(docs, 'introduction.md'), 'utf8');
-const echoes = intro.indexOf('[Echoes](/echoes/)');
-const harm = intro.indexOf('[Harm](/harm/)');
-if (echoes < 0 || harm < 0 || echoes > harm) {
-	errors.push('introduction.md: organisation table must list Echoes before Harm.');
+const english = files
+	.filter((file) => !relative(docs, file).startsWith('hu' + (relative(docs, file).includes('\\') ? '\\' : '/')))
+	.filter((file) => !relative(docs, file).startsWith('hu/'));
+
+for (const file of english) {
+	const rel = relative(docs, file);
+	if (rel.startsWith('hu')) continue;
+	const twin = join(docs, 'hu', rel);
+	if (!existsSync(twin)) {
+		errors.push(`${rel}: missing Hungarian twin at hu/${rel}`);
+	}
 }
+
+function echoesBeforeHarm(path, label) {
+	if (!existsSync(path)) {
+		errors.push(`${label}: file missing`);
+		return;
+	}
+	const intro = readFileSync(path, 'utf8');
+	const echoes = intro.search(/\]\(\/?(hu\/)?echoes\/\)/);
+	const harm = intro.search(/\]\(\/?(hu\/)?harm\/\)/);
+	if (echoes < 0 || harm < 0 || echoes > harm) {
+		errors.push(`${label}: organisation table must list Echoes before Harm.`);
+	}
+}
+
+echoesBeforeHarm(join(docs, 'introduction.md'), 'introduction.md');
+echoesBeforeHarm(join(docs, 'hu', 'introduction.md'), 'hu/introduction.md');
 
 if (errors.length) {
 	console.error('guidebook-integrity failed:\n' + errors.map((e) => '  - ' + e).join('\n'));

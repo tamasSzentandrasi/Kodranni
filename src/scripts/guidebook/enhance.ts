@@ -15,6 +15,7 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 			const parts = path.split('/').filter(Boolean);
 			if (parts[0] && parts[0].toLowerCase() === 'kodranni') parts.shift();
 			if (parts[0] && parts[0].toLowerCase() === 'guidebook') parts.shift();
+			if (parts[0] && parts[0].toLowerCase() === 'hu') parts.shift();
 			return parts[0] || '';
 		} catch {
 			return '';
@@ -64,16 +65,20 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 
 	/** Ensure asides have accessible names; icons are CSS ::before on the aside */
 	function normalizeBoxes() {
+		const hu = document.documentElement.lang === 'hu';
+		const labels = hu
+			? { example: 'Példa', note: 'Jegyzet', counsel: 'Tanács' }
+			: { example: 'Example', note: 'Note', counsel: 'Counsel' };
 		document.querySelectorAll('aside.kod-example').forEach((el) => {
-			if (!el.getAttribute('aria-label')) el.setAttribute('aria-label', 'Example');
+			if (!el.getAttribute('aria-label')) el.setAttribute('aria-label', labels.example);
 			el.querySelectorAll('.kod-example__label').forEach((n) => n.remove());
 		});
 		document.querySelectorAll('aside.kod-note').forEach((el) => {
-			if (!el.getAttribute('aria-label')) el.setAttribute('aria-label', 'Note');
+			if (!el.getAttribute('aria-label')) el.setAttribute('aria-label', labels.note);
 			el.querySelectorAll('.kod-note__label').forEach((n) => n.remove());
 		});
 		document.querySelectorAll('aside.kod-counsel').forEach((el) => {
-			if (!el.getAttribute('aria-label')) el.setAttribute('aria-label', 'Counsel');
+			if (!el.getAttribute('aria-label')) el.setAttribute('aria-label', labels.counsel);
 			el.querySelectorAll('.kod-counsel__label').forEach((n) => n.remove());
 		});
 	}
@@ -86,11 +91,12 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 
 		let back = root.querySelector('.kod-archetypes__back');
 		if (!back) {
+			const hu = document.documentElement.lang === 'hu';
 			back = document.createElement('button');
 			back.type = 'button';
 			back.className = 'kod-archetypes__back';
-			back.setAttribute('aria-label', 'Back to all archetypes');
-			back.textContent = '← Back';
+			back.setAttribute('aria-label', hu ? 'Vissza az őstípusokhoz' : 'Back to all archetypes');
+			back.textContent = hu ? '← Vissza' : '← Back';
 			root.insertBefore(back, root.firstChild);
 		}
 
@@ -507,15 +513,18 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 				if (fillB) fillB.style.width = 100 - pct + '%';
 				if (marker) marker.style.left = pct + '%';
 				if (readout) {
-					const state =
-						p <= 0
-							? 'Imperial side routes (collective).'
-							: p >= scale
-								? 'Mongol side routes (collective).'
-								: 'Imperial footing remaining · Mongol pressure growing as crimson shrinks.';
+					const routA =
+						root.getAttribute('data-tide-rout-a') || 'Imperial side routes (collective).';
+					const routB =
+						root.getAttribute('data-tide-rout-b') || 'Mongol side routes (collective).';
+					const mid =
+						root.getAttribute('data-tide-mid') ||
+						'Imperial footing remaining · Mongol pressure growing as crimson shrinks.';
+					const posLabel = root.getAttribute('data-tide-pos-label') || 'Position';
+					const state = p <= 0 ? routA : p >= scale ? routB : mid;
 					readout.textContent = note
 						? note + ' — ' + state
-						: 'Position ' + p + ' / ' + scale + '. ' + state;
+						: posLabel + ' ' + p + ' / ' + scale + '. ' + state;
 				}
 				root.setAttribute('data-tide-at', String(p));
 			}

@@ -344,3 +344,46 @@ starlight-menu-button button,
   letter-spacing: 0.04em;
 }
 
+header .social-icons:empty {
+  display: none;
+}
+
+/* Language switch — two flags, header + mobile drawer. No blood hover. */
+.kod-lang {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.kod-lang__link {
+  display: flex;
+  align-items: center;
+  opacity: 0.4;
+  line-height: 0;
+  text-decoration: none;
+  transition: opacity 0.12s ease;
+}
+
+.kod-lang__link:hover,
+.kod-lang__link:focus-visible {
+  opacity: 1;
+}
+
+.kod-lang__link.is-current {
+  opacity: 1;
+}
+
+.kod-lang__flag {
+  width: 1.35rem;
+  height: 0.81rem;
+  display: block;
+  border: 1px solid color-mix(in srgb, var(--kod-silver) 28%, transparent);
+  border-radius: 1px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.45);
+}
+
+.mobile-preferences .kod-lang {
+  padding-block: 0.35rem;
+}
+
+
