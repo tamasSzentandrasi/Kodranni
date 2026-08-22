@@ -78,6 +78,7 @@ Short log. Original scaffold (`7c1882e`, 2026-08-09) assumed placeholder CSS, no
 | 2026-08-18 (programme) | Plans rewritten; truth pass; CSS/Head split; Dice 4-page split; Echoes first; Glossary rebuild; portal lift; plates placed; Artisan/Trickster/Sage remade (still below Warrior) |
 | 2026-08-18 (evening) | Situational resolution → Tide; Omen as side-effect; Tide names Small/Skirmish/Battle; Hunnic Practice; iron-silver interactive chrome; Practice matrix + domain stack fix; Weighing heading leak removed |
 | 2026-08-22 | Frame grammar: folio ticks on plates, cartouche buttons, chapter-title iron tile + short identity rule, Tide rivet weave, filled chapter-icon set (`currentColor` + CSS hue). Ornament lock amended — still no new Markdown class. |
+| 2026-08-22 (evening) | Replace L-ticks with soot/tool/smoke plates. Kill the centred red title bar; stamp + iron fade under the word. Redraw Tide (gauge), Harm (slash), Inventory (coffer). |
 
 ---
 
@@ -86,7 +87,7 @@ Short log. Original scaffold (`7c1882e`, 2026-08-09) assumed placeholder CSS, no
 - **Type:** Bellefair for titles *and* body. No second body face. Mitigate with contrast, shorter measure (~42–44rem), emphasis register, boxes, widgets — not a new family. Bellefair has only weight 400; do not fake-bold (`font-synthesis: none`).
 - **Colour:** iron / silver / blood. Dark only. No theme toggle.
 - **Interactive chrome (2026-08-18 lock):** widgets, prev/next, scrollbar, term tips, step examples, Tide callouts use **iron-silver**. Blood stays on identity surfaces: chapter `hr` runes, example boxes, ST lanes, current-page sidebar, invented-seed category, portal falcon ring. Do not put blood on button hover.
-- **Ornament (2026-08-22 frame grammar):** One plate language — 1px hairline, inset silver, folio corner-ticks, short end-caps on *title rules only*. Role is colour (identity blood / interactive pewter / semantic left-bars), not a second flourish family. Chapter icon is the capital: filled `currentColor` set in an iron tile; the title stays a full Bellefair word. No new Markdown class, no raster banners, no drop-caps, no page frames, no fleur-de-lis/gold/leather. Elder Futhark on `hr`; list scroll-reveal; breath-masked plates; example / note / counsel boxes; teaching widgets; pewter scrollbar; folio ticks on pagination and plates. H2 stays a hairline.
+- **Ornament (2026-08-22, soot/smoke 2026-08-22 evening):** One plate language — tooled top highlight, lamp-soot in the corners, smoke drop. No L-ticks, no red centred title bar. Chapter opening is a recessed stamp + Bellefair word + a short iron fade under the *word* (left-aligned). Role is colour (identity blood / interactive pewter / semantic left-bars). No new Markdown class, no raster banners, no drop-caps, no page frames, no fleur-de-lis/gold/leather. Elder Futhark on `hr`; list scroll-reveal; breath-masked plates; example / note / counsel boxes; teaching widgets; pewter scrollbar. H2 stays a hairline.
 - **ST humour (authorial, keep):** Introduction *“It's Fiiiine”*; Harm *“Don't worry. I'll kill you eventually.”* Do not add more gags by default.
 - **Plates:** `figure.kod-breath` after the first divider. Empty `alt` (decorative). Glossary and Automation have no start plate.
 - **Quotes:**
