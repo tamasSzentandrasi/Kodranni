@@ -5,34 +5,34 @@
 
 .kod-page-title {
   display: flex;
-  align-items: center;
-  gap: 0.85rem;
-  margin-top: 1rem;
-  padding-bottom: 0.85em;
+  align-items: flex-start;
+  gap: 1rem;
+  margin: 0.15rem 0 1.15rem;
+  padding: 0.95rem 0 1.25rem;
   border-bottom: none;
   position: relative;
+  isolation: isolate;
 }
 
-.kod-page-title::after {
+/* Smoke field — the opening dissolves into the page. Not a red bar. */
+.kod-page-title::before {
   content: '';
   position: absolute;
-  left: 50%;
-  bottom: 0;
-  transform: translateX(-50%);
-  width: min(16rem, 72%);
-  height: 6px;
+  z-index: -1;
   pointer-events: none;
+  left: -1.5rem;
+  right: -1.5rem;
+  top: -0.15rem;
+  bottom: 0;
   background:
-    linear-gradient(var(--kod-blood), var(--kod-blood)) 0 50% / 1px 6px no-repeat,
-    linear-gradient(var(--kod-blood), var(--kod-blood)) 100% 50% / 1px 6px no-repeat,
+    radial-gradient(ellipse 55% 90% at 6% 48%, rgba(0, 0, 0, 0.55), transparent 64%),
+    radial-gradient(ellipse 40% 80% at 92% 40%, rgba(0, 0, 0, 0.28), transparent 70%),
     linear-gradient(
-      to right,
-      transparent,
-      color-mix(in srgb, var(--kod-blood) 70%, #444) 14%,
-      color-mix(in srgb, var(--kod-blood) 70%, #444) 86%,
-      transparent
-    )
-      center / 100% 1px no-repeat;
+      180deg,
+      rgba(16, 12, 12, 0.5) 0%,
+      rgba(8, 6, 6, 0.22) 58%,
+      transparent 100%
+    );
 }
 
 .kod-page-title h1 {
@@ -40,23 +40,43 @@
   font-size: var(--sl-text-h1);
   line-height: var(--sl-line-height-headings);
   color: var(--sl-color-white);
+  position: relative;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.55);
+}
+
+/* Iron fade under the word, left-aligned to the title — not a centred rule. */
+.kod-page-title h1::after {
+  content: '';
+  display: block;
+  width: 4.4rem;
+  height: 1px;
+  margin-top: 0.48em;
+  background: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--kod-silver) 62%, transparent),
+    color-mix(in srgb, var(--kod-frame-tick) 35%, transparent) 62%,
+    transparent
+  );
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.5);
 }
 
 .kod-page-title__mark {
   flex-shrink: 0;
   box-sizing: border-box;
-  width: 3.25rem;
-  height: 3.25rem;
+  margin-top: 0.12rem;
+  width: 3.35rem;
+  height: 3.35rem;
   display: grid;
   place-items: center;
-  border: 1px solid var(--kod-frame);
+  border: 1px solid color-mix(in srgb, var(--kod-silver) 16%, var(--kod-frame));
   background:
-    var(--kod-folio-ticks),
-    linear-gradient(180deg, rgba(242, 239, 233, 0.05), transparent 55%),
+    var(--kod-plate-wash),
     var(--kod-plate);
   box-shadow:
-    inset 0 0 0 1px var(--kod-inset),
-    0 0 0 1px #141010;
+    inset 0 1px 0 rgba(242, 239, 233, 0.12),
+    inset 0 0 0 1px color-mix(in srgb, var(--kod-icon-hue, var(--kod-silver)) 22%, transparent),
+    inset 0 -8px 14px -8px rgba(0, 0, 0, 0.62),
+    0 10px 22px -10px rgba(0, 0, 0, 0.8);
 }
 
 .kod-page-title__icon {
@@ -66,23 +86,32 @@
   background-color: var(--kod-icon-hue, var(--kod-silver-bright));
   -webkit-mask: var(--kod-icon-mask) center / contain no-repeat;
   mask: var(--kod-icon-mask) center / contain no-repeat;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.65));
 }
 
 @media (min-width: 50rem) {
   .kod-page-title__mark {
-    width: 3.75rem;
-    height: 3.75rem;
+    width: 3.85rem;
+    height: 3.85rem;
   }
   .kod-page-title__icon {
-    width: 2.15rem;
-    height: 2.15rem;
+    width: 2.2rem;
+    height: 2.2rem;
   }
 }
 
 @media (max-width: 40rem) {
+  .kod-page-title {
+    gap: 0.75rem;
+    padding: 0.7rem 0 1rem;
+  }
+  .kod-page-title::before {
+    left: -0.65rem;
+    right: -0.65rem;
+  }
   .kod-page-title__mark {
-    width: 2.75rem;
-    height: 2.75rem;
+    width: 2.85rem;
+    height: 2.85rem;
   }
   .kod-page-title__icon {
     width: 1.55rem;
@@ -280,32 +309,28 @@
 }
 
 .pagination-links a {
-  --kod-folio-tick: var(--kod-frame-tick);
+  --kod-soot-size: 0.85rem;
   border: 1px solid #2e2a28 !important;
   border-radius: 0 !important;
   background:
-    var(--kod-folio-ticks),
-    linear-gradient(180deg, rgba(242, 239, 233, 0.05), transparent 42%),
+    var(--kod-plate-wash),
     #0c0a09 !important;
-  box-shadow:
-    inset 0 0 0 1px var(--kod-inset),
-    0 0 0 1px #141010 !important;
+  box-shadow: var(--kod-smoke) !important;
   padding: 0.95rem 0.9rem !important;
   position: relative;
   color: var(--kod-silver-dim) !important;
   font-size: 0.66rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  transition: border-color 0.18s ease, color 0.18s ease;
+  transition: border-color 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
 }
 
 .pagination-links a:hover,
 .pagination-links a:focus-visible {
-  --kod-folio-tick: var(--kod-frame-tick-hot);
+  --kod-tool: linear-gradient(180deg, rgba(242, 239, 233, 0.14), transparent 42%);
   border-color: #6a6560 !important;
   background:
-    var(--kod-folio-ticks),
-    linear-gradient(180deg, rgba(242, 239, 233, 0.1), transparent 48%),
+    var(--kod-plate-wash),
     #12100e !important;
   outline: none;
   color: #b8b2aa !important;

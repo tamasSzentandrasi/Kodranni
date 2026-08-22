@@ -17,17 +17,17 @@
   line-height: 1.58;
   letter-spacing: 0.01em;
   box-shadow:
-    inset 0 0 0 1px var(--kod-inset),
-    0 0 0 1px color-mix(in srgb, #000 50%, transparent);
+    inset 0 1px 0 rgba(242, 239, 233, 0.07),
+    inset 0 -12px 20px -16px rgba(0, 0, 0, 0.5);
 }
 
-/* Ticks overlay the cells so overflow/thead paint cannot hide them. */
+/* Soot + tool overlay the cells so overflow/thead paint cannot hide them. */
 .sl-markdown-content table:not(:where(.not-content *))::after {
   content: '';
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: var(--kod-folio-ticks);
+  background: var(--kod-plate-wash);
   z-index: 1;
 }
 
