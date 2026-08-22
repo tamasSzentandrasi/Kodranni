@@ -8,39 +8,45 @@
 }
 
 .kod-domain-lane {
-  border-radius: 3px;
+  border-radius: 0;
   padding: 0.75rem 0.9rem 0.9rem;
   border: 1px solid #2a2424;
   box-sizing: border-box;
 }
 
 .kod-domain-lane--physical {
-  background: linear-gradient(
-    90deg,
-    color-mix(in srgb, var(--kod-blood) 38%, #0a0a0a),
-    color-mix(in srgb, var(--kod-blood-deep) 22%, #0a0a0a) 55%,
-    #0a0a0a
-  );
+  background:
+    var(--kod-folio-ticks),
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--kod-blood) 38%, #0a0a0a),
+      color-mix(in srgb, var(--kod-blood-deep) 22%, #0a0a0a) 55%,
+      #0a0a0a
+    );
   border-color: color-mix(in srgb, var(--kod-blood) 40%, #333);
 }
 
 .kod-domain-lane--mental {
-  background: linear-gradient(
-    90deg,
-    color-mix(in srgb, #3a2a8a 45%, #0a0a0a),
-    color-mix(in srgb, #1a1440 35%, #0a0a0a) 55%,
-    #0a0a0a
-  );
+  background:
+    var(--kod-folio-ticks),
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, #3a2a8a 45%, #0a0a0a),
+      color-mix(in srgb, #1a1440 35%, #0a0a0a) 55%,
+      #0a0a0a
+    );
   border-color: color-mix(in srgb, #5a4ab0 40%, #333);
 }
 
 .kod-domain-lane--social {
-  background: linear-gradient(
-    90deg,
-    color-mix(in srgb, #b8860b 38%, #0a0a0a),
-    color-mix(in srgb, #5c4010 30%, #0a0a0a) 55%,
-    #0a0a0a
-  );
+  background:
+    var(--kod-folio-ticks),
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, #b8860b 38%, #0a0a0a),
+      color-mix(in srgb, #5c4010 30%, #0a0a0a) 55%,
+      #0a0a0a
+    );
   border-color: color-mix(in srgb, #c4a035 40%, #333);
 }
 
@@ -358,15 +364,17 @@
   text-align: center;
   min-height: 14.5rem;
   padding: 1rem 0.65rem 1.05rem;
-  border-radius: 3px 3px 2px 2px;
+  border-radius: 0;
   border: 1px solid #2a2424;
   border-top-width: 4px;
-  background: linear-gradient(
-    180deg,
-    color-mix(in srgb, var(--kod-fortune-accent, var(--kod-blood)) 22%, #0c0a0a) 0%,
-    #0a0808 55%,
-    #080606 100%
-  );
+  background:
+    var(--kod-folio-ticks),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--kod-fortune-accent, var(--kod-blood)) 22%, #0c0a0a) 0%,
+      #0a0808 55%,
+      #080606 100%
+    );
   box-shadow: inset 0 1px 0 color-mix(in srgb, var(--kod-fortune-accent, #fff) 18%, transparent);
   transition: box-shadow 0.18s ease, border-color 0.18s ease;
 }
@@ -474,8 +482,10 @@
   margin: 1.25rem 0 1.55rem;
   padding: 0.85rem 0.75rem 1rem;
   border: 1px solid color-mix(in srgb, var(--kod-blood) 30%, #333);
-  border-radius: 3px;
-  background: #0a0808;
+  border-radius: 0;
+  background:
+    var(--kod-folio-ticks),
+    #0a0808;
 }
 .kod-hier-ruler {
   box-sizing: border-box;
@@ -483,12 +493,14 @@
   padding: 0.7rem 0.9rem;
   text-align: center;
   border: 1px solid color-mix(in srgb, var(--kod-blood) 55%, #444);
-  border-radius: 2px;
-  background: linear-gradient(
-    180deg,
-    color-mix(in srgb, var(--kod-blood-deep) 65%, #1a0c0c),
-    #100808 80%
-  );
+  border-radius: 0;
+  background:
+    var(--kod-folio-ticks),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--kod-blood-deep) 65%, #1a0c0c),
+      #100808 80%
+    );
   box-shadow: 0 0 0 1px color-mix(in srgb, var(--kod-blood) 20%, transparent);
 }
 .kod-hier-ruler__title {
@@ -539,12 +551,14 @@
   min-height: 100%;
   border: 1px solid #2a2424;
   border-top: 3px solid var(--kod-hier-accent, #666);
-  border-radius: 2px;
-  background: linear-gradient(
-    180deg,
-    color-mix(in srgb, var(--kod-hier-accent, #444) 14%, #0c0a0a),
-    #0a0808 70%
-  );
+  border-radius: 0;
+  background:
+    var(--kod-folio-ticks),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--kod-hier-accent, #444) 14%, #0c0a0a),
+      #0a0808 70%
+    );
   overflow: hidden;
 }
 .kod-hier-axis--arms {
@@ -657,19 +671,25 @@
   margin: 0 !important;
   padding: 0.65rem 0.75rem;
   border: 1px solid #2a2424;
-  border-radius: 2px;
+  border-radius: 0;
 }
 .kod-harm-col--phys {
   border-left: 3px solid var(--kod-blood);
-  background: color-mix(in srgb, var(--kod-blood-deep) 28%, #0c0c0c);
+  background:
+    var(--kod-folio-ticks),
+    color-mix(in srgb, var(--kod-blood-deep) 28%, #0c0c0c);
 }
 .kod-harm-col--ment {
   border-left: 3px solid #5a4ab0;
-  background: color-mix(in srgb, #1a1440 40%, #0c0c0c);
+  background:
+    var(--kod-folio-ticks),
+    color-mix(in srgb, #1a1440 40%, #0c0c0c);
 }
 .kod-harm-col--soc {
   border-left: 3px solid #c4a035;
-  background: color-mix(in srgb, #3a2a10 40%, #0c0c0c);
+  background:
+    var(--kod-folio-ticks),
+    color-mix(in srgb, #3a2a10 40%, #0c0c0c);
 }
 .kod-harm-col__label {
   font-family: var(--kod-font-display);

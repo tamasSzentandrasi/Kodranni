@@ -13,6 +13,14 @@
   --kod-blood-bright: #b01c1c;
   --kod-blood-deep: #4a0c0c;
 
+  /* Folio plate grammar — iron hardware; role is signalled by border/fill colour */
+  --kod-frame: #3a3330;
+  --kod-frame-tick: #6a6560;
+  --kod-frame-tick-hot: #c4bfb6;
+  --kod-plate: #0b0a0a;
+  --kod-inset: rgba(242, 239, 233, 0.05);
+  --kod-tick-len: 0.7rem;
+
   --kod-font-display: 'Bellefair', 'Times New Roman', Times, serif;
   --kod-font-body: 'Bellefair', 'Times New Roman', Times, serif;
 
@@ -132,6 +140,45 @@ body {
 
 ::-webkit-scrollbar-corner {
   background: #080606;
+}
+
+/*
+ * Folio corner ticks. Defined on the plate selectors (not :root) so
+ * --kod-folio-tick resolves on the element — hover can recolour ticks.
+ * Use as the first background layers: `background: var(--kod-folio-ticks), <fill>;`
+ */
+.kod-example,
+.kod-note,
+.kod-counsel,
+.sl-markdown-content blockquote,
+.sl-markdown-content table:not(:where(.not-content *)),
+.kod-widget,
+.pagination-links a,
+.kod-die-card,
+.kod-tide,
+.kod-seed,
+.kod-lane,
+.kod-harm-col,
+.kod-fortune-pillar,
+.kod-hier-diagram,
+.kod-hier-axis,
+.kod-hier-ruler,
+.kod-domain-lane,
+.kod-phase,
+.kod-menu-item,
+.kod-page-title__mark,
+.kod-widget__btn,
+.kod-step-flow__nav button {
+  --kod-folio-tick: var(--kod-frame-tick);
+  --kod-folio-ticks:
+    linear-gradient(var(--kod-folio-tick), var(--kod-folio-tick)) 0 0 / var(--kod-tick-len) 1px no-repeat,
+    linear-gradient(var(--kod-folio-tick), var(--kod-folio-tick)) 0 0 / 1px var(--kod-tick-len) no-repeat,
+    linear-gradient(var(--kod-folio-tick), var(--kod-folio-tick)) 100% 0 / var(--kod-tick-len) 1px no-repeat,
+    linear-gradient(var(--kod-folio-tick), var(--kod-folio-tick)) 100% 0 / 1px var(--kod-tick-len) no-repeat,
+    linear-gradient(var(--kod-folio-tick), var(--kod-folio-tick)) 0 100% / var(--kod-tick-len) 1px no-repeat,
+    linear-gradient(var(--kod-folio-tick), var(--kod-folio-tick)) 0 100% / 1px var(--kod-tick-len) no-repeat,
+    linear-gradient(var(--kod-folio-tick), var(--kod-folio-tick)) 100% 100% / var(--kod-tick-len) 1px no-repeat,
+    linear-gradient(var(--kod-folio-tick), var(--kod-folio-tick)) 100% 100% / 1px var(--kod-tick-len) no-repeat;
 }
 
 

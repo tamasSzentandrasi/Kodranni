@@ -9,15 +9,26 @@
   border-spacing: 0;
   margin: 1.25rem 0 1.5rem;
   overflow: hidden;
+  position: relative;
   border: 1px solid color-mix(in srgb, var(--kod-blood) 42%, #3a3030);
-  border-radius: 2px;
+  border-radius: 0;
   background: #0c0a0a;
   font-size: 1.04em;
   line-height: 1.58;
   letter-spacing: 0.01em;
   box-shadow:
-    inset 0 0 0 1px color-mix(in srgb, #f2efe9 5%, transparent),
+    inset 0 0 0 1px var(--kod-inset),
     0 0 0 1px color-mix(in srgb, #000 50%, transparent);
+}
+
+/* Ticks overlay the cells so overflow/thead paint cannot hide them. */
+.sl-markdown-content table:not(:where(.not-content *))::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--kod-folio-ticks);
+  z-index: 1;
 }
 
 .sl-markdown-content table:not(:where(.not-content *)) thead {
