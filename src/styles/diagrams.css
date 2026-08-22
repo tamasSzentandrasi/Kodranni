@@ -678,7 +678,6 @@
   border-radius: 0;
 }
 .kod-harm-col--phys {
-  --kod-texture: var(--kod-tex-vine);
   border-left: 3px solid var(--kod-blood);
   background:
     var(--kod-plate-wash),

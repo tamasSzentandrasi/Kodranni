@@ -37,7 +37,6 @@
 
 /* Example — eye (worked scene / what was seen) */
 .kod-example {
-  --kod-texture: var(--kod-tex-vine);
   --kod-soot-size: 1.1rem;
   border: 1px solid color-mix(in srgb, var(--kod-blood) 62%, #333);
   border-left: 4px solid var(--kod-blood);
@@ -98,7 +97,6 @@
 
 /* Quote — literary / epigraph */
 .sl-markdown-content blockquote {
-  --kod-texture: var(--kod-tex-laid);
   border: 1px solid color-mix(in srgb, #6a6058 55%, #222);
   border-left: 4px solid #8a8078;
   background:
@@ -140,7 +138,6 @@
 
 /* Note — factual (teal) — feather pen */
 .kod-note {
-  --kod-texture: var(--kod-tex-laid);
   border: 1px solid color-mix(in srgb, #3d6a6a 55%, #333);
   border-left: 4px solid #4a9a8a;
   background:
@@ -172,7 +169,6 @@
 
 /* Counsel — ST wisdom (violet) — scales of justice */
 .kod-counsel {
-  --kod-texture: var(--kod-tex-lattice);
   border: 1px solid color-mix(in srgb, #4a3a8a 55%, #333);
   border-left: 4px solid #6a5ab8;
   background:

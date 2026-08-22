@@ -130,7 +130,7 @@ Living checklist. Author marks: **✅** pursue · **🚫** do not pursue · **�
 | Medallions | Artisan / Trickster / Sage remakes **accepted**. |
 | Identity chrome | Tables, example boxes, `hr` runes, ST lanes stay **blood**. Interactive widgets stay iron-silver. |
 | Social thumbnail | Site-wide `og.jpg` (1200×630 falcon card) on Guidebook pages and the portal. |
-| Ornament | Soot/smoke plates + banner-diamond terminals (blood identity / pewter interactive). Faint type textures (vine / lozenge / laid / lattice). Blood tokens lifted. |
+| Ornament | Soot/smoke plates. Iron L-strap corners with rivet (blood identity / pewter interactive). No fill textures. |
 
 ### Still open
 

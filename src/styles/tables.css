@@ -10,7 +10,6 @@
   margin: 1.25rem 0 1.5rem;
   overflow: hidden;
   position: relative;
-  --kod-texture: var(--kod-tex-vine);
   --kod-soot-size: 1.1rem;
   border: 1px solid color-mix(in srgb, var(--kod-blood) 62%, #3a3030);
   border-radius: 0;
