@@ -1,7 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-  <!-- rising effort / push — three ascending strokes, not a random flame -->
-  <path stroke="#e08a3c" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M6 18V11"/>
-  <path stroke="#e08a3c" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M12 18V7"/>
-  <path stroke="#e08a3c" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M18 18V4"/>
-  <path stroke="#e08a3c" stroke-width="1.5" stroke-linecap="round" d="M4 18h16"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+  <path fill="#000" d="M12 3.35 19.1 9.05H16.1L12 5.75 7.9 9.05H4.9z"/>
+  <path fill="#000" d="M12 8.85 19.1 14.55H16.1L12 11.25 7.9 14.55H4.9z"/>
+  <path fill="#000" d="M12 14.35 19.1 20.05H16.1L12 16.75 7.9 20.05H4.9z"/>
 </svg>

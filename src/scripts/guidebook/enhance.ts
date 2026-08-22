@@ -26,18 +26,16 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 		const root = document.getElementById('starlight__sidebar');
 		if (!root) return;
 		root.querySelectorAll('a[href]').forEach((a) => {
-			if (a.querySelector('img.kod-sidebar-icon')) return;
+			if (a.querySelector('.kod-sidebar-icon')) return;
 			const seg = segmentFromHref(a.getAttribute('href') || '');
 			const src = sidebarIconMap[seg];
 			if (!src) return;
-			const img = document.createElement('img');
-			img.className = 'kod-sidebar-icon';
-			img.src = src;
-			img.alt = '';
-			img.width = 18;
-			img.height = 18;
-			img.decoding = 'async';
-			a.insertBefore(img, a.firstChild);
+			a.dataset.slug = seg;
+			const mark = document.createElement('span');
+			mark.className = 'kod-sidebar-icon';
+			mark.setAttribute('aria-hidden', 'true');
+			mark.style.setProperty('--kod-icon-mask', `url("${src}")`);
+			a.insertBefore(mark, a.firstChild);
 		});
 	}
 

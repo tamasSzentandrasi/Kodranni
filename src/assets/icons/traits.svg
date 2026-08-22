@@ -1,7 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-  <!-- wax seal / stamp — binary mark of identity, not a balloon face -->
-  <circle cx="12" cy="12" r="7.25" stroke="#c76bb0" stroke-width="1.75"/>
-  <circle cx="12" cy="12" r="3.25" stroke="#c76bb0" stroke-width="1.5"/>
-  <path stroke="#c76bb0" stroke-width="1.5" stroke-linecap="round" d="M12 4.75V3M12 21v-1.75M4.75 12H3M21 12h-1.75"/>
-  <path stroke="#c76bb0" stroke-width="1.5" stroke-linecap="round" d="M6.4 6.4l-1.1-1.1M18.7 18.7l-1.1-1.1M6.4 17.6l-1.1 1.1M18.7 5.3l-1.1 1.1"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+  <path fill="#000" fill-rule="evenodd" d="M12 3.55a8.45 8.45 0 1 0 0 16.9 8.45 8.45 0 0 0 0-16.9zm0 2.9a5.55 5.55 0 1 0 0 11.1 5.55 5.55 0 0 0 0-11.1z"/>
+  <circle fill="#000" cx="12" cy="12" r="1.85"/>
+  <path fill="#000" d="M11.25 2.2h1.5v1.85h-1.5zM11.25 19.95h1.5v1.85h-1.5zM2.2 11.25h1.85v1.5H2.2zM19.95 11.25h1.85v1.5h-1.85z"/>
 </svg>

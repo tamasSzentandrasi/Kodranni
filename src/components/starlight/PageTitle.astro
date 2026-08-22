@@ -10,7 +10,16 @@ const iconSrc = chapterIcons[slug] ?? null;
 <div class="kod-page-title">
 	{
 		iconSrc && (
-			<img class="kod-page-title__icon" src={iconSrc} alt="" width="64" height="64" decoding="async" />
+			<span
+				class="kod-page-title__mark"
+				data-slug={slug}
+			>
+				<span
+					class="kod-page-title__icon"
+					style={`--kod-icon-mask: url("${iconSrc}")`}
+					aria-hidden="true"
+				></span>
+			</span>
 		)
 	}
 	<h1 id="_top">{title}</h1>
