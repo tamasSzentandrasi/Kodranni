@@ -87,7 +87,7 @@ Short log. Original scaffold (`7c1882e`, 2026-08-09) assumed placeholder CSS, no
 - **Type:** Bellefair for titles *and* body. No second body face. Mitigate with contrast, shorter measure (~42–44rem), emphasis register, boxes, widgets — not a new family. Bellefair has only weight 400; do not fake-bold (`font-synthesis: none`).
 - **Colour:** iron / silver / blood. Dark only. No theme toggle.
 - **Interactive chrome (2026-08-18 lock):** widgets, prev/next, scrollbar, term tips, step examples, Tide callouts use **iron-silver**. Blood stays on identity surfaces: chapter `hr` runes, example boxes, ST lanes, current-page sidebar, invented-seed category, portal falcon ring. Do not put blood on button hover.
-- **Ornament:** Tooled highlight, lamp-soot, smoke drop. Corners are iron L-straps with a rivet (book/chest furniture) — blood on identity, pewter on interactive. No repeating fill textures. No HUD ticks, no red centred title bar. Chapter opening is a recessed stamp + Bellefair word + a short iron fade under the *word*. No new Markdown class, no raster banners, no drop-caps, no page frames. H2 stays a hairline.
+- **Ornament:** Tooled highlight, lamp-soot, smoke drop. Corners are thin forged L-straps (rivet + inner scroll) — blood on identity plates, pewter on interactive. Title stamp has no corner straps. Title fade follows the word length. No fill textures, no HUD ticks, no red title bar. No new Markdown class. H2 stays a hairline.
 - **ST humour (authorial, keep):** Introduction *“It's Fiiiine”*; Harm *“Don't worry. I'll kill you eventually.”* Do not add more gags by default.
 - **Plates:** `figure.kod-breath` after the first divider. Empty `alt` (decorative). Glossary and Automation have no start plate.
 - **Quotes:**

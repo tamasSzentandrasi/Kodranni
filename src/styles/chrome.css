@@ -41,27 +41,31 @@
   line-height: var(--sl-line-height-headings);
   color: var(--sl-color-white);
   position: relative;
+  width: fit-content;
+  max-width: 100%;
   text-shadow: 0 2px 16px rgba(0, 0, 0, 0.55);
 }
 
-/* Iron fade under the word, left-aligned to the title — not a centred rule. */
+/* Iron fade under the whole word — length follows the title. */
 .kod-page-title h1::after {
   content: '';
   display: block;
-  width: 4.4rem;
+  width: 100%;
   height: 1px;
   margin-top: 0.48em;
   background: linear-gradient(
     to right,
-    color-mix(in srgb, var(--kod-silver) 62%, transparent),
-    color-mix(in srgb, var(--kod-frame-tick) 35%, transparent) 62%,
-    transparent
+    color-mix(in srgb, var(--kod-silver) 70%, transparent) 0%,
+    color-mix(in srgb, var(--kod-silver) 48%, transparent) 62%,
+    color-mix(in srgb, var(--kod-frame-tick) 28%, transparent) 82%,
+    transparent 100%
   );
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.5);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.45);
 }
 
 .kod-page-title__mark {
-  --kod-corner-size: 1.15rem;
+  --kod-corners: none;
+  --kod-plate-wash: var(--kod-soot), var(--kod-tool);
   flex-shrink: 0;
   box-sizing: border-box;
   margin-top: 0.12rem;

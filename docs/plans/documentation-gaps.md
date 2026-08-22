@@ -130,7 +130,7 @@ Living checklist. Author marks: **✅** pursue · **🚫** do not pursue · **�
 | Medallions | Artisan / Trickster / Sage remakes **accepted**. |
 | Identity chrome | Tables, example boxes, `hr` runes, ST lanes stay **blood**. Interactive widgets stay iron-silver. |
 | Social thumbnail | Site-wide `og.jpg` (1200×630 falcon card) on Guidebook pages and the portal. |
-| Ornament | Soot/smoke plates. Iron L-strap corners with rivet (blood identity / pewter interactive). No fill textures. |
+| Ornament | Soot/smoke plates. Thin forged L-straps (rivet + inner scroll). Title stamp: no straps. Title fade follows the word. |
 
 ### Still open
 
