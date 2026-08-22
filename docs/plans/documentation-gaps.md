@@ -21,7 +21,7 @@ Living checklist. Author marks: **✅** pursue · **🚫** do not pursue · **�
 | Multi-character / downtime montage | Low | — | 🚫 |
 | Solo strand guidance | Low | — | 🚫 |
 | Language / literacy | Low | Trait-only | ❓ |
-| Visual identity | — | Triad locked (blood / silver / black). Medallions accepted. Tables and identity chrome stay blood. Scrollbar silver. | ✅ done |
+| Visual identity | — | Triad locked (blood / silver / black). Medallions accepted. Tables and identity chrome stay blood. Scrollbar silver. Frame grammar 2026-08-22 (folio ticks, capital tile, filled icons). | ✅ done |
 | Splash page | — | **Rejected** | 🚫 |
 | How-to-play chapter | — | **Rejected** | 🚫 |
 | Print CSS | Low | Later; not this programme | 🚫 |
@@ -130,6 +130,7 @@ Living checklist. Author marks: **✅** pursue · **🚫** do not pursue · **�
 | Medallions | Artisan / Trickster / Sage remakes **accepted**. |
 | Identity chrome | Tables, example boxes, `hr` runes, ST lanes stay **blood**. Interactive widgets stay iron-silver. |
 | Social thumbnail | Site-wide `og.jpg` (1200×630 falcon card) on Guidebook pages and the portal. |
+| Ornament | **Amended 2026-08-22.** One CSS frame grammar (folio ticks, inset, title-rule end-caps). Chapter icon is the capital tile. No new Markdown class, no raster banners, no drop-caps. |
 
 ### Still open
 
