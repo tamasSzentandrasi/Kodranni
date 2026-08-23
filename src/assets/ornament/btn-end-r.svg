@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 48" fill="none">
+<g transform="scale(-1,1) translate(-36,0)">
+  <g fill="#e0dad0" stroke="#e0dad0" stroke-width="1.25" stroke-linejoin="round" stroke-linecap="round">
+    <!-- inner double-line of the concave cap -->
+    <path fill="none" stroke-width="1.7" d="M32 3.2C20.5 3.2 14.2 11.2 14.2 24S20.5 44.8 32 44.8"/>
+    <path fill="none" stroke-width="0.9" opacity=".7" d="M32 6.4C22.4 6.4 17.2 12.6 17.2 24S22.4 41.6 32 41.6"/>
+    <!-- diamond knot -->
+    <path stroke="none" d="M16.2 16.4 24.2 24 16.2 31.6 8.2 24z"/>
+    <path stroke="none" d="M16.2 8.4 19.8 16 16.2 18 12.6 16z"/>
+    <path stroke="none" d="M28 24 20.4 27.6 18.4 24 20.4 20.4z"/>
+    <path stroke="none" d="M16.2 39.6 19.8 32 16.2 30 12.6 32z"/>
+    <path stroke="none" d="M4.4 24 12 27.6 14 24 12 20.4z"/>
+    <!-- outward spear -->
+    <path stroke="none" d="M8.4 22.7H.8L-.4 24 .8 25.3h7.6z"/>
+    <path fill="#161412" stroke="none" d="M16.2 20.5 19.7 24 16.2 27.5 12.7 24z"/>
+  </g>
+</g>
+</svg>
