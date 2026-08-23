@@ -1,0 +1,55 @@
+---
+interface Props {
+  axes: string[];
+  tiers: string[];
+}
+
+const { axes, tiers } = Astro.props;
+---
+
+<aside class="kod-plate hall-search" data-hall-search aria-label="Search the hall">
+  <header class="hall-search__head">
+    <p class="hall-search__kicker">Hall</p>
+    <h2 class="hall-search__title">Search</h2>
+  </header>
+  <label class="hall-search__label" for="kod-hall-q">Find a name</label>
+  <div class="hall-search__row">
+    <input
+      id="kod-hall-q"
+      class="hall-search__q"
+      type="search"
+      name="hall-q"
+      autocomplete="off"
+      placeholder="Name"
+      data-hall-q
+    />
+    <button type="button" class="hall-search__clear" data-hall-clear>
+      Clear
+    </button>
+  </div>
+  <div class="hall-search__filters" data-hall-filters>
+    <div class="hall-search__group" role="group" aria-label="Axis">
+      {axes.map((axis) => (
+        <button type="button" class="hall-search__chip" data-filter="axis" data-value={axis} aria-pressed="false">
+          {axis}
+        </button>
+      ))}
+    </div>
+    <div class="hall-search__group" role="group" aria-label="Tier">
+      {tiers.map((tier) => (
+        <button type="button" class="hall-search__chip" data-filter="tier" data-value={tier} aria-pressed="false">
+          {tier}
+        </button>
+      ))}
+    </div>
+    <div class="hall-search__group" role="group" aria-label="Kind">
+      <button type="button" class="hall-search__chip" data-filter="kind" data-value="pc" aria-pressed="false">
+        PC
+      </button>
+      <button type="button" class="hall-search__chip" data-filter="kind" data-value="npc" aria-pressed="false">
+        NPC
+      </button>
+    </div>
+  </div>
+  <ul class="hall-search__hits" data-hall-hits hidden></ul>
+</aside>

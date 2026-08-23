@@ -3,7 +3,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
 import { openSqliteStore, seedDemoCampaign } from '@kodranni/store';
-import { mapMember } from '@kodranni/app';
+import { mapMember, sheetTokenSecret } from '@kodranni/app';
 import type { ChatCard, ChatInteraction, ChatMessageRef, ChatPort } from '@kodranni/chat-port';
 import {
   handleInteraction,
@@ -207,6 +207,44 @@ describe('bot router', () => {
     });
     expect(port.cards).toHaveLength(0);
     expect(port.ephemerals.some((e) => /unknown command/i.test(e))).toBe(true);
+    store.close();
+  });
+
+  it('/live includes a signed Storyteller desk URL for the ST', async () => {
+    const dir = mkdtempSync(join(tmpdir(), 'kod-bot-'));
+    dirs.push(dir);
+    const store = openSqliteStore(join(dir, 'c.sqlite'));
+    seedDemoCampaign(store);
+    mapMember(store, {
+      platform: 'discord',
+      accountId: 'st-1',
+      characterSlug: 'torvald',
+      role: 'storyteller',
+    });
+    const prev = process.env.KODRANNI_SHEET_TOKEN_SECRET;
+    process.env.KODRANNI_SHEET_TOKEN_SECRET = 'test-sheet-secret-do-not-use-in-prod';
+    const port = mockPort();
+    const ctx: BotContext = {
+      store,
+      port,
+      liveBaseUrl: 'http://127.0.0.1:8742',
+      prompts: new Map(),
+      log: () => {},
+    };
+    await handleInteraction(ctx, {
+      type: 'command',
+      id: '4',
+      clientEventId: 'c4',
+      user: { platform: 'discord', accountId: 'st-1', displayName: 'ST' },
+      channelId: 'ch',
+      name: 'live',
+      options: {},
+    });
+    expect(sheetTokenSecret()).toBeTruthy();
+    expect(port.ephemerals.some((e) => e.includes('/community/setup/'))).toBe(true);
+    expect(port.ephemerals.some((e) => e.includes('edit='))).toBe(true);
+    if (prev === undefined) delete process.env.KODRANNI_SHEET_TOKEN_SECRET;
+    else process.env.KODRANNI_SHEET_TOKEN_SECRET = prev;
     store.close();
   });
 

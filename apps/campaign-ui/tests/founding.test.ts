@@ -2,12 +2,15 @@ import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
+import { issueCommunityToken } from '@kodranni/app';
 import { openSqliteStore, seedDemoCampaign } from '@kodranni/store';
 import { foundingOriginOk, PUT } from '../src/pages/api/community/fortunes/founding';
 
 const dirs: string[] = [];
 const prevStore = process.env.KODRANNI_STORE_PATH;
 const prevSlug = process.env.KODRANNI_CAMPAIGN_SLUG;
+const prevSecret = process.env.KODRANNI_SHEET_TOKEN_SECRET;
+const SECRET = 'test-sheet-secret-do-not-use-in-prod';
 
 afterEach(() => {
   for (const d of dirs.splice(0)) rmSync(d, { recursive: true, force: true });
@@ -15,6 +18,8 @@ afterEach(() => {
   else process.env.KODRANNI_STORE_PATH = prevStore;
   if (prevSlug === undefined) delete process.env.KODRANNI_CAMPAIGN_SLUG;
   else process.env.KODRANNI_CAMPAIGN_SLUG = prevSlug;
+  if (prevSecret === undefined) delete process.env.KODRANNI_SHEET_TOKEN_SECRET;
+  else process.env.KODRANNI_SHEET_TOKEN_SECRET = prevSecret;
 });
 
 function liveStore() {
@@ -23,10 +28,22 @@ function liveStore() {
   const path = join(dir, 'c.sqlite');
   const store = openSqliteStore(path);
   seedDemoCampaign(store);
+  const slug = store.getCommunity().slug;
   store.close();
   process.env.KODRANNI_STORE_PATH = path;
+  process.env.KODRANNI_SHEET_TOKEN_SECRET = SECRET;
   delete process.env.KODRANNI_CAMPAIGN_SLUG;
-  return path;
+  return { path, slug };
+}
+
+function setupToken(slug: string): string {
+  return issueCommunityToken({
+    platform: 'discord',
+    accountId: 'st-1',
+    communitySlug: slug,
+    secret: SECRET,
+    ttlSec: 3600,
+  });
 }
 
 const ALL_STEADY = {
@@ -51,6 +68,7 @@ function foundingRequest(init: {
   xfHost?: string;
   xfProto?: string;
   body?: unknown;
+  token?: string | null;
 }): Request {
   const url = 'http://localhost:8742/api/community/fortunes/founding';
   const headers = new Headers({ 'Content-Type': 'application/json' });
@@ -58,6 +76,7 @@ function foundingRequest(init: {
   if (init.host) headers.set('Host', init.host);
   if (init.xfHost) headers.set('X-Forwarded-Host', init.xfHost);
   if (init.xfProto) headers.set('X-Forwarded-Proto', init.xfProto);
+  if (init.token) headers.set('Authorization', `Bearer ${init.token}`);
   return new Request(url, {
     method: 'PUT',
     headers,
@@ -88,7 +107,6 @@ describe('foundingOriginOk', () => {
   });
 
   it('accepts the quick-tunnel pair via X-Forwarded-Host, not rewritten Host', () => {
-    // cloudflared --http-host-header localhost: Host is localhost, Origin is the public URL.
     expect(
       foundingOriginOk(
         new Request(localUrl, {
@@ -152,14 +170,23 @@ describe('foundingOriginOk', () => {
 
 describe('PUT /api/community/fortunes/founding', () => {
   it('403s when Origin is missing', async () => {
-    liveStore();
-    const { status, data } = await put(foundingRequest({ origin: null }));
+    const { slug } = liveStore();
+    const { status, data } = await put(foundingRequest({ origin: null, token: setupToken(slug) }));
     expect(status).toBe(403);
     expect(data.error).toBe('Invalid origin');
   });
 
+  it('401s without a setup token', async () => {
+    liveStore();
+    const { status, data } = await put(
+      foundingRequest({ origin: 'http://localhost:8742', token: null }),
+    );
+    expect(status).toBe(401);
+    expect(String(data.error)).toMatch(/token/i);
+  });
+
   it('stores through the quick-tunnel Origin + localhost Host pair', async () => {
-    const path = liveStore();
+    const { path, slug } = liveStore();
     const { status, data } = await put(
       foundingRequest({
         origin: 'https://abc.trycloudflare.com',
@@ -167,6 +194,7 @@ describe('PUT /api/community/fortunes/founding', () => {
         xfHost: 'abc.trycloudflare.com',
         xfProto: 'https',
         body: { fortunes: MIXED },
+        token: setupToken(slug),
       }),
     );
     expect(status).toBe(200);
@@ -177,12 +205,13 @@ describe('PUT /api/community/fortunes/founding', () => {
   });
 
   it('403s a foreign Origin on the localhost Host pair', async () => {
-    liveStore();
+    const { slug } = liveStore();
     const { status } = await put(
       foundingRequest({
         origin: 'https://evil.example',
         host: 'localhost',
         body: { fortunes: MIXED },
+        token: setupToken(slug),
       }),
     );
     expect(status).toBe(403);
@@ -192,36 +221,41 @@ describe('PUT /api/community/fortunes/founding', () => {
     delete process.env.KODRANNI_STORE_PATH;
     delete process.env.KODRANNI_CAMPAIGN_SLUG;
     const { status, data } = await put(
-      foundingRequest({ origin: 'http://localhost:8742' }),
+      foundingRequest({ origin: 'http://localhost:8742', token: setupToken('vardmark') }),
     );
     expect(status).toBe(503);
     expect(data.error).toBe('No live store configured');
   });
 
   it('400s on invalid JSON and missing fortunes', async () => {
-    liveStore();
+    const { slug } = liveStore();
     const badJson = await PUT({
       request: new Request('http://localhost:8742/api/community/fortunes/founding', {
         method: 'PUT',
         headers: {
           Origin: 'http://localhost:8742',
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${setupToken(slug)}`,
         },
         body: '{',
       }),
     });
     expect(badJson.status).toBe(400);
     const missing = await put(
-      foundingRequest({ origin: 'http://localhost:8742', body: {} }),
+      foundingRequest({ origin: 'http://localhost:8742', body: {}, token: setupToken(slug) }),
     );
     expect(missing.status).toBe(400);
     expect(missing.data.error).toBe('fortunes required');
   });
 
-  it('stores all five and stamps fortunesFoundedAt without kod_edit', async () => {
-    const path = liveStore();
+  it('stores all five and stamps fortunesFoundedAt with a setup token', async () => {
+    const { path, slug } = liveStore();
     const { status, data } = await put(
-      foundingRequest({ origin: 'http://localhost:8742', body: { fortunes: MIXED } }),
+      foundingRequest({
+        origin: 'http://localhost:8742',
+        body: { fortunes: MIXED },
+        token: setupToken(slug),
+      }),
     );
     expect(status).toBe(200);
     expect(data.ok).toBe(true);
@@ -241,25 +275,40 @@ describe('PUT /api/community/fortunes/founding', () => {
     store.close();
   });
 
-  it('409s if already founded', async () => {
-    liveStore();
+  it('overwrites after founding from the Storyteller desk', async () => {
+    const { path, slug } = liveStore();
+    const token = setupToken(slug);
     const first = await put(
-      foundingRequest({ origin: 'http://localhost:8742', body: { fortunes: ALL_STEADY } }),
+      foundingRequest({
+        origin: 'http://localhost:8742',
+        body: { fortunes: ALL_STEADY },
+        token,
+      }),
     );
     expect(first.status).toBe(200);
     const second = await put(
-      foundingRequest({ origin: 'http://localhost:8742', body: { fortunes: MIXED } }),
+      foundingRequest({
+        origin: 'http://localhost:8742',
+        body: { fortunes: MIXED },
+        token,
+      }),
     );
-    expect(second.status).toBe(409);
-    expect(String(second.data.error)).toMatch(/already founded/);
+    expect(second.status).toBe(200);
+    expect(second.data.fortunes).toEqual(MIXED);
+    const store = openSqliteStore(path);
+    expect(store.getCommunity().fortunes).toEqual(MIXED);
+    expect(store.getCommunity().fortuneMeta?.vitality?.source).toBe('st');
+    store.close();
   });
 
   it('400s when a fortune is missing or out of range', async () => {
-    liveStore();
+    const { slug } = liveStore();
+    const token = setupToken(slug);
     const missingKey = await put(
       foundingRequest({
         origin: 'http://localhost:8742',
         body: { fortunes: { vitality: 2, cohesion: 2, surplus: 2, standing: 2 } },
+        token,
       }),
     );
     expect(missingKey.status).toBe(400);
@@ -267,6 +316,7 @@ describe('PUT /api/community/fortunes/founding', () => {
       foundingRequest({
         origin: 'http://localhost:8742',
         body: { fortunes: { ...ALL_STEADY, vitality: 4 } },
+        token,
       }),
     );
     expect(oob.status).toBe(400);

@@ -1,0 +1,86 @@
+---
+export const prerender = false;
+
+import { HIERARCHY_TIERS } from '@kodranni/domain';
+import CampaignLayout from '../../../layouts/CampaignLayout.astro';
+import FortuneHall from '../../../components/FortuneHall.astro';
+import HallSearch from '../../../components/HallSearch.astro';
+import HierarchyBoard from '../../../components/HierarchyBoard.astro';
+import OutsiderPorch from '../../../components/OutsiderPorch.astro';
+import MythList from '../../../components/MythList.astro';
+import InspectDrawer from '../../../components/InspectDrawer.astro';
+import { loadCommunity, whoWeSeeMap } from '../../../data/load';
+import { buildInspectPeople, peopleJson } from '../../../lib/hall-inspect';
+import { resolveSetup, setupCookieHeader } from '../../../lib/setup-auth';
+
+const c = loadCommunity();
+const live = c.source === 'live';
+const auth = live
+  ? resolveSetup(Astro.request, Astro.url, c.slug)
+  : { canEdit: false as const, reason: 'no live store', token: undefined };
+if (auth.canEdit && auth.token && Astro.url.searchParams.has('edit')) {
+  Astro.response.headers.append('Set-Cookie', setupCookieHeader(auth.token));
+}
+
+const tips = whoWeSeeMap(c);
+const people = buildInspectPeople(c);
+const showSearch = auth.canEdit && people.length > 0;
+const tiers = [...HIERARCHY_TIERS];
+const founded = Boolean(c.fortunesFoundedAt);
+---
+
+<CampaignLayout
+  title="Storyteller desk"
+  communityName={c.name}
+  generatedAt={c.generatedAt}
+  primary="community"
+  source={c.source}
+>
+  {
+    !live ? (
+      <section class="kod-plate">
+        <h2>Storyteller desk</h2>
+        <p class="empty">This desk is only on a live campaign store.</p>
+      </section>
+    ) : !auth.canEdit ? (
+      <section class="kod-plate">
+        <h2>Storyteller desk</h2>
+        <p>
+          Open the signed link from the table bot (<code>/live</code>) — the hall itself stays
+          the table’s weather, not this desk.
+        </p>
+      </section>
+    ) : (
+      <>
+        {showSearch && <HallSearch axes={c.hierarchyAxes} tiers={tiers} />}
+        <p class="app__meta">Storyteller desk · signed access · changes land on the hall</p>
+        <div
+          class="hall"
+          data-slug={c.slug}
+          data-source={c.source ?? 'live'}
+          data-founded={c.fortunesFoundedAt ?? ''}
+        >
+          <FortuneHall fortunes={c.fortunes} editable founded={founded} />
+          <HierarchyBoard
+            axes={c.hierarchyAxes}
+            ruler={c.ruler}
+            rulerCharacterSlug={c.rulerCharacterSlug}
+            placements={c.placements}
+            pendingMoves={c.pendingMoves ?? []}
+            tips={tips}
+          />
+          <OutsiderPorch outsiders={c.outsiders ?? []} />
+          <MythList myths={c.myths} />
+        </div>
+
+        <button type="button" id="kod-hall-banner" class="hall-banner" hidden>
+          Record changed — refresh
+        </button>
+
+        <InspectDrawer peopleJson={peopleJson(people)} />
+        <script is:inline src="/hall-client.js"></script>
+        <script is:inline src="/founding-client.js"></script>
+      </>
+    )
+  }
+</CampaignLayout>

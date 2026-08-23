@@ -21,6 +21,7 @@ import {
   startCreateFromBot,
   stReviewCharacter,
   issueSheetToken,
+  issueCommunityToken,
   sheetTokenSecret,
   withEditToken,
 } from '@kodranni/app';
@@ -294,13 +295,25 @@ async function handleCommand(
   if (name === 'live') {
     const live = ctx.liveBaseUrl;
     const arch = ctx.archiveBaseUrl;
-    await ctx.port.replyEphemeral(
-      i,
-      [
-        `**Live sheet:** ${live}`,
-        arch ? `**Archive:** ${arch}` : '**Archive:** (not configured)',
-      ].join('\n'),
-    );
+    const lines = [
+      `**Live sheet:** ${live}`,
+      arch ? `**Archive:** ${arch}` : '**Archive:** (not configured)',
+    ];
+    if (isSt(ctx, user) && sheetTokenSecret()) {
+      try {
+        const token = issueCommunityToken({
+          platform: 'discord',
+          accountId: user.accountId,
+          communitySlug: ctx.store.getCommunity().slug,
+        });
+        lines.push(
+          `**Storyteller desk:** ${withEditToken(`${live.replace(/\/$/, '')}/community/setup/`, token)}`,
+        );
+      } catch {
+        /* leave hall-only */
+      }
+    }
+    await ctx.port.replyEphemeral(i, lines.join('\n'));
     return;
   }
 

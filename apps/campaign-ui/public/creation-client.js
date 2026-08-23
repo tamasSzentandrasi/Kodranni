@@ -371,17 +371,21 @@
     });
   }
 
-  function paintSeal(skillEl, rating) {
+  function paintSeal(skillEl, rating, practice, threshold) {
     skillEl.setAttribute('data-rating', String(rating));
     skillEl.setAttribute('data-rated', rating > 0 ? 'true' : 'false');
-    const n = skillEl.querySelector('.skill-seal__n');
+    const n = skillEl.querySelector('.skill-ring__n');
     if (n) n.textContent = String(rating);
-    const seal = skillEl.querySelector('.skill-seal');
+    const seal = skillEl.querySelector('.skill-ring');
     if (!(seal instanceof HTMLElement)) return;
-    seal.classList.remove('skill-seal--empty', 'skill-seal--practice', 'skill-seal--max');
+    seal.classList.remove('skill-ring--empty', 'skill-ring--practice', 'skill-ring--max');
     const kind = rating <= 0 ? 'empty' : rating >= 3 ? 'max' : 'practice';
-    seal.classList.add('skill-seal--' + kind);
-    const p = rating <= 0 ? 0 : rating >= 3 ? 1 : 0;
+    seal.classList.add('skill-ring--' + kind);
+    let p = 0;
+    if (rating >= 3) p = 1;
+    else if (rating > 0 && Number(threshold) > 0) {
+      p = Math.min(1, Math.max(0, Number(practice) / Number(threshold)));
+    }
     seal.style.setProperty('--p', String(p));
     skillEl.style.setProperty('--p', String(p));
   }
@@ -694,7 +698,7 @@
       const entry =
         Array.isArray(data.skills) && data.skills.find((s) => s && s.name === skill);
       const next = entry ? Number(entry.rating) : 0;
-      paintSeal(skillEl, next);
+      paintSeal(skillEl, next, entry && entry.practice, entry && entry.threshold);
       setBudget(data.creation);
       msg('spend', skill + (refund ? ' lowered.' : ' raised.'), true);
     } catch (e) {
@@ -1055,7 +1059,7 @@
             const name = el.getAttribute('data-spend-skill');
             const entry = data.skills.find((s) => s && s.name === name);
             const rating = entry ? Number(entry.rating) : 0;
-            paintSeal(el, rating);
+            paintSeal(el, rating, entry && entry.practice, entry && entry.threshold);
           });
         }
       }

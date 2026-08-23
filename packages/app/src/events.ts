@@ -170,6 +170,17 @@ function requireFortuneLevel(value: unknown, key: FortuneKey): 0 | 1 | 2 | 3 {
   return value as 0 | 1 | 2 | 3;
 }
 
+function parseFortuneMap(raw: Record<FortuneKey, 0 | 1 | 2 | 3>): Record<FortuneKey, 0 | 1 | 2 | 3> {
+  const fortunes = {} as Record<FortuneKey, 0 | 1 | 2 | 3>;
+  for (const key of FORTUNE_KEYS) {
+    if (raw[key] === undefined) {
+      throw new Error(`missing fortune: ${key}`);
+    }
+    fortunes[key] = requireFortuneLevel(raw[key], key);
+  }
+  return fortunes;
+}
+
 export function setStartingFortunes(
   store: CommunityStorePort,
   cmd: SetStartingFortunesCommand,
@@ -181,13 +192,7 @@ export function setStartingFortunes(
   if (community.fortunesFoundedAt) {
     throw new Error('starting fortunes already founded');
   }
-  const fortunes = {} as Record<FortuneKey, 0 | 1 | 2 | 3>;
-  for (const key of FORTUNE_KEYS) {
-    if (cmd.fortunes[key] === undefined) {
-      throw new Error(`missing fortune: ${key}`);
-    }
-    fortunes[key] = requireFortuneLevel(cmd.fortunes[key], key);
-  }
+  const fortunes = parseFortuneMap(cmd.fortunes);
   const now = new Date().toISOString();
   community.fortunes = fortunes;
   community.fortunesFoundedAt = now;
@@ -203,6 +208,47 @@ export function setStartingFortunes(
     clientEventId: cmd.clientEventId,
     payload: {
       kind: 'fortunes_founded',
+      fortunes,
+      note: cmd.note,
+    },
+  });
+  return community;
+}
+
+export interface SetFortunesCommand {
+  fortunes: Record<FortuneKey, 0 | 1 | 2 | 3>;
+  actor?: string;
+  clientEventId?: string;
+  note?: string;
+}
+
+/** Storyteller desk: overwrite all five after founding (source `'st'`). */
+export function setFortunes(store: CommunityStorePort, cmd: SetFortunesCommand): CommunityRecord {
+  if (cmd.clientEventId && store.hasClientEvent(cmd.clientEventId)) {
+    throw new Error(`duplicate clientEventId: ${cmd.clientEventId}`);
+  }
+  const community = store.getCommunity();
+  if (!community.fortunesFoundedAt) {
+    return setStartingFortunes(store, cmd);
+  }
+  const fortunes = parseFortuneMap(cmd.fortunes);
+  const now = new Date().toISOString();
+  community.fortunes = fortunes;
+  const fortuneMeta: NonNullable<CommunityRecord['fortuneMeta']> = {
+    ...community.fortuneMeta,
+  };
+  for (const key of FORTUNE_KEYS) {
+    fortuneMeta[key] = { at: now, source: 'st' };
+    if (cmd.note) fortuneMeta[key]!.note = cmd.note;
+  }
+  community.fortuneMeta = fortuneMeta;
+  store.putCommunity(community);
+  store.appendEvent({
+    type: 'ResourceChanged',
+    actor: cmd.actor,
+    clientEventId: cmd.clientEventId,
+    payload: {
+      kind: 'fortunes_set',
       fortunes,
       note: cmd.note,
     },

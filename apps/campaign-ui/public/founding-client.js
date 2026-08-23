@@ -1,9 +1,9 @@
 /**
- * One-shot starting Fortunes board. Loaded only on live + unfounded hall.
- * Play-time −/+ is not a web control.
+ * Storyteller desk — set or revise Fortunes. Loaded only on /community/setup/.
+ * The table hall is read-only weather.
  */
 (function () {
-  const sky = document.querySelector('.hall__sky[data-founding]');
+  const sky = document.querySelector('.hall__sky[data-editable]');
   if (!sky) return;
 
   const LABELS = ['Crisis', 'Strained', 'Steady', 'Abundance'];
@@ -12,6 +12,7 @@
   const msgEl = sky.querySelector('[data-founding-msg]');
   if (!(storeBtn instanceof HTMLButtonElement) || !pillars.length) return;
 
+  const founded = sky.getAttribute('data-founded') === 'true';
   let touched = false;
 
   function clamp(n) {
@@ -23,6 +24,10 @@
   }
 
   function syncStore() {
+    if (founded) {
+      storeBtn.disabled = !touched;
+      return;
+    }
     storeBtn.disabled = !(touched || allSteady());
   }
 
@@ -36,31 +41,11 @@
     pillar.setAttribute('aria-label', key + ', ' + label);
     const state = pillar.querySelector('.fortune__state');
     if (state) state.textContent = label;
-    const well = pillar.querySelector('.fortune__well');
-    let ember = pillar.querySelector('.fortune__ember');
-    if (level === 0) {
-      if (!ember && well) {
-        ember = document.createElement('span');
-        ember.className = 'fortune__ember';
-        well.appendChild(ember);
-      }
-    } else if (ember) {
-      ember.remove();
-    }
   }
 
   function markTouched() {
     if (!touched) touched = true;
     syncStore();
-  }
-
-  function levelFromWellClick(well, clientY) {
-    const r = well.getBoundingClientRect();
-    const t = r.height <= 0 ? 1 : (clientY - r.top) / r.height;
-    if (t < 0.25) return 3;
-    if (t < 0.5) return 2;
-    if (t < 0.75) return 1;
-    return 0;
   }
 
   function readFortunes() {
@@ -80,21 +65,12 @@
   }
 
   for (const pillar of pillars) {
-    const well = pillar.querySelector('.fortune__well');
-    const state = pillar.querySelector('.fortune__state');
-    if (well) {
-      well.addEventListener('click', (e) => {
-        setLevel(pillar, levelFromWellClick(well, e.clientY));
-        markTouched();
-      });
-    }
-    if (state) {
-      state.addEventListener('click', () => {
-        const cur = Number(pillar.getAttribute('data-level'));
-        setLevel(pillar, (cur + 1) % 4);
-        markTouched();
-      });
-    }
+    pillar.addEventListener('click', (e) => {
+      if (e.target instanceof Element && e.target.closest('details, a, button')) return;
+      const cur = Number(pillar.getAttribute('data-level'));
+      setLevel(pillar, (cur + 1) % 4);
+      markTouched();
+    });
     pillar.addEventListener('keydown', (e) => {
       const cur = Number(pillar.getAttribute('data-level'));
       if (e.key === 'ArrowUp' || e.key === 'ArrowRight') {
@@ -113,13 +89,17 @@
         e.preventDefault();
         setLevel(pillar, 3);
         markTouched();
+      } else if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        setLevel(pillar, (cur + 1) % 4);
+        markTouched();
       }
     });
   }
 
   storeBtn.addEventListener('click', async () => {
     if (storeBtn.disabled) return;
-    if (allSteady()) {
+    if (!founded && allSteady()) {
       const ok = window.confirm('This people is Steady in every Fortune — store that?');
       if (!ok) return;
     }
@@ -133,10 +113,6 @@
         body: JSON.stringify({ fortunes: readFortunes() }),
       });
       const data = await res.json().catch(() => ({ error: 'Bad response' }));
-      if (res.status === 409) {
-        location.reload();
-        return;
-      }
       if (!res.ok) throw new Error(data.error || res.statusText);
       location.reload();
     } catch (err) {
