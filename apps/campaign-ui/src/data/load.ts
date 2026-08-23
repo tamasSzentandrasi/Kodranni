@@ -79,6 +79,9 @@ function fromSnapshot(
     rulerCharacterSlug: raw.community.rulerCharacterSlug,
     placements: raw.community.placements,
     outsiders: raw.community.outsiders ?? [],
+    fortunesFoundedAt: raw.community.fortunesFoundedAt,
+    fortuneMeta: raw.community.fortuneMeta ?? {},
+    pendingMoves: raw.community.pendingMoves ?? [],
     characters,
     source,
     storePath,
@@ -163,6 +166,8 @@ export function loadCommunity(): ViewCommunity {
   return {
     ...fixtureCommunity,
     placements,
+    pendingMoves: fixtureCommunity.pendingMoves ?? [],
+    fortuneMeta: fixtureCommunity.fortuneMeta ?? {},
     source: 'fixture',
   };
 }

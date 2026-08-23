@@ -1,6 +1,7 @@
 ---
 import { HIERARCHY_TIERS } from '@kodranni/domain';
 import { axisDomain, axisKey } from '../lib/format';
+import { inspectId } from '../lib/hall-inspect';
 import type { FixtureCommunity } from '../data/fixture';
 
 interface Props {
@@ -8,10 +9,11 @@ interface Props {
   ruler: string | null;
   rulerCharacterSlug?: string;
   placements: FixtureCommunity['placements'];
+  pendingMoves?: FixtureCommunity['pendingMoves'];
   tips: Map<string, string>;
 }
 
-const { axes, ruler, rulerCharacterSlug, placements, tips } = Astro.props;
+const { axes, ruler, rulerCharacterSlug, placements, pendingMoves = [], tips } = Astro.props;
 const tiers = [...HIERARCHY_TIERS];
 
 function tipFor(name: string, slug?: string, placementNote?: string): string {
@@ -19,6 +21,12 @@ function tipFor(name: string, slug?: string, placementNote?: string): string {
   if (slug && tips.has(slug)) return tips.get(slug)!;
   return tips.get(name.toLowerCase()) ?? '';
 }
+
+function personKey(name: string, slug?: string): string {
+  return (slug ?? name).toLowerCase();
+}
+
+const rulerId = ruler ? inspectId(ruler, rulerCharacterSlug) : '';
 ---
 
 <section class="hall__crown" aria-labelledby="h-h">
@@ -27,7 +35,7 @@ function tipFor(name: string, slug?: string, placementNote?: string): string {
     <button
       type="button"
       class="info"
-      data-tip="One crown, then parallel ladders. Same four tiers on every axis (Honoured → Outcast). Colour marks the axis; saturation falls toward Outcast. Hover names for who they are."
+      data-tip="One crown, then parallel ladders. Same four tiers on every axis (Honoured → Outcast). Colour marks the axis; saturation falls toward Outcast. Hover names for who they are; click to inspect."
       aria-label="About Hierarchy"
     >
       i
@@ -38,22 +46,18 @@ function tipFor(name: string, slug?: string, placementNote?: string): string {
     <p class="hier-ruler__title">Ruler</p>
     {
       ruler ? (
-        rulerCharacterSlug ? (
-          <a
-            class="member member--pc"
-            href={`/characters/${rulerCharacterSlug}/`}
-            data-tip={tipFor(ruler, rulerCharacterSlug)}
-            style="display:inline-flex;margin:0.35rem auto 0"
-          >
-            <span class="member__dot" />
-            {ruler}
-          </a>
-        ) : (
-          <span class="member" data-tip={tipFor(ruler)} style="display:inline-flex;margin:0.35rem auto 0">
-            <span class="member__dot" />
-            {ruler}
-          </span>
-        )
+        <span
+          class:list={['member', rulerCharacterSlug && 'member--pc']}
+          data-inspect-id={rulerId}
+          data-name={ruler}
+          data-tip={tipFor(ruler, rulerCharacterSlug)}
+          role="button"
+          tabindex="0"
+          style="display:inline-flex;margin:0.35rem auto 0"
+        >
+          <span class="member__dot" />
+          {ruler}
+        </span>
       ) : (
         <p class="hier-ruler__note">One seat for the whole community — none claimed.</p>
       )
@@ -67,10 +71,11 @@ function tipFor(name: string, slug?: string, placementNote?: string): string {
     {
       axes.map((axis, ai) => {
         const onAxis = placements.filter((p) => p.axis === axis);
+        const pendingOnAxis = pendingMoves.filter((m) => m.axis === axis);
         const key = axisKey(axis, ai);
         return (
-          <div class="kod-plate hier-axis" data-axis={key}>
-            <div class="hier-axis__head">
+          <div class="kod-plate hier-axis" data-axis={key} data-axis-name={axis}>
+            <div class="hier-axis__head" tabindex={ai === 0 ? 0 : -1}>
               <p class="hier-axis__name">{axis}</p>
               <p class="hier-axis__domain">{axisDomain(axis)}</p>
               <span class="hier-axis__count">{onAxis.length} placed</span>
@@ -78,22 +83,31 @@ function tipFor(name: string, slug?: string, placementNote?: string): string {
             <ol class="hier-rungs">
               {tiers.map((tier) => {
                 const members = onAxis.filter((p) => p.tier === tier);
-                const empty = members.length === 0;
-                const defaultCollapsed = empty || (tier === 'Outcast' && members.length > 5);
+                const destPending = pendingOnAxis.filter((m) => m.toTier === tier);
+                const memberKeys = new Set(members.map((m) => personKey(m.name, m.characterSlug)));
+                const extraPending = destPending.filter(
+                  (m) => !memberKeys.has(personKey(m.name, m.characterSlug)),
+                );
+                const hasPending = destPending.length > 0;
+                const empty = members.length === 0 && extraPending.length === 0;
+                const defaultCollapsed =
+                  hasPending ? false : empty || (tier === 'Outcast' && members.length > 5);
                 return (
                   <li
                     class="hier-rung"
                     data-tier={tier}
                     data-collapsed={defaultCollapsed ? 'true' : 'false'}
+                    data-pending={hasPending ? 'true' : undefined}
                   >
                     <button
                       type="button"
                       class="hier-rung__head"
                       data-rung-toggle
+                      tabindex="-1"
                       aria-expanded={defaultCollapsed ? 'false' : 'true'}
                     >
                       <span class="hier-rung__tier">{tier}</span>
-                      <span class="hier-rung__n">{members.length}</span>
+                      <span class="hier-rung__n">{members.length + extraPending.length}</span>
                       <span class="hier-rung__chev" aria-hidden="true">
                         {defaultCollapsed ? '▸' : '▾'}
                       </span>
@@ -102,28 +116,65 @@ function tipFor(name: string, slug?: string, placementNote?: string): string {
                       {empty ? (
                         <li class="empty">—</li>
                       ) : (
-                        members.map((m) => {
-                          const tip = tipFor(m.name, m.characterSlug, m.note);
-                          return (
-                            <li>
-                              {m.characterSlug ? (
-                                <a
-                                  class="member member--pc"
-                                  href={`/characters/${m.characterSlug}/`}
+                        <>
+                          {members.map((m) => {
+                            const tip = tipFor(m.name, m.characterSlug, m.note);
+                            const pendingHere = destPending.some(
+                              (p) => personKey(p.name, p.characterSlug) === personKey(m.name, m.characterSlug),
+                            );
+                            return (
+                              <li>
+                                <span
+                                  class:list={[
+                                    'member',
+                                    m.characterSlug && 'member--pc',
+                                    pendingHere && 'member--pending',
+                                  ]}
+                                  data-inspect-id={inspectId(m.name, m.characterSlug)}
+                                  data-name={m.name}
                                   data-tip={tip}
+                                  role="button"
+                                  tabindex="-1"
                                 >
+                                  {pendingHere && (
+                                    <span class="member__knot" aria-hidden="true">
+                                      ◆
+                                    </span>
+                                  )}
                                   <span class="member__dot" />
                                   {m.name}
-                                </a>
-                              ) : (
-                                <span class="member" data-tip={tip} tabindex="0">
-                                  <span class="member__dot" />
-                                  {m.name}
+                                  {pendingHere && <span class="member__pending">pending</span>}
                                 </span>
-                              )}
-                            </li>
-                          );
-                        })
+                              </li>
+                            );
+                          })}
+                          {extraPending.map((m) => {
+                            const tip = tipFor(m.name, m.characterSlug, m.note);
+                            return (
+                              <li>
+                                <span
+                                  class:list={[
+                                    'member',
+                                    'member--pending',
+                                    m.characterSlug && 'member--pc',
+                                  ]}
+                                  data-inspect-id={inspectId(m.name, m.characterSlug)}
+                                  data-name={m.name}
+                                  data-tip={tip}
+                                  role="button"
+                                  tabindex="-1"
+                                >
+                                  <span class="member__knot" aria-hidden="true">
+                                    ◆
+                                  </span>
+                                  <span class="member__dot" />
+                                  {m.name}
+                                  <span class="member__pending">pending</span>
+                                </span>
+                              </li>
+                            );
+                          })}
+                        </>
                       )}
                     </ul>
                   </li>

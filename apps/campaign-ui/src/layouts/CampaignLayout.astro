@@ -63,6 +63,7 @@ const sourceLabel =
           head.addEventListener('click', () => {
             const rung = head.closest('.hier-rung, .rung');
             if (!rung) return;
+            if (rung.getAttribute('data-pending') === 'true') return;
             const c = rung.getAttribute('data-collapsed') === 'true';
             rung.setAttribute('data-collapsed', c ? 'false' : 'true');
             head.setAttribute('aria-expanded', c ? 'true' : 'false');

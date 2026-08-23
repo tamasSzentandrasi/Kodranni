@@ -1,0 +1,588 @@
+/**
+ * Hall-only: inspect drawer, nave search, collapse persist, roving tabindex, rev poll.
+ * Loaded from community/index.astro — not CampaignLayout. No founding handlers.
+ */
+(function () {
+  const hall = document.querySelector('.hall');
+  if (!hall) return;
+
+  const slug = hall.getAttribute('data-slug') || 'hall';
+  const storageKey = 'kod-hall:' + slug;
+  const POLL_MS = 8000;
+
+  /** @type {{ q: string, collapse: Record<string, boolean> }} */
+  let bag = { q: '', collapse: {} };
+
+  function loadBag() {
+    try {
+      const raw = sessionStorage.getItem(storageKey);
+      if (!raw) return;
+      const parsed = JSON.parse(raw);
+      bag.q = typeof parsed.q === 'string' ? parsed.q : '';
+      bag.collapse =
+        parsed.collapse && typeof parsed.collapse === 'object' ? parsed.collapse : {};
+    } catch {
+      /* ignore */
+    }
+  }
+
+  function saveBag() {
+    try {
+      sessionStorage.setItem(storageKey, JSON.stringify(bag));
+    } catch {
+      /* ignore */
+    }
+  }
+
+  function rungKey(rung) {
+    const axis = rung.closest('.hier-axis');
+    const axisName = (axis && axis.getAttribute('data-axis-name')) || '';
+    const tier = rung.getAttribute('data-tier') || '';
+    return axisName + ':' + tier;
+  }
+
+  function setCollapsed(rung, collapsed) {
+    if (rung.getAttribute('data-pending') === 'true') collapsed = false;
+    rung.setAttribute('data-collapsed', collapsed ? 'true' : 'false');
+    const head = rung.querySelector('[data-rung-toggle]');
+    if (head) head.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+    const chev = rung.querySelector('.hier-rung__chev, .rung__chev');
+    if (chev) chev.textContent = collapsed ? '▸' : '▾';
+  }
+
+  function persistCollapse() {
+    const collapse = {};
+    document.querySelectorAll('.hier-rung[data-tier]').forEach((rung) => {
+      collapse[rungKey(rung)] = rung.getAttribute('data-collapsed') === 'true';
+    });
+    bag.collapse = collapse;
+    saveBag();
+  }
+
+  function restoreCollapse() {
+    document.querySelectorAll('.hier-rung[data-tier]').forEach((rung) => {
+      const stored = bag.collapse[rungKey(rung)];
+      if (typeof stored === 'boolean') setCollapsed(rung, stored);
+      else if (rung.getAttribute('data-pending') === 'true') setCollapsed(rung, false);
+    });
+  }
+
+  // —— Inspect drawer ————————————————————————————————————————————————
+
+  /** @type {Map<string, Record<string, unknown>>} */
+  const people = new Map();
+  try {
+    const node = document.getElementById('kod-hall-people');
+    const list = node ? JSON.parse(node.textContent || '[]') : [];
+    for (const p of list) {
+      if (p && p.id) {
+        people.set(String(p.id), p);
+        if (p.name) people.set(String(p.name).toLowerCase(), p);
+        if (p.slug) people.set(String(p.slug).toLowerCase(), p);
+      }
+    }
+  } catch {
+    /* ignore */
+  }
+
+  const drawer = document.getElementById('kod-inspect');
+  const panel = document.getElementById('kod-inspect-panel');
+  const titleEl = document.getElementById('kod-inspect-title');
+  const bodyEl = document.getElementById('kod-inspect-body');
+  const closeBtn = drawer && drawer.querySelector('[data-inspect-close]');
+  let inspectReturn = null;
+
+  function inspectOpen() {
+    return drawer && drawer.getAttribute('data-open') === 'true';
+  }
+
+  function hideTip() {
+    const tip = document.getElementById('kod-tip');
+    if (tip) tip.hidden = true;
+  }
+
+  function el(tag, className, text) {
+    const n = document.createElement(tag);
+    if (className) n.className = className;
+    if (text != null) n.textContent = text;
+    return n;
+  }
+
+  function fillInspect(person) {
+    if (!titleEl || !bodyEl) return;
+    titleEl.textContent = person.name || 'Inspect';
+    bodyEl.replaceChildren();
+
+    const kicker = el('p', 'kod-drawer__kicker');
+    const bits = [];
+    if (person.ruler) bits.push('Ruler');
+    if (person.pc) bits.push('PC');
+    else if (person.kind === 'outsider') bits.push('Outsider');
+    else bits.push('NPC');
+    kicker.textContent = bits.join(' · ');
+    bodyEl.appendChild(kicker);
+
+    if (person.faction) {
+      const fac = el('p', 'kod-drawer__faction', 'Faction: ' + person.faction);
+      bodyEl.appendChild(fac);
+    }
+
+    const who = el('blockquote', 'kod-drawer__who');
+    const quote = person.whoWeSee ? String(person.whoWeSee) : 'No who-we-see yet.';
+    who.textContent = quote;
+    bodyEl.appendChild(who);
+
+    if (person.kind === 'outsider') {
+      bodyEl.appendChild(el('p', 'kod-drawer__note', 'Not on a ladder.'));
+    }
+
+    const placements = Array.isArray(person.placements) ? person.placements : [];
+    const pending = Array.isArray(person.pending) ? person.pending : [];
+    if (placements.length || pending.length) {
+      const list = el('ul', 'kod-drawer__places');
+      const pendingByAxis = new Map();
+      for (const mv of pending) {
+        pendingByAxis.set(mv.axis, mv);
+      }
+      const seen = new Set();
+      for (const pl of placements) {
+        seen.add(pl.axis);
+        const li = el('li', '');
+        const mv = pendingByAxis.get(pl.axis);
+        if (mv && mv.fromTier === pl.tier) {
+          li.textContent =
+            pl.axis + ': ' + pl.tier + ' → ' + mv.toTier + ' (pending)';
+        } else if (mv) {
+          li.textContent =
+            pl.axis +
+            ': ' +
+            pl.tier +
+            ' · pending: ' +
+            mv.fromTier +
+            ' → ' +
+            mv.toTier;
+        } else {
+          li.textContent = pl.axis + ': ' + pl.tier;
+        }
+        list.appendChild(li);
+      }
+      for (const mv of pending) {
+        if (seen.has(mv.axis)) continue;
+        const li = el('li', '');
+        li.textContent = 'pending: ' + mv.fromTier + ' → ' + mv.toTier + ' (' + mv.axis + ')';
+        list.appendChild(li);
+      }
+      bodyEl.appendChild(list);
+    }
+
+    if (person.slug) {
+      const a = el('a', 'kod-drawer__sheet', 'Open sheet');
+      a.href = '/characters/' + encodeURIComponent(String(person.slug)) + '/';
+      bodyEl.appendChild(a);
+    }
+  }
+
+  function tabbables() {
+    if (!panel) return [];
+    return [...panel.querySelectorAll('button, a[href], input, [tabindex]:not([tabindex="-1"])')].filter(
+      (n) => !n.hasAttribute('disabled') && n.tabIndex !== -1 && n.offsetParent !== null,
+    );
+  }
+
+  function openInspect(fromEl) {
+    const id = fromEl.getAttribute('data-inspect-id');
+    const person = (id && people.get(id)) || people.get((fromEl.getAttribute('data-name') || '').toLowerCase());
+    if (!person || !drawer) return;
+    inspectReturn = fromEl;
+    fillInspect(person);
+    drawer.hidden = false;
+    drawer.setAttribute('data-open', 'true');
+    hideTip();
+    const focusTarget = closeBtn || panel;
+    if (focusTarget) focusTarget.focus();
+  }
+
+  function closeInspect() {
+    if (!drawer) return;
+    drawer.setAttribute('data-open', 'false');
+    drawer.hidden = true;
+    const back = inspectReturn;
+    inspectReturn = null;
+    if (back && typeof back.focus === 'function') back.focus();
+  }
+
+  function onInspectClick(e) {
+    if (e.target.closest('.info, [data-rung-toggle]')) return;
+    const host = e.target.closest('[data-inspect-id]');
+    if (!host) return;
+    e.preventDefault();
+    openInspect(host);
+  }
+
+  function onInspectKey(e) {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    if (e.target.closest('[data-rung-toggle], .hall-search, .kod-btn, a.kod-drawer__sheet')) return;
+    const host = e.target.closest('[data-inspect-id]');
+    if (!host || e.target !== host) return;
+    e.preventDefault();
+    openInspect(host);
+  }
+
+  document.addEventListener('click', onInspectClick);
+  document.addEventListener('keydown', onInspectKey);
+
+  if (closeBtn) closeBtn.addEventListener('click', () => closeInspect());
+  const dismiss = drawer && drawer.querySelector('[data-inspect-dismiss]');
+  if (dismiss) dismiss.addEventListener('click', () => closeInspect());
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape' || !inspectOpen()) return;
+    e.preventDefault();
+    closeInspect();
+  });
+
+  if (panel) {
+    panel.addEventListener('keydown', (e) => {
+      if (e.key !== 'Tab' || !inspectOpen()) return;
+      const list = tabbables();
+      if (list.length === 0) return;
+      const first = list[0];
+      const last = list[list.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    });
+  }
+
+  // —— Search ————————————————————————————————————————————————————————
+
+  const searchRoot = document.querySelector('[data-hall-search]');
+  const qInput = document.querySelector('[data-hall-q]');
+  const hitsEl = document.querySelector('[data-hall-hits]');
+  const filters = { axis: '', tier: '', kind: '' };
+
+  function activeFilters() {
+    return Boolean(filters.axis || filters.tier || filters.kind || (qInput && qInput.value.trim()));
+  }
+
+  function chipMatch(el) {
+    const name = (el.getAttribute('data-name') || el.textContent || '').toLowerCase();
+    const q = (qInput && qInput.value.trim().toLowerCase()) || '';
+    const axisEl = el.closest('.hier-axis');
+    const rung = el.closest('.hier-rung');
+    const elAxis = (axisEl && axisEl.getAttribute('data-axis-name')) || '';
+    const elTier = (rung && rung.getAttribute('data-tier')) || '';
+    const pc = el.classList.contains('member--pc');
+    if (q && !name.includes(q)) return false;
+    if (filters.axis && elAxis !== filters.axis) return false;
+    if (filters.tier && elTier !== filters.tier) return false;
+    if (filters.kind === 'pc' && !pc) return false;
+    if (filters.kind === 'npc' && pc) return false;
+    return true;
+  }
+
+  function applySearch() {
+    const on = activeFilters();
+    document.querySelectorAll('.member[data-inspect-id], .outsider[data-inspect-id]').forEach((el) => {
+      if (!on) {
+        el.removeAttribute('data-search');
+        return;
+      }
+      el.setAttribute('data-search', chipMatch(el) ? 'hit' : 'miss');
+    });
+
+    if (!hitsEl) return;
+    hitsEl.replaceChildren();
+    const q = (qInput && qInput.value.trim()) || '';
+    if (!q) {
+      hitsEl.hidden = true;
+      return;
+    }
+    const seen = new Set();
+    const qn = q.toLowerCase();
+    const hits = [];
+    people.forEach((p, key) => {
+      if (seen.has(p)) return;
+      if (key !== p.id) return;
+      seen.add(p);
+      if (String(p.name || '').toLowerCase().includes(qn)) hits.push(p);
+    });
+    if (hits.length === 0) {
+      hitsEl.hidden = true;
+      return;
+    }
+    hitsEl.hidden = false;
+    for (const p of hits) {
+      const li = document.createElement('li');
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'hall-search__hit';
+      btn.textContent = p.name + (p.kind === 'outsider' ? ' (outsider)' : '');
+      btn.setAttribute('data-inspect-id', p.id);
+      btn.setAttribute('data-name', p.name);
+      li.appendChild(btn);
+      hitsEl.appendChild(li);
+    }
+  }
+
+  function bindSearch() {
+    if (!searchRoot) return;
+    if (qInput) {
+      qInput.value = bag.q;
+      qInput.addEventListener('input', () => {
+        bag.q = qInput.value;
+        saveBag();
+        applySearch();
+      });
+    }
+    const clearBtn = searchRoot.querySelector('[data-hall-clear]');
+    if (clearBtn) {
+      clearBtn.addEventListener('click', () => {
+        if (qInput) qInput.value = '';
+        bag.q = '';
+        filters.axis = '';
+        filters.tier = '';
+        filters.kind = '';
+        searchRoot.querySelectorAll('[data-filter]').forEach((btn) => {
+          btn.setAttribute('aria-pressed', 'false');
+        });
+        saveBag();
+        applySearch();
+        if (qInput) qInput.focus();
+      });
+    }
+    searchRoot.querySelectorAll('[data-filter]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const key = btn.getAttribute('data-filter');
+        const value = btn.getAttribute('data-value') || '';
+        if (!key || !(key in filters)) return;
+        const on = filters[key] === value;
+        filters[key] = on ? '' : value;
+        searchRoot.querySelectorAll('[data-filter="' + key + '"]').forEach((b) => {
+          b.setAttribute('aria-pressed', b.getAttribute('data-value') === filters[key] ? 'true' : 'false');
+        });
+        applySearch();
+      });
+    });
+  }
+
+  // —— Roving tabindex ————————————————————————————————————————————————
+
+  function axisColumns() {
+    return [...document.querySelectorAll('.hall__nave .hier-axis')];
+  }
+
+  function itemsInAxis(axis) {
+    const items = [];
+    const head = axis.querySelector('.hier-axis__head');
+    if (head) items.push(head);
+    axis.querySelectorAll('.hier-rung').forEach((rung) => {
+      const rh = rung.querySelector('.hier-rung__head');
+      if (rh) items.push(rh);
+      if (rung.getAttribute('data-collapsed') !== 'true') {
+        rung.querySelectorAll('.member').forEach((m) => items.push(m));
+      }
+    });
+    return items;
+  }
+
+  function allRoving() {
+    return axisColumns().flatMap(itemsInAxis);
+  }
+
+  function currentRoving() {
+    const all = allRoving();
+    const ae = document.activeElement;
+    if (ae && all.includes(ae)) return ae;
+    return all.find((n) => n.getAttribute('tabindex') === '0') || all[0] || null;
+  }
+
+  function setRovingStop(el) {
+    allRoving().forEach((n) => n.setAttribute('tabindex', '-1'));
+    if (el) {
+      el.setAttribute('tabindex', '0');
+    }
+  }
+
+  function initRoving() {
+    const cols = axisColumns();
+    cols.forEach((axis, i) => {
+      itemsInAxis(axis).forEach((n) => n.setAttribute('tabindex', '-1'));
+      const head = axis.querySelector('.hier-axis__head');
+      if (head) head.setAttribute('tabindex', i === 0 ? '0' : '-1');
+    });
+  }
+
+  function moveRoving(dx, dy) {
+    const cols = axisColumns();
+    if (cols.length === 0) return;
+    const cur = currentRoving();
+    if (!cur) return;
+    const axis = cur.closest('.hier-axis');
+    const colIdx = Math.max(0, cols.indexOf(axis));
+    if (dx !== 0) {
+      const nextCol = cols[colIdx + dx];
+      if (!nextCol) return;
+      const items = itemsInAxis(nextCol);
+      const tier = (cur.closest('.hier-rung') && cur.closest('.hier-rung').getAttribute('data-tier')) || '';
+      let dest =
+        (tier &&
+          items.find(
+            (n) =>
+              n.classList.contains('hier-rung__head') &&
+              n.closest('.hier-rung') &&
+              n.closest('.hier-rung').getAttribute('data-tier') === tier,
+          )) ||
+        items[0];
+      if (!dest) return;
+      setRovingStop(dest);
+      dest.focus();
+      return;
+    }
+    const items = itemsInAxis(axis || cols[colIdx]);
+    const idx = items.indexOf(cur);
+    const dest = items[idx + dy];
+    if (!dest) return;
+    setRovingStop(dest);
+    dest.focus();
+  }
+
+  const nave = document.querySelector('.hall__nave');
+  if (nave) {
+    nave.addEventListener('keydown', (e) => {
+      if (inspectOpen()) return;
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        moveRoving(0, 1);
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        moveRoving(0, -1);
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        moveRoving(1, 0);
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        moveRoving(-1, 0);
+      }
+    });
+    nave.addEventListener('focusin', (e) => {
+      const host = e.target.closest('.hier-axis__head, .hier-rung__head, .member');
+      if (host && nave.contains(host)) setRovingStop(host);
+    });
+  }
+
+  // —— Collapse persist after layout toggle ————————————————————————————
+
+  function bindRungPersist() {
+    hall.addEventListener(
+      'click',
+      (e) => {
+        const head = e.target.closest('[data-rung-toggle]');
+        if (!head || !hall.contains(head)) return;
+        const rung = head.closest('.hier-rung, .rung');
+        if (!rung) return;
+        if (rung.getAttribute('data-pending') === 'true') {
+          e.stopPropagation();
+          setCollapsed(rung, false);
+          persistCollapse();
+        }
+      },
+      true,
+    );
+    document.querySelectorAll('.hall [data-rung-toggle]').forEach((head) => {
+      head.addEventListener('click', () => {
+        const rung = head.closest('.hier-rung, .rung');
+        if (!rung) return;
+        if (rung.getAttribute('data-pending') === 'true') setCollapsed(rung, false);
+        persistCollapse();
+      });
+    });
+  }
+
+  // —— Live poll ——————————————————————————————————————————————————————
+
+  const source = hall.getAttribute('data-source') || '';
+  const founded = hall.getAttribute('data-founded') || '';
+  const banner = document.getElementById('kod-hall-banner');
+  let lastRev = null;
+  let timer = null;
+  let abort = null;
+
+  function stopPoll() {
+    if (timer != null) {
+      clearInterval(timer);
+      timer = null;
+    }
+    if (abort) {
+      abort.abort();
+      abort = null;
+    }
+  }
+
+  function onRevChanged(rev) {
+    lastRev = rev;
+    if (inspectOpen()) {
+      if (banner) banner.hidden = false;
+      return;
+    }
+    location.reload();
+  }
+
+  async function tick() {
+    if (abort) abort.abort();
+    abort = new AbortController();
+    try {
+      const res = await fetch('/api/community/rev', {
+        cache: 'no-store',
+        signal: abort.signal,
+        headers: { Accept: 'application/json' },
+      });
+      if (!res.ok) return;
+      const data = await res.json();
+      if (!data || typeof data.rev !== 'string') return;
+      if (lastRev == null) {
+        lastRev = data.rev;
+        return;
+      }
+      if (data.rev !== lastRev) onRevChanged(data.rev);
+    } catch (e) {
+      if (e && e.name !== 'AbortError') console.warn('hall rev poll failed');
+    }
+  }
+
+  function startPoll() {
+    stopPoll();
+    if (document.visibilityState !== 'visible') return;
+    timer = setInterval(tick, POLL_MS);
+  }
+
+  function bindPoll() {
+    if (source !== 'live' || !founded) return;
+    if (banner) banner.addEventListener('click', () => location.reload());
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') startPoll();
+      else stopPoll();
+    });
+    if (document.visibilityState === 'visible') startPoll();
+  }
+
+  function boot() {
+    loadBag();
+    restoreCollapse();
+    bindRungPersist();
+    bindSearch();
+    applySearch();
+    initRoving();
+    bindPoll();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot);
+  } else {
+    boot();
+  }
+})();

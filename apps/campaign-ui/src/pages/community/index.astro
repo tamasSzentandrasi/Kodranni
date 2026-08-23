@@ -1,15 +1,21 @@
 ---
 export const prerender = false;
 
+import { HIERARCHY_TIERS } from '@kodranni/domain';
 import CampaignLayout from '../../layouts/CampaignLayout.astro';
 import FortuneHall from '../../components/FortuneHall.astro';
 import HierarchyBoard from '../../components/HierarchyBoard.astro';
 import OutsiderPorch from '../../components/OutsiderPorch.astro';
 import MythList from '../../components/MythList.astro';
+import InspectDrawer from '../../components/InspectDrawer.astro';
 import { loadCommunity, whoWeSeeMap } from '../../data/load';
+import { buildInspectPeople, hallIsBusy, peopleJson } from '../../lib/hall-inspect';
 
 const c = loadCommunity();
 const tips = whoWeSeeMap(c);
+const people = buildInspectPeople(c);
+const showSearch = hallIsBusy(c);
+const tiers = [...HIERARCHY_TIERS];
 ---
 
 <CampaignLayout
@@ -19,16 +25,77 @@ const tips = whoWeSeeMap(c);
   primary="community"
   source={c.source}
 >
-  <div class="hall">
+  <div
+    class="hall"
+    data-slug={c.slug}
+    data-source={c.source ?? 'fixture'}
+    data-founded={c.fortunesFoundedAt ?? ''}
+  >
+    {
+      showSearch && (
+        <div class="hall__search hall-search" data-hall-search>
+          <label class="hall-search__label" for="kod-hall-q">
+            Search the hall
+          </label>
+          <div class="hall-search__row">
+            <input
+              id="kod-hall-q"
+              class="hall-search__q"
+              type="search"
+              name="hall-q"
+              autocomplete="off"
+              placeholder="Find a name"
+              data-hall-q
+            />
+            <button type="button" class="kod-btn" data-hall-clear>
+              Clear
+            </button>
+          </div>
+          <div class="hall-search__filters" data-hall-filters>
+            <div class="hall-search__group" role="group" aria-label="Axis">
+              {c.hierarchyAxes.map((axis) => (
+                <button type="button" class="hall-search__chip" data-filter="axis" data-value={axis} aria-pressed="false">
+                  {axis}
+                </button>
+              ))}
+            </div>
+            <div class="hall-search__group" role="group" aria-label="Tier">
+              {tiers.map((tier) => (
+                <button type="button" class="hall-search__chip" data-filter="tier" data-value={tier} aria-pressed="false">
+                  {tier}
+                </button>
+              ))}
+            </div>
+            <div class="hall-search__group" role="group" aria-label="Kind">
+              <button type="button" class="hall-search__chip" data-filter="kind" data-value="pc" aria-pressed="false">
+                PC
+              </button>
+              <button type="button" class="hall-search__chip" data-filter="kind" data-value="npc" aria-pressed="false">
+                NPC
+              </button>
+            </div>
+          </div>
+          <ul class="hall-search__hits" data-hall-hits hidden></ul>
+        </div>
+      )
+    }
     <FortuneHall fortunes={c.fortunes} />
     <HierarchyBoard
       axes={c.hierarchyAxes}
       ruler={c.ruler}
       rulerCharacterSlug={c.rulerCharacterSlug}
       placements={c.placements}
+      pendingMoves={c.pendingMoves ?? []}
       tips={tips}
     />
     <OutsiderPorch outsiders={c.outsiders ?? []} />
     <MythList myths={c.myths} />
   </div>
+
+  <button type="button" id="kod-hall-banner" class="hall-banner" hidden>
+    Record changed — refresh
+  </button>
+
+  <InspectDrawer peopleJson={peopleJson(people)} />
+  <script is:inline src="/hall-client.js"></script>
 </CampaignLayout>

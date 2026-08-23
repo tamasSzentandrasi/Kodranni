@@ -1,5 +1,6 @@
 ---
 import { factionHue } from '../lib/format';
+import { inspectId } from '../lib/hall-inspect';
 import type { FixtureCommunity } from '../data/fixture';
 
 interface Props {
@@ -16,7 +17,7 @@ const none = outsiders.length === 0;
     <button
       type="button"
       class="info"
-      data-tip="Named individuals only. Faction is a coloured property. Not on any ladder until inducted."
+      data-tip="Named individuals only. Faction is a coloured property. Not on any ladder until inducted. Click a name to inspect."
       aria-label="About Outsiders"
     >
       i
@@ -30,20 +31,17 @@ const none = outsiders.length === 0;
         outsiders.map((o) => {
           const hue = o.faction ? factionHue(o.faction) : 0;
           return (
-            <li class="outsider" style={o.faction ? `--faction-h: ${hue}` : undefined}>
-              {o.characterSlug ? (
-                <a class="outsider__name" href={`/characters/${o.characterSlug}/`}>
-                  {o.name}
-                </a>
-              ) : (
-                <span class="outsider__name">{o.name}</span>
-              )}
+            <li
+              class="outsider"
+              style={o.faction ? `--faction-h: ${hue}` : undefined}
+              data-inspect-id={inspectId(o.name, o.characterSlug)}
+              data-name={o.name}
+              data-tip={o.note ?? ''}
+              role="button"
+              tabindex="0"
+            >
+              <span class="outsider__name">{o.name}</span>
               {o.faction && <span class="outsider__faction">{o.faction}</span>}
-              {o.note && (
-                <button type="button" class="info" data-tip={o.note} aria-label={`About ${o.name}`}>
-                  i
-                </button>
-              )}
             </li>
           );
         })

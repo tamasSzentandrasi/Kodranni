@@ -79,6 +79,21 @@ export interface FixtureCommunity {
     note?: string;
   }[];
   outsiders: { name: string; faction?: string; note?: string; characterSlug?: string }[];
+  /** Live hall only; archive snapshots omit. */
+  fortunesFoundedAt?: string;
+  fortuneMeta?: Partial<
+    Record<string, { at: string; source: 'founding' | 'st' | 'pivotal'; note?: string }>
+  >;
+  pendingMoves?: {
+    id: string;
+    name: string;
+    characterSlug?: string;
+    axis: string;
+    fromTier: string;
+    toTier: string;
+    requestedBy?: string;
+    note?: string;
+  }[];
   characters: FixtureCharacter[];
 }
 
