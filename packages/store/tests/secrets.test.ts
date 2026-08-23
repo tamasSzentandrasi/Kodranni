@@ -33,19 +33,24 @@ describe('loadSecretsIntoEnv', () => {
       'discord-botToken': 'disc-token',
       'discord-serverID': '111',
       'discord-playChannelID': '222',
+      'discord-storytellerRoleID': '555',
       'fluxer-botToken': 'flux-token',
       'fluxer-serverID': '333',
       'cf-tunnel-token': 'cf-token',
+      'cf-tunnel-hostname': 'live.example.com',
     });
     const env: NodeJS.ProcessEnv = { KODRANNI_HOME: home };
     const loaded = loadSecretsIntoEnv(env);
     expect(env.DISCORD_BOT_TOKEN).toBe('disc-token');
     expect(env.DISCORD_GUILD_ID).toBe('111');
     expect(env.DISCORD_PLAY_CHANNEL_ID).toBe('222');
+    expect(env.DISCORD_STORYTELLER_ROLE_ID).toBe('555');
     expect(env.FLUXER_BOT_TOKEN).toBe('flux-token');
     expect(env.FLUXER_GUILD_ID).toBe('333');
     expect(env.KODRANNI_CF_TUNNEL_TOKEN).toBe('cf-token');
+    expect(env.KODRANNI_TUNNEL_HOSTNAME).toBe('live.example.com');
     expect(loaded.setFromFiles).toContain('DISCORD_BOT_TOKEN');
+    expect(loaded.setFromFiles).toContain('DISCORD_STORYTELLER_ROLE_ID');
     expect(loaded.loosened).toContain('discord-botToken');
     const mode = statSync(join(home, 'secrets', 'discord-botToken')).mode & 0o777;
     expect(mode).toBe(0o600);

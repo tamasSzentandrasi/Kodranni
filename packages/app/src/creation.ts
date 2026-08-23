@@ -486,7 +486,7 @@ export function spendFoundation(
   const to = cmd.toRating ?? from + 1;
   if (to !== from + 1) throw new Error('raise Foundations one rank at a time');
   if (to > 3) throw new Error('Foundation max 3 without ST+Trait path');
-  if (from < 1) throw new Error('Foundation 0 requires Storyteller approval');
+  if (from < 0) throw new Error('invalid Foundation rating');
   const cost = foundationStepCost(from);
   if (creation.foundationPoints < cost) {
     throw new Error(`need ${cost} Foundation points (have ${creation.foundationPoints})`);
@@ -796,7 +796,8 @@ export function spendWordWanting(
     case 'plus_one_foundation': {
       if (!cmd.foundation) throw new Error('foundation required');
       removeSkillRanks(3);
-      const from = ch.foundations[cmd.foundation] ?? 1;
+      const from = ch.foundations[cmd.foundation] ?? 0;
+      if (from >= 3) throw new Error(`${cmd.foundation} already at maximum`);
       ch.foundations[cmd.foundation] = from + 1;
       break;
     }
@@ -813,14 +814,17 @@ export function spendWordWanting(
       } else {
         removeSkillRanks(5);
       }
-      ch.foundations[pair[0]] = (ch.foundations[pair[0]] ?? 1) + 1;
-      ch.foundations[pair[1]] = (ch.foundations[pair[1]] ?? 1) + 1;
+      for (const name of pair) {
+        const from = ch.foundations[name] ?? 0;
+        if (from >= 3) throw new Error(`${name} already at maximum`);
+        ch.foundations[name] = from + 1;
+      }
       break;
     }
     case 'plus_five_skill': {
       if (!cmd.foundation) throw new Error('foundation to reduce required');
-      const f = ch.foundations[cmd.foundation] ?? 1;
-      if (f < 1) throw new Error('cannot reduce foundation below 0 without ST');
+      const f = ch.foundations[cmd.foundation] ?? 0;
+      if (f < 1) throw new Error('cannot reduce Foundation at ∅ further without ST');
       ch.foundations[cmd.foundation] = f - 1;
       creation.skillPoints += cmd.addSkillPoints ?? 5;
       break;
@@ -840,7 +844,16 @@ export function spendWordWanting(
   store.appendEvent({
     type: 'WantingSpent',
     actor: cmd.actor,
-    payload: { characterSlug: ch.slug, menu: cmd.menu, words: creation.words },
+    payload: {
+      characterSlug: ch.slug,
+      menu: cmd.menu,
+      words: creation.words,
+      foundation: cmd.foundation,
+      foundations: cmd.foundations,
+      traitName: cmd.traitName,
+      negativeTrait: cmd.negativeTrait?.name,
+      removeSkills: cmd.removeSkills,
+    },
   });
   return store.getCharacterBySlug(ch.slug)!;
 }
@@ -860,6 +873,7 @@ export interface StEditCharacterPatch {
   inventoryItems?: InventoryItem[];
   foodDays?: number;
   waterDays?: number;
+  armour?: { kind: 'none' | 'light' | 'heavy'; donned: boolean };
   foundationPointsDelta?: number;
   skillPointsDelta?: number;
   wordsDelta?: number;
@@ -901,6 +915,7 @@ export function stEditCharacter(
   if (p.inventoryItems) ch.inventory.items = p.inventoryItems.map((i) => ({ ...i }));
   if (p.foodDays !== undefined) ch.inventory.foodDays = p.foodDays;
   if (p.waterDays !== undefined) ch.inventory.waterDays = p.waterDays;
+  if (p.armour) ch.armour = { ...p.armour };
   const creation = ensureCreation(ch);
   if (p.foundationPointsDelta) creation.foundationPoints += p.foundationPointsDelta;
   if (p.skillPointsDelta) creation.skillPoints += p.skillPointsDelta;

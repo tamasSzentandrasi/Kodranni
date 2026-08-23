@@ -1,8 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import {
+  applyMachineDefaults,
   parseCampaignToml,
   resolveNamedTunnelPublicUrl,
   resolveTunnelMode,
+  serializeCampaignToml,
   type CampaignConfig,
 } from '../src/campaign-toml.js';
 
@@ -59,5 +61,27 @@ tunnel_hostname = "https://live.example.com"
 `);
     expect(cfg.tunnelMode).toBe('named');
     expect(cfg.tunnelHostname).toBe('https://live.example.com');
+  });
+});
+
+describe('applyMachineDefaults', () => {
+  it('sets named tunnel + ST role from env without writing the token into toml', () => {
+    const cfg = applyMachineDefaults(base, {
+      KODRANNI_CF_TUNNEL_TOKEN: 'eyJsecret',
+      KODRANNI_TUNNEL_HOSTNAME: 'live.example.com',
+      DISCORD_STORYTELLER_ROLE_ID: '999888777',
+      DISCORD_BOT_TOKEN: 't',
+      DISCORD_GUILD_ID: 'g',
+    });
+    expect(cfg.tunnelMode).toBe('named');
+    expect(cfg.tunnelHostname).toBe('live.example.com');
+    expect(cfg.liveBaseUrl).toBe('https://live.example.com');
+    expect(cfg.discordStorytellerRoleId).toBe('999888777');
+    expect(cfg.platforms).toContain('discord');
+    expect(cfg.cloudflareTunnelToken).toBeUndefined();
+    const text = serializeCampaignToml(cfg);
+    expect(text).not.toContain('eyJsecret');
+    expect(text).toContain('discord_storyteller_role_id');
+    expect(text).toContain('tunnel_mode = "named"');
   });
 });

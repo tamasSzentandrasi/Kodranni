@@ -52,6 +52,11 @@ export function sessionStatePath(slug: string, env?: NodeJS.ProcessEnv): string 
   return join(campaignRuntimeDir(slug, env), 'session.json');
 }
 
+/** Redacted between-session archive (static HTML + snapshot.json). */
+export function campaignArchiveDir(slug: string, env?: NodeJS.ProcessEnv): string {
+  return join(campaignDir(slug, env), 'archive');
+}
+
 /** Fully remove a campaign directory (SoT + config). Reconstruct with seed-demo. */
 export function destroyCampaignDir(slug: string, env?: NodeJS.ProcessEnv): void {
   rmSync(campaignDir(slug, env), { recursive: true, force: true });

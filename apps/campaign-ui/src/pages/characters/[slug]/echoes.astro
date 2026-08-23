@@ -45,34 +45,38 @@ const resolved = (ch.echoes ?? []).filter((e) => e.resolved);
     live={live}
     tab="echoes"
     showDraftTab={canEdit}
+    canEdit={canEdit}
   >
 
-  <section class="kod-plate">
+  <section class="kod-plate" id="echoes-panel" data-slug={ch.slug} data-can-edit={canEdit ? '1' : '0'}>
     <div class="section-head">
       <h2>Active Echoes</h2>
       <button
         type="button"
         class="info"
-        data-tip="Invoke condition is the argument for +1 Exertion die when the scene matches. Weight is load. Group lists the actual people who share it; Pivotal is the whole community."
+        data-tip="Left column = weight (1–3). When editing: left-click weight to raise, right-click to lower."
         aria-label="About active Echoes"
       >
         i
       </button>
     </div>
 
-    {
-      active.length === 0 ? (
-        <p class="empty">
-          None active — Decadence if this stands (−1 die on every roll). Creating Echoes on the
-          sheet is not built yet (later: request + ST approve).
-        </p>
-      ) : (
-        <div class="echo-list">
-          {active.map((e) => {
+    <div class="echo-list" data-echo-list>
+      {
+        active.length === 0 && !canEdit ? (
+          <p class="empty">None active — Decadence if this stands (−1 die on every roll).</p>
+        ) : (
+          active.map((e, idx) => {
             const w = (e.weight === 2 || e.weight === 3 ? e.weight : 1) as 1 | 2 | 3;
             return (
-              <article class="kod-plate echo">
-                <div class="echo__weight">
+              <article class="kod-plate echo" data-echo-idx={String(idx)}>
+                <div
+                  class:list={['echo__weight', canEdit && 'echo__weight--edit']}
+                  data-echo-weight
+                  data-weight={String(w)}
+                  tabindex={canEdit ? 0 : undefined}
+                  data-tip={canEdit ? 'Left-click +1 · right-click −1 (1–3)' : undefined}
+                >
                   <span class="weight-segs" aria-label={`Weight ${w}`}>
                     {[1, 2, 3].map((i) => (
                       <i class={i <= w ? 'on' : ''} />
@@ -80,68 +84,51 @@ const resolved = (ch.echoes ?? []).filter((e) => e.resolved);
                   </span>
                   <span class="weight-band">{WEIGHT_BAND[w]}</span>
                 </div>
-                <div>
-                  <h3 class="echo__title">{e.title}</h3>
-                  <div class="echo__invoke">
-                    <span class="echo__invoke-lab">Invoke when</span>
-                    {e.invokeWhen}
-                  </div>
-                  {w === 1 && (
-                    <p class="echo__stake">
-                      Stake · <strong style="font-weight:400;color:var(--kod-silver)">
-                        Individual
-                      </strong>{' '}
-                      — {ch.name} alone
-                    </p>
-                  )}
-                  {w === 3 && (
-                    <p class="echo__stake">
-                      Stake · <strong style="font-weight:400;color:var(--kod-silver)">
-                        Community
-                      </strong>{' '}
-                      — {c.name}
-                    </p>
-                  )}
-                  {w === 2 && (
-                    <details class="echo__stake">
-                      <summary>
-                        Stake · {e.groupLabel ?? 'Group'}
-                        {e.group?.length ? ` (${e.group.length})` : ''}
-                      </summary>
-                      {(e.group ?? []).length === 0 ? (
-                        <p class="empty" style="margin:0.4rem 0 0">
-                          No named people recorded yet.
-                        </p>
-                      ) : (
-                        <ul class="echo__people">
-                          {(e.group ?? []).map((p) => (
-                            <li>
-                              {p.characterSlug ? (
-                                <a href={`/characters/${p.characterSlug}/`}>{p.name}</a>
-                              ) : (
-                                <span>{p.name}</span>
-                              )}
-                              {p.note && (
-                                <button
-                                  type="button"
-                                  class="info"
-                                  data-tip={p.note}
-                                  aria-label={`About ${p.name}`}
-                                >
-                                  i
-                                </button>
-                              )}
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </details>
-                  )}
+                <div class="echo__body">
+                  {
+                    canEdit ? (
+                      <>
+                        <input
+                          class="echo__title-input kod-ink"
+                          data-echo-title
+                          value={e.title}
+                          placeholder="Echo title…"
+                        />
+                        <label class="echo__invoke-edit">
+                          <span class="echo__invoke-lab">Invoke when</span>
+                          <textarea
+                            class="kod-ink"
+                            data-echo-invoke
+                            rows="2"
+                            placeholder="When the table agrees the scene matches…"
+                          >{e.invokeWhen ?? ''}</textarea>
+                        </label>
+                        <button type="button" class="echo__remove" data-echo-remove>
+                          Remove
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <h3 class="echo__title">{e.title}</h3>
+                        <div class="echo__invoke">
+                          <span class="echo__invoke-lab">Invoke when</span>
+                          {e.invokeWhen}
+                        </div>
+                      </>
+                    )
+                  }
                 </div>
               </article>
             );
-          })}
-        </div>
+          })
+        )
+      }
+    </div>
+    {
+      canEdit && (
+        <button type="button" class="draft-btn" data-echo-add style="margin-top:0.75rem">
+          + Add Echo
+        </button>
       )
     }
   </section>
@@ -151,14 +138,6 @@ const resolved = (ch.echoes ?? []).filter((e) => e.resolved);
       <section class="kod-plate">
         <div class="section-head">
           <h2>Resolved</h2>
-          <button
-            type="button"
-            class="info"
-            data-tip="Settled, broken, or transcended. No longer load. Name, weight, and resolution narrative only."
-            aria-label="About resolved Echoes"
-          >
-            i
-          </button>
         </div>
         <div class="echo-list">
           {resolved.map((e) => {
@@ -188,38 +167,99 @@ const resolved = (ch.echoes ?? []).filter((e) => e.resolved);
     )
   }
 
-  <section class="kod-plate">
+  <section class="kod-plate" id="traits-panel">
     <div class="section-head">
       <h2>Traits</h2>
-      <button
-        type="button"
-        class="info"
-        data-tip="Standing marks of character — often born from resolved Echoes."
-        aria-label="About Traits"
-      >
-        i
-      </button>
     </div>
-    <ul class="trait-list">
+    <ul class="trait-list" data-trait-list>
       {
-        ch.traits.length === 0 ? (
+        ch.traits.length === 0 && !canEdit ? (
           <li class="empty">None recorded.</li>
         ) : (
-          ch.traits.map((t) => (
-            <li class="kod-plate trait">
-              <span class="trait__name">
-                {t.name}
-                {t.note && (
-                  <button type="button" class="info" data-tip={t.note} aria-label="Trait note">
-                    i
-                  </button>
-                )}
-              </span>
+          ch.traits.map((t, idx) => (
+            <li class="kod-plate trait" data-trait-idx={String(idx)}>
+              {
+                canEdit ? (
+                  <div class="trait__edit">
+                    <input class="kod-ink" data-trait-name value={t.name} placeholder="Trait name" />
+                    <input class="kod-ink" data-trait-note value={t.note ?? ''} placeholder="Optional note" />
+                    <button type="button" data-trait-remove>
+                      Remove
+                    </button>
+                  </div>
+                ) : (
+                  <span class="trait__name">
+                    {t.name}
+                    {t.note && (
+                      <button type="button" class="info" data-tip={t.note} aria-label="Trait note">
+                        i
+                      </button>
+                    )}
+                  </span>
+                )
+              }
             </li>
           ))
         )
       }
     </ul>
+    {
+      canEdit && (
+        <button type="button" class="draft-btn" data-trait-add style="margin-top:0.65rem">
+          + Add Trait
+        </button>
+      )
+    }
+    {
+      canEdit && (
+        <div style="margin-top:1rem">
+          <button type="button" class="draft-btn draft-btn--primary" data-save-echoes-traits>
+            Save Echoes · Traits
+          </button>
+          <p class="draft-msg" data-echoes-msg hidden></p>
+        </div>
+      )
+    }
   </section>
+
+  {
+    canEdit && (
+      <script is:inline src="/sheet-edit-echoes.js"></script>
+    )
+  }
   </SheetChrome>
 </CampaignLayout>
+
+<style>
+  .echo__weight--edit {
+    cursor: pointer;
+  }
+  .echo__title-input {
+    font-size: 1.05rem;
+    margin-bottom: 0.4rem;
+  }
+  .echo__invoke-edit {
+    display: grid;
+    gap: 0.25rem;
+  }
+  .echo__remove,
+  .trait__edit button,
+  .draft-btn {
+    font: inherit;
+    cursor: pointer;
+    margin-top: 0.45rem;
+    padding: 0.3rem 0.65rem;
+    color: inherit;
+    background: transparent;
+    border: 1px solid color-mix(in srgb, var(--kod-silver) 35%, transparent);
+  }
+  .draft-btn--primary {
+    border-color: color-mix(in srgb, var(--kod-blood) 60%, transparent);
+    background: color-mix(in srgb, var(--kod-blood) 18%, transparent);
+  }
+  .trait__edit {
+    display: grid;
+    gap: 0.35rem;
+    width: 100%;
+  }
+</style>

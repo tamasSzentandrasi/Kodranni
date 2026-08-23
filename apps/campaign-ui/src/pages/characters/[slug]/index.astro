@@ -62,10 +62,25 @@ const roman = (n: number) => ['∅', 'I', 'II', 'III', 'IV'][n] ?? String(n);
     live={live}
     tab="core"
     showDraftTab={canEdit}
+    canEdit={canEdit}
   >
   <BudgetDock character={ch} live={live} canEdit={canEdit} />
   <WantingPanel character={ch} live={live} canEdit={canEdit} />
   <ConfirmDock character={ch} live={live} canEdit={canEdit} />
+  {
+    canEdit && (
+      <aside class="wanting-tracker" id="wanting-tracker" hidden aria-live="polite">
+        <div class="wanting-tracker__head">
+          <div>
+            <p class="wanting-tracker__kicker">The Wanting</p>
+            <p class="wanting-tracker__title" data-wanting-tracker-title>Pick a Wanting line</p>
+          </div>
+          <span class="wanting-tracker__status" data-wanting-tracker-status>Waiting for menu</span>
+        </div>
+        <div class="wanting-tracker__rows" data-wanting-tracker-body></div>
+      </aside>
+    )
+  }
   {canEdit && <script is:inline src="/creation-client.js"></script>}
 
   <div slot="stage" class="core-grid">
@@ -155,7 +170,11 @@ const roman = (n: number) => ['∅', 'I', 'II', 'III', 'IV'][n] ?? String(n);
                       ? `Effective ${roman(eff)} · raw ${roman(raw)}`
                       : `Rank ${roman(eff)}`;
                   const tip = canEdit
-                    ? `${tipBase} · left-click raise · right-click lower`
+                    ? raw === 0
+                      ? canRaise
+                        ? `${tipBase} · left-click restore to I (costs ${nextCost})`
+                        : `${tipBase} · need ${nextCost ?? 1} pts or Wanting +1`
+                      : `${tipBase} · left-click raise · right-click lower`
                     : tipBase;
                   return (
                     <div class="found-row">
@@ -182,7 +201,9 @@ const roman = (n: number) => ['∅', 'I', 'II', 'III', 'IV'][n] ?? String(n);
                                   ? `Raise ${fname} (costs ${nextCost})`
                                   : canLower
                                     ? `Lower ${fname} with right-click`
-                                    : `${fname} at minimum`
+                                    : raw === 0
+                                      ? `${fname} at ∅ — need points or Wanting`
+                                      : `${fname} unavailable`
                               }
                             >
                               <span data-roman>{roman(raw)}</span>

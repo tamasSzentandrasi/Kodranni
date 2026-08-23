@@ -144,11 +144,43 @@ export function skillByName(name: string): SkillDef | undefined {
   return ALL_SKILLS.find((s) => s.name === name);
 }
 
+/** Discord autocomplete / fuzzy skill pick — max 25 matches. */
+export function filterSkillSuggestions(
+  query: string,
+  limit = 25,
+): { name: string; value: string; foundation: string; archetype: string }[] {
+  const q = query.trim().toLowerCase();
+  const ranked = ALL_SKILLS.map((s) => {
+    const n = s.name.toLowerCase();
+    let score = 0;
+    if (!q) score = 1;
+    else if (n === q) score = 100;
+    else if (n.startsWith(q)) score = 80;
+    else if (n.includes(q)) score = 50;
+    else if (q.split(/\s+/).every((p) => n.includes(p))) score = 40;
+    return { s, score };
+  })
+    .filter((x) => x.score > 0)
+    .sort((a, b) => b.score - a.score || a.s.name.localeCompare(b.s.name));
+  return ranked.slice(0, limit).map(({ s }) => ({
+    name: s.name,
+    value: s.name,
+    foundation: s.foundation,
+    archetype: s.archetype,
+  }));
+}
+
 export const FOUNDATION_GROUPS = {
   Physical: ['Strength', 'Dexterity', 'Constitution'] as const,
   Mental: ['Intellect', 'Perception', 'Resolve'] as const,
   Social: ['Charisma', 'Guile', 'Authority'] as const,
 };
+
+export const FOUNDATION_NAMES = [
+  ...FOUNDATION_GROUPS.Physical,
+  ...FOUNDATION_GROUPS.Mental,
+  ...FOUNDATION_GROUPS.Social,
+] as const;
 
 export const FOUNDATION_HARM: Record<string, string> = {
   Strength: 'Crushed',

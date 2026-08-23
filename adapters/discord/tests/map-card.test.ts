@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { ButtonStyle } from 'discord.js';
 import { mapCardToDiscordPayload } from '../src/index.js';
 
 describe('mapCardToDiscordPayload', () => {
@@ -12,5 +13,17 @@ describe('mapCardToDiscordPayload', () => {
     });
     expect(p.embeds).toHaveLength(1);
     expect(p.components.length).toBeGreaterThan(0);
+  });
+
+  it('maps links to Discord Link buttons', () => {
+    const p = mapCardToDiscordPayload({
+      title: 'Tomas',
+      description: 'Strength + Slash · d8',
+      links: [{ label: 'Live sheet', url: 'https://example.test/characters/tomas/' }],
+    });
+    const row = p.components.find((r) =>
+      r.components.some((c) => 'data' in c && (c as { data?: { style?: number } }).data?.style === ButtonStyle.Link),
+    );
+    expect(row).toBeTruthy();
   });
 });

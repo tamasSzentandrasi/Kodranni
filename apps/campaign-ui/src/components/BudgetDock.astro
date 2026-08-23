@@ -114,20 +114,18 @@ const words = creation?.words ?? 0;
       </button>
 
       <div class="budget-dock__flags">
-        {
-          !creation.birthOmenGranted ? (
-            <span class="flag">Birth Omen pending</span>
-          ) : (
-            <span class="flag flag--ok">Birth Omen ✓</span>
-          )
-        }
-        {
-          !creation.guidingHandGranted ? (
-            <span class="flag">Guiding Hand pending</span>
-          ) : (
-            <span class="flag flag--ok">Guiding Hand ✓</span>
-          )
-        }
+        <span
+          class:list={['flag', creation.birthOmenGranted && 'flag--ok']}
+          data-field="birthOmenFlag"
+        >
+          {creation.birthOmenGranted ? 'Birth Omen ✓' : 'Birth Omen pending'}
+        </span>
+        <span
+          class:list={['flag', creation.guidingHandGranted && 'flag--ok']}
+          data-field="guidingHandFlag"
+        >
+          {creation.guidingHandGranted ? 'Guiding Hand ✓' : 'Guiding Hand pending'}
+        </span>
       </div>
 
       <p class="budget-dock__hint">

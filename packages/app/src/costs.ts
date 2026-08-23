@@ -5,6 +5,7 @@
 
 /** Cost to raise one Foundation rank (from → from+1). */
 export function foundationStepCost(from: number): number {
+  if (from === 0) return 1; // 0 → 1 (restore after Wanting −1 / ST path)
   if (from === 1) return 1; // 1 → 2
   if (from === 2) return 2; // 2 → 3
   throw new Error(`no Foundation step cost from ${from} (max 3 without ST+Trait)`);
@@ -34,7 +35,7 @@ export function cumulativeStepCost(
 /** Next Foundation rank cost, or null if already at normal max (3). */
 export function nextFoundationCost(rating: number): number | null {
   if (rating >= 3) return null;
-  if (rating < 1) return null; // 0 needs ST path
+  if (rating < 0) return null;
   try {
     return foundationStepCost(rating);
   } catch {

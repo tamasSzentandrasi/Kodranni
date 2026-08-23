@@ -10,6 +10,7 @@ import {
   campaignRuntimeLogsDir,
   defaultCampaignTomlPath,
   destroyCampaignDir,
+  applyMachineDefaults,
   ensureCampaignLayout,
   ensureCampaignRuntime,
   formatCredentialStatus,
@@ -18,7 +19,9 @@ import {
   platformCredentialStatus,
   readCampaignConfig,
   readLiveUrl,
+  readSessionState,
   seedDemoCampaign,
+  writeCampaignConfig,
   writeLiveUrl,
   writeSessionState,
   type CampaignConfig,
@@ -44,6 +47,9 @@ Usage:
   kodranni campaign init --slug <slug> --name <name>
   kodranni campaign seed-demo [--slug ${DEMO_SLUG}] [--force]
       Fresh demo (Guidebook: The Vardmark at Kelarn’s Bend). --force destroys first.
+      Auto-fills tunnel_mode / ST role from ~/.kodranni/secrets/ or env.
+  kodranni campaign sync-defaults [--slug <slug>]
+      Re-apply secrets/env into existing campaign.toml (no data wipe).
   kodranni campaign destroy --slug <slug> [--yes]
       Delete ~/.kodranni/campaigns/<slug> entirely (reconstruct with seed-demo).
   kodranni campaign export-json --slug <slug> [--out path]
@@ -51,16 +57,19 @@ Usage:
                 [--tier 6|8|12] [--exertion 0|1|2] [--echo] [--debug-seed N]
   kodranni st-roll --slug <slug> --label <name> --foundation <n> --skill <n>
                 [--tier 6|8|12] [--exertion 0|1] [--debug-seed N]
-  kodranni live --slug <slug> [--tunnel]
-      Live campaign-ui. --tunnel: Cloudflare quick tunnel (public mid-session URL).
-  kodranni session start --slug <slug> [--tunnel] [--detach] [--force]
-      Start live (+ optional tunnel). --detach runs in background.
+  kodranni live --slug <slug> [--tunnel] [--bot]
+      Live campaign-ui. --tunnel: Cloudflare (named if secrets present). --bot: also start Discord.
+  kodranni session start --slug <slug> [--tunnel] [--bot] [--detach] [--force]
+      Supervisor: live (+ optional tunnel + bot). One process tree; --detach backgrounds it.
   kodranni session status --slug <slug>
-  kodranni session end --slug <slug>
+  kodranni session end --slug <slug> [--park-hostname|--no-park]
+      Stop live/bot; publish archive. Named tunnels default to parking the public hostname on the archive.
+  kodranni campaign publish [--slug <slug>]
+      Write redacted archive/ (snapshot.json + index.html) without ending a session.
   kodranni emissary [--slug <slug>]
       Readiness + live/archive access (what players should open).
   kodranni bot --slug <slug>
-      Discord bot-runtime. Loads ~/.kodranni/secrets/ into env (existing env wins).
+      Discord bot-runtime alone. Prefer session start --bot for table play.
   kodranni help
 
 RNG: production rolls use crypto. --debug-seed is for verification only.
@@ -171,7 +180,31 @@ async function main(): Promise<void> {
     console.log(`Seeded demo: ${cfg.name} (${cfg.slug})`);
     console.log(`  store: ${cfg.storePath}`);
     console.log(`  characters: torvald, leifr`);
+    console.log(
+      `  tunnel: ${cfg.tunnelMode ?? 'quick'}` +
+        (cfg.tunnelHostname ? ` · ${cfg.tunnelHostname}` : '') +
+        (process.env.KODRANNI_CF_TUNNEL_TOKEN ? ' · token from secrets/env' : ''),
+    );
+    console.log(
+      `  ST role: ${cfg.discordStorytellerRoleId ? 'discord set' : 'unset — add ~/.kodranni/secrets/discord-storytellerRoleID'}`,
+    );
     console.log(`  recreate: npm run kodranni -- campaign seed-demo --slug ${slug} --force`);
+    return;
+  }
+
+  if (cmd === 'campaign' && args[1] === 'sync-defaults') {
+    const slug = arg(args, '--slug') ?? DEMO_SLUG;
+    const path = defaultCampaignTomlPath(slug);
+    const cfg = applyMachineDefaults(await readCampaignConfig(path));
+    await writeCampaignConfig(cfg, path);
+    console.log(`Synced machine defaults into ${path}`);
+    console.log(
+      `  tunnel_mode=${cfg.tunnelMode ?? 'quick'}` +
+        (cfg.tunnelHostname ? ` tunnel_hostname=${cfg.tunnelHostname}` : ''),
+    );
+    console.log(
+      `  discord_storyteller_role_id=${cfg.discordStorytellerRoleId ? '(set)' : '(still unset)'}`,
+    );
     return;
   }
 
@@ -253,7 +286,22 @@ async function main(): Promise<void> {
   if (cmd === 'session' && args[1] === 'end') {
     const slug = arg(args, '--slug') ?? DEMO_SLUG;
     const cfg = await loadConfig(slug);
-    await sessionEnd(slug, cfg);
+    const parkHostname = has(args, '--no-park') ? false : has(args, '--park-hostname') ? true : undefined;
+    await sessionEnd(slug, cfg, { parkHostname });
+    return;
+  }
+
+  if (cmd === 'campaign' && args[1] === 'publish') {
+    const slug = arg(args, '--slug') ?? DEMO_SLUG;
+    const cfg = await loadConfig(slug);
+    const { publishCampaignArchive } = await import('@kodranni/publish');
+    const r = publishCampaignArchive({
+      slug,
+      storePath: cfg.storePath,
+      publicHost: cfg.tunnelHostname ?? cfg.liveBaseUrl,
+    });
+    console.log(`Published archive → ${r.dir}`);
+    console.log(`  ${r.characterCount} characters · ${r.generatedAt}`);
     return;
   }
 
@@ -264,6 +312,7 @@ async function main(): Promise<void> {
       slug,
       cfg,
       tunnel: has(args, '--tunnel'),
+      bot: has(args, '--bot'),
       detach: has(args, '--detach'),
       force: has(args, '--force'),
     });
@@ -277,6 +326,7 @@ async function main(): Promise<void> {
   ) {
     const slug = arg(args, '--slug') ?? DEMO_SLUG;
     const useTunnel = has(args, '--tunnel');
+    const useBot = has(args, '--bot');
     const cfg = await loadConfig(slug);
     const repoRoot = resolveRepoRoot();
     ensureCampaignRuntime(slug);
@@ -326,6 +376,7 @@ async function main(): Promise<void> {
     );
 
     let tunnelChild: ChildProcess | undefined;
+    let botChild: ChildProcess | undefined;
     let uiReady = false;
 
     child.stdout?.on('data', (b: Buffer) => {
@@ -338,16 +389,18 @@ async function main(): Promise<void> {
     });
 
     const shutdown = () => {
+      killChild(botChild);
       killChild(tunnelChild);
       killChild(child);
     };
+    // Exit 0 on Ctrl+C so npm does not print a scary "Lifecycle script failed" for a clean stop.
     process.on('SIGINT', () => {
       shutdown();
-      process.exit(130);
+      process.exit(0);
     });
     process.on('SIGTERM', () => {
       shutdown();
-      process.exit(143);
+      process.exit(0);
     });
 
     const uiExit = new Promise<number | null>((resolve, reject) => {
@@ -467,7 +520,7 @@ async function main(): Promise<void> {
             localUrl,
             liveUrl: localUrl,
             tunnel: false,
-            pids: { live: child.pid },
+            pids: { live: child.pid, bot: botChild?.pid },
             lastError: e instanceof Error ? e.message : String(e),
           });
           console.error(
@@ -478,7 +531,63 @@ async function main(): Promise<void> {
       }
     }
 
+    if (useBot) {
+      if (!process.env.DISCORD_BOT_TOKEN || !process.env.DISCORD_GUILD_ID) {
+        console.error(
+          '  bot: skipped — Discord not ready (secrets discord-botToken + discord-serverID).',
+        );
+      } else {
+        const botLogPath = join(logsDir, 'bot.log');
+        const botLog = createWriteStream(botLogPath, { flags: 'a' });
+        botLog.write(`\n--- bot start ${new Date().toISOString()} ---\n`);
+        const liveUrlNow = readLiveUrl(slug) ?? localUrl;
+        console.log('  bot: starting Discord runtime…');
+        botChild = spawn(npmBin, ['run', 'start', '-w', '@kodranni/bot-runtime'], {
+          cwd: repoRoot,
+          stdio: ['ignore', 'pipe', 'pipe'],
+          env: {
+            ...process.env,
+            KODRANNI_STORE_PATH: cfg.storePath,
+            KODRANNI_CAMPAIGN_SLUG: cfg.slug,
+            KODRANNI_LIVE_BASE_URL: liveUrlNow,
+            KODRANNI_PUBLIC_BASE_URL: cfg.publicBaseUrl ?? '',
+            NODE_OPTIONS: [process.env.NODE_OPTIONS, '--experimental-sqlite']
+              .filter(Boolean)
+              .join(' '),
+          },
+          shell: false,
+        });
+        botChild.stdout?.on('data', (b: Buffer) => {
+          process.stdout.write(b);
+          botLog.write(b);
+        });
+        botChild.stderr?.on('data', (b: Buffer) => {
+          process.stderr.write(b);
+          botLog.write(b);
+        });
+        botChild.on('exit', (code) => {
+          botLog.write(`\n--- bot exit code=${code} ---\n`);
+          botLog.end();
+        });
+        const prev = readSessionState(slug);
+        writeSessionState(slug, {
+          slug,
+          startedAt,
+          localUrl,
+          liveUrl: liveUrlNow,
+          tunnel: Boolean(prev?.tunnel),
+          pids: {
+            live: child.pid,
+            tunnel: tunnelChild?.pid ?? prev?.pids?.tunnel,
+            bot: botChild.pid,
+          },
+        });
+        console.log(`  bot: pid ${botChild.pid} · log ${botLogPath}`);
+      }
+    }
+
     const code = await uiExit;
+    killChild(botChild);
     killChild(tunnelChild);
     liveLog.write(`\n--- live exit code=${code} ---\n`);
     liveLog.end();

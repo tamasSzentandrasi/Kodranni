@@ -1,5 +1,12 @@
 import { randomUUID } from 'node:crypto';
-import { DEFAULT_DIE_TIER, type DieTier, cryptoRng, resolveRoll, type Rng } from '@kodranni/domain';
+import {
+  DEFAULT_DIE_TIER,
+  type DieTier,
+  cryptoRng,
+  resolveRoll,
+  skillByName,
+  type Rng,
+} from '@kodranni/domain';
 import {
   refreshCharacterDerived,
   type CharacterRecord,
@@ -65,11 +72,23 @@ export function executePlayerRoll(
 
   refreshCharacterDerived(ch);
 
-  const primitive = cmd.primitive || !cmd.skill;
   const skillName = cmd.skill?.trim() || '';
-  const skill = primitive ? undefined : ch.skills.find((s) => s.name === skillName);
-  if (!primitive && !skill) {
-    throw new Error(`character lacks skill: ${skillName}`);
+  const primitive = Boolean(cmd.primitive) || !skillName;
+  // Guidebook: named skills may be untrained (rating 0). Only "Primitive" omits Skill entirely.
+  let skill = primitive ? undefined : ch.skills.find((s) => s.name === skillName);
+  if (!primitive) {
+    const def = skillByName(skillName);
+    if (!def) throw new Error(`unknown skill: ${skillName}`);
+    if (!skill) {
+      // Untrained — virtual row; persisted only if Practice is gained
+      skill = {
+        name: def.name,
+        rating: 0,
+        practice: 0,
+        threshold: 24,
+        foundation: def.foundation,
+      };
+    }
   }
 
   const foundationRating = ch.foundationsEffective[cmd.foundation];
@@ -123,24 +142,28 @@ export function executePlayerRoll(
 
   if (skill && resolved.practiceGained > 0) {
     skill.practice += resolved.practiceGained;
-    // level-up if threshold met
     while (skill.rating < 3 && skill.practice >= skill.threshold) {
       skill.practice -= skill.threshold;
       skill.rating += 1;
-      // threshold for next rank uses domain helper via stored threshold update in app later; simple bump:
       if (skill.rating === 1) skill.threshold = 48;
       else if (skill.rating === 2) skill.threshold = 72;
       else skill.threshold = 9999;
+    }
+    if (!ch.skills.some((s) => s.name === skill.name)) {
+      ch.skills.push(skill);
     }
   }
 
   refreshCharacterDerived(ch);
   store.putCharacter(ch);
 
+  const skillRating = skill?.rating ?? 0;
   const rollId = randomUUID();
   const whyParts: string[] = [
     `Foundation ${cmd.foundation}=${foundationRating}`,
-    primitive ? 'Primitive (no Skill)' : `Skill ${skillName}=${skill!.rating}`,
+    primitive
+      ? 'Primitive (no Skill)'
+      : `Skill ${skillName}=${skillRating}${skillRating === 0 ? ' (untrained)' : ''}`,
   ];
   if (willSpend) whyParts.push(`Exertion +${willSpend}`);
   if (emptyExertion) whyParts.push('empty Exertion −2 (floor 1)');
@@ -149,7 +172,7 @@ export function executePlayerRoll(
 
   const poolFormula = primitive
     ? `${foundationRating}${willSpend ? `+${willSpend}` : ''} = ${resolved.poolSize}d${dieTier}`
-    : `${foundationRating}+${skill!.rating}${willSpend ? `+${willSpend}` : ''} = ${resolved.poolSize}d${dieTier}`;
+    : `${foundationRating}+${skillRating}${willSpend ? `+${willSpend}` : ''} = ${resolved.poolSize}d${dieTier}`;
 
   const rollData = {
     characterSlug: ch.slug,

@@ -1431,6 +1431,11 @@ section.kod-plate {
   min-width: 0;
 }
 
+.sheet-identity__portrait {
+  position: relative;
+  flex: 0 0 auto;
+}
+
 .sheet-identity__text {
   min-width: 0;
 }
@@ -1467,6 +1472,11 @@ section.kod-plate {
 }
 
 .avatar-upload {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0;
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem;
@@ -1474,11 +1484,22 @@ section.kod-plate {
   margin-top: 0.45rem;
 }
 
-.avatar-upload input[type='file'] {
-  font: inherit;
-  font-size: 0.75rem;
-  color: var(--kod-silver-dim);
-  max-width: 11rem;
+.avatar-upload__btn {
+  display: block;
+  width: 100%;
+  padding: 0.2rem 0.25rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--kod-silver-bright);
+  background: color-mix(in srgb, #050505 78%, transparent);
+  border-top: 1px solid color-mix(in srgb, var(--kod-silver) 30%, transparent);
+  cursor: pointer;
+}
+
+.avatar-upload__btn:hover {
+  background: color-mix(in srgb, var(--kod-blood) 35%, #050505);
 }
 
 .avatar-upload .kod-btn {
@@ -1905,6 +1926,7 @@ section.kod-plate {
   inset: 0;
   z-index: 0;
   overflow: hidden;
+  pointer-events: none;
 }
 
 .arch__art img {
@@ -1914,12 +1936,14 @@ section.kod-plate {
   object-position: center center;
   opacity: 0.48;
   filter: saturate(0.95) contrast(1.05) brightness(0.9);
+  pointer-events: none;
 }
 
 .arch__art::after {
   content: '';
   position: absolute;
   inset: 0;
+  pointer-events: none;
   background:
     radial-gradient(
       ellipse 70% 65% at 50% 38%,
@@ -2021,6 +2045,18 @@ section.kod-plate {
   border-radius: 50%;
 }
 
+/* Hit target is the whole .skill — children must not steal / block clicks */
+.skill[data-spend-skill] {
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.skill[data-spend-skill] .skill-seal,
+.skill[data-spend-skill] .skill__name,
+.skill[data-spend-skill] .skill__cost,
+.skill[data-spend-skill] .skill__pay {
+  pointer-events: none;
+}
+
 .skill-seal__chrome {
   position: absolute;
   inset: 0;
@@ -2118,12 +2154,60 @@ section.kod-plate {
   color: var(--kod-silver-dim);
 }
 
-body.wanting-lock [data-spend-foundation],
-body.wanting-lock [data-spend-skill] {
+body.wanting-lock:not(.wanting-pay) [data-spend-foundation],
+body.wanting-lock:not(.wanting-pay) [data-spend-skill] {
   pointer-events: none;
   opacity: 0.4;
 }
 
+body.wanting-pay [data-spend-foundation] {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+body.wanting-pay [data-spend-skill] {
+  pointer-events: auto;
+  opacity: 1;
+  cursor: pointer;
+}
+
+.found-row__spend--wanting {
+  border-color: var(--kod-blood-bright) !important;
+  box-shadow: 0 0 0 1px var(--kod-blood), 0 0 12px color-mix(in srgb, var(--kod-blood) 40%, transparent);
+}
+
+.found-row__spend--wanting-selectable:not(.found-row__spend--wanting) {
+  outline: 1px dashed color-mix(in srgb, var(--kod-silver) 45%, transparent);
+}
+
+body.wanting-pay .skill[data-rating='0'] {
+  opacity: 0.35;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+.skill--wanting-pay .skill-seal {
+  box-shadow:
+    inset 0 0 0 2px #0a0a0a,
+    0 0 0 2px var(--kod-blood-bright),
+    0 0 16px color-mix(in srgb, var(--kod-blood) 45%, transparent);
+}
+
+body.wanting-pay .skill--unaffordable {
+  opacity: 1;
+  cursor: pointer;
+}
+
+.skill__pay {
+  display: block;
+  margin-top: 0.1rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  color: var(--kod-blood-bright);
+  text-shadow: 0 0 0.3rem rgba(5, 5, 5, 0.9);
+}
+
+/* Unlocked: raisable skill seals */
 .skill--spendable .skill-seal {
   cursor: pointer;
   box-shadow: 0 0 0 1px color-mix(in srgb, var(--kod-silver) 55%, transparent);
@@ -2226,6 +2310,210 @@ body.wanting-lock [data-spend-skill] {
   text-transform: uppercase;
   color: var(--kod-silver-dim);
   text-shadow: 0 0 0.3rem rgba(5, 5, 5, 0.9);
+}
+
+/* Top Wanting selection tracker (Core, while Wanting is open) */
+.wanting-tracker {
+  position: fixed;
+  top: 0.55rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 70;
+  width: min(36rem, calc(100vw - 14.5rem));
+  padding: 0.65rem 0.9rem 0.75rem;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, #120a0a 88%, var(--kod-blood) 12%), #080606);
+  border: 1px solid color-mix(in srgb, var(--kod-silver) 34%, transparent);
+  border-top: 3px solid var(--kod-blood-bright);
+  box-shadow:
+    0 14px 36px rgba(0, 0, 0, 0.58),
+    inset 0 1px 0 color-mix(in srgb, #fff 5%, transparent);
+}
+.wanting-tracker[hidden] {
+  display: none !important;
+}
+body.wanting-open .app {
+  padding-top: 7.5rem;
+}
+@media (max-width: 52rem) {
+  .wanting-tracker {
+    width: min(34rem, calc(100vw - 1.25rem));
+  }
+}
+.wanting-tracker__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.45rem;
+}
+.wanting-tracker__kicker {
+  margin: 0;
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--kod-silver-dim);
+}
+.wanting-tracker__title {
+  margin: 0.15rem 0 0;
+  font-size: 1.08rem;
+  color: var(--kod-silver-bright);
+}
+.wanting-tracker__status {
+  flex: 0 0 auto;
+  margin-top: 0.15rem;
+  padding: 0.2rem 0.45rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--kod-blood-bright);
+  border: 1px solid color-mix(in srgb, var(--kod-blood) 45%, transparent);
+  background: color-mix(in srgb, var(--kod-blood) 14%, transparent);
+}
+.wanting-tracker__status.is-ready {
+  color: var(--kod-silver-bright);
+  border-color: color-mix(in srgb, var(--kod-silver) 50%, transparent);
+  background: color-mix(in srgb, var(--kod-silver) 12%, transparent);
+}
+.wanting-tracker__rows {
+  display: grid;
+  gap: 0.3rem;
+  font-size: 0.86rem;
+  color: var(--kod-silver);
+}
+.wanting-tracker__row {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.38rem 0.5rem;
+  border: 1px solid #2a2222;
+  border-left: 2px solid color-mix(in srgb, var(--kod-blood) 55%, #2a2222);
+  background: #0c0a0a;
+}
+.wanting-tracker__row strong {
+  font-weight: 400;
+  text-align: right;
+  color: var(--kod-blood-bright);
+}
+.wanting-tracker__row.is-pending strong {
+  color: color-mix(in srgb, var(--kod-silver) 70%, var(--kod-blood-bright));
+}
+.wanting-tracker__row.is-done {
+  border-color: color-mix(in srgb, var(--kod-silver) 40%, transparent);
+  border-left-color: color-mix(in srgb, var(--kod-silver) 55%, transparent);
+}
+.wanting-tracker__row.is-done strong {
+  color: var(--kod-silver-bright);
+}
+
+/* Shared ink fields — Guidebook-flavoured inputs */
+.kod-ink,
+.echo__title-input,
+.echo__invoke-edit textarea,
+.trait__edit input,
+.item__edit input,
+.draft-who__field,
+.draft-label input,
+.draft-label textarea,
+.wanting-form__fields input,
+.wanting-form__fields select {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  font: inherit;
+  letter-spacing: 0.02em;
+  color: var(--kod-silver-bright);
+  background-color: #0c0a0a;
+  background-image: linear-gradient(
+    180deg,
+    color-mix(in srgb, #0e0a0a 90%, #fff 4%),
+    #080606 72%
+  );
+  border: 1px solid color-mix(in srgb, var(--kod-silver) 30%, transparent);
+  border-left: 2px solid color-mix(in srgb, var(--kod-blood) 60%, var(--kod-silver));
+  border-radius: 1px;
+  padding: 0.5rem 0.6rem;
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, #fff 5%, transparent),
+    inset 0 -10px 18px color-mix(in srgb, #000 22%, transparent);
+  color-scheme: dark;
+}
+.kod-ink:focus,
+.echo__title-input:focus,
+.echo__invoke-edit textarea:focus,
+.trait__edit input:focus,
+.item__edit input:focus,
+.draft-who__field:focus,
+.draft-label input:focus,
+.draft-label textarea:focus,
+.wanting-form__fields input:focus,
+.wanting-form__fields select:focus {
+  outline: none;
+  border-color: color-mix(in srgb, var(--kod-blood) 55%, var(--kod-silver));
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, #fff 5%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--kod-blood) 28%, transparent),
+    0 0 14px color-mix(in srgb, var(--kod-blood) 18%, transparent);
+}
+.kod-ink::placeholder,
+.echo__title-input::placeholder,
+.echo__invoke-edit textarea::placeholder,
+.trait__edit input::placeholder,
+.item__edit input::placeholder,
+.draft-who__field::placeholder,
+.wanting-form__fields input::placeholder {
+  color: var(--kod-silver-dim);
+  opacity: 0.78;
+  letter-spacing: 0.04em;
+}
+
+/* Native <select> dropdown — force readable options on dark UI */
+.kod-ink,
+.wanting-form__fields select {
+  accent-color: var(--kod-blood);
+}
+select.kod-ink,
+.wanting-form__fields select {
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  padding-right: 1.75rem;
+  background-color: #0c0a0a;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--kod-silver-dim) 50%),
+    linear-gradient(135deg, var(--kod-silver-dim) 50%, transparent 50%),
+    linear-gradient(180deg, color-mix(in srgb, #0e0a0a 90%, #fff 4%), #080606 72%);
+  background-position:
+    calc(100% - 0.85rem) calc(50% - 0.12rem),
+    calc(100% - 0.55rem) calc(50% - 0.12rem),
+    0 0;
+  background-size:
+    0.3rem 0.3rem,
+    0.3rem 0.3rem,
+    100% 100%;
+  background-repeat: no-repeat;
+}
+select.kod-ink:invalid,
+.wanting-form__fields select:invalid,
+select.kod-ink.kod-ink--empty,
+.wanting-form__fields select.kod-ink--empty {
+  color: var(--kod-silver-dim);
+}
+select.kod-ink option,
+.wanting-form__fields select option {
+  background-color: #0c0a0a;
+  color: #f2efe9;
+}
+select.kod-ink option:checked,
+.wanting-form__fields select option:checked {
+  background-color: #1a1010;
+  color: #fff8f0;
+}
+select.kod-ink option:disabled,
+.wanting-form__fields select option:disabled,
+select.kod-ink option[value=''],
+.wanting-form__fields select option[value=''] {
+  color: #8a8580;
 }
 
 /* Echoes — live sheet, not tutorial columns */
@@ -2433,7 +2721,9 @@ body.wanting-lock [data-spend-skill] {
 
 .armour {
   display: grid;
-  gap: 0.1rem;
+  gap: 0.2rem;
+  width: 100%;
+  box-sizing: border-box;
   margin: 0 0 0.85rem;
   padding: 0.75rem 0.85rem;
 }
@@ -2461,12 +2751,14 @@ body.wanting-lock [data-spend-skill] {
 }
 
 .armour__val {
-  font-size: 1.35rem;
+  font-size: 1.45rem;
+  line-height: 1.15;
   color: var(--kod-silver-bright);
 }
 
 .armour__state {
   font-size: 0.85rem;
+  line-height: 1.35;
   color: var(--kod-silver-dim);
 }
 
@@ -2478,21 +2770,38 @@ body.wanting-lock [data-spend-skill] {
 }
 
 .supply {
-  padding: 0.65rem;
+  display: grid;
+  justify-items: center;
+  gap: 0.2rem;
+  padding: 0.7rem 0.55rem 0.65rem;
   text-align: center;
 }
 
 .supply__lab {
   display: block;
+  width: 100%;
   font-size: 0.68rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--kod-silver-dim);
+  text-align: center;
+}
+
+.supply__ctrl {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  width: 100%;
+  min-height: 2rem;
 }
 
 .supply__val {
   display: block;
+  min-width: 1.75rem;
   font-size: 1.7rem;
+  line-height: 1;
+  text-align: center;
   color: var(--kod-silver-bright);
   font-variant-numeric: tabular-nums;
 }
@@ -2501,6 +2810,12 @@ body.wanting-lock [data-spend-skill] {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
   gap: 0.85rem;
+}
+
+.inv-grid > :first-child {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 @media (max-width: 42rem) {
@@ -2663,6 +2978,31 @@ body.wanting-lock [data-spend-skill] {
 
 .budget-card--words .budget-card__main strong {
   color: var(--kod-silver-bright);
+}
+
+.budget-card--empty {
+  opacity: 0.72;
+}
+
+.budget-card--empty .budget-card__cta {
+  color: var(--kod-silver-dim);
+}
+
+.budget-card--pulse {
+  animation: budget-pulse 1.1s ease;
+}
+
+@keyframes budget-pulse {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--kod-blood) 0%, transparent);
+  }
+  35% {
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--kod-blood) 55%, transparent);
+    border-color: var(--kod-blood-bright);
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
 }
 
 .budget-dock__flags {

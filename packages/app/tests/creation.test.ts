@@ -61,9 +61,11 @@ describe('costs', () => {
     expect(skillStepCost(0)).toBe(1);
     expect(skillStepCost(1)).toBe(2);
     expect(skillStepCost(2)).toBe(3);
+    expect(nextFoundationCost(0)).toBe(1);
     expect(nextFoundationCost(3)).toBeNull();
     expect(nextSkillCost(3)).toBeNull();
     expect(refundFoundationCost(1)).toBeNull();
+    expect(refundFoundationCost(0)).toBeNull();
     expect(refundFoundationCost(2)).toBe(1);
     expect(refundFoundationCost(3)).toBe(2);
     expect(refundSkillCost(0)).toBeNull();
@@ -268,6 +270,36 @@ describe('Words & Wanting', () => {
     store.close();
   });
 
+  it('positive_trait adds a Trait and removes 3 skill ranks', () => {
+    const store = emptyStore();
+    const { character } = startCreateFromBot(store, {
+      platform: 'discord',
+      accountId: 'u-trait',
+      displayName: 'Tr',
+      name: 'Trait Want',
+    });
+    spendSkill(store, { characterSlug: character.slug, skill: 'Negotiation' });
+    spendSkill(store, { characterSlug: character.slug, skill: 'Tradecraft' });
+    spendSkill(store, { characterSlug: character.slug, skill: 'Etiquette' });
+    grantWord(store, { characterSlug: character.slug });
+    spendWordWanting(store, {
+      characterSlug: character.slug,
+      menu: 'positive_trait',
+      traitName: 'Silver tongue',
+      traitNote: 'From Wanting',
+      removeSkills: [
+        { skill: 'Negotiation', ranks: 1 },
+        { skill: 'Tradecraft', ranks: 1 },
+        { skill: 'Etiquette', ranks: 1 },
+      ],
+    });
+    const after = store.getCharacterBySlug(character.slug)!;
+    expect(after.traits.some((t) => t.name === 'Silver tongue')).toBe(true);
+    expect(after.creation!.words).toBe(0);
+    expect(after.skills.find((s) => s.name === 'Negotiation')).toBeUndefined();
+    store.close();
+  });
+
   it('plus_one_foundation removes 3 skill ranks', () => {
     const store = emptyStore();
     const { character } = startCreateFromBot(store, {
@@ -292,6 +324,53 @@ describe('Words & Wanting', () => {
     const after = store.getCharacterBySlug(character.slug)!;
     expect(after.foundations.Guile).toBe(2);
     expect(after.skills.find((s) => s.name === 'Negotiation')).toBeUndefined();
+    store.close();
+  });
+
+  it('raises Foundation from ∅ via points and Wanting', () => {
+    const store = emptyStore();
+    const { character } = startCreateFromBot(store, {
+      platform: 'discord',
+      accountId: 'u-zero',
+      displayName: 'Z',
+      name: 'Zero Found',
+    });
+    // Reduce Strength to ∅ via +5 skill Wanting
+    grantWord(store, { characterSlug: character.slug });
+    spendWordWanting(store, {
+      characterSlug: character.slug,
+      menu: 'plus_five_skill',
+      foundation: 'Strength',
+    });
+    expect(store.getCharacterBySlug(character.slug)!.foundations.Strength).toBe(0);
+
+    spendFoundation(store, { characterSlug: character.slug, foundation: 'Strength' });
+    expect(store.getCharacterBySlug(character.slug)!.foundations.Strength).toBe(1);
+
+    // Drop again, then restore via +1 Foundation Wanting
+    grantWord(store, { characterSlug: character.slug });
+    spendWordWanting(store, {
+      characterSlug: character.slug,
+      menu: 'plus_five_skill',
+      foundation: 'Strength',
+    });
+    expect(store.getCharacterBySlug(character.slug)!.foundations.Strength).toBe(0);
+
+    spendSkill(store, { characterSlug: character.slug, skill: 'Slash' });
+    spendSkill(store, { characterSlug: character.slug, skill: 'Unarmed' });
+    spendSkill(store, { characterSlug: character.slug, skill: 'Dodge' });
+    grantWord(store, { characterSlug: character.slug });
+    spendWordWanting(store, {
+      characterSlug: character.slug,
+      menu: 'plus_one_foundation',
+      foundation: 'Strength',
+      removeSkills: [
+        { skill: 'Slash', ranks: 1 },
+        { skill: 'Unarmed', ranks: 1 },
+        { skill: 'Dodge', ranks: 1 },
+      ],
+    });
+    expect(store.getCharacterBySlug(character.slug)!.foundations.Strength).toBe(1);
     store.close();
   });
 });

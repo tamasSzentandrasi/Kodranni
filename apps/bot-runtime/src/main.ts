@@ -66,11 +66,17 @@ async function main(): Promise<void> {
     readLiveUrl(slug) ??
     'http://127.0.0.1:8742';
   let archiveBase = process.env.KODRANNI_PUBLIC_BASE_URL;
+  let discordStorytellerRoleId: string | undefined;
+  let fluxerStorytellerRoleId: string | undefined;
 
   try {
     const cfg = await readCampaignConfig(defaultCampaignTomlPath(slug));
     storePath = storePath ?? cfg.storePath;
     archiveBase = archiveBase ?? cfg.publicBaseUrl;
+    discordStorytellerRoleId =
+      cfg.discordStorytellerRoleId ?? process.env.DISCORD_STORYTELLER_ROLE_ID?.trim();
+    fluxerStorytellerRoleId =
+      cfg.fluxerStorytellerRoleId ?? process.env.FLUXER_STORYTELLER_ROLE_ID?.trim();
     if (!process.env.KODRANNI_LIVE_BASE_URL) {
       liveBase = readLiveUrl(slug) ?? cfg.liveBaseUrl;
     }
@@ -101,12 +107,19 @@ async function main(): Promise<void> {
     archiveBaseUrl: archiveBase,
     prompts: new Map(),
     log: (line) => logLine(logPath, line),
+    discordStorytellerRoleId,
+    fluxerStorytellerRoleId,
   };
 
   port.onInteraction((i) => handleInteraction(ctx, i));
 
   ctx.log(`starting bot for campaign ${slug}`);
   ctx.log(`creds ${formatCredentialStatus(creds)}`);
+  if (discordStorytellerRoleId) {
+    ctx.log(`ST Discord role id: ${discordStorytellerRoleId}`);
+  } else {
+    ctx.log('ST Discord role id: (unset — use /map role:storyteller or set discord_storyteller_role_id)');
+  }
   if (loaded.loosened.length) {
     ctx.log(`tightened mode on: ${loaded.loosened.join(', ')}`);
   }

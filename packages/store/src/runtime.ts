@@ -16,7 +16,11 @@ export interface SessionState {
     live?: number;
     tunnel?: number;
     bot?: number;
+    /** Static archive server parking the public hostname between sessions. */
+    archive?: number;
   };
+  /** True when public hostname is serving archive instead of live UI. */
+  parked?: boolean;
   lastError?: string;
 }
 

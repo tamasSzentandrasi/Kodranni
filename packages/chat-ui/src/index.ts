@@ -1,4 +1,16 @@
-import type { ChatCard } from '@kodranni/chat-port';
+import type { ChatCard, ChatSelect } from '@kodranni/chat-port';
+
+/** Guidebook die-tier language (Advantage / Equal / Disadvantage). */
+export function dieTierLabel(tier: number): string {
+  if (tier === 6) return 'd6 · Disadvantage';
+  if (tier === 12) return 'd12 · Advantage';
+  return 'd8 · Equal';
+}
+
+export function dieTierShort(tier: number): string {
+  if (tier === 6 || tier === 12) return `d${tier}`;
+  return 'd8';
+}
 
 export interface RollCardInput {
   characterName: string;
@@ -25,7 +37,11 @@ export function buildRollResultCard(input: RollCardInput): ChatCard {
   const fields = [
     { name: 'Marks', value: `**${input.marks}**`, inline: true },
     { name: 'Pool', value: input.poolFormula, inline: true },
-    { name: 'Dice', value: `d${input.dieTier}: ${faceStr}`, inline: false },
+    {
+      name: 'Dice',
+      value: `${dieTierLabel(input.dieTier)} · ${faceStr}`,
+      inline: false,
+    },
   ];
   if (input.omen != null) {
     fields.push({
@@ -72,6 +88,74 @@ export function buildRollResultCard(input: RollCardInput): ChatCard {
   };
 }
 
+export interface RollConfirmCardInput {
+  confirmId: string;
+  characterName: string;
+  skill?: string;
+  foundation: string;
+  foundations: string[];
+  dieTier: number;
+  exertion: number;
+  echoApplies: boolean;
+  liveSheetUrl?: string;
+}
+
+/** One-screen stance before Cast — Foundation easy to change; Echo = agreed apply. */
+export function buildRollConfirmCard(input: RollConfirmCardInput): ChatCard {
+  const intent = input.skill
+    ? `${input.foundation} + ${input.skill}`
+    : `${input.foundation} (Primitive)`;
+  const foundSelect: ChatSelect = {
+    id: `roll-found:${input.confirmId}`,
+    placeholder: `Foundation · now ${input.foundation}`,
+    options: input.foundations.slice(0, 25).map((f) => ({
+      value: f,
+      label: f,
+      description: f === input.foundation ? 'Current' : undefined,
+      default: f === input.foundation,
+    })),
+  };
+  return {
+    title: `Ready · ${input.characterName}`,
+    description: `**${intent}** · ${dieTierLabel(input.dieTier)}`,
+    accent: 'blood',
+    fields: [
+      { name: 'Foundation', value: input.foundation, inline: true },
+      { name: 'Skill', value: input.skill ?? 'Primitive', inline: true },
+      { name: 'Tier', value: dieTierLabel(input.dieTier), inline: true },
+      {
+        name: 'Exertion',
+        value: String(input.exertion),
+        inline: true,
+      },
+      {
+        name: 'Echo',
+        value: input.echoApplies ? 'Applies (agreed)' : 'Does not apply',
+        inline: true,
+      },
+    ],
+    footer: 'Change Foundation if the table agreed a different one. Echo only when agreed it matches.',
+    buttons: [
+      { id: `roll-cast:${input.confirmId}`, label: 'Cast', style: 'primary' },
+      {
+        id: `roll-ex:${input.confirmId}`,
+        label: `Exertion ${input.exertion}`,
+        style: 'secondary',
+      },
+      {
+        id: `roll-echo:${input.confirmId}`,
+        label: input.echoApplies ? 'Echo applies ✓' : 'Echo applies?',
+        style: 'secondary',
+      },
+      { id: `roll-cancel:${input.confirmId}`, label: 'Cancel', style: 'danger' },
+    ],
+    selects: [foundSelect],
+    links: input.liveSheetUrl
+      ? [{ label: 'Live sheet', url: input.liveSheetUrl }]
+      : undefined,
+  };
+}
+
 export interface RequestCardInput {
   requestId: string;
   title: string;
@@ -102,24 +186,23 @@ export interface RollPromptCardInput {
   liveSheetUrl?: string;
 }
 
-/** ST sets the fiction config; player presses Roll once. */
+/** ST Intent card — equal peer to free-roll; player presses Roll when ready. */
 export function buildRollPromptCard(input: RollPromptCardInput): ChatCard {
   const intent = input.skill
-    ? `${input.foundation} + ${input.skill} · d${input.dieTier}`
-    : `${input.foundation} (Primitive) · d${input.dieTier}`;
+    ? `${input.foundation} + ${input.skill} · ${dieTierShort(input.dieTier)}`
+    : `${input.foundation} (Primitive) · ${dieTierShort(input.dieTier)}`;
   return {
-    title: input.characterName ? `Roll · ${input.characterName}` : 'Roll when ready',
-    description: `**${input.stName}** sets the pool: ${intent}`,
+    title: input.characterName ? `Intent · ${input.characterName}` : 'Intent · roll when ready',
+    description: `**${input.stName}** posts the agreed pool: **${intent}**`,
     accent: 'blood',
     fields: [
       { name: 'Foundation', value: input.foundation, inline: true },
       { name: 'Skill', value: input.skill ?? 'Primitive', inline: true },
-      { name: 'Tier', value: `d${input.dieTier}`, inline: true },
+      { name: 'Tier', value: dieTierLabel(input.dieTier), inline: true },
     ],
-    footer: 'Defaults: no Exertion, no Echo. Only the named player may press Roll.',
-    buttons: [
-      { id: `prompt-roll:${input.promptId}`, label: 'Roll', style: 'primary' },
-    ],
+    footer:
+      'Only the named player may Roll. Set Exertion on the confirm beat; mark Echo only if the table agreed it applies.',
+    buttons: [{ id: `prompt-roll:${input.promptId}`, label: 'Roll', style: 'primary' }],
     links: input.liveSheetUrl
       ? [{ label: 'Live sheet', url: input.liveSheetUrl }]
       : undefined,

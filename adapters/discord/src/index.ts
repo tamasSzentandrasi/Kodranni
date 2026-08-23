@@ -15,14 +15,19 @@ import {
   type Interaction,
   type Message,
 } from 'discord.js';
+import { FOUNDATION_NAMES, filterSkillSuggestions } from '@kodranni/domain';
 import type {
   ChatCard,
   ChatInteraction,
   ChatMessageRef,
   ChatPort,
   ChatSelect,
+  ChatUserRef,
   CommandInteraction,
 } from '@kodranni/chat-port';
+
+const foundationChoices = () =>
+  FOUNDATION_NAMES.map((f) => ({ name: f, value: f }));
 
 const STYLE: Record<string, ButtonStyle> = {
   primary: ButtonStyle.Primary,
@@ -49,11 +54,6 @@ export function mapCardToDiscordPayload(card: ChatCard): {
     );
   }
   if (card.footer) embed.setFooter({ text: card.footer.slice(0, 2048) });
-  if (card.links?.length) {
-    const linkLine = card.links.map((l) => `[${l.label}](${l.url})`).join(' · ');
-    const prev = embed.data.description ?? '';
-    embed.setDescription([prev, linkLine].filter(Boolean).join('\n\n'));
-  }
 
   const components: ActionRowBuilder<ButtonBuilder | StringSelectMenuBuilder>[] = [];
 
@@ -69,6 +69,16 @@ export function mapCardToDiscordPayload(card: ChatCard): {
       );
     }
     components.push(row);
+  }
+
+  if (card.links?.length) {
+    const linkRow = new ActionRowBuilder<ButtonBuilder>();
+    for (const l of card.links.slice(0, 5)) {
+      linkRow.addComponents(
+        new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(l.label.slice(0, 80)).setURL(l.url),
+      );
+    }
+    components.push(linkRow);
   }
 
   if (card.selects?.length) {
@@ -87,11 +97,22 @@ function selectToRow(sel: ChatSelect): ActionRowBuilder<StringSelectMenuBuilder>
     .setMinValues(sel.minValues ?? 1)
     .setMaxValues(sel.maxValues ?? 1)
     .addOptions(
-      sel.options.slice(0, 25).map((o) => ({
-        label: o.label.slice(0, 100),
-        value: o.value.slice(0, 100),
-        description: o.description?.slice(0, 100),
-      })),
+      sel.options.slice(0, 25).map((o) => {
+        const opt: {
+          label: string;
+          value: string;
+          description?: string;
+          default?: boolean;
+          emoji?: string;
+        } = {
+          label: o.label.slice(0, 100),
+          value: o.value.slice(0, 100),
+        };
+        if (o.description) opt.description = o.description.slice(0, 100);
+        if (o.default) opt.default = true;
+        if (o.emoji) opt.emoji = o.emoji;
+        return opt;
+      }),
     );
   return new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(menu);
 }
@@ -103,42 +124,57 @@ const dieTier = (o: {
 }) =>
   o
     .setName('tier')
-    .setDescription('Die tier')
+    .setDescription('Die tier (ST agreement; default d8 Ordinary)')
     .addChoices(
-      { name: 'd6', value: 6 },
-      { name: 'd8', value: 8 },
-      { name: 'd12', value: 12 },
+      { name: 'd6 · Disadvantage', value: 6 },
+      { name: 'd8 · Equal', value: 8 },
+      { name: 'd12 · Advantage', value: 12 },
     );
 
 const SLASH = [
   new SlashCommandBuilder()
     .setName('roll')
-    .setDescription('Roll for your focused character')
-    .addStringOption((o) => o.setName('skill').setDescription('Skill name (omit for Primitive)'))
+    .setDescription('Roll what the table agreed — skill autocomplete, then confirm')
     .addStringOption((o) =>
-      o.setName('foundation').setDescription('Override foundation (default: skill guiding)'),
+      o
+        .setName('skill')
+        .setDescription('Skill (type to search; omit → pick Archetype)')
+        .setAutocomplete(true),
+    )
+    .addStringOption((o) =>
+      o
+        .setName('foundation')
+        .setDescription('Foundation (often not the guiding one)')
+        .addChoices(...foundationChoices()),
     )
     .addIntegerOption((o) => dieTier(o))
     .addIntegerOption((o) =>
       o
         .setName('exertion')
-        .setDescription('0–2 (2 needs Echo)')
+        .setDescription('Exertion dice to spend (0–2; 2 needs Echo applies)')
         .setMinValue(0)
         .setMaxValue(2),
     )
-    .addBooleanOption((o) => o.setName('echo').setDescription('Invoke a matching Echo'))
+    .addBooleanOption((o) =>
+      o.setName('echo').setDescription('Echo applies — only if the table agreed it matches'),
+    )
     .addStringOption((o) =>
       o.setName('character').setDescription('Character slug if you have more than one'),
     ),
   new SlashCommandBuilder()
     .setName('intent')
-    .setDescription('ST: whisper a prefilled roll to a named player')
+    .setDescription('ST: post the agreed pool for a player to Roll')
     .addUserOption((o) =>
       o.setName('player').setDescription('Player who should roll').setRequired(true),
     )
-    .addStringOption((o) => o.setName('skill').setDescription('Skill name'))
     .addStringOption((o) =>
-      o.setName('foundation').setDescription('Foundation (default: skill guiding)'),
+      o.setName('skill').setDescription('Skill (type to search)').setAutocomplete(true),
+    )
+    .addStringOption((o) =>
+      o
+        .setName('foundation')
+        .setDescription('Foundation (often not the guiding one)')
+        .addChoices(...foundationChoices()),
     )
     .addIntegerOption((o) => dieTier(o))
     .addStringOption((o) =>
@@ -212,7 +248,6 @@ const SLASH = [
   new SlashCommandBuilder()
     .setName('live')
     .setDescription('Show live / archive sheet URLs'),
-  // Emergency / legacy aliases (still registered so old docs work)
   new SlashCommandBuilder()
     .setName('map')
     .setDescription('Emergency: map user → character (prefer /create + Confirm)')
@@ -229,57 +264,6 @@ const SLASH = [
           { name: 'storyteller', value: 'storyteller' },
         ),
     ),
-  new SlashCommandBuilder()
-    .setName('kod-roll')
-    .setDescription('[Legacy] Use /roll')
-    .addStringOption((o) =>
-      o.setName('foundation').setDescription('e.g. Strength').setRequired(true),
-    )
-    .addStringOption((o) => o.setName('skill').setDescription('Skill name'))
-    .addIntegerOption((o) => dieTier(o))
-    .addIntegerOption((o) =>
-      o.setName('exertion').setDescription('0–2').setMinValue(0).setMaxValue(2),
-    )
-    .addBooleanOption((o) => o.setName('echo').setDescription('Invoke Echo')),
-  new SlashCommandBuilder()
-    .setName('kod-live')
-    .setDescription('[Legacy] Use /live'),
-  new SlashCommandBuilder()
-    .setName('kod-map')
-    .setDescription('[Legacy] Use /map')
-    .addUserOption((o) => o.setName('user').setDescription('Discord user').setRequired(true))
-    .addStringOption((o) =>
-      o.setName('character').setDescription('Character slug').setRequired(true),
-    )
-    .addStringOption((o) =>
-      o
-        .setName('role')
-        .setDescription('role')
-        .addChoices(
-          { name: 'player', value: 'player' },
-          { name: 'storyteller', value: 'storyteller' },
-        ),
-    ),
-  new SlashCommandBuilder()
-    .setName('kod-prompt')
-    .setDescription('[Legacy] Use /intent')
-    .addStringOption((o) =>
-      o.setName('foundation').setDescription('Foundation').setRequired(true),
-    )
-    .addStringOption((o) => o.setName('skill').setDescription('Skill'))
-    .addIntegerOption((o) => dieTier(o))
-    .addStringOption((o) => o.setName('character').setDescription('Character slug')),
-  new SlashCommandBuilder()
-    .setName('kod-st-roll')
-    .setDescription('[Legacy] Use /st-roll')
-    .addIntegerOption((o) =>
-      o.setName('foundation').setDescription('Foundation dice').setRequired(true),
-    )
-    .addIntegerOption((o) =>
-      o.setName('skill').setDescription('Skill dice').setRequired(true),
-    )
-    .addStringOption((o) => o.setName('label').setDescription('NPC label'))
-    .addIntegerOption((o) => dieTier(o)),
 ].map((c) => c.toJSON());
 
 export function createDiscordAdapter(opts: {
@@ -307,8 +291,23 @@ export function createDiscordAdapter(opts: {
   }
 
   client.on(Events.InteractionCreate, async (ix: Interaction) => {
-    if (!handler) return;
     try {
+      if (ix.isAutocomplete()) {
+        const focused = ix.options.getFocused(true);
+        if (focused.name === 'skill') {
+          const picks = filterSkillSuggestions(String(focused.value ?? ''), 25);
+          await ix.respond(
+            picks.map((p) => ({
+              name: `${p.name} · ${p.foundation}`.slice(0, 100),
+              value: p.value.slice(0, 100),
+            })),
+          );
+        } else {
+          await ix.respond([]);
+        }
+        return;
+      }
+      if (!handler) return;
       if (ix.isChatInputCommand()) {
         if (!ix.deferred && !ix.replied) {
           await ix.deferReply({ ephemeral: true });
@@ -324,11 +323,7 @@ export function createDiscordAdapter(opts: {
           type: 'button',
           id: ix.id,
           clientEventId: `discord:btn:${ix.id}`,
-          user: {
-            platform: 'discord',
-            accountId: ix.user.id,
-            displayName: ix.user.username,
-          },
+          user: mapUser(ix),
           channelId: ix.channelId,
           guildId: ix.guildId ?? undefined,
           customId: ix.customId,
@@ -353,11 +348,7 @@ export function createDiscordAdapter(opts: {
           type: 'select',
           id: ix.id,
           clientEventId: `discord:sel:${ix.id}`,
-          user: {
-            platform: 'discord',
-            accountId: ix.user.id,
-            displayName: ix.user.username,
-          },
+          user: mapUser(ix),
           channelId: ix.channelId,
           guildId: ix.guildId ?? undefined,
           customId: ix.customId,
@@ -425,9 +416,46 @@ export function createDiscordAdapter(opts: {
         await ix.reply({ content: content.slice(0, 2000), ephemeral: true });
       }
     },
+    async editReplyCard(interaction: ChatInteraction, card: ChatCard): Promise<void> {
+      const ix = pendingIx.get(interaction.id);
+      if (!ix || !ix.isRepliable()) return;
+      const payload = mapCardToDiscordPayload(card);
+      if (ix.deferred || ix.replied) {
+        await ix.editReply({
+          content: null,
+          embeds: payload.embeds,
+          components: payload.components,
+        });
+      } else {
+        await ix.reply({
+          ephemeral: true,
+          embeds: payload.embeds,
+          components: payload.components,
+        });
+      }
+    },
     onInteraction(h) {
       handler = h;
     },
+  };
+}
+
+function discordRoleIds(ix: Interaction): string[] | undefined {
+  if (!ix.inGuild() || !ix.member) return undefined;
+  const roles = ix.member.roles;
+  if (roles && typeof roles === 'object' && 'cache' in roles) {
+    return [...(roles as { cache: Map<string, unknown> }).cache.keys()];
+  }
+  if (Array.isArray(roles)) return roles as string[];
+  return undefined;
+}
+
+function mapUser(ix: Interaction): ChatUserRef {
+  return {
+    platform: 'discord',
+    accountId: ix.user.id,
+    displayName: ix.user.username,
+    roleIds: discordRoleIds(ix),
   };
 }
 
@@ -445,11 +473,7 @@ function mapSlash(ix: ChatInputCommandInteraction): CommandInteraction {
     type: 'command',
     id: ix.id,
     clientEventId: `discord:cmd:${ix.id}`,
-    user: {
-      platform: 'discord',
-      accountId: ix.user.id,
-      displayName: ix.user.username,
-    },
+    user: mapUser(ix),
     channelId: ix.channelId,
     guildId: ix.guildId ?? undefined,
     name: ix.commandName,

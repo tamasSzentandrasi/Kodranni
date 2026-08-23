@@ -4,6 +4,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { extname, join } from 'node:path';
 import { openSqliteStore } from '@kodranni/store';
 import { resolveAvatarsDir, resolveStorePath } from '../../../lib/campaign-paths';
+import { resolveSheetEdit } from '../../../lib/sheet-auth';
 
 const ALLOWED = new Set(['.jpg', '.jpeg', '.png', '.webp', '.gif']);
 
@@ -79,6 +80,17 @@ export async function POST({
       status: 503,
       headers: { 'Content-Type': 'application/json' },
     });
+  }
+
+  const auth = resolveSheetEdit(request, new URL(request.url), slug);
+  if (!auth.canEdit) {
+    return new Response(
+      JSON.stringify({
+        error: auth.reason ?? 'edit token required',
+        hint: 'Open the sheet from the table bot link to upload.',
+      }),
+      { status: 401, headers: { 'Content-Type': 'application/json' } },
+    );
   }
 
   const ct = request.headers.get('content-type') ?? '';

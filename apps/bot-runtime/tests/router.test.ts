@@ -17,13 +17,19 @@ afterEach(() => {
   for (const d of dirs.splice(0)) rmSync(d, { recursive: true, force: true });
 });
 
-function mockPort(): ChatPort & { cards: ChatCard[]; ephemerals: string[] } {
+function mockPort(): ChatPort & {
+  cards: ChatCard[];
+  ephemerals: string[];
+  replies: ChatCard[];
+} {
   const cards: ChatCard[] = [];
   const ephemerals: string[] = [];
+  const replies: ChatCard[] = [];
   return {
     platform: 'discord',
     cards,
     ephemerals,
+    replies,
     async start() {},
     async stop() {},
     async sendCard(_ch, card) {
@@ -33,6 +39,9 @@ function mockPort(): ChatPort & { cards: ChatCard[]; ephemerals: string[] } {
     async editCard() {},
     async replyEphemeral(_i, content) {
       ephemerals.push(content);
+    },
+    async editReplyCard(_i, card) {
+      replies.push(card);
     },
     onInteraction() {},
   };
@@ -81,9 +90,66 @@ describe('bot router', () => {
       },
     };
     await handleInteraction(ctx, rollIx);
+    expect(port.replies.length).toBe(1);
+    expect(port.replies[0]!.title).toMatch(/^Ready ·/);
+    expect(port.replies[0]!.selects?.[0]?.options).toHaveLength(9);
+    const castId = port.replies[0]!.buttons?.find((b) => b.id.startsWith('roll-cast:'))?.id;
+    expect(castId).toBeTruthy();
+    await handleInteraction(ctx, {
+      type: 'button',
+      id: '1b',
+      clientEventId: 'c1b',
+      user: { platform: 'discord', accountId: 'user-1', displayName: 'Player' },
+      channelId: 'ch',
+      customId: castId!,
+    });
     expect(port.cards.length).toBe(1);
     expect(port.cards[0]!.title).toBe('Leifr Ketilsson');
+    expect(port.cards[0]!.fields?.[0]?.name).toBe('Marks');
     expect(port.ephemerals.some((e) => e.includes('Marks'))).toBe(true);
+    store.close();
+  });
+
+  it('allows Foundation change on confirm before Cast', async () => {
+    const dir = mkdtempSync(join(tmpdir(), 'kod-bot-'));
+    dirs.push(dir);
+    const store = openSqliteStore(join(dir, 'c.sqlite'));
+    seedDemoCampaign(store);
+    mapMember(store, {
+      platform: 'discord',
+      accountId: 'user-1',
+      characterSlug: 'leifr',
+      role: 'player',
+    });
+    const port = mockPort();
+    const ctx: BotContext = {
+      store,
+      port,
+      liveBaseUrl: 'http://127.0.0.1:8742',
+      prompts: new Map(),
+      log: () => {},
+    };
+    await handleInteraction(ctx, {
+      type: 'command',
+      id: 'f1',
+      clientEventId: 'cf1',
+      user: { platform: 'discord', accountId: 'user-1' },
+      channelId: 'ch',
+      name: 'roll',
+      options: { skill: 'Command' },
+    });
+    const foundId = port.replies[0]!.selects?.[0]?.id;
+    expect(foundId?.startsWith('roll-found:')).toBe(true);
+    await handleInteraction(ctx, {
+      type: 'select',
+      id: 'f2',
+      clientEventId: 'cf2',
+      user: { platform: 'discord', accountId: 'user-1' },
+      channelId: 'ch',
+      customId: foundId!,
+      values: ['Guile'],
+    });
+    expect(port.replies.at(-1)?.fields?.find((f) => f.name === 'Foundation')?.value).toBe('Guile');
     store.close();
   });
 
@@ -117,17 +183,11 @@ describe('bot router', () => {
     store.close();
   });
 
-  it('legacy kod-roll alias still works', async () => {
+  it('rejects unknown legacy kod-* command names', async () => {
     const dir = mkdtempSync(join(tmpdir(), 'kod-bot-'));
     dirs.push(dir);
     const store = openSqliteStore(join(dir, 'c.sqlite'));
     seedDemoCampaign(store);
-    mapMember(store, {
-      platform: 'discord',
-      accountId: 'user-1',
-      characterSlug: 'leifr',
-      role: 'player',
-    });
     const port = mockPort();
     const ctx: BotContext = {
       store,
@@ -145,7 +205,8 @@ describe('bot router', () => {
       name: 'kod-roll',
       options: { foundation: 'Authority', skill: 'Command' },
     });
-    expect(port.cards[0]!.title).toBe('Leifr Ketilsson');
+    expect(port.cards).toHaveLength(0);
+    expect(port.ephemerals.some((e) => /unknown command/i.test(e))).toBe(true);
     store.close();
   });
 

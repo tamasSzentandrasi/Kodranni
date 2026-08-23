@@ -36,19 +36,44 @@ const unlocked = live && creation && !creation.locked;
       <div class="draft-concept">
         <label class="draft-label">
           Name
-          <input type="text" name="name" value={ch.name} data-field="name" />
+          <input
+            class="kod-ink"
+            type="text"
+            name="name"
+            value={ch.name}
+            data-field="name"
+            placeholder="Character name…"
+          />
         </label>
         <label class="draft-label">
           Concept
-          <textarea name="concept" rows="4" data-field="concept">{ch.concept ?? ''}</textarea>
+          <textarea
+            class="kod-ink"
+            name="concept"
+            rows="4"
+            data-field="concept"
+            placeholder="What drives this person…"
+          >{ch.concept ?? ''}</textarea>
         </label>
         <label class="draft-label">
           Community tie
-          <textarea name="communityTie" rows="3" data-field="communityTie">{ch.communityTie}</textarea>
+          <textarea
+            class="kod-ink"
+            name="communityTie"
+            rows="3"
+            data-field="communityTie"
+            placeholder="How they bind to the table’s place…"
+          >{ch.communityTie}</textarea>
         </label>
         <label class="draft-label">
           Who do we see?
-          <textarea name="whoWeSee" rows="3" data-field="whoWeSee">{ch.whoWeSee ?? ''}</textarea>
+          <textarea
+            class="kod-ink"
+            name="whoWeSee"
+            rows="3"
+            data-field="whoWeSee"
+            placeholder="Ink the figure the table will recognise…"
+          >{ch.whoWeSee ?? ''}</textarea>
         </label>
         <button type="button" class="kod-btn" data-action="save-concept">
           Save concept
@@ -57,8 +82,8 @@ const unlocked = live && creation && !creation.locked;
       </div>
 
       <p class="draft-hint">
-        When ready, return to <a href={`/characters/${ch.slug}/`}>Core</a> and use{' '}
-        <strong>Confirm draft</strong> at the bottom.
+        Spend and Confirm live on <a href={`/characters/${ch.slug}/`}>Core</a>. Portrait sits with
+        the name above.
       </p>
     </section>
   )
@@ -70,29 +95,18 @@ const unlocked = live && creation && !creation.locked;
 
 <style>
   .draft-panel {
-    margin-bottom: 1.25rem;
+    margin: 1.25rem auto 2rem;
+    max-width: 36rem;
   }
   .draft-concept {
     display: grid;
-    gap: 0.55rem;
-    margin: 0.35rem 0 0;
+    gap: 0.75rem;
   }
   .draft-label {
     display: grid;
     gap: 0.25rem;
     font-size: 0.85rem;
-    letter-spacing: 0.02em;
-  }
-  .draft-label input,
-  .draft-label textarea {
-    font: inherit;
-    padding: 0.4rem 0.5rem;
-    border: 1px solid color-mix(in srgb, var(--kod-silver, #b8b3ab) 28%, transparent);
-    border-radius: 2px;
-    background: color-mix(in srgb, #080606 92%, #fff 8%);
-    color: inherit;
-    width: 100%;
-    max-width: 40rem;
+    color: var(--kod-silver, #b8b3ab);
   }
   .draft-panel .kod-btn {
     width: auto;
@@ -103,23 +117,5 @@ const unlocked = live && creation && !creation.locked;
     max-height: none;
     padding: 0.45rem 1.15rem;
     justify-self: start;
-  }
-  .draft-hint {
-    font-size: 0.9rem;
-    opacity: 0.85;
-    margin: 1rem 0 0;
-  }
-  .draft-hint a {
-    color: var(--kod-silver-bright, #f2efe9);
-  }
-  .draft-msg {
-    font-size: 0.9rem;
-    margin: 0.35rem 0 0;
-  }
-  .draft-msg--err {
-    color: var(--kod-blood, #c44);
-  }
-  .draft-msg--ok {
-    opacity: 0.9;
   }
 </style>

@@ -26,10 +26,17 @@ import {
 } from '@kodranni/app';
 import {
   buildHarmAssignCard,
+  buildRollConfirmCard,
   buildRollPromptCard,
   buildRollResultCard,
+  dieTierShort,
 } from '@kodranni/chat-ui';
-import { skillByName, type DieTier } from '@kodranni/domain';
+import {
+  ARCHETYPES,
+  FOUNDATION_NAMES,
+  skillByName,
+  type DieTier,
+} from '@kodranni/domain';
 import type { CommunityStorePort } from '@kodranni/store';
 
 export interface RollPrompt {
@@ -46,13 +53,40 @@ export interface RollPrompt {
   whisper?: boolean;
 }
 
+/** Ephemeral confirm / fallback wizard state for free-roll. */
+export interface RollConfirm {
+  id: string;
+  accountId: string;
+  characterSlug: string;
+  characterName: string;
+  skill?: string;
+  foundation: string;
+  dieTier: DieTier;
+  exertion: number;
+  echoApplies: boolean;
+  channelId: string;
+  /** Fallback wizard: awaiting archetype pick. */
+  phase?: 'arch' | 'skill' | 'confirm';
+  archetype?: string;
+}
+
 export interface BotContext {
   store: CommunityStorePort;
   port: ChatPort;
   liveBaseUrl: string;
   archiveBaseUrl?: string;
   prompts: Map<string, RollPrompt>;
+  confirms?: Map<string, RollConfirm>;
   log: (line: string) => void;
+  /** Discord guild role ID → Storyteller (preferred). */
+  discordStorytellerRoleId?: string;
+  /** Fluxer role ID → Storyteller. */
+  fluxerStorytellerRoleId?: string;
+}
+
+function confirmsOf(ctx: BotContext): Map<string, RollConfirm> {
+  if (!ctx.confirms) ctx.confirms = new Map();
+  return ctx.confirms;
 }
 
 function sheetUrl(
@@ -75,20 +109,29 @@ function sheetUrl(
   }
 }
 
-function isSt(ctx: BotContext, accountId: string): boolean {
-  return resolveRoleByAccount(ctx.store, 'discord', accountId) === 'storyteller';
+function isSt(
+  ctx: BotContext,
+  user: { platform: string; accountId: string; roleIds?: string[] },
+): boolean {
+  if (
+    user.platform === 'discord' &&
+    ctx.discordStorytellerRoleId &&
+    user.roleIds?.includes(ctx.discordStorytellerRoleId)
+  ) {
+    return true;
+  }
+  if (
+    user.platform === 'fluxer' &&
+    ctx.fluxerStorytellerRoleId &&
+    user.roleIds?.includes(ctx.fluxerStorytellerRoleId)
+  ) {
+    return true;
+  }
+  return resolveRoleByAccount(ctx.store, user.platform, user.accountId) === 'storyteller';
 }
 
-/** Canonical command name after demoting kod-* aliases. */
 function canonicalCommand(name: string): string {
-  const aliases: Record<string, string> = {
-    'kod-live': 'live',
-    'kod-roll': 'roll',
-    'kod-st-roll': 'st-roll',
-    'kod-prompt': 'intent',
-    'kod-map': 'map',
-  };
-  return aliases[name] ?? name;
+  return name;
 }
 
 export async function handleInteraction(
@@ -104,10 +147,90 @@ export async function handleInteraction(
       await handleButton(ctx, i);
       return;
     }
+    if (i.type === 'select') {
+      await handleSelect(ctx, i);
+      return;
+    }
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e);
     ctx.log(`error: ${msg}`);
     await ctx.port.replyEphemeral(i, msg.slice(0, 500));
+  }
+}
+
+async function showConfirmCard(
+  ctx: BotContext,
+  i: ChatInteraction,
+  c: RollConfirm,
+): Promise<void> {
+  c.phase = 'confirm';
+  confirmsOf(ctx).set(c.id, c);
+  const card = buildRollConfirmCard({
+    confirmId: c.id,
+    characterName: c.characterName,
+    skill: c.skill,
+    foundation: c.foundation,
+    foundations: [...FOUNDATION_NAMES],
+    dieTier: c.dieTier,
+    exertion: c.exertion,
+    echoApplies: c.echoApplies,
+    liveSheetUrl: sheetUrl(ctx.liveBaseUrl, c.characterSlug, {
+      platform: 'discord',
+      accountId: c.accountId,
+    }),
+  });
+  if (ctx.port.editReplyCard) await ctx.port.editReplyCard(i, card);
+  else await ctx.port.sendCard(c.channelId, card);
+}
+
+async function castConfirm(
+  ctx: BotContext,
+  i: ChatInteraction,
+  c: RollConfirm,
+): Promise<void> {
+  confirmsOf(ctx).delete(c.id);
+  const result = executePlayerRoll(ctx.store, {
+    characterSlug: c.characterSlug,
+    foundation: c.foundation,
+    skill: c.skill,
+    dieTier: c.dieTier,
+    exertionDice: c.exertion,
+    echoInvoked: c.echoApplies,
+    primitive: !c.skill,
+    actor: c.accountId,
+    clientEventId: i.clientEventId,
+  });
+  const intentLine = c.skill
+    ? `${c.foundation} + ${c.skill} · ${dieTierShort(c.dieTier)}`
+    : `${c.foundation} (Primitive) · ${dieTierShort(c.dieTier)}`;
+  const card = buildRollResultCard({
+    characterName: c.characterName,
+    intentLine,
+    poolFormula: result.poolFormula,
+    dieTier: result.dieTier,
+    faces: result.faces,
+    marks: result.marks,
+    omen: result.omen,
+    omenHit: result.omenHit,
+    practiceGained: result.practiceGained,
+    whyPool: result.whyPool,
+    liveSheetUrl: sheetUrl(ctx.liveBaseUrl, c.characterSlug),
+    archiveSheetUrl: ctx.archiveBaseUrl
+      ? sheetUrl(ctx.archiveBaseUrl, c.characterSlug)
+      : undefined,
+    rollId: result.rollId,
+    showOppose: true,
+    showStPalette: true,
+  });
+  await ctx.port.sendCard(c.channelId, card);
+  await ctx.port.replyEphemeral(i, `Rolled **${result.marks}** Marks.`);
+  if (ctx.port.editReplyCard) {
+    await ctx.port.editReplyCard(i, {
+      title: 'Cast',
+      description: `**${result.marks}** Marks · ${intentLine}`,
+      accent: 'neutral',
+      footer: 'Result is on the table.',
+    });
   }
 }
 
@@ -311,7 +434,7 @@ async function handleCommand(
   }
 
   if (name === 'review') {
-    if (!isSt(ctx, user.accountId)) {
+    if (!isSt(ctx, user)) {
       const anySt = ctx.store.listMembers().some((m) => m.role === 'storyteller');
       if (anySt) {
         await ctx.port.replyEphemeral(i, 'Storyteller only.');
@@ -354,7 +477,7 @@ async function handleCommand(
   }
 
   if (name === 'award-word') {
-    if (!isSt(ctx, user.accountId)) {
+    if (!isSt(ctx, user)) {
       const anySt = ctx.store.listMembers().some((m) => m.role === 'storyteller');
       if (anySt) {
         await ctx.port.replyEphemeral(i, 'Storyteller only.');
@@ -379,7 +502,7 @@ async function handleCommand(
   }
 
   if (name === 'map') {
-    if (!isSt(ctx, user.accountId)) {
+    if (!isSt(ctx, user)) {
       await ctx.port.replyEphemeral(
         i,
         'Emergency only. Preferred path: player `/create` → sheet Confirm → ST Approve.',
@@ -409,7 +532,7 @@ async function handleCommand(
   }
 
   if (name === 'intent') {
-    if (!isSt(ctx, user.accountId)) {
+    if (!isSt(ctx, user)) {
       const anySt = ctx.store.listMembers().some((m) => m.role === 'storyteller');
       if (anySt) {
         await ctx.port.replyEphemeral(i, 'Only a Storyteller may send Intent.');
@@ -481,50 +604,67 @@ async function handleCommand(
       return;
     }
     const skill = options.skill != null ? String(options.skill) : undefined;
+    if (skill && !skillByName(skill)) {
+      await ctx.port.replyEphemeral(
+        i,
+        `Unknown skill “${skill}”. Type a few letters for autocomplete, or omit skill to pick by Archetype.`,
+      );
+      return;
+    }
     const foundation = guidingFoundation(
       skill,
       options.foundation != null ? String(options.foundation) : undefined,
     );
     const dieTier = (Number(options.tier ?? 8) || 8) as DieTier;
     const exertion = Number(options.exertion ?? 0);
-    const echo = Boolean(options.echo);
-    const result = executePlayerRoll(ctx.store, {
+    const echoApplies = Boolean(options.echo);
+    const confirmId = randomUUID().slice(0, 8);
+    const confirm: RollConfirm = {
+      id: confirmId,
+      accountId: user.accountId,
       characterSlug: resolved.slug,
-      foundation,
-      skill,
-      dieTier,
-      exertionDice: exertion,
-      echoInvoked: echo,
-      primitive: !skill,
-      actor: user.accountId,
-      clientEventId: i.clientEventId,
-    });
-    const card = buildRollResultCard({
       characterName: resolved.name,
-      intentLine: skill ? `${foundation} + ${skill}` : `${foundation} (Primitive)`,
-      poolFormula: result.poolFormula,
-      dieTier: result.dieTier,
-      faces: result.faces,
-      marks: result.marks,
-      omen: result.omen,
-      omenHit: result.omenHit,
-      practiceGained: result.practiceGained,
-      whyPool: result.whyPool,
-      liveSheetUrl: sheetUrl(ctx.liveBaseUrl, resolved.slug),
-      archiveSheetUrl: ctx.archiveBaseUrl
-        ? sheetUrl(ctx.archiveBaseUrl, resolved.slug)
-        : undefined,
-      rollId: result.rollId,
-      showOppose: true,
-      showStPalette: true,
-    });
-    await ctx.port.sendCard(channelId, card);
-    await ctx.port.replyEphemeral(i, `Rolled **${result.marks}** Marks.`);
+      skill,
+      foundation,
+      dieTier,
+      exertion,
+      echoApplies,
+      channelId,
+      phase: skill ? 'confirm' : 'arch',
+    };
+    confirmsOf(ctx).set(confirmId, confirm);
+
+    if (!skill) {
+      // Fallback: Archetype → Skill, then same confirm card
+      const card: ChatCard = {
+        title: `Pick skill · ${resolved.name}`,
+        description:
+          'Forgot the skill name? Choose an Archetype — then you’ll land on the same confirm card as typing `/roll skill:…`.',
+        accent: 'blood',
+        selects: [
+          {
+            id: `roll-arch:${confirmId}`,
+            placeholder: 'Archetype…',
+            options: ARCHETYPES.map((a) => ({
+              value: a.id,
+              label: a.name,
+              description: a.tag,
+            })),
+          },
+        ],
+        buttons: [{ id: `roll-cancel:${confirmId}`, label: 'Cancel', style: 'danger' }],
+      };
+      if (ctx.port.editReplyCard) await ctx.port.editReplyCard(i, card);
+      else await ctx.port.sendCard(channelId, card);
+      return;
+    }
+
+    await showConfirmCard(ctx, i, confirm);
     return;
   }
 
   if (name === 'st-roll') {
-    if (!isSt(ctx, user.accountId)) {
+    if (!isSt(ctx, user)) {
       const anySt = ctx.store.listMembers().some((m) => m.role === 'storyteller');
       if (anySt) {
         await ctx.port.replyEphemeral(i, 'Storyteller only.');
@@ -563,11 +703,137 @@ async function handleCommand(
   await ctx.port.replyEphemeral(i, `Unknown command: ${i.name}`);
 }
 
+async function handleSelect(
+  ctx: BotContext,
+  i: Extract<ChatInteraction, { type: 'select' }>,
+): Promise<void> {
+  const id = i.customId;
+  const value = i.values[0];
+  if (!value) return;
+
+  if (id.startsWith('roll-arch:')) {
+    const confirmId = id.slice('roll-arch:'.length);
+    const c = confirmsOf(ctx).get(confirmId);
+    if (!c || c.accountId !== i.user.accountId) {
+      await ctx.port.replyEphemeral(i, 'This picker is not yours or expired.');
+      return;
+    }
+    const arch = ARCHETYPES.find((a) => a.id === value);
+    if (!arch) {
+      await ctx.port.replyEphemeral(i, 'Unknown Archetype.');
+      return;
+    }
+    c.archetype = arch.id;
+    c.phase = 'skill';
+    confirmsOf(ctx).set(confirmId, c);
+    const card: ChatCard = {
+      title: `Skill · ${arch.name}`,
+      description:
+        'Pick the skill the table agreed — then confirm Foundation, Exertion, and whether an Echo applies.',
+      accent: 'blood',
+      selects: [
+        {
+          id: `roll-skill:${confirmId}`,
+          placeholder: `${arch.name} skills…`,
+          options: arch.skills.map((s) => ({
+            value: s.name,
+            label: s.name,
+            description: `Guiding ${s.foundation}`,
+          })),
+        },
+      ],
+      buttons: [{ id: `roll-cancel:${confirmId}`, label: 'Cancel', style: 'danger' }],
+    };
+    if (ctx.port.editReplyCard) await ctx.port.editReplyCard(i, card);
+    return;
+  }
+
+  if (id.startsWith('roll-skill:')) {
+    const confirmId = id.slice('roll-skill:'.length);
+    const c = confirmsOf(ctx).get(confirmId);
+    if (!c || c.accountId !== i.user.accountId) {
+      await ctx.port.replyEphemeral(i, 'This picker is not yours or expired.');
+      return;
+    }
+    const def = skillByName(value);
+    if (!def) {
+      await ctx.port.replyEphemeral(i, 'Unknown skill.');
+      return;
+    }
+    c.skill = def.name;
+    c.foundation = def.foundation;
+    await showConfirmCard(ctx, i, c);
+    return;
+  }
+
+  if (id.startsWith('roll-found:')) {
+    const confirmId = id.slice('roll-found:'.length);
+    const c = confirmsOf(ctx).get(confirmId);
+    if (!c || c.accountId !== i.user.accountId) {
+      await ctx.port.replyEphemeral(i, 'This confirm is not yours or expired.');
+      return;
+    }
+    if (!(FOUNDATION_NAMES as readonly string[]).includes(value)) {
+      await ctx.port.replyEphemeral(i, 'Unknown Foundation.');
+      return;
+    }
+    c.foundation = value;
+    await showConfirmCard(ctx, i, c);
+  }
+}
+
 async function handleButton(
   ctx: BotContext,
   i: Extract<ChatInteraction, { type: 'button' }>,
 ): Promise<void> {
   const id = i.customId;
+
+  if (id.startsWith('roll-cast:')) {
+    const confirmId = id.slice('roll-cast:'.length);
+    const c = confirmsOf(ctx).get(confirmId);
+    if (!c || c.accountId !== i.user.accountId) {
+      await ctx.port.replyEphemeral(i, 'This confirm is not yours or expired.');
+      return;
+    }
+    await castConfirm(ctx, i, c);
+    return;
+  }
+  if (id.startsWith('roll-cancel:')) {
+    const confirmId = id.slice('roll-cancel:'.length);
+    confirmsOf(ctx).delete(confirmId);
+    if (ctx.port.editReplyCard) {
+      await ctx.port.editReplyCard(i, {
+        title: 'Cancelled',
+        description: 'No roll.',
+        accent: 'neutral',
+      });
+    } else {
+      await ctx.port.replyEphemeral(i, 'Cancelled.');
+    }
+    return;
+  }
+  if (id.startsWith('roll-ex:')) {
+    const confirmId = id.slice('roll-ex:'.length);
+    const c = confirmsOf(ctx).get(confirmId);
+    if (!c || c.accountId !== i.user.accountId) {
+      await ctx.port.replyEphemeral(i, 'This confirm is not yours or expired.');
+      return;
+    }
+    c.exertion = (c.exertion + 1) % 3;
+    await showConfirmCard(ctx, i, c);
+    return;
+  }
+  if (id.startsWith('roll-echo:')) {
+    const confirmId = id.slice('roll-echo:'.length);
+    const c = confirmsOf(ctx).get(confirmId);
+    if (!c || c.accountId !== i.user.accountId) {
+      await ctx.port.replyEphemeral(i, 'This confirm is not yours or expired.');
+      return;
+    }
+    c.echoApplies = !c.echoApplies;
+    await showConfirmCard(ctx, i, c);
+    return;
+  }
 
   if (id.startsWith('prompt-roll:')) {
     const promptId = id.slice('prompt-roll:'.length);
@@ -580,7 +846,8 @@ async function handleButton(
       await ctx.port.replyEphemeral(i, 'This Intent is for another player.');
       return;
     }
-    let ch = resolveCharacterByAccount(ctx.store, 'discord', i.user.accountId);
+    let ch = resolveFocusedCharacter(ctx.store, 'discord', i.user.accountId);
+    if (!ch) ch = resolveCharacterByAccount(ctx.store, 'discord', i.user.accountId);
     if (!ch && prompt.characterSlug) {
       ch = ctx.store.getCharacterBySlug(prompt.characterSlug);
     }
@@ -591,44 +858,26 @@ async function handleButton(
       );
       return;
     }
-    const result = executePlayerRoll(ctx.store, {
+    const confirmId = randomUUID().slice(0, 8);
+    const confirm: RollConfirm = {
+      id: confirmId,
+      accountId: i.user.accountId,
       characterSlug: ch.slug,
-      foundation: prompt.foundation,
-      skill: prompt.skill,
-      dieTier: prompt.dieTier,
-      exertionDice: 0,
-      echoInvoked: false,
-      primitive: !prompt.skill,
-      actor: i.user.accountId,
-      clientEventId: i.clientEventId,
-    });
-    const card = buildRollResultCard({
       characterName: ch.name,
-      intentLine: prompt.skill
-        ? `${prompt.foundation} + ${prompt.skill}`
-        : `${prompt.foundation} (Primitive)`,
-      poolFormula: result.poolFormula,
-      dieTier: result.dieTier,
-      faces: result.faces,
-      marks: result.marks,
-      omen: result.omen,
-      omenHit: result.omenHit,
-      practiceGained: result.practiceGained,
-      whyPool: result.whyPool,
-      liveSheetUrl: sheetUrl(ctx.liveBaseUrl, ch.slug),
-      archiveSheetUrl: ctx.archiveBaseUrl
-        ? sheetUrl(ctx.archiveBaseUrl, ch.slug)
-        : undefined,
-      rollId: result.rollId,
-      showOppose: true,
-      showStPalette: true,
-    });
-    await ctx.port.sendCard(i.channelId, card);
+      skill: prompt.skill,
+      foundation: prompt.foundation,
+      dieTier: prompt.dieTier,
+      exertion: 0,
+      echoApplies: false,
+      channelId: i.channelId,
+      phase: 'confirm',
+    };
+    await showConfirmCard(ctx, i, confirm);
     return;
   }
 
   if (id.startsWith('approve:') || id.startsWith('deny:') || id.startsWith('changes:')) {
-    if (!isSt(ctx, i.user.accountId)) {
+    if (!isSt(ctx, i.user)) {
       await ctx.port.replyEphemeral(i, 'Storyteller only.');
       return;
     }
@@ -669,7 +918,7 @@ async function handleButton(
   }
 
   if (id.startsWith('st-harm:')) {
-    if (!isSt(ctx, i.user.accountId)) {
+    if (!isSt(ctx, i.user)) {
       await ctx.port.replyEphemeral(i, 'Storyteller only.');
       return;
     }
@@ -720,7 +969,7 @@ async function handleButton(
   }
 
   if (id.startsWith('harm-apply:')) {
-    if (!isSt(ctx, i.user.accountId)) {
+    if (!isSt(ctx, i.user)) {
       await ctx.port.replyEphemeral(i, 'Storyteller only.');
       return;
     }
@@ -765,7 +1014,7 @@ async function handleButton(
   }
 
   if (id.startsWith('st-exert:')) {
-    if (!isSt(ctx, i.user.accountId)) {
+    if (!isSt(ctx, i.user)) {
       await ctx.port.replyEphemeral(i, 'Storyteller only.');
       return;
     }

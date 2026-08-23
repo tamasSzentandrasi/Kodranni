@@ -11,6 +11,8 @@ export interface ChatUserRef {
   platform: PlatformId;
   accountId: string;
   displayName?: string;
+  /** Platform role IDs (e.g. Discord guild roles) for ST recognition. */
+  roleIds?: string[];
 }
 
 export type ButtonStyle = 'primary' | 'secondary' | 'success' | 'danger';
@@ -26,6 +28,10 @@ export interface ChatSelectOption {
   value: string;
   label: string;
   description?: string;
+  /** Discord: mark as default selected. */
+  default?: boolean;
+  /** Discord custom emoji name or unicode. */
+  emoji?: string;
 }
 
 export interface ChatSelect {
@@ -98,5 +104,10 @@ export interface ChatPort {
   sendCard(channelId: string, card: ChatCard): Promise<ChatMessageRef>;
   editCard(ref: ChatMessageRef, card: ChatCard): Promise<void>;
   replyEphemeral(interaction: ChatInteraction, content: string): Promise<void>;
+  /**
+   * Edit the deferred/ephemeral interaction reply as a rich card
+   * (confirm stance, fallback picker, etc.).
+   */
+  editReplyCard?(interaction: ChatInteraction, card: ChatCard): Promise<void>;
   onInteraction(handler: (i: ChatInteraction) => Promise<void>): void;
 }

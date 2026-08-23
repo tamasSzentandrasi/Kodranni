@@ -39,6 +39,13 @@ export interface CampaignConfig {
   cloudflareTunnelName?: string;
   /** Optional path to cloudflared config.yml */
   cloudflareTunnelConfig?: string;
+  /**
+   * Discord guild role ID whose holders are Storytellers (preferred over /map).
+   * Snowflakes as strings.
+   */
+  discordStorytellerRoleId?: string;
+  /** Fluxer server role ID for Storytellers (when Fluxer adapter is live). */
+  fluxerStorytellerRoleId?: string;
 }
 
 const DEFAULTS = {
@@ -79,6 +86,15 @@ export function serializeCampaignToml(cfg: CampaignConfig): string {
   }
   if (cfg.cloudflareTunnelConfig) {
     lines.push(`cloudflare_tunnel_config = ${tomlString(cfg.cloudflareTunnelConfig)}`);
+  }
+  if (cfg.discordStorytellerRoleId || cfg.fluxerStorytellerRoleId) {
+    lines.push('', '# Storyteller recognition (platform role IDs)');
+  }
+  if (cfg.discordStorytellerRoleId) {
+    lines.push(`discord_storyteller_role_id = ${tomlString(cfg.discordStorytellerRoleId)}`);
+  }
+  if (cfg.fluxerStorytellerRoleId) {
+    lines.push(`fluxer_storyteller_role_id = ${tomlString(cfg.fluxerStorytellerRoleId)}`);
   }
   lines.push('');
   return lines.join('\n');
@@ -131,6 +147,12 @@ export function parseCampaignToml(text: string): CampaignConfig {
       : undefined,
     cloudflareTunnelConfig: map.has('cloudflare_tunnel_config')
       ? unquote(map.get('cloudflare_tunnel_config')!)
+      : undefined,
+    discordStorytellerRoleId: map.has('discord_storyteller_role_id')
+      ? unquote(map.get('discord_storyteller_role_id')!)
+      : undefined,
+    fluxerStorytellerRoleId: map.has('fluxer_storyteller_role_id')
+      ? unquote(map.get('fluxer_storyteller_role_id')!)
       : undefined,
   };
 }
@@ -203,10 +225,60 @@ export async function readCampaignConfig(path: string): Promise<CampaignConfig> 
   return parseCampaignToml(text);
 }
 
+/**
+ * Fill durable ST-machine prefs from env / ~/.kodranni/secrets without
+ * writing secret tokens into campaign.toml (token stays in env/file).
+ * Used on create and seed-demo --force so destroy/recreate is not a hassle.
+ */
+export function applyMachineDefaults(
+  cfg: CampaignConfig,
+  env: NodeJS.ProcessEnv = process.env,
+): CampaignConfig {
+  const out: CampaignConfig = { ...cfg };
+  const tunnelToken = env.KODRANNI_CF_TUNNEL_TOKEN?.trim();
+  const tunnelHost =
+    env.KODRANNI_TUNNEL_HOSTNAME?.trim() ||
+    env.KODRANNI_CF_TUNNEL_HOSTNAME?.trim();
+  const stRole = env.DISCORD_STORYTELLER_ROLE_ID?.trim();
+  const fluxerStRole = env.FLUXER_STORYTELLER_ROLE_ID?.trim();
+
+  if (tunnelToken || tunnelHost || out.cloudflareTunnelName || out.cloudflareTunnelConfig) {
+    out.tunnelMode = 'named';
+  } else if (!out.tunnelMode) {
+    out.tunnelMode = DEFAULTS.tunnelMode;
+  }
+
+  if (tunnelHost) {
+    out.tunnelHostname = tunnelHost.replace(/\/$/, '');
+    // Named public URL players open mid-session
+    const host = out.tunnelHostname.startsWith('http')
+      ? out.tunnelHostname
+      : `https://${out.tunnelHostname}`;
+    out.liveBaseUrl = host;
+  }
+
+  // Never persist the Cloudflare run token into campaign.toml — env/secret file only.
+  delete out.cloudflareTunnelToken;
+
+  if (stRole) out.discordStorytellerRoleId = stRole;
+  if (fluxerStRole) out.fluxerStorytellerRoleId = fluxerStRole;
+
+  const platforms = new Set(out.platforms ?? []);
+  if (env.DISCORD_BOT_TOKEN?.trim() && env.DISCORD_GUILD_ID?.trim()) {
+    platforms.add('discord');
+  }
+  if (env.FLUXER_BOT_TOKEN?.trim() && env.FLUXER_GUILD_ID?.trim()) {
+    platforms.add('fluxer');
+  }
+  out.platforms = [...platforms];
+
+  return out;
+}
+
 export async function ensureCampaignLayout(slug: string, name: string): Promise<CampaignConfig> {
   const dir = campaignDir(slug);
   const storePath = defaultStorePath(slug);
-  const cfg: CampaignConfig = {
+  let cfg: CampaignConfig = {
     schema: DEFAULTS.schema,
     slug,
     name,
@@ -216,6 +288,7 @@ export async function ensureCampaignLayout(slug: string, name: string): Promise<
     publishDebounceMs: DEFAULTS.publishDebounceMs,
     platforms: [],
   };
+  cfg = applyMachineDefaults(cfg, process.env);
   await mkdir(join(dir, 'data'), { recursive: true });
   await mkdir(join(dir, 'private'), { recursive: true });
   await mkdir(join(dir, 'media', 'avatars'), { recursive: true });

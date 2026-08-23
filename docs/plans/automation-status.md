@@ -1,64 +1,121 @@
-# Automation status & fix register
+# Automation status, process lanes & backlog
 
-**Updated:** 2026-08-14
+**Updated:** 2026-08-22
 
-## Status snapshot
+---
 
-| Layer | State | Notes |
+## U-phase shipping
+
+| Phase | Focus | Status |
 |-------|--------|--------|
-| Domain (pools, Practice, Harm, Tide, capacities) | Strong | Golden tests; dual capacity formulas |
-| Store port (hexagonal) | Improving | `CommunityStorePort`; SQLite is one adapter |
-| SQLite adapter | Working | Local SoT under `~/.kodranni/campaigns/<slug>/` |
-| CLI | Working | seed/destroy/roll/live/`emissary`/`session`; `live --tunnel`; reconstructible `--force` |
-| Live campaign-ui | Functional enough | Community + character UX; polish later |
-| App services | Growing | rolls + harm + **creation lifecycle** (draft/claim/spend/Weighing pts/Wanting/ST edit/focus) |
-| Discord bot-runtime | **Redesign in progress** | `/create` `/roll` `/intent` `/review` + Birth Omen/Hand; sheet Confirm; Harm on result; kod-* legacy aliases |
-| Campaign GitHub/Pages spawn | Not started | Designed only; force-publish on session end |
+| **U1** | In-place Found/Skill spend + spacing + Echo track colour | **Shipped** |
+| **U2** | Bot-signed edit tokens | **Shipped** |
+| **U3** | Wanting + who-we-see | **Shipped** (polish continues on sheet) |
+| **U4** | Echoes / Inventory / Traits editors | **Shipped** (UX craft ongoing) |
+| **U5** | Discord Intent∥free-roll, autocomplete, confirm, Link buttons, remove `kod-*` | **Shipped** — restart bot to re-register slash cmds |
+| **U6** | Archive publish + same-hostname park | **MVP shipped** — Pages push later |
 
-## Reconstructible demo
+Sheet creation UX **theorycraft** (highest visual bar) is queued **after U6** (or after a short QoL lane if U6 waits on ops).
+
+---
+
+## Process lanes (how we work)
+
+Use **one active lane** at a time. Park ideas in the backlog; do not start a second lane mid-flight.
+
+| Lane | Purpose | Cadence |
+|------|---------|---------|
+| **A · Table (Discord)** | Rolls, Intent, Harm, bot UX | Done for U5; bugfixes only until U6 |
+| **B · Sheet craft** | Creation UX, Wanting, inventory, ink fields | Theorycraft after U6; hotfixes anytime |
+| **C · Session ops** | Secrets auto-fill, **one CLI supervisor** (`session start --tunnel --bot`), logs | **Active QoL now** |
+| **D · Archive / hostname** | U6 publish + CF failover | Next major after C supervisor MVP |
+| **E · Debt / polish** | Explicit debt tickets below | Pull between lanes, not mid-feature |
+
+**North star for C:** one CLI supervisor process that owns live UI + tunnel + bot as **child processes**, multiplexed logs, one Ctrl+C stops all. Still separate OS processes (correct isolation) — not one Node mega-process.
+
+---
+
+## Reconstructible demo + durable ST machine prefs
 
 | Command | Effect |
 |---------|--------|
-| `campaign seed-demo [--slug vardmark] [--force]` | Write/overwrite Guidebook **Vardmark at Kelarn’s Bend** demo |
-| `campaign destroy --slug X --yes` | Delete campaign dir entirely |
-| `campaign export-json --slug X` | Redacted snapshot for inspection |
+| `campaign seed-demo [--force]` | Write demo; **auto-fills** tunnel mode/hostname + ST role from secrets/env |
+| `campaign sync-defaults` | Re-apply secrets/env into existing `campaign.toml` (no wipe) |
+| `campaign destroy --yes` | Delete campaign dir |
 
-Default demo slug: **`vardmark`**. Characters: **torvald**, **leifr**.
+Durable files under `~/.kodranni/secrets/` (survive destroy):
 
-## Design decisions locked here
+| File | Env |
+|------|-----|
+| `cf-tunnel-token` | `KODRANNI_CF_TUNNEL_TOKEN` |
+| `cf-tunnel-hostname` | `KODRANNI_TUNNEL_HOSTNAME` |
+| `discord-storytellerRoleID` | `DISCORD_STORYTELLER_ROLE_ID` |
+| (+ existing discord/fluxer/sheet secrets) | |
 
-| Topic | Decision |
-|-------|----------|
-| Echo capacity vs Exertion | Independent formulas (Guidebook) |
-| Over-capacity dice penalty | Only when roll **involves an Echo** (invoke/tag); flag still means load > capacity |
-| Decadence | No Echoes → −1 on every roll |
-| RNG | **Crypto** in play; `mulberry32` / `--debug-seed` only for tests & verification |
-| Fortunes UI | Visual (bar height + colour); not arabic focus |
-| Exertion UI | Arabic current/max + progress bar |
-| Foundations UI | Roman rank marks + Harm pips (small ranks) |
-| Hierarchy | Every **member** on every axis (default Outcast); Outsiders **side rail** only |
-| Hexagonal persistence | App → `CommunityStorePort`; SQLite implements it |
-| Campaign map | **Post-initial release** — ST editor + public viewer; Atlas/Ground modes; not VTT. Grok skill/MCP templates later (after hand editor) |
-| Layering | **Adapters → `packages/app` in-process**; CLI is ST orchestration only (never bot IPC) |
-| Live access | Cloudflare tunnel: **quick** (default) or **named** (ST domain); `live --tunnel`; `emissary`; see `docs/plans/live-tunnel.md` |
-| Naming | **`emissary`** (not doctor) — readiness + what to share mid-session |
+Tunnel **token is never written** into `campaign.toml`.
 
-## Known gaps / next
+---
 
-1. Fluxer prefix path; auto-post review card on Confirm (event bus); true Intent DM  
-2. Oppose linking; multi-track / multi-family harm; Discord multi-step skill selects  
-3. Publish/archive pipeline (force on session end)  
-4. `session start` auto-launch bot when Discord env present  
-5. Campaign geography map programme (deferred)  
-6. ST full edit UI on sheet (API exists: `stEditCharacter`)
+## Backlog (parked ideas & debt)
+
+### P0 — from manual test (2026-08-22)
+
+1. ~~Untrained skill rolls~~ **fixed**
+2. ~~Archive `/community` `/characters` routes~~ **fixed** (static pages)
+3. ~~session end hang / Ctrl+C noise~~ **mitigated**
+4. ~~Die tier Advantage/Equal/Disadvantage labels~~ **fixed**
+5. Avatar upload — retest with edit link (client hardened)
+6. Confirm: Echo select = named Echoes from sheet (not boolean)
+7. Group Echo stakeholders seeded from community hierarchy
+8. Archive → real Pages deploy (park process is interim only)
+9. `/exertion-reclaim` (or ST tool) with exact amounts
+10. README clarity rewrite (again) after ops settle
+
+### P1 — U6
+
+5. `packages/publish` redacted snapshot → campaign Pages
+6. Session-end force publish
+7. One-hostname CF failover runbook (tunnel up → live; down → archive)
+
+### P2 — sheet creation theorycraft
+
+8. Full creation journey UX review (Wanting tracker, budgets, text craft, mobile)
+9. Sheet “Roll this” deep links into Discord confirm
+10. Progressive menus only as mercy paths; Intent∥free-roll already equal
+
+### P3 — Discord / Fluxer depth
+
+11. Oppose `parent_roll_id` linking
+12. Multi-track / multi-family Harm
+13. Fluxer prefix parity + autocomplete
+14. Custom die emoji pack (optional)
+
+### P4 — deferred product
+
+15. Campaign geography map
+16. Cloudflare Access / OAuth (only if tokens prove insufficient)
+
+---
 
 ## Verify loop
 
 ```bash
 npm test
-npm run kodranni -- campaign destroy --slug vardmark --yes   # optional clean
-npm run kodranni -- campaign seed-demo --force
-npm run kodranni -- roll --slug vardmark --character torvald \
-  --foundation Strength --skill "Carpentry & Masonry" --tier 8 --exertion 1
-npm run kodranni -- live --slug vardmark
+npm run kodranni -- campaign sync-defaults --slug vardmark
+npm run kodranni -- emissary --slug vardmark
+# after secrets filled:
+npm run kodranni -- campaign seed-demo --force   # or sync-defaults only
 ```
+
+---
+
+## Design decisions still locked
+
+| Topic | Decision |
+|-------|----------|
+| Sheet = person / Chat = hands | Unchanged |
+| Intent ∥ free-roll | Equal paths; confirm shared; Echo = agreed apply |
+| Foundation ≠ guiding | Common; all 9 on confirm |
+| Hexagonal | Adapters → `packages/app`; CLI = ST ops only |
+| Live access | CF quick or named; secrets for token/hostname |
+| Session shape | **Supervisor CLI** (live+tunnel+bot children), not one Node blob |

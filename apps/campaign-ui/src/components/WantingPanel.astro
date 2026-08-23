@@ -1,5 +1,5 @@
 ---
-import { ARCHETYPES, FOUNDATION_GROUPS } from '@kodranni/domain';
+import { FOUNDATION_GROUPS } from '@kodranni/domain';
 import type { FixtureCharacter } from '../data/fixture';
 
 interface Props {
@@ -12,7 +12,6 @@ const { character: ch, live, canEdit = false } = Astro.props;
 const creation = ch.creation;
 const unlocked = canEdit && live && creation && !creation.locked;
 const foundations = Object.values(FOUNDATION_GROUPS).flat();
-const skillNames = ARCHETYPES.flatMap((a) => a.skills.map((s) => s.name));
 ---
 
 {
@@ -39,12 +38,13 @@ const skillNames = ARCHETYPES.flatMap((a) => a.skills.map((s) => s.name));
       </header>
 
       <p class="wanting-panel__lead">
-        While this panel is open, Foundation and Skill spends are locked. Stage purchases, undo
-        freely, then <strong>Confirm Wanting</strong> to commit — or Cancel to discard.
+        While open, normal Found/Skill spends are locked. Pick Foundations and mark skill ranks on
+        <strong>Core</strong> (left-click mark · right-click unmark). Trait vs skill pay is exclusive.
+        Each line must be <strong>Stage</strong>d before <strong>Confirm Wanting</strong>.
       </p>
 
       <p class="wanting-panel__words">
-        Words available: <strong data-field="words-open">{creation?.words ?? 0}</strong>
+        Words: <strong data-field="words-open">{creation?.words ?? 0}</strong>
         · staged: <strong data-field="words-staged">0</strong>
       </p>
 
@@ -96,9 +96,6 @@ const skillNames = ARCHETYPES.flatMap((a) => a.skills.map((s) => s.name));
       <template id="wanting-field-catalog" hidden>
         <select data-foundations>
           {foundations.map((f) => <option value={f}>{f}</option>)}
-        </select>
-        <select data-skills multiple size="6">
-          {skillNames.map((s) => <option value={s}>{s}</option>)}
         </select>
       </template>
     </aside>

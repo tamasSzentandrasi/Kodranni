@@ -7,6 +7,7 @@ import {
   spendFoundation,
   spendSkill,
   spendWordWanting,
+  stEditCharacter,
   updateDraftConcept,
   type WantingMenuId,
 } from '@kodranni/app';
@@ -37,13 +38,60 @@ type ActionBody =
       traitNote?: string;
       negativeTrait?: { name: string; note?: string };
     }
-  | { action: 'confirm' };
+  | { action: 'confirm' }
+  | {
+      action: 'st-edit';
+      patch: {
+        concept?: string;
+        communityTie?: string;
+        whoWeSee?: string;
+        traits?: { name: string; note?: string }[];
+        echoes?: unknown[];
+        inventoryItems?: { name: string; note?: string; tags?: string[] }[];
+        foodDays?: number;
+        waterDays?: number;
+        armour?: { kind: 'none' | 'light' | 'heavy'; donned: boolean };
+        foundations?: Record<string, number>;
+        skills?: unknown[];
+        name?: string;
+      };
+    };
 
 function json(data: unknown, status = 200) {
   return new Response(JSON.stringify(data), {
     status,
     headers: { 'Content-Type': 'application/json' },
   });
+}
+
+/** GET /api/character/:slug — creation snapshot for live budget polling. */
+export async function GET({
+  params,
+}: {
+  params: { slug?: string };
+}) {
+  const slug = params.slug;
+  if (!slug) return json({ error: 'Missing slug' }, 400);
+  const storePath = resolveStorePath();
+  if (!storePath) return json({ error: 'No live store configured' }, 503);
+  const store = openSqliteStore(storePath);
+  try {
+    const ch = store.getCharacterBySlug(slug);
+    if (!ch) return json({ error: 'Not found' }, 404);
+    return json({
+      ok: true,
+      status: ch.status,
+      creation: ch.creation ?? null,
+      foundations: ch.foundations,
+      skills: ch.skills,
+      traits: ch.traits,
+      echoes: ch.echoes,
+      inventory: ch.inventory,
+      armour: ch.armour,
+    });
+  } finally {
+    store.close();
+  }
 }
 
 /** POST /api/character/:slug — draft/unlock actions (live store only). */
@@ -168,6 +216,23 @@ export async function POST({
           ok: true,
           status: r.character.status,
           mention: r.mention,
+        });
+      }
+      case 'st-edit': {
+        const ch = stEditCharacter(store, {
+          characterSlug: slug,
+          patch: body.patch as Parameters<typeof stEditCharacter>[1]['patch'],
+          actor: auth.claims?.accountId,
+        });
+        return json({
+          ok: true,
+          traits: ch.traits,
+          echoes: ch.echoes,
+          inventory: ch.inventory,
+          armour: ch.armour,
+          foundations: ch.foundations,
+          skills: ch.skills,
+          creation: ch.creation,
         });
       }
       default:

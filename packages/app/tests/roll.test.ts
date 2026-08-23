@@ -67,4 +67,19 @@ describe('executePlayerRoll', () => {
     expect(r.marks + r.failures).toBe(r.poolSize);
     store.close();
   });
+
+  it('allows untrained (rating 0) named skills', () => {
+    const store = demoStore();
+    const r = executePlayerRoll(store, {
+      characterSlug: 'torvald',
+      foundation: 'Charisma',
+      skill: 'Debate & Rhetoric',
+      dieTier: 8,
+      rng: mulberry32(7),
+      clientEventId: 'untrained-1',
+    });
+    expect(r.whyPool).toMatch(/untrained|Skill Debate/);
+    expect(r.poolFormula).toMatch(/\+/);
+    store.close();
+  });
 });

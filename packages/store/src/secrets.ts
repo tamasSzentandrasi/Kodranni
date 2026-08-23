@@ -13,12 +13,17 @@ export const SECRET_FILE_TO_ENV = {
   'discord-playChannelID': 'DISCORD_PLAY_CHANNEL_ID',
   'discord-appID': 'DISCORD_APP_ID',
   'discord-publicKey': 'DISCORD_PUBLIC_KEY',
+  /** Guild role ID for Storytellers — survives campaign destroy/recreate. */
+  'discord-storytellerRoleID': 'DISCORD_STORYTELLER_ROLE_ID',
   'fluxer-botToken': 'FLUXER_BOT_TOKEN',
   'fluxer-serverID': 'FLUXER_GUILD_ID',
   'fluxer-playChannelID': 'FLUXER_PLAY_CHANNEL_ID',
   'fluxer-appID': 'FLUXER_APP_ID',
   'fluxer-clientSecret': 'FLUXER_CLIENT_SECRET',
+  'fluxer-storytellerRoleID': 'FLUXER_STORYTELLER_ROLE_ID',
   'cf-tunnel-token': 'KODRANNI_CF_TUNNEL_TOKEN',
+  /** Public hostname for named tunnels, e.g. live.example.com */
+  'cf-tunnel-hostname': 'KODRANNI_TUNNEL_HOSTNAME',
   'sheet-token-secret': 'KODRANNI_SHEET_TOKEN_SECRET',
 } as const;
 
@@ -37,7 +42,11 @@ export interface LoadedSecrets {
 
 function readSecretValue(path: string): string | undefined {
   if (!existsSync(path)) return undefined;
-  const raw = readFileSync(path, 'utf8').replace(/^\uFEFF/, '').trim();
+  let raw = readFileSync(path, 'utf8').replace(/^\uFEFF/, '').trim();
+  // Hostnames / URLs: drop a single trailing slash so sync is stable
+  if (/^https?:\/\//i.test(raw) || /^[a-z0-9.-]+\.[a-z]{2,}/i.test(raw)) {
+    raw = raw.replace(/\/+$/, '');
+  }
   return raw || undefined;
 }
 

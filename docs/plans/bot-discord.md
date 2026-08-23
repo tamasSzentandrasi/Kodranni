@@ -44,13 +44,33 @@ Fluxer files load the same way. The Fluxer adapter is not connected yet — cred
    Edit spends on the **sheet**. **Confirm · return to table** → bot posts review card (fallback: ST `/review`) → ST **Approve**.
 3. **Weighing dice (bot only):** `/birth-omen character:…` · `/guiding-hand character:…`  
    Points land on the unlocked sheet.
-4. **ST Intent:** `/intent player:@Player skill:Command` → card; only that player may **Roll**.
-5. **Player free roll:** `/roll skill:…` (foundation defaults to guiding; optional override).
-6. **Result card:** Marks · Omen · Why this pool? · **Harm** (ST) · Exertion reclaim (ST).
+4. **Two equal roll paths** (fiction agreement first):
+   - **Intent:** ST `/intent player:@Player skill:…` (autocomplete) → channel card → player **Roll** → same confirm stance (Foundation easy to change; Exertion; **Echo applies?** when agreed) → Cast.
+   - **Free roll:** player `/roll skill:…` (autocomplete) → ephemeral confirm → Cast. Omit skill → Archetype→Skill **fallback only**, then the same confirm.
+5. Foundation often is **not** the skill’s guiding foundation — confirm always shows all 9.
+6. **Echo** is agreed apply, not a spend.
+7. **Result card:** Marks-first · die-tier language · Omen · Why this pool? · **Harm** (ST) · Link button to sheet.
 
-Emergency only: `/map` (legacy `/kod-map`). Prefer create → Confirm → Approve.
+Emergency only: `/map`. Prefer create → Confirm → Approve.
 
 Live sheet links use `runtime/live.url` or campaign `live_base_url`.
+
+## Storyteller recognition
+
+Prefer a durable Storyteller role ID that survives campaign recreate:
+
+| File under `~/.kodranni/secrets/` | Env | Also written into |
+|-----------------------------------|-----|-------------------|
+| `discord-storytellerRoleID` | `DISCORD_STORYTELLER_ROLE_ID` | `campaign.toml` → `discord_storyteller_role_id` via seed/sync-defaults |
+| `fluxer-storytellerRoleID` | `FLUXER_STORYTELLER_ROLE_ID` | `fluxer_storyteller_role_id` |
+
+```bash
+printf '%s\n' '123456789012345678' > ~/.kodranni/secrets/discord-storytellerRoleID
+chmod 600 ~/.kodranni/secrets/discord-storytellerRoleID
+npm run kodranni -- campaign sync-defaults --slug vardmark
+```
+
+Anyone with that guild role is treated as Storyteller for `/review`, Harm, `/intent`, Approve buttons, etc. Fallback remains `MemberRecord.role = storyteller` from emergency `/map`.
 
 ## Commands
 
@@ -59,8 +79,8 @@ Live sheet links use `runtime/live.url` or campaign `live_base_url`.
 | `/create` | Player | Start draft + sheet URL (bot stores initiator) |
 | `/claim` | Player | Claim claimable prebuilt |
 | `/focus` | Player | Active character when multi-PC |
-| `/roll` | Player | Free roll (Archetype/skill + foundation) |
-| `/intent` | ST | Prefill roll for **named player** |
+| `/roll` | Player | Agreed pool — skill autocomplete → confirm → Cast |
+| `/intent` | ST | Post agreed pool for **named player** (equal peer to `/roll`) |
 | `/birth-omen` | Table | Private d20 → Foundation points on sheet |
 | `/guiding-hand` | Table | Private d20 → Skill points on sheet |
 | `/award-word` | ST | +1 Word to speaker (Wanting on sheet) |
@@ -68,14 +88,14 @@ Live sheet links use `runtime/live.url` or campaign `live_base_url`.
 | `/live` | Anyone | Ephemeral live/archive URLs |
 | `/map` | ST emergency | Force-bind account → character |
 
-Legacy aliases still registered: `/kod-roll`, `/kod-prompt`, `/kod-map`, `/kod-live`, `/kod-st-roll`.
+Product names only — legacy `kod-*` aliases removed.
 
-## Next
+## Next (U5+)
 
+- Intent ∥ free-roll as equals (autocomplete + confirm card; Echo = agreed apply)  
 - Oppose parent_roll_id linking  
 - Mental/social harm family picker  
 - Split harm across tracks  
-- True Discord DM for Intent whisper  
 - Fluxer prefix parity  
-- `session start` auto-spawns bot when token present  
-- Archetype multi-step skill selects on Discord (25-option limits)  
+- Archetype→Skill fallback only when skill name forgotten  
+
