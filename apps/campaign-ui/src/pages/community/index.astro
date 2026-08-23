@@ -16,6 +16,7 @@ const tips = whoWeSeeMap(c);
 const people = buildInspectPeople(c);
 const showSearch = hallIsBusy(c);
 const tiers = [...HIERARCHY_TIERS];
+const founding = c.source === 'live' && !c.fortunesFoundedAt;
 ---
 
 <CampaignLayout
@@ -79,7 +80,7 @@ const tiers = [...HIERARCHY_TIERS];
         </div>
       )
     }
-    <FortuneHall fortunes={c.fortunes} />
+    <FortuneHall fortunes={c.fortunes} founding={founding} />
     <HierarchyBoard
       axes={c.hierarchyAxes}
       ruler={c.ruler}
@@ -98,4 +99,5 @@ const tiers = [...HIERARCHY_TIERS];
 
   <InspectDrawer peopleJson={peopleJson(people)} />
   <script is:inline src="/hall-client.js"></script>
+  {founding && <script is:inline src="/founding-client.js"></script>}
 </CampaignLayout>

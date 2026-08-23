@@ -13,6 +13,8 @@ import { fixtureCommunity, type FixtureCommunity } from './fixture';
 export type ViewCommunity = FixtureCommunity & {
   source?: 'live' | 'snapshot' | 'fixture';
   storePath?: string;
+  /** Live hall only; archive/fixture/snapshot never carry a founding stamp. */
+  fortunesFoundedAt?: string;
 };
 
 function characterToView(ch: CharacterRecord): FixtureCommunity['characters'][number] {
@@ -85,6 +87,7 @@ function fromSnapshot(
     characters,
     source,
     storePath,
+    fortunesFoundedAt: source === 'live' ? raw.community.fortunesFoundedAt : undefined,
   };
   // Ensure complete placements even for fixture/snapshot paths
   communityBase.placements = completeMemberPlacements(

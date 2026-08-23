@@ -507,6 +507,67 @@ section.kod-plate {
   color: var(--kod-silver);
 }
 
+.fortune__purpose {
+  margin: 0.35rem 0 0;
+  font-size: 0.82rem;
+  line-height: 1.4;
+  color: var(--kod-silver);
+  text-align: start;
+}
+
+/* Founding board — live + unfounded only. Pewter kicker, not blood. */
+.fortune-founding__kicker {
+  margin: -0.2rem 0 0.7rem;
+  font-size: 0.82rem;
+  letter-spacing: 0.03em;
+  color: var(--kod-silver-dim);
+}
+
+.fortune--founding {
+  user-select: none;
+}
+
+.fortune--founding .fortune__well {
+  width: 2.1rem;
+  min-height: 5rem;
+  cursor: pointer;
+}
+
+.fortune--founding .fortune__state {
+  cursor: pointer;
+  min-height: 1.55rem;
+  padding: 0.12rem 0.35rem;
+}
+
+.fortune--founding .fortune__state:hover,
+.fortune--founding .fortune__well:hover {
+  color: var(--kod-silver-bright);
+}
+
+.fortune--founding .fortune__well:hover {
+  border-color: var(--kod-frame-tick-hot);
+}
+
+.fortune-founding__commit {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.5rem;
+  width: 100%;
+  max-width: 22rem;
+  margin: 0.9rem auto 0;
+}
+
+.fortune-founding__store:disabled {
+  pointer-events: none;
+}
+
+.fortune-founding__msg {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--kod-silver-bright);
+}
+
 /* —— Hierarchy diagram (guidebook scaffolding) —— */
 .hier-ruler {
   --kod-soot-size: 1.05rem;
