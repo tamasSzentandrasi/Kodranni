@@ -1,8 +1,9 @@
 import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { DatabaseSync } from 'node:sqlite';
 import { afterEach, describe, expect, it } from 'vitest';
-import { openSqliteStore } from '../src/sqlite.js';
+import { emptyCommunity, openSqliteStore } from '../src/sqlite.js';
 import { seedDemoCampaign } from '../src/seed.js';
 import { parseCampaignToml, serializeCampaignToml } from '../src/campaign-toml.js';
 
@@ -34,6 +35,9 @@ describe('sqlite store', () => {
 
     const snap = store.toPublicSnapshot();
     expect(snap.community.slug).toBe('vardmark');
+    expect('pendingMoves' in snap.community).toBe(false);
+    expect('fortuneMeta' in snap.community).toBe(false);
+    expect('fortunesFoundedAt' in snap.community).toBe(false);
     expect(snap.characters.length).toBeGreaterThanOrEqual(1);
     const torvald = snap.characters.find((c) => c.slug === 'torvald')!;
     expect(torvald.name).toBe('Torvald Adzeson');
@@ -86,6 +90,87 @@ describe('sqlite store', () => {
     expect(store.toPublicSnapshot().characters.some((c) => c.slug === 'mara-reed')).toBe(
       false,
     );
+    store.close();
+  });
+
+  it('emptyCommunity is unfounded Steady 2', () => {
+    const c = emptyCommunity('vardmark', 'The Vardmark');
+    expect(c.fortunes).toEqual({
+      vitality: 2,
+      cohesion: 2,
+      surplus: 2,
+      standing: 2,
+      tradition: 2,
+    });
+    expect(c.fortunesFoundedAt).toBeUndefined();
+  });
+
+  it('normalizes missing pendingMoves and fortuneMeta', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'kodranni-store-'));
+    dirs.push(dir);
+    const path = join(dir, 'community.sqlite');
+    const store = openSqliteStore(path);
+    seedDemoCampaign(store);
+    store.close();
+
+    const db = new DatabaseSync(path);
+    const row = db.prepare(`SELECT data FROM community WHERE id = 'main'`).get() as {
+      data: string;
+    };
+    const data = JSON.parse(row.data) as Record<string, unknown>;
+    delete data.pendingMoves;
+    delete data.fortuneMeta;
+    delete data.fortunesFoundedAt;
+    db.prepare(`UPDATE community SET data = ? WHERE id = 'main'`).run(JSON.stringify(data));
+    db.close();
+
+    const again = openSqliteStore(path);
+    const c = again.getCommunity();
+    expect(c.pendingMoves).toEqual([]);
+    expect(c.fortuneMeta).toEqual({});
+    expect(c.fortunesFoundedAt).toBeUndefined();
+    again.close();
+  });
+
+  it('strips pendingMoves, fortuneMeta, and fortunesFoundedAt from the public snapshot', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'kodranni-store-'));
+    dirs.push(dir);
+    const store = openSqliteStore(join(dir, 'community.sqlite'));
+    seedDemoCampaign(store);
+    const community = store.getCommunity();
+    community.fortunesFoundedAt = '2026-08-01T12:00:00.000Z';
+    community.fortuneMeta = {
+      vitality: { at: '2026-08-01T12:00:00.000Z', source: 'founding' },
+      cohesion: { at: '2026-08-12T09:00:00.000Z', source: 'st', note: 'winter' },
+    };
+    community.pendingMoves = [
+      {
+        id: 'mv-1',
+        name: 'Mara',
+        axis: 'Arms',
+        fromTier: 'Trusted',
+        toTier: 'Honoured',
+        requestedBy: 'Leifr',
+      },
+    ];
+    store.putCommunity(community);
+
+    const live = store.getCommunity();
+    expect(live.fortunesFoundedAt).toBe('2026-08-01T12:00:00.000Z');
+    expect(live.fortuneMeta?.cohesion?.source).toBe('st');
+    expect(live.pendingMoves).toHaveLength(1);
+
+    const snap = store.toPublicSnapshot();
+    expect(snap.community.fortunesFoundedAt).toBeUndefined();
+    expect(snap.community.fortuneMeta).toBeUndefined();
+    expect(snap.community.pendingMoves).toBeUndefined();
+    expect('fortunesFoundedAt' in snap.community).toBe(false);
+    expect('fortuneMeta' in snap.community).toBe(false);
+    expect('pendingMoves' in snap.community).toBe(false);
+    const json = JSON.stringify(snap.community);
+    expect(json).not.toContain('fortunesFoundedAt');
+    expect(json).not.toContain('fortuneMeta');
+    expect(json).not.toContain('pendingMoves');
     store.close();
   });
 });

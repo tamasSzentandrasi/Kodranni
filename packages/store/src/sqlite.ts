@@ -31,6 +31,8 @@ function normalizeCommunity(raw: CommunityRecord): CommunityRecord {
     outsiders: raw.outsiders ?? [],
     placements: raw.placements ?? [],
     hierarchyAxes: raw.hierarchyAxes ?? ['Arms', 'Faith', 'Coin', 'Blood'],
+    pendingMoves: raw.pendingMoves ?? [],
+    fortuneMeta: raw.fortuneMeta ?? {},
   };
 }
 
@@ -270,6 +272,10 @@ export function openSqliteStore(path: string): CommunityStorePort {
         }[]
       ).map((r) => normalizeCharacter(JSON.parse(r.data) as CharacterRecord));
       community.placements = completeMemberPlacements(community, characters);
+      // Weather-log fields stay on the live hall; the archive does not carry them.
+      delete community.pendingMoves;
+      delete community.fortuneMeta;
+      delete community.fortunesFoundedAt;
       return {
         generatedAt: new Date().toISOString(),
         schemaVersion: SCHEMA_VERSION,

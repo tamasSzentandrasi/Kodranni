@@ -57,6 +57,29 @@ export interface OutsiderRecord {
   characterSlug?: string;
 }
 
+export type FortuneKey = 'vitality' | 'cohesion' | 'surplus' | 'standing' | 'tradition';
+
+export type FortuneSource = 'founding' | 'st' | 'pivotal';
+
+export interface FortuneMeta {
+  at: string;
+  source: FortuneSource;
+  /** Short, table-visible — never accountId. */
+  note?: string;
+}
+
+export interface HierarchyMoveRequest {
+  id: string;
+  name: string;
+  characterSlug?: string;
+  axis: string;
+  fromTier: string;
+  toTier: string;
+  /** Display name only — never accountId. */
+  requestedBy?: string;
+  note?: string;
+}
+
 export interface CommunityRecord {
   slug: string;
   name: string;
@@ -73,6 +96,12 @@ export interface CommunityRecord {
   rulerCharacterSlug?: string;
   placements: HierarchyPlacement[];
   outsiders: OutsiderRecord[];
+  /** ISO. Absent until founding; live hall only. */
+  fortunesFoundedAt?: string;
+  /** Last-change per Fortune; live hall only. */
+  fortuneMeta?: Partial<Record<FortuneKey, FortuneMeta>>;
+  /** Pending hierarchy move requests; live hall only. */
+  pendingMoves?: HierarchyMoveRequest[];
 }
 
 export interface InventoryItem {

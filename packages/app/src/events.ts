@@ -3,7 +3,11 @@ import {
   type CharacterRecord,
   type CommunityRecord,
   type CommunityStorePort,
+  type FortuneKey,
+  type FortuneMeta,
 } from '@kodranni/store';
+
+export type { FortuneKey };
 
 function requireCharacter(store: CommunityStorePort, slug: string): CharacterRecord {
   const ch = store.getCharacterBySlug(slug);
@@ -93,8 +97,6 @@ export function healHarm(store: CommunityStorePort, cmd: HealHarmCommand): Chara
   return ch;
 }
 
-export type FortuneKey = 'vitality' | 'cohesion' | 'surplus' | 'standing' | 'tradition';
-
 export interface ShiftFortuneCommand {
   fortune: FortuneKey;
   /** Usually −1 or +1; result clamped 0–3. */
@@ -102,7 +104,17 @@ export interface ShiftFortuneCommand {
   actor?: string;
   clientEventId?: string;
   note?: string;
+  /** Default `'st'`. Founding uses setStartingFortunes, not this command. */
+  source?: 'st' | 'pivotal';
 }
+
+const FORTUNE_KEYS: FortuneKey[] = [
+  'vitality',
+  'cohesion',
+  'surplus',
+  'standing',
+  'tradition',
+];
 
 export function shiftFortune(
   store: CommunityStorePort,
@@ -114,11 +126,19 @@ export function shiftFortune(
   if (!Number.isInteger(cmd.delta) || cmd.delta === 0) {
     throw new Error('delta must be a non-zero integer');
   }
+  const source = cmd.source ?? 'st';
+  if (source !== 'st' && source !== 'pivotal') {
+    throw new Error(`source must be 'st' or 'pivotal'`);
+  }
   const community = store.getCommunity();
   const before = community.fortunes[cmd.fortune];
   if (before === undefined) throw new Error(`unknown fortune: ${cmd.fortune}`);
   const after = Math.max(0, Math.min(3, before + cmd.delta));
   community.fortunes[cmd.fortune] = after;
+  const now = new Date().toISOString();
+  const meta: FortuneMeta = { at: now, source };
+  if (cmd.note) meta.note = cmd.note;
+  community.fortuneMeta = { ...community.fortuneMeta, [cmd.fortune]: meta };
   store.putCommunity(community);
   store.appendEvent({
     type: 'ResourceChanged',
@@ -129,6 +149,61 @@ export function shiftFortune(
       fortune: cmd.fortune,
       before,
       after,
+      source,
+      note: cmd.note,
+    },
+  });
+  return community;
+}
+
+export interface SetStartingFortunesCommand {
+  fortunes: Record<FortuneKey, 0 | 1 | 2 | 3>;
+  actor?: string;
+  clientEventId?: string;
+  note?: string;
+}
+
+function requireFortuneLevel(value: unknown, key: FortuneKey): 0 | 1 | 2 | 3 {
+  if (!Number.isInteger(value) || (value as number) < 0 || (value as number) > 3) {
+    throw new Error(`${key} must be an integer 0–3`);
+  }
+  return value as 0 | 1 | 2 | 3;
+}
+
+export function setStartingFortunes(
+  store: CommunityStorePort,
+  cmd: SetStartingFortunesCommand,
+): CommunityRecord {
+  if (cmd.clientEventId && store.hasClientEvent(cmd.clientEventId)) {
+    throw new Error(`duplicate clientEventId: ${cmd.clientEventId}`);
+  }
+  const community = store.getCommunity();
+  if (community.fortunesFoundedAt) {
+    throw new Error('starting fortunes already founded');
+  }
+  const fortunes = {} as Record<FortuneKey, 0 | 1 | 2 | 3>;
+  for (const key of FORTUNE_KEYS) {
+    if (cmd.fortunes[key] === undefined) {
+      throw new Error(`missing fortune: ${key}`);
+    }
+    fortunes[key] = requireFortuneLevel(cmd.fortunes[key], key);
+  }
+  const now = new Date().toISOString();
+  community.fortunes = fortunes;
+  community.fortunesFoundedAt = now;
+  const fortuneMeta: NonNullable<CommunityRecord['fortuneMeta']> = {};
+  for (const key of FORTUNE_KEYS) {
+    fortuneMeta[key] = { at: now, source: 'founding' };
+  }
+  community.fortuneMeta = fortuneMeta;
+  store.putCommunity(community);
+  store.appendEvent({
+    type: 'ResourceChanged',
+    actor: cmd.actor,
+    clientEventId: cmd.clientEventId,
+    payload: {
+      kind: 'fortunes_founded',
+      fortunes,
       note: cmd.note,
     },
   });
