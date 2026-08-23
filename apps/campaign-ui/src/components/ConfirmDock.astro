@@ -17,7 +17,7 @@ const canConfirm =
 
 {
   unlocked && (
-    <div class="draft-foot" id="draft-confirm">
+    <div class="kod-plate draft-foot" id="draft-confirm">
       <div class="draft-foot__ornament" aria-hidden="true">
         <span class="draft-foot__rule" />
         <span class="draft-foot__mark">᛫</span>
@@ -35,9 +35,9 @@ const canConfirm =
           </div>
         ) : canConfirm ? (
           <div class="draft-foot__body">
-            <button type="button" class="draft-confirm-btn" data-action="confirm">
-              <span class="draft-confirm-btn__kicker">Return to table</span>
-              <span class="draft-confirm-btn__title">Confirm draft</span>
+            <button type="button" class="kod-btn kod-btn--folio" data-action="confirm">
+              <span class="kod-btn__kicker">Return to table</span>
+              <span class="kod-btn__title">Confirm draft</span>
             </button>
             <p class="draft-hint">
               Mentions <strong>{ch.initiator?.displayName ?? 'you'}</strong> for Storyteller Approve
@@ -70,105 +70,3 @@ const canConfirm =
     </div>
   )
 }
-
-<style>
-  .draft-foot {
-    position: fixed;
-    left: 50%;
-    bottom: 0;
-    transform: translateX(-50%);
-    z-index: 55;
-    width: min(36rem, calc(100vw - 1.5rem));
-    padding: 0.65rem 1rem 0.85rem;
-    background: color-mix(in srgb, #080606 94%, var(--kod-blood, #8a1515) 6%);
-    border: 1px solid color-mix(in srgb, var(--kod-silver, #b8b3ab) 28%, transparent);
-    border-bottom: none;
-    box-shadow: 0 -10px 28px rgba(0, 0, 0, 0.45);
-  }
-  .draft-foot__ornament {
-    display: flex;
-    align-items: center;
-    gap: 0.65rem;
-    margin: 0.15rem 0 0.45rem;
-  }
-  .draft-foot__ornament:last-child {
-    margin: 0.55rem 0 0;
-  }
-  .draft-foot__rule {
-    flex: 1 1 auto;
-    height: 1px;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      color-mix(in srgb, var(--kod-blood, #8a1515) 55%, var(--kod-silver, #b8b3ab)) 35%,
-      color-mix(in srgb, var(--kod-blood, #8a1515) 55%, var(--kod-silver, #b8b3ab)) 65%,
-      transparent
-    );
-  }
-  .draft-foot__mark {
-    color: var(--kod-blood-bright, #b01c1c);
-    font-size: 0.85rem;
-    letter-spacing: 0.2em;
-  }
-  .draft-foot__body {
-    text-align: center;
-  }
-  .draft-hint {
-    font-size: 0.85rem;
-    opacity: 0.85;
-    margin: 0.35rem 0 0;
-  }
-  .draft-hint a {
-    color: var(--kod-silver-bright, #f2efe9);
-  }
-  .draft-msg {
-    font-size: 0.9rem;
-    margin: 0.35rem 0 0;
-  }
-  .draft-msg--err {
-    color: var(--kod-blood, #c44);
-  }
-  .draft-msg--ok {
-    opacity: 0.9;
-  }
-  .flag--ok {
-    opacity: 0.85;
-  }
-  .draft-confirm-btn {
-    display: grid;
-    gap: 0.15rem;
-    width: 100%;
-    margin: 0 auto;
-    padding: 0.7rem 1rem 0.75rem;
-    font: inherit;
-    color: var(--kod-silver-bright, #f2efe9);
-    cursor: pointer;
-    background: linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--kod-blood, #8a1515) 28%, #0c0a0a),
-      color-mix(in srgb, var(--kod-blood-deep, #4a0c0c) 45%, #080606)
-    );
-    border: 1px solid color-mix(in srgb, var(--kod-blood, #8a1515) 70%, transparent);
-    box-shadow:
-      inset 0 1px 0 color-mix(in srgb, #fff 12%, transparent),
-      0 0 0 1px color-mix(in srgb, var(--kod-silver, #b8b3ab) 12%, transparent);
-  }
-  .draft-confirm-btn:hover {
-    border-color: var(--kod-blood-bright, #b01c1c);
-    background: linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--kod-blood-bright, #b01c1c) 32%, #0c0a0a),
-      color-mix(in srgb, var(--kod-blood, #8a1515) 40%, #080606)
-    );
-  }
-  .draft-confirm-btn__kicker {
-    font-size: 0.68rem;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--kod-silver, #b8b3ab);
-  }
-  .draft-confirm-btn__title {
-    font-size: 1.15rem;
-    letter-spacing: 0.04em;
-  }
-</style>

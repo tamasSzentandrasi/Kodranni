@@ -46,7 +46,7 @@ const words = creation?.words ?? 0;
 {
   unlocked && creation && (
     <aside
-      class="budget-dock"
+      class="kod-plate budget-dock"
       id="budget-dock"
       aria-label="Creation budgets"
       data-slug={ch.slug}
@@ -61,7 +61,7 @@ const words = creation?.words ?? 0;
         <h2 class="budget-dock__title">Budgets</h2>
       </header>
 
-      <button type="button" class="budget-card" data-jump="section-foundations" data-budget="foundation">
+      <button type="button" class="kod-plate budget-card" data-jump="section-foundations" data-budget="foundation">
         <span class="budget-card__label">Foundations</span>
         <span class="budget-card__main">
           <strong data-field="foundationPoints">{fLeft}</strong>
@@ -81,7 +81,7 @@ const words = creation?.words ?? 0;
         <span class="budget-card__cta">Jump to Foundations →</span>
       </button>
 
-      <button type="button" class="budget-card" data-jump="section-skills" data-budget="skill">
+      <button type="button" class="kod-plate budget-card" data-jump="section-skills" data-budget="skill">
         <span class="budget-card__label">Skills</span>
         <span class="budget-card__main">
           <strong data-field="skillPoints">{sLeft}</strong>
@@ -101,7 +101,7 @@ const words = creation?.words ?? 0;
         <span class="budget-card__cta">Jump to Skills →</span>
       </button>
 
-      <button type="button" class="budget-card budget-card--words" data-open-wanting data-budget="words">
+      <button type="button" class="kod-plate budget-card budget-card--words" data-open-wanting data-budget="words">
         <span class="budget-card__label">Words</span>
         <span class="budget-card__main">
           <strong data-field="words">{words}</strong>
@@ -137,133 +137,3 @@ const words = creation?.words ?? 0;
     </aside>
   )
 }
-
-<style>
-  .budget-dock {
-    position: fixed;
-    left: 0.35rem;
-    top: 4.5rem;
-    z-index: 60;
-    width: 11.25rem;
-    max-height: calc(100vh - 5.25rem);
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 0.45rem;
-    padding: 0.55rem 0.5rem 0.6rem;
-    overflow: auto;
-    background: color-mix(in srgb, #080606 94%, var(--kod-blood, #8a1515) 6%);
-    border: 1px solid color-mix(in srgb, var(--kod-silver, #b8b3ab) 30%, transparent);
-    border-left: 3px solid var(--kod-blood, #8a1515);
-    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5);
-  }
-  .budget-dock__head {
-    margin: 0 0 0.15rem;
-  }
-  .budget-dock__kicker {
-    margin: 0;
-    font-size: 0.65rem;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--kod-silver-dim, #8a8580);
-  }
-  .budget-dock__title {
-    margin: 0.1rem 0 0;
-    font-size: 1.15rem;
-    font-weight: 400;
-    color: var(--kod-silver-bright, #f2efe9);
-  }
-  .budget-card {
-    display: grid;
-    gap: 0.2rem;
-    width: 100%;
-    margin: 0;
-    padding: 0.55rem 0.5rem 0.5rem;
-    text-align: left;
-    font: inherit;
-    color: inherit;
-    cursor: pointer;
-    background: color-mix(in srgb, #0c0a0a 88%, #fff 4%);
-    border: 1px solid color-mix(in srgb, var(--kod-silver, #b8b3ab) 22%, transparent);
-    border-radius: 2px;
-  }
-  .budget-card:hover,
-  .budget-card:focus-visible {
-    border-color: var(--kod-silver, #b8b3ab);
-    background: color-mix(in srgb, #121010 90%, var(--kod-blood, #8a1515) 10%);
-  }
-  .budget-card__label {
-    font-size: 0.68rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--kod-silver-dim, #8a8580);
-  }
-  .budget-card__main {
-    display: flex;
-    align-items: baseline;
-    gap: 0.35rem;
-  }
-  .budget-card__main strong {
-    font-size: 1.65rem;
-    line-height: 1;
-    color: var(--kod-blood-bright, #b01c1c);
-    font-weight: 400;
-  }
-  .budget-card__unit {
-    font-size: 0.8rem;
-    color: var(--kod-silver, #b8b3ab);
-  }
-  .budget-card__meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.25rem 0.55rem;
-    font-size: 0.78rem;
-    color: var(--kod-silver-dim, #8a8580);
-  }
-  .budget-card__meta em {
-    font-style: normal;
-    color: var(--kod-silver-bright, #f2efe9);
-  }
-  .budget-card__bar {
-    display: block;
-    height: 0.28rem;
-    margin-top: 0.25rem;
-    background: #1a1414;
-    border: 1px solid #2a2222;
-  }
-  .budget-card__fill {
-    display: block;
-    height: 100%;
-    background: linear-gradient(90deg, var(--kod-blood-deep, #4a0c0c), var(--kod-blood-bright, #b01c1c));
-  }
-  .budget-card__cta {
-    margin-top: 0.2rem;
-    font-size: 0.72rem;
-    letter-spacing: 0.04em;
-    color: var(--kod-silver, #b8b3ab);
-  }
-  .budget-card--words .budget-card__main strong {
-    color: var(--kod-silver-bright, #f2efe9);
-  }
-  .budget-dock__flags {
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-  }
-  .budget-dock__hint {
-    margin: 0.15rem 0 0;
-    font-size: 0.72rem;
-    line-height: 1.35;
-    color: var(--kod-silver-dim, #8a8580);
-  }
-  .budget-dock__msg {
-    margin: 0;
-    font-size: 0.8rem;
-  }
-  .budget-dock__msg.draft-msg--err {
-    color: var(--kod-blood-bright, #c44);
-  }
-  .budget-dock__msg.draft-msg--ok {
-    color: var(--kod-silver-bright, #f2efe9);
-  }
-</style>

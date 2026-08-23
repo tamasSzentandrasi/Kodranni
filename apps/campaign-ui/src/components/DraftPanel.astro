@@ -50,7 +50,7 @@ const unlocked = live && creation && !creation.locked;
           Who do we see?
           <textarea name="whoWeSee" rows="3" data-field="whoWeSee">{ch.whoWeSee ?? ''}</textarea>
         </label>
-        <button type="button" class="draft-btn" data-action="save-concept">
+        <button type="button" class="kod-btn" data-action="save-concept">
           Save concept
         </button>
         <p class="draft-msg" data-msg="concept" hidden></p>
@@ -94,19 +94,15 @@ const unlocked = live && creation && !creation.locked;
     width: 100%;
     max-width: 40rem;
   }
-  .draft-btn {
-    font: inherit;
-    cursor: pointer;
-    padding: 0.4rem 0.85rem;
-    border: 1px solid color-mix(in srgb, var(--kod-silver, #b8b3ab) 40%, transparent);
-    background: transparent;
-    color: inherit;
-    border-radius: 2px;
+  .draft-panel .kod-btn {
+    width: auto;
+    min-width: 0;
+    max-width: none;
+    height: auto;
+    min-height: 2.55rem;
+    max-height: none;
+    padding: 0.45rem 1.15rem;
     justify-self: start;
-  }
-  .draft-btn:hover:not(:disabled) {
-    border-color: var(--kod-silver, #b8b3ab);
-    background: color-mix(in srgb, var(--kod-silver, #b8b3ab) 12%, transparent);
   }
   .draft-hint {
     font-size: 0.9rem;

@@ -345,11 +345,31 @@
     }
   }
 
+  function wantingTabbables() {
+    if (!wanting) return [];
+    return Array.from(
+      wanting.querySelectorAll(
+        'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+      ),
+    ).filter((el) => {
+      if (!(el instanceof HTMLElement)) return false;
+      if (el.hidden || el.closest('[hidden]')) return false;
+      const style = window.getComputedStyle(el);
+      return style.display !== 'none' && style.visibility !== 'hidden';
+    });
+  }
+
+  function setConfirmHidden(hide) {
+    const confirmEl = document.getElementById('draft-confirm');
+    if (confirmEl) confirmEl.hidden = hide;
+  }
+
   function openWanting() {
     if (!wanting) return;
     wanting.hidden = false;
     document.body.classList.add('wanting-open', 'wanting-lock');
     document.body.classList.add('creation-edit');
+    setConfirmHidden(true);
     renderStaged();
     setBudget({
       foundationPoints: Number(root.getAttribute('data-foundation-points') || '0'),
@@ -357,6 +377,8 @@
       words: wordsAvailable,
     });
     msg('wanting', '', true);
+    const closeBtn = wanting.querySelector('[data-wanting-close]');
+    if (closeBtn instanceof HTMLElement) closeBtn.focus();
   }
 
   function closeWanting(discard) {
@@ -364,6 +386,7 @@
     if (discard) staged = [];
     wanting.hidden = true;
     document.body.classList.remove('wanting-open', 'wanting-lock');
+    setConfirmHidden(false);
     const form = document.getElementById('wanting-form');
     if (form) form.hidden = true;
     formMenu = null;
@@ -373,6 +396,8 @@
       skillPoints: Number(root.getAttribute('data-skill-points') || '0'),
       words: wordsAvailable,
     });
+    const wordsCard = dock && dock.querySelector('[data-open-wanting]');
+    if (wordsCard instanceof HTMLElement) wordsCard.focus();
   }
 
   function renderStaged() {
@@ -769,6 +794,33 @@
 
   const form = document.getElementById('wanting-form');
   if (form) form.addEventListener('submit', stageFromForm);
+
+  document.addEventListener('keydown', (ev) => {
+    if (!wanting || wanting.hidden) return;
+    if (ev.key === 'Escape') {
+      ev.preventDefault();
+      closeWanting(true);
+      return;
+    }
+    if (ev.key !== 'Tab') return;
+    const list = wantingTabbables();
+    if (!list.length) return;
+    const first = list[0];
+    const last = list[list.length - 1];
+    const inside = wanting.contains(document.activeElement);
+    if (!inside) {
+      ev.preventDefault();
+      (ev.shiftKey ? last : first).focus();
+      return;
+    }
+    if (ev.shiftKey && document.activeElement === first) {
+      ev.preventDefault();
+      last.focus();
+    } else if (!ev.shiftKey && document.activeElement === last) {
+      ev.preventDefault();
+      first.focus();
+    }
+  });
 
   // Docks overlay — do not compress the middle content column.
 })();
