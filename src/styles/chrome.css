@@ -105,7 +105,7 @@
   border: none;
   border-radius: 50%;
   background:
-    url('../assets/ornament/seal-ring.svg') center / contain no-repeat,
+    var(--kod-seal-ring) center / contain no-repeat,
     var(--kod-plate-wash),
     radial-gradient(circle at 50% 42%, color-mix(in srgb, var(--kod-icon-hue, var(--kod-silver)) 14%, transparent), transparent 62%),
     var(--kod-plate);

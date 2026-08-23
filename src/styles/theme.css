@@ -1,3 +1,5 @@
+@import '@kodranni/design/tokens.css';
+
 /* --- from custom.css 1-87 --- */
 /* Kodranni Guidebook — Bellefair, black/silver/blood
    Boxes: example · quote · note · chapter icons */
@@ -5,50 +7,6 @@
 /* Fonts: @font-face with BASE_URL injected in Head.astro (Project Pages base path). */
 
 :root {
-  --kod-black: #050505;
-  --kod-silver: #c6c1b8;
-  --kod-silver-dim: #8a8580;
-  --kod-silver-bright: #f2efe9;
-  --kod-blood: #a01818;
-  --kod-blood-bright: #c92222;
-  --kod-blood-deep: #5a1010;
-
-  /* Plate grammar — tooled iron in soot, not corner brackets */
-  --kod-frame: #3a3330;
-  --kod-frame-tick: #6a6560;
-  --kod-frame-tick-hot: #c4bfb6;
-  --kod-plate: #0b0a0a;
-  --kod-inset: rgba(0, 0, 0, 0.28);
-  --kod-soot-size: 1.35rem;
-  --kod-corner-size: 1.38rem;
-  --kod-tool: linear-gradient(180deg, rgba(0, 0, 0, 0.22), transparent 42%);
-  --kod-smoke:
-    inset 0 1px 0 rgba(0, 0, 0, 0.4),
-    inset 0 -18px 26px -14px rgba(0, 0, 0, 0.72),
-    0 14px 30px -12px rgba(0, 0, 0, 0.82),
-    0 2px 6px rgba(0, 0, 0, 0.48);
-
-  /* Gothic L-bracket (double rail + volute). Pewter on every plate. */
-  --kod-c-tl: url('../assets/ornament/corner-tl.svg');
-  --kod-c-tr: url('../assets/ornament/corner-tr.svg');
-  --kod-c-bl: url('../assets/ornament/corner-bl.svg');
-  --kod-c-br: url('../assets/ornament/corner-br.svg');
-  --kod-btn-end-l: url('../assets/ornament/btn-end-l.svg');
-  --kod-btn-end-r: url('../assets/ornament/btn-end-r.svg');
-  --kod-cartouche: polygon(
-    0.58rem 0,
-    calc(100% - 0.58rem) 0,
-    100% 0.5rem,
-    100% calc(100% - 0.5rem),
-    calc(100% - 0.58rem) 100%,
-    0.58rem 100%,
-    0 calc(100% - 0.5rem),
-    0 0.5rem
-  );
-
-  --kod-font-display: 'Bellefair', 'Times New Roman', Times, serif;
-  --kod-font-body: 'Bellefair', 'Times New Roman', Times, serif;
-
   --sl-font: var(--kod-font-body);
   --sl-font-system: var(--kod-font-body);
 

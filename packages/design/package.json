@@ -6,10 +6,12 @@
   "exports": {
     "./tokens.css": "./tokens.css",
     "./fonts.css": "./fonts.css",
-    "./campaign.css": "./campaign.css"
+    "./campaign.css": "./campaign.css",
+    "./ornament/*": "./ornament/*"
   },
   "files": [
     "*.css",
-    "fonts"
+    "fonts",
+    "ornament"
   ]
 }
