@@ -287,10 +287,10 @@
 /* Tier dial buttons with embedded die icons */
 .kod-widget__btn--die {
   width: auto !important;
-  min-width: 5.25rem !important;
+  min-width: 5.6rem !important;
   max-width: none !important;
   gap: 0.35rem;
-  padding: 0 0.55rem !important;
+  padding: 0 1.15rem !important;
   font-family: var(--kod-font-display);
   font-size: 1rem !important;
 }
@@ -377,52 +377,85 @@
 }
 
 .kod-widget__btn {
-  --kod-soot-size: 0.7rem;
-  --kod-corner-size: 0.72rem;
+  --kod-soot-size: 0.55rem;
+  --kod-corners: none;
+  --kod-btn-ends:
+    var(--kod-btn-end-l) left 0.1rem center / auto 50% no-repeat,
+    var(--kod-btn-end-r) right 0.1rem center / auto 50% no-repeat;
   appearance: none;
   -webkit-appearance: none;
   box-sizing: border-box;
+  position: relative;
+  isolation: isolate;
   flex: 0 0 auto;
-  width: 5.75rem;
-  height: 2.5rem;
-  min-width: 5.75rem;
-  min-height: 2.5rem;
-  max-width: 5.75rem;
-  max-height: 2.5rem;
+  width: 6.1rem;
+  height: 2.55rem;
+  min-width: 6.1rem;
+  min-height: 2.55rem;
+  max-width: 6.1rem;
+  max-height: 2.55rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid #4a4540;
-  background:
-    var(--kod-plate-wash),
-    linear-gradient(180deg, rgba(242, 239, 233, 0.12), transparent 42%),
-    #161412;
+  border: none;
+  background: #5c5550;
   color: var(--kod-silver);
   font-family: var(--kod-font-body);
   font-size: 0.82rem;
   line-height: 1;
   margin: 0 !important; /* Starlight sibling gap would lift the first button */
-  padding: 0;
+  padding: 0 1.15rem;
   border-radius: 0;
   cursor: pointer;
   letter-spacing: 0.01em;
   white-space: nowrap;
   vertical-align: middle;
-  box-shadow:
-    inset 0 0 0 1px rgba(242, 239, 233, 0.05),
-    inset 0 1px 0 rgba(242, 239, 233, 0.12),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.4);
-  transition: border-color 0.12s ease, background 0.12s ease, color 0.12s ease, box-shadow 0.12s ease;
+  clip-path: var(--kod-cartouche);
+  transition: color 0.12s ease, background-color 0.12s ease;
+}
+
+.kod-widget__btn::before {
+  content: '';
+  position: absolute;
+  inset: 1px;
+  z-index: -1;
+  clip-path: var(--kod-cartouche);
+  background:
+    var(--kod-soot),
+    linear-gradient(180deg, rgba(242, 239, 233, 0.12), transparent 42%),
+    #161412;
+  pointer-events: none;
+}
+
+.kod-widget__btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--kod-btn-ends);
+  pointer-events: none;
+  opacity: 0.88;
 }
 
 /* Scout Marks: number-only chips */
 .kod-widget[data-widget='marks-ladder'] .kod-widget__btn {
+  --kod-btn-ends: none;
+  --kod-cartouche: polygon(
+    0.34rem 0,
+    calc(100% - 0.34rem) 0,
+    100% 0.34rem,
+    100% calc(100% - 0.34rem),
+    calc(100% - 0.34rem) 100%,
+    0.34rem 100%,
+    0 calc(100% - 0.34rem),
+    0 0.34rem
+  );
   width: 2.65rem;
   min-width: 2.65rem;
   max-width: 2.65rem;
   height: 2.65rem;
   min-height: 2.65rem;
   max-height: 2.65rem;
+  padding: 0;
   font-family: var(--kod-font-display);
   font-size: 1.15rem;
   letter-spacing: 0.02em;
@@ -431,9 +464,9 @@
 
 /* Tier dial: d6 / d8 / d12 */
 .kod-widget[data-widget='tier-dial'] .kod-widget__btn {
-  width: 4.5rem;
-  min-width: 4.5rem;
-  max-width: 4.5rem;
+  width: 5.5rem;
+  min-width: 5.5rem;
+  max-width: 5.5rem;
   font-family: var(--kod-font-display);
   font-size: 1.05rem;
   letter-spacing: 0.03em;
@@ -940,28 +973,38 @@
 
 .kod-widget__btn:hover,
 .kod-widget__btn:focus-visible {
-  --kod-tool: linear-gradient(180deg, rgba(242, 239, 233, 0.16), transparent 42%);
-  border-color: #8a8580;
   outline: none;
   color: #fff8f0;
+  background: #8a8580;
+}
+
+.kod-widget__btn:hover::before,
+.kod-widget__btn:focus-visible::before {
   background:
-    var(--kod-plate-wash),
+    var(--kod-soot),
     linear-gradient(180deg, rgba(242, 239, 233, 0.16), transparent 42%),
     #1c1916;
 }
 
+.kod-widget__btn:hover::after,
+.kod-widget__btn:focus-visible::after {
+  opacity: 1;
+}
+
 .kod-widget__btn[aria-pressed='true'] {
-  --kod-tool: linear-gradient(180deg, rgba(242, 239, 233, 0.06), transparent 55%);
-  border-color: #c4bfb6;
+  color: #fff8f0;
+  background: #c4bfb6;
+}
+
+.kod-widget__btn[aria-pressed='true']::before {
   background:
-    var(--kod-plate-wash),
+    var(--kod-soot),
     linear-gradient(180deg, rgba(242, 239, 233, 0.08), transparent 55%),
     #2a2622;
-  color: #fff8f0;
-  box-shadow:
-    inset 0 0 0 1px rgba(242, 239, 233, 0.08),
-    inset 0 2px 3px rgba(0, 0, 0, 0.45),
-    inset 0 -1px 0 rgba(242, 239, 233, 0.06);
+}
+
+.kod-widget__btn[aria-pressed='true']::after {
+  opacity: 1;
 }
 
 .kod-widget__panel {
@@ -1067,9 +1110,9 @@
   min-width: 6.25rem;
   max-width: none;
   height: auto;
-  min-height: 2.5rem;
+  min-height: 2.55rem;
   max-height: none;
-  padding: 0.4rem 0.85rem;
+  padding: 0.4rem 1.4rem;
   white-space: normal;
   line-height: 1.25;
 }
@@ -1106,9 +1149,9 @@
   min-width: 6.25rem;
   max-width: none;
   height: auto;
-  min-height: 2.5rem;
+  min-height: 2.55rem;
   max-height: none;
-  padding: 0.4rem 0.85rem;
+  padding: 0.4rem 1.4rem;
   white-space: normal;
   line-height: 1.25;
 }
@@ -1277,37 +1320,43 @@
   margin: 0 0 1rem;
 }
 .kod-step-flow__track .kod-widget__btn {
-  --kod-plate-wash: none;
+  --kod-btn-ends: none;
+  --kod-cartouche: none;
   width: 2.35rem;
   min-width: 2.35rem;
   max-width: 2.35rem;
   height: 2.35rem;
   min-height: 2.35rem;
   max-height: 2.35rem;
+  padding: 0;
   border-radius: 50%;
+  clip-path: none;
   font-family: var(--kod-font-display);
   font-size: 0.95rem;
-  padding: 0;
+  background: #5c5550;
+  box-shadow: none;
+}
+.kod-step-flow__track .kod-widget__btn::before {
+  inset: 1px;
+  border-radius: 50%;
+  clip-path: none;
   background:
     linear-gradient(180deg, rgba(242, 239, 233, 0.12), transparent 48%),
     #161412;
-  box-shadow:
-    inset 0 1px 0 rgba(242, 239, 233, 0.12),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.35);
 }
-.kod-step-flow__track .kod-widget__btn:hover,
-.kod-step-flow__track .kod-widget__btn:focus-visible {
+.kod-step-flow__track .kod-widget__btn::after {
+  content: none;
+}
+.kod-step-flow__track .kod-widget__btn:hover::before,
+.kod-step-flow__track .kod-widget__btn:focus-visible::before {
   background:
     linear-gradient(180deg, rgba(242, 239, 233, 0.16), transparent 48%),
     #1c1916;
 }
-.kod-step-flow__track .kod-widget__btn[aria-pressed='true'] {
+.kod-step-flow__track .kod-widget__btn[aria-pressed='true']::before {
   background:
     linear-gradient(180deg, rgba(242, 239, 233, 0.08), transparent 55%),
     #2a2622;
-  box-shadow:
-    inset 0 2px 3px rgba(0, 0, 0, 0.45),
-    inset 0 -1px 0 rgba(242, 239, 233, 0.06);
 }
 .kod-step-flow__label {
   text-align: center;
@@ -1332,38 +1381,64 @@
   margin-top: 0.9rem;
 }
 .kod-step-flow__nav button {
-  --kod-soot-size: 0.7rem;
-  --kod-corner-size: 0.72rem;
+  --kod-soot-size: 0.55rem;
+  --kod-corners: none;
+  --kod-btn-ends:
+    var(--kod-btn-end-l) left 0.1rem center / auto 50% no-repeat,
+    var(--kod-btn-end-r) right 0.1rem center / auto 50% no-repeat;
   appearance: none;
   box-sizing: border-box;
+  position: relative;
+  isolation: isolate;
   margin: 0;
-  padding: 0.4rem 0.85rem;
-  border: 1px solid #4a4540;
+  padding: 0.4rem 1.4rem;
+  border: none;
   border-radius: 0;
-  background:
-    var(--kod-plate-wash),
-    linear-gradient(180deg, rgba(242, 239, 233, 0.1), transparent 42%),
-    #161412;
+  background: #5c5550;
   color: var(--kod-silver);
   font-family: var(--kod-font-body);
   font-size: 0.9rem;
   cursor: pointer;
   letter-spacing: 0.03em;
-  box-shadow:
-    inset 0 0 0 1px rgba(242, 239, 233, 0.05),
-    inset 0 1px 0 rgba(242, 239, 233, 0.1),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.35);
+  clip-path: var(--kod-cartouche);
+  transition: color 0.12s ease, background-color 0.12s ease;
+}
+.kod-step-flow__nav button::before {
+  content: '';
+  position: absolute;
+  inset: 1px;
+  z-index: -1;
+  clip-path: var(--kod-cartouche);
+  background:
+    var(--kod-soot),
+    linear-gradient(180deg, rgba(242, 239, 233, 0.1), transparent 42%),
+    #161412;
+  pointer-events: none;
+}
+.kod-step-flow__nav button::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--kod-btn-ends);
+  pointer-events: none;
+  opacity: 0.88;
 }
 .kod-step-flow__nav button:hover:not(:disabled),
 .kod-step-flow__nav button:focus-visible:not(:disabled) {
-  --kod-tool: linear-gradient(180deg, rgba(242, 239, 233, 0.16), transparent 42%);
-  border-color: #8a8580;
   color: #fff8f0;
   outline: none;
+  background: #8a8580;
+}
+.kod-step-flow__nav button:hover:not(:disabled)::before,
+.kod-step-flow__nav button:focus-visible:not(:disabled)::before {
   background:
-    var(--kod-plate-wash),
+    var(--kod-soot),
     linear-gradient(180deg, rgba(242, 239, 233, 0.16), transparent 42%),
     #1c1916;
+}
+.kod-step-flow__nav button:hover:not(:disabled)::after,
+.kod-step-flow__nav button:focus-visible:not(:disabled)::after {
+  opacity: 1;
 }
 .kod-step-flow__nav button:disabled {
   opacity: 0.35;
@@ -1448,8 +1523,11 @@
 /* Walked steps on a stepper / Tide demo */
 .kod-step-flow__track .kod-widget__btn.is-done,
 .kod-widget[data-widget='tide-demo'] .kod-widget__btn.is-done {
-  border-color: #4a4540;
   color: var(--kod-silver-dim);
+  background: #4a4540;
+}
+.kod-step-flow__track .kod-widget__btn.is-done::before,
+.kod-widget[data-widget='tide-demo'] .kod-widget__btn.is-done::before {
   background: #1a1816;
 }
 

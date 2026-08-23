@@ -180,6 +180,13 @@
   .sl-markdown-content .kod-archetypes.is-exiting .kod-archetype {
     animation: none;
   }
+  .sl-markdown-content .kod-archetype {
+    transition: box-shadow 0.2s ease;
+  }
+  .sl-markdown-content .kod-archetypes:not(.is-focus) .kod-archetype:hover,
+  .sl-markdown-content .kod-archetypes:not(.is-focus) .kod-archetype:focus-within {
+    transform: none;
+  }
 }
 
 /* Small back control — only in focus mode */
@@ -216,38 +223,69 @@
 }
 
 .sl-markdown-content .kod-archetype {
+  --kod-arch-glow: color-mix(in srgb, #f2efe9 22%, transparent);
   border: 1px solid #3a3030;
   border-radius: 4px;
   overflow: hidden;
   list-style: none;
   margin: 0;
   min-width: 0;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 /* Per-archetype colour wash */
 .sl-markdown-content .kod-archetype--warrior {
+  --kod-arch-glow: color-mix(in srgb, var(--kod-blood-bright) 55%, transparent);
   background: linear-gradient(180deg, color-mix(in srgb, var(--kod-blood) 28%, #0a0808), #0a0808 70%);
   border-color: color-mix(in srgb, var(--kod-blood) 45%, #333);
 }
 .sl-markdown-content .kod-archetype--wayfarer {
+  --kod-arch-glow: color-mix(in srgb, #2a8a55 55%, transparent);
   background: linear-gradient(180deg, color-mix(in srgb, #1a5c38 32%, #0a0808), #0a0808 70%);
   border-color: color-mix(in srgb, #2a8a55 40%, #333);
 }
 .sl-markdown-content .kod-archetype--artisan {
+  --kod-arch-glow: color-mix(in srgb, #8a7a6a 55%, transparent);
   background: linear-gradient(180deg, color-mix(in srgb, #5a5048 35%, #0a0808), #0a0808 70%);
   border-color: color-mix(in srgb, #8a7a6a 40%, #333);
 }
 .sl-markdown-content .kod-archetype--mother {
+  --kod-arch-glow: color-mix(in srgb, #c4a035 50%, transparent);
   background: linear-gradient(180deg, color-mix(in srgb, #8a6a18 32%, #0a0808), #0a0808 70%);
   border-color: color-mix(in srgb, #c4a035 40%, #333);
 }
 .sl-markdown-content .kod-archetype--sage {
+  --kod-arch-glow: color-mix(in srgb, #5a5ab8 55%, transparent);
   background: linear-gradient(180deg, color-mix(in srgb, #2a2a7a 35%, #0a0808), #0a0808 70%);
   border-color: color-mix(in srgb, #5a5ab8 40%, #333);
 }
 .sl-markdown-content .kod-archetype--trickster {
+  --kod-arch-glow: color-mix(in srgb, #6a3a7a 55%, transparent);
   background: linear-gradient(180deg, color-mix(in srgb, #3a1a4a 38%, #0a0808), #0a0808 70%);
   border-color: color-mix(in srgb, #6a3a7a 45%, #333);
+}
+
+/* Closed grid: lift + colour glow — not a button-style border flash. */
+.sl-markdown-content .kod-archetypes:not(.is-focus) .kod-archetype:hover,
+.sl-markdown-content .kod-archetypes:not(.is-focus) .kod-archetype:focus-within {
+  transform: translateY(-0.32rem);
+  box-shadow:
+    0 18px 32px -10px rgba(0, 0, 0, 0.82),
+    0 0 32px 2px var(--kod-arch-glow);
+}
+
+.sl-markdown-content .kod-archetypes:not(.is-focus) .kod-archetype:hover .kod-archetype__panel,
+.sl-markdown-content .kod-archetypes:not(.is-focus) .kod-archetype:focus-within .kod-archetype__panel {
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, #000 60%, transparent),
+    0 8px 22px rgba(0, 0, 0, 0.5),
+    0 0 18px var(--kod-arch-glow);
+}
+
+.sl-markdown-content .kod-archetypes:not(.is-focus) .kod-archetype:hover .kod-archetype__name,
+.sl-markdown-content .kod-archetypes:not(.is-focus) .kod-archetype:focus-within .kod-archetype__name {
+  color: #fff8f0;
 }
 
 .sl-markdown-content .kod-archetype__summary {
@@ -290,6 +328,7 @@
   border: 2px solid color-mix(in srgb, #f2efe9 18%, transparent);
   box-shadow: 0 0 0 1px color-mix(in srgb, #000 60%, transparent), 0 6px 18px rgba(0, 0, 0, 0.45);
   margin: 0 auto;
+  transition: box-shadow 0.2s ease;
 }
 
 .sl-markdown-content .kod-archetype__name {
@@ -299,6 +338,7 @@
   color: var(--kod-silver-bright);
   margin: 0.15rem 0 0;
   line-height: 1.2;
+  transition: color 0.2s ease;
 }
 
 .sl-markdown-content .kod-archetype__tag {
