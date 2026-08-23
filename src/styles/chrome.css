@@ -4,89 +4,120 @@
 /* -------------------------------------------------------------------------- */
 
 .kod-page-title {
+  --kod-corners: none;
   display: flex;
-  align-items: flex-start;
-  gap: 1rem;
-  margin: 0.15rem 0 1.15rem;
-  padding: 0.95rem 0 1.25rem;
+  align-items: center;
+  gap: 0.95rem;
+  width: fit-content;
+  max-width: 100%;
+  box-sizing: border-box;
+  margin: 0.1rem 0 1.2rem;
+  padding: 0.55rem 1.6rem 0.65rem 0.45rem;
   border-bottom: none;
   position: relative;
   isolation: isolate;
+  align-self: start;
 }
 
-/* Smoke field — the opening dissolves into the page. Not a red bar. */
+/* Folio ground — lamp-black field, left-weighted, no second cartouche. */
 .kod-page-title::before {
   content: '';
   position: absolute;
   z-index: -1;
   pointer-events: none;
-  left: -1.5rem;
-  right: -1.5rem;
-  top: -0.15rem;
-  bottom: 0;
+  inset: 0;
   background:
-    radial-gradient(ellipse 55% 90% at 6% 48%, rgba(0, 0, 0, 0.72), transparent 64%),
-    radial-gradient(ellipse 40% 80% at 92% 40%, rgba(0, 0, 0, 0.45), transparent 70%),
+    radial-gradient(ellipse 70% 90% at 8% 50%, rgba(0, 0, 0, 0.62), transparent 68%),
     linear-gradient(
-      180deg,
-      rgba(0, 0, 0, 0.62) 0%,
-      rgba(0, 0, 0, 0.32) 58%,
+      90deg,
+      rgba(0, 0, 0, 0.55) 0%,
+      rgba(0, 0, 0, 0.28) 52%,
       transparent 100%
     );
+}
+
+.kod-page-title__text {
+  min-width: 0;
+  width: fit-content;
+  max-width: 100%;
+}
+
+.kod-page-title__kicker {
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  font-family: var(--kod-font-display);
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--kod-silver-dim);
+  line-height: 1.25;
+  margin: 0 0 0.32rem;
 }
 
 .kod-page-title h1 {
   margin: 0 !important;
   font-size: var(--sl-text-h1);
   line-height: var(--sl-line-height-headings);
+  letter-spacing: 0.04em;
   color: var(--sl-color-white);
   position: relative;
   width: fit-content;
   max-width: 100%;
-  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.55);
 }
 
-/* Iron fade under the whole word — length follows the title. */
+/* Cartouche rule — same grammar as the buttons; length follows the word. */
 .kod-page-title h1::after {
   content: '';
   display: block;
   width: 100%;
-  height: 1px;
-  margin-top: 0.48em;
-  background: linear-gradient(
-    to right,
-    color-mix(in srgb, var(--kod-silver) 70%, transparent) 0%,
-    color-mix(in srgb, var(--kod-silver) 48%, transparent) 62%,
-    color-mix(in srgb, var(--kod-frame-tick) 28%, transparent) 82%,
-    transparent 100%
-  );
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.45);
+  height: 0.72rem;
+  margin-top: 0.34em;
+  background:
+    var(--kod-btn-end-l) left center / auto 92% no-repeat,
+    var(--kod-btn-end-r) right center / auto 92% no-repeat,
+    linear-gradient(
+      to right,
+      color-mix(in srgb, var(--kod-silver) 78%, transparent),
+      color-mix(in srgb, var(--kod-silver) 48%, transparent) 78%,
+      transparent
+    )
+      center / calc(100% - 1.2rem) 1.45px no-repeat,
+    linear-gradient(
+      to right,
+      color-mix(in srgb, var(--kod-silver) 28%, transparent),
+      transparent 85%
+    )
+      center / calc(100% - 1.2rem) 3.4px no-repeat;
 }
 
 .kod-page-title__mark {
   --kod-corners: none;
+  --kod-soot-size: 0.85rem;
   --kod-plate-wash: var(--kod-soot), var(--kod-tool);
   flex-shrink: 0;
   box-sizing: border-box;
-  margin-top: 0.12rem;
-  width: 3.35rem;
-  height: 3.35rem;
+  width: 3.55rem;
+  height: 3.55rem;
   display: grid;
   place-items: center;
-  border: 1px solid color-mix(in srgb, var(--kod-silver) 16%, var(--kod-frame));
+  border: none;
+  border-radius: 50%;
   background:
+    url('../assets/ornament/seal-ring.svg') center / contain no-repeat,
     var(--kod-plate-wash),
+    radial-gradient(circle at 50% 42%, color-mix(in srgb, var(--kod-icon-hue, var(--kod-silver)) 14%, transparent), transparent 62%),
     var(--kod-plate);
   box-shadow:
-    inset 0 1px 0 rgba(0, 0, 0, 0.45),
-    inset 0 0 0 1px color-mix(in srgb, var(--kod-icon-hue, var(--kod-silver)) 22%, transparent),
-    inset 0 -10px 16px -8px rgba(0, 0, 0, 0.78),
-    0 10px 22px -10px rgba(0, 0, 0, 0.88);
+    inset 0 0 0 1px color-mix(in srgb, var(--kod-icon-hue, var(--kod-silver)) 20%, transparent),
+    inset 0 -10px 14px -8px rgba(0, 0, 0, 0.78),
+    0 10px 20px -10px rgba(0, 0, 0, 0.88);
 }
 
 .kod-page-title__icon {
-  width: 1.85rem;
-  height: 1.85rem;
+  width: 1.7rem;
+  height: 1.7rem;
   display: block;
   background-color: var(--kod-icon-hue, var(--kod-silver-bright));
   -webkit-mask: var(--kod-icon-mask) center / contain no-repeat;
@@ -95,32 +126,42 @@
 }
 
 @media (min-width: 50rem) {
+  .kod-page-title {
+    gap: 1.1rem;
+    padding: 0.6rem 1.85rem 0.7rem 0.5rem;
+  }
   .kod-page-title__mark {
-    width: 3.85rem;
-    height: 3.85rem;
+    width: 4.05rem;
+    height: 4.05rem;
   }
   .kod-page-title__icon {
-    width: 2.2rem;
-    height: 2.2rem;
+    width: 1.95rem;
+    height: 1.95rem;
+  }
+  .kod-page-title h1 {
+    white-space: nowrap;
   }
 }
 
 @media (max-width: 40rem) {
   .kod-page-title {
-    gap: 0.75rem;
-    padding: 0.7rem 0 1rem;
+    gap: 0.7rem;
+    padding: 0.45rem 1rem 0.5rem 0.35rem;
   }
-  .kod-page-title::before {
-    left: -0.65rem;
-    right: -0.65rem;
+  .kod-page-title__kicker {
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
   }
   .kod-page-title__mark {
-    width: 2.85rem;
-    height: 2.85rem;
+    width: 2.95rem;
+    height: 2.95rem;
   }
   .kod-page-title__icon {
-    width: 1.55rem;
-    height: 1.55rem;
+    width: 1.4rem;
+    height: 1.4rem;
+  }
+  .kod-page-title h1::after {
+    height: 0.62rem;
   }
 }
 

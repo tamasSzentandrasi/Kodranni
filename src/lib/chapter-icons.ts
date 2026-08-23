@@ -66,6 +66,49 @@ export const hrefSegmentToSlug: Record<string, string> = {
 	automation: 'automation',
 };
 
+/** Sidebar group label — shown as a title kicker only when it adds wayfinding. */
+type SectionLabel = { en: string; hu: string };
+
+const sectionDice: SectionLabel = { en: 'Dice Mechanics', hu: 'Kockamechanika' };
+const sectionHuman: SectionLabel = { en: 'Human Potential', hu: 'Emberi adottságok' };
+const sectionResolution: SectionLabel = {
+	en: 'Resolution & Continuity',
+	hu: 'Feloldás és folytonosság',
+};
+const sectionCampaign: SectionLabel = {
+	en: 'Campaign & Character Creation',
+	hu: 'Kampány és karakteralkotás',
+};
+const sectionReference: SectionLabel = { en: 'Reference', hu: 'Névtár' };
+
+const chapterKickers: Record<string, SectionLabel | null> = {
+	index: null,
+	introduction: null,
+	'dice-mechanics': null,
+	'marks-and-tiers': sectionDice,
+	omens: sectionDice,
+	tide: sectionDice,
+	glossary: sectionReference,
+	'human-potential': null,
+	foundations: sectionHuman,
+	skills: sectionHuman,
+	traits: sectionHuman,
+	exertion: sectionHuman,
+	harm: sectionResolution,
+	echoes: sectionResolution,
+	hierarchies: sectionResolution,
+	inventory: sectionResolution,
+	'campaign-setup': sectionCampaign,
+	'character-creation': sectionCampaign,
+	automation: null,
+};
+
+export function chapterKickerFor(slug: string, lang: string): string | null {
+	const label = chapterKickers[slug];
+	if (!label) return null;
+	return lang === 'hu' ? label.hu : label.en;
+}
+
 export function slugFromEntryId(id: string): string {
 	let slug = String(id)
 		.replace(/\\/g, '/')

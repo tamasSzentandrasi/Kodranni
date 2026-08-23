@@ -1,19 +1,17 @@
 ---
-import { chapterIcons, slugFromEntryId } from '../../lib/chapter-icons';
+import { chapterIcons, chapterKickerFor, slugFromEntryId } from '../../lib/chapter-icons';
 
-const { entry } = Astro.locals.starlightRoute;
+const { entry, lang } = Astro.locals.starlightRoute;
 const title = entry.data.title;
 const slug = slugFromEntryId(entry.id);
 const iconSrc = chapterIcons[slug] ?? null;
+const kicker = chapterKickerFor(slug, lang);
 ---
 
 <div class="kod-page-title">
 	{
 		iconSrc && (
-			<span
-				class="kod-page-title__mark"
-				data-slug={slug}
-			>
+			<span class="kod-page-title__mark" data-slug={slug}>
 				<span
 					class="kod-page-title__icon"
 					style={`--kod-icon-mask: url("${iconSrc}")`}
@@ -22,5 +20,8 @@ const iconSrc = chapterIcons[slug] ?? null;
 			</span>
 		)
 	}
-	<h1 id="_top">{title}</h1>
+	<div class="kod-page-title__text">
+		{kicker && <span class="kod-page-title__kicker">{kicker}</span>}
+		<h1 id="_top">{title}</h1>
+	</div>
 </div>
