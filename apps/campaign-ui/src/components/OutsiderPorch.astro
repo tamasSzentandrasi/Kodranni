@@ -1,0 +1,53 @@
+---
+import { factionHue } from '../lib/format';
+import type { FixtureCommunity } from '../data/fixture';
+
+interface Props {
+  outsiders: FixtureCommunity['outsiders'];
+}
+
+const { outsiders } = Astro.props;
+const none = outsiders.length === 0;
+---
+
+<aside class="kod-plate hall__porch outsiders" aria-labelledby="o-h">
+  <div class="section-head" style="margin:0">
+    <h3 id="o-h">Outsiders</h3>
+    <button
+      type="button"
+      class="info"
+      data-tip="Named individuals only. Faction is a coloured property. Not on any ladder until inducted."
+      aria-label="About Outsiders"
+    >
+      i
+    </button>
+  </div>
+  <ul class="outsiders__list">
+    {
+      none ? (
+        <li class="empty">None tracked.</li>
+      ) : (
+        outsiders.map((o) => {
+          const hue = o.faction ? factionHue(o.faction) : 0;
+          return (
+            <li class="outsider" style={o.faction ? `--faction-h: ${hue}` : undefined}>
+              {o.characterSlug ? (
+                <a class="outsider__name" href={`/characters/${o.characterSlug}/`}>
+                  {o.name}
+                </a>
+              ) : (
+                <span class="outsider__name">{o.name}</span>
+              )}
+              {o.faction && <span class="outsider__faction">{o.faction}</span>}
+              {o.note && (
+                <button type="button" class="info" data-tip={o.note} aria-label={`About ${o.name}`}>
+                  i
+                </button>
+              )}
+            </li>
+          );
+        })
+      )
+    }
+  </ul>
+</aside>

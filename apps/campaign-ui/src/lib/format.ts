@@ -35,12 +35,28 @@ export const AXIS_DOMAIN: Record<string, string> = {
   Blood: 'Kinship, land, lineage, domestic authority',
 };
 
+/** Unknown / renamed / fifth axis — empty string is not enough. */
+export const AXIS_DOMAIN_FALLBACK = 'Standing on this axis.';
+
+export function axisDomain(axis: string): string {
+  return AXIS_DOMAIN[axis] ?? AXIS_DOMAIN_FALLBACK;
+}
+
 export const AXIS_KEY: Record<string, string> = {
   Arms: 'arms',
   Faith: 'faith',
   Coin: 'coin',
   Blood: 'blood',
 };
+
+const AXIS_HUE_CYCLE = ['arms', 'faith', 'coin', 'blood'] as const;
+
+/** Named axes keep their hue; a fifth unknown axis is pewter, not a recycled accent. */
+export function axisKey(axis: string, index = 0): string {
+  if (AXIS_KEY[axis]) return AXIS_KEY[axis]!;
+  if (index >= AXIS_HUE_CYCLE.length) return 'other';
+  return AXIS_HUE_CYCLE[index]!;
+}
 
 export const FORTUNE_BLURBS: Record<string, string> = {
   vitality: 'People and health — how many hands remain, how much loss the group can still take.',

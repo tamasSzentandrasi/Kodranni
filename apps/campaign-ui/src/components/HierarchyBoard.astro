@@ -1,0 +1,138 @@
+---
+import { HIERARCHY_TIERS } from '@kodranni/domain';
+import { axisDomain, axisKey } from '../lib/format';
+import type { FixtureCommunity } from '../data/fixture';
+
+interface Props {
+  axes: string[];
+  ruler: string | null;
+  rulerCharacterSlug?: string;
+  placements: FixtureCommunity['placements'];
+  tips: Map<string, string>;
+}
+
+const { axes, ruler, rulerCharacterSlug, placements, tips } = Astro.props;
+const tiers = [...HIERARCHY_TIERS];
+
+function tipFor(name: string, slug?: string, placementNote?: string): string {
+  if (placementNote) return placementNote;
+  if (slug && tips.has(slug)) return tips.get(slug)!;
+  return tips.get(name.toLowerCase()) ?? '';
+}
+---
+
+<section class="hall__crown" aria-labelledby="h-h">
+  <div class="section-head">
+    <h2 id="h-h">Hierarchy</h2>
+    <button
+      type="button"
+      class="info"
+      data-tip="One crown, then parallel ladders. Same four tiers on every axis (Honoured → Outcast). Colour marks the axis; saturation falls toward Outcast. Hover names for who they are."
+      aria-label="About Hierarchy"
+    >
+      i
+    </button>
+  </div>
+
+  <div class="kod-plate hier-ruler">
+    <p class="hier-ruler__title">Ruler</p>
+    {
+      ruler ? (
+        rulerCharacterSlug ? (
+          <a
+            class="member member--pc"
+            href={`/characters/${rulerCharacterSlug}/`}
+            data-tip={tipFor(ruler, rulerCharacterSlug)}
+            style="display:inline-flex;margin:0.35rem auto 0"
+          >
+            <span class="member__dot" />
+            {ruler}
+          </a>
+        ) : (
+          <span class="member" data-tip={tipFor(ruler)} style="display:inline-flex;margin:0.35rem auto 0">
+            <span class="member__dot" />
+            {ruler}
+          </span>
+        )
+      ) : (
+        <p class="hier-ruler__note">One seat for the whole community — none claimed.</p>
+      )
+    }
+  </div>
+  <p class="hier-join" aria-hidden="true" />
+</section>
+
+<div class="hall__nave" role="region" aria-label="Hierarchy ladders">
+  <div class="hier-axes">
+    {
+      axes.map((axis, ai) => {
+        const onAxis = placements.filter((p) => p.axis === axis);
+        const key = axisKey(axis, ai);
+        return (
+          <div class="kod-plate hier-axis" data-axis={key}>
+            <div class="hier-axis__head">
+              <p class="hier-axis__name">{axis}</p>
+              <p class="hier-axis__domain">{axisDomain(axis)}</p>
+              <span class="hier-axis__count">{onAxis.length} placed</span>
+            </div>
+            <ol class="hier-rungs">
+              {tiers.map((tier) => {
+                const members = onAxis.filter((p) => p.tier === tier);
+                const empty = members.length === 0;
+                const defaultCollapsed = empty || (tier === 'Outcast' && members.length > 5);
+                return (
+                  <li
+                    class="hier-rung"
+                    data-tier={tier}
+                    data-collapsed={defaultCollapsed ? 'true' : 'false'}
+                  >
+                    <button
+                      type="button"
+                      class="hier-rung__head"
+                      data-rung-toggle
+                      aria-expanded={defaultCollapsed ? 'false' : 'true'}
+                    >
+                      <span class="hier-rung__tier">{tier}</span>
+                      <span class="hier-rung__n">{members.length}</span>
+                      <span class="hier-rung__chev" aria-hidden="true">
+                        {defaultCollapsed ? '▸' : '▾'}
+                      </span>
+                    </button>
+                    <ul class="hier-rung__members">
+                      {empty ? (
+                        <li class="empty">—</li>
+                      ) : (
+                        members.map((m) => {
+                          const tip = tipFor(m.name, m.characterSlug, m.note);
+                          return (
+                            <li>
+                              {m.characterSlug ? (
+                                <a
+                                  class="member member--pc"
+                                  href={`/characters/${m.characterSlug}/`}
+                                  data-tip={tip}
+                                >
+                                  <span class="member__dot" />
+                                  {m.name}
+                                </a>
+                              ) : (
+                                <span class="member" data-tip={tip} tabindex="0">
+                                  <span class="member__dot" />
+                                  {m.name}
+                                </span>
+                              )}
+                            </li>
+                          );
+                        })
+                      )}
+                    </ul>
+                  </li>
+                );
+              })}
+            </ol>
+          </div>
+        );
+      })
+    }
+  </div>
+</div>

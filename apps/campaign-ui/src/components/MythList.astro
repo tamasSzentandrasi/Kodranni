@@ -1,0 +1,62 @@
+---
+import type { FixtureCommunity } from '../data/fixture';
+
+interface Props {
+  myths: FixtureCommunity['myths'];
+}
+
+const { myths } = Astro.props;
+---
+
+<section class="hall__crypt" aria-labelledby="m-h">
+  <div class="section-head">
+    <h2 id="m-h">Foundation Myths</h2>
+    <button
+      type="button"
+      class="info"
+      data-tip="Active myths of this community. Effects fire only when a roll tags the Myth."
+      aria-label="About Foundation Myths"
+    >
+      i
+    </button>
+  </div>
+  {
+    myths.length === 0 ? (
+      <article class="kod-plate myth-card myth-card--empty">
+        <p class="empty">No active Foundation Myths.</p>
+      </article>
+    ) : (
+      <div class="myth-list">
+        {myths.map((m) => (
+          <article class="kod-plate myth-card">
+            <h3 class="myth-card__title">
+              {m.title}
+              {m.summary && (
+                <button type="button" class="info" data-tip={m.summary} aria-label={`About ${m.title}`}>
+                  i
+                </button>
+              )}
+            </h3>
+            <div class="myth-card__fx">
+              {(m.effects ?? []).length === 0 ? (
+                <span class="empty">No listed effects.</span>
+              ) : (
+                (m.effects ?? []).map((e) => (
+                  <span class="fx" data-kind={e.kind}>
+                    {e.label}
+                    {e.faces?.length ? ` (${e.faces.join(', ')})` : ''}
+                    {e.detail && (
+                      <button type="button" class="info" data-tip={e.detail} aria-label="Effect detail">
+                        i
+                      </button>
+                    )}
+                  </span>
+                ))
+              )}
+            </div>
+          </article>
+        ))}
+      </div>
+    )
+  }
+</section>
