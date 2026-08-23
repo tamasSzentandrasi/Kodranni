@@ -9,9 +9,9 @@
   --kod-silver: #c6c1b8;
   --kod-silver-dim: #8a8580;
   --kod-silver-bright: #f2efe9;
-  --kod-blood: #a01818;
-  --kod-blood-bright: #c92222;
-  --kod-blood-deep: #5a1010;
+  --kod-blood: #c41414;
+  --kod-blood-bright: #ea2c2c;
+  --kod-blood-deep: #7a1010;
 
   /* Plate grammar — tooled iron in soot, not corner brackets */
   --kod-frame: #3a3330;
@@ -20,7 +20,7 @@
   --kod-plate: #0b0a0a;
   --kod-inset: rgba(242, 239, 233, 0.05);
   --kod-soot-size: 1.35rem;
-  --kod-corner-size: 1.28rem;
+  --kod-corner-size: 1.58rem;
   --kod-tool: linear-gradient(180deg, rgba(242, 239, 233, 0.08), transparent 34%);
   --kod-smoke:
     inset 0 1px 0 rgba(242, 239, 233, 0.08),
@@ -28,11 +28,13 @@
     0 12px 28px -12px rgba(0, 0, 0, 0.68),
     0 2px 5px rgba(0, 0, 0, 0.35);
 
-  /* Thin forged L-strap + inner scroll + rivet. Pewter default; identity swaps blood. */
-  --kod-c-tl: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cg fill='%23c4bfb6' stroke='%23c4bfb6' opacity='.82'%3E%3Cpath stroke='none' d='M0 0h13.8v2.4H3.15Q2.4 2.4 2.4 3.15V13.8H0z'/%3E%3Cpath fill='none' stroke-width='1.15' stroke-linecap='round' d='M6.4 6.4q3.6 0 3.6 3.6'/%3E%3Cpath stroke='none' d='M4.55 3.4a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4z'/%3E%3C/g%3E%3C/svg%3E");
-  --kod-c-tr: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cg fill='%23c4bfb6' stroke='%23c4bfb6' opacity='.82'%3E%3Cpath stroke='none' d='M32 0H18.2v2.4H28.85Q29.6 2.4 29.6 3.15V13.8H32z'/%3E%3Cpath fill='none' stroke-width='1.15' stroke-linecap='round' d='M25.6 6.4q-3.6 0-3.6 3.6'/%3E%3Cpath stroke='none' d='M27.45 3.4a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4z'/%3E%3C/g%3E%3C/svg%3E");
-  --kod-c-bl: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cg fill='%23c4bfb6' stroke='%23c4bfb6' opacity='.82'%3E%3Cpath stroke='none' d='M0 32h13.8v-2.4H3.15Q2.4 29.6 2.4 28.85V18.2H0z'/%3E%3Cpath fill='none' stroke-width='1.15' stroke-linecap='round' d='M6.4 25.6q3.6 0 3.6-3.6'/%3E%3Cpath stroke='none' d='M4.55 26.2a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4z'/%3E%3C/g%3E%3C/svg%3E");
-  --kod-c-br: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cg fill='%23c4bfb6' stroke='%23c4bfb6' opacity='.82'%3E%3Cpath stroke='none' d='M32 32H18.2v-2.4H28.85Q29.6 29.6 29.6 28.85V18.2H32z'/%3E%3Cpath fill='none' stroke-width='1.15' stroke-linecap='round' d='M25.6 25.6q-3.6 0-3.6-3.6'/%3E%3Cpath stroke='none' d='M27.45 26.2a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4z'/%3E%3C/g%3E%3C/svg%3E");
+  /* Gothic knot + crocket spears. Pewter default; identity swaps blood. */
+  --kod-c-tl: url("../assets/ornament/corner-tl.svg");
+  --kod-c-tr: url("../assets/ornament/corner-tr.svg");
+  --kod-c-bl: url("../assets/ornament/corner-bl.svg");
+  --kod-c-br: url("../assets/ornament/corner-br.svg");
+  --kod-btn-end-l: url("../assets/ornament/btn-end-l.svg");
+  --kod-btn-end-r: url("../assets/ornament/btn-end-r.svg");
 
   --kod-font-display: 'Bellefair', 'Times New Roman', Times, serif;
   --kod-font-body: 'Bellefair', 'Times New Roman', Times, serif;
@@ -42,7 +44,7 @@
 
   --sl-color-accent-low: var(--kod-blood-deep);
   --sl-color-accent: var(--kod-blood);
-  --sl-color-accent-high: #e8a0a0;
+  --sl-color-accent-high: #f07070;
 
   --sl-text-h1: 2.55rem;
   --sl-text-h2: 1.85rem;
@@ -103,7 +105,7 @@ header starlight-theme-select {
 body {
   background-color: var(--kod-black);
   background-image:
-    radial-gradient(ellipse 120% 80% at 50% -10%, rgba(160, 24, 24, 0.2), transparent 55%),
+    radial-gradient(ellipse 120% 80% at 50% -10%, rgba(196, 20, 20, 0.26), transparent 55%),
     radial-gradient(ellipse 90% 60% at 100% 100%, rgba(0, 0, 0, 0.55), transparent 50%),
     radial-gradient(ellipse 70% 50% at 0% 80%, rgba(0, 0, 0, 0.4), transparent 45%);
   background-attachment: fixed;
@@ -180,6 +182,7 @@ body {
 .kod-phase,
 .kod-menu-item,
 .kod-page-title__mark,
+.kod-archetype,
 .kod-widget__btn,
 .kod-step-flow__nav button {
   --kod-soot:
@@ -203,7 +206,7 @@ body {
   --kod-plate-wash: var(--kod-corners), var(--kod-soot), var(--kod-tool);
 }
 
-/* Identity plates — blood iron L-straps. */
+/* Identity plates — blood gothic knots. */
 .kod-example,
 .sl-markdown-content table:not(:where(.not-content *)),
 .kod-lane--st,
@@ -211,10 +214,10 @@ body {
 .kod-phase,
 .kod-harm-col--phys,
 .kod-hier-ruler {
-  --kod-c-tl: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cg fill='%23c45a5a' stroke='%23c45a5a' opacity='.82'%3E%3Cpath stroke='none' d='M0 0h13.8v2.4H3.15Q2.4 2.4 2.4 3.15V13.8H0z'/%3E%3Cpath fill='none' stroke-width='1.15' stroke-linecap='round' d='M6.4 6.4q3.6 0 3.6 3.6'/%3E%3Cpath stroke='none' d='M4.55 3.4a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4z'/%3E%3C/g%3E%3C/svg%3E");
-  --kod-c-tr: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cg fill='%23c45a5a' stroke='%23c45a5a' opacity='.82'%3E%3Cpath stroke='none' d='M32 0H18.2v2.4H28.85Q29.6 2.4 29.6 3.15V13.8H32z'/%3E%3Cpath fill='none' stroke-width='1.15' stroke-linecap='round' d='M25.6 6.4q-3.6 0-3.6 3.6'/%3E%3Cpath stroke='none' d='M27.45 3.4a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4z'/%3E%3C/g%3E%3C/svg%3E");
-  --kod-c-bl: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cg fill='%23c45a5a' stroke='%23c45a5a' opacity='.82'%3E%3Cpath stroke='none' d='M0 32h13.8v-2.4H3.15Q2.4 29.6 2.4 28.85V18.2H0z'/%3E%3Cpath fill='none' stroke-width='1.15' stroke-linecap='round' d='M6.4 25.6q3.6 0 3.6-3.6'/%3E%3Cpath stroke='none' d='M4.55 26.2a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4z'/%3E%3C/g%3E%3C/svg%3E");
-  --kod-c-br: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cg fill='%23c45a5a' stroke='%23c45a5a' opacity='.82'%3E%3Cpath stroke='none' d='M32 32H18.2v-2.4H28.85Q29.6 29.6 29.6 28.85V18.2H32z'/%3E%3Cpath fill='none' stroke-width='1.15' stroke-linecap='round' d='M25.6 25.6q-3.6 0-3.6-3.6'/%3E%3Cpath stroke='none' d='M27.45 26.2a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4z'/%3E%3C/g%3E%3C/svg%3E");
+  --kod-c-tl: url("../assets/ornament/corner-blood-tl.svg");
+  --kod-c-tr: url("../assets/ornament/corner-blood-tr.svg");
+  --kod-c-bl: url("../assets/ornament/corner-blood-bl.svg");
+  --kod-c-br: url("../assets/ornament/corner-blood-br.svg");
 }
 
 

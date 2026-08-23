@@ -236,8 +236,8 @@
   background: linear-gradient(
     to right,
     transparent,
-    color-mix(in srgb, var(--kod-blood) 70%, #444) 20%,
-    color-mix(in srgb, var(--kod-blood) 70%, #444) 80%,
+    color-mix(in srgb, var(--kod-blood) 88%, #444) 20%,
+    color-mix(in srgb, var(--kod-blood) 88%, #444) 80%,
     transparent
   );
   background-size: 100% 1px;

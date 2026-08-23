@@ -48,7 +48,7 @@
   border-left: 3px solid var(--kod-blood);
   background:
     var(--kod-plate-wash),
-    linear-gradient(160deg, color-mix(in srgb, var(--kod-blood-deep) 60%, #0c0c0c), #0c0c0c 72%);
+    linear-gradient(160deg, color-mix(in srgb, var(--kod-blood-deep) 70%, #0c0c0c), #0c0c0c 72%);
 }
 
 .sl-markdown-content .kod-lane__title {
@@ -377,46 +377,51 @@
 }
 
 .kod-widget__btn {
-  --kod-soot-size: 0.7rem;
-  --kod-corner-size: 0.72rem;
+  --kod-soot-size: 0.55rem;
+  --kod-corners: none;
+  --kod-btn-ends:
+    var(--kod-btn-end-l) left 50% / auto 88% no-repeat,
+    var(--kod-btn-end-r) right 50% / auto 88% no-repeat;
   appearance: none;
   -webkit-appearance: none;
   box-sizing: border-box;
   flex: 0 0 auto;
-  width: 5.75rem;
-  height: 2.5rem;
-  min-width: 5.75rem;
-  min-height: 2.5rem;
-  max-width: 5.75rem;
-  max-height: 2.5rem;
+  width: 6.15rem;
+  height: 2.55rem;
+  min-width: 6.15rem;
+  min-height: 2.55rem;
+  max-width: 6.15rem;
+  max-height: 2.55rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid #4a4540;
+  border: 1px solid #8a8078;
   background:
-    var(--kod-plate-wash),
-    linear-gradient(180deg, rgba(242, 239, 233, 0.12), transparent 42%),
+    var(--kod-btn-ends),
+    linear-gradient(180deg, rgba(242, 239, 233, 0.1), transparent 42%),
     #161412;
   color: var(--kod-silver);
   font-family: var(--kod-font-body);
   font-size: 0.82rem;
   line-height: 1;
   margin: 0 !important; /* Starlight sibling gap would lift the first button */
-  padding: 0;
+  padding: 0 1.2rem;
   border-radius: 0;
   cursor: pointer;
   letter-spacing: 0.01em;
   white-space: nowrap;
   vertical-align: middle;
   box-shadow:
-    inset 0 0 0 1px rgba(242, 239, 233, 0.05),
-    inset 0 1px 0 rgba(242, 239, 233, 0.12),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.4);
+    inset 0 0 0 1px rgba(242, 239, 233, 0.06),
+    inset 0 0 0 3px #161412,
+    inset 0 0 0 4px #6a6560;
   transition: border-color 0.12s ease, background 0.12s ease, color 0.12s ease, box-shadow 0.12s ease;
 }
 
 /* Scout Marks: number-only chips */
 .kod-widget[data-widget='marks-ladder'] .kod-widget__btn {
+  --kod-btn-ends: none;
+  padding: 0;
   width: 2.65rem;
   min-width: 2.65rem;
   max-width: 2.65rem;
@@ -431,9 +436,9 @@
 
 /* Tier dial: d6 / d8 / d12 */
 .kod-widget[data-widget='tier-dial'] .kod-widget__btn {
-  width: 4.5rem;
-  min-width: 4.5rem;
-  max-width: 4.5rem;
+  width: 5.5rem;
+  min-width: 5.5rem;
+  max-width: 5.5rem;
   font-family: var(--kod-font-display);
   font-size: 1.05rem;
   letter-spacing: 0.03em;
@@ -940,21 +945,19 @@
 
 .kod-widget__btn:hover,
 .kod-widget__btn:focus-visible {
-  --kod-tool: linear-gradient(180deg, rgba(242, 239, 233, 0.16), transparent 42%);
-  border-color: #8a8580;
+  border-color: #c4bfb6;
   outline: none;
   color: #fff8f0;
   background:
-    var(--kod-plate-wash),
+    var(--kod-btn-ends),
     linear-gradient(180deg, rgba(242, 239, 233, 0.16), transparent 42%),
     #1c1916;
 }
 
 .kod-widget__btn[aria-pressed='true'] {
-  --kod-tool: linear-gradient(180deg, rgba(242, 239, 233, 0.06), transparent 55%);
-  border-color: #c4bfb6;
+  border-color: #e4dfd6;
   background:
-    var(--kod-plate-wash),
+    var(--kod-btn-ends),
     linear-gradient(180deg, rgba(242, 239, 233, 0.08), transparent 55%),
     #2a2622;
   color: #fff8f0;
@@ -1163,7 +1166,7 @@
   border-left: 3px solid var(--kod-blood);
   background:
     var(--kod-plate-wash),
-    linear-gradient(160deg, color-mix(in srgb, var(--kod-blood-deep) 58%, #0c0c0c), #0c0c0c 75%);
+    linear-gradient(160deg, color-mix(in srgb, var(--kod-blood-deep) 70%, #0c0c0c), #0c0c0c 75%);
 }
 .kod-seed__title {
   font-family: var(--kod-font-display);
@@ -1233,7 +1236,7 @@
   border-radius: 0;
   background:
     var(--kod-plate-wash),
-    color-mix(in srgb, var(--kod-blood-deep) 36%, #0c0c0c);
+    color-mix(in srgb, var(--kod-blood-deep) 50%, #0c0c0c);
 }
 .kod-phase__n {
   display: inline-block;
@@ -1332,16 +1335,19 @@
   margin-top: 0.9rem;
 }
 .kod-step-flow__nav button {
-  --kod-soot-size: 0.7rem;
-  --kod-corner-size: 0.72rem;
+  --kod-soot-size: 0.55rem;
+  --kod-corners: none;
+  --kod-btn-ends:
+    var(--kod-btn-end-l) left 50% / auto 88% no-repeat,
+    var(--kod-btn-end-r) right 50% / auto 88% no-repeat;
   appearance: none;
   box-sizing: border-box;
   margin: 0;
-  padding: 0.4rem 0.85rem;
-  border: 1px solid #4a4540;
+  padding: 0.4rem 1.15rem;
+  border: 1px solid #8a8078;
   border-radius: 0;
   background:
-    var(--kod-plate-wash),
+    var(--kod-btn-ends),
     linear-gradient(180deg, rgba(242, 239, 233, 0.1), transparent 42%),
     #161412;
   color: var(--kod-silver);
@@ -1350,18 +1356,17 @@
   cursor: pointer;
   letter-spacing: 0.03em;
   box-shadow:
-    inset 0 0 0 1px rgba(242, 239, 233, 0.05),
-    inset 0 1px 0 rgba(242, 239, 233, 0.1),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.35);
+    inset 0 0 0 1px rgba(242, 239, 233, 0.06),
+    inset 0 0 0 3px #161412,
+    inset 0 0 0 4px #6a6560;
 }
 .kod-step-flow__nav button:hover:not(:disabled),
 .kod-step-flow__nav button:focus-visible:not(:disabled) {
-  --kod-tool: linear-gradient(180deg, rgba(242, 239, 233, 0.16), transparent 42%);
-  border-color: #8a8580;
+  border-color: #c4bfb6;
   color: #fff8f0;
   outline: none;
   background:
-    var(--kod-plate-wash),
+    var(--kod-btn-ends),
     linear-gradient(180deg, rgba(242, 239, 233, 0.16), transparent 42%),
     #1c1916;
 }

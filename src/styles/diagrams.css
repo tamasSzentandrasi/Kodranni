@@ -217,36 +217,62 @@
 
 .sl-markdown-content .kod-archetype {
   border: 1px solid #3a3030;
-  border-radius: 4px;
-  overflow: hidden;
+  border-radius: 0;
+  overflow: visible;
   list-style: none;
   margin: 0;
   min-width: 0;
+  background-image: var(--kod-plate-wash);
+  background-repeat: no-repeat;
+  cursor: pointer;
+  transition: border-color 0.14s ease, box-shadow 0.14s ease, filter 0.14s ease;
+}
+
+.sl-markdown-content .kod-archetype:hover,
+.sl-markdown-content .kod-archetype:focus-within {
+  border-color: #b8b2aa;
+  box-shadow:
+    var(--kod-smoke),
+    0 0 0 1px #7a756e,
+    inset 0 1px 0 rgba(242, 239, 233, 0.12);
+  filter: brightness(1.08);
 }
 
 /* Per-archetype colour wash */
 .sl-markdown-content .kod-archetype--warrior {
-  background: linear-gradient(180deg, color-mix(in srgb, var(--kod-blood) 28%, #0a0808), #0a0808 70%);
-  border-color: color-mix(in srgb, var(--kod-blood) 45%, #333);
+  background:
+    var(--kod-plate-wash),
+    linear-gradient(180deg, color-mix(in srgb, var(--kod-blood) 36%, #0a0808), #0a0808 70%);
+  border-color: color-mix(in srgb, var(--kod-blood) 58%, #333);
 }
 .sl-markdown-content .kod-archetype--wayfarer {
-  background: linear-gradient(180deg, color-mix(in srgb, #1a5c38 32%, #0a0808), #0a0808 70%);
+  background:
+    var(--kod-plate-wash),
+    linear-gradient(180deg, color-mix(in srgb, #1a5c38 32%, #0a0808), #0a0808 70%);
   border-color: color-mix(in srgb, #2a8a55 40%, #333);
 }
 .sl-markdown-content .kod-archetype--artisan {
-  background: linear-gradient(180deg, color-mix(in srgb, #5a5048 35%, #0a0808), #0a0808 70%);
+  background:
+    var(--kod-plate-wash),
+    linear-gradient(180deg, color-mix(in srgb, #5a5048 35%, #0a0808), #0a0808 70%);
   border-color: color-mix(in srgb, #8a7a6a 40%, #333);
 }
 .sl-markdown-content .kod-archetype--mother {
-  background: linear-gradient(180deg, color-mix(in srgb, #8a6a18 32%, #0a0808), #0a0808 70%);
+  background:
+    var(--kod-plate-wash),
+    linear-gradient(180deg, color-mix(in srgb, #8a6a18 32%, #0a0808), #0a0808 70%);
   border-color: color-mix(in srgb, #c4a035 40%, #333);
 }
 .sl-markdown-content .kod-archetype--sage {
-  background: linear-gradient(180deg, color-mix(in srgb, #2a2a7a 35%, #0a0808), #0a0808 70%);
+  background:
+    var(--kod-plate-wash),
+    linear-gradient(180deg, color-mix(in srgb, #2a2a7a 35%, #0a0808), #0a0808 70%);
   border-color: color-mix(in srgb, #5a5ab8 40%, #333);
 }
 .sl-markdown-content .kod-archetype--trickster {
-  background: linear-gradient(180deg, color-mix(in srgb, #3a1a4a 38%, #0a0808), #0a0808 70%);
+  background:
+    var(--kod-plate-wash),
+    linear-gradient(180deg, color-mix(in srgb, #3a1a4a 38%, #0a0808), #0a0808 70%);
   border-color: color-mix(in srgb, #6a3a7a 45%, #333);
 }
 
@@ -681,7 +707,7 @@
   border-left: 3px solid var(--kod-blood);
   background:
     var(--kod-plate-wash),
-    color-mix(in srgb, var(--kod-blood-deep) 40%, #0c0c0c);
+    color-mix(in srgb, var(--kod-blood-deep) 52%, #0c0c0c);
 }
 .kod-harm-col--ment {
   border-left: 3px solid #5a4ab0;
