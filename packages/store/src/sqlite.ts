@@ -29,6 +29,7 @@ function normalizeCommunity(raw: CommunityRecord): CommunityRecord {
       return { title: legacy.title, summary: legacy.summary, effects: [] };
     }),
     outsiders: raw.outsiders ?? [],
+    factions: raw.factions ?? [],
     placements: raw.placements ?? [],
     hierarchyAxes: raw.hierarchyAxes ?? ['Arms', 'Faith', 'Coin', 'Blood'],
     pendingMoves: raw.pendingMoves ?? [],

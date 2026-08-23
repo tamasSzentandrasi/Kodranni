@@ -65,9 +65,24 @@ const allSteady = fortuneOrder.every((k) => Math.min(3, Math.max(0, fortunes[k] 
             aria-label={`${k}, ${label}`}
           >
             <span class="fortune__icon" aria-hidden="true" />
-            <span class="fortune__name">{k}</span>
+            <span class="fortune__name">
+              {k}
+              <button
+                type="button"
+                class="info"
+                data-tip={FORTUNE_BLURBS[k] ?? ''}
+                aria-label={`About ${k}`}
+              >
+                i
+              </button>
+            </span>
+            <div class="fortune__stack" aria-hidden="true">
+              <i />
+              <i />
+              <i />
+              <i />
+            </div>
             <span class="fortune__state">{label}</span>
-            <p class="fortune__purpose">{FORTUNE_BLURBS[k] ?? ''}</p>
           </div>
         );
       })

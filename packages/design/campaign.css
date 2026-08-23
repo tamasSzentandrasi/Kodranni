@@ -180,6 +180,32 @@ section.kod-plate {
   font-size: 1.2rem;
 }
 
+.hall .section-head {
+  justify-content: center;
+  margin: 0.55rem 0 1.45rem;
+}
+
+.hall .section-head h2 {
+  font-size: clamp(2.2rem, 4.4vw, 3.15rem);
+  letter-spacing: 0.08em;
+  text-align: center;
+  color: var(--kod-silver-bright);
+}
+
+.hall__sky,
+.hall__crown,
+.hall__crypt {
+  padding-top: 1.15rem;
+}
+
+.hall__crown {
+  margin-top: 2.1rem;
+}
+
+.hall__crypt {
+  margin-top: 2.6rem;
+}
+
 .info {
   display: inline-flex;
   align-items: center;
@@ -253,7 +279,7 @@ section.kod-plate {
     "crown  crown"
     "nave   porch"
     "crypt  crypt";
-  gap: 0.85rem 1rem;
+  gap: 1.35rem 1rem;
   align-items: start;
 }
 
@@ -304,7 +330,7 @@ section.kod-plate {
   align-items: center;
   text-align: center;
   padding: 0.95rem 0.65rem 0.85rem;
-  min-height: 9.5rem;
+  min-height: 10.6rem;
   border-top-width: 4px;
   border-top-color: var(--kod-fortune-accent);
   background:
@@ -352,24 +378,68 @@ section.kod-plate {
   mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='2.2' fill='black'/%3E%3Ccircle cx='16' cy='5.2' r='2' fill='black'/%3E%3Ccircle cx='16' cy='26.8' r='2' fill='black'/%3E%3Ccircle cx='5.2' cy='16' r='2' fill='black'/%3E%3Ccircle cx='26.8' cy='16' r='2' fill='black'/%3E%3Ccircle cx='8.4' cy='8.4' r='2' fill='black'/%3E%3Ccircle cx='23.6' cy='8.4' r='2' fill='black'/%3E%3Ccircle cx='8.4' cy='23.6' r='2' fill='black'/%3E%3Ccircle cx='23.6' cy='23.6' r='2' fill='black'/%3E%3C/svg%3E");
 }
 .fortune[data-key='surplus'] .fortune__icon {
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M15.1 29h1.8V17.2c1.9.3 3.3 1.2 4.2 2.6l1.4-1c-1.1-1.8-2.9-2.9-5.1-3.3V12c2.2-.3 3.9-1.6 4.8-3.5l-1.5-.8c-.7 1.4-1.9 2.3-3.5 2.6V7.5c1.4-.3 2.5-1.2 3.1-2.5l-1.6-.8c-.4.9-1.2 1.5-2.2 1.7V2.8h-1.8v3.1c-1-.2-1.8-.8-2.2-1.7l-1.6.8c.6 1.3 1.7 2.2 3.1 2.5v2.8c-1.6-.3-2.8-1.2-3.5-2.6l-1.5.8c.9 1.9 2.6 3.2 4.8 3.5v3.5c-2.2.4-4 1.5-5.1 3.3l1.4 1c.9-1.4 2.3-2.3 4.2-2.6V29z'/%3E%3C/svg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M15.1 29h1.8V17.2c1.9.3 3.3 1.2 4.2 2.6l1.4-1c-1.1-1.8-2.9-2.9-5.1-3.3V12c2.2-.3 3.9-1.6 4.8-3.5l-1.5-.8c-.7 1.4-1.9 2.3-3.5 2.6V7.5c1.4-.3 2.5-1.2 3.1-2.5l-1.6-.8c-.4.9-1.2 1.5-2.2 1.7V2.8h-1.8v3.1c-1-.2-1.8-.8-2.2-1.7l-1.6.8c.6 1.3 1.7 2.2 3.1 2.5v2.8c-1.6-.3-2.8-1.2-3.5-2.6l-1.5.8c.9 1.9 2.6 3.2 4.8 3.5v3.5c-2.2.4-4 1.5-5.1 3.3l1.4 1c.9-1.4 2.3-2.3 4.2-2.6V29z'/%3E%3C/svg%3E");
+  /* Guidebook wheat sheaf — same paths as .kod-fortune-pillar--surplus */
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M15.1 29h1.8V17.2c1.9.3 3.3 1.2 4.2 2.6l1.4-1c-1.1-1.8-2.9-2.9-5.1-3.3V12c2.2-.3 3.9-1.6 4.8-3.5l-1.5-.8c-.7 1.4-1.9 2.3-3.5 2.6V7.5c1.4-.3 2.5-1.2 3.1-2.5l-1.6-.8c-.4.9-1.2 1.5-2.2 1.7V2.8h-1.8v3.1c-1-.2-1.8-.8-2.2-1.7l-1.6.8c.6 1.3 1.7 2.2 3.1 2.5v2.8c-1.6-.3-2.8-1.2-3.5-2.6l-1.5.8c.9 1.9 2.6 3.2 4.8 3.5v3.5c-2.2.4-4 1.5-5.1 3.3l1.4 1c.9-1.4 2.3-2.3 4.2-2.6V29z'/%3E%3Cpath fill='black' d='M12.2 19.2c-.9 1.3-.9 2.7 0 4 .9-1.3.9-2.7 0-4zm7.6 0c.9 1.3.9 2.7 0 4-.9-1.3-.9-2.7 0-4zM10.6 14.5c-.7 1.1-.7 2.2 0 3.3.7-1.1.7-2.2 0-3.3zm10.8 0c.7 1.1.7 2.2 0 3.3-.7-1.1-.7-2.2 0-3.3zM9.8 10.2c-.6.9-.6 1.9 0 2.8.6-.9.6-1.9 0-2.8zm12.4 0c.6.9.6 1.9 0 2.8-.6-.9-.6-1.9 0-2.8z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M15.1 29h1.8V17.2c1.9.3 3.3 1.2 4.2 2.6l1.4-1c-1.1-1.8-2.9-2.9-5.1-3.3V12c2.2-.3 3.9-1.6 4.8-3.5l-1.5-.8c-.7 1.4-1.9 2.3-3.5 2.6V7.5c1.4-.3 2.5-1.2 3.1-2.5l-1.6-.8c-.4.9-1.2 1.5-2.2 1.7V2.8h-1.8v3.1c-1-.2-1.8-.8-2.2-1.7l-1.6.8c.6 1.3 1.7 2.2 3.1 2.5v2.8c-1.6-.3-2.8-1.2-3.5-2.6l-1.5.8c.9 1.9 2.6 3.2 4.8 3.5v3.5c-2.2.4-4 1.5-5.1 3.3l1.4 1c.9-1.4 2.3-2.3 4.2-2.6V29z'/%3E%3Cpath fill='black' d='M12.2 19.2c-.9 1.3-.9 2.7 0 4 .9-1.3.9-2.7 0-4zm7.6 0c.9 1.3.9 2.7 0 4-.9-1.3-.9-2.7 0-4zM10.6 14.5c-.7 1.1-.7 2.2 0 3.3.7-1.1.7-2.2 0-3.3zm10.8 0c.7 1.1.7 2.2 0 3.3-.7-1.1-.7-2.2 0-3.3zM9.8 10.2c-.6.9-.6 1.9 0 2.8.6-.9.6-1.9 0-2.8zm12.4 0c.6.9.6 1.9 0 2.8-.6-.9-.6-1.9 0-2.8z'/%3E%3C/svg%3E");
 }
 .fortune[data-key='standing'] .fortune__icon {
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M15.2 1.8h1.6v2.4c3.2.4 5.7 2.4 6.6 5.4.5 1.7.5 3.5.1 5.1l1.6.4c.5-1.9.5-4-.1-6.1C23.8 5.1 20.5 2.6 16.8 2.2V1.8h-1.6v.4c-3.7.4-7 2.9-8.2 6.8-.6 2.1-.6 4.2-.1 6.1l1.6-.4c-.4-1.6-.4-3.4.1-5.1.9-3 3.4-5 6.6-5.4V1.8z'/%3E%3Cpath fill='black' d='M11.6 24.2h8.8c1.4 0 2.6 1 2.9 2.4l.3 1.4H8.4l.3-1.4c.3-1.4 1.5-2.4 2.9-2.4z'/%3E%3C/svg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M15.2 1.8h1.6v2.4c3.2.4 5.7 2.4 6.6 5.4.5 1.7.5 3.5.1 5.1l1.6.4c.5-1.9.5-4-.1-6.1C23.8 5.1 20.5 2.6 16.8 2.2V1.8h-1.6v.4c-3.7.4-7 2.9-8.2 6.8-.6 2.1-.6 4.2-.1 6.1l1.6-.4c-.4-1.6-.4-3.4.1-5.1.9-3 3.4-5 6.6-5.4V1.8z'/%3E%3Cpath fill='black' d='M11.6 24.2h8.8c1.4 0 2.6 1 2.9 2.4l.3 1.4H8.4l.3-1.4c.3-1.4 1.5-2.4 2.9-2.4z'/%3E%3C/svg%3E");
+  /* Guidebook galea — same paths as .kod-fortune-pillar--standing */
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M15.2 1.8h1.6v2.4c3.2.4 5.7 2.4 6.6 5.4.5 1.7.5 3.5.1 5.1l1.6.4c.5-1.9.5-4-.1-6.1C23.8 5.1 20.5 2.6 16.8 2.2V1.8h-1.6v.4c-3.7.4-7 2.9-8.2 6.8-.6 2.1-.6 4.2-.1 6.1l1.6-.4c-.4-1.6-.4-3.4.1-5.1.9-3 3.4-5 6.6-5.4V1.8z'/%3E%3Cpath fill='black' d='M9.2 13.2c0-3.6 3-6.5 6.8-6.5s6.8 2.9 6.8 6.5v2.8c0 1.1-.3 2.1-.8 3l1.6 1.1c.4-.4.7-.9.9-1.5.3-.9.5-1.8.5-2.8V13c0-1.2-.2-2.3-.6-3.4C23.4 6.2 20 3.8 16 3.8S8.6 6.2 7.6 9.6c-.4 1.1-.6 2.2-.6 3.4v2.4c0 1 .2 1.9.5 2.8.2.6.5 1.1.9 1.5l1.6-1.1c-.5-.9-.8-1.9-.8-3v-2.8z'/%3E%3Cpath fill='black' d='M10.4 16.8v4.6c0 1.2.7 2.3 1.8 2.8l.9-1.5c-.4-.2-.7-.7-.7-1.3v-3.2c0-1.8 1.2-3.3 2.8-3.8v-1.7c-2.7.5-4.8 2.8-4.8 5.6v-.5zm11.2 0c0-2.8-2.1-5.1-4.8-5.6v1.7c1.6.5 2.8 2 2.8 3.8v3.2c0 .6-.3 1.1-.7 1.3l.9 1.5c1.1-.5 1.8-1.6 1.8-2.8v-4.6z'/%3E%3Cpath fill='black' d='M11.6 24.2h8.8c1.4 0 2.6 1 2.9 2.4l.3 1.4H8.4l.3-1.4c.3-1.4 1.5-2.4 2.9-2.4zm1.2 1.7c-.3.3-.5.7-.5 1.1h7.4c0-.4-.2-.8-.5-1.1H12.8z'/%3E%3Cpath fill='black' d='M14.4 8.6h3.2v1.6h-3.2V8.6zM13.6 11.2h4.8v1.3h-4.8v-1.3z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M15.2 1.8h1.6v2.4c3.2.4 5.7 2.4 6.6 5.4.5 1.7.5 3.5.1 5.1l1.6.4c.5-1.9.5-4-.1-6.1C23.8 5.1 20.5 2.6 16.8 2.2V1.8h-1.6v.4c-3.7.4-7 2.9-8.2 6.8-.6 2.1-.6 4.2-.1 6.1l1.6-.4c-.4-1.6-.4-3.4.1-5.1.9-3 3.4-5 6.6-5.4V1.8z'/%3E%3Cpath fill='black' d='M9.2 13.2c0-3.6 3-6.5 6.8-6.5s6.8 2.9 6.8 6.5v2.8c0 1.1-.3 2.1-.8 3l1.6 1.1c.4-.4.7-.9.9-1.5.3-.9.5-1.8.5-2.8V13c0-1.2-.2-2.3-.6-3.4C23.4 6.2 20 3.8 16 3.8S8.6 6.2 7.6 9.6c-.4 1.1-.6 2.2-.6 3.4v2.4c0 1 .2 1.9.5 2.8.2.6.5 1.1.9 1.5l1.6-1.1c-.5-.9-.8-1.9-.8-3v-2.8z'/%3E%3Cpath fill='black' d='M10.4 16.8v4.6c0 1.2.7 2.3 1.8 2.8l.9-1.5c-.4-.2-.7-.7-.7-1.3v-3.2c0-1.8 1.2-3.3 2.8-3.8v-1.7c-2.7.5-4.8 2.8-4.8 5.6v-.5zm11.2 0c0-2.8-2.1-5.1-4.8-5.6v1.7c1.6.5 2.8 2 2.8 3.8v3.2c0 .6-.3 1.1-.7 1.3l.9 1.5c1.1-.5 1.8-1.6 1.8-2.8v-4.6z'/%3E%3Cpath fill='black' d='M11.6 24.2h8.8c1.4 0 2.6 1 2.9 2.4l.3 1.4H8.4l.3-1.4c.3-1.4 1.5-2.4 2.9-2.4zm1.2 1.7c-.3.3-.5.7-.5 1.1h7.4c0-.4-.2-.8-.5-1.1H12.8z'/%3E%3Cpath fill='black' d='M14.4 8.6h3.2v1.6h-3.2V8.6zM13.6 11.2h4.8v1.3h-4.8v-1.3z'/%3E%3C/svg%3E");
 }
 .fortune[data-key='tradition'] .fortune__icon {
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M5.5 4.2h21v2.2H5.5V4.2zm1.5 2.8h18c0 1.1-.5 2-1.3 2.7-.5.4-1.1.8-1.6 1.3H9.9c-.5-.5-1.1-.9-1.6-1.3-.8-.7-1.3-1.6-1.3-2.7zm3.6 5.2h11.8v14.2h-2V14.4h-2.2v11.8h-2.2V14.4h-2.2v11.8H12V14.4H9.8v11.8H7.8V12.2h2.8zM6.2 27.2h19.6v1.6H6.2v-1.6z'/%3E%3C/svg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M5.5 4.2h21v2.2H5.5V4.2zm1.5 2.8h18c0 1.1-.5 2-1.3 2.7-.5.4-1.1.8-1.6 1.3H9.9c-.5-.5-1.1-.9-1.6-1.3-.8-.7-1.3-1.6-1.3-2.7zm3.6 5.2h11.8v14.2h-2V14.4h-2.2v11.8h-2.2V14.4h-2.2v11.8H12V14.4H9.8v11.8H7.8V12.2h2.8zM6.2 27.2h19.6v1.6H6.2v-1.6z'/%3E%3C/svg%3E");
+  /* Guidebook column — same paths as .kod-fortune-pillar--tradition */
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M5.5 4.2h21v2.2H5.5V4.2zm1.5 2.8h18c0 1.1-.5 2-1.3 2.7-.5.4-1.1.8-1.6 1.3H9.9c-.5-.5-1.1-.9-1.6-1.3-.8-.7-1.3-1.6-1.3-2.7zm3.6 5.2h11.8v14.2h-2V14.4h-2.2v11.8h-2.2V14.4h-2.2v11.8H12V14.4H9.8v11.8H7.8V12.2h2.8zM6.2 27.2h19.6v1.6H6.2v-1.6zm1.4 2.2h16.8V31H7.6v-1.6z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M5.5 4.2h21v2.2H5.5V4.2zm1.5 2.8h18c0 1.1-.5 2-1.3 2.7-.5.4-1.1.8-1.6 1.3H9.9c-.5-.5-1.1-.9-1.6-1.3-.8-.7-1.3-1.6-1.3-2.7zm3.6 5.2h11.8v14.2h-2V14.4h-2.2v11.8h-2.2V14.4h-2.2v11.8H12V14.4H9.8v11.8H7.8V12.2h2.8zM6.2 27.2h19.6v1.6H6.2v-1.6zm1.4 2.2h16.8V31H7.6v-1.6z'/%3E%3C/svg%3E");
 }
 
 .fortune__name {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
   font-size: 0.72rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: #fff8f0;
   margin: 0 0 0.45rem;
+}
+
+/* Soft weather column — four unmarked tiers, fill rises with the state. */
+.fortune__stack {
+  display: flex;
+  flex-direction: column-reverse;
+  width: 1.55rem;
+  height: 5.1rem;
+  gap: 3px;
+  margin: 0 0 0.55rem;
+}
+
+.fortune__stack i {
+  display: block;
+  flex: 1 1 auto;
+  background: color-mix(in srgb, var(--kod-fortune-accent) 9%, #0a0808);
+}
+
+.fortune[data-level='0'] .fortune__stack i:nth-child(1) {
+  background: color-mix(in srgb, var(--kod-blood) 55%, #1a1010);
+}
+
+.fortune[data-level='1'] .fortune__stack i:nth-child(-n + 2) {
+  background: color-mix(in srgb, var(--kod-fortune-accent) 62%, #3a3430);
+}
+
+.fortune[data-level='2'] .fortune__stack i:nth-child(-n + 3) {
+  background: var(--kod-fortune-accent);
+}
+
+.fortune[data-level='3'] .fortune__stack i {
+  background: var(--kod-fortune-accent);
+  box-shadow: inset 0 0 8px color-mix(in srgb, #fff8f0 16%, transparent);
+}
+
+.fortune__purpose {
+  display: none;
 }
 
 .fortune[data-level='0'] {
@@ -588,6 +658,109 @@ section.kod-plate {
   grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
   gap: 0.45rem;
   align-items: stretch;
+}
+
+.hier-add {
+  margin-top: 0.95rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.hier-add__open {
+  appearance: none;
+  font: inherit;
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--kod-silver);
+  background: color-mix(in srgb, #100e0c 82%, transparent);
+  border: 1px solid var(--kod-frame);
+  border-top: 2px solid var(--kod-blood);
+  padding: 0.38rem 1.05rem;
+  cursor: pointer;
+}
+
+.hier-add__open:hover,
+.hier-add__open:focus-visible {
+  color: var(--kod-silver-bright);
+  border-top-color: var(--kod-blood-bright);
+}
+
+.hier-add__pop {
+  width: min(22rem, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  padding: 0.85rem 0.9rem 0.8rem;
+  border-top: 3px solid var(--kod-blood);
+}
+
+.hier-add__kicker {
+  margin: 0;
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--kod-blood-bright);
+}
+
+.hier-add__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--kod-silver-dim);
+}
+
+.hier-add__field .hall-search__q,
+.hier-add__select {
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.hier-add__select {
+  appearance: none;
+  font: inherit;
+  font-size: 1rem;
+  color: var(--kod-silver-bright);
+  background: #0c0a0a;
+  border: 1px solid var(--kod-frame);
+  border-left: 3px solid var(--kod-blood);
+  padding: 0.4rem 0.5rem;
+}
+
+.hier-add__check {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.92rem;
+  color: var(--kod-silver);
+}
+
+.hier-add__note {
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: var(--kod-silver-dim);
+}
+
+.hier-add__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.hier-add__msg {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--kod-silver);
+}
+
+.hier-add__msg--err {
+  color: var(--kod-blood-bright);
 }
 
 .hier-axis {
@@ -812,6 +985,15 @@ section.kod-plate {
 .member[data-search='hit'] {
   outline: 1px solid var(--kod-silver);
   outline-offset: 1px;
+}
+
+.outsider[data-search='hit'] {
+  outline: 1px solid hsl(var(--faction-h, 0) 40% 58%);
+  outline-offset: 1px;
+}
+
+.hall[data-preview-faction] .hier-axes {
+  opacity: 0.55;
 }
 
 /* Outsiders — porch, not a fifth ladder */
@@ -1122,6 +1304,45 @@ section.kod-plate {
   background: color-mix(in srgb, var(--kod-blood-deep) 45%, #0c0a0a);
 }
 
+.hall-search__chip--faction {
+  border-top-color: hsl(var(--faction-h, 0) 42% 48%);
+}
+
+.hall-search__chip--faction[aria-pressed='true'] {
+  border-top-color: hsl(var(--faction-h, 0) 48% 62%);
+  background: color-mix(in srgb, hsl(var(--faction-h, 0) 32% 24%) 60%, #0c0a0a);
+}
+
+.hall-search__empty {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--kod-silver-dim);
+  font-style: italic;
+}
+
+.hall-search__add-faction {
+  flex: 1 0 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 1.7rem auto;
+  gap: 0.3rem;
+  align-items: center;
+  margin-top: 0.35rem;
+}
+
+.hall-search__add-faction .hall-search__q {
+  grid-column: auto;
+}
+
+.hall-search__add-faction input[type='color'] {
+  appearance: none;
+  width: 1.7rem;
+  height: 1.7rem;
+  padding: 0;
+  border: 1px solid var(--kod-frame);
+  background: #0c0a0a;
+  cursor: pointer;
+}
+
 .hall-search__hits {
   list-style: none;
   margin: 0;
@@ -1338,6 +1559,69 @@ section.kod-plate {
   --kod-plate-wash: var(--kod-corners), var(--kod-soot), var(--kod-tool);
 }
 
+.char-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--kod-frame);
+}
+
+.char-list > li {
+  margin: 0;
+  padding: 0;
+}
+
+.char-row {
+  display: grid;
+  grid-template-columns: 2.6rem minmax(0, 1fr) auto;
+  gap: 0.55rem 0.9rem;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  padding: 0.62rem 0.45rem;
+  border-bottom: 1px solid var(--kod-frame);
+}
+
+.char-row .avatar {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.char-row__body {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 0.12rem;
+}
+
+.char-row__name {
+  font-size: 1.15rem;
+  color: var(--kod-silver-bright);
+}
+
+.char-row__meta {
+  font-size: 0.8rem;
+  color: var(--kod-silver-dim);
+}
+
+.char-row__player {
+  font-size: 0.82rem;
+  color: var(--kod-silver-dim);
+  text-align: right;
+}
+
+.char-row:hover,
+.char-row:focus-visible {
+  background: color-mix(in srgb, var(--kod-blood-deep) 22%, transparent);
+  outline: none;
+}
+
+.char-row[data-selected='true'] {
+  box-shadow: inset 3px 0 0 var(--kod-blood);
+}
+
 .char-card {
   --kod-soot-size: 0.7rem;
   display: grid;
@@ -1490,12 +1774,22 @@ section.kod-plate {
 }
 
 .sheet-identity {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) minmax(9.5rem, 0.8fr);
+  align-items: start;
+  gap: 1rem 1.15rem;
   margin-bottom: 1rem;
   padding: 0.75rem 1rem 0.85rem;
   min-width: 0;
+}
+
+@media (max-width: 48rem) {
+  .sheet-identity {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+  .sheet-identity__who {
+    grid-column: 1 / -1;
+  }
 }
 
 .sheet-identity__portrait {
@@ -1581,6 +1875,51 @@ section.kod-plate {
   margin: 0;
 }
 
+.sheet-identity__who {
+  min-width: 0;
+  padding-left: 0.85rem;
+  border-left: 1px solid var(--kod-frame);
+}
+
+.sheet-identity__who-lab {
+  margin: 0 0 0.25rem;
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--kod-silver-dim);
+}
+
+.sheet-identity__who-text {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.45;
+  color: color-mix(in srgb, var(--kod-silver) 72%, transparent);
+  font-style: italic;
+}
+
+.sheet-identity__who-input {
+  appearance: none;
+  display: block;
+  width: 100%;
+  min-height: 4.2rem;
+  box-sizing: border-box;
+  font: inherit;
+  font-size: 0.92rem;
+  line-height: 1.4;
+  color: color-mix(in srgb, var(--kod-silver) 85%, transparent);
+  font-style: italic;
+  background: color-mix(in srgb, #0c0a0a 70%, transparent);
+  border: 1px solid var(--kod-frame);
+  padding: 0.4rem 0.5rem;
+  resize: vertical;
+}
+
+.sheet-identity__who-input:focus {
+  outline: none;
+  border-color: var(--kod-blood);
+  color: var(--kod-silver);
+}
+
 .avatar-upload {
   position: absolute;
   left: 0;
@@ -1623,21 +1962,24 @@ section.kod-plate {
   font-size: 0.75rem;
 }
 
-/* Identity flanked by lean rails; main is full-width so the rails do not gutter the page. */
+/* Rails sit in the outer columns of the stage; identity keeps the middle. */
 .sheet-stage--core {
   display: grid;
-  grid-template-columns: max-content minmax(0, 1fr) max-content;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   grid-template-areas:
     'ex id echo'
-    'main main main';
-  gap: 0.75rem 0.55rem;
+    'ex main echo';
+  column-gap: 2rem;
+  row-gap: 1rem;
   align-items: start;
-  justify-items: start;
+  padding-inline: 0.35rem;
 }
 
 .sheet-stage--core .sheet-identity {
   grid-area: id;
   margin-bottom: 0;
+  justify-self: stretch;
+  width: 100%;
 }
 
 .sheet-stage--core .core-grid {
@@ -1647,13 +1989,15 @@ section.kod-plate {
 .sheet-stage--core .vtrack:not(.vtrack--echo) {
   grid-area: ex;
   align-self: start;
-  justify-self: start;
+  justify-self: center;
+  margin-top: 0.15rem;
 }
 
 .sheet-stage--core .vtrack--echo {
   grid-area: echo;
   align-self: start;
-  justify-self: end;
+  justify-self: center;
+  margin-top: 0.15rem;
 }
 
 .sheet-stage--core .core-main {
@@ -1698,9 +2042,9 @@ section.kod-plate {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.28rem;
-  padding: 0.45rem 0.4rem 0.5rem;
-  width: 3.15rem;
+  gap: 0.32rem;
+  padding: 0.55rem 0.5rem 0.6rem;
+  width: 3.55rem;
   min-height: 0;
   height: auto !important;
   max-height: none;
@@ -3136,7 +3480,7 @@ select.kod-ink option[value=''],
   width: 100%;
   margin: 0;
   padding: 0.55rem 0.55rem 0.5rem 0.6rem;
-  text-align: left;
+  text-align: center;
   font: inherit;
   color: inherit;
   border-radius: 0;
@@ -3178,6 +3522,7 @@ select.kod-ink option[value=''],
 .budget-card__label {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.25rem;
   font-size: 0.68rem;
   letter-spacing: 0.12em;
@@ -3188,6 +3533,7 @@ select.kod-ink option[value=''],
 .budget-card__main {
   display: flex;
   align-items: baseline;
+  justify-content: center;
   gap: 0.35rem;
 }
 
@@ -3286,7 +3632,9 @@ select.kod-ink option[value=''],
 .budget-dock__flags {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 0.3rem;
+  text-align: center;
 }
 
 .budget-dock__hint {
@@ -3294,6 +3642,7 @@ select.kod-ink option[value=''],
   font-size: 0.72rem;
   line-height: 1.35;
   color: var(--kod-silver-dim);
+  text-align: center;
 }
 
 .budget-dock__msg {

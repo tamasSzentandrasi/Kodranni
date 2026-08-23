@@ -61,8 +61,8 @@ const roman = (n: number) => ['∅', 'I', 'II', 'III', 'IV'][n] ?? String(n);
     overCapacity={ch.flags.overCapacity}
     live={live}
     tab="core"
-    showDraftTab={canEdit}
     canEdit={canEdit}
+    whoWeSee={ch.whoWeSee}
   >
   <BudgetDock character={ch} live={live} canEdit={canEdit} />
   <WantingPanel character={ch} live={live} canEdit={canEdit} />
@@ -123,15 +123,6 @@ const roman = (n: number) => ['∅', 'I', 'II', 'III', 'IV'][n] ?? String(n);
             (<code>/create</code> or review) to edit.
           </p>
         )
-      }
-
-      {
-        ch.whoWeSee ? (
-          <blockquote class="who-quote">
-            <span class="who-quote__lab">Who do we see?</span>
-            <p class="who-quote__text">{ch.whoWeSee}</p>
-          </blockquote>
-        ) : null
       }
 
       <section class="kod-plate" id="section-foundations">

@@ -44,8 +44,8 @@ const resolved = (ch.echoes ?? []).filter((e) => e.resolved);
     overCapacity={ch.flags.overCapacity}
     live={live}
     tab="echoes"
-    showDraftTab={canEdit}
     canEdit={canEdit}
+    whoWeSee={ch.whoWeSee}
   >
 
   <section class="kod-plate" id="echoes-panel" data-slug={ch.slug} data-can-edit={canEdit ? '1' : '0'}>

@@ -166,6 +166,35 @@ export interface StartCreateFromBotResult {
   character: CharacterRecord;
 }
 
+/** Named NPC for the hall diagram — active, locked, Outcast until automation moves them. */
+export function addHallNpc(
+  store: CommunityStorePort,
+  cmd: { name: string; actor?: string },
+): CharacterRecord {
+  const name = cmd.name.trim().slice(0, 80);
+  if (!name) throw new Error('name required');
+  const slug = uniqueSlug(store, slugify(name));
+  const ch = emptyDraft({
+    slug,
+    name,
+    kind: 'npc',
+    status: 'active',
+    creation: defaultCreation({
+      locked: true,
+      foundationPoints: 0,
+      skillPoints: 0,
+      claimable: false,
+    }),
+  });
+  store.putCharacter(ch);
+  store.appendEvent({
+    type: 'CharacterCreated',
+    actor: cmd.actor,
+    payload: { characterSlug: ch.slug, kind: 'npc', source: 'hall' },
+  });
+  return ch;
+}
+
 /** Bot: player starts creation — draft + initiator for Confirm @mention. */
 export function startCreateFromBot(
   store: CommunityStorePort,

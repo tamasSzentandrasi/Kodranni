@@ -64,6 +64,14 @@ function json(data: unknown, status = 200) {
   });
 }
 
+function capacities(ch: { exertion: { current: number; max: number }; echoCapacity: number; echoWeight: number }) {
+  return {
+    exertion: ch.exertion,
+    echoCapacity: ch.echoCapacity,
+    echoWeight: ch.echoWeight,
+  };
+}
+
 /** GET /api/character/:slug — creation snapshot for live budget polling. */
 export async function GET({
   params,
@@ -88,6 +96,7 @@ export async function GET({
       echoes: ch.echoes,
       inventory: ch.inventory,
       armour: ch.armour,
+      ...capacities(ch),
     });
   } finally {
     store.close();
@@ -155,6 +164,7 @@ export async function POST({
           ok: true,
           foundations: ch.foundations,
           creation: ch.creation,
+          ...capacities(ch),
         });
       }
       case 'spend-skill': {
@@ -177,6 +187,7 @@ export async function POST({
           ok: true,
           foundations: ch.foundations,
           creation: ch.creation,
+          ...capacities(ch),
         });
       }
       case 'refund-skill': {
@@ -208,6 +219,7 @@ export async function POST({
           skills: ch.skills,
           traits: ch.traits,
           creation: ch.creation,
+          ...capacities(ch),
         });
       }
       case 'confirm': {
@@ -233,6 +245,7 @@ export async function POST({
           foundations: ch.foundations,
           skills: ch.skills,
           creation: ch.creation,
+          ...capacities(ch),
         });
       }
       default:

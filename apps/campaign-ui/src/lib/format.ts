@@ -67,10 +67,39 @@ export const FORTUNE_BLURBS: Record<string, string> = {
     'Shared memory and self-belief — lore, custom, and what the people still know themselves to be.',
 };
 
+export type FactionOpt = { name: string; hue: number };
+
 export function factionHue(faction: string): number {
   let h = 0;
   for (let i = 0; i < faction.length; i++) h = (h * 31 + faction.charCodeAt(i)) >>> 0;
   return h % 360;
+}
+
+export function resolveFactionHue(name: string, listed?: FactionOpt[]): number {
+  const n = name.trim().toLowerCase();
+  const hit = listed?.find((f) => f.name.toLowerCase() === n);
+  return hit ? hit.hue : factionHue(name);
+}
+
+export function collectFactions(
+  listed: FactionOpt[] | undefined,
+  outsiders: { faction?: string }[],
+): FactionOpt[] {
+  const out: FactionOpt[] = [];
+  const seen = new Set<string>();
+  for (const f of listed ?? []) {
+    const n = f.name.trim();
+    if (!n || seen.has(n.toLowerCase())) continue;
+    seen.add(n.toLowerCase());
+    out.push({ name: n, hue: f.hue });
+  }
+  for (const o of outsiders) {
+    const n = (o.faction ?? '').trim();
+    if (!n || seen.has(n.toLowerCase())) continue;
+    seen.add(n.toLowerCase());
+    out.push({ name: n, hue: factionHue(n) });
+  }
+  return out;
 }
 
 export function avatarUrl(slug: string, avatar?: string): string | null {

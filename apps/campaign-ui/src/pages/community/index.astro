@@ -9,15 +9,21 @@ import HierarchyBoard from '../../components/HierarchyBoard.astro';
 import OutsiderPorch from '../../components/OutsiderPorch.astro';
 import MythList from '../../components/MythList.astro';
 import InspectDrawer from '../../components/InspectDrawer.astro';
+import { collectFactions } from '../../lib/format';
 import { loadCommunity, whoWeSeeMap } from '../../data/load';
 import { buildInspectPeople, peopleJson } from '../../lib/hall-inspect';
 
 const c = loadCommunity();
 const tips = whoWeSeeMap(c);
 const people = buildInspectPeople(c);
-const showSearch = people.length > 0;
+const showSearch = true;
 const tiers = [...HIERARCHY_TIERS];
 const founded = Boolean(c.fortunesFoundedAt);
+const live = c.source === 'live';
+const factions = collectFactions(c.factions, c.outsiders ?? []);
+const pcSlugs = c.characters
+  .filter((ch) => (ch.kind ?? 'pc') !== 'npc')
+  .map((ch) => ch.slug);
 ---
 
 <CampaignLayout
@@ -27,7 +33,11 @@ const founded = Boolean(c.fortunesFoundedAt);
   primary="community"
   source={c.source}
 >
-  {showSearch && <HallSearch axes={c.hierarchyAxes} tiers={tiers} />}
+  {
+    showSearch && (
+      <HallSearch axes={c.hierarchyAxes} tiers={tiers} factions={factions} live={live} />
+    )
+  }
   <div
     class="hall"
     data-slug={c.slug}
@@ -42,8 +52,11 @@ const founded = Boolean(c.fortunesFoundedAt);
       placements={c.placements}
       pendingMoves={c.pendingMoves ?? []}
       tips={tips}
+      live={live}
+      factions={factions}
+      pcSlugs={pcSlugs}
     />
-    <OutsiderPorch outsiders={c.outsiders ?? []} />
+    <OutsiderPorch outsiders={c.outsiders ?? []} factions={factions} />
     <MythList myths={c.myths} />
   </div>
 

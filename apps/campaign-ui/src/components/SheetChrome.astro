@@ -16,6 +16,7 @@ interface Props {
   showDraftTab?: boolean;
   /** Show portrait upload control in the identity block. */
   canEdit?: boolean;
+  whoWeSee?: string;
 }
 
 const {
@@ -32,6 +33,7 @@ const {
   tab,
   showDraftTab = false,
   canEdit = false,
+  whoWeSee = '',
 } = Astro.props;
 const av = avatarUrl(slug, avatar);
 const statusLabel = status === 'pending_review' ? 'pending review' : status;
@@ -53,10 +55,10 @@ const showPortraitEdit = Boolean(live && canEdit && (tab === 'core' || tab === '
     Inventory
   </a>
   {
-    showDraftTab && (
+    showDraftTab && tab === 'draft' && (
       <a
         href={`/characters/${slug}/draft/`}
-        aria-current={tab === 'draft' ? 'page' : undefined}
+        aria-current="page"
       >
         Who do we see?
       </a>
@@ -149,6 +151,25 @@ const showPortraitEdit = Boolean(live && canEdit && (tab === 'core' || tab === '
         }
       </p>
     </div>
+    {
+      (canEdit || whoWeSee) && (
+        <div class="sheet-identity__who">
+          <p class="sheet-identity__who-lab">Who do we see?</p>
+          {
+            canEdit ? (
+              <textarea
+                class="sheet-identity__who-input"
+                data-field="whoWeSee"
+                rows="3"
+                placeholder="The figure the table will recognise…"
+              >{whoWeSee}</textarea>
+            ) : (
+              <p class="sheet-identity__who-text">{whoWeSee}</p>
+            )
+          }
+        </div>
+      )
+    }
   </div>
 
   {/* In-flow after identity, out of .core-grid — PR 8 can `position: static` the budget here. */}

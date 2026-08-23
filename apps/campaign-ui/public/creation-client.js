@@ -243,6 +243,7 @@
         }
       }
       setBudget(data.creation);
+      paintRails(data);
     } catch {
       /* ignore */
     }
@@ -371,6 +372,53 @@
     });
   }
 
+  function paintTrack(el, current, max, label) {
+    if (!el || typeof max !== 'number' || max < 0) return;
+    const cur = Math.max(0, Number(current) || 0);
+    el.setAttribute('aria-label', label + ' ' + cur + ' of ' + max);
+    const segs = el.querySelector('.vtrack__segs');
+    const readout = el.querySelector('.vtrack__readout');
+    if (readout) {
+      readout.textContent = '';
+      readout.appendChild(document.createTextNode(String(cur)));
+      const of = document.createElement('span');
+      of.className = 'vtrack__of';
+      of.textContent = '/' + max;
+      readout.appendChild(of);
+    }
+    if (!segs) return;
+    const n = Math.max(max, cur);
+    segs.replaceChildren();
+    for (let i = 0; i < n; i++) {
+      const s = document.createElement('span');
+      s.className = 'vtrack__seg';
+      if (i < Math.min(cur, max)) s.classList.add('vtrack__seg--on');
+      if (i >= max && i < cur) s.classList.add('vtrack__seg--over');
+      segs.appendChild(s);
+    }
+  }
+
+  function paintRails(data) {
+    if (!data) return;
+    if (data.exertion) {
+      paintTrack(
+        document.querySelector('.sheet-stage--core .vtrack:not(.vtrack--echo)'),
+        data.exertion.current,
+        data.exertion.max,
+        'Exertion',
+      );
+    }
+    if (typeof data.echoCapacity === 'number') {
+      const echoEl = document.querySelector('.sheet-stage--core .vtrack--echo');
+      let current = data.echoWeight;
+      if (typeof current !== 'number' && echoEl) {
+        const readout = echoEl.querySelector('.vtrack__readout');
+        current = Number((readout && readout.childNodes[0] && readout.childNodes[0].textContent) || '0');
+      }
+      paintTrack(echoEl, Number(current) || 0, data.echoCapacity, 'Echo load');
+    }
+  }
+
   function paintSeal(skillEl, rating, practice, threshold) {
     skillEl.setAttribute('data-rating', String(rating));
     skillEl.setAttribute('data-rated', rating > 0 ? 'true' : 'false');
@@ -458,6 +506,7 @@
         if (mark) mark.textContent = ROMAN[raw] || String(raw);
       }
       setBudget(data.creation);
+      paintRails(data);
       msg('spend', foundation + (refund ? ' lowered.' : ' raised.'), true);
     } catch (e) {
       msg('spend', e instanceof Error ? e.message : String(e), false);
@@ -1063,6 +1112,7 @@
             paintSeal(el, rating, entry && entry.practice, entry && entry.threshold);
           });
         }
+        paintRails(data);
       }
       staged = [];
       if (creation) {

@@ -48,6 +48,13 @@ export function buildInspectPeople(c: ViewCommunity): InspectPerson[] {
     return byName?.whoWeSee ?? '';
   };
 
+  const isPc = (slug?: string): boolean => {
+    if (!slug) return false;
+    const ch = c.characters.find((x) => x.slug === slug);
+    if (!ch) return true;
+    return (ch.kind ?? 'pc') !== 'npc';
+  };
+
   const upsert = (partial: {
     kind: InspectPerson['kind'];
     name: string;
@@ -64,7 +71,7 @@ export function buildInspectPeople(c: ViewCommunity): InspectPerson[] {
       if (partial.faction) existing.faction = partial.faction;
       if (partial.ruler) existing.ruler = true;
       if (partial.kind === 'outsider') existing.kind = 'outsider';
-      if (existing.slug) existing.pc = true;
+      existing.pc = isPc(existing.slug);
       return existing;
     }
     const person: InspectPerson = {
@@ -73,7 +80,7 @@ export function buildInspectPeople(c: ViewCommunity): InspectPerson[] {
       name: partial.name,
       slug: partial.slug,
       whoWeSee: partial.whoWeSee ?? '',
-      pc: Boolean(partial.slug),
+      pc: isPc(partial.slug),
       ruler: partial.ruler,
       faction: partial.faction,
       placements: [],

@@ -29,6 +29,7 @@ function characterToView(ch: CharacterRecord): FixtureCommunity['characters'][nu
   return {
     slug: ch.slug,
     name: ch.name,
+    kind: ch.kind ?? 'pc',
     status,
     communityTie: ch.communityTie,
     concept: ch.concept,
@@ -81,6 +82,7 @@ function fromSnapshot(
     rulerCharacterSlug: raw.community.rulerCharacterSlug,
     placements: raw.community.placements,
     outsiders: raw.community.outsiders ?? [],
+    factions: raw.community.factions ?? [],
     fortunesFoundedAt: raw.community.fortunesFoundedAt,
     fortuneMeta: raw.community.fortuneMeta ?? {},
     pendingMoves: raw.community.pendingMoves ?? [],

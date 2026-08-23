@@ -256,6 +256,66 @@ export function setFortunes(store: CommunityStorePort, cmd: SetFortunesCommand):
   return community;
 }
 
+export interface AddHallOutsiderCommand {
+  name: string;
+  faction?: string;
+  actor?: string;
+}
+
+export function addHallOutsider(
+  store: CommunityStorePort,
+  cmd: AddHallOutsiderCommand,
+): CommunityRecord {
+  const name = cmd.name.trim().slice(0, 80);
+  if (!name) throw new Error('name required');
+  const community = store.getCommunity();
+  const exists = (community.outsiders ?? []).some(
+    (o) => o.name.toLowerCase() === name.toLowerCase(),
+  );
+  if (exists) throw new Error('that outsider is already on the porch');
+  const faction = cmd.faction?.trim();
+  community.outsiders = [
+    ...(community.outsiders ?? []),
+    { name, faction: faction || undefined },
+  ];
+  store.putCommunity(community);
+  store.appendEvent({
+    type: 'ResourceChanged',
+    actor: cmd.actor,
+    payload: { kind: 'outsider_added', name, faction },
+  });
+  return community;
+}
+
+export interface AddCommunityFactionCommand {
+  name: string;
+  hue: number;
+  actor?: string;
+}
+
+export function addCommunityFaction(
+  store: CommunityStorePort,
+  cmd: AddCommunityFactionCommand,
+): CommunityRecord {
+  const name = cmd.name.trim().slice(0, 48);
+  if (!name) throw new Error('faction name required');
+  const hue = Number.isFinite(cmd.hue) ? ((cmd.hue % 360) + 360) % 360 : 0;
+  const community = store.getCommunity();
+  const factions = [...(community.factions ?? [])];
+  if (factions.some((f) => f.name.toLowerCase() === name.toLowerCase())) {
+    throw new Error('faction already listed');
+  }
+  factions.push({ name, hue });
+  community.factions = factions;
+  store.putCommunity(community);
+  store.appendEvent({
+    type: 'ResourceChanged',
+    actor: cmd.actor,
+    payload: { kind: 'faction_added', name, hue },
+  });
+  return community;
+}
+
 export interface SetSuppliesCommand {
   characterSlug: string;
   foodDays?: number;

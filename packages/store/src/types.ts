@@ -96,6 +96,8 @@ export interface CommunityRecord {
   rulerCharacterSlug?: string;
   placements: HierarchyPlacement[];
   outsiders: OutsiderRecord[];
+  /** Named outsider banners with a chosen hue (0–360). */
+  factions?: { name: string; hue: number }[];
   /** ISO. Absent until founding; live hall only. */
   fortunesFoundedAt?: string;
   /** Last-change per Fortune; live hall only. */

@@ -1,13 +1,14 @@
 ---
-import { factionHue } from '../lib/format';
+import { resolveFactionHue, type FactionOpt } from '../lib/format';
 import { inspectId } from '../lib/hall-inspect';
 import type { FixtureCommunity } from '../data/fixture';
 
 interface Props {
   outsiders: FixtureCommunity['outsiders'];
+  factions?: FactionOpt[];
 }
 
-const { outsiders } = Astro.props;
+const { outsiders, factions = [] } = Astro.props;
 const none = outsiders.length === 0;
 ---
 
@@ -29,13 +30,15 @@ const none = outsiders.length === 0;
         <li class="empty">None tracked.</li>
       ) : (
         outsiders.map((o) => {
-          const hue = o.faction ? factionHue(o.faction) : 0;
+          const hue = o.faction ? resolveFactionHue(o.faction, factions) : 0;
           return (
             <li
               class="outsider"
               style={o.faction ? `--faction-h: ${hue}` : undefined}
               data-inspect-id={inspectId(o.name, o.characterSlug)}
               data-name={o.name}
+              data-kind="outsider"
+              data-faction={o.faction ?? ''}
               data-tip={o.note ?? ''}
               role="button"
               tabindex="0"

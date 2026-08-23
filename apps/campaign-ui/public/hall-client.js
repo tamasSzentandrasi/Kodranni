@@ -263,10 +263,20 @@
   const searchRoot = document.querySelector('[data-hall-search]');
   const qInput = document.querySelector('[data-hall-q]');
   const hitsEl = document.querySelector('[data-hall-hits]');
-  const filters = { axis: '', tier: '', kind: '' };
+  const filters = { axis: '', tier: '', kind: '', faction: '' };
 
   function activeFilters() {
-    return Boolean(filters.axis || filters.tier || filters.kind || (qInput && qInput.value.trim()));
+    return Boolean(
+      filters.axis ||
+        filters.tier ||
+        filters.kind ||
+        filters.faction ||
+        (qInput && qInput.value.trim()),
+    );
+  }
+
+  function kindOf(el) {
+    return el.getAttribute('data-kind') || (el.classList.contains('member--pc') ? 'pc' : 'npc');
   }
 
   function chipMatch(el) {
@@ -276,17 +286,41 @@
     const rung = el.closest('.hier-rung');
     const elAxis = (axisEl && axisEl.getAttribute('data-axis-name')) || '';
     const elTier = (rung && rung.getAttribute('data-tier')) || '';
-    const pc = el.classList.contains('member--pc');
+    const elFaction = el.getAttribute('data-faction') || '';
+    const kind = kindOf(el);
     if (q && !name.includes(q)) return false;
     if (filters.axis && elAxis !== filters.axis) return false;
     if (filters.tier && elTier !== filters.tier) return false;
-    if (filters.kind === 'pc' && !pc) return false;
-    if (filters.kind === 'npc' && pc) return false;
+    if (filters.kind === 'pc' && kind !== 'pc') return false;
+    if (filters.kind === 'npc' && kind === 'pc') return false;
+    if (filters.faction && elFaction !== filters.faction) return false;
+    return true;
+  }
+
+  function personMatches(p) {
+    const q = (qInput && qInput.value.trim().toLowerCase()) || '';
+    if (q && !String(p.name || '').toLowerCase().includes(q)) return false;
+    if (filters.kind === 'pc' && !p.pc) return false;
+    if (filters.kind === 'npc' && p.pc) return false;
+    if (filters.faction && (p.faction || '') !== filters.faction) return false;
+    if (filters.axis || filters.tier) {
+      const places = Array.isArray(p.placements) ? p.placements : [];
+      const hit = places.some(
+        (pl) =>
+          (!filters.axis || pl.axis === filters.axis) &&
+          (!filters.tier || pl.tier === filters.tier),
+      );
+      if (!hit) return false;
+    }
     return true;
   }
 
   function applySearch() {
     const on = activeFilters();
+    if (hall) {
+      if (filters.faction) hall.setAttribute('data-preview-faction', filters.faction);
+      else hall.removeAttribute('data-preview-faction');
+    }
     document.querySelectorAll('.member[data-inspect-id], .outsider[data-inspect-id]').forEach((el) => {
       if (!on) {
         el.removeAttribute('data-search');
@@ -294,22 +328,25 @@
       }
       el.setAttribute('data-search', chipMatch(el) ? 'hit' : 'miss');
     });
+    if (on) {
+      document.querySelectorAll('.hier-rung').forEach((rung) => {
+        if (rung.querySelector('[data-search="hit"]')) setCollapsed(rung, false);
+      });
+    }
 
     if (!hitsEl) return;
     hitsEl.replaceChildren();
-    const q = (qInput && qInput.value.trim()) || '';
-    if (!q) {
+    if (!on) {
       hitsEl.hidden = true;
       return;
     }
     const seen = new Set();
-    const qn = q.toLowerCase();
     const hits = [];
     people.forEach((p, key) => {
       if (seen.has(p)) return;
       if (key !== p.id) return;
       seen.add(p);
-      if (String(p.name || '').toLowerCase().includes(qn)) hits.push(p);
+      if (personMatches(p)) hits.push(p);
     });
     if (hits.length === 0) {
       hitsEl.hidden = true;
@@ -321,7 +358,8 @@
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'hall-search__hit';
-      btn.textContent = p.name + (p.kind === 'outsider' ? ' (outsider)' : '');
+      const tag = p.kind === 'outsider' ? ' (outsider)' : p.pc ? '' : ' (named)';
+      btn.textContent = p.name + tag;
       btn.setAttribute('data-inspect-id', p.id);
       btn.setAttribute('data-name', p.name);
       li.appendChild(btn);
@@ -347,6 +385,7 @@
         filters.axis = '';
         filters.tier = '';
         filters.kind = '';
+        filters.faction = '';
         searchRoot.querySelectorAll('[data-filter]').forEach((btn) => {
           btn.setAttribute('aria-pressed', 'false');
         });
@@ -367,6 +406,113 @@
         });
         applySearch();
       });
+    });
+  }
+
+  function hexToHue(hex) {
+    const m = /^#?([0-9a-f]{6})$/i.exec(String(hex || ''));
+    if (!m) return 0;
+    const n = parseInt(m[1], 16);
+    const r = ((n >> 16) & 255) / 255;
+    const g = ((n >> 8) & 255) / 255;
+    const b = (n & 255) / 255;
+    const max = Math.max(r, g, b);
+    const min = Math.min(r, g, b);
+    if (max === min) return 0;
+    const d = max - min;
+    let h = 0;
+    if (max === r) h = ((g - b) / d) % 6;
+    else if (max === g) h = (b - r) / d + 2;
+    else h = (r - g) / d + 4;
+    h = Math.round(h * 60);
+    if (h < 0) h += 360;
+    return h;
+  }
+
+  async function postFigure(body) {
+    const res = await fetch('/api/community/figures', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+      credentials: 'same-origin',
+    });
+    const data = await res.json().catch(() => ({ error: 'Bad response' }));
+    if (!res.ok) throw new Error(data.error || res.statusText);
+    return data;
+  }
+
+  function bindAddFaction() {
+    const form = document.querySelector('[data-add-faction]');
+    if (!form) return;
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const nameEl = form.querySelector('[name="faction-name"]');
+      const colorEl = form.querySelector('[name="faction-color"]');
+      const name = nameEl && 'value' in nameEl ? String(nameEl.value).trim() : '';
+      const hue = hexToHue(colorEl && 'value' in colorEl ? String(colorEl.value) : '#8a3030');
+      if (!name) return;
+      try {
+        await postFigure({ kind: 'faction', name, hue });
+        location.reload();
+      } catch (err) {
+        alert(err instanceof Error ? err.message : String(err));
+      }
+    });
+  }
+
+  function bindAddFigure() {
+    const openBtn = document.querySelector('[data-add-figure]');
+    const form = document.querySelector('[data-add-figure-form]');
+    if (!openBtn || !form) return;
+    const outsider = form.querySelector('[data-add-outsider]');
+    const factionField = form.querySelector('[data-add-faction-field]');
+    const cancel = form.querySelector('[data-add-figure-cancel]');
+    const msgEl = form.querySelector('[data-add-figure-msg]');
+
+    function setMsg(text, ok) {
+      if (!msgEl) return;
+      msgEl.hidden = !text;
+      msgEl.textContent = text || '';
+      msgEl.classList.toggle('hier-add__msg--err', !ok && !!text);
+    }
+
+    function syncOutsider() {
+      const on = Boolean(outsider && outsider.checked);
+      if (factionField) factionField.hidden = !on;
+    }
+
+    openBtn.addEventListener('click', () => {
+      const open = !form.hidden;
+      form.hidden = open;
+      if (!open) {
+        const name = form.querySelector('[name="name"]');
+        if (name instanceof HTMLInputElement) name.focus();
+      }
+    });
+    if (cancel) {
+      cancel.addEventListener('click', () => {
+        form.hidden = true;
+        setMsg('', true);
+      });
+    }
+    if (outsider) outsider.addEventListener('change', syncOutsider);
+    syncOutsider();
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const fd = new FormData(form);
+      const name = String(fd.get('name') || '').trim();
+      const isOut = fd.get('outsider') != null;
+      const faction = String(fd.get('faction') || '').trim();
+      if (!name) {
+        setMsg('Name required.', false);
+        return;
+      }
+      try {
+        await postFigure({ name, outsider: isOut, faction: isOut ? faction : undefined });
+        location.reload();
+      } catch (err) {
+        setMsg(err instanceof Error ? err.message : String(err), false);
+      }
     });
   }
 
@@ -575,6 +721,8 @@
     restoreCollapse();
     bindRungPersist();
     bindSearch();
+    bindAddFaction();
+    bindAddFigure();
     applySearch();
     initRoving();
     bindPoll();

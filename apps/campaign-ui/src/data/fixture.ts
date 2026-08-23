@@ -13,6 +13,7 @@ export interface FixtureCreation {
 export interface FixtureCharacter {
   slug: string;
   name: string;
+  kind?: 'pc' | 'npc' | 'notable';
   status: 'active' | 'dead' | 'draft' | 'pending_review';
   communityTie: string;
   concept?: string;
@@ -79,6 +80,7 @@ export interface FixtureCommunity {
     note?: string;
   }[];
   outsiders: { name: string; faction?: string; note?: string; characterSlug?: string }[];
+  factions?: { name: string; hue: number }[];
   /** Live hall only; archive snapshots omit. */
   fortunesFoundedAt?: string;
   fortuneMeta?: Partial<
@@ -193,6 +195,10 @@ export const fixtureCommunity: FixtureCommunity = {
       tier: 'Outcast',
       note: 'Counts spoils for whoever holds the store tonight.',
     },
+  ],
+  factions: [
+    { name: 'Reed-marsh folk', hue: 142 },
+    { name: 'Rival war-band', hue: 12 },
   ],
   outsiders: [
     {

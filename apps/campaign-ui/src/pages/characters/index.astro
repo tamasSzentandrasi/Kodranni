@@ -16,48 +16,47 @@ const selected = Astro.url.searchParams.get('sel') ?? '';
   primary="characters"
   source={c.source}
 >
-  <p class="app__meta" style="margin-bottom:0.85rem">
-    Open a sheet for load, foundations, skills, echoes, and inventory. Hierarchy lives on Community.
-  </p>
-
-  <div class="char-grid">
-    {
-      c.characters.map((ch) => {
-        const src = avatarUrl(ch.slug, ch.avatar);
-        return (
-          <a
-            class="kod-plate char-card"
-            href={`/characters/${ch.slug}/`}
-            data-selected={selected === ch.slug ? 'true' : 'false'}
-          >
-            {src ? (
-              <img class="avatar" src={src} alt="" width="56" height="56" loading="lazy" />
-            ) : (
-              <span class="avatar avatar--mono" aria-hidden="true">
-                {monogram(ch.name)}
-              </span>
-            )}
-            <div>
-              <p class="char-card__name">{ch.name}</p>
-              <span
-                class:list={['char-card__status', ch.dying && 'char-card__status--dying']}
-                data-status={ch.status}
+  {
+    c.characters.length === 0 ? (
+      <p class="empty">No names on the roster yet.</p>
+    ) : (
+      <ul class="char-list">
+        {c.characters.map((ch) => {
+          const src = avatarUrl(ch.slug, ch.avatar);
+          const kind = (ch.kind ?? 'pc') === 'npc' ? 'Named' : ch.kind === 'notable' ? 'Notable' : 'Player';
+          return (
+            <li>
+              <a
+                class="char-row"
+                href={`/characters/${ch.slug}/`}
+                data-selected={selected === ch.slug ? 'true' : 'false'}
               >
-                {ch.status === 'pending_review' ? 'pending review' : ch.status}
-                {ch.dying ? ' · dying' : ''}
-              </span>
-              <p class="char-card__meta">{ch.player?.displayName ?? 'Unmapped player'}</p>
-              {(ch.flags.decadence || ch.flags.overCapacity) && (
-                <p class="char-card__meta">
-                  {ch.flags.decadence ? 'Decadence' : ''}
-                  {ch.flags.decadence && ch.flags.overCapacity ? ' · ' : ''}
-                  {ch.flags.overCapacity ? 'Over capacity' : ''}
-                </p>
-              )}
-            </div>
-          </a>
-        );
-      })
-    }
-  </div>
+                {src ? (
+                  <img class="avatar" src={src} alt="" width="40" height="40" loading="lazy" />
+                ) : (
+                  <span class="avatar avatar--mono" aria-hidden="true">
+                    {monogram(ch.name)}
+                  </span>
+                )}
+                <span class="char-row__body">
+                  <span class="char-row__name">{ch.name}</span>
+                  <span class="char-row__meta">
+                    {kind}
+                    {ch.player?.displayName ? ` · ${ch.player.displayName}` : ''}
+                  </span>
+                </span>
+                <span
+                  class:list={['char-card__status', ch.dying && 'char-card__status--dying']}
+                  data-status={ch.status}
+                >
+                  {ch.status === 'pending_review' ? 'pending review' : ch.status}
+                  {ch.dying ? ' · dying' : ''}
+                </span>
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    )
+  }
 </CampaignLayout>

@@ -2,9 +2,11 @@
 interface Props {
   axes: string[];
   tiers: string[];
+  factions?: { name: string; hue: number }[];
+  live?: boolean;
 }
 
-const { axes, tiers } = Astro.props;
+const { axes, tiers, factions = [], live = false } = Astro.props;
 ---
 
 <aside class="kod-plate hall-search" data-hall-search aria-label="Find someone in the hall">
@@ -21,7 +23,7 @@ const { axes, tiers } = Astro.props;
       type="search"
       name="hall-q"
       autocomplete="off"
-      placeholder="A name in the hall"
+      placeholder="Optional — filters still list"
       data-hall-q
     />
     <button type="button" class="hall-search__clear" data-hall-clear aria-label="Clear search">
@@ -54,6 +56,34 @@ const { axes, tiers } = Astro.props;
       <button type="button" class="hall-search__chip" data-filter="kind" data-value="npc" aria-pressed="false">
         Named
       </button>
+    </div>
+    <div class="hall-search__group" role="group" aria-label="Faction">
+      <p class="hall-search__legend">Factions</p>
+      {factions.length === 0 ? (
+        <p class="hall-search__empty">None listed yet.</p>
+      ) : (
+        factions.map((f) => (
+          <button
+            type="button"
+            class="hall-search__chip hall-search__chip--faction"
+            data-filter="faction"
+            data-value={f.name}
+            aria-pressed="false"
+            style={`--faction-h: ${f.hue}`}
+          >
+            {f.name}
+          </button>
+        ))
+      )}
+      {
+        live && (
+          <form class="hall-search__add-faction" data-add-faction>
+            <input class="hall-search__q" name="faction-name" placeholder="New faction" required />
+            <input type="color" name="faction-color" value="#8a3030" aria-label="Faction colour" />
+            <button type="submit" class="hall-search__clear">Add</button>
+          </form>
+        )
+      }
     </div>
   </div>
 

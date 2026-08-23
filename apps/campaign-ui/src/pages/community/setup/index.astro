@@ -9,6 +9,7 @@ import HierarchyBoard from '../../../components/HierarchyBoard.astro';
 import OutsiderPorch from '../../../components/OutsiderPorch.astro';
 import MythList from '../../../components/MythList.astro';
 import InspectDrawer from '../../../components/InspectDrawer.astro';
+import { collectFactions } from '../../../lib/format';
 import { loadCommunity, whoWeSeeMap } from '../../../data/load';
 import { buildInspectPeople, peopleJson } from '../../../lib/hall-inspect';
 import { resolveSetup, setupCookieHeader } from '../../../lib/setup-auth';
@@ -24,9 +25,13 @@ if (auth.canEdit && auth.token && Astro.url.searchParams.has('edit')) {
 
 const tips = whoWeSeeMap(c);
 const people = buildInspectPeople(c);
-const showSearch = auth.canEdit && people.length > 0;
+const showSearch = auth.canEdit;
 const tiers = [...HIERARCHY_TIERS];
 const founded = Boolean(c.fortunesFoundedAt);
+const factions = collectFactions(c.factions, c.outsiders ?? []);
+const pcSlugs = c.characters
+  .filter((ch) => (ch.kind ?? 'pc') !== 'npc')
+  .map((ch) => ch.slug);
 ---
 
 <CampaignLayout
@@ -52,7 +57,9 @@ const founded = Boolean(c.fortunesFoundedAt);
       </section>
     ) : (
       <>
-        {showSearch && <HallSearch axes={c.hierarchyAxes} tiers={tiers} />}
+        {showSearch && (
+          <HallSearch axes={c.hierarchyAxes} tiers={tiers} factions={factions} live />
+        )}
         <p class="app__meta">Storyteller desk · signed access · changes land on the hall</p>
         <div
           class="hall"
@@ -68,8 +75,11 @@ const founded = Boolean(c.fortunesFoundedAt);
             placements={c.placements}
             pendingMoves={c.pendingMoves ?? []}
             tips={tips}
+            live
+            factions={factions}
+            pcSlugs={pcSlugs}
           />
-          <OutsiderPorch outsiders={c.outsiders ?? []} />
+          <OutsiderPorch outsiders={c.outsiders ?? []} factions={factions} />
           <MythList myths={c.myths} />
         </div>
 
