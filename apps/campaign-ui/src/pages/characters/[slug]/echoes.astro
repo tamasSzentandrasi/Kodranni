@@ -40,10 +40,12 @@ const resolved = (ch.echoes ?? []).filter((e) => e.resolved);
     avatar={ch.avatar}
     status={ch.status}
     dying={ch.dying}
+    decadence={ch.flags.decadence}
+    overCapacity={ch.flags.overCapacity}
     live={live}
     tab="echoes"
     showDraftTab={canEdit}
-  />
+  >
 
   <section class="kod-plate">
     <div class="section-head">
@@ -69,7 +71,7 @@ const resolved = (ch.echoes ?? []).filter((e) => e.resolved);
           {active.map((e) => {
             const w = (e.weight === 2 || e.weight === 3 ? e.weight : 1) as 1 | 2 | 3;
             return (
-              <article class="echo">
+              <article class="kod-plate echo">
                 <div class="echo__weight">
                   <span class="weight-segs" aria-label={`Weight ${w}`}>
                     {[1, 2, 3].map((i) => (
@@ -162,7 +164,7 @@ const resolved = (ch.echoes ?? []).filter((e) => e.resolved);
           {resolved.map((e) => {
             const w = (e.weight === 2 || e.weight === 3 ? e.weight : 1) as 1 | 2 | 3;
             return (
-              <article class="echo echo--resolved">
+              <article class="kod-plate echo echo--resolved">
                 <div class="echo__weight">
                   <span class="weight-segs" aria-label={`Weight ${w}`}>
                     {[1, 2, 3].map((i) => (
@@ -204,7 +206,7 @@ const resolved = (ch.echoes ?? []).filter((e) => e.resolved);
           <li class="empty">None recorded.</li>
         ) : (
           ch.traits.map((t) => (
-            <li class="trait">
+            <li class="kod-plate trait">
               <span class="trait__name">
                 {t.name}
                 {t.note && (
@@ -219,4 +221,5 @@ const resolved = (ch.echoes ?? []).filter((e) => e.resolved);
       }
     </ul>
   </section>
+  </SheetChrome>
 </CampaignLayout>

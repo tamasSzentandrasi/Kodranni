@@ -9,6 +9,8 @@ interface Props {
   avatar?: string;
   status: string;
   dying?: boolean;
+  decadence?: boolean;
+  overCapacity?: boolean;
   live?: boolean;
   tab: 'core' | 'echoes' | 'inventory' | 'draft';
   /** Show Draft tab only when the sheet is unlocked for creation. */
@@ -23,25 +25,18 @@ const {
   avatar,
   status,
   dying,
+  decadence,
+  overCapacity,
   live,
   tab,
   showDraftTab = false,
 } = Astro.props;
 const av = avatarUrl(slug, avatar);
+const statusLabel = status === 'pending_review' ? 'pending review' : status;
 ---
 
 <div class="sheet-top">
   <a class="kod-plate sheet-back" href={`/characters/?sel=${slug}`}>← Character roster</a>
-  {
-    (status === 'dead' || status === 'draft' || status === 'pending_review' || dying) && (
-      <p class="app__meta" style="margin:0">
-        <span class="char-card__status" data-status={status}>
-          {status === 'pending_review' ? 'pending review' : status}
-          {dying ? ' · dying' : ''}
-        </span>
-      </p>
-    )
-  }
 </div>
 
 <nav class="sheet-tabs" aria-label="Sheet sections">
@@ -70,49 +65,75 @@ const av = avatarUrl(slug, avatar);
   }
 </nav>
 
-<div class="sheet-identity">
-  {
-    av ? (
-      <img class="avatar avatar--lg" src={av} alt="" width="84" height="84" />
-    ) : (
-      <span class="avatar avatar--lg avatar--mono" aria-hidden="true">
-        {monogram(name)}
-      </span>
-    )
-  }
-  <div class="sheet-identity__text">
-    <h1 class="sheet-identity__name">{name}</h1>
-    <p class="sheet-identity__player">
-      {
-        playerDisplay ? (
-          <>
-            played by <strong>{playerDisplay}</strong>
-            {playerPlatform ? ` · ${playerPlatform}` : ''}
-          </>
-        ) : (
-          <span class="empty">No player mapped</span>
-        )
-      }
-    </p>
+<div class:list={['sheet-stage', tab === 'core' && 'sheet-stage--core']}>
+  <div class="kod-plate sheet-identity">
     {
-      live && tab === 'core' && (
-        <form
-          class="avatar-upload"
-          method="post"
-          enctype="multipart/form-data"
-          action={`/api/avatar/${slug}`}
-        >
-          <input
-            type="file"
-            name="file"
-            accept="image/jpeg,image/png,image/webp,image/gif"
-            required
-          />
-          <button type="submit">Upload portrait</button>
-        </form>
+      av ? (
+        <img class="avatar avatar--lg" src={av} alt="" width="84" height="84" />
+      ) : (
+        <span class="avatar avatar--lg avatar--mono" aria-hidden="true">
+          {monogram(name)}
+        </span>
       )
     }
+    <div class="sheet-identity__text">
+      <h1 class="sheet-identity__name">{name}</h1>
+      <p class="sheet-identity__player">
+        {
+          playerDisplay ? (
+            <>
+              played by <strong>{playerDisplay}</strong>
+              {playerPlatform ? ` · ${playerPlatform}` : ''}
+            </>
+          ) : (
+            <span class="empty">No player mapped</span>
+          )
+        }
+      </p>
+      <p class="sheet-identity__chips">
+        <span class="char-card__status" data-status={status}>
+          {statusLabel}
+        </span>
+        {dying && <span class="flag">Dying</span>}
+        {
+          decadence && (
+            <span class="flag" data-tip="No active Echoes — −1 die on every roll">
+              Decadence
+            </span>
+          )
+        }
+        {
+          overCapacity && (
+            <span class="flag" data-tip="−1 die only on rolls that involve an Echo">
+              Over capacity
+            </span>
+          )
+        }
+      </p>
+      {
+        live && tab === 'core' && (
+          <form
+            class="avatar-upload"
+            method="post"
+            enctype="multipart/form-data"
+            action={`/api/avatar/${slug}`}
+          >
+            <input
+              type="file"
+              name="file"
+              accept="image/jpeg,image/png,image/webp,image/gif"
+              required
+            />
+            <button class="kod-btn" type="submit">Upload portrait</button>
+          </form>
+        )
+      }
+    </div>
   </div>
+
+  {/* In-flow after identity, out of .core-grid — PR 8 can `position: static` the budget here. */}
+  <slot />
+  {tab === 'core' && <slot name="stage" />}
 </div>
 
 {

@@ -56,28 +56,20 @@ const roman = (n: number) => ['∅', 'I', 'II', 'III', 'IV'][n] ?? String(n);
     avatar={ch.avatar}
     status={ch.status}
     dying={ch.dying}
+    decadence={ch.flags.decadence}
+    overCapacity={ch.flags.overCapacity}
     live={live}
     tab="core"
     showDraftTab={canEdit}
-  />
-
-  {
-    unlocked && !canEdit && live && (
-      <p class="app__meta" style="margin:0.5rem 0 0.75rem">
-        Sheet is unlocked but <strong>read-only</strong> here — open the link from the table bot
-        (<code>/create</code> or review) to edit.
-      </p>
-    )
-  }
-
+  >
   <BudgetDock character={ch} live={live} canEdit={canEdit} />
   <WantingPanel character={ch} live={live} canEdit={canEdit} />
   <ConfirmDock character={ch} live={live} canEdit={canEdit} />
   {canEdit && <script is:inline src="/creation-client.js"></script>}
 
-  <div class="core-grid">
+  <div slot="stage" class="core-grid">
     <aside
-      class="vtrack"
+      class="kod-plate vtrack"
       aria-label={`Exertion ${ch.exertion.current} of ${ch.exertion.max}`}
     >
       <span class="vtrack__label">Exertion</span>
@@ -110,36 +102,21 @@ const roman = (n: number) => ['∅', 'I', 'II', 'III', 'IV'][n] ?? String(n);
 
     <div class="core-main">
       {
+        unlocked && !canEdit && live && (
+          <p class="app__meta" style="margin:0 0 0.75rem">
+            Sheet is unlocked but <strong>read-only</strong> here — open the link from the table bot
+            (<code>/create</code> or review) to edit.
+          </p>
+        )
+      }
+
+      {
         ch.whoWeSee ? (
           <blockquote class="who-quote">
             <span class="who-quote__lab">Who do we see?</span>
             <p class="who-quote__text">{ch.whoWeSee}</p>
           </blockquote>
         ) : null
-      }
-
-      {
-        (ch.flags.decadence || ch.flags.overCapacity || ch.dying) && (
-          <p style="margin:0 0 0.75rem">
-            {ch.dying && <span class="flag">Dying</span>}
-            {ch.flags.decadence && (
-              <span
-                class="flag"
-                data-tip="No active Echoes — −1 die on every roll"
-              >
-                Decadence
-              </span>
-            )}
-            {ch.flags.overCapacity && (
-              <span
-                class="flag"
-                data-tip="−1 die only on rolls that involve an Echo"
-              >
-                Over capacity
-              </span>
-            )}
-          </p>
-        )
       }
 
       <section class="kod-plate" id="section-foundations">
@@ -161,7 +138,7 @@ const roman = (n: number) => ['∅', 'I', 'II', 'III', 'IV'][n] ?? String(n);
         <div class="found-groups">
           {
             Object.entries(FOUNDATION_GROUPS).map(([group, keys]) => (
-              <div class="found-group">
+              <div class="kod-plate found-group">
                 <p class="found-group__title">{group}</p>
                 {keys.map((fname) => {
                   const raw = ch.foundations[fname] ?? 0;
@@ -188,6 +165,7 @@ const roman = (n: number) => ['∅', 'I', 'II', 'III', 'IV'][n] ?? String(n);
                             <button
                               type="button"
                               class:list={[
+                                'kod-btn',
                                 'found-row__spend',
                                 canEdit && !canRaise && nextCost != null && 'found-row__spend--blocked',
                               ]}
@@ -335,7 +313,7 @@ const roman = (n: number) => ['∅', 'I', 'II', 'III', 'IV'][n] ?? String(n);
     </div>
 
     <aside
-      class="vtrack vtrack--echo"
+      class="kod-plate vtrack vtrack--echo"
       aria-label={`Echo load ${ch.echoWeight} of ${ch.echoCapacity}`}
     >
       <span class="vtrack__label">Echo load</span>
@@ -366,4 +344,5 @@ const roman = (n: number) => ['∅', 'I', 'II', 'III', 'IV'][n] ?? String(n);
       </button>
     </aside>
   </div>
+  </SheetChrome>
 </CampaignLayout>

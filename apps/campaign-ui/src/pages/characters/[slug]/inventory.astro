@@ -39,10 +39,12 @@ const armourLabel =
     avatar={ch.avatar}
     status={ch.status}
     dying={ch.dying}
+    decadence={ch.flags.decadence}
+    overCapacity={ch.flags.overCapacity}
     live={live}
     tab="inventory"
     showDraftTab={canEdit}
-  />
+  >
 
   <section class="kod-plate">
     <div class="section-head">
@@ -59,7 +61,7 @@ const armourLabel =
 
     <div class="inv-grid">
       <div>
-        <div class="armour" data-kind={ch.armour.kind} data-donned={String(ch.armour.donned)}>
+        <div class="kod-plate armour" data-kind={ch.armour.kind} data-donned={String(ch.armour.donned)}>
           <span class="armour__lab">Armour</span>
           <span class="armour__val">{armourLabel}</span>
           <span class="armour__state">
@@ -70,12 +72,12 @@ const armourLabel =
         </div>
 
         <div class="supplies">
-          <div class="supply">
+          <div class="kod-plate supply">
             <span class="supply__lab">Food</span>
             <span class="supply__val">{ch.inventory.foodDays}</span>
             <span class="app__meta" style="margin:0">days</span>
           </div>
-          <div class="supply">
+          <div class="kod-plate supply">
             <span class="supply__lab">Water</span>
             <span class="supply__val">{ch.inventory.waterDays}</span>
             <span class="app__meta" style="margin:0">days</span>
@@ -94,7 +96,7 @@ const armourLabel =
               </li>
             ) : (
               ch.inventory.items.map((it) => (
-                <li class="item">
+                <li class="kod-plate item">
                   <span class="item__name">
                     {it.name}
                     {it.note && (
@@ -116,4 +118,5 @@ const armourLabel =
       </div>
     </div>
   </section>
+  </SheetChrome>
 </CampaignLayout>

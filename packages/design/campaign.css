@@ -876,7 +876,43 @@ a.member:hover {
   gap: 0.7rem;
 }
 
+/* :root snapshots --kod-soot-size into --kod-soot / --kod-plate-wash; rebind here, not on .sheet-back. */
+.char-card,
+.vtrack,
+.found-group,
+.echo,
+.trait,
+.item,
+.armour,
+.supply {
+  --kod-soot:
+    radial-gradient(var(--kod-soot-size) var(--kod-soot-size) at 0 0, rgba(0, 0, 0, 0.62), transparent 72%),
+    radial-gradient(var(--kod-soot-size) var(--kod-soot-size) at 100% 0, rgba(0, 0, 0, 0.62), transparent 72%),
+    radial-gradient(
+      calc(var(--kod-soot-size) + 0.15rem) calc(var(--kod-soot-size) + 0.1rem) at 0 100%,
+      rgba(0, 0, 0, 0.74),
+      transparent 74%
+    ),
+    radial-gradient(
+      calc(var(--kod-soot-size) + 0.15rem) calc(var(--kod-soot-size) + 0.1rem) at 100% 100%,
+      rgba(0, 0, 0, 0.74),
+      transparent 74%
+    );
+}
+
+.char-card,
+.echo {
+  --kod-corner-size: 0.88rem;
+  --kod-corners:
+    var(--kod-c-tl) 0 0 / var(--kod-corner-size) var(--kod-corner-size) no-repeat,
+    var(--kod-c-tr) 100% 0 / var(--kod-corner-size) var(--kod-corner-size) no-repeat,
+    var(--kod-c-bl) 0 100% / var(--kod-corner-size) var(--kod-corner-size) no-repeat,
+    var(--kod-c-br) 100% 100% / var(--kod-corner-size) var(--kod-corner-size) no-repeat;
+  --kod-plate-wash: var(--kod-corners), var(--kod-soot), var(--kod-tool);
+}
+
 .char-card {
+  --kod-soot-size: 0.7rem;
   display: grid;
   grid-template-columns: 3.5rem 1fr;
   gap: 0.7rem;
@@ -884,17 +920,21 @@ a.member:hover {
   text-decoration: none;
   color: inherit;
   padding: 0.75rem 0.8rem;
-  background: color-mix(in srgb, #0c0a0a 80%, transparent);
-  border-left: 3px solid #3a2a2a;
   transition: border-color 0.12s, background 0.12s;
 }
 
 .char-card:hover,
-.char-card:focus-visible,
-.char-card[data-selected='true'] {
-  border-left-color: var(--kod-blood);
-  background: color-mix(in srgb, #160e0e 85%, transparent);
+.char-card:focus-visible {
+  --kod-tool: linear-gradient(180deg, rgba(0, 0, 0, 0.12), transparent 42%);
+  border-color: var(--kod-frame-tick);
+  background: var(--kod-plate-wash), #12100e;
   outline: none;
+}
+
+.char-card[data-selected='true'] {
+  box-shadow:
+    inset 3px 0 0 var(--kod-blood),
+    var(--kod-smoke);
 }
 
 .char-card__name {
@@ -907,13 +947,26 @@ a.member:hover {
   font-size: 0.72rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  color: var(--kod-silver-dim);
 }
 
 .char-card__status[data-status='active'] {
   color: #8aab8a;
 }
-.char-card__status[data-status='dead'] {
+
+.char-card__status[data-status='draft'],
+.char-card__status[data-status='pending_review'] {
+  color: var(--kod-silver-dim);
+}
+
+.char-card__status[data-status='dead'],
+.char-card__status--dying {
   color: var(--kod-blood-bright);
+}
+
+.sheet-identity .char-card__status[data-status='active'] {
+  color: var(--kod-silver-dim);
+  opacity: 0.72;
 }
 
 .char-card__meta {
@@ -922,16 +975,19 @@ a.member:hover {
   color: var(--kod-silver-dim);
 }
 
-/* Avatars */
+/* Avatars — square iron frame; L-straps live on the identity plate, not the photo. */
 .avatar {
   width: 3.5rem;
   height: 3.5rem;
-  border-radius: 2px;
+  border-radius: 0;
   object-fit: cover;
   display: block;
   flex-shrink: 0;
   background: #141010;
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--kod-blood) 25%, transparent);
+  border: 1px solid var(--kod-frame);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--kod-frame-tick) 55%, transparent),
+    0 0 0 1px #0a0808;
 }
 
 .avatar--lg {
@@ -942,10 +998,19 @@ a.member:hover {
 .avatar--mono {
   display: grid;
   place-items: center;
-  font-size: 1rem;
-  letter-spacing: 0.06em;
-  color: var(--kod-silver-dim);
-  background: linear-gradient(145deg, #1a1212, #0c0a0a);
+  font-size: 1.05rem;
+  letter-spacing: 0.08em;
+  color: var(--kod-silver-bright);
+  background:
+    radial-gradient(ellipse 72% 70% at 50% 42%, #1c1916, #0c0a09 72%);
+  box-shadow:
+    inset 0 0 0 1px var(--kod-frame-tick),
+    inset 0 0 0 5px #100e0c,
+    inset 0 0 0 6px color-mix(in srgb, var(--kod-silver) 30%, #3a3330);
+}
+
+.avatar--lg.avatar--mono {
+  font-size: 1.55rem;
 }
 
 /* —— Character sheet shell —— */
@@ -1002,6 +1067,8 @@ a.member:hover {
   align-items: center;
   gap: 1rem;
   margin-bottom: 1rem;
+  padding: 0.75rem 1rem 0.85rem;
+  min-width: 0;
 }
 
 .sheet-identity__text {
@@ -1027,12 +1094,24 @@ a.member:hover {
   color: #d8d0c4;
 }
 
+.sheet-identity__chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.55rem;
+  margin: 0.4rem 0 0;
+}
+
+.sheet-identity__chips .flag {
+  margin: 0;
+}
+
 .avatar-upload {
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem;
   align-items: center;
-  margin-top: 0.4rem;
+  margin-top: 0.45rem;
 }
 
 .avatar-upload input[type='file'] {
@@ -1042,53 +1121,84 @@ a.member:hover {
   max-width: 11rem;
 }
 
-.avatar-upload button {
-  font: inherit;
-  font-size: 0.78rem;
-  padding: 0.25rem 0.55rem;
-  background: #141010;
-  color: var(--kod-silver);
-  border: 1px solid #3a2a2a;
-  cursor: pointer;
+.avatar-upload .kod-btn {
+  width: auto;
+  min-width: 0;
+  max-width: none;
+  height: 1.9rem;
+  min-height: 1.9rem;
+  max-height: 1.9rem;
+  padding: 0 1.05rem;
+  font-size: 0.75rem;
 }
 
-/* Core grid: vertical load rails + main */
-.core-grid {
+/* Identity + rails+main. Docks stay out of .core-grid; desktop they are fixed overlays. */
+.sheet-stage--core {
   display: grid;
   grid-template-columns: 4.25rem minmax(0, 1fr) 4.25rem;
+  grid-template-areas:
+    'ex id echo'
+    'ex main echo';
   gap: 0.75rem 0.85rem;
-  align-items: start;
+  align-items: stretch;
+}
+
+.sheet-stage--core .sheet-identity {
+  grid-area: id;
+  margin-bottom: 0;
+}
+
+.sheet-stage--core .core-grid {
+  display: contents;
+}
+
+.sheet-stage--core .vtrack:not(.vtrack--echo) {
+  grid-area: ex;
+}
+
+.sheet-stage--core .vtrack--echo {
+  grid-area: echo;
+}
+
+.sheet-stage--core .core-main {
+  grid-area: main;
+  min-width: 0;
 }
 
 @media (max-width: 48rem) {
-  .core-grid {
+  .sheet-stage--core {
     grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      'id id'
+      'ex echo'
+      'main main';
   }
-  .core-main {
-    grid-column: 1 / -1;
-    order: -1;
+
+  /* PR 8 makes budget `position: static` here; Wanting/Confirm stay overlays. */
+  .sheet-stage--core:has(.budget-dock) {
+    grid-template-areas:
+      'id id'
+      'dock dock'
+      'ex echo'
+      'main main';
+  }
+
+  .sheet-stage--core .budget-dock {
+    grid-area: dock;
   }
 }
 
-/* Vertical segment trackers */
+/* Tooled load rails — 4.25rem; soot+tool+frame only (L-straps would collide). */
 .vtrack {
+  --kod-soot-size: 0.7rem;
+  --kod-plate-wash: var(--kod-soot), var(--kod-tool);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.45rem;
   padding: 0.65rem 0.35rem 0.75rem;
   min-height: 14rem;
-  background: linear-gradient(
-    180deg,
-    color-mix(in srgb, var(--vtrack-accent, var(--kod-blood)) 18%, #0c0a0a),
-    #080606
-  );
-  border-top: 3px solid var(--vtrack-accent, var(--kod-blood));
-}
-
-/* Echo load: same blood/silver triad as Exertion — distinguish by label, not pink hue */
-.vtrack--echo {
-  --vtrack-accent: var(--kod-silver);
+  height: 100%;
 }
 
 .vtrack__label {
@@ -1112,31 +1222,37 @@ a.member:hover {
 .vtrack__seg {
   width: 1.15rem;
   height: 0.7rem;
-  border: 1px solid #3a3030;
-  background: #141010;
+  border: 1px solid var(--kod-frame-tick);
+  background: #100e0c;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.7);
 }
 
 .vtrack__seg--on {
-  background: linear-gradient(90deg, var(--kod-blood-bright), var(--kod-blood-deep));
+  background:
+    var(--kod-tool),
+    linear-gradient(180deg, var(--kod-blood-bright), var(--kod-blood-deep));
   border-color: var(--kod-blood);
+  box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.35);
 }
 
 .vtrack--echo .vtrack__seg--on {
-  background: linear-gradient(
-    90deg,
-    var(--kod-silver-bright),
-    color-mix(in srgb, var(--kod-silver) 55%, var(--kod-blood-deep))
-  );
+  background:
+    var(--kod-tool),
+    linear-gradient(180deg, var(--kod-silver-bright), var(--kod-silver-dim));
   border-color: var(--kod-silver);
 }
 
 .vtrack__seg--over {
-  background: var(--kod-blood-deep);
+  background:
+    var(--kod-tool),
+    linear-gradient(180deg, var(--kod-blood), var(--kod-blood-deep));
   border-color: var(--kod-blood-bright);
 }
 
 .vtrack--echo .vtrack__seg--over {
-  background: color-mix(in srgb, var(--kod-blood) 55%, #1a1010);
+  background:
+    var(--kod-tool),
+    linear-gradient(180deg, var(--kod-blood), var(--kod-blood-deep));
   border-color: var(--kod-blood);
 }
 
@@ -1152,6 +1268,43 @@ a.member:hover {
   display: block;
   font-size: 0.7rem;
   color: var(--kod-silver-dim);
+}
+
+@media (max-width: 48rem) {
+  .vtrack {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    min-height: 0;
+    height: auto;
+    padding: 0.45rem 0.5rem 0.5rem;
+    gap: 0.35rem 0.45rem;
+  }
+
+  .vtrack__label {
+    writing-mode: horizontal-tb;
+    transform: none;
+    width: 100%;
+    text-align: center;
+  }
+
+  .vtrack__segs {
+    flex-direction: row;
+    flex-wrap: wrap;
+    min-height: 0;
+    flex: 1 1 auto;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .vtrack__readout {
+    flex: 0 0 auto;
+  }
+
+  .vtrack__readout small {
+    display: inline;
+    margin-left: 0.15rem;
+  }
 }
 
 /* Quote block */
@@ -1200,8 +1353,8 @@ a.member:hover {
 }
 
 .found-group {
-  background: color-mix(in srgb, #0a0808 80%, transparent);
-  border-top: 2px solid #2a2222;
+  --kod-soot-size: 0.7rem;
+  --kod-plate-wash: var(--kod-soot), var(--kod-tool);
 }
 
 .found-group__title {
@@ -1211,7 +1364,8 @@ a.member:hover {
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--kod-silver-dim);
-  background: #101010;
+  background: color-mix(in srgb, #101010 72%, transparent);
+  border-bottom: 1px solid var(--kod-frame);
 }
 
 .found-row {
@@ -1245,26 +1399,18 @@ a.member:hover {
   gap: 0.35rem;
 }
 
-/* Unlocked creation: clickable rank / cost chip (iron-silver) */
+/* Compact cartouche rank chip — pewter hover, never blood. */
 .found-row__spend {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-  margin: 0;
-  padding: 0.15rem 0.35rem;
-  font: inherit;
-  font-size: 1.15rem;
+  width: auto;
+  min-width: 2.65rem;
+  max-width: none;
+  height: 2.1rem;
+  min-height: 2.1rem;
+  max-height: 2.1rem;
+  padding: 0 0.95rem;
+  font-size: 1.05rem;
   letter-spacing: 0.04em;
-  color: var(--kod-silver-bright);
-  background: transparent;
-  border: 1px solid color-mix(in srgb, var(--kod-silver) 35%, transparent);
-  border-radius: 2px;
-  cursor: pointer;
-}
-
-.found-row__spend:hover:not(:disabled) {
-  border-color: var(--kod-silver);
-  background: color-mix(in srgb, var(--kod-silver) 12%, transparent);
+  gap: 0.3rem;
 }
 
 .found-row__spend:disabled {
@@ -1629,20 +1775,16 @@ body.wanting-lock [data-spend-skill] {
 }
 
 .echo {
-  /* Fixed weight rail so Individual / Group / Pivotal never shift the body */
   --echo-weight-w: 5.5rem;
+  --kod-soot-size: 0.85rem;
   display: grid;
   grid-template-columns: var(--echo-weight-w) minmax(0, 1fr);
   gap: 0.75rem 1rem;
   padding: 0.85rem 0.9rem;
-  background: color-mix(in srgb, #0c0a0a 75%, transparent);
-  border-left: 3px solid color-mix(in srgb, var(--kod-blood) 55%, transparent);
 }
 
 .echo--resolved {
   opacity: 0.55;
-  border-left-color: #4a4440;
-  background: color-mix(in srgb, #0a0a0a 50%, transparent);
   filter: grayscale(0.35);
 }
 
@@ -1670,17 +1812,23 @@ body.wanting-lock [data-spend-skill] {
   display: block;
   width: 0.85rem;
   height: 0.55rem;
-  background: #2a2222;
-  border: 1px solid #3a3030;
+  background: #100e0c;
+  border: 1px solid var(--kod-frame-tick);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.7);
 }
 
 .weight-segs i.on {
-  background: var(--kod-blood);
-  border-color: var(--kod-blood-bright);
+  background:
+    var(--kod-tool),
+    linear-gradient(180deg, var(--kod-blood-bright), var(--kod-blood-deep));
+  border-color: var(--kod-blood);
+  box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.35);
 }
 
 .echo--resolved .weight-segs i.on {
-  background: #5a5050;
+  background:
+    var(--kod-tool),
+    linear-gradient(180deg, #6a6060, #3a3434);
   border-color: #6a6060;
 }
 
@@ -1715,7 +1863,7 @@ body.wanting-lock [data-spend-skill] {
   margin: 0 0 0.55rem;
   padding: 0.5rem 0.65rem;
   background: color-mix(in srgb, var(--kod-blood-deep) 35%, #0a0808);
-  border-left: 2px solid var(--kod-blood);
+  border-left: 3px solid var(--kod-blood);
   font-size: 0.98rem;
   line-height: 1.45;
   color: #e8dcd0;
@@ -1798,12 +1946,22 @@ body.wanting-lock [data-spend-skill] {
   list-style: none;
   margin: 0;
   padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.trait,
+.item,
+.armour,
+.supply {
+  --kod-soot-size: 0.7rem;
+  --kod-plate-wash: var(--kod-soot), var(--kod-tool);
 }
 
 .trait,
 .item {
-  padding: 0.5rem 0;
-  border-bottom: 1px solid color-mix(in srgb, #1c1818 80%, transparent);
+  padding: 0.5rem 0.65rem;
 }
 
 .trait__name,
@@ -1817,19 +1975,27 @@ body.wanting-lock [data-spend-skill] {
   gap: 0.1rem;
   margin: 0 0 0.85rem;
   padding: 0.75rem 0.85rem;
-  background: color-mix(in srgb, var(--kod-blood-deep) 42%, #0c0c0c);
-  border-left: 3px solid var(--kod-blood);
+}
+
+.armour[data-donned='true']:not([data-kind='none']) {
+  box-shadow:
+    inset 3px 0 0 var(--kod-blood),
+    var(--kod-smoke);
 }
 
 .armour[data-kind='none'] {
-  border-left-style: dashed;
-  opacity: 0.9;
+  border-style: dashed;
+  border-color: var(--kod-frame-tick);
 }
 
 .armour__lab {
   font-size: 0.68rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
+  color: var(--kod-silver-dim);
+}
+
+.armour[data-donned='true']:not([data-kind='none']) .armour__lab {
   color: var(--kod-blood-bright);
 }
 
@@ -1853,8 +2019,6 @@ body.wanting-lock [data-spend-skill] {
 .supply {
   padding: 0.65rem;
   text-align: center;
-  background: color-mix(in srgb, #100c0c 85%, transparent);
-  border-top: 2px solid color-mix(in srgb, var(--kod-blood) 35%, transparent);
 }
 
 .supply__lab {

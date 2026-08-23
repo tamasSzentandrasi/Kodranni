@@ -26,7 +26,7 @@ const selected = Astro.url.searchParams.get('sel') ?? '';
         const src = avatarUrl(ch.slug, ch.avatar);
         return (
           <a
-            class="char-card"
+            class="kod-plate char-card"
             href={`/characters/${ch.slug}/`}
             data-selected={selected === ch.slug ? 'true' : 'false'}
           >
@@ -39,8 +39,11 @@ const selected = Astro.url.searchParams.get('sel') ?? '';
             )}
             <div>
               <p class="char-card__name">{ch.name}</p>
-              <span class="char-card__status" data-status={ch.status}>
-                {ch.status}
+              <span
+                class:list={['char-card__status', ch.dying && 'char-card__status--dying']}
+                data-status={ch.status}
+              >
+                {ch.status === 'pending_review' ? 'pending review' : ch.status}
                 {ch.dying ? ' · dying' : ''}
               </span>
               <p class="char-card__meta">{ch.player?.displayName ?? 'Unmapped player'}</p>

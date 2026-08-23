@@ -41,10 +41,12 @@ if (!canEdit) {
     avatar={ch.avatar}
     status={ch.status}
     dying={ch.dying}
+    decadence={ch.flags.decadence}
+    overCapacity={ch.flags.overCapacity}
     live={live}
     tab="draft"
     showDraftTab={true}
-  />
-
-  <DraftPanel character={ch} live={live} />
+  >
+    <DraftPanel character={ch} live={live} />
+  </SheetChrome>
 </CampaignLayout>

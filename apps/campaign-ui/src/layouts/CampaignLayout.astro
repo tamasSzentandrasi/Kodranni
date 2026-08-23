@@ -72,6 +72,8 @@ const sourceLabel =
         });
         const tip = document.getElementById('kod-tip');
         if (tip) {
+          let sticky = false;
+          let stickyEl = null;
           function show(el, text) {
             if (!text) return;
             tip.textContent = text;
@@ -89,12 +91,60 @@ const sourceLabel =
           }
           function hide() {
             tip.hidden = true;
+            sticky = false;
+            stickyEl = null;
           }
           document.querySelectorAll('[data-tip]').forEach((el) => {
-            el.addEventListener('mouseenter', () => show(el, el.getAttribute('data-tip') || ''));
-            el.addEventListener('mouseleave', hide);
-            el.addEventListener('focus', () => show(el, el.getAttribute('data-tip') || ''));
-            el.addEventListener('blur', hide);
+            el.addEventListener('pointerenter', (e) => {
+              if (e.pointerType !== 'mouse' || sticky) return;
+              show(el, el.getAttribute('data-tip') || '');
+            });
+            el.addEventListener('pointerleave', (e) => {
+              if (e.pointerType !== 'mouse' || sticky) return;
+              hide();
+            });
+            el.addEventListener('focus', () => {
+              if (sticky) return;
+              show(el, el.getAttribute('data-tip') || '');
+            });
+            el.addEventListener('blur', () => {
+              if (sticky) return;
+              hide();
+            });
+          });
+          document.querySelectorAll('.info[data-tip]').forEach((el) => {
+            el.addEventListener('pointerdown', (e) => {
+              el._kodPtr = e.pointerType;
+            });
+            // Touch has no hover; tap toggles. Ignore mouseleave by sticking until next tap / Escape.
+            el.addEventListener('click', (e) => {
+              const mouse =
+                el._kodPtr === 'mouse' ||
+                (el._kodPtr == null && !window.matchMedia('(pointer: coarse)').matches);
+              if (mouse) return;
+              e.preventDefault();
+              e.stopPropagation();
+              const text = el.getAttribute('data-tip') || '';
+              if (sticky && stickyEl === el) {
+                hide();
+                return;
+              }
+              sticky = true;
+              stickyEl = el;
+              show(el, text);
+            });
+          });
+          document.addEventListener(
+            'pointerdown',
+            (e) => {
+              if (!sticky) return;
+              if (stickyEl && stickyEl.contains(e.target)) return;
+              hide();
+            },
+            true,
+          );
+          document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') hide();
           });
         }
       })();
