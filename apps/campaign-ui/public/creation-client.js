@@ -374,19 +374,15 @@
   function paintSeal(skillEl, rating, practice, threshold) {
     skillEl.setAttribute('data-rating', String(rating));
     skillEl.setAttribute('data-rated', rating > 0 ? 'true' : 'false');
-    const n = skillEl.querySelector('.skill-ring__n');
+    const n = skillEl.querySelector('.skill__inner');
     if (n) n.textContent = String(rating);
-    const seal = skillEl.querySelector('.skill-ring');
-    if (!(seal instanceof HTMLElement)) return;
-    seal.classList.remove('skill-ring--empty', 'skill-ring--practice', 'skill-ring--max');
-    const kind = rating <= 0 ? 'empty' : rating >= 3 ? 'max' : 'practice';
-    seal.classList.add('skill-ring--' + kind);
+    const ring = skillEl.querySelector('.skill__ring');
     let p = 0;
     if (rating >= 3) p = 1;
     else if (rating > 0 && Number(threshold) > 0) {
       p = Math.min(1, Math.max(0, Number(practice) / Number(threshold)));
     }
-    seal.style.setProperty('--p', String(p));
+    if (ring instanceof HTMLElement) ring.style.setProperty('--p', String(p));
     skillEl.style.setProperty('--p', String(p));
   }
 

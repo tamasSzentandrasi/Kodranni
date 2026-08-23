@@ -52,7 +52,6 @@ const founded = Boolean(c.fortunesFoundedAt);
       </section>
     ) : (
       <>
-        {showSearch && <HallSearch axes={c.hierarchyAxes} tiers={tiers} />}
         <p class="app__meta">Storyteller desk · signed access · changes land on the hall</p>
         <div
           class="hall"
@@ -60,6 +59,7 @@ const founded = Boolean(c.fortunesFoundedAt);
           data-source={c.source ?? 'live'}
           data-founded={c.fortunesFoundedAt ?? ''}
         >
+          {showSearch && <HallSearch axes={c.hierarchyAxes} tiers={tiers} />}
           <FortuneHall fortunes={c.fortunes} editable founded={founded} />
           <HierarchyBoard
             axes={c.hierarchyAxes}

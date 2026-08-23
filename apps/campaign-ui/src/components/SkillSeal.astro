@@ -5,10 +5,8 @@ interface Props {
 }
 
 const { rating, p } = Astro.props;
-const kind = rating <= 0 ? 'empty' : rating >= 3 ? 'max' : 'practice';
 ---
 
-<span class:list={['skill-ring', `skill-ring--${kind}`]} style={`--p: ${p}`}>
-  <span class="skill-ring__dial" aria-hidden="true"></span>
-  <span class="skill-ring__n">{rating}</span>
+<span class="skill__ring" style={`--p: ${p}`}>
+  <span class="skill__inner">{rating}</span>
 </span>

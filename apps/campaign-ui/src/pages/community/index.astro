@@ -29,13 +29,13 @@ const hideWeather = live && !founded;
   primary="community"
   source={c.source}
 >
-  {showSearch && <HallSearch axes={c.hierarchyAxes} tiers={tiers} />}
   <div
     class="hall"
     data-slug={c.slug}
     data-source={c.source ?? 'fixture'}
     data-founded={c.fortunesFoundedAt ?? ''}
   >
+    {showSearch && <HallSearch axes={c.hierarchyAxes} tiers={tiers} />}
     {
       hideWeather ? (
         <section class="hall__sky" aria-labelledby="f-h">

@@ -185,7 +185,6 @@ const roman = (n: number) => ['∅', 'I', 'II', 'III', 'IV'][n] ?? String(n);
                             <button
                               type="button"
                               class:list={[
-                                'kod-btn',
                                 'found-row__spend',
                                 canEdit && !canRaise && nextCost != null && 'found-row__spend--blocked',
                               ]}
@@ -198,7 +197,7 @@ const roman = (n: number) => ['∅', 'I', 'II', 'III', 'IV'][n] ?? String(n);
                               data-tip={tip}
                               aria-label={
                                 canRaise
-                                  ? `Raise ${fname} (costs ${nextCost})`
+                                  ? `Raise ${fname} to ${roman((raw || 0) + 1)} (costs ${nextCost})`
                                   : canLower
                                     ? `Lower ${fname} with right-click`
                                     : raw === 0
@@ -207,9 +206,6 @@ const roman = (n: number) => ['∅', 'I', 'II', 'III', 'IV'][n] ?? String(n);
                               }
                             >
                               <span data-roman>{roman(raw)}</span>
-                              <span class="found-row__cost">
-                                {nextCost != null ? `−${nextCost}` : 'max'}
-                              </span>
                             </button>
                           ) : (
                             <span data-tip={tip}>
