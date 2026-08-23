@@ -61,57 +61,73 @@ const words = creation?.words ?? 0;
         <h2 class="budget-dock__title">Budgets</h2>
       </header>
 
-      <button type="button" class="kod-plate budget-card" data-jump="section-foundations" data-budget="foundation">
-        <span class="budget-card__label">Foundations</span>
+      <div class="kod-plate budget-card budget-card--found" data-budget="foundation">
+        <span class="budget-card__label">
+          Foundations
+          <button
+            type="button"
+            class="info"
+            data-tip="Left-click a Foundation to raise · right-click to refund. Bar is what remains of the pool."
+            aria-label="About Foundation budget"
+          >
+            i
+          </button>
+        </span>
         <span class="budget-card__main">
           <strong data-field="foundationPoints">{fLeft}</strong>
           <span class="budget-card__unit">left</span>
-        </span>
-        <span class="budget-card__meta">
-          <span><em data-field="foundationSpent">{fInvested}</em> spent</span>
-          <span class="budget-card__pool">of <em data-field="foundationPool">{fPool}</em></span>
         </span>
         <span class="budget-card__bar" aria-hidden="true">
           <span
             class="budget-card__fill"
             data-field="foundationFill"
-            style={`width: ${fPool > 0 ? Math.round((fInvested / fPool) * 100) : 0}%`}
+            style={`width: ${fPool > 0 ? Math.round((fLeft / fPool) * 100) : 0}%`}
           />
         </span>
-        <span class="budget-card__cta">Jump to Foundations →</span>
-      </button>
+      </div>
 
-      <button type="button" class="kod-plate budget-card" data-jump="section-skills" data-budget="skill">
-        <span class="budget-card__label">Skills</span>
+      <div class="kod-plate budget-card budget-card--skill" data-budget="skill">
+        <span class="budget-card__label">
+          Skills
+          <button
+            type="button"
+            class="info"
+            data-tip="Left-click a skill to raise · right-click to refund. The ring fills with Practice toward the next rank."
+            aria-label="About Skill budget"
+          >
+            i
+          </button>
+        </span>
         <span class="budget-card__main">
           <strong data-field="skillPoints">{sLeft}</strong>
           <span class="budget-card__unit">left</span>
-        </span>
-        <span class="budget-card__meta">
-          <span><em data-field="skillSpent">{sInvested}</em> spent</span>
-          <span class="budget-card__pool">of <em data-field="skillPool">{sPool}</em></span>
         </span>
         <span class="budget-card__bar" aria-hidden="true">
           <span
             class="budget-card__fill"
             data-field="skillFill"
-            style={`width: ${sPool > 0 ? Math.round((sInvested / sPool) * 100) : 0}%`}
+            style={`width: ${sPool > 0 ? Math.round((sLeft / sPool) * 100) : 0}%`}
           />
         </span>
-        <span class="budget-card__cta">Jump to Skills →</span>
-      </button>
+      </div>
 
-      <button type="button" class="kod-plate budget-card budget-card--words" data-open-wanting data-budget="words">
-        <span class="budget-card__label">Words</span>
+      <div class="kod-plate budget-card budget-card--words" data-open-wanting data-budget="words" role="button" tabindex="0">
+        <span class="budget-card__label">
+          Words
+          <button
+            type="button"
+            class="info"
+            data-tip="The Storyteller awards Words at the table. Spend them here in The Wanting."
+            aria-label="About Words"
+          >
+            i
+          </button>
+        </span>
         <span class="budget-card__main">
           <strong data-field="words">{words}</strong>
-          <span class="budget-card__unit">to Want</span>
+          <span class="budget-card__unit">held</span>
         </span>
-        <span class="budget-card__meta">
-          Awarded at the table · spend in The Wanting
-        </span>
-        <span class="budget-card__cta">Open Wanting →</span>
-      </button>
+      </div>
 
       <div class="budget-dock__flags">
         <span

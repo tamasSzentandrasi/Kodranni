@@ -38,10 +38,6 @@ const statusLabel = status === 'pending_review' ? 'pending review' : status;
 const showPortraitEdit = Boolean(live && canEdit && (tab === 'core' || tab === 'draft'));
 ---
 
-<div class="sheet-top">
-  <a class="kod-plate sheet-back" href={`/characters/?sel=${slug}`}>← Character roster</a>
-</div>
-
 <nav class="sheet-tabs" aria-label="Sheet sections">
   <a href={`/characters/${slug}/`} aria-current={tab === 'core' ? 'page' : undefined}>Core</a>
   <a
@@ -62,7 +58,7 @@ const showPortraitEdit = Boolean(live && canEdit && (tab === 'core' || tab === '
         href={`/characters/${slug}/draft/`}
         aria-current={tab === 'draft' ? 'page' : undefined}
       >
-        Draft
+        Who do we see?
       </a>
     )
   }
@@ -103,7 +99,23 @@ const showPortraitEdit = Boolean(live && canEdit && (tab === 'core' || tab === '
       }
     </div>
     <div class="sheet-identity__text">
-      <h1 class="sheet-identity__name">{name}</h1>
+      <h1 class="sheet-identity__name">
+        {
+          canEdit ? (
+            <label class="sheet-identity__name-edit">
+              <input
+                class="sheet-identity__name-input"
+                data-field="name"
+                value={name}
+                aria-label="Character name"
+              />
+              <span class="sheet-identity__pen" aria-hidden="true">✎</span>
+            </label>
+          ) : (
+            name
+          )
+        }
+      </h1>
       <p class="sheet-identity__player">
         {
           playerDisplay ? (

@@ -81,16 +81,19 @@
     if (!(t instanceof HTMLElement)) return;
     if (t.closest('[data-echo-add]')) {
       addEchoCard(1, '', '');
+      saveSoon();
       return;
     }
     if (t.closest('[data-echo-remove]')) {
       t.closest('[data-echo-idx]')?.remove();
+      saveSoon();
       return;
     }
     const wEl = t.closest('[data-echo-weight]');
     if (wEl instanceof HTMLElement && wEl.classList.contains('echo__weight--edit')) {
       const cur = Number(wEl.getAttribute('data-weight') || 1);
       paintWeight(wEl, Math.min(3, cur + 1));
+      saveSoon();
     }
   });
 
@@ -102,6 +105,7 @@
       ev.preventDefault();
       const cur = Number(wEl.getAttribute('data-weight') || 1);
       paintWeight(wEl, Math.max(1, cur - 1));
+      saveSoon();
     }
   });
 
@@ -119,15 +123,25 @@
       '<input class="kod-ink" data-trait-note value="" placeholder="Optional note" />' +
       '<button type="button" data-trait-remove>Remove</button></div>';
     traitList.appendChild(li);
+    saveSoon();
   });
 
   document.querySelector('#traits-panel')?.addEventListener('click', (ev) => {
     const t = ev.target;
     if (!(t instanceof HTMLElement)) return;
-    if (t.closest('[data-trait-remove]')) t.closest('[data-trait-idx]')?.remove();
+    if (t.closest('[data-trait-remove]')) {
+      t.closest('[data-trait-idx]')?.remove();
+      saveSoon();
+    }
   });
 
-  document.querySelector('[data-save-echoes-traits]')?.addEventListener('click', async () => {
+  let saveTimer = 0;
+  function saveSoon() {
+    window.clearTimeout(saveTimer);
+    saveTimer = window.setTimeout(saveNow, 550);
+  }
+
+  async function saveNow() {
     const msg = document.querySelector('[data-echoes-msg]');
     const res = await fetch('/api/character/' + encodeURIComponent(slug), {
       method: 'POST',
@@ -139,11 +153,13 @@
       }),
     });
     const data = await res.json().catch(() => ({}));
-    if (msg) {
+    if (msg && !res.ok) {
       msg.hidden = false;
-      msg.textContent = res.ok ? 'Saved.' : data.error || 'Failed';
-      msg.className = 'draft-msg ' + (res.ok ? 'draft-msg--ok' : 'draft-msg--err');
+      msg.textContent = data.error || 'Failed';
+      msg.className = 'draft-msg draft-msg--err';
     }
-    if (res.ok) setTimeout(() => location.reload(), 450);
-  });
+  }
+
+  panel.addEventListener('input', saveSoon);
+  traitList?.addEventListener('input', saveSoon);
 })();

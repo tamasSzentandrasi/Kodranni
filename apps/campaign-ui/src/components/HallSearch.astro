@@ -8,26 +8,38 @@ const { axes, tiers } = Astro.props;
 ---
 
 <aside class="kod-plate hall-search" data-hall-search aria-label="Find someone in the hall">
-  <p class="hall-search__kicker">Find</p>
-  <label class="hall-search__label" for="kod-hall-q">Name</label>
-  <input
-    id="kod-hall-q"
-    class="hall-search__q"
-    type="search"
-    name="hall-q"
-    autocomplete="off"
-    placeholder="Name"
-    data-hall-q
-  />
+  <header class="hall-search__head">
+    <p class="hall-search__kicker">Hall</p>
+    <h2 class="hall-search__title">Find</h2>
+  </header>
+
+  <div class="hall-search__lookup">
+    <label class="hall-search__label" for="kod-hall-q">Name</label>
+    <input
+      id="kod-hall-q"
+      class="hall-search__q"
+      type="search"
+      name="hall-q"
+      autocomplete="off"
+      placeholder="A name in the hall"
+      data-hall-q
+    />
+    <button type="button" class="hall-search__clear" data-hall-clear aria-label="Clear search">
+      Clear
+    </button>
+  </div>
+
   <div class="hall-search__filters" data-hall-filters>
     <div class="hall-search__group" role="group" aria-label="Axis">
+      <p class="hall-search__legend">Axis</p>
       {axes.map((axis) => (
         <button type="button" class="hall-search__chip" data-filter="axis" data-value={axis} aria-pressed="false">
           {axis}
         </button>
       ))}
     </div>
-    <div class="hall-search__group" role="group" aria-label="Tier">
+    <div class="hall-search__group" role="group" aria-label="Standing">
+      <p class="hall-search__legend">Standing</p>
       {tiers.map((tier) => (
         <button type="button" class="hall-search__chip" data-filter="tier" data-value={tier} aria-pressed="false">
           {tier}
@@ -35,16 +47,15 @@ const { axes, tiers } = Astro.props;
       ))}
     </div>
     <div class="hall-search__group" role="group" aria-label="Kind">
+      <p class="hall-search__legend">Kind</p>
       <button type="button" class="hall-search__chip" data-filter="kind" data-value="pc" aria-pressed="false">
-        PC
+        Player
       </button>
       <button type="button" class="hall-search__chip" data-filter="kind" data-value="npc" aria-pressed="false">
-        NPC
+        Named
       </button>
     </div>
   </div>
-  <button type="button" class="hall-search__clear" data-hall-clear>
-    Clear
-  </button>
+
   <ul class="hall-search__hits" data-hall-hits hidden></ul>
 </aside>

@@ -210,16 +210,7 @@ const resolved = (ch.echoes ?? []).filter((e) => e.resolved);
         </button>
       )
     }
-    {
-      canEdit && (
-        <div style="margin-top:1rem">
-          <button type="button" class="draft-btn draft-btn--primary" data-save-echoes-traits>
-            Save Echoes · Traits
-          </button>
-          <p class="draft-msg" data-echoes-msg hidden></p>
-        </div>
-      )
-    }
+    <p class="draft-msg" data-echoes-msg hidden></p>
   </section>
 
   {

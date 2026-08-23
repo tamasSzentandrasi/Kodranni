@@ -17,9 +17,7 @@ const tips = whoWeSeeMap(c);
 const people = buildInspectPeople(c);
 const showSearch = people.length > 0;
 const tiers = [...HIERARCHY_TIERS];
-const live = c.source === 'live';
 const founded = Boolean(c.fortunesFoundedAt);
-const hideWeather = live && !founded;
 ---
 
 <CampaignLayout
@@ -29,25 +27,14 @@ const hideWeather = live && !founded;
   primary="community"
   source={c.source}
 >
+  {showSearch && <HallSearch axes={c.hierarchyAxes} tiers={tiers} />}
   <div
     class="hall"
     data-slug={c.slug}
     data-source={c.source ?? 'fixture'}
     data-founded={c.fortunesFoundedAt ?? ''}
   >
-    {showSearch && <HallSearch axes={c.hierarchyAxes} tiers={tiers} />}
-    {
-      hideWeather ? (
-        <section class="hall__sky" aria-labelledby="f-h">
-          <div class="section-head">
-            <h2 id="f-h">Fortunes</h2>
-          </div>
-          <p class="empty">This people’s weather has not been set.</p>
-        </section>
-      ) : (
-        <FortuneHall fortunes={c.fortunes} founded={founded} />
-      )
-    }
+    <FortuneHall fortunes={c.fortunes} founded={founded || c.source !== 'live'} />
     <HierarchyBoard
       axes={c.hierarchyAxes}
       ruler={c.ruler}

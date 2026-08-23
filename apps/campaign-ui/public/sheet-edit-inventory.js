@@ -6,6 +6,7 @@
 
   const KINDS = ['none', 'light', 'heavy'];
   const LABELS = { none: 'None', light: 'Light', heavy: 'Heavy' };
+  let saveTimer = 0;
 
   function tokenHeaders() {
     const headers = { 'Content-Type': 'application/json' };
@@ -34,40 +35,83 @@
     }
     if (label) label.textContent = LABELS[k] || k;
     if (state) {
-      state.textContent =
-        k === 'none'
-          ? 'No armour'
-          : d
-            ? 'Donned — counts for physical Harm'
-            : 'Not donned';
+      state.textContent = k === 'none' ? 'None worn' : d ? 'Donned' : 'Carried';
     }
   }
 
-  panel.querySelector('[data-armour-cycle]')?.addEventListener('click', () => {
+  function cycle(dir) {
     const i = KINDS.indexOf(kind());
-    const next = KINDS[(i + 1) % KINDS.length];
+    const next = KINDS[(i + dir + KINDS.length) % KINDS.length];
     panel.setAttribute('data-armour-kind', next);
-    if (next === 'none') panel.setAttribute('data-armour-donned', '0');
+    panel.setAttribute('data-armour-donned', next === 'none' ? '0' : '1');
     paintArmour();
-  });
+    saveSoon();
+  }
 
-  panel.querySelector('[data-armour-donned-toggle]')?.addEventListener('change', (ev) => {
-    const t = ev.target;
-    if (!(t instanceof HTMLInputElement)) return;
-    panel.setAttribute('data-armour-donned', t.checked ? '1' : '0');
-    paintArmour();
+  function readPatch() {
+    const food = Number(
+      panel.querySelector('[data-supply="food"] [data-supply-val]')?.textContent || 0,
+    );
+    const water = Number(
+      panel.querySelector('[data-supply="water"] [data-supply-val]')?.textContent || 0,
+    );
+    const inventoryItems = Array.from(panel.querySelectorAll('[data-item-idx]'))
+      .map((li) => {
+        const name = li.querySelector('[data-item-name]')?.value?.trim();
+        if (!name) return null;
+        const note = li.querySelector('[data-item-note]')?.value?.trim();
+        return { name, note: note || undefined };
+      })
+      .filter(Boolean);
+    return {
+      foodDays: food,
+      waterDays: water,
+      inventoryItems,
+      armour: { kind: kind(), donned: kind() !== 'none' && donned() },
+    };
+  }
+
+  function saveSoon() {
+    window.clearTimeout(saveTimer);
+    saveTimer = window.setTimeout(saveNow, 500);
+  }
+
+  async function saveNow() {
+    const msg = panel.querySelector('[data-inv-msg]');
+    const res = await fetch('/api/character/' + encodeURIComponent(slug), {
+      method: 'POST',
+      headers: tokenHeaders(),
+      credentials: 'same-origin',
+      body: JSON.stringify({ action: 'st-edit', patch: readPatch() }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (msg) {
+      msg.hidden = !res.ok;
+      if (!res.ok) {
+        msg.textContent = data.error || 'Failed';
+        msg.className = 'draft-msg draft-msg--err';
+      }
+    }
+  }
+
+  const armourBtn = panel.querySelector('[data-armour-cycle]');
+  armourBtn?.addEventListener('click', () => cycle(1));
+  armourBtn?.addEventListener('contextmenu', (ev) => {
+    ev.preventDefault();
+    cycle(-1);
   });
 
   panel.querySelectorAll('[data-supply]').forEach((box) => {
     box.addEventListener('click', (ev) => {
       const t = ev.target;
       if (!(t instanceof HTMLElement)) return;
-      const delta = t.getAttribute('data-supply-delta');
-      if (!delta) return;
+      const btn = t.closest('[data-supply-delta]');
+      if (!btn) return;
       const valEl = box.querySelector('[data-supply-val]');
       if (!valEl) return;
-      const next = Math.max(0, Number(valEl.textContent || 0) + Number(delta));
+      const next = Math.max(0, Number(valEl.textContent || 0) + Number(btn.getAttribute('data-supply-delta')));
       valEl.textContent = String(next);
+      saveSoon();
     });
   });
 
@@ -90,44 +134,15 @@
   panel.addEventListener('click', (ev) => {
     const t = ev.target;
     if (!(t instanceof HTMLElement)) return;
-    if (t.closest('[data-item-remove]')) t.closest('[data-item-idx]')?.remove();
+    if (t.closest('[data-item-remove]')) {
+      t.closest('[data-item-idx]')?.remove();
+      saveSoon();
+    }
   });
 
-  panel.querySelector('[data-save-inventory]')?.addEventListener('click', async () => {
-    const msg = panel.querySelector('[data-inv-msg]');
-    const food = Number(
-      panel.querySelector('[data-supply="food"] [data-supply-val]')?.textContent || 0,
-    );
-    const water = Number(
-      panel.querySelector('[data-supply="water"] [data-supply-val]')?.textContent || 0,
-    );
-    const inventoryItems = Array.from(panel.querySelectorAll('[data-item-idx]'))
-      .map((li) => {
-        const name = li.querySelector('[data-item-name]')?.value?.trim();
-        if (!name) return null;
-        const note = li.querySelector('[data-item-note]')?.value?.trim();
-        return { name, note: note || undefined };
-      })
-      .filter(Boolean);
-    const armour = {
-      kind: kind(),
-      donned: kind() !== 'none' && donned(),
-    };
-    const res = await fetch('/api/character/' + encodeURIComponent(slug), {
-      method: 'POST',
-      headers: tokenHeaders(),
-      credentials: 'same-origin',
-      body: JSON.stringify({
-        action: 'st-edit',
-        patch: { foodDays: food, waterDays: water, inventoryItems, armour },
-      }),
-    });
-    const data = await res.json().catch(() => ({}));
-    if (msg) {
-      msg.hidden = false;
-      msg.textContent = res.ok ? 'Saved.' : data.error || 'Failed';
-      msg.className = 'draft-msg ' + (res.ok ? 'draft-msg--ok' : 'draft-msg--err');
-    }
-    if (res.ok) setTimeout(() => location.reload(), 450);
+  panel.addEventListener('input', (ev) => {
+    const t = ev.target;
+    if (!(t instanceof HTMLElement)) return;
+    if (t.closest('[data-item-name], [data-item-note]')) saveSoon();
   });
 })();

@@ -29,22 +29,17 @@ const { myths } = Astro.props;
       <div class="myth-list">
         {myths.map((m) => (
           <article class="kod-plate myth-card">
-            <h3 class="myth-card__title">
-              {m.title}
-              {m.summary && (
-                <button type="button" class="info" data-tip={m.summary} aria-label={`About ${m.title}`}>
-                  i
-                </button>
-              )}
-            </h3>
+            <p class="myth-card__kicker">Foundation Myth</p>
+            <h3 class="myth-card__title">{m.title}</h3>
+            {m.summary && <p class="myth-card__summary">{m.summary}</p>}
             <div class="myth-card__fx">
               {(m.effects ?? []).length === 0 ? (
                 <span class="empty">No listed effects.</span>
               ) : (
                 (m.effects ?? []).map((e) => (
                   <span class="fx" data-kind={e.kind}>
-                    {e.label}
-                    {e.faces?.length ? ` (${e.faces.join(', ')})` : ''}
+                    <span class="fx__kind">{e.kind.replace(/_/g, ' ')}</span>
+                    <span class="fx__label">{e.label}</span>
                     {e.detail && (
                       <button type="button" class="info" data-tip={e.detail} aria-label="Effect detail">
                         i

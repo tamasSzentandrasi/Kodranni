@@ -28,7 +28,11 @@ function liveStore() {
   const path = join(dir, 'c.sqlite');
   const store = openSqliteStore(path);
   seedDemoCampaign(store);
-  const slug = store.getCommunity().slug;
+  const live = store.getCommunity();
+  delete live.fortunesFoundedAt;
+  delete live.fortuneMeta;
+  store.putCommunity(live);
+  const slug = live.slug;
   store.close();
   process.env.KODRANNI_STORE_PATH = path;
   process.env.KODRANNI_SHEET_TOKEN_SECRET = SECRET;

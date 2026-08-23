@@ -370,6 +370,7 @@ export function seedDemoCampaign(
     standing: 1,
     tradition: 2,
   };
+  community.fortunesFoundedAt = '2026-08-01T12:00:00.000Z';
   community.myths = [
     {
       title: 'Kelarn’s Fall',

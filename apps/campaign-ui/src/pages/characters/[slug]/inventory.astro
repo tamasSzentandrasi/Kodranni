@@ -60,7 +60,7 @@ const armourLabel =
       <button
         type="button"
         class="info"
-        data-tip="Armour click cycles None → Light → Heavy. Food/Water use ±. Items: name + optional note."
+        data-tip="Armour: left-click cycles None → Light → Heavy, right-click reverses. Food and water: arrows."
         aria-label="About Inventory"
       >
         i
@@ -82,64 +82,44 @@ const armourLabel =
           <span class="armour__state" data-armour-state>
             {
               ch.armour.kind === 'none'
-                ? 'No armour'
+                ? 'None worn'
                 : ch.armour.donned
-                  ? 'Donned — counts for physical Harm'
-                  : 'Carried — click again ideas…'
+                  ? 'Donned'
+                  : 'Carried'
             }
           </span>
         </button>
-        {
-          canEdit && ch.armour.kind !== 'none' && (
-            <label class="armour-donned">
-              <input type="checkbox" data-armour-donned-toggle checked={ch.armour.donned} />
-              Donned
-            </label>
-          )
-        }
 
         <div class="supplies">
           <div class="kod-plate supply" data-supply="food">
             <span class="supply__lab">Food</span>
-            <div class="supply__ctrl">
-              {
-                canEdit && (
-                  <button type="button" class="supply__btn" data-supply-delta="-1" aria-label="Less food">
-                    −
-                  </button>
-                )
-              }
-              <span class="supply__val" data-supply-val>{ch.inventory.foodDays}</span>
-              {
-                canEdit && (
-                  <button type="button" class="supply__btn" data-supply-delta="1" aria-label="More food">
-                    +
-                  </button>
-                )
-              }
-            </div>
-            <span class="app__meta" style="margin:0">days</span>
+            {
+              canEdit && (
+                <button type="button" class="supply__chev" data-supply-delta="1" aria-label="More food"></button>
+              )
+            }
+            <span class="supply__val" data-supply-val>{ch.inventory.foodDays}</span>
+            {
+              canEdit && (
+                <button type="button" class="supply__chev supply__chev--down" data-supply-delta="-1" aria-label="Less food"></button>
+              )
+            }
+            <span class="supply__unit">days</span>
           </div>
           <div class="kod-plate supply" data-supply="water">
             <span class="supply__lab">Water</span>
-            <div class="supply__ctrl">
-              {
-                canEdit && (
-                  <button type="button" class="supply__btn" data-supply-delta="-1" aria-label="Less water">
-                    −
-                  </button>
-                )
-              }
-              <span class="supply__val" data-supply-val>{ch.inventory.waterDays}</span>
-              {
-                canEdit && (
-                  <button type="button" class="supply__btn" data-supply-delta="1" aria-label="More water">
-                    +
-                  </button>
-                )
-              }
-            </div>
-            <span class="app__meta" style="margin:0">days</span>
+            {
+              canEdit && (
+                <button type="button" class="supply__chev" data-supply-delta="1" aria-label="More water"></button>
+              )
+            }
+            <span class="supply__val" data-supply-val>{ch.inventory.waterDays}</span>
+            {
+              canEdit && (
+                <button type="button" class="supply__chev supply__chev--down" data-supply-delta="-1" aria-label="Less water"></button>
+              )
+            }
+            <span class="supply__unit">days</span>
           </div>
         </div>
       </div>
@@ -198,16 +178,7 @@ const armourLabel =
       </div>
     </div>
 
-    {
-      canEdit && (
-        <div style="margin-top:1rem">
-          <button type="button" class="draft-btn draft-btn--primary" data-save-inventory>
-            Save Inventory
-          </button>
-          <p class="draft-msg" data-inv-msg hidden></p>
-        </div>
-      )
-    }
+    <p class="draft-msg" data-inv-msg hidden></p>
   </section>
 
   {canEdit && <script is:inline src="/sheet-edit-inventory.js"></script>}
@@ -220,29 +191,6 @@ const armourLabel =
   }
   .armour:disabled {
     cursor: default;
-  }
-  .armour-donned {
-    display: flex;
-    gap: 0.4rem;
-    align-items: center;
-    margin: 0.45rem 0 0.75rem;
-    font-size: 0.85rem;
-    color: var(--kod-silver);
-  }
-  .supply__btn {
-    width: 1.6rem;
-    height: 1.6rem;
-    flex: 0 0 auto;
-    font: inherit;
-    font-size: 1.1rem;
-    line-height: 1;
-    cursor: pointer;
-    color: var(--kod-silver-bright);
-    background: #0c0a0a;
-    border: 1px solid color-mix(in srgb, var(--kod-silver) 35%, transparent);
-  }
-  .supply__btn:hover {
-    border-color: var(--kod-blood);
   }
   .item__edit {
     display: grid;

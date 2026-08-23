@@ -11,11 +11,17 @@ afterEach(() => {
   for (const d of dirs.splice(0)) rmSync(d, { recursive: true, force: true });
 });
 
-function demoStore() {
+function demoStore(unfounded = false) {
   const dir = mkdtempSync(join(tmpdir(), 'kod-app-'));
   dirs.push(dir);
   const store = openSqliteStore(join(dir, 'c.sqlite'));
   seedDemoCampaign(store);
+  if (unfounded) {
+    const c = store.getCommunity();
+    delete c.fortunesFoundedAt;
+    delete c.fortuneMeta;
+    store.putCommunity(c);
+  }
   return store;
 }
 
@@ -39,7 +45,7 @@ const ALL_STEADY = {
 
 describe('setStartingFortunes', () => {
   it('writes all five fortunes, fortunesFoundedAt, and founding fortuneMeta', () => {
-    const store = demoStore();
+    const store = demoStore(true);
     const fortunes = {
       vitality: 3,
       cohesion: 1,
@@ -68,7 +74,7 @@ describe('setStartingFortunes', () => {
   });
 
   it('throws on a second founding', () => {
-    const store = demoStore();
+    const store = demoStore(true);
     setStartingFortunes(store, { fortunes: ALL_STEADY });
     expect(() => setStartingFortunes(store, { fortunes: ALL_STEADY })).toThrow(
       /already founded/,
@@ -79,7 +85,7 @@ describe('setStartingFortunes', () => {
 
 describe('setFortunes', () => {
   it('founds when the weather has not been stored yet', () => {
-    const store = demoStore();
+    const store = demoStore(true);
     const c = setFortunes(store, { fortunes: ALL_STEADY, actor: 'st' });
     expect(c.fortunesFoundedAt).toEqual(expect.any(String));
     expect(c.fortuneMeta?.vitality?.source).toBe('founding');
@@ -88,7 +94,6 @@ describe('setFortunes', () => {
 
   it('overwrites all five after founding with source st', () => {
     const store = demoStore();
-    setStartingFortunes(store, { fortunes: ALL_STEADY });
     const mixed = {
       vitality: 0,
       cohesion: 3,

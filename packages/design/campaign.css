@@ -257,16 +257,6 @@ section.kod-plate {
   align-items: start;
 }
 
-.hall:has(.hall-search) {
-  grid-template-columns: minmax(12.25rem, 13.5rem) minmax(0, 1fr) minmax(13rem, 16rem);
-  grid-template-areas:
-    "search sky    sky"
-    "search crown  crown"
-    "search nave   porch"
-    "search crypt  crypt";
-}
-
-.hall-search { grid-area: search; }
 .hall__sky { grid-area: sky; }
 .hall__crown { grid-area: crown; }
 .hall__nave { grid-area: nave; min-width: 0; }
@@ -274,11 +264,9 @@ section.kod-plate {
 .hall__crypt { grid-area: crypt; }
 
 @media (max-width: 56rem) {
-  .hall,
-  .hall:has(.hall-search) {
+  .hall {
     grid-template-columns: 1fr;
     grid-template-areas:
-      "search"
       "sky"
       "crown"
       "nave"
@@ -439,21 +427,12 @@ section.kod-plate {
 .fortune__blurb {
   position: relative;
   width: 100%;
-  margin: 0.25rem 0 0;
+  margin: 0.35rem 0 0;
   text-align: start;
 }
 
 .fortune__blurb > summary {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  min-height: 1.4rem;
-  padding: 0.25rem 0.35rem 0.1rem;
-  cursor: pointer;
-  list-style: none;
-  color: var(--kod-silver-dim);
+  display: none;
 }
 
 .fortune__blurb > summary::-webkit-details-marker,
@@ -896,18 +875,23 @@ section.kod-plate {
 /* Myths */
 .myth-list {
   display: grid;
-  /* Floor is max(16rem, one-third) so auto-fit never makes a fourth column on the 82rem hall. */
-  grid-template-columns: repeat(auto-fit, minmax(max(16rem, calc((100% - 1.1rem) / 3)), 1fr));
-  gap: 0.55rem;
+  grid-template-columns: repeat(auto-fit, minmax(max(18rem, calc((100% - 1.1rem) / 2)), 1fr));
+  gap: 0.75rem;
 }
 
 .myth-card {
-  --kod-soot-size: 0.9rem;
+  --kod-soot-size: 0.95rem;
   --kod-corner-size: 1.05rem;
-  padding: 0.7rem 0.8rem 0.8rem;
+  padding: 0.95rem 1rem 1.05rem;
+  border-top-width: 3px;
+  border-top-color: color-mix(in srgb, var(--kod-blood) 65%, var(--kod-frame));
   background:
     var(--kod-plate-wash),
-    color-mix(in srgb, #0c0a0a 75%, transparent);
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--kod-blood-deep) 28%, #0c0a0a),
+      #080606 58%
+    );
 }
 
 .myth-card--empty {
@@ -916,63 +900,119 @@ section.kod-plate {
   align-items: center;
 }
 
+.myth-card__kicker {
+  margin: 0 0 0.2rem;
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--kod-blood-bright);
+}
+
 .myth-card__title {
   color: var(--kod-silver-bright);
-  font-size: 1.05rem;
+  font-size: 1.35rem;
   margin: 0;
+  line-height: 1.25;
+}
+
+.myth-card__summary {
+  margin: 0.45rem 0 0;
+  font-size: 0.95rem;
+  line-height: 1.45;
+  color: var(--kod-silver);
 }
 
 .myth-card__fx {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.3rem;
-  margin-top: 0.45rem;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: 0.75rem;
 }
 
 .fx {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.2rem;
-  padding: 0.12rem 0.35rem;
-  font-size: 0.8rem;
+  display: grid;
+  gap: 0.12rem;
+  padding: 0.4rem 0.55rem 0.45rem 0.7rem;
+  font-size: 0.9rem;
+  line-height: 1.35;
   color: var(--kod-silver);
   background: color-mix(in srgb, #151310 80%, transparent);
   border: 1px solid var(--kod-frame);
-  border-top-width: 2px;
-  border-top-color: var(--kod-frame-tick);
+  border-left: 3px solid var(--kod-frame-tick);
+}
+
+.fx__kind {
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--kod-silver-dim);
+}
+
+.fx__label {
+  color: var(--kod-silver-bright);
 }
 
 .fx[data-kind='advantage'],
 .fx[data-kind='exertion_free'],
 .fx[data-kind='trait_grant'] {
-  border-top-color: color-mix(in srgb, #8a9a7a 65%, var(--kod-frame-tick));
+  border-left-color: #8a9a7a;
 }
 
 .fx[data-kind='disadvantage'],
 .fx[data-kind='exertion_forced'],
 .fx[data-kind='trait_deny'] {
-  border-top-color: color-mix(in srgb, var(--kod-silver-dim) 70%, var(--kod-frame));
+  border-left-color: var(--kod-silver-dim);
 }
 
-/* —— Hall search: left column of the hall, sticky like a sheet dock —— */
+.fx[data-kind='omen_faces'],
+.fx[data-kind='practice_mod'],
+.fx[data-kind='tide_mod'] {
+  border-left-color: var(--kod-blood);
+}
+
+/* —— Hall search: right-edge dock, same anchoring as creation plates —— */
 .hall-search {
-  --kod-soot-size: 0.7rem;
-  position: sticky;
-  top: 0.65rem;
-  align-self: start;
+  --kod-soot-size: 0.85rem;
+  --kod-corner-size: 0.88rem;
+  position: fixed;
+  right: 0.4rem;
+  top: 4.6rem;
+  z-index: 45;
+  width: 14.75rem;
+  max-height: calc(100vh - 5.4rem);
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
-  padding: 0.55rem 0.55rem 0.65rem;
-  min-width: 0;
+  gap: 0.7rem;
+  padding: 1.05rem 0.8rem 0.9rem;
+  overflow: auto;
+  border-top: 3px solid color-mix(in srgb, var(--kod-blood) 70%, var(--kod-frame));
+}
+
+@media (min-width: 56.01rem) {
+  body:has(.hall-search) .app {
+    padding-right: 16.1rem;
+  }
+}
+
+.hall-search__head {
+  margin: 0;
+  padding-bottom: 0.45rem;
+  border-bottom: 1px solid var(--kod-frame);
 }
 
 .hall-search__kicker {
   margin: 0;
-  font-size: 0.65rem;
-  letter-spacing: 0.16em;
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--kod-silver-dim);
+  color: var(--kod-blood-bright);
+}
+
+.hall-search__title {
+  margin: 0.15rem 0 0;
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: var(--kod-silver-bright);
 }
 
 .hall-search__label {
@@ -983,51 +1023,76 @@ section.kod-plate {
   clip: rect(0, 0, 0, 0);
 }
 
+.hall-search__lookup {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.35rem;
+  align-items: stretch;
+}
+
 .hall-search__q {
   appearance: none;
+  grid-column: 1 / -1;
   font-family: inherit;
   font-size: 1rem;
-  color: var(--kod-silver);
-  background: var(--kod-plate);
+  color: var(--kod-silver-bright);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, #141010 80%, transparent), #0c0a0a);
   border: 1px solid var(--kod-frame);
+  border-left: 3px solid var(--kod-blood);
   border-radius: 0;
-  padding: 0.4rem 0.5rem;
+  padding: 0.45rem 0.55rem;
   width: 100%;
 }
 
 .hall-search__q:focus-visible {
+  outline: none;
   border-color: var(--kod-frame-tick-hot);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--kod-blood) 35%, transparent);
 }
 
 .hall-search__clear {
   appearance: none;
+  justify-self: end;
   font: inherit;
-  font-size: 0.78rem;
-  letter-spacing: 0.06em;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--kod-silver-dim);
   background: transparent;
-  border: 1px solid var(--kod-frame);
-  padding: 0.2rem 0.4rem;
+  border: none;
+  border-bottom: 1px solid var(--kod-frame);
+  padding: 0.05rem 0;
   cursor: pointer;
 }
 
 .hall-search__clear:hover,
 .hall-search__clear:focus-visible {
   color: var(--kod-silver-bright);
-  border-color: var(--kod-frame-tick-hot);
+  border-bottom-color: var(--kod-blood-bright);
 }
 
 .hall-search__filters {
   display: flex;
   flex-direction: column;
-  gap: 0.55rem;
+  gap: 0.75rem;
 }
 
 .hall-search__group {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.25rem;
+  gap: 0.3rem;
+  padding-top: 0.35rem;
+  border-top: 1px solid color-mix(in srgb, var(--kod-frame) 70%, transparent);
+}
+
+.hall-search__legend {
+  flex: 1 0 100%;
+  margin: 0 0 0.15rem;
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--kod-silver-dim);
 }
 
 .hall-search__chip {
@@ -1035,24 +1100,26 @@ section.kod-plate {
   font: inherit;
   font-size: 0.78rem;
   letter-spacing: 0.04em;
-  color: var(--kod-silver-dim);
-  background: transparent;
+  color: var(--kod-silver);
+  background: color-mix(in srgb, #100e0c 82%, transparent);
   border: 1px solid var(--kod-frame);
+  border-top: 2px solid var(--kod-frame-tick);
   border-radius: 0;
-  padding: 0.15rem 0.45rem;
+  padding: 0.22rem 0.5rem;
   cursor: pointer;
 }
 
 .hall-search__chip:hover,
 .hall-search__chip:focus-visible {
   color: var(--kod-silver-bright);
-  border-color: var(--kod-frame-tick-hot);
+  border-top-color: var(--kod-silver);
 }
 
 .hall-search__chip[aria-pressed='true'] {
-  color: var(--kod-silver-bright);
-  border-color: var(--kod-frame-tick-hot);
-  background: color-mix(in srgb, var(--kod-silver) 10%, #0c0a0a);
+  color: #fff8f0;
+  border-color: color-mix(in srgb, var(--kod-blood) 55%, var(--kod-frame));
+  border-top-color: var(--kod-blood-bright);
+  background: color-mix(in srgb, var(--kod-blood-deep) 45%, #0c0a0a);
 }
 
 .hall-search__hits {
@@ -1067,20 +1134,21 @@ section.kod-plate {
 .hall-search__hit {
   appearance: none;
   font: inherit;
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   width: 100%;
   text-align: left;
-  color: var(--kod-silver);
+  color: var(--kod-silver-bright);
   background: color-mix(in srgb, #0c0a0a 80%, transparent);
   border: 1px solid var(--kod-frame);
-  padding: 0.25rem 0.45rem;
+  border-left: 3px solid var(--kod-blood);
+  padding: 0.3rem 0.5rem;
   cursor: pointer;
 }
 
 .hall-search__hit:hover,
 .hall-search__hit:focus-visible {
   border-color: var(--kod-frame-tick-hot);
-  color: var(--kod-silver-bright);
+  color: #fff8f0;
 }
 
 @media (max-width: 56rem) {
@@ -1088,34 +1156,7 @@ section.kod-plate {
     position: static;
     width: 100%;
     max-height: none;
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
-    align-items: center;
-    gap: 0.35rem 0.5rem;
-    padding: 0.4rem 0.5rem 0.45rem;
-  }
-
-  .hall-search__kicker {
-    grid-column: 1;
-  }
-
-  .hall-search__q {
-    grid-column: 2;
-  }
-
-  .hall-search__clear {
-    grid-column: 3;
-  }
-
-  .hall-search__filters,
-  .hall-search__hits {
-    grid-column: 1 / -1;
-  }
-
-  .hall-search__filters {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 0.3rem 0.55rem;
+    margin: 0 0 0.85rem;
   }
 }
 
@@ -1474,6 +1515,49 @@ section.kod-plate {
   letter-spacing: 0.02em;
 }
 
+.sheet-identity__name-edit {
+  position: relative;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  max-width: 100%;
+}
+
+.sheet-identity__name-input {
+  appearance: none;
+  font: inherit;
+  font-size: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid transparent;
+  padding: 0;
+  margin: 0;
+  min-width: 8rem;
+  width: 18ch;
+  max-width: 100%;
+}
+
+.sheet-identity__name-input:hover,
+.sheet-identity__name-input:focus {
+  outline: none;
+  border-bottom-color: var(--kod-blood);
+}
+
+.sheet-identity__pen {
+  font-size: 0.85rem;
+  color: var(--kod-blood-bright);
+  opacity: 0;
+  transition: opacity 0.12s ease;
+  pointer-events: none;
+}
+
+.sheet-identity__name-edit:hover .sheet-identity__pen,
+.sheet-identity__name-input:focus + .sheet-identity__pen {
+  opacity: 1;
+}
+
 .sheet-identity__player {
   margin: 0;
   font-size: 0.95rem;
@@ -1542,12 +1626,13 @@ section.kod-plate {
 /* Identity flanked by lean rails; main is full-width so the rails do not gutter the page. */
 .sheet-stage--core {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-columns: max-content minmax(0, 1fr) max-content;
   grid-template-areas:
     'ex id echo'
     'main main main';
-  gap: 0.75rem 0.65rem;
+  gap: 0.75rem 0.55rem;
   align-items: start;
+  justify-items: start;
 }
 
 .sheet-stage--core .sheet-identity {
@@ -1561,10 +1646,14 @@ section.kod-plate {
 
 .sheet-stage--core .vtrack:not(.vtrack--echo) {
   grid-area: ex;
+  align-self: start;
+  justify-self: start;
 }
 
 .sheet-stage--core .vtrack--echo {
   grid-area: echo;
+  align-self: start;
+  justify-self: end;
 }
 
 .sheet-stage--core .core-main {
@@ -1604,15 +1693,18 @@ section.kod-plate {
 /* Lean load rails — sized to their pips, blood vs silver, never page-height. */
 .vtrack {
   --kod-soot-size: 0.55rem;
+  --kod-corner-size: 0.7rem;
   --kod-plate-wash: var(--kod-soot), var(--kod-tool);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.3rem;
-  padding: 0.4rem 0.28rem 0.45rem;
-  width: 2.7rem;
+  gap: 0.28rem;
+  padding: 0.45rem 0.4rem 0.5rem;
+  width: 3.15rem;
   min-height: 0;
-  height: auto;
+  height: auto !important;
+  max-height: none;
+  flex: 0 0 auto;
   background:
     var(--kod-plate-wash),
     linear-gradient(
@@ -1635,11 +1727,13 @@ section.kod-plate {
 }
 
 .vtrack__label {
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
-  font-size: 0.62rem;
-  letter-spacing: 0.12em;
+  writing-mode: horizontal-tb;
+  transform: none;
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
+  text-align: center;
+  line-height: 1.15;
   color: var(--kod-silver-dim);
 }
 
@@ -1704,16 +1798,16 @@ section.kod-plate {
 
 .vtrack__readout {
   font-variant-numeric: tabular-nums;
-  font-size: 0.78rem;
+  font-size: 0.82rem;
   color: var(--kod-silver-bright);
   text-align: center;
-  line-height: 1.15;
+  line-height: 1.1;
+  white-space: nowrap;
 }
 
-.vtrack__readout small {
-  display: block;
-  font-size: 0.62rem;
+.vtrack__of {
   color: var(--kod-silver-dim);
+  font-size: 0.7rem;
 }
 
 .vtrack .info {
@@ -1852,22 +1946,24 @@ section.kod-plate {
   gap: 0.35rem;
 }
 
-/* Rank mark only — not a cartouche, not a cost chip. */
+/* Rank mark — blood rail, soot field, roman only. */
 .found-row__spend {
   appearance: none;
   -webkit-appearance: none;
   display: inline-grid;
   place-items: center;
   margin: 0;
-  width: 2.15rem;
-  min-width: 2.15rem;
-  height: 1.85rem;
+  width: 2.35rem;
+  min-width: 2.35rem;
+  height: 2rem;
   padding: 0;
-  border: 1px solid var(--kod-frame-tick);
-  background: #141210;
+  border: 1px solid var(--kod-frame);
+  border-left: 3px solid var(--kod-blood);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--kod-blood-deep) 38%, #141010), #0c0a0a);
   color: var(--kod-silver-bright);
   font: inherit;
-  font-size: 1.05rem;
+  font-size: 1.1rem;
   letter-spacing: 0.04em;
   line-height: 1;
   cursor: pointer;
@@ -2121,22 +2217,22 @@ section.kod-plate {
 /* Practice ring: conic fill toward next rank; inner disc is the rating. */
 .skill__ring {
   --p: 0;
-  width: 2.45rem;
-  height: 2.45rem;
+  width: 2.7rem;
+  height: 2.7rem;
   flex: 0 0 auto;
   margin: 0;
   border-radius: 50%;
   background: conic-gradient(
     from -90deg,
     var(--arch-accent-bright) calc(var(--p) * 1turn),
-    var(--arch-track) 0
+    color-mix(in srgb, var(--arch-accent) 32%, #3a3330) 0
   );
   display: grid;
   place-items: center;
   box-shadow:
     inset 0 0 0 2px #0a0a0a,
-    0 0 0 1px color-mix(in srgb, var(--arch-accent) 40%, transparent),
-    0 0 10px color-mix(in srgb, var(--arch-accent) 18%, transparent);
+    0 0 0 1px color-mix(in srgb, var(--arch-accent-bright) 55%, transparent),
+    0 0 12px color-mix(in srgb, var(--arch-accent) 28%, transparent);
 }
 
 .skill[data-rated='true'] .skill__ring {
@@ -2147,17 +2243,17 @@ section.kod-plate {
 }
 
 .skill__inner {
-  width: 1.72rem;
-  height: 1.72rem;
+  width: 1.88rem;
+  height: 1.88rem;
   border-radius: 50%;
   background: radial-gradient(
     circle at 40% 35%,
-    color-mix(in srgb, var(--arch-track) 40%, #141010),
-    #0a0808 70%
+    color-mix(in srgb, var(--arch-track) 30%, #1a1412),
+    #0a0808 72%
   );
   display: grid;
   place-items: center;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   line-height: 1;
   color: var(--kod-silver-bright);
   font-variant-numeric: tabular-nums;
@@ -2594,13 +2690,13 @@ select.kod-ink option[value=''],
 }
 
 .echo {
-  --echo-weight-w: 6.5rem;
+  --echo-weight-w: 8.25rem;
   --kod-soot-size: 0.85rem;
   display: grid;
   grid-template-columns: var(--echo-weight-w) minmax(0, 1fr);
   gap: 0.75rem 1rem;
-  align-items: start;
-  padding: 0.85rem 0.9rem;
+  align-items: stretch;
+  padding: 0.85rem 0.9rem 0.85rem 0;
 }
 
 .echo--resolved {
@@ -2612,13 +2708,16 @@ select.kod-ink option[value=''],
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  gap: 0.4rem;
+  justify-content: center;
+  gap: 0.45rem;
   width: var(--echo-weight-w);
   min-width: var(--echo-weight-w);
   max-width: var(--echo-weight-w);
   box-sizing: border-box;
-  padding: 0.2rem 0 0;
+  padding: 0.65rem 0.45rem;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--kod-blood-deep) 42%, #0c0a0a), #080606);
+  border-right: 1px solid var(--kod-frame);
 }
 
 .weight-segs {
@@ -2630,8 +2729,8 @@ select.kod-ink option[value=''],
 
 .weight-segs i {
   display: block;
-  width: 1.45rem;
-  height: 0.82rem;
+  width: 2.35rem;
+  height: 1.1rem;
   background: #100e0c;
   border: 1px solid var(--kod-frame-tick);
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.7);
@@ -2663,6 +2762,11 @@ select.kod-ink option[value=''],
   line-height: 1.15;
   overflow-wrap: anywhere;
   hyphens: auto;
+}
+
+.echo__body {
+  padding: 0.15rem 0.9rem 0.15rem 0;
+  min-width: 0;
 }
 
 .echo__title {
@@ -2807,6 +2911,17 @@ select.kod-ink option[value=''],
   border-left: 3px solid var(--kod-blood);
 }
 
+.armour[data-kind='light'] {
+  background:
+    var(--kod-plate-wash),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--kod-silver) 18%, #0c0a0a),
+      #080606 62%
+    );
+  border-left-color: var(--kod-silver);
+}
+
 .armour[data-kind='heavy'] {
   background:
     var(--kod-plate-wash),
@@ -2908,6 +3023,51 @@ select.kod-ink option[value=''],
   font-variant-numeric: tabular-nums;
 }
 
+.supply__unit {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--kod-silver-dim);
+}
+
+.supply__chev {
+  appearance: none;
+  display: block;
+  width: 1.4rem;
+  height: 0.9rem;
+  margin: 0.1rem auto;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+}
+
+.supply__chev::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0.18rem;
+  width: 0.52rem;
+  height: 0.52rem;
+  border-top: 2px solid var(--kod-silver);
+  border-right: 2px solid var(--kod-silver);
+  transform: translateX(-50%) rotate(-45deg);
+}
+
+.supply__chev--down::before {
+  top: auto;
+  bottom: 0.18rem;
+  transform: translateX(-50%) rotate(135deg);
+}
+
+.supply__chev:hover::before,
+.supply__chev:focus-visible::before {
+  border-color: var(--kod-blood-bright);
+}
+
 .inv-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
@@ -2932,17 +3092,19 @@ select.kod-ink option[value=''],
    ========================================================================== */
 
 .budget-dock {
+  --kod-corner-size: 0.82rem;
+  --kod-soot-size: 0.7rem;
   position: fixed;
   left: 0.35rem;
   top: 4.5rem;
   z-index: 50;
-  width: 11.25rem;
+  width: 12rem;
   max-height: calc(100vh - 5.25rem);
   height: auto;
   display: flex;
   flex-direction: column;
-  gap: 0.45rem;
-  padding: 0.55rem 0.5rem 0.6rem;
+  gap: 0.5rem;
+  padding: 1.05rem 0.7rem 0.8rem;
   overflow: auto;
 }
 
@@ -2965,21 +3127,44 @@ select.kod-ink option[value=''],
   color: var(--kod-silver-bright);
 }
 
-/* Budget cards are plates — L-straps, no cartouche endcaps in the remaining row. */
+/* Budget cards are plates — remaining fill, no cartouche endcaps. */
 .budget-card {
+  --kod-corner-size: 0.7rem;
   isolation: isolate;
   display: grid;
-  gap: 0.2rem;
+  gap: 0.22rem;
   width: 100%;
   margin: 0;
-  padding: 0.55rem 0.6rem 0.5rem;
+  padding: 0.55rem 0.55rem 0.5rem 0.6rem;
   text-align: left;
   font: inherit;
   color: inherit;
-  cursor: pointer;
   border-radius: 0;
   appearance: none;
   -webkit-appearance: none;
+  border-left: 3px solid var(--kod-frame-tick);
+}
+
+.budget-card--found {
+  border-left-color: var(--kod-blood);
+  background:
+    var(--kod-plate-wash),
+    linear-gradient(180deg, color-mix(in srgb, var(--kod-blood-deep) 40%, #0c0a0a), #080606 70%);
+}
+
+.budget-card--skill {
+  border-left-color: var(--kod-silver);
+  background:
+    var(--kod-plate-wash),
+    linear-gradient(180deg, color-mix(in srgb, var(--kod-silver) 12%, #0c0a0a), #080606 70%);
+}
+
+.budget-card--words {
+  border-left-color: #c4a035;
+  background:
+    var(--kod-plate-wash),
+    linear-gradient(180deg, color-mix(in srgb, #c4a035 16%, #0c0a0a), #080606 70%);
+  cursor: pointer;
 }
 
 .budget-card:hover,
@@ -2991,6 +3176,9 @@ select.kod-ink option[value=''],
 }
 
 .budget-card__label {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
   font-size: 0.68rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -3055,14 +3243,19 @@ select.kod-ink option[value=''],
 }
 
 .budget-card__cta {
-  margin-top: 0.2rem;
-  font-size: 0.72rem;
-  letter-spacing: 0.04em;
-  color: var(--kod-silver);
+  display: none;
+}
+
+.budget-card--found .budget-card__main strong {
+  color: var(--kod-blood-bright);
+}
+
+.budget-card--skill .budget-card__main strong {
+  color: var(--kod-silver-bright);
 }
 
 .budget-card--words .budget-card__main strong {
-  color: var(--kod-silver-bright);
+  color: #e0c050;
 }
 
 .budget-card--empty {
@@ -3129,6 +3322,7 @@ body.wanting-lock .wanting-scrim {
 }
 
 .wanting-panel {
+  --kod-corner-size: 0.82rem;
   position: fixed;
   right: 0.35rem;
   top: 4.5rem;
@@ -3139,8 +3333,9 @@ body.wanting-lock .wanting-scrim {
   display: flex;
   flex-direction: column;
   gap: 0.45rem;
-  padding: 0.55rem 0.55rem 0.65rem;
+  padding: 1.05rem 0.75rem 0.8rem;
   overflow: auto;
+  border-top: 3px solid var(--kod-blood);
 }
 
 .wanting-panel[hidden] {
@@ -3359,12 +3554,28 @@ body.wanting-lock .wanting-scrim {
   font-size: 0.82rem;
 }
 
-/* Blood kicker is identity of the rite — cartouche fill hover stays pewter. */
-.wanting-confirm .kod-btn__kicker,
-.wanting-confirm:hover .kod-btn__kicker,
-.wanting-confirm:focus-visible .kod-btn__kicker,
-.wanting-confirm:active .kod-btn__kicker {
-  color: var(--kod-blood-bright);
+.wanting-confirm {
+  --kod-corner-size: 0.7rem;
+  appearance: none;
+  width: 100%;
+  margin: 0;
+  padding: 0.7rem 0.85rem;
+  font: inherit;
+  font-size: 1.05rem;
+  letter-spacing: 0.06em;
+  color: var(--kod-silver-bright);
+  text-align: center;
+  cursor: pointer;
+  border-top: 3px solid var(--kod-blood);
+  background:
+    var(--kod-plate-wash),
+    linear-gradient(180deg, color-mix(in srgb, var(--kod-blood-deep) 42%, #0c0a0a), #080606);
+}
+
+.wanting-confirm:hover,
+.wanting-confirm:focus-visible {
+  color: #fff8f0;
+  border-color: var(--kod-blood-bright);
 }
 
 .draft-foot {

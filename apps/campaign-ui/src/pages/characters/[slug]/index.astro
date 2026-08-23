@@ -103,8 +103,7 @@ const roman = (n: number) => ['∅', 'I', 'II', 'III', 'IV'][n] ?? String(n);
         }
       </div>
       <div class="vtrack__readout">
-        {ch.exertion.current}
-        <small>/ {ch.exertion.max}</small>
+        {ch.exertion.current}<span class="vtrack__of">/{ch.exertion.max}</span>
       </div>
       <button
         type="button"
@@ -351,8 +350,7 @@ const roman = (n: number) => ['∅', 'I', 'II', 'III', 'IV'][n] ?? String(n);
         }
       </div>
       <div class="vtrack__readout">
-        {ch.echoWeight}
-        <small>/ {ch.echoCapacity}</small>
+        {ch.echoWeight}<span class="vtrack__of">/{ch.echoCapacity}</span>
       </div>
       <button
         type="button"

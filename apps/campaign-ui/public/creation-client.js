@@ -179,8 +179,8 @@
       set('[data-field="skillPool"]', sPool);
       const ff = scope.querySelector('[data-field="foundationFill"]');
       const sf = scope.querySelector('[data-field="skillFill"]');
-      if (ff) ff.style.width = (fPool > 0 ? Math.round((fSpent / fPool) * 100) : 0) + '%';
-      if (sf) sf.style.width = (sPool > 0 ? Math.round((sSpent / sPool) * 100) : 0) + '%';
+      if (ff) ff.style.width = (fPool > 0 ? Math.round((fp / fPool) * 100) : 0) + '%';
+      if (sf) sf.style.width = (sPool > 0 ? Math.round((sp / sPool) * 100) : 0) + '%';
       if (creation.birthOmenGranted != null) {
         const bf = scope.querySelector('[data-field="birthOmenFlag"]');
         if (bf) {
@@ -384,6 +384,11 @@
     }
     if (ring instanceof HTMLElement) ring.style.setProperty('--p', String(p));
     skillEl.style.setProperty('--p', String(p));
+    const costEl = skillEl.querySelector('.skill__cost');
+    if (costEl) {
+      const next = rating >= 3 ? null : rating === 0 ? 1 : rating === 1 ? 2 : 3;
+      costEl.textContent = next != null ? '−' + next : 'max';
+    }
   }
 
   function toggleFoundPick(btn) {
@@ -1163,9 +1168,51 @@
     document.head.appendChild(style);
   }
 
+  function saveWhoWeSee() {
+    const field = document.querySelector('[data-field="whoWeSee"]');
+    if (!(field instanceof HTMLTextAreaElement)) return;
+    post({ action: 'update-concept', whoWeSee: field.value })
+      .then(() => msg('concept', 'Saved.', true))
+      .catch((e) => msg('concept', e instanceof Error ? e.message : String(e), false));
+  }
+
+  function saveName() {
+    const field = document.querySelector('.sheet-identity__name-input');
+    if (!(field instanceof HTMLInputElement)) return;
+    const name = field.value.trim();
+    if (!name) return;
+    post({ action: 'update-concept', name })
+      .then(() => {
+        document.title = name + document.title.replace(/^[^·]+/, '');
+      })
+      .catch(() => {});
+  }
+
+  let whoTimer = 0;
+  const whoField = document.querySelector('[data-field="whoWeSee"]');
+  if (whoField instanceof HTMLTextAreaElement) {
+    whoField.addEventListener('input', () => {
+      window.clearTimeout(whoTimer);
+      whoTimer = window.setTimeout(saveWhoWeSee, 700);
+    });
+    whoField.addEventListener('blur', saveWhoWeSee);
+  }
+
+  const nameField = document.querySelector('.sheet-identity__name-input');
+  if (nameField instanceof HTMLInputElement) {
+    nameField.addEventListener('change', saveName);
+    nameField.addEventListener('keydown', (ev) => {
+      if (ev.key === 'Enter') {
+        ev.preventDefault();
+        nameField.blur();
+      }
+    });
+  }
+
   document.addEventListener('click', (ev) => {
     const t = ev.target;
     if (!(t instanceof HTMLElement)) return;
+    if (t.closest('.info')) return;
 
     const jump = t.closest('[data-jump]');
     if (jump instanceof HTMLElement) {
