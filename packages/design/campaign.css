@@ -1,8 +1,9 @@
 @import './fonts.css';
 @import './tokens.css';
+@import './primitives.css';
 
 /* ==========================================================================
-   Kodranni campaign-ui — smoke surfaces, hierarchy ladders, live sheets
+   Kodranni campaign-ui — plate chrome, hierarchy ladders, live sheets
    ========================================================================== */
 
 *,
@@ -28,7 +29,7 @@ body {
   letter-spacing: 0.015em;
   background-color: var(--kod-black);
   background-image:
-    radial-gradient(ellipse 120% 80% at 50% -10%, rgba(74, 12, 12, 0.16), transparent 55%),
+    radial-gradient(ellipse 120% 80% at 50% -10%, color-mix(in srgb, var(--kod-blood-deep) 16%, transparent), transparent 55%),
     radial-gradient(ellipse 90% 60% at 100% 100%, rgba(0, 0, 0, 0.55), transparent 50%);
   background-attachment: fixed;
 }
@@ -65,7 +66,7 @@ a:hover {
   gap: 0.75rem;
   padding-bottom: 0.55rem;
   margin-bottom: 0.25rem;
-  border-bottom: 1px solid color-mix(in srgb, var(--kod-blood) 35%, transparent);
+  border-bottom: 1px solid var(--kod-frame);
 }
 
 .app__logo {
@@ -105,14 +106,37 @@ a:hover {
   color: #6a625c;
 }
 
-.tabs {
+.tabs,
+.sheet-tabs {
   display: flex;
+  flex-wrap: wrap;
   gap: 0;
   margin-bottom: 1rem;
-  border-bottom: 1px solid color-mix(in srgb, #2a2222 80%, transparent);
+  position: relative;
+  border-bottom: none;
 }
 
-.tabs a {
+.tabs::after,
+.sheet-tabs::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  pointer-events: none;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--kod-frame) 12%,
+    var(--kod-frame-tick) 50%,
+    var(--kod-frame) 88%,
+    transparent
+  );
+}
+
+.tabs a,
+.sheet-tabs a {
   text-decoration: none;
   padding: 0.5rem 1.05rem;
   color: var(--kod-silver-dim);
@@ -120,52 +144,27 @@ a:hover {
   margin-bottom: -1px;
   letter-spacing: 0.05em;
   font-size: 0.95rem;
-}
-
-.tabs a[aria-current='page'] {
-  color: var(--kod-silver-bright);
-  border-bottom-color: var(--kod-blood);
-}
-
-/* —— Smoke surface (no stiff box barriers) —— */
-.smoke {
-  position: relative;
-  margin-bottom: 1rem;
-  padding: 0.95rem 1rem 1.05rem;
-  background: linear-gradient(
-    165deg,
-    color-mix(in srgb, #1a1010 55%, transparent) 0%,
-    color-mix(in srgb, #0a0808 70%, transparent) 45%,
-    color-mix(in srgb, #050505 40%, transparent) 100%
-  );
-  border: none;
-  -webkit-mask-image:
-    radial-gradient(ellipse 110% 100% at 48% 40%, #000 35%, #000 58%, transparent 92%),
-    linear-gradient(to bottom, transparent 0%, #000 6%, #000 90%, transparent 100%),
-    linear-gradient(to right, transparent 0%, #000 3%, #000 97%, transparent 100%);
-  mask-image:
-    radial-gradient(ellipse 110% 100% at 48% 40%, #000 35%, #000 58%, transparent 92%),
-    linear-gradient(to bottom, transparent 0%, #000 6%, #000 90%, transparent 100%),
-    linear-gradient(to right, transparent 0%, #000 3%, #000 97%, transparent 100%);
-  -webkit-mask-composite: source-in, source-in;
-  mask-composite: intersect, intersect;
-}
-
-.smoke::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  background:
-    radial-gradient(ellipse 90% 80% at 50% 45%, transparent 40%, rgba(0, 0, 0, 0.35) 100%),
-    linear-gradient(180deg, rgba(0, 0, 0, 0.45) 0%, transparent 18%, transparent 82%, rgba(0, 0, 0, 0.55) 100%);
-  mix-blend-mode: multiply;
-}
-
-.smoke > * {
   position: relative;
   z-index: 1;
+}
+
+.tabs a[aria-current='page'],
+.sheet-tabs a[aria-current='page'] {
+  color: var(--kod-silver-bright);
+  border-bottom-color: var(--kod-blood);
+  background: color-mix(in srgb, var(--kod-blood-deep) 22%, transparent);
+}
+
+.tabs a:hover:not([aria-current='page']),
+.sheet-tabs a:hover:not([aria-current='page']) {
+  color: var(--kod-silver-bright);
+  border-bottom-color: var(--kod-frame-tick-hot);
+}
+
+/* Wrapper sections only — inner plates stay chrome-only. */
+section.kod-plate {
+  margin-bottom: 1rem;
+  padding: 0.95rem 1rem 1.05rem;
 }
 
 .section-head {
@@ -188,7 +187,7 @@ a:hover {
   width: 0.95rem;
   height: 0.95rem;
   margin-left: 0.25rem;
-  border: 1px solid #4a3a3a;
+  border: 1px solid var(--kod-frame);
   border-radius: 50%;
   color: var(--kod-silver-dim);
   font-size: 0.65rem;
@@ -196,16 +195,15 @@ a:hover {
   line-height: 1;
   cursor: help;
   vertical-align: middle;
-  background: rgba(20, 12, 12, 0.7);
+  background: color-mix(in srgb, var(--kod-plate) 85%, #1a1816);
   flex-shrink: 0;
   padding: 0;
 }
 
 .info:hover,
 .info:focus-visible {
-  border-color: var(--kod-blood-bright);
+  border-color: var(--kod-frame-tick-hot);
   color: var(--kod-silver-bright);
-  outline: none;
 }
 
 .tip {
@@ -213,13 +211,13 @@ a:hover {
   z-index: 50;
   max-width: 18rem;
   padding: 0.45rem 0.6rem;
-  background: #1a1414;
-  border: 1px solid color-mix(in srgb, var(--kod-blood) 45%, #444);
+  background: #141210;
+  border: 1px solid var(--kod-frame);
   color: var(--kod-silver);
   font-size: 0.84rem;
   line-height: 1.4;
   pointer-events: none;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  box-shadow: var(--kod-smoke);
 }
 
 .tip[hidden] {
@@ -794,44 +792,42 @@ a.member:hover {
 }
 
 .sheet-back {
+  --kod-soot-size: 0.7rem;
+  --kod-corner-size: 0.88rem;
+  /* Rebind on this element so size/tool vars are not the :root snapshot. */
+  --kod-soot:
+    radial-gradient(var(--kod-soot-size) var(--kod-soot-size) at 0 0, rgba(0, 0, 0, 0.62), transparent 72%),
+    radial-gradient(var(--kod-soot-size) var(--kod-soot-size) at 100% 0, rgba(0, 0, 0, 0.62), transparent 72%),
+    radial-gradient(
+      calc(var(--kod-soot-size) + 0.15rem) calc(var(--kod-soot-size) + 0.1rem) at 0 100%,
+      rgba(0, 0, 0, 0.74),
+      transparent 74%
+    ),
+    radial-gradient(
+      calc(var(--kod-soot-size) + 0.15rem) calc(var(--kod-soot-size) + 0.1rem) at 100% 100%,
+      rgba(0, 0, 0, 0.74),
+      transparent 74%
+    );
+  --kod-corners:
+    var(--kod-c-tl) 0 0 / var(--kod-corner-size) var(--kod-corner-size) no-repeat,
+    var(--kod-c-tr) 100% 0 / var(--kod-corner-size) var(--kod-corner-size) no-repeat,
+    var(--kod-c-bl) 0 100% / var(--kod-corner-size) var(--kod-corner-size) no-repeat,
+    var(--kod-c-br) 100% 100% / var(--kod-corner-size) var(--kod-corner-size) no-repeat;
+  --kod-plate-wash: var(--kod-corners), var(--kod-soot), var(--kod-tool);
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
   text-decoration: none;
-  padding: 0.35rem 0.7rem;
+  padding: 0.32rem 0.7rem;
   font-size: 0.88rem;
   color: var(--kod-silver-dim);
-  background: color-mix(in srgb, #121010 80%, transparent);
-  border-left: 2px solid #3a2a2a;
 }
 
 .sheet-back:hover {
+  --kod-tool: linear-gradient(180deg, rgba(0, 0, 0, 0.12), transparent 42%);
   color: var(--kod-silver-bright);
-  border-left-color: var(--kod-blood);
-}
-
-.sheet-tabs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0;
-  border-bottom: 1px solid color-mix(in srgb, #2a2222 70%, transparent);
-  margin-bottom: 1rem;
-}
-
-.sheet-tabs a {
-  text-decoration: none;
-  padding: 0.55rem 1.15rem;
-  color: var(--kod-silver-dim);
-  border-bottom: 2px solid transparent;
-  margin-bottom: -1px;
-  letter-spacing: 0.04em;
-  font-size: 0.95rem;
-}
-
-.sheet-tabs a[aria-current='page'] {
-  color: var(--kod-silver-bright);
-  border-bottom-color: var(--kod-blood);
-  background: color-mix(in srgb, var(--kod-blood-deep) 22%, transparent);
+  border-color: var(--kod-frame-tick);
+  background: var(--kod-plate-wash), #12100e;
 }
 
 .sheet-identity {

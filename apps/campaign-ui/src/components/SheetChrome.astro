@@ -31,7 +31,7 @@ const av = avatarUrl(slug, avatar);
 ---
 
 <div class="sheet-top">
-  <a class="sheet-back" href={`/characters/?sel=${slug}`}>← Character roster</a>
+  <a class="kod-plate sheet-back" href={`/characters/?sel=${slug}`}>← Character roster</a>
   {
     (status === 'dead' || status === 'draft' || status === 'pending_review' || dying) && (
       <p class="app__meta" style="margin:0">

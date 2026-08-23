@@ -1,4 +1,4 @@
-/* Shared chrome primitives — cartouche + focus ring.
+/* Shared chrome primitives — plates, cartouche, focus ring.
  * Tokens only: landing already loads Bellefair. */
 @import './tokens.css';
 
@@ -6,6 +6,15 @@
 :focus-visible {
   outline: 1px solid var(--kod-blood-bright);
   outline-offset: 2px;
+}
+
+/* L-straps + soot + tool live on --kod-plate-wash; smoke is the drop, not a mask. */
+.kod-plate {
+  box-sizing: border-box;
+  position: relative;
+  border: 1px solid var(--kod-frame);
+  background: var(--kod-plate-wash), var(--kod-plate);
+  box-shadow: var(--kod-smoke);
 }
 
 .kod-btn {
