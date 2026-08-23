@@ -18,8 +18,8 @@
   line-height: 1.58;
   letter-spacing: 0.01em;
   box-shadow:
-    inset 0 1px 0 rgba(242, 239, 233, 0.07),
-    inset 0 -12px 20px -16px rgba(0, 0, 0, 0.5);
+    inset 0 1px 0 rgba(0, 0, 0, 0.4),
+    inset 0 -14px 22px -16px rgba(0, 0, 0, 0.68);
 }
 
 /* Soot + tool overlay the cells so overflow/thead paint cannot hide them. */

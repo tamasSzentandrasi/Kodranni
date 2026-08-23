@@ -1538,7 +1538,7 @@
 }
 
 .kod-die-card:hover {
-  --kod-tool: linear-gradient(180deg, rgba(242, 239, 233, 0.14), transparent 36%);
+  --kod-tool: linear-gradient(180deg, rgba(0, 0, 0, 0.1), transparent 36%);
   box-shadow:
     var(--kod-smoke),
     0 0 0 1px #6a6560;
