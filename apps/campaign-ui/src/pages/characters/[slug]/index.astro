@@ -7,6 +7,7 @@ import BudgetDock from '../../../components/BudgetDock.astro';
 import CampaignLayout from '../../../layouts/CampaignLayout.astro';
 import ConfirmDock from '../../../components/ConfirmDock.astro';
 import SheetChrome from '../../../components/SheetChrome.astro';
+import SkillSeal from '../../../components/SkillSeal.astro';
 import WantingPanel from '../../../components/WantingPanel.astro';
 import { getCharacter, loadCommunity } from '../../../data/load';
 import { harmPips, segments } from '../../../lib/format';
@@ -222,8 +223,8 @@ const roman = (n: number) => ['∅', 'I', 'II', 'III', 'IV'][n] ?? String(n);
             class="info"
             data-tip={
               canEdit
-                ? 'Left-click raise · right-click lower (refund). Centre = rating · ring = Practice.'
-                : 'Centre = rating. Ring = Practice toward next rank. Hover a skill for Practice and Foundation.'
+                ? 'Left-click raise · right-click lower (refund). Centre = rating · rose = Practice.'
+                : 'Centre = rating. Rose = Practice toward next rank. Hover a skill for Practice and Foundation; open About on touch.'
             }
             aria-label="About Skills"
           >
@@ -289,9 +290,7 @@ const roman = (n: number) => ['∅', 'I', 'II', 'III', 'IV'][n] ?? String(n);
                           data-tip={tip}
                           tabindex="0"
                         >
-                          <div class="skill__ring">
-                            <div class="skill__inner">{rating}</div>
-                          </div>
+                          <SkillSeal rating={rating} p={p} />
                           <span class="skill__name">{def.name}</span>
                           {
                             canEdit && (
@@ -300,6 +299,10 @@ const roman = (n: number) => ['∅', 'I', 'II', 'III', 'IV'][n] ?? String(n);
                               </span>
                             )
                           }
+                          <details class="skill__more">
+                            <summary>About</summary>
+                            <p>{tip}</p>
+                          </details>
                         </li>
                       );
                     })}

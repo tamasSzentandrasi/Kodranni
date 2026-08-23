@@ -225,19 +225,35 @@
       else if (cost != null) el.classList.add('skill--unaffordable');
       if (!locked && refund != null) el.classList.add('skill--refundable');
 
-      el.setAttribute(
-        'data-tip',
+      const tipText =
         (!locked && cost != null && sp >= cost
           ? 'Left-click: raise (costs ' + cost + ')'
           : cost != null
             ? 'Need ' + cost + ' Skill pts'
             : 'At maximum') +
-          ' · ' +
-          (refund != null && !locked
-            ? 'Right-click: lower (refund ' + refund + ')'
-            : 'Cannot lower below 0'),
-      );
+        ' · ' +
+        (refund != null && !locked
+          ? 'Right-click: lower (refund ' + refund + ')'
+          : 'Cannot lower below 0');
+      el.setAttribute('data-tip', tipText);
+      const more = el.querySelector('.skill__more p');
+      if (more) more.textContent = tipText;
     });
+  }
+
+  function paintSeal(skillEl, rating) {
+    skillEl.setAttribute('data-rating', String(rating));
+    skillEl.setAttribute('data-rated', rating > 0 ? 'true' : 'false');
+    const n = skillEl.querySelector('.skill-seal__n');
+    if (n) n.textContent = String(rating);
+    const seal = skillEl.querySelector('.skill-seal');
+    if (!(seal instanceof HTMLElement)) return;
+    seal.classList.remove('skill-seal--empty', 'skill-seal--practice', 'skill-seal--max');
+    const kind = rating <= 0 ? 'empty' : rating >= 3 ? 'max' : 'practice';
+    seal.classList.add('skill-seal--' + kind);
+    const p = rating <= 0 ? 0 : rating >= 3 ? 1 : 0;
+    seal.style.setProperty('--p', String(p));
+    skillEl.style.setProperty('--p', String(p));
   }
 
   async function applyFoundation(btn, refund) {
@@ -321,10 +337,7 @@
       const entry =
         Array.isArray(data.skills) && data.skills.find((s) => s && s.name === skill);
       const next = entry ? Number(entry.rating) : 0;
-      skillEl.setAttribute('data-rating', String(next));
-      skillEl.setAttribute('data-rated', next > 0 ? 'true' : 'false');
-      const inner = skillEl.querySelector('.skill__inner');
-      if (inner) inner.textContent = String(next);
+      paintSeal(skillEl, next);
       setBudget(data.creation);
       msg('spend', skill + (refund ? ' lowered.' : ' raised.'), true);
     } catch (e) {
@@ -582,10 +595,7 @@
             const name = el.getAttribute('data-spend-skill');
             const entry = data.skills.find((s) => s && s.name === name);
             const rating = entry ? Number(entry.rating) : 0;
-            el.setAttribute('data-rating', String(rating));
-            el.setAttribute('data-rated', rating > 0 ? 'true' : 'false');
-            const inner = el.querySelector('.skill__inner');
-            if (inner) inner.textContent = String(rating);
+            paintSeal(el, rating);
           });
         }
       }
@@ -735,7 +745,7 @@
     const skillEl = t.closest('[data-spend-skill]');
     if (
       skillEl instanceof HTMLElement &&
-      (t.closest('.skill__ring') || t.closest('.skill__name') || t === skillEl)
+      (t.closest('.skill-seal') || t.closest('.skill__name') || t === skillEl)
     ) {
       void applySkill(skillEl, false);
     }

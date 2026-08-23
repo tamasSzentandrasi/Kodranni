@@ -1838,7 +1838,7 @@ section.kod-plate {
   --arch-accent-deep: var(--kod-blood-deep);
   --arch-track: #1a1414;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   aspect-ratio: 1 / 1;
   min-width: 0;
   min-height: 0;
@@ -1893,6 +1893,7 @@ section.kod-plate {
   position: absolute;
   inset: 0;
   z-index: 0;
+  overflow: hidden;
 }
 
 .arch__art img {
@@ -1992,60 +1993,85 @@ section.kod-plate {
   gap: 0.2rem;
 }
 
-.skill__ring {
-  width: 2.15rem;
-  height: 2.15rem;
+@property --p {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0;
+}
+
+.skill-seal {
+  --p: 0;
+  position: relative;
+  width: 2.3rem;
+  height: 2.3rem;
   flex: 0 0 auto;
-  margin: 0;
-  border-radius: 50%;
-  background: conic-gradient(
-    var(--arch-accent-bright) calc(var(--p) * 1turn),
-    var(--arch-track) 0
-  );
   display: grid;
   place-items: center;
-  box-shadow:
-    inset 0 0 0 2px #0a0a0a,
-    0 0 0 1px color-mix(in srgb, var(--arch-accent) 35%, transparent),
-    0 0 10px color-mix(in srgb, var(--arch-accent) 18%, transparent);
-}
-
-.skill[data-rated='true'] .skill__ring {
-  box-shadow:
-    inset 0 0 0 2px #0a0a0a,
-    0 0 0 1px color-mix(in srgb, var(--arch-accent-bright) 55%, transparent),
-    0 0 12px color-mix(in srgb, var(--arch-accent) 28%, transparent);
-}
-
-.skill__inner {
-  width: 1.55rem;
-  height: 1.55rem;
   border-radius: 50%;
-  background: radial-gradient(
-    circle at 40% 35%,
-    color-mix(in srgb, var(--arch-track) 40%, #141010),
-    #0a0808 70%
-  );
+}
+
+.skill-seal__chrome {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.skill-seal__fill {
+  /* Petal silhouette ∩ conic from 12 o'clock — not a HUD ring. */
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: color-mix(in srgb, var(--arch-accent-bright) 35%, #c4bfb6);
+  -webkit-mask-image:
+    url('./ornament/practice-rose-petals.svg'),
+    conic-gradient(from -90deg, #000 calc(var(--p) * 1turn), transparent 0);
+  -webkit-mask-size: 100% 100%, 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-composite: source-in;
+  mask-image:
+    url('./ornament/practice-rose-petals.svg'),
+    conic-gradient(from -90deg, #000 calc(var(--p) * 1turn), transparent 0);
+  mask-size: 100% 100%, 100% 100%;
+  mask-repeat: no-repeat;
+  mask-composite: intersect;
+  transition: --p 0.35s ease;
+}
+
+.skill-seal--empty .skill-seal__fill,
+.skill-seal--empty .skill-seal__rim {
+  visibility: hidden;
+}
+
+.skill-seal--max .skill-seal__rim {
+  fill: #e8e4dc;
+}
+
+.skill-seal__n {
+  position: relative;
+  z-index: 2;
+  width: 1.5rem;
+  height: 1.5rem;
   display: grid;
   place-items: center;
-  font-size: 0.9rem;
-  color: var(--kod-silver-bright);
+  font-size: 0.82rem;
+  line-height: 1;
   font-variant-numeric: tabular-nums;
-}
-
-.skill[data-rated='true'] .skill__inner {
-  color: color-mix(in srgb, #fff8f0 70%, var(--arch-accent-bright));
-  border: 1px solid color-mix(in srgb, var(--arch-accent) 30%, transparent);
-}
-
-.skill[data-rating='0'] .skill__inner {
   color: #4a4440;
-  border: none;
+  pointer-events: none;
+  text-shadow: 0 0 0.28rem rgba(5, 5, 5, 0.95);
 }
 
-.skill[data-rating='3'] .skill__inner {
+.skill-seal--practice .skill-seal__n {
+  color: var(--kod-silver-bright);
+}
+
+.skill-seal--max .skill-seal__n {
   color: var(--arch-accent-bright);
-  box-shadow: inset 0 0 8px color-mix(in srgb, var(--arch-accent) 35%, transparent);
 }
 
 .skill__name {
@@ -2087,29 +2113,98 @@ body.wanting-lock [data-spend-skill] {
   opacity: 0.4;
 }
 
-/* Unlocked: raisable skill rings */
-.skill--spendable .skill__ring {
+.skill--spendable .skill-seal {
   cursor: pointer;
-  box-shadow:
-    inset 0 0 0 2px #0a0a0a,
-    0 0 0 1px color-mix(in srgb, var(--kod-silver) 45%, var(--arch-accent)),
-    0 0 14px color-mix(in srgb, var(--kod-silver) 22%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--kod-silver) 55%, transparent);
 }
 
-.skill--spendable:hover .skill__ring,
-.skill--spendable:focus-within .skill__ring {
-  box-shadow:
-    inset 0 0 0 2px #0a0a0a,
-    0 0 0 1px var(--kod-silver-bright),
-    0 0 16px color-mix(in srgb, var(--kod-silver) 30%, transparent);
+.skill--spendable:hover .skill-seal,
+.skill--spendable:focus-within .skill-seal {
+  box-shadow: 0 0 0 1px var(--kod-silver-bright);
 }
 
-.skill--unaffordable {
+.skill--unaffordable .skill-seal {
   opacity: 0.55;
+  cursor: not-allowed;
 }
 
-.skill--unaffordable .skill__ring {
-  cursor: not-allowed;
+.arch:has(.skill__more[open]),
+.skill:has(.skill__more[open]) {
+  z-index: 3;
+}
+
+.skill__more {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  margin: 0;
+  width: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  pointer-events: none;
+}
+
+.skill__more summary {
+  pointer-events: auto;
+  cursor: pointer;
+  list-style: none;
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--kod-silver-dim);
+  text-align: center;
+  white-space: nowrap;
+  text-shadow: 0 0 0.3rem rgba(5, 5, 5, 0.9);
+}
+
+.skill__more summary::-webkit-details-marker {
+  display: none;
+}
+
+.skill__more summary::before {
+  content: '▸ ';
+  color: var(--kod-silver-dim);
+}
+
+.skill__more[open] summary::before {
+  content: '▾ ';
+}
+
+.skill__more p {
+  pointer-events: auto;
+  position: absolute;
+  left: 50%;
+  bottom: 1.1rem;
+  transform: translateX(-50%);
+  z-index: 5;
+  width: max(100%, 9rem);
+  max-width: 12rem;
+  margin: 0;
+  padding: 0.3rem 0.35rem;
+  font-size: 0.68rem;
+  line-height: 1.25;
+  letter-spacing: 0.01em;
+  text-align: left;
+  color: var(--kod-silver);
+  background: var(--kod-plate);
+  border: 1px solid var(--kod-frame);
+  box-shadow: var(--kod-smoke);
+  max-height: 7rem;
+  overflow: auto;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .skill__more {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skill-seal__fill {
+    transition: none;
+  }
 }
 
 .skill__cost {

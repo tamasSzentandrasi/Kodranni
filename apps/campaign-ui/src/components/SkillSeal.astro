@@ -1,0 +1,57 @@
+---
+interface Props {
+  rating: number;
+  p: number;
+}
+
+const { rating, p } = Astro.props;
+const kind = rating <= 0 ? 'empty' : rating >= 3 ? 'max' : 'practice';
+---
+
+<span class:list={['skill-seal', `skill-seal--${kind}`]} style={`--p: ${p}`}>
+  <svg class="skill-seal__chrome" viewBox="0 0 64 64" aria-hidden="true" fill="none">
+    <g class="skill-seal__hairline" stroke="#d0cac0" stroke-linejoin="round" fill="none">
+      <circle cx="32" cy="32" r="31.15" stroke-width="0.85" opacity="0.7"></circle>
+      <circle cx="32" cy="32" r="28.9" stroke-width="0.7" opacity="0.85"></circle>
+      <circle cx="32" cy="32" r="26.7" stroke-width="0.7" opacity="0.7"></circle>
+      <circle cx="32" cy="32" r="24.35" stroke-width="0.85"></circle>
+      <g stroke-width="0.85">
+        <path d="M32 25.5 A7.627 7.627 0 0 1 32 10.5 A7.627 7.627 0 0 1 32 25.5Z"></path>
+        <path d="M36.596 27.404 A7.627 7.627 0 0 1 47.203 16.797 A7.627 7.627 0 0 1 36.596 27.404Z"></path>
+        <path d="M38.5 32 A7.627 7.627 0 0 1 53.5 32 A7.627 7.627 0 0 1 38.5 32Z"></path>
+        <path d="M36.596 36.596 A7.627 7.627 0 0 1 47.203 47.203 A7.627 7.627 0 0 1 36.596 36.596Z"></path>
+        <path d="M32 38.5 A7.627 7.627 0 0 1 32 53.5 A7.627 7.627 0 0 1 32 38.5Z"></path>
+        <path d="M27.404 36.596 A7.627 7.627 0 0 1 16.797 47.203 A7.627 7.627 0 0 1 27.404 36.596Z"></path>
+        <path d="M25.5 32 A7.627 7.627 0 0 1 10.5 32 A7.627 7.627 0 0 1 25.5 32Z"></path>
+        <path d="M27.404 27.404 A7.627 7.627 0 0 1 16.797 16.797 A7.627 7.627 0 0 1 27.404 27.404Z"></path>
+      </g>
+      <g stroke-width="0.65" opacity="0.85">
+        <path d="M32 26.9 A5.42 5.42 0 0 1 32 16.8 A5.42 5.42 0 0 1 32 26.9Z"></path>
+        <path d="M35.606 28.394 A5.42 5.42 0 0 1 42.748 21.252 A5.42 5.42 0 0 1 35.606 28.394Z"></path>
+        <path d="M37.1 32 A5.42 5.42 0 0 1 47.2 32 A5.42 5.42 0 0 1 37.1 32Z"></path>
+        <path d="M35.606 35.606 A5.42 5.42 0 0 1 42.748 42.748 A5.42 5.42 0 0 1 35.606 35.606Z"></path>
+        <path d="M32 37.1 A5.42 5.42 0 0 1 32 47.2 A5.42 5.42 0 0 1 32 37.1Z"></path>
+        <path d="M28.394 35.606 A5.42 5.42 0 0 1 21.252 42.748 A5.42 5.42 0 0 1 28.394 35.606Z"></path>
+        <path d="M26.9 32 A5.42 5.42 0 0 1 16.8 32 A5.42 5.42 0 0 1 26.9 32Z"></path>
+        <path d="M28.394 28.394 A5.42 5.42 0 0 1 21.252 21.252 A5.42 5.42 0 0 1 28.394 28.394Z"></path>
+      </g>
+      <circle cx="32" cy="32" r="3.15" stroke-width="0.9"></circle>
+      <circle cx="32" cy="32" r="1.55" stroke-width="0.7"></circle>
+      <g fill="#d0cac0" stroke="none">
+        <circle cx="32" cy="27.55" r="0.55"></circle>
+        <circle cx="35.15" cy="28.85" r="0.55"></circle>
+        <circle cx="36.45" cy="32" r="0.55"></circle>
+        <circle cx="35.15" cy="35.15" r="0.55"></circle>
+        <circle cx="32" cy="36.45" r="0.55"></circle>
+        <circle cx="28.85" cy="35.15" r="0.55"></circle>
+        <circle cx="27.55" cy="32" r="0.55"></circle>
+        <circle cx="28.85" cy="28.85" r="0.55"></circle>
+      </g>
+    </g>
+    <g class="skill-seal__rim" fill="#d0cac0" fill-rule="evenodd">
+      <path d="M32 1.1a30.9 30.9 0 1 0 .002 0zm0 6.7a24.2 24.2 0 1 0 .002 0z"></path>
+    </g>
+  </svg>
+  <span class="skill-seal__fill" aria-hidden="true"></span>
+  <span class="skill-seal__n">{rating}</span>
+</span>
