@@ -11,7 +11,7 @@
   overflow: hidden;
   position: relative;
   --kod-soot-size: 1.1rem;
-  border: 1px solid color-mix(in srgb, var(--kod-blood) 78%, #3a3030);
+  border: 1px solid color-mix(in srgb, var(--kod-blood) 62%, #3a3030);
   border-radius: 0;
   background: #0c0a0a;
   font-size: 1.04em;
@@ -35,7 +35,7 @@
 .sl-markdown-content table:not(:where(.not-content *)) thead {
   background: linear-gradient(
     180deg,
-    color-mix(in srgb, var(--kod-blood-deep) 80%, #121010),
+    color-mix(in srgb, var(--kod-blood-deep) 68%, #121010),
     color-mix(in srgb, #141010 90%, #000)
   );
 }
@@ -47,7 +47,7 @@
   text-transform: uppercase;
   font-size: 0.82em;
   color: #f2efe9 !important;
-  border-bottom: 1px solid color-mix(in srgb, var(--kod-blood) 86%, #333) !important;
+  border-bottom: 1px solid color-mix(in srgb, var(--kod-blood) 70%, #333) !important;
   padding: 0.65rem 0.85rem !important;
   vertical-align: middle;
   text-align: start;
@@ -79,7 +79,7 @@
 }
 
 .sl-markdown-content tbody tr:hover td {
-  background: color-mix(in srgb, var(--kod-blood-deep) 55%, transparent);
+  background: color-mix(in srgb, var(--kod-blood-deep) 40%, transparent);
 }
 
 .sl-markdown-content td strong,

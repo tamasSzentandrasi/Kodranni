@@ -64,12 +64,12 @@ site-title,
 }
 
 .sl-markdown-content a:not(.sl-link-button) {
-  color: #f24a4a;
+  color: #ed6a6a;
   text-decoration: none;
 }
 
 .sl-markdown-content a:not(.sl-link-button):hover {
-  color: #ff6e6e;
+  color: #ff8f8f;
 }
 
 .sidebar-content a {

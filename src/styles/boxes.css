@@ -38,11 +38,11 @@
 /* Example — eye (worked scene / what was seen) */
 .kod-example {
   --kod-soot-size: 1.1rem;
-  border: 1px solid color-mix(in srgb, var(--kod-blood) 78%, #333);
+  border: 1px solid color-mix(in srgb, var(--kod-blood) 62%, #333);
   border-left: 4px solid var(--kod-blood);
   background:
     var(--kod-plate-wash),
-    color-mix(in srgb, var(--kod-blood-deep) 58%, #0c0c0c);
+    color-mix(in srgb, var(--kod-blood-deep) 44%, #0c0c0c);
   color: var(--kod-silver);
   box-shadow: var(--kod-smoke);
 }
@@ -86,7 +86,7 @@
 }
 
 .kod-example a {
-  color: #f24a4a;
+  color: #ed6a6a;
   text-decoration: underline;
   text-underline-offset: 0.12em;
 }
