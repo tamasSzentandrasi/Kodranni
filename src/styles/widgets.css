@@ -376,7 +376,8 @@
   margin: 0 auto 0.9rem;
 }
 
-.kod-widget__btn {
+.kod-widget__btn,
+.kod-btn {
   --kod-soot-size: 0.55rem;
   --kod-corners: none;
   --kod-btn-ends:
@@ -414,7 +415,8 @@
   transition: color 0.12s ease, background-color 0.12s ease;
 }
 
-.kod-widget__btn::before {
+.kod-widget__btn::before,
+.kod-btn::before {
   content: '';
   position: absolute;
   inset: 1px;
@@ -427,7 +429,8 @@
   pointer-events: none;
 }
 
-.kod-widget__btn::after {
+.kod-widget__btn::after,
+.kod-btn::after {
   content: '';
   position: absolute;
   inset: 0;
@@ -972,14 +975,18 @@
 }
 
 .kod-widget__btn:hover,
-.kod-widget__btn:focus-visible {
+.kod-widget__btn:focus-visible,
+.kod-btn:hover,
+.kod-btn:focus-visible {
   outline: none;
   color: #fff8f0;
   background: #8a8580;
 }
 
 .kod-widget__btn:hover::before,
-.kod-widget__btn:focus-visible::before {
+.kod-widget__btn:focus-visible::before,
+.kod-btn:hover::before,
+.kod-btn:focus-visible::before {
   background:
     var(--kod-soot),
     linear-gradient(180deg, rgba(242, 239, 233, 0.16), transparent 42%),
@@ -987,23 +994,31 @@
 }
 
 .kod-widget__btn:hover::after,
-.kod-widget__btn:focus-visible::after {
+.kod-widget__btn:focus-visible::after,
+.kod-btn:hover::after,
+.kod-btn:focus-visible::after {
   opacity: 1;
 }
 
-.kod-widget__btn[aria-pressed='true'] {
+.kod-widget__btn[aria-pressed='true'],
+.kod-btn[aria-pressed='true'],
+.kod-btn:active {
   color: #fff8f0;
   background: #c4bfb6;
 }
 
-.kod-widget__btn[aria-pressed='true']::before {
+.kod-widget__btn[aria-pressed='true']::before,
+.kod-btn[aria-pressed='true']::before,
+.kod-btn:active::before {
   background:
     var(--kod-soot),
     linear-gradient(180deg, rgba(242, 239, 233, 0.08), transparent 55%),
     #2a2622;
 }
 
-.kod-widget__btn[aria-pressed='true']::after {
+.kod-widget__btn[aria-pressed='true']::after,
+.kod-btn[aria-pressed='true']::after,
+.kod-btn:active::after {
   opacity: 1;
 }
 

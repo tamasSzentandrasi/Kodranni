@@ -1,0 +1,208 @@
+/* Shared chrome primitives — cartouche + focus ring.
+ * Tokens only: landing already loads Bellefair. */
+@import './tokens.css';
+
+/* Identity ring once. Cartouche opt-out: pewter brightening is the focus. */
+:focus-visible {
+  outline: 1px solid var(--kod-blood-bright);
+  outline-offset: 2px;
+}
+
+.kod-btn {
+  --kod-soot-size: 0.55rem;
+  --kod-corners: none;
+  --kod-btn-ends:
+    var(--kod-btn-end-l) left 0.1rem center / auto 50% no-repeat,
+    var(--kod-btn-end-r) right 0.1rem center / auto 50% no-repeat;
+  appearance: none;
+  -webkit-appearance: none;
+  box-sizing: border-box;
+  position: relative;
+  isolation: isolate;
+  flex: 0 0 auto;
+  width: 6.1rem;
+  height: 2.55rem;
+  min-width: 6.1rem;
+  min-height: 2.55rem;
+  max-width: 6.1rem;
+  max-height: 2.55rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: #5c5550;
+  color: var(--kod-silver);
+  font-family: var(--kod-font-body);
+  font-size: 0.82rem;
+  line-height: 1;
+  margin: 0;
+  padding: 0 1.15rem;
+  border-radius: 0;
+  cursor: pointer;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  vertical-align: middle;
+  text-decoration: none;
+  clip-path: var(--kod-cartouche);
+  transition: color 0.12s ease, background-color 0.12s ease;
+}
+
+.kod-btn:visited {
+  color: var(--kod-silver);
+  text-decoration: none;
+}
+
+.kod-btn::before {
+  content: '';
+  position: absolute;
+  inset: 1px;
+  z-index: -1;
+  clip-path: var(--kod-cartouche);
+  background:
+    var(--kod-soot),
+    linear-gradient(180deg, rgba(242, 239, 233, 0.12), transparent 42%),
+    #161412;
+  pointer-events: none;
+}
+
+.kod-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--kod-btn-ends);
+  pointer-events: none;
+  opacity: 0.88;
+}
+
+.kod-btn:hover,
+.kod-btn:focus-visible {
+  outline: none;
+  color: #fff8f0;
+  background: #8a8580;
+}
+
+.kod-btn:hover::before,
+.kod-btn:focus-visible::before {
+  background:
+    var(--kod-soot),
+    linear-gradient(180deg, rgba(242, 239, 233, 0.16), transparent 42%),
+    #1c1916;
+}
+
+.kod-btn:hover::after,
+.kod-btn:focus-visible::after {
+  opacity: 1;
+}
+
+.kod-btn[aria-pressed='true'],
+.kod-btn:active {
+  color: #fff8f0;
+  background: #c4bfb6;
+}
+
+.kod-btn[aria-pressed='true']::before,
+.kod-btn:active::before {
+  background:
+    var(--kod-soot),
+    linear-gradient(180deg, rgba(242, 239, 233, 0.08), transparent 55%),
+    #2a2622;
+}
+
+.kod-btn[aria-pressed='true']::after,
+.kod-btn:active::after {
+  opacity: 1;
+}
+
+.kod-btn:disabled,
+.kod-btn[aria-disabled='true'] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Wide cartouche — larger notches than the 6.1rem widget clip. */
+.kod-btn--folio {
+  --kod-cartouche: polygon(
+    1.05rem 0,
+    calc(100% - 1.05rem) 0,
+    100% 0.85rem,
+    100% calc(100% - 0.85rem),
+    calc(100% - 1.05rem) 100%,
+    1.05rem 100%,
+    0 calc(100% - 0.85rem),
+    0 0.85rem
+  );
+  --kod-btn-ends:
+    var(--kod-btn-end-l) left 0.18rem center / auto 52% no-repeat,
+    var(--kod-btn-end-r) right 0.18rem center / auto 52% no-repeat;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
+  min-width: 0;
+  min-height: 4.2rem;
+  max-width: none;
+  height: auto;
+  max-height: none;
+  padding: 0.7rem 1.4rem;
+  white-space: normal;
+  text-decoration: none;
+  text-align: start;
+}
+
+.kod-btn__kicker {
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: inherit;
+}
+
+.kod-btn__title {
+  margin-top: 0.18rem;
+  font-size: 1.2rem;
+  letter-spacing: 0.05em;
+  color: var(--kod-silver-bright);
+}
+
+.kod-btn--folio:hover,
+.kod-btn--folio:focus-visible {
+  outline: none;
+  color: #fff8f0;
+  background: #8a8580;
+}
+
+.kod-btn--folio:hover::before,
+.kod-btn--folio:focus-visible::before {
+  background:
+    var(--kod-soot),
+    linear-gradient(180deg, rgba(242, 239, 233, 0.16), transparent 42%),
+    #1c1916;
+}
+
+.kod-btn--folio:hover::after,
+.kod-btn--folio:focus-visible::after {
+  opacity: 1;
+}
+
+.kod-btn--folio:active {
+  color: #fff8f0;
+  background: #c4bfb6;
+}
+
+.kod-btn--folio:active::before {
+  background:
+    var(--kod-soot),
+    linear-gradient(180deg, rgba(242, 239, 233, 0.08), transparent 55%),
+    #2a2622;
+}
+
+.kod-btn--folio:active::after {
+  opacity: 1;
+}
+
+.kod-btn:hover .kod-btn__title,
+.kod-btn:focus-visible .kod-btn__title,
+.kod-btn:active .kod-btn__title,
+.kod-btn[aria-pressed='true'] .kod-btn__title {
+  color: #fff8f0;
+}

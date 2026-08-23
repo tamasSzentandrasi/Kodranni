@@ -22,7 +22,8 @@
 	<link rel="icon" href="./Guidebook/favicon.ico" sizes="any" />
 	<link rel="icon" type="image/png" sizes="32x32" href="./Guidebook/favicon-32x32.png" />
 	<link rel="apple-touch-icon" sizes="180x180" href="./Guidebook/apple-touch-icon.png" />
-	<meta name="theme-color" content="#8a1515" />
+	<meta name="theme-color" content="#a01818" />
+	<link rel="stylesheet" href="./design/primitives.css" />
 	<style>
 		@font-face {
 			font-family: "Bellefair";
@@ -31,13 +32,7 @@
 			font-display: swap;
 			src: url("./Guidebook/fonts/bellefair/bellefair-latin-400-normal.woff2") format("woff2");
 		}
-		:root {
-			color-scheme: dark;
-			--fg: #c6c1b8;
-			--muted: #8a8580;
-			--blood: #8a1515;
-			--silver: #f2efe9;
-		}
+		:root { color-scheme: dark; }
 		* { box-sizing: border-box; }
 		html, body { margin: 0; min-height: 100%; }
 		html {
@@ -49,7 +44,7 @@
 		}
 		body {
 			min-height: 100vh;
-			color: var(--fg);
+			color: var(--kod-silver);
 			font-family: "Bellefair", Georgia, serif;
 			font-size: 1.25rem;
 			line-height: 1.7;
@@ -117,13 +112,13 @@
 			height: 4.6rem;
 			object-fit: contain;
 			border-radius: 50%;
-			box-shadow: 0 0 0 2px color-mix(in srgb, var(--blood) 55%, transparent);
+			box-shadow: 0 0 0 2px color-mix(in srgb, var(--kod-blood) 55%, transparent);
 		}
 		h1 {
 			margin: 0;
 			font-weight: 400;
 			font-size: clamp(2.75rem, 10vw, 4.2rem);
-			color: var(--silver);
+			color: var(--kod-silver-bright);
 			letter-spacing: 0.04em;
 			text-shadow: 0 2px 18px rgba(0, 0, 0, 0.75);
 		}
@@ -159,66 +154,6 @@
 		@media (min-width: 36rem) {
 			.folios { grid-template-columns: 1fr 1fr; }
 		}
-		a.folio {
-			--tick: #6a6560;
-			display: block;
-			padding: 0.95rem 0.9rem;
-			border: 1px solid #2e2a28;
-			border-radius: 0;
-			background:
-				linear-gradient(var(--tick), var(--tick)) 0 0 / 0.7rem 1px no-repeat,
-				linear-gradient(var(--tick), var(--tick)) 0 0 / 1px 0.7rem no-repeat,
-				linear-gradient(var(--tick), var(--tick)) 100% 0 / 0.7rem 1px no-repeat,
-				linear-gradient(var(--tick), var(--tick)) 100% 0 / 1px 0.7rem no-repeat,
-				linear-gradient(var(--tick), var(--tick)) 0 100% / 0.7rem 1px no-repeat,
-				linear-gradient(var(--tick), var(--tick)) 0 100% / 1px 0.7rem no-repeat,
-				linear-gradient(var(--tick), var(--tick)) 100% 100% / 0.7rem 1px no-repeat,
-				linear-gradient(var(--tick), var(--tick)) 100% 100% / 1px 0.7rem no-repeat,
-				linear-gradient(180deg, rgba(242, 239, 233, 0.05), transparent 42%),
-				rgba(12, 10, 9, 0.82);
-			color: #8a8580;
-			text-decoration: none;
-			text-align: start;
-			box-shadow:
-				inset 0 0 0 1px rgba(242, 239, 233, 0.04),
-				0 0 0 1px #141010;
-			transition: border-color 0.18s ease, color 0.18s ease;
-		}
-		a.folio:hover,
-		a.folio:focus-visible {
-			--tick: #c4bfb6;
-			border-color: #6a6560;
-			color: #b8b2aa;
-			background:
-				linear-gradient(var(--tick), var(--tick)) 0 0 / 0.7rem 1px no-repeat,
-				linear-gradient(var(--tick), var(--tick)) 0 0 / 1px 0.7rem no-repeat,
-				linear-gradient(var(--tick), var(--tick)) 100% 0 / 0.7rem 1px no-repeat,
-				linear-gradient(var(--tick), var(--tick)) 100% 0 / 1px 0.7rem no-repeat,
-				linear-gradient(var(--tick), var(--tick)) 0 100% / 0.7rem 1px no-repeat,
-				linear-gradient(var(--tick), var(--tick)) 0 100% / 1px 0.7rem no-repeat,
-				linear-gradient(var(--tick), var(--tick)) 100% 100% / 0.7rem 1px no-repeat,
-				linear-gradient(var(--tick), var(--tick)) 100% 100% / 1px 0.7rem no-repeat,
-				linear-gradient(180deg, rgba(242, 239, 233, 0.1), transparent 48%),
-				rgba(18, 16, 14, 0.88);
-			outline: none;
-		}
-		.folio__label {
-			display: block;
-			font-size: 0.66rem;
-			letter-spacing: 0.14em;
-			text-transform: uppercase;
-		}
-		.folio__title {
-			display: block;
-			margin-top: 0.18rem;
-			font-size: 1.2rem;
-			letter-spacing: 0.05em;
-			color: var(--silver);
-		}
-		a.folio:hover .folio__title,
-		a.folio:focus-visible .folio__title {
-			color: #fff8f0;
-		}
 	</style>
 </head>
 <body>
@@ -239,13 +174,13 @@
 				<li>Ordinary humans</li>
 			</ul>
 			<nav class="folios" aria-label="Kodranni">
-				<a class="folio" href="./Guidebook/introduction/">
-					<span class="folio__label">Start here</span>
-					<span class="folio__title">Guidebook</span>
+				<a class="kod-btn kod-btn--folio" href="./Guidebook/introduction/">
+					<span class="kod-btn__kicker">Start here</span>
+					<span class="kod-btn__title">Guidebook</span>
 				</a>
-				<a class="folio" href="https://github.com/tamasszentandrasi/Kodranni">
-					<span class="folio__label">The source</span>
-					<span class="folio__title">Repository</span>
+				<a class="kod-btn kod-btn--folio" href="https://github.com/tamasszentandrasi/Kodranni">
+					<span class="kod-btn__kicker">The source</span>
+					<span class="kod-btn__title">Repository</span>
 				</a>
 			</nav>
 		</div>

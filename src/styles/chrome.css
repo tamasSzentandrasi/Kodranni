@@ -515,12 +515,6 @@ site-title img,
   border-radius: 1px;
 }
 
-/* Focus: blood ring, no browser default blue */
-:focus-visible {
-  outline: 1px solid var(--kod-blood-bright);
-  outline-offset: 2px;
-}
-
 /* Mobile menu button chrome */
 starlight-menu-button button,
 .menu-toggle {

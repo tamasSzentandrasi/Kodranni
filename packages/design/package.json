@@ -6,6 +6,7 @@
   "exports": {
     "./tokens.css": "./tokens.css",
     "./fonts.css": "./fonts.css",
+    "./primitives.css": "./primitives.css",
     "./campaign.css": "./campaign.css",
     "./ornament/*": "./ornament/*"
   },

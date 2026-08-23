@@ -1,4 +1,5 @@
 /* Kodranni Guidebook — entry. Import order is the old single-file cascade. */
+@import '@kodranni/design/primitives.css';
 @import './theme.css';
 @import './type.css';
 @import './chrome.css';

@@ -38,7 +38,12 @@ jobs:
           mkdir -p publish/Guidebook
           cp -a dist/. publish/Guidebook/
           cp public-root/index.html publish/index.html
-          # Optional: noindex nothing special; 404 for unknown paths is fine.
+          cp -a public-root/design publish/design
+          test -f publish/design/primitives.css
+          test -f publish/design/tokens.css
+          test -f publish/design/ornament/btn-end-l.svg
+          test -f publish/design/ornament/btn-end-r.svg
+          test -f publish/design/ornament/corner-tl.svg
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
