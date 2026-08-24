@@ -11,13 +11,28 @@
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
-  margin: 0.15rem 0 1.65rem;
+  margin: 0.15rem 0 0.15rem;
   padding: 0;
   border-bottom: none;
   background: none;
   box-shadow: none;
   position: relative;
   align-self: stretch;
+}
+
+/* Afterglow that the epigraph sits in — title becomes the chapter's start, not a stamp. */
+.kod-page-title::after {
+  content: '';
+  display: block;
+  width: min(24rem, 92%);
+  height: 3.4rem;
+  margin: 0.1rem auto -1.6rem;
+  background: radial-gradient(
+    ellipse 70% 100% at 50% 0%,
+    color-mix(in srgb, var(--kod-icon-hue, var(--kod-silver)) 26%, transparent),
+    transparent 72%
+  );
+  pointer-events: none;
 }
 
 .kod-page-title__rose {
@@ -101,32 +116,8 @@ a.kod-page-title__kicker:focus-visible {
   text-wrap: balance;
 }
 
-/* Cartouche rule — symmetric, length follows the word. */
 .kod-page-title h1::after {
-  content: '';
-  display: block;
-  width: 100%;
-  height: 0.72rem;
-  margin-top: 0.34em;
-  background:
-    var(--kod-btn-end-l) left center / auto 92% no-repeat,
-    var(--kod-btn-end-r) right center / auto 92% no-repeat,
-    linear-gradient(
-      to right,
-      transparent,
-      color-mix(in srgb, var(--kod-silver) 72%, transparent) 14%,
-      color-mix(in srgb, var(--kod-silver) 72%, transparent) 86%,
-      transparent
-    )
-      center / calc(100% - 1.2rem) 1.45px no-repeat,
-    linear-gradient(
-      to right,
-      transparent,
-      color-mix(in srgb, var(--kod-silver) 26%, transparent) 22%,
-      color-mix(in srgb, var(--kod-silver) 26%, transparent) 78%,
-      transparent
-    )
-      center / calc(100% - 1.2rem) 3.4px no-repeat;
+  content: none;
 }
 
 .kod-page-title__mark {
@@ -168,7 +159,7 @@ a.kod-page-title__kicker:focus-visible {
 
 @media (max-width: 40rem) {
   .kod-page-title {
-    margin-bottom: 1.25rem;
+    margin-bottom: 0.1rem;
   }
   .kod-page-title__rose {
     width: min(15.5rem, 82vw);
@@ -185,14 +176,41 @@ a.kod-page-title__kicker:focus-visible {
     width: 1.85rem;
     height: 1.85rem;
   }
-  .kod-page-title h1::after {
-    height: 0.62rem;
-  }
 }
 
 @media (prefers-reduced-motion: no-preference) {
+  .kod-page-title__rose {
+    animation: kod-rose-in 1.15s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
   .kod-page-title__rose::before {
-    animation: kod-rose-breathe 6.4s ease-in-out infinite;
+    animation: kod-rose-breathe 6.4s ease-in-out 0.9s infinite;
+  }
+  .kod-page-title__text {
+    animation: kod-title-in 0.8s ease-out 0.28s both;
+  }
+}
+
+@keyframes kod-rose-in {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+    filter: brightness(0.55);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+@keyframes kod-title-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.55rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
   }
 }
 
@@ -208,6 +226,72 @@ a.kod-page-title__kicker:focus-visible {
   }
 }
 
+@keyframes kod-epigraph-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.4rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Title panel and first prose panel are one beat — no hairline between them. */
+.main-pane .content-panel:has(.kod-page-title) {
+  padding-bottom: 0;
+}
+.main-pane .content-panel:has(.kod-page-title) + .content-panel {
+  border-top: none;
+  padding-top: 0.2rem;
+}
+
+/* Opening quote is the epigraph of the rose, not a second ornamental plate. */
+.sl-markdown-content > blockquote.kod-epigraph {
+  --kod-corners: none;
+  --kod-plate-wash: none;
+  --kod-soot: none;
+  border: none;
+  background: none;
+  box-shadow: none;
+  text-align: center;
+  max-width: 36rem;
+  margin: 0.15rem auto 1.9rem;
+  padding: 0.15rem 0.8rem 0.2rem;
+  font-size: 1.02em;
+  line-height: 1.7;
+  color: color-mix(in srgb, var(--kod-silver) 88%, #fff);
+}
+
+.sl-markdown-content > blockquote.kod-epigraph::before {
+  display: none;
+}
+
+.sl-markdown-content > blockquote.kod-epigraph + hr {
+  margin-top: 0.35rem;
+}
+
+.sl-markdown-content > blockquote.kod-epigraph + hr + .kod-breath {
+  margin-top: 1.15rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .sl-markdown-content > blockquote.kod-epigraph {
+    animation: kod-epigraph-in 0.85s ease-out 0.62s both;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kod-page-title__rose,
+  .kod-page-title__text,
+  .sl-markdown-content > blockquote.kod-epigraph {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+}
+
 /* Sidebar chapter icons */
 .sidebar-content a[href] {
   display: flex;
@@ -217,8 +301,8 @@ a.kod-page-title__kicker:focus-visible {
 
 .sidebar-content a[href] .kod-sidebar-icon {
   flex-shrink: 0;
-  width: 1.28rem;
-  height: 1.28rem;
+  width: 1.4rem;
+  height: 1.4rem;
   display: inline-block;
   vertical-align: middle;
   background-color: var(--kod-icon-hue, var(--kod-silver));

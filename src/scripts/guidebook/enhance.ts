@@ -22,6 +22,15 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 		}
 	}
 
+	function markEpigraph() {
+		const main = document.querySelector('.sl-markdown-content');
+		if (!main) return;
+		const first = main.querySelector(':scope > blockquote');
+		if (!first || first.classList.contains('kod-epigraph')) return;
+		first.classList.add('kod-epigraph');
+		first.classList.remove('kod-reveal', 'kod-type');
+	}
+
 	function injectSidebarIcons() {
 		const root = document.getElementById('starlight__sidebar');
 		if (!root) return;
@@ -577,6 +586,7 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 		if (!root) return;
 
 		root.querySelectorAll('blockquote').forEach((bq) => {
+			if (bq.classList.contains('kod-epigraph')) return;
 			bq.classList.add('kod-reveal', 'kod-type');
 		});
 
@@ -692,6 +702,7 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 	function enhance() {
 		const steps = [
 			injectSidebarIcons,
+			markEpigraph,
 			decorateDividers,
 			normalizeBoxes,
 			setupArchetypeFocus,
