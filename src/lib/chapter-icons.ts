@@ -1,24 +1,24 @@
 /**
  * Chapter icons via Vite `?url` so `base: '/Kodranni/Guidebook'` is applied correctly.
  */
-import automation from '../assets/icons/automation.png?url';
-import campaignSetup from '../assets/icons/campaign-setup.png?url';
-import characterCreation from '../assets/icons/character-creation.png?url';
-import diceMechanics from '../assets/icons/dice-mechanics.png?url';
-import echoes from '../assets/icons/echoes.png?url';
-import exertion from '../assets/icons/exertion.png?url';
-import foundations from '../assets/icons/foundations.png?url';
-import glossary from '../assets/icons/glossary.png?url';
-import harm from '../assets/icons/harm.png?url';
-import hierarchies from '../assets/icons/hierarchies.png?url';
-import humanPotential from '../assets/icons/human-potential.png?url';
-import introduction from '../assets/icons/introduction.png?url';
-import inventory from '../assets/icons/inventory.png?url';
-import marksAndTiers from '../assets/icons/marks-and-tiers.png?url';
-import omens from '../assets/icons/omens.png?url';
-import skills from '../assets/icons/skills.png?url';
-import tide from '../assets/icons/tide.png?url';
-import traits from '../assets/icons/traits.png?url';
+import automation from '../assets/icons/automation.svg?url';
+import campaignSetup from '../assets/icons/campaign-setup.svg?url';
+import characterCreation from '../assets/icons/character-creation.svg?url';
+import diceMechanics from '../assets/icons/dice-mechanics.svg?url';
+import echoes from '../assets/icons/echoes.svg?url';
+import exertion from '../assets/icons/exertion.svg?url';
+import foundations from '../assets/icons/foundations.svg?url';
+import glossary from '../assets/icons/glossary.svg?url';
+import harm from '../assets/icons/harm.svg?url';
+import hierarchies from '../assets/icons/hierarchies.svg?url';
+import humanPotential from '../assets/icons/human-potential.svg?url';
+import introduction from '../assets/icons/introduction.svg?url';
+import inventory from '../assets/icons/inventory.svg?url';
+import marksAndTiers from '../assets/icons/marks-and-tiers.svg?url';
+import omens from '../assets/icons/omens.svg?url';
+import skills from '../assets/icons/skills.svg?url';
+import tide from '../assets/icons/tide.svg?url';
+import traits from '../assets/icons/traits.svg?url';
 
 /** slug → resolved asset URL (includes base path when built) */
 export const chapterIcons: Record<string, string> = {
