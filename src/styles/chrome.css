@@ -1,26 +1,68 @@
-/* --- from custom.css 178-279 --- */
 /* -------------------------------------------------------------------------- */
-/* Chapter title icon                                                          */
+/* Chapter title — stained-glass rose frontispiece                             */
 /* -------------------------------------------------------------------------- */
 
 .kod-page-title {
   --kod-corners: none;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 0.95rem;
-  width: fit-content;
+  text-align: center;
+  width: 100%;
   max-width: 100%;
   box-sizing: border-box;
-  margin: 0.1rem 0 1.2rem;
-  padding: 0.15rem 0.2rem 0.25rem 0;
+  margin: 0.15rem 0 1.65rem;
+  padding: 0;
   border-bottom: none;
   background: none;
   box-shadow: none;
   position: relative;
-  align-self: start;
+  align-self: stretch;
+}
+
+.kod-page-title__rose {
+  position: relative;
+  width: min(19.5rem, 74vw);
+  aspect-ratio: 1;
+  margin: 0 auto 0.05rem;
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+}
+
+.kod-page-title__rose::before {
+  content: '';
+  position: absolute;
+  inset: 8%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--kod-icon-hue, var(--kod-silver)) 90%, white) 0%,
+    color-mix(in srgb, var(--kod-icon-hue, var(--kod-silver)) 42%, transparent) 48%,
+    transparent 74%
+  );
+  filter: blur(26px);
+  opacity: 0.48;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.kod-page-title__rose img {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 86%;
+  height: 86%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 50%;
+  pointer-events: none;
 }
 
 .kod-page-title__text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   min-width: 0;
   width: fit-content;
   max-width: 100%;
@@ -31,13 +73,19 @@
   width: fit-content;
   max-width: 100%;
   font-family: var(--kod-font-display);
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-weight: 400;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--kod-silver-dim);
   line-height: 1.25;
-  margin: 0 0 0.32rem;
+  margin: 0.2rem 0 0.38rem;
+  text-decoration: none;
+}
+
+a.kod-page-title__kicker:hover,
+a.kod-page-title__kicker:focus-visible {
+  color: var(--kod-icon-hue, var(--kod-silver-bright));
 }
 
 .kod-page-title h1 {
@@ -49,9 +97,11 @@
   position: relative;
   width: fit-content;
   max-width: 100%;
+  text-align: center;
+  text-wrap: balance;
 }
 
-/* Cartouche rule — same grammar as the buttons; length follows the word. */
+/* Cartouche rule — symmetric, length follows the word. */
 .kod-page-title h1::after {
   content: '';
   display: block;
@@ -63,15 +113,18 @@
     var(--kod-btn-end-r) right center / auto 92% no-repeat,
     linear-gradient(
       to right,
-      color-mix(in srgb, var(--kod-silver) 78%, transparent),
-      color-mix(in srgb, var(--kod-silver) 48%, transparent) 78%,
+      transparent,
+      color-mix(in srgb, var(--kod-silver) 72%, transparent) 14%,
+      color-mix(in srgb, var(--kod-silver) 72%, transparent) 86%,
       transparent
     )
       center / calc(100% - 1.2rem) 1.45px no-repeat,
     linear-gradient(
       to right,
-      color-mix(in srgb, var(--kod-silver) 28%, transparent),
-      transparent 85%
+      transparent,
+      color-mix(in srgb, var(--kod-silver) 26%, transparent) 22%,
+      color-mix(in srgb, var(--kod-silver) 26%, transparent) 78%,
+      transparent
     )
       center / calc(100% - 1.2rem) 3.4px no-repeat;
 }
@@ -108,31 +161,21 @@
 }
 
 @media (min-width: 50rem) {
-  .kod-page-title {
-    gap: 1.1rem;
-    padding: 0.2rem 0.25rem 0.3rem 0;
-  }
-  .kod-page-title__mark {
-    width: 4.25rem;
-    height: 4.25rem;
-  }
-  .kod-page-title__icon {
-    width: 2.5rem;
-    height: 2.5rem;
-  }
-  .kod-page-title h1 {
-    white-space: nowrap;
+  .kod-page-title__rose {
+    width: min(22rem, 48vw);
   }
 }
 
 @media (max-width: 40rem) {
   .kod-page-title {
-    gap: 0.7rem;
-    padding: 0.1rem 0.15rem 0.2rem 0;
+    margin-bottom: 1.25rem;
+  }
+  .kod-page-title__rose {
+    width: min(15.5rem, 82vw);
   }
   .kod-page-title__kicker {
-    font-size: 0.66rem;
-    letter-spacing: 0.1em;
+    font-size: 0.64rem;
+    letter-spacing: 0.12em;
   }
   .kod-page-title__mark {
     width: 3.15rem;
@@ -147,6 +190,24 @@
   }
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  .kod-page-title__rose::before {
+    animation: kod-rose-breathe 6.4s ease-in-out infinite;
+  }
+}
+
+@keyframes kod-rose-breathe {
+  0%,
+  100% {
+    opacity: 0.32;
+    transform: scale(0.97);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.05);
+  }
+}
+
 /* Sidebar chapter icons */
 .sidebar-content a[href] {
   display: flex;
@@ -156,8 +217,8 @@
 
 .sidebar-content a[href] .kod-sidebar-icon {
   flex-shrink: 0;
-  width: 1.15rem;
-  height: 1.15rem;
+  width: 1.28rem;
+  height: 1.28rem;
   display: inline-block;
   vertical-align: middle;
   background-color: var(--kod-icon-hue, var(--kod-silver));
@@ -165,76 +226,95 @@
   mask: var(--kod-icon-mask) center / contain no-repeat;
 }
 
-/* Chapter hues — wayfinding. Same map for title tile and sidebar. */
+/* Chapter hues — wayfinding. Title rose glow + sidebar mark share the map. */
+.kod-page-title[data-slug='index'],
+.kod-page-title[data-slug='introduction'],
 .kod-page-title__mark[data-slug='index'],
 .kod-page-title__mark[data-slug='introduction'],
 .sidebar-content a[data-slug='introduction'] {
   --kod-icon-hue: #c4a35a;
 }
+.kod-page-title[data-slug='dice-mechanics'],
 .kod-page-title__mark[data-slug='dice-mechanics'],
 .sidebar-content a[data-slug='dice-mechanics'] {
   --kod-icon-hue: #6ea8d4;
 }
+.kod-page-title[data-slug='marks-and-tiers'],
 .kod-page-title__mark[data-slug='marks-and-tiers'],
 .sidebar-content a[data-slug='marks-and-tiers'] {
   --kod-icon-hue: #e6e0d4;
 }
+.kod-page-title[data-slug='omens'],
 .kod-page-title__mark[data-slug='omens'],
 .sidebar-content a[data-slug='omens'] {
   --kod-icon-hue: #b8a0d8;
 }
+.kod-page-title[data-slug='tide'],
 .kod-page-title__mark[data-slug='tide'],
 .sidebar-content a[data-slug='tide'] {
   --kod-icon-hue: #4a9a8a;
 }
+.kod-page-title[data-slug='human-potential'],
 .kod-page-title__mark[data-slug='human-potential'],
 .sidebar-content a[data-slug='human-potential'] {
   --kod-icon-hue: #d4a06e;
 }
+.kod-page-title[data-slug='foundations'],
 .kod-page-title__mark[data-slug='foundations'],
 .sidebar-content a[data-slug='foundations'] {
   --kod-icon-hue: #c47a4a;
 }
+.kod-page-title[data-slug='skills'],
 .kod-page-title__mark[data-slug='skills'],
 .sidebar-content a[data-slug='skills'] {
   --kod-icon-hue: #5aaf8a;
 }
+.kod-page-title[data-slug='traits'],
 .kod-page-title__mark[data-slug='traits'],
 .sidebar-content a[data-slug='traits'] {
   --kod-icon-hue: #c76bb0;
 }
+.kod-page-title[data-slug='exertion'],
 .kod-page-title__mark[data-slug='exertion'],
 .sidebar-content a[data-slug='exertion'] {
   --kod-icon-hue: #e08a3c;
 }
+.kod-page-title[data-slug='echoes'],
 .kod-page-title__mark[data-slug='echoes'],
 .sidebar-content a[data-slug='echoes'] {
   --kod-icon-hue: #6b8fd4;
 }
+.kod-page-title[data-slug='harm'],
 .kod-page-title__mark[data-slug='harm'],
 .sidebar-content a[data-slug='harm'] {
   --kod-icon-hue: #d94a4a;
 }
+.kod-page-title[data-slug='hierarchies'],
 .kod-page-title__mark[data-slug='hierarchies'],
 .sidebar-content a[data-slug='hierarchies'] {
   --kod-icon-hue: #d4b85a;
 }
+.kod-page-title[data-slug='inventory'],
 .kod-page-title__mark[data-slug='inventory'],
 .sidebar-content a[data-slug='inventory'] {
   --kod-icon-hue: #8a9a5a;
 }
+.kod-page-title[data-slug='campaign-setup'],
 .kod-page-title__mark[data-slug='campaign-setup'],
 .sidebar-content a[data-slug='campaign-setup'] {
   --kod-icon-hue: #5a8f9a;
 }
+.kod-page-title[data-slug='character-creation'],
 .kod-page-title__mark[data-slug='character-creation'],
 .sidebar-content a[data-slug='character-creation'] {
   --kod-icon-hue: #9a6ab8;
 }
+.kod-page-title[data-slug='automation'],
 .kod-page-title__mark[data-slug='automation'],
 .sidebar-content a[data-slug='automation'] {
   --kod-icon-hue: #7a8a9a;
 }
+.kod-page-title[data-slug='glossary'],
 .kod-page-title__mark[data-slug='glossary'],
 .sidebar-content a[data-slug='glossary'] {
   --kod-icon-hue: #b8a0d4;
