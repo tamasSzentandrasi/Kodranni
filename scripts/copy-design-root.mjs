@@ -65,7 +65,7 @@ function copyOrnament(src, dest) {
 		const from = join(src, entry.name);
 		const to = join(dest, entry.name);
 		if (entry.isDirectory()) copyOrnament(from, to);
-		else if (entry.name.endsWith('.svg') || entry.name.endsWith('.png')) cpSync(from, to);
+		else if (/\.(svg|png|jpe?g)$/i.test(entry.name)) cpSync(from, to);
 	}
 }
 copyOrnament(ornamentSrc, ornamentDest);

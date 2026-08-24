@@ -68,7 +68,7 @@ const sourceLabel =
             rung.setAttribute('data-collapsed', c ? 'false' : 'true');
             head.setAttribute('aria-expanded', c ? 'true' : 'false');
             const chev = head.querySelector('.hier-rung__chev, .rung__chev');
-            if (chev) chev.textContent = c ? '▾' : '▸';
+            if (chev) chev.textContent = '';
           });
         });
         const tip = document.getElementById('kod-tip');

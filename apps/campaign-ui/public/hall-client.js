@@ -47,7 +47,7 @@
     const head = rung.querySelector('[data-rung-toggle]');
     if (head) head.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
     const chev = rung.querySelector('.hier-rung__chev, .rung__chev');
-    if (chev) chev.textContent = collapsed ? '▸' : '▾';
+    if (chev) chev.textContent = '';
   }
 
   function persistCollapse() {

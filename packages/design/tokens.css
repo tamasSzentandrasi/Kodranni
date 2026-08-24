@@ -45,6 +45,9 @@
   --kod-fortune-standing: url('./ornament/fortunes/standing.png');
   --kod-fortune-tradition: url('./ornament/fortunes/tradition.png');
   --kod-seal-ring: url('./ornament/seal-ring.svg');
+  --kod-armour-linen: url('./ornament/armour/linen.jpg');
+  --kod-armour-leather: url('./ornament/armour/leather.jpg');
+  --kod-armour-mail: url('./ornament/armour/mail.jpg');
   --kod-cartouche: polygon(
     0.58rem 0,
     calc(100% - 0.58rem) 0,

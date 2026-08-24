@@ -23,7 +23,7 @@
   --kod-plate: #0b0a0a;
   --kod-inset: rgba(0, 0, 0, 0.28);
   --kod-soot-size: 1.35rem;
-  --kod-corner-size: 1.38rem;
+  --kod-corner-size: 1.72rem;
   --kod-tool: linear-gradient(180deg, rgba(0, 0, 0, 0.22), transparent 42%);
   --kod-smoke:
     inset 0 1px 0 rgba(0, 0, 0, 0.4),
@@ -38,7 +38,16 @@
   --kod-c-br: url('./ornament/corner-br.svg');
   --kod-btn-end-l: url('./ornament/btn-end-l.svg');
   --kod-btn-end-r: url('./ornament/btn-end-r.svg');
+  --kod-plus-ring: url('./ornament/plus-ring.svg');
+  --kod-fortune-vitality: url('./ornament/fortunes/vitality.png');
+  --kod-fortune-cohesion: url('./ornament/fortunes/cohesion.png');
+  --kod-fortune-surplus: url('./ornament/fortunes/surplus.png');
+  --kod-fortune-standing: url('./ornament/fortunes/standing.png');
+  --kod-fortune-tradition: url('./ornament/fortunes/tradition.png');
   --kod-seal-ring: url('./ornament/seal-ring.svg');
+  --kod-armour-linen: url('./ornament/armour/linen.jpg');
+  --kod-armour-leather: url('./ornament/armour/leather.jpg');
+  --kod-armour-mail: url('./ornament/armour/mail.jpg');
   --kod-cartouche: polygon(
     0.58rem 0,
     calc(100% - 0.58rem) 0,

@@ -72,7 +72,6 @@ const rulerId = ruler ? inspectId(ruler, rulerCharacterSlug) : '';
           tabindex="0"
           style="display:inline-flex;margin:0.35rem auto 0"
         >
-          <span class="member__dot" />
           {ruler}
         </span>
       ) : (
@@ -137,9 +136,7 @@ const rulerId = ruler ? inspectId(ruler, rulerCharacterSlug) : '';
                     >
                       <span class="hier-rung__tier">{tier}</span>
                       <span class="hier-rung__n">{members.length + extraPending.length}</span>
-                      <span class="hier-rung__chev" aria-hidden="true">
-                        {defaultCollapsed ? '▸' : '▾'}
-                      </span>
+                      <span class="hier-rung__chev" aria-hidden="true" />
                     </button>
                     <ul class="hier-rung__members kod-scroll">
                       {empty ? (
@@ -171,7 +168,6 @@ const rulerId = ruler ? inspectId(ruler, rulerCharacterSlug) : '';
                                       ◆
                                     </span>
                                   )}
-                                  <span class="member__dot" />
                                   {m.name}
                                   {pendingHere && <span class="member__pending">pending</span>}
                                 </span>
@@ -198,7 +194,6 @@ const rulerId = ruler ? inspectId(ruler, rulerCharacterSlug) : '';
                                   <span class="member__knot" aria-hidden="true">
                                     ◆
                                   </span>
-                                  <span class="member__dot" />
                                   {m.name}
                                   <span class="member__pending">pending</span>
                                 </span>

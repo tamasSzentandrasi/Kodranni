@@ -20,6 +20,11 @@
     segs.forEach((i, idx) => i.classList.toggle('on', idx < w));
     const band = el.querySelector('.weight-band');
     if (band) band.textContent = BAND[w] || String(w);
+    const art = el.closest('[data-echo-idx]');
+    const circle = art && art.querySelector('[data-echo-circle]');
+    const all = art && art.querySelector('[data-echo-all]');
+    if (circle) circle.hidden = w !== 2;
+    if (all) all.hidden = w !== 3;
   }
 
   function readEchoes() {
@@ -29,7 +34,17 @@
       const invokeWhen =
         art.querySelector('[data-echo-invoke]')?.value?.trim() ||
         'When the table agrees the scene matches.';
-      return { title, weight: Math.min(3, Math.max(1, w)), invokeWhen };
+      const group = Array.from(art.querySelectorAll('[data-echo-group-name]'))
+        .map((inp) => (inp && 'value' in inp ? String(inp.value).trim() : ''))
+        .filter(Boolean)
+        .map((name) => ({ name }));
+      return {
+        title,
+        weight: Math.min(3, Math.max(1, w)),
+        invokeWhen,
+        group: w === 2 ? group : [],
+        groupLabel: w === 2 ? 'Who shares this' : undefined,
+      };
     });
   }
 
@@ -51,7 +66,7 @@
     if (empty) empty.remove();
     const idx = list.querySelectorAll('[data-echo-idx]').length;
     const art = document.createElement('article');
-    art.className = 'echo';
+    art.className = 'kod-plate echo';
     art.setAttribute('data-echo-idx', String(idx));
     art.innerHTML =
       '<div class="echo__weight echo__weight--edit" data-echo-weight data-weight="' +
@@ -71,6 +86,11 @@
       '<textarea class="kod-ink" data-echo-invoke rows="2" placeholder="When the table agrees the scene matches…">' +
       (invoke || '') +
       '</textarea></label>' +
+      '<div class="echo__circle" data-echo-circle hidden>' +
+      '<p class="echo__circle-lab">Who shares this</p>' +
+      '<ul class="echo__people" data-echo-group></ul>' +
+      '<button type="button" class="draft-btn" data-echo-group-add>Add a name</button></div>' +
+      '<p class="echo__circle-all" data-echo-all hidden>The whole community.</p>' +
       '<button type="button" class="echo__remove" data-echo-remove>Remove</button></div>';
     list.appendChild(art);
     paintWeight(art.querySelector('[data-echo-weight]'), weight);
@@ -86,6 +106,23 @@
     }
     if (t.closest('[data-echo-remove]')) {
       t.closest('[data-echo-idx]')?.remove();
+      saveSoon();
+      return;
+    }
+    if (t.closest('[data-echo-group-add]')) {
+      const list = t.closest('[data-echo-idx]')?.querySelector('[data-echo-group]');
+      if (list) {
+        const li = document.createElement('li');
+        li.innerHTML =
+          '<input class="kod-ink" data-echo-group-name value="" placeholder="Name" />' +
+          '<button type="button" data-echo-group-remove>Remove</button>';
+        list.appendChild(li);
+        saveSoon();
+      }
+      return;
+    }
+    if (t.closest('[data-echo-group-remove]')) {
+      t.closest('li')?.remove();
       saveSoon();
       return;
     }
@@ -115,7 +152,7 @@
     if (empty) empty.remove();
     const idx = traitList.querySelectorAll('[data-trait-idx]').length;
     const li = document.createElement('li');
-    li.className = 'trait';
+    li.className = 'kod-plate trait';
     li.setAttribute('data-trait-idx', String(idx));
     li.innerHTML =
       '<div class="trait__edit">' +

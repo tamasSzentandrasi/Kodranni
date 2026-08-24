@@ -103,6 +103,30 @@ const resolved = (ch.echoes ?? []).filter((e) => e.resolved);
                             placeholder="When the table agrees the scene matches…"
                           >{e.invokeWhen ?? ''}</textarea>
                         </label>
+                        <div class="echo__circle" data-echo-circle hidden={w !== 2}>
+                          <p class="echo__circle-lab">Who shares this</p>
+                          <ul class="echo__people" data-echo-group>
+                            {(e.group ?? []).map((g) => (
+                              <li>
+                                <input
+                                  class="kod-ink"
+                                  data-echo-group-name
+                                  value={g.name}
+                                  placeholder="Name"
+                                />
+                                <button type="button" data-echo-group-remove>
+                                  Remove
+                                </button>
+                              </li>
+                            ))}
+                          </ul>
+                          <button type="button" class="draft-btn" data-echo-group-add>
+                            Add a name
+                          </button>
+                        </div>
+                        <p class="echo__circle-all" data-echo-all hidden={w !== 3}>
+                          The whole community.
+                        </p>
                         <button type="button" class="echo__remove" data-echo-remove>
                           Remove
                         </button>
@@ -114,6 +138,29 @@ const resolved = (ch.echoes ?? []).filter((e) => e.resolved);
                           <span class="echo__invoke-lab">Invoke when</span>
                           {e.invokeWhen}
                         </div>
+                        {
+                          w === 2 && (
+                            <div class="echo__circle">
+                              <p class="echo__circle-lab">{e.groupLabel || 'Who shares this'}</p>
+                              {(e.group ?? []).length === 0 ? (
+                                <p class="empty">None named yet.</p>
+                              ) : (
+                                <ul class="echo__people">
+                                  {(e.group ?? []).map((g) => (
+                                    <li>
+                                      {g.characterSlug ? (
+                                        <a href={`/characters/${g.characterSlug}/`}>{g.name}</a>
+                                      ) : (
+                                        g.name
+                                      )}
+                                    </li>
+                                  ))}
+                                </ul>
+                              )}
+                            </div>
+                          )
+                        }
+                        {w === 3 && <p class="echo__circle-all">The whole community.</p>}
                       </>
                     )
                   }
@@ -152,7 +199,7 @@ const resolved = (ch.echoes ?? []).filter((e) => e.resolved);
                   </span>
                   <span class="weight-band">{WEIGHT_BAND[w]}</span>
                 </div>
-                <div>
+                <div class="echo__body">
                   <h3 class="echo__title">{e.title}</h3>
                   <p class="echo__resolution">
                     <span class="echo__resolution-lab">Resolution</span>
