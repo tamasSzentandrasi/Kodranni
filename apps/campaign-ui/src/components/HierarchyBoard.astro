@@ -2,6 +2,7 @@
 import { HIERARCHY_TIERS } from '@kodranni/domain';
 import { axisDomain, axisKey } from '../lib/format';
 import { inspectId } from '../lib/hall-inspect';
+import MemberName from './MemberName.astro';
 import type { FixtureCommunity } from '../data/fixture';
 
 interface Props {
@@ -51,7 +52,7 @@ const rulerId = ruler ? inspectId(ruler, rulerCharacterSlug) : '';
     <button
       type="button"
       class="info"
-      data-tip="One crown, then parallel ladders. Same four tiers on every axis (Honoured → Outcast). Colour marks the axis; saturation falls toward Outcast. Hover names for who they are; click to inspect."
+      data-tip="One crown, then parallel ladders. Same four tiers on every axis (Honoured → Outcast). Colour marks the axis; saturation falls toward Outcast. Hover a name for who they are; click to open the sheet."
       aria-label="About Hierarchy"
     >
       i
@@ -62,17 +63,14 @@ const rulerId = ruler ? inspectId(ruler, rulerCharacterSlug) : '';
     <p class="hier-ruler__title">Ruler</p>
     {
       ruler ? (
-        <span
-          class:list={['member', isPc(rulerCharacterSlug) && 'member--pc']}
-          data-inspect-id={rulerId}
-          data-name={ruler}
-          data-kind={isPc(rulerCharacterSlug) ? 'pc' : 'npc'}
-          data-tip={tipFor(ruler, rulerCharacterSlug)}
-          role="button"
-          tabindex="0"
-        >
-          {ruler}
-        </span>
+        <MemberName
+          name={ruler}
+          slug={rulerCharacterSlug}
+          pc={isPc(rulerCharacterSlug)}
+          tip={tipFor(ruler, rulerCharacterSlug)}
+          kind={isPc(rulerCharacterSlug) ? 'pc' : 'npc'}
+          personId={rulerId}
+        />
       ) : (
         <p class="hier-ruler__note">One seat for the whole community — none claimed.</p>
       )
@@ -149,27 +147,16 @@ const rulerId = ruler ? inspectId(ruler, rulerCharacterSlug) : '';
                             );
                             return (
                               <li>
-                                <span
-                                  class:list={[
-                                    'member',
-                                    isPc(m.characterSlug) && 'member--pc',
-                                    pendingHere && 'member--pending',
-                                  ]}
-                                  data-inspect-id={inspectId(m.name, m.characterSlug)}
-                                  data-name={m.name}
-                                  data-kind={isPc(m.characterSlug) ? 'pc' : 'npc'}
-                                  data-tip={tip}
-                                  role="button"
-                                  tabindex="-1"
-                                >
-                                  {pendingHere && (
-                                    <span class="member__knot" aria-hidden="true">
-                                      ◆
-                                    </span>
-                                  )}
-                                  {m.name}
-                                  {pendingHere && <span class="member__pending">pending</span>}
-                                </span>
+                                <MemberName
+                                  name={m.name}
+                                  slug={m.characterSlug}
+                                  pc={isPc(m.characterSlug)}
+                                  pending={pendingHere}
+                                  tip={tip}
+                                  kind={isPc(m.characterSlug) ? 'pc' : 'npc'}
+                                  personId={inspectId(m.name, m.characterSlug)}
+                                  roving
+                                />
                               </li>
                             );
                           })}
@@ -177,25 +164,16 @@ const rulerId = ruler ? inspectId(ruler, rulerCharacterSlug) : '';
                             const tip = tipFor(m.name, m.characterSlug, m.note);
                             return (
                               <li>
-                                <span
-                                  class:list={[
-                                    'member',
-                                    'member--pending',
-                                    isPc(m.characterSlug) && 'member--pc',
-                                  ]}
-                                  data-inspect-id={inspectId(m.name, m.characterSlug)}
-                                  data-name={m.name}
-                                  data-kind={isPc(m.characterSlug) ? 'pc' : 'npc'}
-                                  data-tip={tip}
-                                  role="button"
-                                  tabindex="-1"
-                                >
-                                  <span class="member__knot" aria-hidden="true">
-                                    ◆
-                                  </span>
-                                  {m.name}
-                                  <span class="member__pending">pending</span>
-                                </span>
+                                <MemberName
+                                  name={m.name}
+                                  slug={m.characterSlug}
+                                  pc={isPc(m.characterSlug)}
+                                  pending
+                                  tip={tip}
+                                  kind={isPc(m.characterSlug) ? 'pc' : 'npc'}
+                                  personId={inspectId(m.name, m.characterSlug)}
+                                  roving
+                                />
                               </li>
                             );
                           })}

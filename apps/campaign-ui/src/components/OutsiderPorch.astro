@@ -18,7 +18,7 @@ const none = outsiders.length === 0;
     <button
       type="button"
       class="info"
-      data-tip="Named individuals only. Faction is a coloured property. Not on any ladder until inducted. Click a name to inspect."
+      data-tip="Named individuals only. Faction is a coloured property. Not on any ladder until inducted. Hover for who they are; click a sheeted name to open it."
       aria-label="About Outsiders"
     >
       i
@@ -31,20 +31,32 @@ const none = outsiders.length === 0;
       ) : (
         outsiders.map((o) => {
           const hue = o.faction ? resolveFactionHue(o.faction, factions) : 0;
-          return (
-            <li
-              class="outsider"
-              style={o.faction ? `--faction-h: ${hue}` : undefined}
-              data-inspect-id={inspectId(o.name, o.characterSlug)}
-              data-name={o.name}
-              data-kind="outsider"
-              data-faction={o.faction ?? ''}
-              data-tip={o.note ?? ''}
-              role="button"
-              tabindex="0"
-            >
+          const href = o.characterSlug ? `/characters/${o.characterSlug}/` : undefined;
+          const attrs = {
+            class: 'outsider',
+            style: o.faction ? `--faction-h: ${hue}` : undefined,
+            'data-inspect-id': inspectId(o.name, o.characterSlug),
+            'data-name': o.name,
+            'data-kind': 'outsider',
+            'data-faction': o.faction ?? '',
+            'data-tip': o.note ?? '',
+            'data-slug': o.characterSlug,
+          };
+          const inner = (
+            <>
               <span class="outsider__name">{o.name}</span>
               {o.faction && <span class="outsider__faction">{o.faction}</span>}
+            </>
+          );
+          return (
+            <li>
+              {href ? (
+                <a {...attrs} href={href}>
+                  {inner}
+                </a>
+              ) : (
+                <div {...attrs}>{inner}</div>
+              )}
             </li>
           );
         })

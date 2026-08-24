@@ -1,0 +1,64 @@
+---
+interface Props {
+  name: string;
+  slug?: string;
+  pc?: boolean;
+  pending?: boolean;
+  tip?: string;
+  kind?: string;
+  personId: string;
+  roving?: boolean;
+}
+
+const {
+  name,
+  slug,
+  pc = false,
+  pending = false,
+  tip = '',
+  kind = 'npc',
+  personId,
+  roving = false,
+} = Astro.props;
+const href = slug ? `/characters/${slug}/` : undefined;
+const cls = ['member', pc && 'member--pc', pending && 'member--pending'];
+---
+
+{
+  href ? (
+    <a
+      class:list={cls}
+      href={href}
+      data-inspect-id={personId}
+      data-name={name}
+      data-kind={kind}
+      data-slug={slug}
+      data-tip={tip || undefined}
+      tabindex={roving ? '-1' : undefined}
+    >
+      {pending && (
+        <span class="member__knot" aria-hidden="true">
+          ◆
+        </span>
+      )}
+      {name}
+      {pending && <span class="member__pending">pending</span>}
+    </a>
+  ) : (
+    <span
+      class:list={cls}
+      data-inspect-id={personId}
+      data-name={name}
+      data-kind={kind}
+      data-tip={tip || undefined}
+    >
+      {pending && (
+        <span class="member__knot" aria-hidden="true">
+          ◆
+        </span>
+      )}
+      {name}
+      {pending && <span class="member__pending">pending</span>}
+    </span>
+  )
+}

@@ -7,26 +7,3 @@ const { peopleJson } = Astro.props;
 ---
 
 <div id="kod-hall-people" hidden>{peopleJson}</div>
-
-<div id="kod-inspect" class="kod-drawer" data-open="false" hidden>
-  <button
-    type="button"
-    class="kod-drawer__backdrop"
-    data-inspect-dismiss
-    tabindex="-1"
-    aria-label="Close inspect"
-  ></button>
-  <aside
-    class="kod-plate kod-drawer__panel"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="kod-inspect-title"
-    id="kod-inspect-panel"
-  >
-    <header class="kod-drawer__head">
-      <h2 id="kod-inspect-title" class="kod-drawer__title">Inspect</h2>
-      <button type="button" class="kod-btn" data-inspect-close>Close</button>
-    </header>
-    <div class="kod-drawer__body" id="kod-inspect-body"></div>
-  </aside>
-</div>

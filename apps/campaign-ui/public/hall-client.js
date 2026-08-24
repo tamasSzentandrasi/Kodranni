@@ -1,5 +1,5 @@
 /**
- * Hall-only: inspect drawer, nave search, collapse persist, roving tabindex, rev poll.
+ * Hall-only: nave search, collapse persist, roving tabindex, rev poll.
  * Loaded from community/index.astro — not CampaignLayout. No founding handlers.
  */
 (function () {
@@ -67,7 +67,7 @@
     });
   }
 
-  // —— Inspect drawer ————————————————————————————————————————————————
+  // —— People index (search) ——————————————————————————————————————————
 
   /** @type {Map<string, Record<string, unknown>>} */
   const people = new Map();
@@ -83,179 +83,6 @@
     }
   } catch {
     /* ignore */
-  }
-
-  const drawer = document.getElementById('kod-inspect');
-  const panel = document.getElementById('kod-inspect-panel');
-  const titleEl = document.getElementById('kod-inspect-title');
-  const bodyEl = document.getElementById('kod-inspect-body');
-  const closeBtn = drawer && drawer.querySelector('[data-inspect-close]');
-  let inspectReturn = null;
-
-  function inspectOpen() {
-    return drawer && drawer.getAttribute('data-open') === 'true';
-  }
-
-  function hideTip() {
-    const tip = document.getElementById('kod-tip');
-    if (tip) tip.hidden = true;
-  }
-
-  function el(tag, className, text) {
-    const n = document.createElement(tag);
-    if (className) n.className = className;
-    if (text != null) n.textContent = text;
-    return n;
-  }
-
-  function fillInspect(person) {
-    if (!titleEl || !bodyEl) return;
-    titleEl.textContent = person.name || 'Inspect';
-    bodyEl.replaceChildren();
-
-    const kicker = el('p', 'kod-drawer__kicker');
-    const bits = [];
-    if (person.ruler) bits.push('Ruler');
-    if (person.pc) bits.push('PC');
-    else if (person.kind === 'outsider') bits.push('Outsider');
-    else bits.push('NPC');
-    kicker.textContent = bits.join(' · ');
-    bodyEl.appendChild(kicker);
-
-    if (person.faction) {
-      const fac = el('p', 'kod-drawer__faction', 'Faction: ' + person.faction);
-      bodyEl.appendChild(fac);
-    }
-
-    const who = el('blockquote', 'kod-drawer__who');
-    const quote = person.whoWeSee ? String(person.whoWeSee) : 'No who-we-see yet.';
-    who.textContent = quote;
-    bodyEl.appendChild(who);
-
-    if (person.kind === 'outsider') {
-      bodyEl.appendChild(el('p', 'kod-drawer__note', 'Not on a ladder.'));
-    }
-
-    const placements = Array.isArray(person.placements) ? person.placements : [];
-    const pending = Array.isArray(person.pending) ? person.pending : [];
-    if (placements.length || pending.length) {
-      const list = el('ul', 'kod-drawer__places');
-      const pendingByAxis = new Map();
-      for (const mv of pending) {
-        pendingByAxis.set(mv.axis, mv);
-      }
-      const seen = new Set();
-      for (const pl of placements) {
-        seen.add(pl.axis);
-        const li = el('li', '');
-        const mv = pendingByAxis.get(pl.axis);
-        if (mv && mv.fromTier === pl.tier) {
-          li.textContent =
-            pl.axis + ': ' + pl.tier + ' → ' + mv.toTier + ' (pending)';
-        } else if (mv) {
-          li.textContent =
-            pl.axis +
-            ': ' +
-            pl.tier +
-            ' · pending: ' +
-            mv.fromTier +
-            ' → ' +
-            mv.toTier;
-        } else {
-          li.textContent = pl.axis + ': ' + pl.tier;
-        }
-        list.appendChild(li);
-      }
-      for (const mv of pending) {
-        if (seen.has(mv.axis)) continue;
-        const li = el('li', '');
-        li.textContent = 'pending: ' + mv.fromTier + ' → ' + mv.toTier + ' (' + mv.axis + ')';
-        list.appendChild(li);
-      }
-      bodyEl.appendChild(list);
-    }
-
-    if (person.slug) {
-      const a = el('a', 'kod-drawer__sheet', 'Open sheet');
-      a.href = '/characters/' + encodeURIComponent(String(person.slug)) + '/';
-      bodyEl.appendChild(a);
-    }
-  }
-
-  function tabbables() {
-    if (!panel) return [];
-    return [...panel.querySelectorAll('button, a[href], input, [tabindex]:not([tabindex="-1"])')].filter(
-      (n) => !n.hasAttribute('disabled') && n.tabIndex !== -1 && n.offsetParent !== null,
-    );
-  }
-
-  function openInspect(fromEl) {
-    const id = fromEl.getAttribute('data-inspect-id');
-    const person = (id && people.get(id)) || people.get((fromEl.getAttribute('data-name') || '').toLowerCase());
-    if (!person || !drawer) return;
-    inspectReturn = fromEl;
-    fillInspect(person);
-    drawer.hidden = false;
-    drawer.setAttribute('data-open', 'true');
-    hideTip();
-    const focusTarget = closeBtn || panel;
-    if (focusTarget) focusTarget.focus();
-  }
-
-  function closeInspect() {
-    if (!drawer) return;
-    drawer.setAttribute('data-open', 'false');
-    drawer.hidden = true;
-    const back = inspectReturn;
-    inspectReturn = null;
-    if (back && typeof back.focus === 'function') back.focus();
-  }
-
-  function onInspectClick(e) {
-    if (e.target.closest('.info, [data-rung-toggle]')) return;
-    const host = e.target.closest('[data-inspect-id]');
-    if (!host) return;
-    e.preventDefault();
-    openInspect(host);
-  }
-
-  function onInspectKey(e) {
-    if (e.key !== 'Enter' && e.key !== ' ') return;
-    if (e.target.closest('[data-rung-toggle], .hall-search, .kod-btn, a.kod-drawer__sheet')) return;
-    const host = e.target.closest('[data-inspect-id]');
-    if (!host || e.target !== host) return;
-    e.preventDefault();
-    openInspect(host);
-  }
-
-  document.addEventListener('click', onInspectClick);
-  document.addEventListener('keydown', onInspectKey);
-
-  if (closeBtn) closeBtn.addEventListener('click', () => closeInspect());
-  const dismiss = drawer && drawer.querySelector('[data-inspect-dismiss]');
-  if (dismiss) dismiss.addEventListener('click', () => closeInspect());
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key !== 'Escape' || !inspectOpen()) return;
-    e.preventDefault();
-    closeInspect();
-  });
-
-  if (panel) {
-    panel.addEventListener('keydown', (e) => {
-      if (e.key !== 'Tab' || !inspectOpen()) return;
-      const list = tabbables();
-      if (list.length === 0) return;
-      const first = list[0];
-      const last = list[list.length - 1];
-      if (e.shiftKey && document.activeElement === first) {
-        e.preventDefault();
-        last.focus();
-      } else if (!e.shiftKey && document.activeElement === last) {
-        e.preventDefault();
-        first.focus();
-      }
-    });
   }
 
   // —— Search ————————————————————————————————————————————————————————
@@ -359,14 +186,32 @@
     hitsEl.hidden = false;
     for (const p of hits) {
       const li = document.createElement('li');
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'hall-search__hit';
       const tag = p.kind === 'outsider' ? ' (outsider)' : p.pc ? '' : ' (npc)';
-      btn.textContent = p.name + tag;
-      btn.setAttribute('data-inspect-id', p.id);
-      btn.setAttribute('data-name', p.name);
-      li.appendChild(btn);
+      const label = p.name + tag;
+      if (p.slug) {
+        const a = document.createElement('a');
+        a.className = 'hall-search__hit';
+        a.href = '/characters/' + encodeURIComponent(String(p.slug)) + '/';
+        a.textContent = label;
+        li.appendChild(a);
+      } else {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'hall-search__hit';
+        btn.textContent = label;
+        btn.setAttribute('data-name', p.name);
+        btn.addEventListener('click', () => {
+          const el = document.querySelector(
+            '.member[data-name="' +
+              String(p.name).replace(/"/g, '') +
+              '"], .outsider[data-name="' +
+              String(p.name).replace(/"/g, '') +
+              '"]',
+          );
+          if (el instanceof HTMLElement) el.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+        });
+        li.appendChild(btn);
+      }
       hitsEl.appendChild(li);
     }
   }
@@ -700,7 +545,6 @@
   const nave = document.querySelector('.hall__nave');
   if (nave) {
     nave.addEventListener('keydown', (e) => {
-      if (inspectOpen()) return;
       if (e.key === 'ArrowDown') {
         e.preventDefault();
         moveRoving(0, 1);
@@ -771,10 +615,6 @@
 
   function onRevChanged(rev) {
     lastRev = rev;
-    if (inspectOpen()) {
-      if (banner) banner.hidden = false;
-      return;
-    }
     location.reload();
   }
 

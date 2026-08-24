@@ -1223,96 +1223,80 @@ section.kod-plate {
 }
 
 .member {
-  --kod-soot-size: 0.45rem;
-  --kod-corners: none;
-  --kod-btn-ends:
-    var(--kod-btn-end-l) left 0.06rem center / auto 1.28rem no-repeat,
-    var(--kod-btn-end-r) right 0.06rem center / auto 1.28rem no-repeat;
-  appearance: none;
-  isolation: isolate;
-  position: relative;
   display: flex;
   align-items: center;
   gap: 0.35rem;
   box-sizing: border-box;
   width: 100%;
-  min-height: 2.15rem;
-  padding: 0.4rem 1.42rem 0.42rem;
+  min-height: 1.85rem;
+  padding: 0.3rem 0.7rem 0.32rem 0.72rem;
   font: inherit;
-  font-size: 0.95rem;
-  letter-spacing: 0.03em;
+  font-size: 0.94rem;
+  letter-spacing: 0.025em;
   line-height: 1.3;
   text-align: left;
   text-decoration: none;
   color: var(--kod-silver-bright);
-  background: #5c5550;
+  background: #100e0c;
   border: none;
-  clip-path: var(--kod-cartouche);
+  clip-path: polygon(
+    0.36rem 0,
+    calc(100% - 0.36rem) 0,
+    100% 0.3rem,
+    100% calc(100% - 0.3rem),
+    calc(100% - 0.36rem) 100%,
+    0.36rem 100%,
+    0 calc(100% - 0.3rem),
+    0 0.3rem
+  );
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--kod-silver) 14%, transparent);
   cursor: pointer;
 }
 
-.member::before {
-  content: '';
-  position: absolute;
-  inset: 1px;
-  z-index: -1;
-  clip-path: var(--kod-cartouche);
-  pointer-events: none;
-  background:
-    var(--kod-soot),
-    linear-gradient(180deg, rgba(242, 239, 233, 0.12), transparent 42%),
-    #161412;
-}
-
-.member::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: var(--kod-btn-ends);
-  opacity: 0.9;
-}
-
-.member:hover,
-.member:focus-visible {
+a.member:hover,
+a.member:focus-visible {
   outline: none;
   color: #fff8f0;
-  background: #8a8580;
+  background: #181512;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--kod-silver) 34%, transparent);
 }
 
-.member:hover::before,
-.member:focus-visible::before {
-  background:
-    var(--kod-soot),
-    linear-gradient(180deg, rgba(242, 239, 233, 0.16), transparent 42%),
-    #1c1916;
+.member:not(a) {
+  cursor: default;
 }
 
-.member:hover::after,
-.member:focus-visible::after {
-  opacity: 1;
+a.member:visited {
+  color: var(--kod-silver-bright);
+}
+
+a.member--pc:visited {
+  color: #fff8f0;
 }
 
 .member--pc {
   color: #fff8f0;
-  letter-spacing: 0.04em;
-  background: #8a8580;
-}
-
-.member--pc::before {
+  letter-spacing: 0.035em;
   background:
-    var(--kod-soot),
-    linear-gradient(180deg, rgba(242, 239, 233, 0.2), transparent 40%),
-    #1e1b17;
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--kod-silver) 9%, #141210),
+      #100e0c 70%
+    );
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--kod-silver) 32%, transparent),
+    inset 2px 0 0 color-mix(in srgb, var(--kod-silver) 52%, transparent);
 }
 
-.member--pc::after {
-  opacity: 1;
+a.member--pc:hover,
+a.member--pc:focus-visible {
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--kod-silver) 48%, transparent),
+    inset 2px 0 0 var(--kod-silver);
 }
 
 .hier-ruler .member {
   width: auto;
-  min-width: 9rem;
+  min-width: 8.5rem;
   display: inline-flex;
   justify-content: center;
   margin: 0.4rem auto 0;
@@ -1339,23 +1323,14 @@ section.kod-plate {
 }
 
 .member[data-search='miss'],
-.outsider[data-search='miss'] {
+.outsider[data-search='miss'],
+.hier-rung__members > li:has([data-search='miss']),
+.outsiders__list > li:has([data-search='miss']) {
   display: none;
 }
 
 .member[data-search='hit'] {
-  background: #c4bfb6;
-}
-
-.member[data-search='hit']::before {
-  background:
-    var(--kod-soot),
-    linear-gradient(180deg, rgba(242, 239, 233, 0.18), transparent 42%),
-    #201c18;
-}
-
-.member[data-search='hit']::after {
-  opacity: 1;
+  box-shadow: inset 0 0 0 1px var(--kod-silver);
 }
 
 .outsider[data-search='hit'] {
@@ -1416,11 +1391,23 @@ section.kod-plate {
   background: color-mix(in srgb, var(--kod-silver) 58%, #2a2824);
 }
 
+.outsiders__list > li {
+  margin: 0;
+  padding: 0;
+}
+
 .outsider {
+  display: block;
   padding: 0.55rem 0.55rem;
   background: color-mix(in srgb, #0e0c0a 80%, transparent);
   border-left: 3px solid hsl(var(--faction-h, 0) 28% 42%);
+  text-decoration: none;
+  color: inherit;
   cursor: pointer;
+}
+
+.outsider:not([href]) {
+  cursor: default;
 }
 
 .outsider:hover,
@@ -1745,10 +1732,13 @@ section.kod-plate {
 
 .hall-search__hit {
   appearance: none;
+  display: block;
+  box-sizing: border-box;
   font: inherit;
   font-size: 0.88rem;
   width: 100%;
   text-align: left;
+  text-decoration: none;
   color: var(--kod-silver-bright);
   background: color-mix(in srgb, #0c0a0a 80%, transparent);
   border: 1px solid var(--kod-frame);
