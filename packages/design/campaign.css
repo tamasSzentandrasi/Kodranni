@@ -670,7 +670,7 @@ section.kod-plate {
 }
 
 .hier-add {
-  margin-top: 1.15rem;
+  margin: 0.7rem 0 0.2rem;
   display: flex;
   justify-content: center;
 }
@@ -723,10 +723,9 @@ section.kod-plate {
 }
 
 .kod-plus--sm {
-  width: 2.15rem;
-  height: 2.15rem;
-  align-self: center;
-  margin-top: 0.55rem;
+  width: 2.4rem;
+  height: 2.4rem;
+  margin: 0;
 }
 
 .kod-plus--sm .kod-plus__mark {
@@ -764,6 +763,10 @@ section.kod-plate {
   cursor: pointer;
 }
 
+.rite [hidden] {
+  display: none !important;
+}
+
 .rite__panel {
   position: relative;
   z-index: 1;
@@ -775,6 +778,37 @@ section.kod-plate {
   border-top: 3px solid var(--kod-blood);
   transform: translateY(0.7rem);
   transition: transform 0.22s ease;
+}
+
+.rite__panel .kod-btn--folio {
+  min-height: 3.9rem;
+  padding: 0.75rem 2.4rem;
+}
+
+.rite__panel .kod-btn--folio[data-banner-submit] {
+  --rite-banner: #a01818;
+  background: var(--rite-banner);
+}
+
+.rite__panel .kod-btn--folio[data-banner-submit]::before {
+  background:
+    var(--kod-soot),
+    linear-gradient(180deg, rgba(242, 239, 233, 0.14), transparent 42%),
+    var(--rite-banner);
+}
+
+.rite__panel .kod-btn--folio[data-banner-submit]:hover,
+.rite__panel .kod-btn--folio[data-banner-submit]:focus-visible {
+  background: var(--rite-banner);
+  filter: brightness(1.08);
+}
+
+.rite__panel .kod-btn--folio[data-banner-submit]:hover::before,
+.rite__panel .kod-btn--folio[data-banner-submit]:focus-visible::before {
+  background:
+    var(--kod-soot),
+    linear-gradient(180deg, rgba(242, 239, 233, 0.18), transparent 42%),
+    var(--rite-banner);
 }
 
 .rite[data-open='true'] .rite__panel {
@@ -809,7 +843,7 @@ section.kod-plate {
   background: color-mix(in srgb, #100e0c 82%, transparent);
   border: 1px solid var(--kod-frame);
   border-top: 2px solid var(--kod-frame-tick);
-  padding: 0.7rem 0.5rem 0.75rem;
+  padding: 0.85rem 0.5rem 0.9rem;
   cursor: pointer;
 }
 
@@ -889,7 +923,16 @@ section.kod-plate {
 }
 
 .factions {
+  display: flex;
+  flex-direction: column;
   padding: 0.85rem 0.9rem 1rem;
+}
+
+.factions__add {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 0.85rem;
 }
 
 .factions h3 {

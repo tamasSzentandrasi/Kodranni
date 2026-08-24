@@ -44,12 +44,14 @@ const { factions = [], live = false } = Astro.props;
   </ul>
   {
     live && (
-      <button type="button" class="kod-plus kod-plus--sm" data-rite-open="faction" aria-label="Add a faction">
-        <span class="kod-plus__ring" aria-hidden="true" />
-        <span class="kod-plus__mark" aria-hidden="true">
-          +
-        </span>
-      </button>
+      <div class="factions__add">
+        <button type="button" class="kod-plus kod-plus--sm" data-rite-open="faction" aria-label="Add a faction">
+          <span class="kod-plus__ring" aria-hidden="true" />
+          <span class="kod-plus__mark" aria-hidden="true">
+            +
+          </span>
+        </button>
+      </div>
     )
   }
 </aside>

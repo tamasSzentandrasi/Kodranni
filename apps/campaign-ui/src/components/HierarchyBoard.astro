@@ -80,6 +80,18 @@ const rulerId = ruler ? inspectId(ruler, rulerCharacterSlug) : '';
       )
     }
   </div>
+  {
+    live && (
+      <div class="hier-add">
+        <button type="button" class="kod-plus" data-rite-open="figure" aria-label="Add a character">
+          <span class="kod-plus__ring" aria-hidden="true" />
+          <span class="kod-plus__mark" aria-hidden="true">
+            +
+          </span>
+        </button>
+      </div>
+    )
+  }
   <p class="hier-join" aria-hidden="true" />
 </section>
 
@@ -205,16 +217,4 @@ const rulerId = ruler ? inspectId(ruler, rulerCharacterSlug) : '';
       })
     }
   </div>
-  {
-    live && (
-      <div class="hier-add">
-        <button type="button" class="kod-plus" data-rite-open="figure" aria-label="Add a name to the hall">
-          <span class="kod-plus__ring" aria-hidden="true" />
-          <span class="kod-plus__mark" aria-hidden="true">
-            +
-          </span>
-        </button>
-      </div>
-    )
-  }
 </div>

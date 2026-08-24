@@ -441,12 +441,37 @@
     return data;
   }
 
+  function resetFigureForm(form) {
+    const kindStep = form.querySelector('[data-step="kind"]');
+    const details = form.querySelector('[data-step="details"]');
+    const factionField = form.querySelector('[data-add-faction-field]');
+    const outsiderInput = form.querySelector('[data-add-outsider]');
+    const select = form.querySelector('[name="faction"]');
+    const name = form.querySelector('[name="name"]');
+    const note = form.querySelector('[data-figure-note]');
+    if (kindStep) kindStep.hidden = false;
+    if (details) details.hidden = true;
+    if (factionField) factionField.hidden = true;
+    if (select instanceof HTMLSelectElement) {
+      select.disabled = true;
+      select.value = '';
+    }
+    if (outsiderInput) outsiderInput.value = '';
+    if (name instanceof HTMLInputElement) name.value = '';
+    if (note) note.textContent = 'Kin land Outcast on every axis until the table moves them.';
+    form.querySelectorAll('[data-pick-kind]').forEach((b) => b.removeAttribute('aria-pressed'));
+  }
+
   function openRite(name) {
     const rite = document.querySelector('[data-rite="' + name + '"]');
     if (!rite) return;
+    if (name === 'figure') {
+      const form = rite.querySelector('[data-add-figure-form]');
+      if (form) resetFigureForm(form);
+    }
     rite.hidden = false;
     requestAnimationFrame(() => rite.setAttribute('data-open', 'true'));
-    const first = rite.querySelector('button, input, select');
+    const first = rite.querySelector('[data-step="kind"] button, input, select');
     if (first instanceof HTMLElement) first.focus();
   }
 
@@ -492,6 +517,11 @@
           const isOut = kind === 'outsider';
           if (outsiderInput) outsiderInput.value = isOut ? '1' : '';
           if (factionField) factionField.hidden = !isOut;
+          const select = figureForm.querySelector('[name="faction"]');
+          if (select instanceof HTMLSelectElement) {
+            select.disabled = !isOut;
+            if (!isOut) select.value = '';
+          }
           if (note) {
             note.textContent = isOut
               ? 'Outsiders stay on the porch until inducted.'
@@ -528,6 +558,14 @@
     const factionForm = document.querySelector('[data-add-faction]');
     if (factionForm) {
       const msgEl = factionForm.querySelector('[data-add-faction-msg]');
+      const colorEl = factionForm.querySelector('[name="faction-color"]');
+      const bannerBtn = factionForm.querySelector('[data-banner-submit]');
+      function paintBanner() {
+        if (!(colorEl instanceof HTMLInputElement) || !(bannerBtn instanceof HTMLElement)) return;
+        bannerBtn.style.setProperty('--rite-banner', colorEl.value);
+      }
+      if (colorEl) colorEl.addEventListener('input', paintBanner);
+      paintBanner();
       factionForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const nameEl = factionForm.querySelector('[name="faction-name"]');
