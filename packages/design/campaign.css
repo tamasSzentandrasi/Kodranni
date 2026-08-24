@@ -351,8 +351,8 @@ section.kod-plate {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 1.15rem 0.8rem 1.05rem;
-  min-height: 11.4rem;
+  padding: 1.05rem 0.65rem 0.8rem;
+  min-height: 12.2rem;
   border-top-width: 4px;
   border-top-color: var(--kod-fortune-accent);
   background:
@@ -382,9 +382,10 @@ section.kod-plate {
 
 .fortune__icon {
   display: block;
-  width: 2.45rem;
-  height: 2.45rem;
-  margin: 0 0 0.5rem;
+  width: 4.35rem;
+  height: 4.35rem;
+  margin: 0.05rem 0 0.55rem;
+  flex-shrink: 0;
   background-color: var(--kod-fortune-accent);
   -webkit-mask: center / contain no-repeat;
   mask: center / contain no-repeat;
@@ -423,21 +424,22 @@ section.kod-plate {
   align-items: center;
   justify-content: center;
   gap: 0.3rem;
-  font-size: 0.72rem;
-  letter-spacing: 0.08em;
+  font-size: 1.12rem;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: #fff8f0;
-  margin: 0 0 0.45rem;
+  margin: 0 0 0.5rem;
+  line-height: 1.15;
 }
 
 /* Soft weather column — four unmarked tiers, fill rises with the state. */
 .fortune__stack {
   display: flex;
   flex-direction: column-reverse;
-  width: 1.55rem;
-  height: 5.1rem;
-  gap: 3px;
-  margin: 0 0 0.55rem;
+  width: 1.05rem;
+  height: 2.35rem;
+  gap: 2px;
+  margin: 0 0 0.32rem;
 }
 
 .fortune__stack i {
@@ -500,10 +502,11 @@ section.kod-plate {
 
 /* Weather word is the reading — not a tank, not a 0–3 ledger. */
 .fortune__state {
-  font-size: 1.15rem;
-  letter-spacing: 0.04em;
-  color: var(--kod-silver-bright);
-  margin: 0 0 0.15rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--kod-silver);
+  margin: 0;
 }
 
 .fortune[data-level='0'] .fortune__state {
@@ -575,8 +578,8 @@ section.kod-plate {
 }
 
 .fortune--editable .fortune__state {
-  min-height: 1.55rem;
-  padding: 0.12rem 0.35rem;
+  min-height: 1.15rem;
+  padding: 0.08rem 0.3rem;
 }
 
 .fortune--editable:hover,
@@ -3716,6 +3719,19 @@ select.kod-ink option[value=''],
 .echo__people [data-echo-group-remove]:focus-visible {
   color: var(--kod-silver-bright);
   border-color: var(--kod-silver);
+}
+
+.echo__pick {
+  display: grid;
+  gap: 0.2rem;
+  margin-top: 0.5rem;
+}
+
+.echo__pick-lab {
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--kod-silver-dim);
 }
 
 .echo__resolution {

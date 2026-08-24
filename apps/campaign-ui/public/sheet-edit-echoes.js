@@ -6,6 +6,14 @@
   const list = panel.querySelector('[data-echo-list]');
   const traitList = document.querySelector('[data-trait-list]');
   const BAND = { 1: 'Individual', 2: 'Group', 3: 'Pivotal' };
+  let roster = [];
+  try {
+    const raw = document.getElementById('echo-roster');
+    roster = raw ? JSON.parse(raw.textContent || '[]') : [];
+    if (!Array.isArray(roster)) roster = [];
+  } catch {
+    roster = [];
+  }
 
   function tokenHeaders() {
     const headers = { 'Content-Type': 'application/json' };
@@ -25,6 +33,77 @@
     const all = art && art.querySelector('[data-echo-all]');
     if (circle) circle.hidden = w !== 2;
     if (all) all.hidden = w !== 3;
+    if (art) refreshPicks(art);
+  }
+
+  function groupKey(name, slug) {
+    return (slug || name || '').trim().toLowerCase();
+  }
+
+  function takenKeys(art) {
+    const keys = new Set();
+    art.querySelectorAll('[data-echo-group] li').forEach((li) => {
+      const slug = li.getAttribute('data-slug') || '';
+      const nameEl = li.querySelector('[data-echo-group-name]');
+      const name =
+        nameEl && 'value' in nameEl
+          ? String(nameEl.value).trim()
+          : (nameEl && nameEl.textContent ? nameEl.textContent.trim() : '');
+      if (slug) keys.add(groupKey('', slug));
+      if (name) keys.add(groupKey(name, ''));
+    });
+    return keys;
+  }
+
+  function fillPick(select, art) {
+    if (!(select instanceof HTMLSelectElement)) return;
+    const taken = takenKeys(art);
+    const keep = select.value;
+    select.replaceChildren();
+    const blank = document.createElement('option');
+    blank.value = '';
+    blank.textContent = 'Choose…';
+    select.appendChild(blank);
+    roster.forEach((row) => {
+      const name = String(row.name || '').trim();
+      if (!name) return;
+      const slug = row.slug ? String(row.slug) : '';
+      const opt = document.createElement('option');
+      opt.value = slug ? 'slug:' + slug : 'name:' + name;
+      opt.textContent = name;
+      if (taken.has(groupKey(name, slug)) || taken.has(groupKey(name, '')) || (slug && taken.has(groupKey('', slug)))) {
+        opt.disabled = true;
+      }
+      select.appendChild(opt);
+    });
+    if ([...select.options].some((o) => o.value === keep && !o.disabled)) select.value = keep;
+    else select.value = '';
+  }
+
+  function refreshPicks(art) {
+    const select = art.querySelector('[data-echo-group-pick]');
+    if (select) fillPick(select, art);
+  }
+
+  function readGroupName(el) {
+    if (!el) return '';
+    if ('value' in el) return String(el.value).trim();
+    return (el.textContent || '').trim();
+  }
+
+  function addGroupRow(list, name, slug) {
+    const li = document.createElement('li');
+    if (slug) li.setAttribute('data-slug', slug);
+    const span = document.createElement('span');
+    span.setAttribute('data-echo-group-name', '');
+    span.textContent = name;
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.setAttribute('data-echo-group-remove', '');
+    btn.textContent = 'Remove';
+    li.appendChild(span);
+    li.appendChild(btn);
+    list.appendChild(li);
   }
 
   function readEchoes() {
@@ -34,10 +113,14 @@
       const invokeWhen =
         art.querySelector('[data-echo-invoke]')?.value?.trim() ||
         'When the table agrees the scene matches.';
-      const group = Array.from(art.querySelectorAll('[data-echo-group-name]'))
-        .map((inp) => (inp && 'value' in inp ? String(inp.value).trim() : ''))
-        .filter(Boolean)
-        .map((name) => ({ name }));
+      const group = Array.from(art.querySelectorAll('[data-echo-group] li'))
+        .map((li) => {
+          const name = readGroupName(li.querySelector('[data-echo-group-name]'));
+          if (!name) return null;
+          const slug = li.getAttribute('data-slug') || undefined;
+          return slug ? { name, characterSlug: slug } : { name };
+        })
+        .filter(Boolean);
       return {
         title,
         weight: Math.min(3, Math.max(1, w)),
@@ -89,7 +172,8 @@
       '<div class="echo__circle" data-echo-circle hidden>' +
       '<p class="echo__circle-lab">Who shares this</p>' +
       '<ul class="echo__people" data-echo-group></ul>' +
-      '<button type="button" class="draft-btn" data-echo-group-add>Add a name</button></div>' +
+      '<label class="echo__pick"><span class="echo__pick-lab">Add a character</span>' +
+      '<select class="kod-ink" data-echo-group-pick><option value="">Choose…</option></select></label></div>' +
       '<p class="echo__circle-all" data-echo-all hidden>The whole community.</p>' +
       '<button type="button" class="echo__remove" data-echo-remove>Remove</button></div>';
     list.appendChild(art);
@@ -109,20 +193,10 @@
       saveSoon();
       return;
     }
-    if (t.closest('[data-echo-group-add]')) {
-      const list = t.closest('[data-echo-idx]')?.querySelector('[data-echo-group]');
-      if (list) {
-        const li = document.createElement('li');
-        li.innerHTML =
-          '<input class="kod-ink" data-echo-group-name value="" placeholder="Name" />' +
-          '<button type="button" data-echo-group-remove>Remove</button>';
-        list.appendChild(li);
-        saveSoon();
-      }
-      return;
-    }
     if (t.closest('[data-echo-group-remove]')) {
+      const art = t.closest('[data-echo-idx]');
       t.closest('li')?.remove();
+      if (art) refreshPicks(art);
       saveSoon();
       return;
     }
@@ -196,6 +270,35 @@
       msg.className = 'draft-msg draft-msg--err';
     }
   }
+
+  panel.addEventListener('change', (ev) => {
+    const t = ev.target;
+    if (!(t instanceof HTMLSelectElement) || !t.hasAttribute('data-echo-group-pick')) return;
+    const art = t.closest('[data-echo-idx]');
+    const list = art && art.querySelector('[data-echo-group]');
+    const raw = t.value;
+    t.value = '';
+    if (!art || !list || !raw) return;
+    let name = '';
+    let slug = '';
+    if (raw.startsWith('slug:')) {
+      slug = raw.slice(5);
+      const row = roster.find((r) => r && r.slug === slug);
+      name = row && row.name ? String(row.name) : slug;
+    } else if (raw.startsWith('name:')) {
+      name = raw.slice(5);
+    }
+    if (!name) return;
+    const taken = takenKeys(art);
+    if (taken.has(groupKey(name, slug)) || taken.has(groupKey(name, '')) || (slug && taken.has(groupKey('', slug)))) {
+      return;
+    }
+    addGroupRow(list, name, slug);
+    refreshPicks(art);
+    saveSoon();
+  });
+
+  panel.querySelectorAll('[data-echo-idx]').forEach((art) => refreshPicks(art));
 
   panel.addEventListener('input', saveSoon);
   traitList?.addEventListener('input', saveSoon);

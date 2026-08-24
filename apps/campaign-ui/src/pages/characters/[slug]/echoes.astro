@@ -23,6 +23,13 @@ if (auth.canEdit && auth.token && Astro.url.searchParams.has('edit')) {
 const canEdit = unlocked && auth.canEdit;
 const active = (ch.echoes ?? []).filter((e) => !e.resolved);
 const resolved = (ch.echoes ?? []).filter((e) => e.resolved);
+const sheetNames = new Set(c.characters.map((x) => x.name.toLowerCase()));
+const echoRoster = [
+  ...c.characters.map((x) => ({ name: x.name, slug: x.slug })),
+  ...(c.outsiders ?? [])
+    .filter((o) => !sheetNames.has(o.name.toLowerCase()))
+    .map((o) => ({ name: o.name, slug: o.characterSlug })),
+].sort((a, b) => a.name.localeCompare(b.name));
 ---
 
 <CampaignLayout
@@ -49,6 +56,11 @@ const resolved = (ch.echoes ?? []).filter((e) => e.resolved);
   >
 
   <section class="kod-plate" id="echoes-panel" data-slug={ch.slug} data-can-edit={canEdit ? '1' : '0'}>
+    {canEdit && (
+      <div id="echo-roster" hidden>
+        {JSON.stringify(echoRoster).replace(/</g, '\\u003c')}
+      </div>
+    )}
     <div class="section-head">
       <h2>Active Echoes</h2>
       <button
@@ -107,22 +119,20 @@ const resolved = (ch.echoes ?? []).filter((e) => e.resolved);
                           <p class="echo__circle-lab">Who shares this</p>
                           <ul class="echo__people" data-echo-group>
                             {(e.group ?? []).map((g) => (
-                              <li>
-                                <input
-                                  class="kod-ink"
-                                  data-echo-group-name
-                                  value={g.name}
-                                  placeholder="Name"
-                                />
+                              <li data-slug={g.characterSlug || undefined}>
+                                <span data-echo-group-name>{g.name}</span>
                                 <button type="button" data-echo-group-remove>
                                   Remove
                                 </button>
                               </li>
                             ))}
                           </ul>
-                          <button type="button" class="draft-btn" data-echo-group-add>
-                            Add a name
-                          </button>
+                          <label class="echo__pick">
+                            <span class="echo__pick-lab">Add a character</span>
+                            <select class="kod-ink" data-echo-group-pick>
+                              <option value="">Choose…</option>
+                            </select>
+                          </label>
                         </div>
                         <p class="echo__circle-all" data-echo-all hidden={w !== 3}>
                           The whole community.
