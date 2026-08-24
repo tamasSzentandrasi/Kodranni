@@ -1,6 +1,6 @@
 ---
 import { HIERARCHY_TIERS } from '@kodranni/domain';
-import { axisDomain, axisKey, type FactionOpt } from '../lib/format';
+import { axisDomain, axisKey } from '../lib/format';
 import { inspectId } from '../lib/hall-inspect';
 import type { FixtureCommunity } from '../data/fixture';
 
@@ -12,7 +12,6 @@ interface Props {
   pendingMoves?: FixtureCommunity['pendingMoves'];
   tips: Map<string, string>;
   live?: boolean;
-  factions?: FactionOpt[];
   pcSlugs?: string[];
 }
 
@@ -24,7 +23,6 @@ const {
   pendingMoves = [],
   tips,
   live = false,
-  factions = [],
   pcSlugs = [],
 } = Astro.props;
 const tiers = [...HIERARCHY_TIERS];
@@ -210,41 +208,12 @@ const rulerId = ruler ? inspectId(ruler, rulerCharacterSlug) : '';
   {
     live && (
       <div class="hier-add">
-        <button type="button" class="hier-add__open" data-add-figure>
-          Add a name
+        <button type="button" class="kod-plus" data-rite-open="figure" aria-label="Add a name to the hall">
+          <span class="kod-plus__ring" aria-hidden="true" />
+          <span class="kod-plus__mark" aria-hidden="true">
+            +
+          </span>
         </button>
-        <form class="kod-plate hier-add__pop" data-add-figure-form hidden>
-          <p class="hier-add__kicker">Named figure</p>
-          <label class="hier-add__field">
-            <span>Name</span>
-            <input class="hall-search__q" name="name" required maxlength="80" autocomplete="off" />
-          </label>
-          <label class="hier-add__check">
-            <input type="checkbox" name="outsider" data-add-outsider />
-            <span>Outsider</span>
-          </label>
-          <label class="hier-add__field" data-add-faction-field hidden>
-            <span>Faction</span>
-            <select class="hier-add__select" name="faction">
-              <option value="">— none —</option>
-              {factions.map((f) => (
-                <option value={f.name}>{f.name}</option>
-              ))}
-            </select>
-          </label>
-          <p class="hier-add__note">
-            Hall names land Outcast on every axis. Outsiders stay on the porch.
-          </p>
-          <div class="hier-add__actions">
-            <button type="submit" class="hier-add__open">
-              Place
-            </button>
-            <button type="button" class="hall-search__clear" data-add-figure-cancel>
-              Cancel
-            </button>
-          </div>
-          <p class="hier-add__msg" data-add-figure-msg hidden></p>
-        </form>
       </div>
     )
   }

@@ -430,32 +430,39 @@
 
 .kod-fortune-pillar__icon {
   display: block;
-  width: 2.65rem;
-  height: 2.65rem;
+  width: 2.85rem;
+  height: 2.85rem;
   margin: 0.15rem 0 0.85rem;
   background-color: var(--kod-fortune-accent, var(--kod-blood-bright));
   -webkit-mask: center / contain no-repeat;
   mask: center / contain no-repeat;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
   flex-shrink: 0;
   filter: drop-shadow(0 0 8px color-mix(in srgb, var(--kod-fortune-accent) 40%, transparent));
 }
 
 .kod-fortune-pillar__name {
   font-family: var(--kod-font-display);
-  font-size: 1.05rem;
-  letter-spacing: 0.06em;
+  font-size: 1.38rem;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #fff8f0;
-  margin: 0 0 0.55rem;
-  line-height: 1.2;
+  color: var(--kod-silver-bright);
+  margin: 0 0 0.45rem;
+  line-height: 1.15;
 }
 
 .kod-fortune-pillar__blurb {
   margin: 0;
-  font-size: 0.88em;
+  font-size: 0.78rem;
   line-height: 1.45;
-  color: var(--kod-silver);
+  color: var(--kod-silver-dim);
   flex: 1 1 auto;
+  font-weight: 400;
 }
 
 /*
@@ -471,9 +478,8 @@
   border-top-color: #c45a6a;
 }
 .kod-fortune-pillar--vitality .kod-fortune-pillar__icon {
-  /* blood drop */
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M16 2.5c.4 0 1.1.8 2.2 2.4 1.5 2.2 3.6 5.6 5 9.1 1.2 3 1.8 5.7 1.8 7.5 0 5-3.8 8.5-9 8.5s-9-3.5-9-8.5c0-1.8.6-4.5 1.8-7.5 1.4-3.5 3.5-6.9 5-9.1C14.9 3.3 15.6 2.5 16 2.5zm0 3.2c-1.2 1.7-3.1 4.8-4.4 8-1.1 2.8-1.6 5.2-1.6 6.8 0 3.8 2.8 6.5 6 6.5s6-2.7 6-6.5c0-1.6-.5-4-1.6-6.8-1.3-3.2-3.2-6.3-4.4-8z'/%3E%3Cpath fill='black' d='M13.2 18.2c0-2.2 1.4-4 3.2-4.6.3 1 .5 2.1.5 3.2 0 1.8-.7 3.3-1.8 4.3-1.1-.8-1.9-2.2-1.9-3.9z'/%3E%3C/svg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M16 2.5c.4 0 1.1.8 2.2 2.4 1.5 2.2 3.6 5.6 5 9.1 1.2 3 1.8 5.7 1.8 7.5 0 5-3.8 8.5-9 8.5s-9-3.5-9-8.5c0-1.8.6-4.5 1.8-7.5 1.4-3.5 3.5-6.9 5-9.1C14.9 3.3 15.6 2.5 16 2.5zm0 3.2c-1.2 1.7-3.1 4.8-4.4 8-1.1 2.8-1.6 5.2-1.6 6.8 0 3.8 2.8 6.5 6 6.5s6-2.7 6-6.5c0-1.6-.5-4-1.6-6.8-1.3-3.2-3.2-6.3-4.4-8z'/%3E%3Cpath fill='black' d='M13.2 18.2c0-2.2 1.4-4 3.2-4.6.3 1 .5 2.1.5 3.2 0 1.8-.7 3.3-1.8 4.3-1.1-.8-1.9-2.2-1.9-3.9z'/%3E%3C/svg%3E");
+  -webkit-mask-image: var(--kod-fortune-vitality);
+  mask-image: var(--kod-fortune-vitality);
 }
 
 .kod-fortune-pillar--cohesion {
@@ -481,19 +487,16 @@
   border-top-color: #6a9fd4;
 }
 .kod-fortune-pillar--cohesion .kod-fortune-pillar__icon {
-  /* eight dots on a circle + centre */
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='2.2' fill='black'/%3E%3Ccircle cx='16' cy='5.2' r='2' fill='black'/%3E%3Ccircle cx='16' cy='26.8' r='2' fill='black'/%3E%3Ccircle cx='5.2' cy='16' r='2' fill='black'/%3E%3Ccircle cx='26.8' cy='16' r='2' fill='black'/%3E%3Ccircle cx='8.4' cy='8.4' r='2' fill='black'/%3E%3Ccircle cx='23.6' cy='8.4' r='2' fill='black'/%3E%3Ccircle cx='8.4' cy='23.6' r='2' fill='black'/%3E%3Ccircle cx='23.6' cy='23.6' r='2' fill='black'/%3E%3C/svg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='2.2' fill='black'/%3E%3Ccircle cx='16' cy='5.2' r='2' fill='black'/%3E%3Ccircle cx='16' cy='26.8' r='2' fill='black'/%3E%3Ccircle cx='5.2' cy='16' r='2' fill='black'/%3E%3Ccircle cx='26.8' cy='16' r='2' fill='black'/%3E%3Ccircle cx='8.4' cy='8.4' r='2' fill='black'/%3E%3Ccircle cx='23.6' cy='8.4' r='2' fill='black'/%3E%3Ccircle cx='8.4' cy='23.6' r='2' fill='black'/%3E%3Ccircle cx='23.6' cy='23.6' r='2' fill='black'/%3E%3C/svg%3E");
+  -webkit-mask-image: var(--kod-fortune-cohesion);
+  mask-image: var(--kod-fortune-cohesion);
 }
-
 .kod-fortune-pillar--surplus {
   --kod-fortune-accent: #c4a035;
   border-top-color: #c4a035;
 }
 .kod-fortune-pillar--surplus .kod-fortune-pillar__icon {
-  /* stacked grain / wheat sheaf */
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M15.1 29h1.8V17.2c1.9.3 3.3 1.2 4.2 2.6l1.4-1c-1.1-1.8-2.9-2.9-5.1-3.3V12c2.2-.3 3.9-1.6 4.8-3.5l-1.5-.8c-.7 1.4-1.9 2.3-3.5 2.6V7.5c1.4-.3 2.5-1.2 3.1-2.5l-1.6-.8c-.4.9-1.2 1.5-2.2 1.7V2.8h-1.8v3.1c-1-.2-1.8-.8-2.2-1.7l-1.6.8c.6 1.3 1.7 2.2 3.1 2.5v2.8c-1.6-.3-2.8-1.2-3.5-2.6l-1.5.8c.9 1.9 2.6 3.2 4.8 3.5v3.5c-2.2.4-4 1.5-5.1 3.3l1.4 1c.9-1.4 2.3-2.3 4.2-2.6V29z'/%3E%3Cpath fill='black' d='M12.2 19.2c-.9 1.3-.9 2.7 0 4 .9-1.3.9-2.7 0-4zm7.6 0c.9 1.3.9 2.7 0 4-.9-1.3-.9-2.7 0-4zM10.6 14.5c-.7 1.1-.7 2.2 0 3.3.7-1.1.7-2.2 0-3.3zm10.8 0c.7 1.1.7 2.2 0 3.3-.7-1.1-.7-2.2 0-3.3zM9.8 10.2c-.6.9-.6 1.9 0 2.8.6-.9.6-1.9 0-2.8zm12.4 0c.6.9.6 1.9 0 2.8-.6-.9-.6-1.9 0-2.8z'/%3E%3C/svg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M15.1 29h1.8V17.2c1.9.3 3.3 1.2 4.2 2.6l1.4-1c-1.1-1.8-2.9-2.9-5.1-3.3V12c2.2-.3 3.9-1.6 4.8-3.5l-1.5-.8c-.7 1.4-1.9 2.3-3.5 2.6V7.5c1.4-.3 2.5-1.2 3.1-2.5l-1.6-.8c-.4.9-1.2 1.5-2.2 1.7V2.8h-1.8v3.1c-1-.2-1.8-.8-2.2-1.7l-1.6.8c.6 1.3 1.7 2.2 3.1 2.5v2.8c-1.6-.3-2.8-1.2-3.5-2.6l-1.5.8c.9 1.9 2.6 3.2 4.8 3.5v3.5c-2.2.4-4 1.5-5.1 3.3l1.4 1c.9-1.4 2.3-2.3 4.2-2.6V29z'/%3E%3Cpath fill='black' d='M12.2 19.2c-.9 1.3-.9 2.7 0 4 .9-1.3.9-2.7 0-4zm7.6 0c.9 1.3.9 2.7 0 4-.9-1.3-.9-2.7 0-4zM10.6 14.5c-.7 1.1-.7 2.2 0 3.3.7-1.1.7-2.2 0-3.3zm10.8 0c.7 1.1.7 2.2 0 3.3-.7-1.1-.7-2.2 0-3.3zM9.8 10.2c-.6.9-.6 1.9 0 2.8.6-.9.6-1.9 0-2.8zm12.4 0c.6.9.6 1.9 0 2.8-.6-.9-.6-1.9 0-2.8z'/%3E%3C/svg%3E");
+  -webkit-mask-image: var(--kod-fortune-surplus);
+  mask-image: var(--kod-fortune-surplus);
 }
 
 .kod-fortune-pillar--standing {
@@ -501,9 +504,8 @@
   border-top-color: #9b8fd4;
 }
 .kod-fortune-pillar--standing .kod-fortune-pillar__icon {
-  /* Imperial Roman galea: brush crest, brow, cheek guards, neck guard, face opening */
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M15.2 1.8h1.6v2.4c3.2.4 5.7 2.4 6.6 5.4.5 1.7.5 3.5.1 5.1l1.6.4c.5-1.9.5-4-.1-6.1C23.8 5.1 20.5 2.6 16.8 2.2V1.8h-1.6v.4c-3.7.4-7 2.9-8.2 6.8-.6 2.1-.6 4.2-.1 6.1l1.6-.4c-.4-1.6-.4-3.4.1-5.1.9-3 3.4-5 6.6-5.4V1.8z'/%3E%3Cpath fill='black' d='M9.2 13.2c0-3.6 3-6.5 6.8-6.5s6.8 2.9 6.8 6.5v2.8c0 1.1-.3 2.1-.8 3l1.6 1.1c.4-.4.7-.9.9-1.5.3-.9.5-1.8.5-2.8V13c0-1.2-.2-2.3-.6-3.4C23.4 6.2 20 3.8 16 3.8S8.6 6.2 7.6 9.6c-.4 1.1-.6 2.2-.6 3.4v2.4c0 1 .2 1.9.5 2.8.2.6.5 1.1.9 1.5l1.6-1.1c-.5-.9-.8-1.9-.8-3v-2.8z'/%3E%3Cpath fill='black' d='M10.4 16.8v4.6c0 1.2.7 2.3 1.8 2.8l.9-1.5c-.4-.2-.7-.7-.7-1.3v-3.2c0-1.8 1.2-3.3 2.8-3.8v-1.7c-2.7.5-4.8 2.8-4.8 5.6v-.5zm11.2 0c0-2.8-2.1-5.1-4.8-5.6v1.7c1.6.5 2.8 2 2.8 3.8v3.2c0 .6-.3 1.1-.7 1.3l.9 1.5c1.1-.5 1.8-1.6 1.8-2.8v-4.6z'/%3E%3Cpath fill='black' d='M11.6 24.2h8.8c1.4 0 2.6 1 2.9 2.4l.3 1.4H8.4l.3-1.4c.3-1.4 1.5-2.4 2.9-2.4zm1.2 1.7c-.3.3-.5.7-.5 1.1h7.4c0-.4-.2-.8-.5-1.1H12.8z'/%3E%3Cpath fill='black' d='M14.4 8.6h3.2v1.6h-3.2V8.6zM13.6 11.2h4.8v1.3h-4.8v-1.3z'/%3E%3C/svg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M15.2 1.8h1.6v2.4c3.2.4 5.7 2.4 6.6 5.4.5 1.7.5 3.5.1 5.1l1.6.4c.5-1.9.5-4-.1-6.1C23.8 5.1 20.5 2.6 16.8 2.2V1.8h-1.6v.4c-3.7.4-7 2.9-8.2 6.8-.6 2.1-.6 4.2-.1 6.1l1.6-.4c-.4-1.6-.4-3.4.1-5.1.9-3 3.4-5 6.6-5.4V1.8z'/%3E%3Cpath fill='black' d='M9.2 13.2c0-3.6 3-6.5 6.8-6.5s6.8 2.9 6.8 6.5v2.8c0 1.1-.3 2.1-.8 3l1.6 1.1c.4-.4.7-.9.9-1.5.3-.9.5-1.8.5-2.8V13c0-1.2-.2-2.3-.6-3.4C23.4 6.2 20 3.8 16 3.8S8.6 6.2 7.6 9.6c-.4 1.1-.6 2.2-.6 3.4v2.4c0 1 .2 1.9.5 2.8.2.6.5 1.1.9 1.5l1.6-1.1c-.5-.9-.8-1.9-.8-3v-2.8z'/%3E%3Cpath fill='black' d='M10.4 16.8v4.6c0 1.2.7 2.3 1.8 2.8l.9-1.5c-.4-.2-.7-.7-.7-1.3v-3.2c0-1.8 1.2-3.3 2.8-3.8v-1.7c-2.7.5-4.8 2.8-4.8 5.6v-.5zm11.2 0c0-2.8-2.1-5.1-4.8-5.6v1.7c1.6.5 2.8 2 2.8 3.8v3.2c0 .6-.3 1.1-.7 1.3l.9 1.5c1.1-.5 1.8-1.6 1.8-2.8v-4.6z'/%3E%3Cpath fill='black' d='M11.6 24.2h8.8c1.4 0 2.6 1 2.9 2.4l.3 1.4H8.4l.3-1.4c.3-1.4 1.5-2.4 2.9-2.4zm1.2 1.7c-.3.3-.5.7-.5 1.1h7.4c0-.4-.2-.8-.5-1.1H12.8z'/%3E%3Cpath fill='black' d='M14.4 8.6h3.2v1.6h-3.2V8.6zM13.6 11.2h4.8v1.3h-4.8v-1.3z'/%3E%3C/svg%3E");
+  -webkit-mask-image: var(--kod-fortune-standing);
+  mask-image: var(--kod-fortune-standing);
 }
 
 .kod-fortune-pillar--tradition {
@@ -511,9 +513,8 @@
   border-top-color: #6fc4b0;
 }
 .kod-fortune-pillar--tradition .kod-fortune-pillar__icon {
-  /* Greek column: capital (echinus + abacus) + fluted shaft + base */
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M5.5 4.2h21v2.2H5.5V4.2zm1.5 2.8h18c0 1.1-.5 2-1.3 2.7-.5.4-1.1.8-1.6 1.3H9.9c-.5-.5-1.1-.9-1.6-1.3-.8-.7-1.3-1.6-1.3-2.7zm3.6 5.2h11.8v14.2h-2V14.4h-2.2v11.8h-2.2V14.4h-2.2v11.8H12V14.4H9.8v11.8H7.8V12.2h2.8zM6.2 27.2h19.6v1.6H6.2v-1.6zm1.4 2.2h16.8V31H7.6v-1.6z'/%3E%3C/svg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M5.5 4.2h21v2.2H5.5V4.2zm1.5 2.8h18c0 1.1-.5 2-1.3 2.7-.5.4-1.1.8-1.6 1.3H9.9c-.5-.5-1.1-.9-1.6-1.3-.8-.7-1.3-1.6-1.3-2.7zm3.6 5.2h11.8v14.2h-2V14.4h-2.2v11.8h-2.2V14.4h-2.2v11.8H12V14.4H9.8v11.8H7.8V12.2h2.8zM6.2 27.2h19.6v1.6H6.2v-1.6zm1.4 2.2h16.8V31H7.6v-1.6z'/%3E%3C/svg%3E");
+  -webkit-mask-image: var(--kod-fortune-tradition);
+  mask-image: var(--kod-fortune-tradition);
 }
 
 .sl-markdown-content .kod-fortune-hall > * {

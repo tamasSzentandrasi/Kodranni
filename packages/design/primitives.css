@@ -29,12 +29,12 @@
   position: relative;
   isolation: isolate;
   flex: 0 0 auto;
-  width: 6.1rem;
-  height: 2.55rem;
-  min-width: 6.1rem;
-  min-height: 2.55rem;
-  max-width: 6.1rem;
-  max-height: 2.55rem;
+  width: 6.7rem;
+  height: 2.8rem;
+  min-width: 6.7rem;
+  min-height: 2.8rem;
+  max-width: 6.7rem;
+  max-height: 2.8rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -42,10 +42,10 @@
   background: #5c5550;
   color: var(--kod-silver);
   font-family: var(--kod-font-body);
-  font-size: 0.82rem;
+  font-size: 0.88rem;
   line-height: 1;
   margin: 0;
-  padding: 0 1.15rem;
+  padding: 0 1.35rem;
   border-radius: 0;
   cursor: pointer;
   letter-spacing: 0.01em;
@@ -149,11 +149,11 @@
   justify-content: center;
   width: 100%;
   min-width: 0;
-  min-height: 5.2rem;
+  min-height: 5.65rem;
   max-width: none;
   height: auto;
   max-height: none;
-  padding: 0.85rem 2.6rem;
+  padding: 1rem 2.85rem;
   white-space: normal;
   text-decoration: none;
   text-align: center;
@@ -214,4 +214,44 @@
 .kod-btn:active .kod-btn__title,
 .kod-btn[aria-pressed='true'] .kod-btn__title {
   color: #fff8f0;
+}
+
+.kod-btn--blood {
+  background: var(--kod-blood);
+  color: #fff8f0;
+}
+
+.kod-btn--blood::before {
+  background:
+    var(--kod-soot),
+    linear-gradient(180deg, rgba(242, 239, 233, 0.1), transparent 42%),
+    var(--kod-blood-deep);
+}
+
+.kod-btn--blood:hover,
+.kod-btn--blood:focus-visible {
+  background: var(--kod-blood-bright);
+  color: #fff8f0;
+}
+
+.kod-btn--blood:hover::before,
+.kod-btn--blood:focus-visible::before {
+  background:
+    var(--kod-soot),
+    linear-gradient(180deg, rgba(242, 239, 233, 0.14), transparent 42%),
+    #4a0c0c;
+}
+
+.kod-btn--blood:active,
+.kod-btn--blood[aria-pressed='true'] {
+  background: #e8d0d0;
+  color: var(--kod-blood-deep);
+}
+
+.kod-btn--blood:active::before,
+.kod-btn--blood[aria-pressed='true']::before {
+  background:
+    var(--kod-soot),
+    linear-gradient(180deg, rgba(242, 239, 233, 0.08), transparent 55%),
+    #2a0808;
 }

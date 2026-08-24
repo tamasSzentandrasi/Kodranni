@@ -441,78 +441,136 @@
     return data;
   }
 
-  function bindAddFaction() {
-    const form = document.querySelector('[data-add-faction]');
-    if (!form) return;
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const nameEl = form.querySelector('[name="faction-name"]');
-      const colorEl = form.querySelector('[name="faction-color"]');
-      const name = nameEl && 'value' in nameEl ? String(nameEl.value).trim() : '';
-      const hue = hexToHue(colorEl && 'value' in colorEl ? String(colorEl.value) : '#8a3030');
-      if (!name) return;
-      try {
-        await postFigure({ kind: 'faction', name, hue });
-        location.reload();
-      } catch (err) {
-        alert(err instanceof Error ? err.message : String(err));
-      }
-    });
+  function openRite(name) {
+    const rite = document.querySelector('[data-rite="' + name + '"]');
+    if (!rite) return;
+    rite.hidden = false;
+    requestAnimationFrame(() => rite.setAttribute('data-open', 'true'));
+    const first = rite.querySelector('button, input, select');
+    if (first instanceof HTMLElement) first.focus();
   }
 
-  function bindAddFigure() {
-    const openBtn = document.querySelector('[data-add-figure]');
-    const form = document.querySelector('[data-add-figure-form]');
-    if (!openBtn || !form) return;
-    const outsider = form.querySelector('[data-add-outsider]');
-    const factionField = form.querySelector('[data-add-faction-field]');
-    const cancel = form.querySelector('[data-add-figure-cancel]');
-    const msgEl = form.querySelector('[data-add-figure-msg]');
+  function closeRite(rite) {
+    if (!rite) return;
+    rite.setAttribute('data-open', 'false');
+    window.setTimeout(() => {
+      if (rite.getAttribute('data-open') === 'false') rite.hidden = true;
+    }, 220);
+  }
 
-    function setMsg(text, ok) {
-      if (!msgEl) return;
-      msgEl.hidden = !text;
-      msgEl.textContent = text || '';
-      msgEl.classList.toggle('hier-add__msg--err', !ok && !!text);
-    }
-
-    function syncOutsider() {
-      const on = Boolean(outsider && outsider.checked);
-      if (factionField) factionField.hidden = !on;
-    }
-
-    openBtn.addEventListener('click', () => {
-      const open = !form.hidden;
-      form.hidden = open;
-      if (!open) {
-        const name = form.querySelector('[name="name"]');
-        if (name instanceof HTMLInputElement) name.focus();
-      }
+  function bindRites() {
+    document.querySelectorAll('[data-rite-open]').forEach((btn) => {
+      btn.addEventListener('click', () => openRite(btn.getAttribute('data-rite-open') || ''));
     });
-    if (cancel) {
-      cancel.addEventListener('click', () => {
-        form.hidden = true;
-        setMsg('', true);
+    document.querySelectorAll('[data-rite]').forEach((rite) => {
+      rite.querySelectorAll('[data-rite-dismiss]').forEach((btn) => {
+        btn.addEventListener('click', () => closeRite(rite));
+      });
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape') return;
+      document.querySelectorAll('[data-rite][data-open="true"]').forEach((rite) => closeRite(rite));
+    });
+
+    const figureForm = document.querySelector('[data-add-figure-form]');
+    if (figureForm) {
+      const kindStep = figureForm.querySelector('[data-step="kind"]');
+      const details = figureForm.querySelector('[data-step="details"]');
+      const factionField = figureForm.querySelector('[data-add-faction-field]');
+      const outsiderInput = figureForm.querySelector('[data-add-outsider]');
+      const note = figureForm.querySelector('[data-figure-note]');
+      const msgEl = figureForm.querySelector('[data-add-figure-msg]');
+      function setMsg(text, ok) {
+        if (!msgEl) return;
+        msgEl.hidden = !text;
+        msgEl.textContent = text || '';
+        msgEl.classList.toggle('rite__msg--err', !ok && !!text);
+      }
+      figureForm.querySelectorAll('[data-pick-kind]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const kind = btn.getAttribute('data-pick-kind');
+          const isOut = kind === 'outsider';
+          if (outsiderInput) outsiderInput.value = isOut ? '1' : '';
+          if (factionField) factionField.hidden = !isOut;
+          if (note) {
+            note.textContent = isOut
+              ? 'Outsiders stay on the porch until inducted.'
+              : 'Kin land Outcast on every axis until the table moves them.';
+          }
+          figureForm.querySelectorAll('[data-pick-kind]').forEach((b) => {
+            b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+          });
+          if (kindStep) kindStep.hidden = true;
+          if (details) details.hidden = false;
+          const name = figureForm.querySelector('[name="name"]');
+          if (name instanceof HTMLInputElement) name.focus();
+        });
+      });
+      figureForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const fd = new FormData(figureForm);
+        const name = String(fd.get('name') || '').trim();
+        const isOut = String(fd.get('outsider') || '') === '1';
+        const faction = String(fd.get('faction') || '').trim();
+        if (!name) {
+          setMsg('Name required.', false);
+          return;
+        }
+        try {
+          await postFigure({ name, outsider: isOut, faction: isOut ? faction : undefined });
+          location.reload();
+        } catch (err) {
+          setMsg(err instanceof Error ? err.message : String(err), false);
+        }
       });
     }
-    if (outsider) outsider.addEventListener('change', syncOutsider);
-    syncOutsider();
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const fd = new FormData(form);
-      const name = String(fd.get('name') || '').trim();
-      const isOut = fd.get('outsider') != null;
-      const faction = String(fd.get('faction') || '').trim();
-      if (!name) {
-        setMsg('Name required.', false);
-        return;
-      }
-      try {
-        await postFigure({ name, outsider: isOut, faction: isOut ? faction : undefined });
-        location.reload();
-      } catch (err) {
-        setMsg(err instanceof Error ? err.message : String(err), false);
-      }
+
+    const factionForm = document.querySelector('[data-add-faction]');
+    if (factionForm) {
+      const msgEl = factionForm.querySelector('[data-add-faction-msg]');
+      factionForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const nameEl = factionForm.querySelector('[name="faction-name"]');
+        const colorEl = factionForm.querySelector('[name="faction-color"]');
+        const name = nameEl && 'value' in nameEl ? String(nameEl.value).trim() : '';
+        const hue = hexToHue(colorEl && 'value' in colorEl ? String(colorEl.value) : '#8a3030');
+        if (!name) return;
+        try {
+          await postFigure({ kind: 'faction', name, hue });
+          location.reload();
+        } catch (err) {
+          if (msgEl) {
+            msgEl.hidden = false;
+            msgEl.textContent = err instanceof Error ? err.message : String(err);
+            msgEl.classList.add('rite__msg--err');
+          }
+        }
+      });
+    }
+
+    document.querySelectorAll('[data-preview-faction]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const value = btn.getAttribute('data-preview-faction') || '';
+        const on = hall && hall.getAttribute('data-preview-faction') === value;
+        const next = on ? '' : value;
+        if (hall) {
+          if (next) hall.setAttribute('data-preview-faction', next);
+          else hall.removeAttribute('data-preview-faction');
+        }
+        document.querySelectorAll('[data-preview-faction]').forEach((b) => {
+          b.setAttribute(
+            'aria-pressed',
+            b.getAttribute('data-preview-faction') === next ? 'true' : 'false',
+          );
+        });
+        document.querySelectorAll('.outsider[data-inspect-id]').forEach((el) => {
+          if (!next) {
+            el.removeAttribute('data-search');
+            return;
+          }
+          el.setAttribute('data-search', el.getAttribute('data-faction') === next ? 'hit' : 'miss');
+        });
+      });
     });
   }
 
@@ -721,8 +779,7 @@
     restoreCollapse();
     bindRungPersist();
     bindSearch();
-    bindAddFaction();
-    bindAddFigure();
+    bindRites();
     applySearch();
     initRoving();
     bindPoll();

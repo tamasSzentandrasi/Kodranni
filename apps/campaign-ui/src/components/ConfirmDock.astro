@@ -35,7 +35,7 @@ const canConfirm =
           </div>
         ) : canConfirm ? (
           <div class="draft-foot__body">
-            <button type="button" class="kod-btn kod-btn--folio" data-action="confirm">
+            <button type="button" class="kod-btn kod-btn--folio kod-btn--blood" data-action="confirm">
               <span class="kod-btn__kicker">Return to table</span>
               <span class="kod-btn__title">Confirm draft</span>
             </button>
@@ -55,8 +55,7 @@ const canConfirm =
         ) : (
           <div class="draft-foot__body">
             <p class="draft-hint">
-              Finish concept on the <a href={`/characters/${ch.slug}/draft/`}>Draft</a> tab, then
-              Confirm here.
+              Set Who do we see? on Core, then Confirm here.
             </p>
           </div>
         )

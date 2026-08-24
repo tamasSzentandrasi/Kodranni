@@ -1259,6 +1259,20 @@
     });
   }
 
+  document.addEventListener('keydown', (ev) => {
+    if (ev.key !== 'Enter' && ev.key !== ' ') return;
+    const t = ev.target;
+    if (!(t instanceof HTMLElement)) return;
+    if (t.closest('.info')) return;
+    const jump = t.closest('[data-jump]');
+    if (jump instanceof HTMLElement && t === jump) {
+      ev.preventDefault();
+      const id = jump.getAttribute('data-jump');
+      const el = id && document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+
   document.addEventListener('click', (ev) => {
     const t = ev.target;
     if (!(t instanceof HTMLElement)) return;

@@ -1,0 +1,82 @@
+---
+import type { FactionOpt } from '../lib/format';
+
+interface Props {
+  live?: boolean;
+  factions?: FactionOpt[];
+}
+
+const { live = false, factions = [] } = Astro.props;
+---
+
+{
+  live && (
+    <>
+      <div class="rite" data-rite="figure" hidden>
+        <button type="button" class="rite__scrim" data-rite-dismiss aria-label="Close" />
+        <form class="kod-plate rite__panel" data-add-figure-form>
+          <p class="rite__kicker">A name in the hall</p>
+          <div class="rite__step" data-step="kind">
+            <p class="rite__ask">Who is this?</p>
+            <div class="rite__choices">
+              <button type="button" class="rite__choice" data-pick-kind="kin">
+                <span class="rite__choice-kicker">Of the hall</span>
+                <span class="rite__choice-title">Kin</span>
+              </button>
+              <button type="button" class="rite__choice" data-pick-kind="outsider">
+                <span class="rite__choice-kicker">Beyond the porch</span>
+                <span class="rite__choice-title">Outsider</span>
+              </button>
+            </div>
+          </div>
+          <div class="rite__step" data-step="details" hidden>
+            <p class="rite__ask" data-figure-kind-lab>Name</p>
+            <label class="rite__field">
+              <span>Name</span>
+              <input class="hall-search__q" name="name" required maxlength="80" autocomplete="off" />
+            </label>
+            <label class="rite__field" data-add-faction-field hidden>
+              <span>Faction</span>
+              <select class="rite__select" name="faction">
+                <option value="">— none —</option>
+                {factions.map((f) => (
+                  <option value={f.name}>{f.name}</option>
+                ))}
+              </select>
+            </label>
+            <input type="hidden" name="outsider" value="" data-add-outsider />
+            <p class="rite__note" data-figure-note>
+              Kin land Outcast on every axis until the table moves them.
+            </p>
+            <button type="submit" class="kod-btn kod-btn--folio kod-btn--blood">
+              <span class="kod-btn__kicker">Into the record</span>
+              <span class="kod-btn__title">Place</span>
+            </button>
+          </div>
+          <p class="rite__msg" data-add-figure-msg hidden></p>
+        </form>
+      </div>
+
+      <div class="rite" data-rite="faction" hidden>
+        <button type="button" class="rite__scrim" data-rite-dismiss aria-label="Close" />
+        <form class="kod-plate rite__panel" data-add-faction>
+          <p class="rite__kicker">A banner</p>
+          <p class="rite__ask">Name this faction</p>
+          <label class="rite__field">
+            <span>Name</span>
+            <input class="hall-search__q" name="faction-name" required maxlength="48" autocomplete="off" />
+          </label>
+          <label class="rite__field rite__field--color">
+            <span>Colour</span>
+            <input type="color" name="faction-color" value="#8a3030" aria-label="Faction colour" />
+          </label>
+          <button type="submit" class="kod-btn kod-btn--folio kod-btn--blood">
+            <span class="kod-btn__kicker">On the porch</span>
+            <span class="kod-btn__title">Keep</span>
+          </button>
+          <p class="rite__msg" data-add-faction-msg hidden></p>
+        </form>
+      </div>
+    </>
+  )
+}

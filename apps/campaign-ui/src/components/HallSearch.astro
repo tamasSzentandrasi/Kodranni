@@ -3,10 +3,9 @@ interface Props {
   axes: string[];
   tiers: string[];
   factions?: { name: string; hue: number }[];
-  live?: boolean;
 }
 
-const { axes, tiers, factions = [], live = false } = Astro.props;
+const { axes, tiers, factions = [] } = Astro.props;
 ---
 
 <aside class="kod-plate hall-search" data-hall-search aria-label="Find someone in the hall">
@@ -75,15 +74,6 @@ const { axes, tiers, factions = [], live = false } = Astro.props;
           </button>
         ))
       )}
-      {
-        live && (
-          <form class="hall-search__add-faction" data-add-faction>
-            <input class="hall-search__q" name="faction-name" placeholder="New faction" required />
-            <input type="color" name="faction-color" value="#8a3030" aria-label="Faction colour" />
-            <button type="submit" class="hall-search__clear">Add</button>
-          </form>
-        )
-      }
     </div>
   </div>
 

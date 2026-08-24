@@ -163,8 +163,8 @@ a:hover {
 
 /* Wrapper sections only — inner plates stay chrome-only. */
 section.kod-plate {
-  margin-bottom: 1rem;
-  padding: 0.95rem 1rem 1.05rem;
+  margin-bottom: 1.15rem;
+  padding: 1.15rem 1.2rem 1.25rem;
 }
 
 .section-head {
@@ -286,7 +286,13 @@ section.kod-plate {
 .hall__sky { grid-area: sky; }
 .hall__crown { grid-area: crown; }
 .hall__nave { grid-area: nave; min-width: 0; }
-.hall__porch { grid-area: porch; }
+.hall__porch {
+  grid-area: porch;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-width: 0;
+}
 .hall__crypt { grid-area: crypt; }
 
 @media (max-width: 56rem) {
@@ -329,8 +335,8 @@ section.kod-plate {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 0.95rem 0.65rem 0.85rem;
-  min-height: 10.6rem;
+  padding: 1.15rem 0.8rem 1.05rem;
+  min-height: 11.4rem;
   border-top-width: 4px;
   border-top-color: var(--kod-fortune-accent);
   background:
@@ -360,37 +366,40 @@ section.kod-plate {
 
 .fortune__icon {
   display: block;
-  width: 2.15rem;
-  height: 2.15rem;
-  margin: 0 0 0.4rem;
+  width: 2.45rem;
+  height: 2.45rem;
+  margin: 0 0 0.5rem;
   background-color: var(--kod-fortune-accent);
   -webkit-mask: center / contain no-repeat;
   mask: center / contain no-repeat;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
   filter: drop-shadow(0 0 6px color-mix(in srgb, var(--kod-fortune-accent) 40%, transparent));
 }
 
 .fortune[data-key='vitality'] .fortune__icon {
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M16 2.5c.4 0 1.1.8 2.2 2.4 1.5 2.2 3.6 5.6 5 9.1 1.2 3 1.8 5.7 1.8 7.5 0 5-3.8 8.5-9 8.5s-9-3.5-9-8.5c0-1.8.6-4.5 1.8-7.5 1.4-3.5 3.5-6.9 5-9.1C14.9 3.3 15.6 2.5 16 2.5zm0 3.2c-1.2 1.7-3.1 4.8-4.4 8-1.1 2.8-1.6 5.2-1.6 6.8 0 3.8 2.8 6.5 6 6.5s6-2.7 6-6.5c0-1.6-.5-4-1.6-6.8-1.3-3.2-3.2-6.3-4.4-8z'/%3E%3C/svg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M16 2.5c.4 0 1.1.8 2.2 2.4 1.5 2.2 3.6 5.6 5 9.1 1.2 3 1.8 5.7 1.8 7.5 0 5-3.8 8.5-9 8.5s-9-3.5-9-8.5c0-1.8.6-4.5 1.8-7.5 1.4-3.5 3.5-6.9 5-9.1C14.9 3.3 15.6 2.5 16 2.5zm0 3.2c-1.2 1.7-3.1 4.8-4.4 8-1.1 2.8-1.6 5.2-1.6 6.8 0 3.8 2.8 6.5 6 6.5s6-2.7 6-6.5c0-1.6-.5-4-1.6-6.8-1.3-3.2-3.2-6.3-4.4-8z'/%3E%3C/svg%3E");
+  -webkit-mask-image: var(--kod-fortune-vitality);
+  mask-image: var(--kod-fortune-vitality);
 }
 .fortune[data-key='cohesion'] .fortune__icon {
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='2.2' fill='black'/%3E%3Ccircle cx='16' cy='5.2' r='2' fill='black'/%3E%3Ccircle cx='16' cy='26.8' r='2' fill='black'/%3E%3Ccircle cx='5.2' cy='16' r='2' fill='black'/%3E%3Ccircle cx='26.8' cy='16' r='2' fill='black'/%3E%3Ccircle cx='8.4' cy='8.4' r='2' fill='black'/%3E%3Ccircle cx='23.6' cy='8.4' r='2' fill='black'/%3E%3Ccircle cx='8.4' cy='23.6' r='2' fill='black'/%3E%3Ccircle cx='23.6' cy='23.6' r='2' fill='black'/%3E%3C/svg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='2.2' fill='black'/%3E%3Ccircle cx='16' cy='5.2' r='2' fill='black'/%3E%3Ccircle cx='16' cy='26.8' r='2' fill='black'/%3E%3Ccircle cx='5.2' cy='16' r='2' fill='black'/%3E%3Ccircle cx='26.8' cy='16' r='2' fill='black'/%3E%3Ccircle cx='8.4' cy='8.4' r='2' fill='black'/%3E%3Ccircle cx='23.6' cy='8.4' r='2' fill='black'/%3E%3Ccircle cx='8.4' cy='23.6' r='2' fill='black'/%3E%3Ccircle cx='23.6' cy='23.6' r='2' fill='black'/%3E%3C/svg%3E");
+  -webkit-mask-image: var(--kod-fortune-cohesion);
+  mask-image: var(--kod-fortune-cohesion);
 }
 .fortune[data-key='surplus'] .fortune__icon {
-  /* Guidebook wheat sheaf — same paths as .kod-fortune-pillar--surplus */
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M15.1 29h1.8V17.2c1.9.3 3.3 1.2 4.2 2.6l1.4-1c-1.1-1.8-2.9-2.9-5.1-3.3V12c2.2-.3 3.9-1.6 4.8-3.5l-1.5-.8c-.7 1.4-1.9 2.3-3.5 2.6V7.5c1.4-.3 2.5-1.2 3.1-2.5l-1.6-.8c-.4.9-1.2 1.5-2.2 1.7V2.8h-1.8v3.1c-1-.2-1.8-.8-2.2-1.7l-1.6.8c.6 1.3 1.7 2.2 3.1 2.5v2.8c-1.6-.3-2.8-1.2-3.5-2.6l-1.5.8c.9 1.9 2.6 3.2 4.8 3.5v3.5c-2.2.4-4 1.5-5.1 3.3l1.4 1c.9-1.4 2.3-2.3 4.2-2.6V29z'/%3E%3Cpath fill='black' d='M12.2 19.2c-.9 1.3-.9 2.7 0 4 .9-1.3.9-2.7 0-4zm7.6 0c.9 1.3.9 2.7 0 4-.9-1.3-.9-2.7 0-4zM10.6 14.5c-.7 1.1-.7 2.2 0 3.3.7-1.1.7-2.2 0-3.3zm10.8 0c.7 1.1.7 2.2 0 3.3-.7-1.1-.7-2.2 0-3.3zM9.8 10.2c-.6.9-.6 1.9 0 2.8.6-.9.6-1.9 0-2.8zm12.4 0c.6.9.6 1.9 0 2.8-.6-.9-.6-1.9 0-2.8z'/%3E%3C/svg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M15.1 29h1.8V17.2c1.9.3 3.3 1.2 4.2 2.6l1.4-1c-1.1-1.8-2.9-2.9-5.1-3.3V12c2.2-.3 3.9-1.6 4.8-3.5l-1.5-.8c-.7 1.4-1.9 2.3-3.5 2.6V7.5c1.4-.3 2.5-1.2 3.1-2.5l-1.6-.8c-.4.9-1.2 1.5-2.2 1.7V2.8h-1.8v3.1c-1-.2-1.8-.8-2.2-1.7l-1.6.8c.6 1.3 1.7 2.2 3.1 2.5v2.8c-1.6-.3-2.8-1.2-3.5-2.6l-1.5.8c.9 1.9 2.6 3.2 4.8 3.5v3.5c-2.2.4-4 1.5-5.1 3.3l1.4 1c.9-1.4 2.3-2.3 4.2-2.6V29z'/%3E%3Cpath fill='black' d='M12.2 19.2c-.9 1.3-.9 2.7 0 4 .9-1.3.9-2.7 0-4zm7.6 0c.9 1.3.9 2.7 0 4-.9-1.3-.9-2.7 0-4zM10.6 14.5c-.7 1.1-.7 2.2 0 3.3.7-1.1.7-2.2 0-3.3zm10.8 0c.7 1.1.7 2.2 0 3.3-.7-1.1-.7-2.2 0-3.3zM9.8 10.2c-.6.9-.6 1.9 0 2.8.6-.9.6-1.9 0-2.8zm12.4 0c.6.9.6 1.9 0 2.8-.6-.9-.6-1.9 0-2.8z'/%3E%3C/svg%3E");
+  -webkit-mask-image: var(--kod-fortune-surplus);
+  mask-image: var(--kod-fortune-surplus);
 }
 .fortune[data-key='standing'] .fortune__icon {
-  /* Guidebook galea — same paths as .kod-fortune-pillar--standing */
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M15.2 1.8h1.6v2.4c3.2.4 5.7 2.4 6.6 5.4.5 1.7.5 3.5.1 5.1l1.6.4c.5-1.9.5-4-.1-6.1C23.8 5.1 20.5 2.6 16.8 2.2V1.8h-1.6v.4c-3.7.4-7 2.9-8.2 6.8-.6 2.1-.6 4.2-.1 6.1l1.6-.4c-.4-1.6-.4-3.4.1-5.1.9-3 3.4-5 6.6-5.4V1.8z'/%3E%3Cpath fill='black' d='M9.2 13.2c0-3.6 3-6.5 6.8-6.5s6.8 2.9 6.8 6.5v2.8c0 1.1-.3 2.1-.8 3l1.6 1.1c.4-.4.7-.9.9-1.5.3-.9.5-1.8.5-2.8V13c0-1.2-.2-2.3-.6-3.4C23.4 6.2 20 3.8 16 3.8S8.6 6.2 7.6 9.6c-.4 1.1-.6 2.2-.6 3.4v2.4c0 1 .2 1.9.5 2.8.2.6.5 1.1.9 1.5l1.6-1.1c-.5-.9-.8-1.9-.8-3v-2.8z'/%3E%3Cpath fill='black' d='M10.4 16.8v4.6c0 1.2.7 2.3 1.8 2.8l.9-1.5c-.4-.2-.7-.7-.7-1.3v-3.2c0-1.8 1.2-3.3 2.8-3.8v-1.7c-2.7.5-4.8 2.8-4.8 5.6v-.5zm11.2 0c0-2.8-2.1-5.1-4.8-5.6v1.7c1.6.5 2.8 2 2.8 3.8v3.2c0 .6-.3 1.1-.7 1.3l.9 1.5c1.1-.5 1.8-1.6 1.8-2.8v-4.6z'/%3E%3Cpath fill='black' d='M11.6 24.2h8.8c1.4 0 2.6 1 2.9 2.4l.3 1.4H8.4l.3-1.4c.3-1.4 1.5-2.4 2.9-2.4zm1.2 1.7c-.3.3-.5.7-.5 1.1h7.4c0-.4-.2-.8-.5-1.1H12.8z'/%3E%3Cpath fill='black' d='M14.4 8.6h3.2v1.6h-3.2V8.6zM13.6 11.2h4.8v1.3h-4.8v-1.3z'/%3E%3C/svg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M15.2 1.8h1.6v2.4c3.2.4 5.7 2.4 6.6 5.4.5 1.7.5 3.5.1 5.1l1.6.4c.5-1.9.5-4-.1-6.1C23.8 5.1 20.5 2.6 16.8 2.2V1.8h-1.6v.4c-3.7.4-7 2.9-8.2 6.8-.6 2.1-.6 4.2-.1 6.1l1.6-.4c-.4-1.6-.4-3.4.1-5.1.9-3 3.4-5 6.6-5.4V1.8z'/%3E%3Cpath fill='black' d='M9.2 13.2c0-3.6 3-6.5 6.8-6.5s6.8 2.9 6.8 6.5v2.8c0 1.1-.3 2.1-.8 3l1.6 1.1c.4-.4.7-.9.9-1.5.3-.9.5-1.8.5-2.8V13c0-1.2-.2-2.3-.6-3.4C23.4 6.2 20 3.8 16 3.8S8.6 6.2 7.6 9.6c-.4 1.1-.6 2.2-.6 3.4v2.4c0 1 .2 1.9.5 2.8.2.6.5 1.1.9 1.5l1.6-1.1c-.5-.9-.8-1.9-.8-3v-2.8z'/%3E%3Cpath fill='black' d='M10.4 16.8v4.6c0 1.2.7 2.3 1.8 2.8l.9-1.5c-.4-.2-.7-.7-.7-1.3v-3.2c0-1.8 1.2-3.3 2.8-3.8v-1.7c-2.7.5-4.8 2.8-4.8 5.6v-.5zm11.2 0c0-2.8-2.1-5.1-4.8-5.6v1.7c1.6.5 2.8 2 2.8 3.8v3.2c0 .6-.3 1.1-.7 1.3l.9 1.5c1.1-.5 1.8-1.6 1.8-2.8v-4.6z'/%3E%3Cpath fill='black' d='M11.6 24.2h8.8c1.4 0 2.6 1 2.9 2.4l.3 1.4H8.4l.3-1.4c.3-1.4 1.5-2.4 2.9-2.4zm1.2 1.7c-.3.3-.5.7-.5 1.1h7.4c0-.4-.2-.8-.5-1.1H12.8z'/%3E%3Cpath fill='black' d='M14.4 8.6h3.2v1.6h-3.2V8.6zM13.6 11.2h4.8v1.3h-4.8v-1.3z'/%3E%3C/svg%3E");
+  -webkit-mask-image: var(--kod-fortune-standing);
+  mask-image: var(--kod-fortune-standing);
 }
 .fortune[data-key='tradition'] .fortune__icon {
-  /* Guidebook column — same paths as .kod-fortune-pillar--tradition */
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M5.5 4.2h21v2.2H5.5V4.2zm1.5 2.8h18c0 1.1-.5 2-1.3 2.7-.5.4-1.1.8-1.6 1.3H9.9c-.5-.5-1.1-.9-1.6-1.3-.8-.7-1.3-1.6-1.3-2.7zm3.6 5.2h11.8v14.2h-2V14.4h-2.2v11.8h-2.2V14.4h-2.2v11.8H12V14.4H9.8v11.8H7.8V12.2h2.8zM6.2 27.2h19.6v1.6H6.2v-1.6zm1.4 2.2h16.8V31H7.6v-1.6z'/%3E%3C/svg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='black' d='M5.5 4.2h21v2.2H5.5V4.2zm1.5 2.8h18c0 1.1-.5 2-1.3 2.7-.5.4-1.1.8-1.6 1.3H9.9c-.5-.5-1.1-.9-1.6-1.3-.8-.7-1.3-1.6-1.3-2.7zm3.6 5.2h11.8v14.2h-2V14.4h-2.2v11.8h-2.2V14.4h-2.2v11.8H12V14.4H9.8v11.8H7.8V12.2h2.8zM6.2 27.2h19.6v1.6H6.2v-1.6zm1.4 2.2h16.8V31H7.6v-1.6z'/%3E%3C/svg%3E");
+  -webkit-mask-image: var(--kod-fortune-tradition);
+  mask-image: var(--kod-fortune-tradition);
 }
 
 .fortune__name {
@@ -661,43 +670,118 @@ section.kod-plate {
 }
 
 .hier-add {
-  margin-top: 0.95rem;
+  margin-top: 1.15rem;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.55rem;
+  justify-content: center;
 }
 
-.hier-add__open {
+.kod-plus {
   appearance: none;
-  font: inherit;
-  font-size: 0.78rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--kod-silver);
-  background: color-mix(in srgb, #100e0c 82%, transparent);
-  border: 1px solid var(--kod-frame);
-  border-top: 2px solid var(--kod-blood);
-  padding: 0.38rem 1.05rem;
+  position: relative;
+  width: 3.5rem;
+  height: 3.5rem;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 42%, color-mix(in srgb, var(--kod-blood-deep) 35%, #141010), #080606 72%);
+  box-shadow:
+    0 0 0 1px var(--kod-frame),
+    0 10px 22px -12px rgba(0, 0, 0, 0.85);
+  cursor: pointer;
+  color: var(--kod-blood-bright);
+}
+
+.kod-plus__ring {
+  position: absolute;
+  inset: 0.12rem;
+  background: var(--kod-plus-ring) center / contain no-repeat;
+  opacity: 0.82;
+  pointer-events: none;
+}
+
+.kod-plus__mark {
+  position: relative;
+  z-index: 1;
+  font-size: 1.65rem;
+  line-height: 1;
+  color: var(--kod-blood-bright);
+}
+
+.kod-plus:hover,
+.kod-plus:focus-visible {
+  outline: none;
+  color: #fff8f0;
+  box-shadow:
+    0 0 0 1px var(--kod-blood),
+    0 0 18px color-mix(in srgb, var(--kod-blood) 35%, transparent);
+}
+
+.kod-plus:hover .kod-plus__mark,
+.kod-plus:focus-visible .kod-plus__mark {
+  color: #fff8f0;
+}
+
+.kod-plus--sm {
+  width: 2.15rem;
+  height: 2.15rem;
+  align-self: center;
+  margin-top: 0.55rem;
+}
+
+.kod-plus--sm .kod-plus__mark {
+  font-size: 1.15rem;
+}
+
+.rite {
+  position: fixed;
+  inset: 0;
+  z-index: 85;
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.rite[hidden] {
+  display: none;
+}
+
+.rite[data-open='true'] {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.rite__scrim {
+  appearance: none;
+  position: absolute;
+  inset: 0;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  background: rgba(8, 6, 6, 0.62);
   cursor: pointer;
 }
 
-.hier-add__open:hover,
-.hier-add__open:focus-visible {
-  color: var(--kod-silver-bright);
-  border-top-color: var(--kod-blood-bright);
-}
-
-.hier-add__pop {
-  width: min(22rem, 100%);
+.rite__panel {
+  position: relative;
+  z-index: 1;
+  width: min(24rem, calc(100vw - 1.5rem));
   display: flex;
   flex-direction: column;
-  gap: 0.55rem;
-  padding: 0.85rem 0.9rem 0.8rem;
+  gap: 0.85rem;
+  padding: 1.2rem 1.2rem 1.15rem;
   border-top: 3px solid var(--kod-blood);
+  transform: translateY(0.7rem);
+  transition: transform 0.22s ease;
 }
 
-.hier-add__kicker {
+.rite[data-open='true'] .rite__panel {
+  transform: none;
+}
+
+.rite__kicker {
   margin: 0;
   font-size: 0.62rem;
   letter-spacing: 0.16em;
@@ -705,23 +789,69 @@ section.kod-plate {
   color: var(--kod-blood-bright);
 }
 
-.hier-add__field {
+.rite__ask {
+  margin: 0;
+  font-size: 1.15rem;
+  color: var(--kod-silver-bright);
+}
+
+.rite__choices {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.55rem;
+}
+
+.rite__choice {
+  appearance: none;
+  font: inherit;
+  text-align: center;
+  color: var(--kod-silver);
+  background: color-mix(in srgb, #100e0c 82%, transparent);
+  border: 1px solid var(--kod-frame);
+  border-top: 2px solid var(--kod-frame-tick);
+  padding: 0.7rem 0.5rem 0.75rem;
+  cursor: pointer;
+}
+
+.rite__choice:hover,
+.rite__choice:focus-visible,
+.rite__choice[aria-pressed='true'] {
+  color: #fff8f0;
+  border-top-color: var(--kod-blood-bright);
+  background: color-mix(in srgb, var(--kod-blood-deep) 40%, #0c0a0a);
+}
+
+.rite__choice-kicker {
+  display: block;
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--kod-silver-dim);
+  margin-bottom: 0.2rem;
+}
+
+.rite__choice-title {
+  font-size: 1.2rem;
+  color: inherit;
+}
+
+.rite__field {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
-  font-size: 0.78rem;
-  letter-spacing: 0.08em;
+  gap: 0.3rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--kod-silver-dim);
 }
 
-.hier-add__field .hall-search__q,
-.hier-add__select {
+.rite__field .hall-search__q,
+.rite__select {
   text-transform: none;
   letter-spacing: 0;
 }
 
-.hier-add__select {
+.rite__select {
   appearance: none;
   font: inherit;
   font-size: 1rem;
@@ -729,38 +859,87 @@ section.kod-plate {
   background: #0c0a0a;
   border: 1px solid var(--kod-frame);
   border-left: 3px solid var(--kod-blood);
-  padding: 0.4rem 0.5rem;
+  padding: 0.5rem 0.55rem;
 }
 
-.hier-add__check {
-  display: flex;
-  align-items: center;
-  gap: 0.45rem;
-  font-size: 0.92rem;
-  color: var(--kod-silver);
+.rite__field--color input[type='color'] {
+  width: 2.4rem;
+  height: 2.1rem;
+  padding: 0;
+  border: 1px solid var(--kod-frame);
+  background: #0c0a0a;
+  cursor: pointer;
 }
 
-.hier-add__note {
+.rite__note {
   margin: 0;
-  font-size: 0.78rem;
-  line-height: 1.4;
+  font-size: 0.84rem;
+  line-height: 1.45;
   color: var(--kod-silver-dim);
 }
 
-.hier-add__actions {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.hier-add__msg {
+.rite__msg {
   margin: 0;
-  font-size: 0.8rem;
+  font-size: 0.84rem;
   color: var(--kod-silver);
 }
 
-.hier-add__msg--err {
+.rite__msg--err {
   color: var(--kod-blood-bright);
+}
+
+.factions {
+  padding: 0.85rem 0.9rem 1rem;
+}
+
+.factions h3 {
+  margin: 0;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.factions__list {
+  list-style: none;
+  margin: 0.65rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.faction-row {
+  appearance: none;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  width: 100%;
+  font: inherit;
+  text-align: left;
+  color: var(--kod-silver-bright);
+  background: color-mix(in srgb, #0e0c0a 80%, transparent);
+  border: none;
+  border-left: 3px solid hsl(var(--faction-h, 0) 28% 42%);
+  padding: 0.45rem 0.5rem;
+  cursor: pointer;
+}
+
+.faction-row:hover,
+.faction-row:focus-visible,
+.faction-row[aria-pressed='true'] {
+  background: color-mix(in srgb, #161410 85%, transparent);
+}
+
+.faction-row__swatch {
+  width: 0.7rem;
+  height: 0.7rem;
+  flex-shrink: 0;
+  background: hsl(var(--faction-h, 0) 42% 48%);
+  box-shadow: 0 0 0 1px color-mix(in srgb, #000 40%, transparent);
+}
+
+.faction-row__name {
+  font-size: 0.95rem;
 }
 
 .hier-axis {
@@ -801,8 +980,8 @@ section.kod-plate {
 
 .hier-axis__head {
   flex: 0 0 auto;
-  min-height: 5.35rem;
-  padding: 0.55rem 0.45rem 0.5rem;
+  min-height: 5.6rem;
+  padding: 0.7rem 0.55rem 0.65rem;
   text-align: center;
   border-bottom: 1px solid color-mix(in srgb, var(--hier-accent) 25%, transparent);
   background: color-mix(in srgb, var(--hier-accent) 12%, transparent);
@@ -913,19 +1092,19 @@ section.kod-plate {
 .hier-rung__members {
   list-style: none;
   margin: 0;
-  padding: 0.3rem 0.3rem 0.35rem;
+  padding: 0.4rem 0.4rem 0.45rem;
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
+  gap: 0.32rem;
   flex: 1 1 auto;
 }
 
 .member {
   display: flex;
   align-items: center;
-  gap: 0.35rem;
-  padding: 0.28rem 0.4rem;
-  font-size: 0.88rem;
+  gap: 0.4rem;
+  padding: 0.42rem 0.55rem;
+  font-size: 0.92rem;
   text-decoration: none;
   color: var(--kod-silver);
   background: color-mix(in srgb, #0c0a0a 70%, transparent);
@@ -1022,11 +1201,11 @@ section.kod-plate {
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 0.5rem;
 }
 
 .outsider {
-  padding: 0.4rem 0.45rem;
+  padding: 0.55rem 0.55rem;
   background: color-mix(in srgb, #0e0c0a 80%, transparent);
   border-left: 3px solid hsl(var(--faction-h, 0) 28% 42%);
   cursor: pointer;
@@ -1064,7 +1243,7 @@ section.kod-plate {
 .myth-card {
   --kod-soot-size: 0.95rem;
   --kod-corner-size: 1.05rem;
-  padding: 0.95rem 1rem 1.05rem;
+  padding: 1.15rem 1.15rem 1.2rem;
   border-top-width: 3px;
   border-top-color: color-mix(in srgb, var(--kod-blood) 65%, var(--kod-frame));
   background:
@@ -1287,7 +1466,7 @@ section.kod-plate {
   border: 1px solid var(--kod-frame);
   border-top: 2px solid var(--kod-frame-tick);
   border-radius: 0;
-  padding: 0.22rem 0.5rem;
+  padding: 0.32rem 0.62rem;
   cursor: pointer;
 }
 
@@ -1580,7 +1759,7 @@ section.kod-plate {
   align-items: center;
   text-decoration: none;
   color: inherit;
-  padding: 0.62rem 0.45rem;
+  padding: 0.78rem 0.55rem;
   border-bottom: 1px solid var(--kod-frame);
 }
 
@@ -2043,8 +2222,8 @@ section.kod-plate {
   flex-direction: column;
   align-items: center;
   gap: 0.32rem;
-  padding: 0.55rem 0.5rem 0.6rem;
-  width: 3.55rem;
+  padding: 0.7rem 0.55rem 0.8rem;
+  width: 4.15rem;
   min-height: 0;
   height: auto !important;
   max-height: none;
@@ -2073,7 +2252,7 @@ section.kod-plate {
 .vtrack__label {
   writing-mode: horizontal-tb;
   transform: none;
-  font-size: 0.58rem;
+  font-size: 0.64rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   text-align: center;
@@ -2092,14 +2271,14 @@ section.kod-plate {
 .vtrack__segs {
   display: flex;
   flex-direction: column-reverse;
-  gap: 2px;
+  gap: 5px;
   flex: 0 0 auto;
   justify-content: flex-start;
 }
 
 .vtrack__seg {
-  width: 0.92rem;
-  height: 0.42rem;
+  width: 1.15rem;
+  height: 0.72rem;
   border: 1px solid var(--kod-frame-tick);
   background: #100e0c;
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.7);
@@ -2264,10 +2443,10 @@ section.kod-plate {
   grid-template-columns: minmax(0, 1fr) auto minmax(4.5rem, auto);
   gap: 0.45rem 0.75rem;
   align-items: center;
-  padding: 0.55rem 0.65rem;
+  padding: 0.7rem 0.8rem;
   border-top: 1px solid #161212;
   font-size: 0.95rem;
-  min-height: 2.6rem;
+  min-height: 3rem;
 }
 
 .found-row__name {
@@ -3479,8 +3658,9 @@ select.kod-ink option[value=''],
   gap: 0.22rem;
   width: 100%;
   margin: 0;
-  padding: 0.55rem 0.55rem 0.5rem 0.6rem;
+  padding: 0.7rem 0.65rem 0.65rem 0.7rem;
   text-align: center;
+  cursor: pointer;
   font: inherit;
   color: inherit;
   border-radius: 0;

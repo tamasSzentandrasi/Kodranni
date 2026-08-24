@@ -7,6 +7,8 @@ import FortuneHall from '../../components/FortuneHall.astro';
 import HallSearch from '../../components/HallSearch.astro';
 import HierarchyBoard from '../../components/HierarchyBoard.astro';
 import OutsiderPorch from '../../components/OutsiderPorch.astro';
+import FactionList from '../../components/FactionList.astro';
+import HallRites from '../../components/HallRites.astro';
 import MythList from '../../components/MythList.astro';
 import InspectDrawer from '../../components/InspectDrawer.astro';
 import { collectFactions } from '../../lib/format';
@@ -35,7 +37,7 @@ const pcSlugs = c.characters
 >
   {
     showSearch && (
-      <HallSearch axes={c.hierarchyAxes} tiers={tiers} factions={factions} live={live} />
+      <HallSearch axes={c.hierarchyAxes} tiers={tiers} factions={factions} />
     )
   }
   <div
@@ -53,12 +55,15 @@ const pcSlugs = c.characters
       pendingMoves={c.pendingMoves ?? []}
       tips={tips}
       live={live}
-      factions={factions}
       pcSlugs={pcSlugs}
     />
-    <OutsiderPorch outsiders={c.outsiders ?? []} factions={factions} />
+    <div class="hall__porch">
+      <OutsiderPorch outsiders={c.outsiders ?? []} factions={factions} />
+      <FactionList factions={factions} live={live} />
+    </div>
     <MythList myths={c.myths} />
   </div>
+  <HallRites live={live} factions={factions} />
 
   <button type="button" id="kod-hall-banner" class="hall-banner" hidden>
     Record changed — refresh

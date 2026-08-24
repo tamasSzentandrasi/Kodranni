@@ -61,7 +61,13 @@ const words = creation?.words ?? 0;
         <h2 class="budget-dock__title">Budgets</h2>
       </header>
 
-      <div class="kod-plate budget-card budget-card--found" data-budget="foundation">
+      <div
+        class="kod-plate budget-card budget-card--found"
+        data-budget="foundation"
+        data-jump="section-foundations"
+        role="button"
+        tabindex="0"
+      >
         <span class="budget-card__label">
           Foundations
           <button
@@ -86,7 +92,13 @@ const words = creation?.words ?? 0;
         </span>
       </div>
 
-      <div class="kod-plate budget-card budget-card--skill" data-budget="skill">
+      <div
+        class="kod-plate budget-card budget-card--skill"
+        data-budget="skill"
+        data-jump="section-skills"
+        role="button"
+        tabindex="0"
+      >
         <span class="budget-card__label">
           Skills
           <button

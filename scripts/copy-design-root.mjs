@@ -59,10 +59,16 @@ for (const file of cssFiles) {
 	writeFileSync(join(dest, file), css);
 }
 
-for (const name of readdirSync(ornamentSrc)) {
-	if (!name.endsWith('.svg')) continue;
-	cpSync(join(ornamentSrc, name), join(ornamentDest, name));
+function copyOrnament(src, dest) {
+	mkdirSync(dest, { recursive: true });
+	for (const entry of readdirSync(src, { withFileTypes: true })) {
+		const from = join(src, entry.name);
+		const to = join(dest, entry.name);
+		if (entry.isDirectory()) copyOrnament(from, to);
+		else if (entry.name.endsWith('.svg') || entry.name.endsWith('.png')) cpSync(from, to);
+	}
 }
+copyOrnament(ornamentSrc, ornamentDest);
 
 for (const file of requiredOrnament) {
 	if (!existsSync(join(ornamentDest, file))) {
