@@ -5,10 +5,6 @@ description: Vonások, amelyek a karaktert konkréttá teszik — vagy megvannak
 
 ----------
 
-<figure class="kod-breath not-content">
-<img src="/scenes/manuscript.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
-</figure>
-
 ## Vonások
 
 A **vonások** **vagy megvannak, vagy nincsenek**, és teljesen egyediek. Ezek a részletek teszik a karaktert **konkréttá**, nem általánossá.
@@ -40,6 +36,10 @@ A vonásoknak **nincs foka**. Vagy érvényesek, vagy nem. A mesélő a játéko
 </aside>
 
 ----------
+
+<figure class="kod-breath not-content">
+<img src="/scenes/manuscript.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+</figure>
 
 ### Honnan jönnek a vonások
 

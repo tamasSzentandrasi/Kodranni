@@ -8,10 +8,6 @@ description: Kockatípusok, sikerjelek, előny és hátrány, és hogyan épül 
 
 ----------
 
-<figure class="kod-breath not-content">
-<img src="/scenes/quenching.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
-</figure>
-
 A Kodranni **három** akciókockát használ. Egy adott dobás a készlet egészére **csak egy** típust használ — tiszta **d6**, **d8** vagy **d12** (plusz a külön [ómen](/hu/omens/) **d20**).
 
 <div class="kod-die-row not-content" aria-label="A három akciókocka">
@@ -38,6 +34,10 @@ A Kodranni **három** akciókockát használ. Egy adott dobás a készlet egész
 Ez a három a **kockafok** (die tier). A kontextus nem ad módosítót a jelekre — ezen a létrán visz fel vagy le (lásd [Előny és hátrány](#előny-és-hátrány)).
 
 ----------
+
+<figure class="kod-breath not-content">
+<img src="/scenes/quenching.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+</figure>
 
 ## Sikerjelek
 

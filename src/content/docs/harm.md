@@ -9,10 +9,6 @@ description: The nine Harm tracks, Dying, recovery, and protection ratios.
 
 ----------
 
-<figure class="kod-breath not-content">
-<img src="/scenes/wound-care.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
-</figure>
-
 Kodranni does **not** track hit points. It tracks the **unravelling of the nine [Foundations](/foundations/)**.
 
 **Harm** is recorded on nine named tracks. Each track is permanently paired with one Foundation. Every point of Harm reduces that Foundation by one for dice purposes.
@@ -139,6 +135,10 @@ After death: remove the character from the [Hierarchy Diagram](/hierarchies/#the
 </aside>
 
 ----------
+
+<figure class="kod-breath not-content">
+<img src="/scenes/wound-care.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+</figure>
 
 ## Recovery
 

@@ -8,10 +8,6 @@ description: Hierarchies, Reputation, Legacies, and the Diagram.
 
 ----------
 
-<figure class="kod-breath not-content">
-<img src="/scenes/emissaries.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
-</figure>
-
 ## Hierarchies, Reputation and Legacies
 
 Hierarchies are where the community sees its people — position believed, understood, and accepted.
@@ -25,6 +21,10 @@ During [Campaign Setup](/campaign-setup/), leave axes empty of names; standing i
 ### Tiers
 
 Each axis uses the same four rungs, top to bottom: **Honoured**, **Trusted**, **Acknowledged**, **Outcast**. The **Ruler** sits above them, not on them.
+
+<figure class="kod-breath not-content">
+<img src="/scenes/emissaries.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
+</figure>
 
 ### The shape of the Diagram
 

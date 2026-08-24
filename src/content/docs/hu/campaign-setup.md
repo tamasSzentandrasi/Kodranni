@@ -8,10 +8,6 @@ description: Mesélői munka, mielőtt karakterek léteznének — eredetek, vil
 
 ----------
 
-<figure class="kod-breath not-content">
-<img src="/scenes/settlers.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
-</figure>
-
 Ez a szakasz szinte teljesen mesélői munka. A játékosi beleszólás annyi, hogy konkrét kampányeredeteket (seeds) rangsorolnak. A [karakteralkotás](/hu/character-creation/) később jön.
 
 Ha játékosként olvasol előre: csak a korlátokra és azokra az eredetekre van szükséged, amelyeket rangsorolnod kell. Minden más ezen a lapon annak szól, aki az asztalt készíti.
@@ -123,6 +119,10 @@ Egy jó **eredet** **valódi vagy kitalált helynevet** használ (nem homályos 
 </div>
 
 ----------
+
+<figure class="kod-breath not-content">
+<img src="/scenes/settlers.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+</figure>
 
 ## Világépítési eljárások
 

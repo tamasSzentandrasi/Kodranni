@@ -8,10 +8,6 @@ description: Die types, Marks of Success, Advantage and Disadvantage, and how th
 
 ----------
 
-<figure class="kod-breath not-content">
-<img src="/scenes/quenching.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
-</figure>
-
 Kodranni uses **three** action dice. A given roll uses **only one** type for the whole pool — pure **d6**, **d8**, or **d12** (plus the separate [Omen](/omens/) **d20**).
 
 <div class="kod-die-row not-content" aria-label="The three action dice">
@@ -38,6 +34,10 @@ Kodranni uses **three** action dice. A given roll uses **only one** type for the
 These three are the **die tiers**. Context does not add modifiers to Marks — it moves you up or down this ladder (see [Advantage and Disadvantage](#advantage-and-disadvantage)).
 
 ----------
+
+<figure class="kod-breath not-content">
+<img src="/scenes/quenching.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+</figure>
 
 ## Marks of Success
 

@@ -9,10 +9,6 @@ description: Közös nyomás, ha az összecsapás nagyobb, mint tiszta 1v1 — f
 
 ----------
 
-<figure class="kod-breath not-content">
-<img src="/scenes/hattin.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
-</figure>
-
 ## Helyzeti kockafeloldás
 
 Közös sáv előtt minden akció magában áll. A primitív, az ellendobás nélküli és az ellendobás ugyanazt a jelolvasatot használja. A **sodrás** (Tide) az, amit akkor nyitsz, ha a *közös* összecsapás nagyobb, mint tiszta 1v1.
@@ -50,6 +46,10 @@ Támpontok:
 Ha sok akarat tol egyszerre — zaklatott oszlop, teremnyi vita — az egyéni ellendobás-olvasat nem elég. Az a sodrás.
 
 ----------
+
+<figure class="kod-breath not-content">
+<img src="/scenes/hattin.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+</figure>
 
 ## A sodrás
 

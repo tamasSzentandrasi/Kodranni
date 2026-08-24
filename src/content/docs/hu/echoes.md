@@ -8,10 +8,6 @@ description: Visszhangok, sorsok és alapítómítoszok.
 
 ----------
 
-<figure class="kod-breath not-content">
-<img src="/scenes/cominghome.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
-</figure>
-
 ## Visszhangok
 
 A **visszhang** (Echo) tett, döntés vagy esemény, amit a karakter **hordozni választ**. Ez annak a kézzelfogható nyoma, hogy mi számít neki — személyes, közös, vagy közösséget formáló —, és a **folytonosság** sarokköve, amikor az egyének elbuknak.
@@ -46,6 +42,10 @@ A **játékos** kiemel egy pillanatot visszhanggá. A mesélő csak hangnem vagy
 <li><strong>Összesúly &gt; 6:</strong> −1 kocka a visszhangjait érintő dobásokon (a független dobásokon nem).</li>
 </ol>
 </aside>
+
+<figure class="kod-breath not-content">
+<img src="/scenes/cominghome.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
+</figure>
 
 ### Felidézés
 

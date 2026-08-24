@@ -23,10 +23,6 @@ Character creation has **two phases**:
 </div>
 </div>
 
-<figure class="kod-breath not-content">
-<img src="/scenes/soothsayer.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
-</figure>
-
 ----------
 
 ## Private prep
@@ -75,6 +71,10 @@ Rank 3 in one Skill therefore costs **6**. Possible; expensive.
 **Keep all of these numbers private** until The Weighing. Do not discuss them with the other players.
 
 ----------
+
+<figure class="kod-breath not-content">
+<img src="/scenes/soothsayer.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+</figure>
 
 ## The Weighing
 

@@ -8,10 +8,6 @@ description: Shared pressure for contests larger than a clean 1v1 — setup, Mar
 
 ----------
 
-<figure class="kod-breath not-content">
-<img src="/scenes/hattin.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
-</figure>
-
 ## Situational Dice Resolution
 
 Before a shared bar exists, each action still stands alone. Primitive, unopposed, and opposed rolls use the same Marks reading. The Tide is what you open when the *collective* contest is larger than a clean 1v1.
@@ -49,6 +45,10 @@ Hints:
 When many wills push at once — a column under harassment, a hall-wide debate — those individual opposed readings are not enough. That is the Tide.
 
 ----------
+
+<figure class="kod-breath not-content">
+<img src="/scenes/hattin.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+</figure>
 
 ## The Tide
 

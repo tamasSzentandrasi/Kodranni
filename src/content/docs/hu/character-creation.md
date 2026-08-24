@@ -23,10 +23,6 @@ A karakteralkotásnak **két fázisa** van:
 </div>
 </div>
 
-<figure class="kod-breath not-content">
-<img src="/scenes/soothsayer.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
-</figure>
-
 ----------
 
 ## Magánelőkészítés
@@ -75,6 +71,10 @@ Egy jártasság 3-as foka ezért **6**-ba kerül. Lehetséges; drága.
 **Ezeket a számokat mind tartsd magán** A Megmérettetésig. Ne beszélj róluk a többi játékossal.
 
 ----------
+
+<figure class="kod-breath not-content">
+<img src="/scenes/soothsayer.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+</figure>
 
 ## A Megmérettetés
 

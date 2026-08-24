@@ -8,10 +8,6 @@ description: Skills organised under six Archetypes, with Practice and improvemen
 
 ----------
 
-<figure class="kod-breath not-content">
-<img src="/scenes/vineyard.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
-</figure>
-
 **Skills** are organised under six **Archetypes**. Archetypes are not classes. Each is a named group of related Skills; a character may take Skills from any of them.
 
 **Skills are rated between 0 and 3.**
@@ -28,6 +24,10 @@ Specific techniques, regional styles, named tools, or binary capabilities remain
 At the table, the Storyteller selects the Skill that best matches the player’s described intent when building a [dice pool](/marks-and-tiers/#the-makeup-of-the-dice-pool).
 
 ----------
+
+<figure class="kod-breath not-content">
+<img src="/scenes/vineyard.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+</figure>
 
 ## Improvement
 

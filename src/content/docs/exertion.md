@@ -5,10 +5,6 @@ description: The capacity to push beyond ordinary limits.
 
 ----------
 
-<figure class="kod-breath not-content">
-<img src="/scenes/ford-cart.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
-</figure>
-
 ## Exertion
 
 **Exertion** is the character’s capacity to **push beyond ordinary limits**. Fatigue, hunger, and thirst all map into this single measure when management fails.
@@ -24,6 +20,10 @@ It is **primarily player-controlled**: when to push, when to rest, and where to 
 - Spend **1 Exertion** to add **one extra die** to any dice pool.
 - With a matching [Echo](/echoes/#invocation), you may spend a **second** Exertion die on that roll (normal limit is one).
 - [Dying](/harm/#dying) characters must spend Exertion on **every** roll; death follows when the pool hits zero while Dying.
+
+<figure class="kod-breath not-content">
+<img src="/scenes/ford-cart.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+</figure>
 
 <aside class="kod-example">
 <p class="kod-example__scene">The cart is hung on a stony ford. The oxen will not pull; the water is rising. The player decides this is worth the cost: they dig in, spend Exertion, and put one more die into the pool. The die tier does not change — they are not better situated, only more committed.</p>

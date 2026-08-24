@@ -7,10 +7,6 @@ description: Foundations, Skills, Traits, and Exertion — the representation of
 
 ----------
 
-<figure class="kod-breath not-content">
-<img src="/scenes/reeds.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
-</figure>
-
 ## The Human Potential
 
 Representing human capacity is delicate. We are limited, yet adaptable; we specialise; we can push past ordinary limits when will and body allow.
@@ -25,6 +21,10 @@ Kodranni separates that into four interlocking measures:
 | **[Exertion](/exertion/)** | Will to push beyond the ordinary. Also the ledger for fatigue, hunger, and thirst. | Max = Resolve + Constitution + Charisma |
 
 ----------
+
+<figure class="kod-breath not-content">
+<img src="/scenes/reeds.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
+</figure>
 
 ### How They Meet the Dice
 

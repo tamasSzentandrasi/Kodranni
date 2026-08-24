@@ -9,10 +9,6 @@ description: Mikor dobj — és hogyan van rendezve a többi réteg.
 
 ----------
 
-<figure class="kod-breath not-content">
-<img src="/scenes/gambling.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
-</figure>
-
 Más TTRPG-khez hasonlóan a tettek feloldása kockával megy. Ha egy **játékosnak** vagy **mesélőnek** tettet kell feloldania, tisztázzák a szándékot, aztán dobják a megfelelő kockákat. Nagyon szokványos — *eddig*.
 
 Ez a fejezet az ajtó. A köteg a következő három fejezetben él:
@@ -35,6 +31,10 @@ Ez a fejezet az ajtó. A köteg a következő három fejezetben él:
 </div>
 
 ----------
+
+<figure class="kod-breath not-content">
+<img src="/scenes/gambling.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+</figure>
 
 ## Mikor dobj
 

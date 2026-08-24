@@ -9,10 +9,6 @@ description: When to roll — and how the rest of the stack is organised.
 
 ----------
 
-<figure class="kod-breath not-content">
-<img src="/scenes/gambling.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
-</figure>
-
 Similar to other TTRPGs, action resolution uses dice. When a **player** or **Storyteller** needs to resolve an action, they settle intent, then throw the appropriate dice. Very standard — *so far*.
 
 This chapter is the door. The stack itself lives in the three that follow:
@@ -35,6 +31,10 @@ This chapter is the door. The stack itself lives in the three that follow:
 </div>
 
 ----------
+
+<figure class="kod-breath not-content">
+<img src="/scenes/gambling.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+</figure>
 
 ## When to roll
 

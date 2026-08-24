@@ -8,10 +8,6 @@ description: Echoes, Fortunes, and Foundation Myths.
 
 ----------
 
-<figure class="kod-breath not-content">
-<img src="/scenes/cominghome.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
-</figure>
-
 ## Echoes
 
 An **Echo** is a deed, decision, or event that a character **chooses to carry**. It is the concrete mark of what the character cares about — personal, shared, or community-defining — and a cornerstone of **continuity** when individuals fall.
@@ -46,6 +42,10 @@ The **player** elevates a moment into an Echo. The Storyteller may veto only for
 <li><strong>Total weight &gt; 6:</strong> −1 die on rolls that involve any of his Echoes (not on unrelated rolls).</li>
 </ol>
 </aside>
+
+<figure class="kod-breath not-content">
+<img src="/scenes/cominghome.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
+</figure>
 
 ### Invocation
 

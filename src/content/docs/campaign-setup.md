@@ -8,10 +8,6 @@ description: Storyteller work before characters exist — seeds, worldbuilding, 
 
 ----------
 
-<figure class="kod-breath not-content">
-<img src="/scenes/settlers.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
-</figure>
-
 This phase is almost entirely Storyteller work. Player input is limited to ranking concrete campaign seeds. [Character creation](/character-creation/) comes later.
 
 If you are a player reading ahead: you only need the constraints and the seeds you are asked to rank. Everything else on this page is for the person preparing the table.
@@ -123,6 +119,10 @@ A good seed uses a **real or invented place name** (not a vague label like “ri
 </div>
 
 ----------
+
+<figure class="kod-breath not-content">
+<img src="/scenes/settlers.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+</figure>
 
 ## Worldbuilding Practices
 

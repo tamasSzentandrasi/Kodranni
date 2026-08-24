@@ -5,10 +5,6 @@ description: Binary traits that make a character specific.
 
 ----------
 
-<figure class="kod-breath not-content">
-<img src="/scenes/manuscript.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
-</figure>
-
 ## Traits
 
 **Traits** are **binary** and entirely custom. They are the details that make a character **specific** rather than generic.
@@ -40,6 +36,10 @@ Traits are **not rated**. They either apply or they do not. The Storyteller deci
 </aside>
 
 ----------
+
+<figure class="kod-breath not-content">
+<img src="/scenes/manuscript.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+</figure>
 
 ### Where Traits Come From
 

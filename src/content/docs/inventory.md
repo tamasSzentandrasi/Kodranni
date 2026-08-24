@@ -5,10 +5,6 @@ description: Explicit possession, armour, food, water, and named items.
 
 ----------
 
-<figure class="kod-breath not-content">
-<img src="/scenes/storeroom.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
-</figure>
-
 ## Inventory
 
 Inventory is kept light. Only what is **declared and tracked** exists.
@@ -52,6 +48,10 @@ Dedicated automation commands exist only for:
 All other resupply (arrows, herbs, bandages, materials, etc.) is pure roleplay. The Storyteller decides what the situation allows. Bandages and herbs matter narratively for [Harm recovery](/harm/#recovery) even when not line-items.
 
 ----------
+
+<figure class="kod-breath not-content">
+<img src="/scenes/storeroom.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+</figure>
 
 ### Load and transport
 

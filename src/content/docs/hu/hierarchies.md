@@ -8,10 +8,6 @@ description: Hierarchiák, hírnév, örökségek és az ábra.
 
 ----------
 
-<figure class="kod-breath not-content">
-<img src="/scenes/emissaries.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
-</figure>
-
 ## Hierarchiák, hírnév és örökségek
 
 A hierarchiák (Hierarchy) azok, ahol a közösség látja a sajátjait — elhitt, értett és elfogadott hely.
@@ -25,6 +21,10 @@ A [Kampányelőkészítésben](/hu/campaign-setup/) a tengelyeket nevektől üre
 ### Szintek
 
 Minden tengely ugyanazt a négy fokot használja, fentről le: **tisztelt**, **megbízott** (Trusted), **elismert**, **kitaszított** (Outcast). Az **uralkodó** fölöttük ül, nem rajtuk.
+
+<figure class="kod-breath not-content">
+<img src="/scenes/emissaries.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
+</figure>
 
 ### Az ábra alakja
 

@@ -5,10 +5,6 @@ description: Kimondott birtoklás, páncél, étel, víz és megnevezett tárgya
 
 ----------
 
-<figure class="kod-breath not-content">
-<img src="/scenes/storeroom.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
-</figure>
-
 ## Felszerelés
 
 A felszerelés könnyű marad. Csak az létezik, ami **ki van mondva és követve**.
@@ -52,6 +48,10 @@ Külön automatizálási parancs csak erre van:
 Minden más utánpótlás (nyíl, fű, kötszer, anyag stb.) tiszta szerepjáték. A mesélő dönti el, mit enged a helyzet. A kötszer és a fű narratívan számít a [sérülés gyógyulásánál](/hu/harm/#felépülés), még ha nincsenek is tételsorként.
 
 ----------
+
+<figure class="kod-breath not-content">
+<img src="/scenes/storeroom.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+</figure>
 
 ### Teher és szállítás
 

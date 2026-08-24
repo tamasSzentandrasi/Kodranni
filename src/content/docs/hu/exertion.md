@@ -5,10 +5,6 @@ description: A kapacitás, hogy a hétköznapi határokon túlra tolj.
 
 ----------
 
-<figure class="kod-breath not-content">
-<img src="/scenes/ford-cart.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
-</figure>
-
 ## Erőfeszítés
 
 Az **erőfeszítés** (Exertion) a karakter kapacitása, hogy **a hétköznapi határokon túlra tolsza magát**. Fáradtság, éhség és szomjúság mind ebbe az egy mértékbe fut, ha nem viseled.
@@ -24,6 +20,10 @@ Az **erőfeszítés** (Exertion) a karakter kapacitása, hogy **a hétköznapi h
 - Fektess bele **1 erőfeszítést**, hogy **egy extra kockát** tegyél bármely kockakészletbe.
 - Illő [visszhangnál](/hu/echoes/#felidézés) **második** erőfeszítés-kockát is belefektethetsz arra a dobásra (a rendes határ egy).
 - [Haldokló](/hu/harm/#haldoklás) karakternek **minden** dobásra erőfeszítést kell beletennie; a halál akkor jön, ha a készlet nullára esik haldoklás közben.
+
+<figure class="kod-breath not-content">
+<img src="/scenes/ford-cart.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+</figure>
 
 <aside class="kod-example">
 <p class="kod-example__scene">A kocsi megakadt a köves gázlón. Az ökrök nem húznak; a víz emelkedik. A játékos úgy dönt, megéri az árát: beleássa magát, erőfeszítést fektet bele, és még egy kockát tesz a készletbe. A kockafok nem változik — nincs jobb helyzete, csak elszántabb.</p>

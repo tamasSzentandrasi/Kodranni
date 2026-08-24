@@ -5,10 +5,6 @@ description: The Omen die and side-events — independent of Marks.
 
 ----------
 
-<figure class="kod-breath not-content">
-<img src="/scenes/eclipse.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
-</figure>
-
 ## The Omen Die and Consequences
 
 **Every roll** includes one extra die: the **Omen** die — a **d20**. It is independent of Marks, Traits, and Exertion. It never changes the primary success reading. It may introduce a **Consequence** — a genuine side-effect.
@@ -26,6 +22,10 @@ When a Consequence fires, the Storyteller interprets it. Constraint: it must rem
 In multi-party contests, Omens also feed **[The Tide](/tide/)**. How Primitive, opposed, and collective rolls are read lives there, as the preamble to the Tide.
 
 ----------
+
+<figure class="kod-breath not-content">
+<img src="/scenes/eclipse.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+</figure>
 
 ## Worked scene — the sword
 

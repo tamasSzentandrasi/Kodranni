@@ -7,10 +7,6 @@ description: Adottságok, jártasságok, vonások és erőfeszítés — az embe
 
 ----------
 
-<figure class="kod-breath not-content">
-<img src="/scenes/reeds.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
-</figure>
-
 ## Az emberi adottság
 
 Az emberi kapacitást ábrázolni kényes. Korlátozottak vagyunk, mégis alkalmazkodók; specializálódunk; a hétköznapi határokon túlra tudunk tolni, ha az akarat és a test engedi.
@@ -25,6 +21,10 @@ A Kodranni ezt négy egymásba kapcsolódó mértékre bontja:
 | **[Erőfeszítés](/hu/exertion/)** | Akarat, hogy a hétköznapin túlra tolsza magát. Egyben a fáradtság, éhség és szomjúság könyve. | Maximum = akarat + állóképesség + karizma |
 
 ----------
+
+<figure class="kod-breath not-content">
+<img src="/scenes/reeds.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
+</figure>
 
 ### Hogyan találkoznak a kockával
 

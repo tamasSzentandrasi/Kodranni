@@ -7,10 +7,6 @@ description: Welcome to Kodranni — a pre-industrial grim human TTRPG system.
 
 ----------
 
-<figure class="kod-breath not-content">
-<img src="/scenes/falconer.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
-</figure>
-
 > *“The sunsets and sunrises of civilization are inevitably separated by intervals of isolated darkness.*
 >
 > *The night that followed the Roman sunset was long and uncertain, and the turmoil it brought **consumed countless men**.*
@@ -86,6 +82,10 @@ Whether the campaign is semi-historical or invented fantasy, if those three cond
 | [Glossary](/glossary/) | Quick definitions of every major term |
 
 ----------
+
+<figure class="kod-breath not-content">
+<img src="/scenes/falconer.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
+</figure>
 
 ## Grim reality vs fun
 

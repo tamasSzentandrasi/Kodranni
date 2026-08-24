@@ -5,10 +5,6 @@ description: Az ómenkocka és a mellékesemények — a jelektől függetlenül
 
 ----------
 
-<figure class="kod-breath not-content">
-<img src="/scenes/eclipse.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
-</figure>
-
 ## Az ómenkocka és a következmények
 
 **Minden dobás** tartalmaz egy extra kockát: az **ómenkockát** — egy **d20**-at. Független a jelektől, a vonásoktól és az erőfeszítéstől. Soha nem változtatja meg az elsődleges kimenetelt. **Következményt** hozhat — valódi mellékhatást.
@@ -26,6 +22,10 @@ Ha következmény sül el, a mesélő értelmezi. Kötés: **mellékhatás** mar
 Többoldalú összecsapásokban az ómenek a **[sodrást](/hu/tide/)** is táplálják. A primitív, ellendobásos és közös dobások olvasása ott él, a sodrás előszavaként.
 
 ----------
+
+<figure class="kod-breath not-content">
+<img src="/scenes/eclipse.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+</figure>
 
 ## Kidolgozott jelenet — a kard
 

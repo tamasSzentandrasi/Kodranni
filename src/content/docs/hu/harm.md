@@ -9,10 +9,6 @@ description: A kilenc sérüléssáv, a haldoklás, a felépülés és a védelm
 
 ----------
 
-<figure class="kod-breath not-content">
-<img src="/scenes/wound-care.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
-</figure>
-
 A Kodranni **nem** követ találati pontot. A kilenc [adottság](/hu/foundations/) foszlását követi.
 
 A **sérülés** (Harm) kilenc megnevezett sávon van feljegyezve. Minden sáv egy adottsághoz van párosítva. Minden sérüléspont eggyel csökkenti azt az adottságot a kocka szempontjából.
@@ -139,6 +135,10 @@ Halál után: vedd le a karaktert a [hierarchiaábráról](/hu/hierarchies/#a-hi
 </aside>
 
 ----------
+
+<figure class="kod-breath not-content">
+<img src="/scenes/wound-care.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+</figure>
 
 ## Felépülés
 

@@ -8,10 +8,6 @@ description: The nine inborn Foundations that shape a character.
 
 ----------
 
-<figure class="kod-breath not-content">
-<img src="/scenes/peasantkid.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
-</figure>
-
 ## Foundations
 
 **Foundations** are the **inborn potential** of each character. Barring aging, trauma, or rare Storyteller events, they do not drift session to session. They feed every **dice pool** and shape how quickly Skills improve through [Practice](/skills/#improvement).
@@ -56,6 +52,10 @@ Each Foundation is rated on a narrow scale:
 Values of **0** or **4** are *technically possible* — rarities for extreme cases (severe disability or legendary freaks of nature), and only with Storyteller approval and a matching [Trait](/traits/).
 
 ----------
+
+<figure class="kod-breath not-content">
+<img src="/scenes/peasantkid.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
+</figure>
 
 ### Where Foundations Matter
 

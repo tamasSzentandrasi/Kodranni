@@ -7,10 +7,6 @@ description: Üdv a Kodranniban — iparosodás előtti, komor, emberi TTRPG-ren
 
 ----------
 
-<figure class="kod-breath not-content">
-<img src="/scenes/falconer.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
-</figure>
-
 > *„A civilizációk naplementéit és napkelteit elkerülhetetlenül elszigetelt sötétség választja el.*
 >
 > *A római naplementét követő éjszaka hosszú és bizonytalan volt, és a zűrzavar, amit hozott, **számtalan embert emésztett fel**.*
@@ -86,6 +82,10 @@ Akár félig történelmi a kampány, akár kitalált fantasy, ha ez a három fe
 | [Fogalomtár](/hu/glossary/) | Minden fontosabb fogalom röviden |
 
 ----------
+
+<figure class="kod-breath not-content">
+<img src="/scenes/falconer.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
+</figure>
 
 ## Komor valóság és a szórakozás
 

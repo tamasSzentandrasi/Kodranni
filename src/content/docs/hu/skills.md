@@ -8,10 +8,6 @@ description: Jártasságok hat őstípus alá rendezve, gyakorlattal és fejlőd
 
 ----------
 
-<figure class="kod-breath not-content">
-<img src="/scenes/vineyard.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
-</figure>
-
 A **jártasságok** (Skills) hat **őstípus** (Archetype) alá vannak rendezve. Az őstípusok nem kasztok. Mindegyik elnevezett, rokon jártasságcsoport; a karakter bármelyikből vehet.
 
 **A jártasságok 0 és 3 között értékeltek.**
@@ -28,6 +24,10 @@ A konkrét technikák, tájegységi stílusok, megnevezett eszközök és igen-n
 Az asztalnál a mesélő azt a jártasságot választja, ami a játékos leírt szándékához a legjobban illik, amikor a [kockakészletet](/hu/marks-and-tiers/#a-kockakészlet-felépítése) építi.
 
 ----------
+
+<figure class="kod-breath not-content">
+<img src="/scenes/vineyard.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+</figure>
 
 ## Fejlődés
 

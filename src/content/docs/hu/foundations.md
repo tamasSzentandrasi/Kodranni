@@ -8,10 +8,6 @@ description: A kilenc veleszületett adottság, amely a karaktert formálja.
 
 ----------
 
-<figure class="kod-breath not-content">
-<img src="/scenes/peasantkid.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
-</figure>
-
 ## Adottságok
 
 Az **adottságok** (Foundations) minden karakter **veleszületett lehetősége**. Öregedést, traumát vagy ritka mesélői eseményt leszámítva nem mozdulnak ülésről ülésre. Minden **kockakészletet** táplálnak, és megszabják, milyen gyorsan javulnak a jártasságok [gyakorlattal](/hu/skills/#fejlődés).
@@ -56,6 +52,10 @@ Minden adottság szűk skálán van értékelve:
 A **0** vagy **4** *technikailag lehetséges* — ritkaság szélső esetekre (súlyos fogyatékosság vagy legendásan ritka termet), és csak mesélői engedéllyel plusz illő [vonással](/hu/traits/).
 
 ----------
+
+<figure class="kod-breath not-content">
+<img src="/scenes/peasantkid.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
+</figure>
 
 ### Hol számítanak az adottságok
 
