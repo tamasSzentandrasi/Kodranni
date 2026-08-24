@@ -35,9 +35,6 @@ Ez a három a **kockafok** (die tier). A kontextus nem ad módosítót a jelekre
 
 ----------
 
-<figure class="kod-breath not-content">
-<img src="/scenes/quenching.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
-</figure>
 
 ## Sikerjelek
 

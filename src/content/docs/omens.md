@@ -24,7 +24,7 @@ In multi-party contests, Omens also feed **[The Tide](/tide/)**. How Primitive, 
 ----------
 
 <figure class="kod-breath not-content">
-<img src="/scenes/eclipse.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+<img src="/scenes/quenching.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
 </figure>
 
 ## Worked scene — the sword

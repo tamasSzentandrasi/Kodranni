@@ -29,9 +29,15 @@ The **player** elevates a moment into an Echo. The Storyteller may veto only for
 | Total Echo weight **> capacity** | **–1** die on every roll that involves any of the character’s Echoes |
 | **No Echoes at all** (**Decadence**) | **–1** die on **every** roll |
 
+<figure class="kod-breath not-content">
+<img src="/scenes/cominghome.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
+</figure>
+
 <aside class="kod-counsel" aria-label="Counsel">
 <p>The load is not abstract. Too many burdens crack a person. None at all leaves them hollow.</p>
 </aside>
+
+----------
 
 <aside class="kod-example">
 <p class="kod-example__scene">Leif’s sheet: Strength 2, Dexterity 1, Intellect 2, Authority 2. Capacity is max(2, 1) + 2 + 2 = <strong>6</strong>. He has carried nothing all winter (Decadence). After the spring raid he takes on three Echoes whose weights sum to 6 — full load, no over-cap penalty. A fourth weight-1 Echo would push him past capacity.</p>
@@ -43,9 +49,7 @@ The **player** elevates a moment into an Echo. The Storyteller may veto only for
 </ol>
 </aside>
 
-<figure class="kod-breath not-content">
-<img src="/scenes/cominghome.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
-</figure>
+----------
 
 ### Invocation
 
@@ -60,6 +64,8 @@ When a roll’s context matches one of the character’s Echoes, the player may 
 <li><strong>Without a matching Echo:</strong> only one Exertion die may be spent on a roll.</li>
 </ol>
 </aside>
+
+----------
 
 ### Resolution
 

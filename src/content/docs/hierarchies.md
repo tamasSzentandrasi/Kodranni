@@ -130,7 +130,7 @@ Competition and cooperation on the same tier are left to roleplay.
 ----------
 
 <figure class="kod-breath not-content">
-<img src="/scenes/death.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
+<img src="/scenes/eclipse.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
 </figure>
 
 ### Legacies

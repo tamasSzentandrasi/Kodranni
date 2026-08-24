@@ -29,9 +29,15 @@ A **játékos** kiemel egy pillanatot visszhanggá. A mesélő csak hangnem vagy
 | Összes visszhangsúly **> teherbírás** | **−1** kocka minden dobáson, ami a karakter bármely visszhangját érinti |
 | **Egyáltalán nincs visszhang** (**hanyatlás** (Decadence)) | **−1** kocka **minden** dobáson |
 
+<figure class="kod-breath not-content">
+<img src="/scenes/cominghome.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
+</figure>
+
 <aside class="kod-counsel" aria-label="Tanács">
 <p>A teher nem elvont. Túl sok gond kettétöri az embert. A semmi üregessé teszi.</p>
 </aside>
+
+----------
 
 <aside class="kod-example" aria-label="Példa">
 <p class="kod-example__scene">Leif lapja: erő 2, ügyesség 1, értelem 2, tekintély 2. A teherbírás max(2, 1) + 2 + 2 = <strong>6</strong>. Egész télen semmit nem hordozott (hanyatlás). A tavaszi portya után három visszhangot vesz fel, súlyaik összege 6 — teljes teher, nincs túllépési büntetés. Egy negyedik, 1 súlyú visszhang túllépné a teherbírást.</p>
@@ -43,13 +49,12 @@ A **játékos** kiemel egy pillanatot visszhanggá. A mesélő csak hangnem vagy
 </ol>
 </aside>
 
-<figure class="kod-breath not-content">
-<img src="/scenes/cominghome.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
-</figure>
 
 ### Felidézés
 
 A **felidézés** (Invocation): ha egy dobás kontextusa illik a karakter egyik visszhangjához, a játékos **egy extra [erőfeszítés](/hu/exertion/)-kockát** (Exertion) fektethet bele a rendes egykockás határon túl. Lásd [a kockakészlet felépítését](/hu/marks-and-tiers/#a-kockakészlet-felépítése).
+
+----------
 
 <aside class="kod-example" aria-label="Példa">
 <p class="kod-example__scene">A múlt aratáskor Leif a csarnok előtt esküdött, hogy a hamuhegy fölötti forrás nem esik a felső törzsnek. Az eskü visszhang. Ma éjjel portyázók állnak a forrásnál. A mesélő egyetért: a jelenet illik. Leif többet fektethet a dobásba, mint amennyit az erőfeszítés rendesen enged.</p>
@@ -60,6 +65,8 @@ A **felidézés** (Invocation): ha egy dobás kontextusa illik a karakter egyik 
 <li><strong>Illő visszhang nélkül:</strong> csak egy erőfeszítés-kocka fektethető a dobásba.</li>
 </ol>
 </aside>
+
+----------
 
 ### Lezárás
 

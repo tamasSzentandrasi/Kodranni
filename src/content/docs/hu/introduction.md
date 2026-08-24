@@ -43,6 +43,10 @@ Akár félig történelmi a kampány, akár kitalált fantasy, ha ez a három fe
 
 ----------
 
+<figure class="kod-breath not-content">
+<img src="/scenes/falconer.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
+</figure>
+
 ## Alapgondolatok
 
 > *„Bármit teszel, jelentéktelen lesz, de nagyon fontos, hogy megtedd.”*
@@ -83,9 +87,6 @@ Akár félig történelmi a kampány, akár kitalált fantasy, ha ez a három fe
 
 ----------
 
-<figure class="kod-breath not-content">
-<img src="/scenes/falconer.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
-</figure>
 
 ## Komor valóság és a szórakozás
 

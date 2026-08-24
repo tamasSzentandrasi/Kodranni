@@ -13,6 +13,10 @@ A felszerelés könnyű marad. Csak az létezik, ami **ki van mondva és követv
 
 A [karakteralkotásnál](/hu/character-creation/#a-megmérettetés-után) csak azok a megnevezett tárgyak kerülnek listára, amelyek a koncepcióhoz már illenek. Nincs ingyen ellátmánycsomag. Minden más játék közben telik meg.
 
+<figure class="kod-breath not-content">
+<img src="/scenes/storeroom.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+</figure>
+
 ### Követett elemek
 
 | Elem | Részletek |
@@ -49,9 +53,6 @@ Minden más utánpótlás (nyíl, fű, kötszer, anyag stb.) tiszta szerepjáté
 
 ----------
 
-<figure class="kod-breath not-content">
-<img src="/scenes/storeroom.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
-</figure>
 
 ### Teher és szállítás
 

@@ -21,9 +21,6 @@ Az **erőfeszítés** (Exertion) a karakter kapacitása, hogy **a hétköznapi h
 - Illő [visszhangnál](/hu/echoes/#felidézés) **második** erőfeszítés-kockát is belefektethetsz arra a dobásra (a rendes határ egy).
 - [Haldokló](/hu/harm/#haldoklás) karakternek **minden** dobásra erőfeszítést kell beletennie; a halál akkor jön, ha a készlet nullára esik haldoklás közben.
 
-<figure class="kod-breath not-content">
-<img src="/scenes/ford-cart.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
-</figure>
 
 <aside class="kod-example">
 <p class="kod-example__scene">A kocsi megakadt a köves gázlón. Az ökrök nem húznak; a víz emelkedik. A játékos úgy dönt, megéri az árát: beleássa magát, erőfeszítést fektet bele, és még egy kockát tesz a készletbe. A kockafok nem változik — nincs jobb helyzete, csak elszántabb.</p>
@@ -35,6 +32,7 @@ Az **erőfeszítés** (Exertion) a karakter kapacitása, hogy **a hétköznapi h
 </ol>
 </aside>
 
+----------
 
 ### Visszatöltés
 
@@ -50,6 +48,12 @@ Javasolt visszatöltés:
 | Nincs étel vagy víz | −1 a pihenő-visszatöltésből |
 
 A [felszerelés](/hu/inventory/) étel- és víz-napjai mondják meg, ez a visszatöltés tisztán jár-e.
+
+----------
+
+<figure class="kod-breath not-content">
+<img src="/scenes/ford-cart.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+</figure>
 
 ### Kimerülés
 

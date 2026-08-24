@@ -27,6 +27,10 @@ Traits are **not rated**. They either apply or they do not. The Storyteller deci
 <p>Traits exist to colour the character and to short-circuit unnecessary rolls. They are not a second skill system.</p>
 </aside>
 
+<figure class="kod-breath not-content">
+<img src="/scenes/manuscript.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+</figure>
+
 <aside class="kod-example">
 <p class="kod-example__scene">A monastery scribe lays a Latin charter on the table and waits. The character has the Trait “Speaks Latin.” Reading the document is ordinary for them — no roll. Later they try to copy the hand and seal onto a false leaf: knowing the language helps the fiction, but forgery is still craft and cunning.</p>
 <ol class="kod-example__steps">
@@ -37,9 +41,6 @@ Traits are **not rated**. They either apply or they do not. The Storyteller deci
 
 ----------
 
-<figure class="kod-breath not-content">
-<img src="/scenes/manuscript.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
-</figure>
 
 ### Where Traits Come From
 

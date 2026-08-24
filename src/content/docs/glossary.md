@@ -3,6 +3,8 @@ title: Glossary
 description: Quick definitions of every major Kodranni term, grouped by system.
 ---
 
+----------
+
 Quick reference. Each entry links to the chapter that owns the full rule.
 
 ----------

@@ -3,6 +3,8 @@ title: Fogalomtár
 description: Minden fontosabb Kodranni-fogalom röviden, rendszer szerint csoportosítva.
 ---
 
+----------
+
 Gyors hivatkozás. Minden tétel arra a fejezetre mutat, ahol a teljes szabály él.
 
 ----------

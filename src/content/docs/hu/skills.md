@@ -8,6 +8,10 @@ description: Jártasságok hat őstípus alá rendezve, gyakorlattal és fejlőd
 
 ----------
 
+<figure class="kod-breath not-content">
+<img src="/scenes/vineyard.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+</figure>
+
 A **jártasságok** (Skills) hat **őstípus** (Archetype) alá vannak rendezve. Az őstípusok nem kasztok. Mindegyik elnevezett, rokon jártasságcsoport; a karakter bármelyikből vehet.
 
 **A jártasságok 0 és 3 között értékeltek.**
@@ -25,9 +29,6 @@ Az asztalnál a mesélő azt a jártasságot választja, ami a játékos leírt 
 
 ----------
 
-<figure class="kod-breath not-content">
-<img src="/scenes/vineyard.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
-</figure>
 
 ## Fejlődés
 

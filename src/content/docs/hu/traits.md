@@ -27,6 +27,10 @@ A vonásoknak **nincs foka**. Vagy érvényesek, vagy nem. A mesélő a játéko
 <p>A vonások a karaktert színezik, és a felesleges dobásokat rövidre zárják. Nem második jártasságrendszer.</p>
 </aside>
 
+<figure class="kod-breath not-content">
+<img src="/scenes/manuscript.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+</figure>
+
 <aside class="kod-example">
 <p class="kod-example__scene">Egy kolostori írnok latin oklevelet tesz az asztalra, és vár. A karakternek megvan a „Tud latinul” vonása. A dokumentum elolvasása neki hétköznapi — nincs dobás. Később a kezet és a pecsétet hamis levélre akarja másolni: a nyelvismeret segíti a fikciót, de a hamisítás még mindig mesterség és ravaszság.</p>
 <ol class="kod-example__steps">
@@ -37,9 +41,6 @@ A vonásoknak **nincs foka**. Vagy érvényesek, vagy nem. A mesélő a játéko
 
 ----------
 
-<figure class="kod-breath not-content">
-<img src="/scenes/manuscript.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
-</figure>
 
 ### Honnan jönnek a vonások
 

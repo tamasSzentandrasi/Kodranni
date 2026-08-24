@@ -130,7 +130,7 @@ Ugyanazon a szinten a versengés és az együttműködés szerepjáték marad.
 ----------
 
 <figure class="kod-breath not-content">
-<img src="/scenes/death.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
+<img src="/scenes/eclipse.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
 </figure>
 
 ### Örökségek

@@ -43,6 +43,10 @@ Whether the campaign is semi-historical or invented fantasy, if those three cond
 
 ----------
 
+<figure class="kod-breath not-content">
+<img src="/scenes/falconer.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
+</figure>
+
 ## Core ideas
 
 > *“Whatever you do will be insignificant, but it is very important that you do it.”*
@@ -83,9 +87,6 @@ Whether the campaign is semi-historical or invented fantasy, if those three cond
 
 ----------
 
-<figure class="kod-breath not-content">
-<img src="/scenes/falconer.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
-</figure>
 
 ## Grim reality vs fun
 

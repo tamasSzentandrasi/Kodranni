@@ -35,9 +35,6 @@ These three are the **die tiers**. Context does not add modifiers to Marks — i
 
 ----------
 
-<figure class="kod-breath not-content">
-<img src="/scenes/quenching.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
-</figure>
 
 ## Marks of Success
 
