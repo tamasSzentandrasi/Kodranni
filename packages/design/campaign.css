@@ -665,7 +665,9 @@ section.kod-plate {
 .hier-axes {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
-  gap: 0.45rem;
+  grid-template-rows: auto repeat(4, minmax(0, auto));
+  column-gap: 0.45rem;
+  row-gap: 0.28rem;
   align-items: stretch;
 }
 
@@ -1021,6 +1023,23 @@ section.kod-plate {
   --hier-accent: var(--kod-silver-dim);
 }
 
+@supports (grid-template-rows: subgrid) {
+  .hier-axis {
+    display: grid;
+    grid-template-rows: subgrid;
+    grid-row: 1 / span 5;
+  }
+
+  .hier-rungs {
+    display: contents;
+    padding: 0;
+  }
+
+  .hier-rung {
+    margin-inline: 0.35rem;
+  }
+}
+
 .hier-axis__head {
   flex: 0 0 auto;
   min-height: 5.6rem;
@@ -1091,16 +1110,22 @@ section.kod-plate {
 .hier-rung__head {
   display: flex;
   align-items: center;
-  gap: 0.3rem;
+  gap: 0.35rem;
   width: 100%;
-  padding: 0.3rem 0.4rem;
+  padding: 0.42rem 0.5rem;
   font: inherit;
   color: inherit;
   background: color-mix(in srgb, var(--hier-accent) calc(var(--rung-sat) * 40%), transparent);
   border: none;
+  border-top: 2px solid color-mix(in srgb, var(--hier-accent) 58%, var(--kod-frame));
   border-bottom: 1px solid color-mix(in srgb, var(--hier-accent) 20%, transparent);
   cursor: pointer;
   text-align: left;
+}
+
+.hier-rung__head:hover,
+.hier-rung__head:focus-visible {
+  background: color-mix(in srgb, var(--hier-accent) calc(var(--rung-sat) * 55%), #120a0a);
 }
 
 .hier-rung__tier {
@@ -1124,8 +1149,20 @@ section.kod-plate {
 
 .hier-rung__chev {
   margin-left: auto;
-  font-size: 0.65rem;
-  color: #6a625c;
+  display: grid;
+  place-items: center;
+  width: 1.2rem;
+  height: 1.2rem;
+  font-size: 0.72rem;
+  color: var(--kod-silver-bright);
+  border: 1px solid color-mix(in srgb, var(--hier-accent) 45%, var(--kod-frame));
+  background: color-mix(in srgb, #0c0a0a 70%, transparent);
+}
+
+.hier-rung__head:hover .hier-rung__chev,
+.hier-rung__head:focus-visible .hier-rung__chev {
+  border-color: var(--kod-blood);
+  color: var(--kod-blood-bright);
 }
 
 .hier-rung[data-collapsed='true'] .hier-rung__members {
@@ -1140,6 +1177,7 @@ section.kod-plate {
   flex-direction: column;
   gap: 0.32rem;
   flex: 1 1 auto;
+  max-height: 9.4rem;
 }
 
 .member {
@@ -1201,7 +1239,7 @@ section.kod-plate {
 
 .member[data-search='miss'],
 .outsider[data-search='miss'] {
-  opacity: 0.35;
+  display: none;
 }
 
 .member[data-search='hit'] {
@@ -1245,6 +1283,22 @@ section.kod-plate {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  max-height: 16.8rem;
+}
+
+.kod-scroll {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--kod-blood) 45%, var(--kod-frame)) transparent;
+}
+
+.kod-scroll::-webkit-scrollbar {
+  width: 0.4rem;
+}
+
+.kod-scroll::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--kod-blood) 42%, #3a3330);
 }
 
 .outsider {
@@ -1828,6 +1882,11 @@ section.kod-plate {
   color: var(--kod-silver-dim);
 }
 
+.char-row__meta--placeholder {
+  color: color-mix(in srgb, var(--kod-blood-bright) 45%, var(--kod-silver-dim));
+  font-style: italic;
+}
+
 .char-row__player {
   font-size: 0.82rem;
   color: var(--kod-silver-dim);
@@ -2256,17 +2315,24 @@ section.kod-plate {
   }
 }
 
-/* Lean load rails — sized to their pips, blood vs silver, never page-height. */
+/* Rails: vertical names, compact pips, room in the plate — not fat brackets. */
 .vtrack {
   --kod-soot-size: 0.55rem;
   --kod-corner-size: 0.7rem;
   --kod-plate-wash: var(--kod-soot), var(--kod-tool);
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1.15rem auto;
+  grid-template-rows: auto auto auto;
+  grid-template-areas:
+    'lab segs'
+    'lab read'
+    'lab info';
   align-items: center;
-  gap: 0.32rem;
-  padding: 0.7rem 0.55rem 0.8rem;
-  width: 4.15rem;
+  justify-items: center;
+  column-gap: 0.45rem;
+  row-gap: 0.35rem;
+  padding: 0.85rem 0.55rem 0.8rem 0.45rem;
+  width: auto;
   min-height: 0;
   height: auto !important;
   max-height: none;
@@ -2293,18 +2359,19 @@ section.kod-plate {
 }
 
 .vtrack__label {
-  writing-mode: horizontal-tb;
-  transform: none;
-  font-size: 0.64rem;
-  letter-spacing: 0.1em;
+  grid-area: lab;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   text-align: center;
-  line-height: 1.15;
+  line-height: 1.1;
   color: var(--kod-silver-dim);
 }
 
 .vtrack:not(.vtrack--echo) .vtrack__label {
-  color: color-mix(in srgb, var(--kod-blood-bright) 55%, var(--kod-silver));
+  color: var(--kod-blood);
 }
 
 .vtrack--echo .vtrack__label {
@@ -2312,16 +2379,21 @@ section.kod-plate {
 }
 
 .vtrack__segs {
+  grid-area: segs;
   display: flex;
   flex-direction: column-reverse;
-  gap: 5px;
+  gap: 3px;
   flex: 0 0 auto;
   justify-content: flex-start;
 }
 
+.vtrack .info {
+  grid-area: info;
+}
+
 .vtrack__seg {
-  width: 1.15rem;
-  height: 0.72rem;
+  width: 0.92rem;
+  height: 0.42rem;
   border: 1px solid var(--kod-frame-tick);
   background: #100e0c;
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.7);
@@ -2335,7 +2407,7 @@ section.kod-plate {
 .vtrack__seg--on {
   background:
     var(--kod-tool),
-    linear-gradient(180deg, var(--kod-blood-bright), var(--kod-blood-deep));
+    linear-gradient(180deg, var(--kod-blood), var(--kod-blood-deep));
   border-color: var(--kod-blood);
   box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.35);
 }
@@ -2363,6 +2435,7 @@ section.kod-plate {
 }
 
 .vtrack__readout {
+  grid-area: read;
   font-variant-numeric: tabular-nums;
   font-size: 0.82rem;
   color: var(--kod-silver-bright);
@@ -2384,39 +2457,7 @@ section.kod-plate {
 
 @media (max-width: 48rem) {
   .vtrack {
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    min-height: 0;
-    height: auto;
-    width: auto;
-    padding: 0.45rem 0.5rem 0.5rem;
-    gap: 0.35rem 0.45rem;
-  }
-
-  .vtrack__label {
-    writing-mode: horizontal-tb;
-    transform: none;
-    width: 100%;
-    text-align: center;
-  }
-
-  .vtrack__segs {
-    flex-direction: row;
-    flex-wrap: wrap;
-    min-height: 0;
-    flex: 0 0 auto;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .vtrack__readout {
-    flex: 0 0 auto;
-  }
-
-  .vtrack__readout small {
-    display: inline;
-    margin-left: 0.15rem;
+    padding: 0.65rem 0.45rem 0.6rem 0.35rem;
   }
 }
 
@@ -2466,19 +2507,41 @@ section.kod-plate {
 }
 
 .found-group {
+  --found-accent: var(--kod-frame);
   --kod-soot-size: 0.7rem;
   --kod-plate-wash: var(--kod-soot), var(--kod-tool);
+  border-top-width: 3px;
+  border-top-color: color-mix(in srgb, var(--found-accent) 55%, var(--kod-frame));
+  background:
+    var(--kod-plate-wash),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--found-accent) 22%, #0c0a0a),
+      #080606 62%
+    );
+}
+
+.found-group--physical {
+  --found-accent: var(--kod-blood);
+}
+
+.found-group--mental {
+  --found-accent: #5a4ab0;
+}
+
+.found-group--social {
+  --found-accent: #c4a035;
 }
 
 .found-group__title {
   margin: 0;
-  padding: 0.35rem 0.55rem;
-  font-size: 0.68rem;
-  letter-spacing: 0.1em;
+  padding: 0.45rem 0.65rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--kod-silver-dim);
-  background: color-mix(in srgb, #101010 72%, transparent);
-  border-bottom: 1px solid var(--kod-frame);
+  color: color-mix(in srgb, var(--found-accent) 70%, var(--kod-silver-bright));
+  background: color-mix(in srgb, var(--found-accent) 14%, #101010);
+  border-bottom: 1px solid color-mix(in srgb, var(--found-accent) 28%, var(--kod-frame));
 }
 
 .found-row {

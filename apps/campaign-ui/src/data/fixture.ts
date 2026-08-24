@@ -8,6 +8,7 @@ export interface FixtureCreation {
   guidingHandGranted: boolean;
   locked: boolean;
   claimable?: boolean;
+  placeholder?: boolean;
 }
 
 export interface FixtureCharacter {
@@ -99,6 +100,70 @@ export interface FixtureCommunity {
   characters: FixtureCharacter[];
 }
 
+const EMPTY_HARM: Record<string, number> = {
+  Crushed: 0,
+  Bleeding: 0,
+  Fever: 0,
+  Fog: 0,
+  Disoriented: 0,
+  Shock: 0,
+  Tarnished: 0,
+  Exposed: 0,
+  Disgrace: 0,
+};
+
+const BASE_FOUND: Record<string, number> = {
+  Strength: 1,
+  Dexterity: 1,
+  Constitution: 1,
+  Intellect: 1,
+  Perception: 1,
+  Resolve: 1,
+  Charisma: 1,
+  Guile: 1,
+  Authority: 1,
+};
+
+function fixtureNpc(opts: {
+  slug: string;
+  name: string;
+  whoWeSee: string;
+  communityTie?: string;
+  hierarchy: { axis: string; tier: string }[];
+}): FixtureCharacter {
+  return {
+    slug: opts.slug,
+    name: opts.name,
+    kind: 'npc',
+    status: 'active',
+    communityTie: opts.communityTie ?? '',
+    whoWeSee: opts.whoWeSee,
+    creation: {
+      foundationPoints: 0,
+      skillPoints: 0,
+      words: 0,
+      birthOmenGranted: true,
+      guidingHandGranted: true,
+      locked: true,
+      placeholder: false,
+    },
+    foundations: { ...BASE_FOUND },
+    foundationsEffective: { ...BASE_FOUND },
+    skills: [],
+    traits: [],
+    exertion: { current: 0, max: 3 },
+    echoes: [],
+    echoCapacity: 3,
+    echoWeight: 0,
+    harm: { ...EMPTY_HARM },
+    dying: false,
+    hierarchy: opts.hierarchy,
+    armour: { kind: 'none', donned: false },
+    inventory: { foodDays: 0, waterDays: 0, items: [] },
+    flags: { decadence: true, overCapacity: false },
+  };
+}
+
 export const fixtureCommunity: FixtureCommunity = {
   slug: 'vardmark',
   name: 'The Vardmark at Kelarn’s Bend',
@@ -160,39 +225,45 @@ export const fixtureCommunity: FixtureCommunity = {
       note: 'A hard bargainer who still answers when the ford is threatened.',
     },
     {
-      name: 'Halla of the Mill',
+      name: 'Halla Ketilsdottir',
       axis: 'Coin',
       tier: 'Trusted',
+      characterSlug: 'halla',
       note: 'Keeps the mill ledger after the taking; quiet power over grain counts.',
     },
     {
-      name: 'Halla of the Mill',
+      name: 'Halla Ketilsdottir',
       axis: 'Blood',
       tier: 'Acknowledged',
+      characterSlug: 'halla',
       note: 'Widow of a Bend man who did not survive the fall.',
     },
     {
-      name: 'Rurik the Oath-speaker',
+      name: 'Rurik Hrafnsson',
       axis: 'Faith',
       tier: 'Honoured',
+      characterSlug: 'rurik',
       note: 'Speaks for the dead of the Bend and the living oaths of the Vardmark.',
     },
     {
-      name: 'Sten of the Watch',
+      name: 'Sten Vebjornsson',
       axis: 'Arms',
       tier: 'Trusted',
+      characterSlug: 'sten',
       note: 'Leifr’s ford watch; eager, unpaid enough to leave if the freeze bites hard.',
     },
     {
-      name: 'Bera of the Lower Bank',
+      name: 'Bera Unfree',
       axis: 'Blood',
       tier: 'Outcast',
+      characterSlug: 'bera',
       note: 'Survived the taking; kept as labour on the fields.',
     },
     {
-      name: 'Gorm Tally-hand',
+      name: 'Gorm Audunsson',
       axis: 'Coin',
       tier: 'Outcast',
+      characterSlug: 'gorm',
       note: 'Counts spoils for whoever holds the store tonight.',
     },
   ],
@@ -207,17 +278,17 @@ export const fixtureCommunity: FixtureCommunity = {
       note: 'Speaks for grain and silence; will not bleed free for foreign occupiers.',
     },
     {
-      name: 'Jorun Reed-eye',
+      name: 'Jorun of the Channels',
       faction: 'Reed-marsh folk',
       note: 'Scout of the channels.',
     },
     {
-      name: 'Skard of the Next Bend',
+      name: 'Skard Ketilsson',
       faction: 'Rival war-band',
       note: 'Means to stake the next ford before the Vardmark hardens theirs.',
     },
     {
-      name: 'Inga Ash-tongue',
+      name: 'Inga Skardsdottir',
       faction: 'Rival war-band',
       note: 'Herald and bargainer for the rival band.',
     },
@@ -230,7 +301,7 @@ export const fixtureCommunity: FixtureCommunity = {
       communityTie: 'Holds the shared grain store as spoils and ration.',
       whoWeSee:
         'A quiet man who measures twice — timber, grain, and what is still owed after a taking.',
-      player: { platform: 'local', displayName: 'Player (Torvald)', accountId: 'local-torvald' },
+      player: { platform: 'local', displayName: 'Torvald', accountId: 'local-torvald' },
       foundations: {
         Strength: 2,
         Dexterity: 2,
@@ -275,8 +346,8 @@ export const fixtureCommunity: FixtureCommunity = {
           groupLabel: 'Store-wardens',
           group: [
             { name: 'Torvald Adzeson', characterSlug: 'torvald' },
-            { name: 'Halla of the Mill' },
-            { name: 'Gorm Tally-hand' },
+            { name: 'Halla Ketilsdottir' },
+            { name: 'Gorm Audunsson' },
           ],
         },
         {
@@ -325,7 +396,7 @@ export const fixtureCommunity: FixtureCommunity = {
         'A hard bargainer who still answers when the ford is threatened — conqueror’s claim, not a neighbour’s.',
       player: {
         platform: 'discord',
-        displayName: 'Player (Leifr)',
+        displayName: 'Leifr',
         accountId: 'demo-discord-leifr',
       },
       foundations: {
@@ -380,7 +451,7 @@ export const fixtureCommunity: FixtureCommunity = {
           groupLabel: 'Ford watch',
           group: [
             { name: 'Leifr Ketilsson', characterSlug: 'leifr' },
-            { name: 'Sten of the Watch' },
+            { name: 'Sten Vebjornsson' },
             { name: 'Ase River-step' },
             { name: 'Bjorn One-ear' },
           ],
@@ -415,5 +486,39 @@ export const fixtureCommunity: FixtureCommunity = {
       },
       flags: { decadence: false, overCapacity: false },
     },
+    fixtureNpc({
+      slug: 'halla',
+      name: 'Halla Ketilsdottir',
+      whoWeSee: 'Keeps the mill ledger after the taking; quiet power over grain counts.',
+      communityTie: 'Widow of a Bend man — still claims kin-right in the hall.',
+      hierarchy: [
+        { axis: 'Coin', tier: 'Trusted' },
+        { axis: 'Blood', tier: 'Acknowledged' },
+      ],
+    }),
+    fixtureNpc({
+      slug: 'rurik',
+      name: 'Rurik Hrafnsson',
+      whoWeSee: 'Speaks for the dead of the Bend and the living oaths of the Vardmark.',
+      hierarchy: [{ axis: 'Faith', tier: 'Honoured' }],
+    }),
+    fixtureNpc({
+      slug: 'sten',
+      name: 'Sten Vebjornsson',
+      whoWeSee: 'Leifr’s ford watch; eager, unpaid enough to leave if the freeze bites hard.',
+      hierarchy: [{ axis: 'Arms', tier: 'Trusted' }],
+    }),
+    fixtureNpc({
+      slug: 'bera',
+      name: 'Bera Unfree',
+      whoWeSee: 'Survived the taking; kept as labour on the fields.',
+      hierarchy: [{ axis: 'Blood', tier: 'Outcast' }],
+    }),
+    fixtureNpc({
+      slug: 'gorm',
+      name: 'Gorm Audunsson',
+      whoWeSee: 'Counts spoils for whoever holds the store tonight.',
+      hierarchy: [{ axis: 'Coin', tier: 'Outcast' }],
+    }),
   ],
 };

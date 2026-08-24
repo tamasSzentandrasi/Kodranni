@@ -26,6 +26,7 @@ describe('addHallNpc', () => {
     expect(ch.kind).toBe('npc');
     expect(ch.status).toBe('active');
     expect(ch.creation?.locked).toBe(true);
+    expect(ch.creation?.placeholder).toBe(true);
     const community = store.getCommunity();
     const placed = completeMemberPlacements(community, store.listCharacters()).filter(
       (p) => p.characterSlug === ch.slug,

@@ -46,6 +46,7 @@ function characterToView(ch: CharacterRecord): FixtureCommunity['characters'][nu
           guidingHandGranted: ch.creation.guidingHandGranted,
           locked: ch.creation.locked,
           claimable: ch.creation.claimable,
+          placeholder: ch.creation.placeholder,
         }
       : undefined,
     foundations: ch.foundations,
@@ -152,7 +153,7 @@ export function loadCommunity(): ViewCommunity {
   const fixtureChars = fixtureCommunity.characters.map((ch) => ({
     ...ch,
     id: ch.slug,
-    kind: 'pc' as const,
+    kind: ch.kind ?? 'pc',
   })) as unknown as CharacterRecord[];
   const placements = completeMemberPlacements(
     {

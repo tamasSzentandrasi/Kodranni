@@ -110,6 +110,34 @@ export function avatarUrl(slug: string, avatar?: string): string | null {
   return `/api/avatar/${encodeURIComponent(slug)}`;
 }
 
+function playerHandle(display: string, characterName: string): string {
+  const wrapped = /^\s*Player\s*\((.+)\)\s*$/i.exec(display);
+  if (wrapped?.[1]) return wrapped[1].trim();
+  if (/^player$/i.test(display.trim())) {
+    return characterName.trim().split(/\s+/)[0] || display;
+  }
+  return display;
+}
+
+/** Roster subtitle: Main — handle, Main — Unclaimed, NPC, NPC · placeholder. */
+export function rosterCaption(ch: {
+  kind?: string;
+  name: string;
+  whoWeSee?: string;
+  player?: { displayName: string };
+  creation?: { placeholder?: boolean; claimable?: boolean };
+}): { line: string; placeholder: boolean } {
+  if (ch.kind === 'npc' || ch.kind === 'notable') {
+    const placeholder =
+      ch.creation?.placeholder === true ||
+      (ch.creation?.placeholder !== false && !ch.whoWeSee);
+    return { line: placeholder ? 'NPC · placeholder' : 'NPC', placeholder };
+  }
+  const claimed = Boolean(ch.player?.displayName) && !ch.creation?.claimable;
+  if (!claimed) return { line: 'Main — Unclaimed', placeholder: false };
+  return { line: `Main — ${playerHandle(ch.player!.displayName, ch.name)}`, placeholder: false };
+}
+
 export function monogram(name: string): string {
   const parts = name.trim().split(/\s+/).filter(Boolean);
   if (parts.length === 0) return '?';

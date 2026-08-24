@@ -144,7 +144,7 @@ const roman = (n: number) => ['∅', 'I', 'II', 'III', 'IV'][n] ?? String(n);
         <div class="found-groups">
           {
             Object.entries(FOUNDATION_GROUPS).map(([group, keys]) => (
-              <div class="kod-plate found-group">
+              <div class={`kod-plate found-group found-group--${group.toLowerCase()}`}>
                 <p class="found-group__title">{group}</p>
                 {keys.map((fname) => {
                   const raw = ch.foundations[fname] ?? 0;

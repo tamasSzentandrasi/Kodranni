@@ -24,7 +24,7 @@ export function demoTorvald(): CharacterRecord {
       'A quiet man who measures twice — timber, grain, and what is still owed after a taking.',
     player: {
       platform: 'local',
-      displayName: 'Player (Torvald)',
+      displayName: 'Torvald',
       accountId: 'local-torvald',
     },
     foundations: {
@@ -121,8 +121,8 @@ export function demoTorvald(): CharacterRecord {
         groupLabel: 'Store-wardens',
         group: [
           { name: 'Torvald Adzeson', characterSlug: 'torvald' },
-          { name: 'Halla of the Mill', note: 'Keeps the mill ledger; counts what leaves the store.' },
-          { name: 'Gorm Tally-hand', note: 'Spoils-counter; loyalty follows the key.' },
+          { name: 'Halla Ketilsdottir', note: 'Keeps the mill ledger; counts what leaves the store.' },
+          { name: 'Gorm Audunsson', note: 'Spoils-counter; loyalty follows the key.' },
         ],
       }),
       makeEcho({
@@ -185,7 +185,7 @@ export function demoLeifr(): CharacterRecord {
       'A hard bargainer who still answers when the ford is threatened — conqueror’s claim, not a neighbour’s.',
     player: {
       platform: 'discord',
-      displayName: 'Player (Leifr)',
+      displayName: 'Leifr',
       accountId: 'demo-discord-leifr',
     },
     foundations: {
@@ -300,7 +300,7 @@ export function demoLeifr(): CharacterRecord {
         groupLabel: 'Ford watch',
         group: [
           { name: 'Leifr Ketilsson', characterSlug: 'leifr' },
-          { name: 'Sten of the Watch', note: 'Eager; unpaid enough to leave if the freeze bites hard.' },
+          { name: 'Sten Vebjornsson', note: 'Eager; unpaid enough to leave if the freeze bites hard.' },
           { name: 'Ase River-step', note: 'Young spear on the night shift; fears the marsh channels.' },
           { name: 'Bjorn One-ear', note: 'Veteran of the taking; drinks the pay first.' },
         ],
@@ -338,6 +338,72 @@ export function demoLeifr(): CharacterRecord {
       ],
     },
     flags: { decadence: false, overCapacity: false },
+  };
+  return refreshCharacterDerived(ch);
+}
+
+const NPC_HARM: Record<string, number> = {
+  Crushed: 0,
+  Bleeding: 0,
+  Fever: 0,
+  Fog: 0,
+  Disoriented: 0,
+  Shock: 0,
+  Tarnished: 0,
+  Exposed: 0,
+  Disgrace: 0,
+};
+
+/** Living hall NPC — weighed enough to appear as a sheet, not a placeholder. */
+function demoHallNpc(opts: {
+  slug: string;
+  name: string;
+  whoWeSee: string;
+  communityTie?: string;
+  hierarchy: { axis: string; tier: string }[];
+}): CharacterRecord {
+  const ch: CharacterRecord = {
+    id: randomUUID(),
+    slug: opts.slug,
+    name: opts.name,
+    kind: 'npc',
+    status: 'active',
+    communityTie: opts.communityTie ?? '',
+    whoWeSee: opts.whoWeSee,
+    creation: {
+      foundationPoints: 0,
+      skillPoints: 0,
+      words: 0,
+      birthOmenGranted: true,
+      guidingHandGranted: true,
+      locked: true,
+      claimable: false,
+      placeholder: false,
+    },
+    foundations: {
+      Strength: 1,
+      Dexterity: 1,
+      Constitution: 1,
+      Intellect: 1,
+      Perception: 1,
+      Resolve: 1,
+      Charisma: 1,
+      Guile: 1,
+      Authority: 1,
+    },
+    foundationsEffective: {},
+    skills: [],
+    traits: [],
+    exertion: { current: 0, max: 0 },
+    echoes: [],
+    echoCapacity: 0,
+    echoWeight: 0,
+    harm: { ...NPC_HARM },
+    dying: false,
+    hierarchy: opts.hierarchy,
+    armour: { kind: 'none', donned: false },
+    inventory: { foodDays: 0, waterDays: 0, items: [] },
+    flags: { decadence: true, overCapacity: false },
   };
   return refreshCharacterDerived(ch);
 }
@@ -409,6 +475,41 @@ export function seedDemoCampaign(
   ];
   const torvald = demoTorvald();
   const leifr = demoLeifr();
+  const halla = demoHallNpc({
+    slug: 'halla',
+    name: 'Halla Ketilsdottir',
+    whoWeSee: 'Keeps the mill ledger after the taking; quiet power over grain counts.',
+    communityTie: 'Widow of a Bend man — still claims kin-right in the hall.',
+    hierarchy: [
+      { axis: 'Coin', tier: 'Trusted' },
+      { axis: 'Blood', tier: 'Acknowledged' },
+    ],
+  });
+  const rurik = demoHallNpc({
+    slug: 'rurik',
+    name: 'Rurik Hrafnsson',
+    whoWeSee: 'Speaks for the dead of the Bend and the living oaths of the Vardmark.',
+    hierarchy: [{ axis: 'Faith', tier: 'Honoured' }],
+  });
+  const sten = demoHallNpc({
+    slug: 'sten',
+    name: 'Sten Vebjornsson',
+    whoWeSee: 'Leifr’s ford watch; eager, unpaid enough to leave if the freeze bites hard.',
+    hierarchy: [{ axis: 'Arms', tier: 'Trusted' }],
+  });
+  const bera = demoHallNpc({
+    slug: 'bera',
+    name: 'Bera Unfree',
+    whoWeSee: 'Survived the taking; kept as labour on the fields. Watches the river more than the hall.',
+    hierarchy: [{ axis: 'Blood', tier: 'Outcast' }],
+  });
+  const gorm = demoHallNpc({
+    slug: 'gorm',
+    name: 'Gorm Audunsson',
+    whoWeSee: 'Counts spoils for whoever holds the store tonight; loyalty follows the key.',
+    hierarchy: [{ axis: 'Coin', tier: 'Outcast' }],
+  });
+  const npcs = [halla, rurik, sten, bera, gorm];
   community.placements = [
     {
       name: torvald.name,
@@ -424,42 +525,15 @@ export function seedDemoCampaign(
       characterSlug: leifr.slug,
       note: leifr.whoWeSee,
     },
-    {
-      name: 'Halla of the Mill',
-      axis: 'Coin',
-      tier: 'Trusted',
-      note: 'Keeps the mill ledger after the taking; quiet power over grain counts.',
-    },
-    {
-      name: 'Halla of the Mill',
-      axis: 'Blood',
-      tier: 'Acknowledged',
-      note: 'Widow of a Bend man who did not survive the fall — still claims kin-right in the hall.',
-    },
-    {
-      name: 'Rurik the Oath-speaker',
-      axis: 'Faith',
-      tier: 'Honoured',
-      note: 'Speaks for the dead of the Bend and the living oaths of the Vardmark — few contradict him twice.',
-    },
-    {
-      name: 'Sten of the Watch',
-      axis: 'Arms',
-      tier: 'Trusted',
-      note: 'Leifr’s ford watch; eager, unpaid enough to leave if the freeze bites hard.',
-    },
-    {
-      name: 'Bera of the Lower Bank',
-      axis: 'Blood',
-      tier: 'Outcast',
-      note: 'Survived the taking; kept as labour on the fields. Watches the river more than the hall.',
-    },
-    {
-      name: 'Gorm Tally-hand',
-      axis: 'Coin',
-      tier: 'Outcast',
-      note: 'Counts spoils for whoever holds the store tonight; loyalty follows the key.',
-    },
+    ...npcs.flatMap((ch) =>
+      ch.hierarchy.map((h) => ({
+        name: ch.name,
+        axis: h.axis,
+        tier: h.tier,
+        characterSlug: ch.slug,
+        note: ch.whoWeSee,
+      })),
+    ),
   ];
   community.outsiders = [
     {
@@ -468,17 +542,17 @@ export function seedDemoCampaign(
       note: 'Speaks for grain and silence; will not bleed free for foreign occupiers at the Bend.',
     },
     {
-      name: 'Jorun Reed-eye',
+      name: 'Jorun of the Channels',
       faction: 'Reed-marsh folk',
       note: 'Scout of the channels; knows every path that can starve or feed the ford.',
     },
     {
-      name: 'Skard of the Next Bend',
+      name: 'Skard Ketilsson',
       faction: 'Rival war-band',
       note: 'Same campaign of conquest; means to stake the next ford before the Vardmark hardens theirs.',
     },
     {
-      name: 'Inga Ash-tongue',
+      name: 'Inga Skardsdottir',
       faction: 'Rival war-band',
       note: 'Herald and bargainer for the rival band — offers terms that never quite favour the Vardmark.',
     },
@@ -488,6 +562,7 @@ export function seedDemoCampaign(
   store.putCommunity(community);
   store.putCharacter(torvald);
   store.putCharacter(leifr);
+  for (const npc of npcs) store.putCharacter(npc);
   store.appendEvent({
     type: 'CampaignSeeded',
     payload: { slug, seed: DEMO_SEED_ID },

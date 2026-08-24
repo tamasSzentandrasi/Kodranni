@@ -87,6 +87,10 @@ export function ensureCreation(ch: CharacterRecord): CreationState {
   return ch.creation;
 }
 
+function clearPlaceholder(ch: CharacterRecord): void {
+  if (ch.creation?.placeholder) ch.creation.placeholder = false;
+}
+
 function slugify(name: string): string {
   const base = name
     .normalize('NFKD')
@@ -184,6 +188,7 @@ export function addHallNpc(
       foundationPoints: 0,
       skillPoints: 0,
       claimable: false,
+      placeholder: true,
     }),
   });
   store.putCharacter(ch);
@@ -522,6 +527,7 @@ export function spendFoundation(
   }
   creation.foundationPoints -= cost;
   ch.foundations[name] = to;
+  clearPlaceholder(ch);
   store.putCharacter(ch);
   store.appendEvent({
     type: 'FoundationSpent',
@@ -578,6 +584,7 @@ export function spendSkill(
     );
     skill.foundation = def.foundation;
   }
+  clearPlaceholder(ch);
   store.putCharacter(ch);
   store.appendEvent({
     type: 'SkillSpent',
@@ -610,6 +617,7 @@ export function refundFoundation(
   const to = from - 1;
   creation.foundationPoints += refund;
   ch.foundations[name] = to;
+  clearPlaceholder(ch);
   store.putCharacter(ch);
   store.appendEvent({
     type: 'FoundationRefunded',
@@ -650,6 +658,7 @@ export function refundSkill(
       foundationRating,
     );
   }
+  clearPlaceholder(ch);
   store.putCharacter(ch);
   store.appendEvent({
     type: 'SkillRefunded',
@@ -869,6 +878,7 @@ export function spendWordWanting(
   }
 
   creation.words -= 1;
+  clearPlaceholder(ch);
   store.putCharacter(ch);
   store.appendEvent({
     type: 'WantingSpent',
@@ -950,6 +960,7 @@ export function stEditCharacter(
   if (p.skillPointsDelta) creation.skillPoints += p.skillPointsDelta;
   if (p.wordsDelta) creation.words += p.wordsDelta;
   if (p.claimable !== undefined) creation.claimable = p.claimable;
+  clearPlaceholder(ch);
   store.putCharacter(ch);
   store.appendEvent({
     type: 'CharacterStEdited',
@@ -1057,6 +1068,7 @@ export function updateDraftConcept(
   if (cmd.concept !== undefined) ch.concept = cmd.concept;
   if (cmd.communityTie !== undefined) ch.communityTie = cmd.communityTie;
   if (cmd.whoWeSee !== undefined) ch.whoWeSee = cmd.whoWeSee;
+  clearPlaceholder(ch);
   store.putCharacter(ch);
   store.appendEvent({
     type: 'DraftConceptUpdated',

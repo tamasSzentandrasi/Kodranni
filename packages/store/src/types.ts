@@ -147,6 +147,8 @@ export interface CreationState {
   locked: boolean;
   /** ST prebuilt open for player claim. */
   claimable?: boolean;
+  /** Hall-added NPC not yet weighed by the Storyteller. */
+  placeholder?: boolean;
 }
 
 export interface SkillProgress {

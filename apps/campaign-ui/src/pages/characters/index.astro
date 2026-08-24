@@ -3,10 +3,16 @@ export const prerender = false;
 
 import CampaignLayout from '../../layouts/CampaignLayout.astro';
 import { loadCommunity } from '../../data/load';
-import { avatarUrl, monogram } from '../../lib/format';
+import { avatarUrl, monogram, rosterCaption } from '../../lib/format';
 
 const c = loadCommunity();
 const selected = Astro.url.searchParams.get('sel') ?? '';
+const roster = [...c.characters].sort((a, b) => {
+  const an = a.kind === 'npc' || a.kind === 'notable' ? 1 : 0;
+  const bn = b.kind === 'npc' || b.kind === 'notable' ? 1 : 0;
+  if (an !== bn) return an - bn;
+  return a.name.localeCompare(b.name);
+});
 ---
 
 <CampaignLayout
@@ -21,9 +27,9 @@ const selected = Astro.url.searchParams.get('sel') ?? '';
       <p class="empty">No names on the roster yet.</p>
     ) : (
       <ul class="char-list">
-        {c.characters.map((ch) => {
+        {roster.map((ch) => {
           const src = avatarUrl(ch.slug, ch.avatar);
-          const kind = (ch.kind ?? 'pc') === 'npc' ? 'Named' : ch.kind === 'notable' ? 'Notable' : 'Player';
+          const cap = rosterCaption(ch);
           return (
             <li>
               <a
@@ -40,9 +46,8 @@ const selected = Astro.url.searchParams.get('sel') ?? '';
                 )}
                 <span class="char-row__body">
                   <span class="char-row__name">{ch.name}</span>
-                  <span class="char-row__meta">
-                    {kind}
-                    {ch.player?.displayName ? ` · ${ch.player.displayName}` : ''}
+                  <span class:list={['char-row__meta', cap.placeholder && 'char-row__meta--placeholder']}>
+                    {cap.line}
                   </span>
                 </span>
                 <span

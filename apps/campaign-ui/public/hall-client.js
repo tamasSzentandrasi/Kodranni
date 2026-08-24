@@ -332,6 +332,10 @@
       document.querySelectorAll('.hier-rung').forEach((rung) => {
         if (rung.querySelector('[data-search="hit"]')) setCollapsed(rung, false);
       });
+      const firstHit = document.querySelector('[data-search="hit"]');
+      if (firstHit instanceof HTMLElement) {
+        firstHit.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+      }
     }
 
     if (!hitsEl) return;
@@ -358,7 +362,7 @@
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'hall-search__hit';
-      const tag = p.kind === 'outsider' ? ' (outsider)' : p.pc ? '' : ' (named)';
+      const tag = p.kind === 'outsider' ? ' (outsider)' : p.pc ? '' : ' (npc)';
       btn.textContent = p.name + tag;
       btn.setAttribute('data-inspect-id', p.id);
       btn.setAttribute('data-name', p.name);
