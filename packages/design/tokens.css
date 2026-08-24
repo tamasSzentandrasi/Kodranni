@@ -36,8 +36,10 @@
   --kod-c-tr: url('./ornament/corner-tr.svg');
   --kod-c-bl: url('./ornament/corner-bl.svg');
   --kod-c-br: url('./ornament/corner-br.svg');
-  --kod-btn-end-l: url('./ornament/btn-end-l.svg');
-  --kod-btn-end-r: url('./ornament/btn-end-r.svg');
+  --kod-btn-end-l: url('./ornament/btn-end-l.png');
+  --kod-btn-end-r: url('./ornament/btn-end-r.png');
+  --kod-btn-glass: url('./ornament/btn-glass.png');
+  --kod-btn-round: url('./ornament/btn-round.png');
   --kod-plus-ring: url('./ornament/plus-ring.svg');
   --kod-fortune-vitality: url('./ornament/fortunes/vitality.png');
   --kod-fortune-cohesion: url('./ornament/fortunes/cohesion.png');

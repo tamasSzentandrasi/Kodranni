@@ -287,10 +287,11 @@
 /* Tier dial buttons with embedded die icons */
 .kod-widget__btn--die {
   width: auto !important;
-  min-width: 5.6rem !important;
+  min-width: 6.4rem !important;
   max-width: none !important;
   gap: 0.35rem;
-  padding: 0 1.15rem !important;
+  border-width: 0.2rem 1.35rem !important;
+  padding: 0 0.2rem !important;
   font-family: var(--kod-font-display);
   font-size: 1rem !important;
 }
@@ -372,7 +373,7 @@
   justify-content: center;
   align-items: center; /* same baseline — never stretch-first / margin-second */
   align-content: center;
-  gap: 0.45rem;
+  gap: 0.7rem;
   margin: 0 auto 0.9rem;
 }
 
@@ -380,96 +381,85 @@
 .kod-btn {
   --kod-soot-size: 0.55rem;
   --kod-corners: none;
-  --kod-btn-ends:
-    var(--kod-btn-end-l) left 0.1rem center / auto 50% no-repeat,
-    var(--kod-btn-end-r) right 0.1rem center / auto 50% no-repeat;
+  --kod-btn-glass-slice: 9% 14.5% 9% 14.5% fill;
   appearance: none;
   -webkit-appearance: none;
   box-sizing: border-box;
   position: relative;
   isolation: isolate;
   flex: 0 0 auto;
-  width: 6.1rem;
-  height: 2.55rem;
-  min-width: 6.1rem;
-  min-height: 2.55rem;
-  max-width: 6.1rem;
-  max-height: 2.55rem;
+  width: 6.4rem;
+  height: 2.65rem;
+  min-width: 6.4rem;
+  min-height: 2.65rem;
+  max-width: 6.4rem;
+  max-height: 2.65rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: none;
-  background: #5c5550;
-  color: var(--kod-silver);
+  border-style: solid;
+  border-color: transparent;
+  border-width: 0.2rem 1.28rem;
+  border-image-source: var(--kod-btn-glass);
+  border-image-slice: var(--kod-btn-glass-slice);
+  border-image-repeat: stretch;
+  background: none;
+  color: var(--kod-silver-bright);
   font-family: var(--kod-font-body);
   font-size: 0.82rem;
   line-height: 1;
   margin: 0 !important; /* Starlight sibling gap would lift the first button */
-  padding: 0 1.15rem;
+  padding: 0 0.12rem;
   border-radius: 0;
   cursor: pointer;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.02em;
   white-space: nowrap;
   vertical-align: middle;
-  clip-path: var(--kod-cartouche);
-  transition: color 0.12s ease, background-color 0.12s ease;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
+  clip-path: none;
+  transition: color 0.14s ease, filter 0.14s ease;
 }
 
 .kod-widget__btn::before,
 .kod-btn::before {
   content: '';
   position: absolute;
-  inset: 1px;
-  z-index: -1;
-  clip-path: var(--kod-cartouche);
-  background:
-    var(--kod-soot),
-    linear-gradient(180deg, rgba(242, 239, 233, 0.12), transparent 42%),
-    #161412;
+  inset: 0;
+  z-index: 0;
   pointer-events: none;
+  background: transparent;
+  mix-blend-mode: overlay;
 }
 
 .kod-widget__btn::after,
 .kod-btn::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--kod-btn-ends);
-  pointer-events: none;
-  opacity: 0.88;
+  content: none;
 }
 
-/* Scout Marks: number-only chips */
+/* Scout Marks: number-only roundels — too small for end-knots */
 .kod-widget[data-widget='marks-ladder'] .kod-widget__btn {
-  --kod-btn-ends: none;
-  --kod-cartouche: polygon(
-    0.34rem 0,
-    calc(100% - 0.34rem) 0,
-    100% 0.34rem,
-    100% calc(100% - 0.34rem),
-    calc(100% - 0.34rem) 100%,
-    0.34rem 100%,
-    0 calc(100% - 0.34rem),
-    0 0.34rem
-  );
-  width: 2.65rem;
-  min-width: 2.65rem;
-  max-width: 2.65rem;
-  height: 2.65rem;
-  min-height: 2.65rem;
-  max-height: 2.65rem;
+  width: 2.7rem;
+  min-width: 2.7rem;
+  max-width: 2.7rem;
+  height: 2.7rem;
+  min-height: 2.7rem;
+  max-height: 2.7rem;
   padding: 0;
+  border: none;
+  border-image: none;
+  border-radius: 50%;
+  background: var(--kod-btn-round) center / contain no-repeat;
   font-family: var(--kod-font-display);
-  font-size: 1.15rem;
+  font-size: 1.12rem;
   letter-spacing: 0.02em;
   color: var(--kod-silver-bright);
 }
 
 /* Tier dial: d6 / d8 / d12 */
 .kod-widget[data-widget='tier-dial'] .kod-widget__btn {
-  width: 5.5rem;
-  min-width: 5.5rem;
-  max-width: 5.5rem;
+  width: 6.5rem;
+  min-width: 6.5rem;
+  max-width: 6.5rem;
   font-family: var(--kod-font-display);
   font-size: 1.05rem;
   letter-spacing: 0.03em;
@@ -980,46 +970,27 @@
 .kod-btn:focus-visible {
   outline: none;
   color: #fff8f0;
-  background: #8a8580;
+  filter: brightness(1.18) saturate(1.08);
 }
 
 .kod-widget__btn:hover::before,
 .kod-widget__btn:focus-visible::before,
 .kod-btn:hover::before,
 .kod-btn:focus-visible::before {
-  background:
-    var(--kod-soot),
-    linear-gradient(180deg, rgba(242, 239, 233, 0.16), transparent 42%),
-    #1c1916;
-}
-
-.kod-widget__btn:hover::after,
-.kod-widget__btn:focus-visible::after,
-.kod-btn:hover::after,
-.kod-btn:focus-visible::after {
-  opacity: 1;
+  background: color-mix(in srgb, #fff8f0 18%, transparent);
 }
 
 .kod-widget__btn[aria-pressed='true'],
 .kod-btn[aria-pressed='true'],
 .kod-btn:active {
   color: #fff8f0;
-  background: #c4bfb6;
+  filter: brightness(1.48) saturate(1.22);
 }
 
 .kod-widget__btn[aria-pressed='true']::before,
 .kod-btn[aria-pressed='true']::before,
 .kod-btn:active::before {
-  background:
-    var(--kod-soot),
-    linear-gradient(180deg, rgba(242, 239, 233, 0.08), transparent 55%),
-    #2a2622;
-}
-
-.kod-widget__btn[aria-pressed='true']::after,
-.kod-btn[aria-pressed='true']::after,
-.kod-btn:active::after {
-  opacity: 1;
+  background: color-mix(in srgb, #f2d078 34%, transparent);
 }
 
 .kod-widget__panel {
@@ -1122,12 +1093,13 @@
 }
 .kod-widget[data-widget='practice-award'] .kod-widget__btn {
   width: auto;
-  min-width: 6.25rem;
+  min-width: 7.1rem;
   max-width: none;
   height: auto;
-  min-height: 2.55rem;
+  min-height: 2.7rem;
   max-height: none;
-  padding: 0.4rem 1.4rem;
+  border-width: 0.2rem 1.45rem;
+  padding: 0.38rem 0.25rem;
   white-space: normal;
   line-height: 1.25;
 }
@@ -1161,12 +1133,13 @@
 }
 .kod-widget[data-widget='content-tabs'] .kod-widget__btn {
   width: auto;
-  min-width: 6.25rem;
+  min-width: 7.1rem;
   max-width: none;
   height: auto;
-  min-height: 2.55rem;
+  min-height: 2.7rem;
   max-height: none;
-  padding: 0.4rem 1.4rem;
+  border-width: 0.2rem 1.45rem;
+  padding: 0.38rem 0.25rem;
   white-space: normal;
   line-height: 1.25;
 }
@@ -1331,47 +1304,42 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 0.35rem;
+  gap: 0.45rem;
   margin: 0 0 1rem;
 }
 .kod-step-flow__track .kod-widget__btn {
-  --kod-btn-ends: none;
-  --kod-cartouche: none;
-  width: 2.35rem;
-  min-width: 2.35rem;
-  max-width: 2.35rem;
-  height: 2.35rem;
-  min-height: 2.35rem;
-  max-height: 2.35rem;
+  width: 2.55rem;
+  min-width: 2.55rem;
+  max-width: 2.55rem;
+  height: 2.55rem;
+  min-height: 2.55rem;
+  max-height: 2.55rem;
   padding: 0;
+  border: none;
+  border-image: none;
   border-radius: 50%;
   clip-path: none;
   font-family: var(--kod-font-display);
   font-size: 0.95rem;
-  background: #5c5550;
+  background: var(--kod-btn-round) center / contain no-repeat;
   box-shadow: none;
 }
 .kod-step-flow__track .kod-widget__btn::before {
-  inset: 1px;
+  inset: 18%;
   border-radius: 50%;
   clip-path: none;
-  background:
-    linear-gradient(180deg, rgba(242, 239, 233, 0.12), transparent 48%),
-    #161412;
+  background: transparent;
+  mix-blend-mode: overlay;
 }
 .kod-step-flow__track .kod-widget__btn::after {
   content: none;
 }
 .kod-step-flow__track .kod-widget__btn:hover::before,
 .kod-step-flow__track .kod-widget__btn:focus-visible::before {
-  background:
-    linear-gradient(180deg, rgba(242, 239, 233, 0.16), transparent 48%),
-    #1c1916;
+  background: color-mix(in srgb, #fff8f0 20%, transparent);
 }
 .kod-step-flow__track .kod-widget__btn[aria-pressed='true']::before {
-  background:
-    linear-gradient(180deg, rgba(242, 239, 233, 0.08), transparent 55%),
-    #2a2622;
+  background: color-mix(in srgb, #f2d078 24%, transparent);
 }
 .kod-step-flow__label {
   text-align: center;
@@ -1398,62 +1366,51 @@
 .kod-step-flow__nav button {
   --kod-soot-size: 0.55rem;
   --kod-corners: none;
-  --kod-btn-ends:
-    var(--kod-btn-end-l) left 0.1rem center / auto 50% no-repeat,
-    var(--kod-btn-end-r) right 0.1rem center / auto 50% no-repeat;
+  --kod-btn-glass-slice: 9% 14.5% 9% 14.5% fill;
   appearance: none;
   box-sizing: border-box;
   position: relative;
   isolation: isolate;
   margin: 0;
-  padding: 0.4rem 1.4rem;
-  border: none;
+  padding: 0.38rem 0.3rem;
+  border-style: solid;
+  border-color: transparent;
+  border-width: 0.2rem 1.45rem;
+  border-image-source: var(--kod-btn-glass);
+  border-image-slice: var(--kod-btn-glass-slice);
+  border-image-repeat: stretch;
   border-radius: 0;
-  background: #5c5550;
-  color: var(--kod-silver);
+  background: none;
+  color: var(--kod-silver-bright);
   font-family: var(--kod-font-body);
   font-size: 0.9rem;
   cursor: pointer;
   letter-spacing: 0.03em;
-  clip-path: var(--kod-cartouche);
-  transition: color 0.12s ease, background-color 0.12s ease;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
+  clip-path: none;
+  transition: color 0.14s ease, filter 0.14s ease;
 }
 .kod-step-flow__nav button::before {
   content: '';
   position: absolute;
-  inset: 1px;
-  z-index: -1;
-  clip-path: var(--kod-cartouche);
-  background:
-    var(--kod-soot),
-    linear-gradient(180deg, rgba(242, 239, 233, 0.1), transparent 42%),
-    #161412;
+  inset: 0;
+  z-index: 0;
   pointer-events: none;
+  background: transparent;
+  mix-blend-mode: overlay;
 }
 .kod-step-flow__nav button::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--kod-btn-ends);
-  pointer-events: none;
-  opacity: 0.88;
+  content: none;
 }
 .kod-step-flow__nav button:hover:not(:disabled),
 .kod-step-flow__nav button:focus-visible:not(:disabled) {
   color: #fff8f0;
   outline: none;
-  background: #8a8580;
+  filter: brightness(1.18) saturate(1.08);
 }
 .kod-step-flow__nav button:hover:not(:disabled)::before,
 .kod-step-flow__nav button:focus-visible:not(:disabled)::before {
-  background:
-    var(--kod-soot),
-    linear-gradient(180deg, rgba(242, 239, 233, 0.16), transparent 42%),
-    #1c1916;
-}
-.kod-step-flow__nav button:hover:not(:disabled)::after,
-.kod-step-flow__nav button:focus-visible:not(:disabled)::after {
-  opacity: 1;
+  background: color-mix(in srgb, #fff8f0 18%, transparent);
 }
 .kod-step-flow__nav button:disabled {
   opacity: 0.35;
@@ -1539,11 +1496,11 @@
 .kod-step-flow__track .kod-widget__btn.is-done,
 .kod-widget[data-widget='tide-demo'] .kod-widget__btn.is-done {
   color: var(--kod-silver-dim);
-  background: #4a4540;
+  filter: brightness(0.78) saturate(0.7);
 }
 .kod-step-flow__track .kod-widget__btn.is-done::before,
 .kod-widget[data-widget='tide-demo'] .kod-widget__btn.is-done::before {
-  background: #1a1816;
+  background: color-mix(in srgb, #000 28%, transparent);
 }
 
 .kod-widget[data-widget='step-flow']:focus-visible,

@@ -803,33 +803,27 @@ section.kod-plate {
 
 .rite__panel .kod-btn--folio {
   min-height: 3.9rem;
-  padding: 0.75rem 2.4rem;
+  padding: 0.75rem 0.4rem;
+  border-width: 0.28rem 2.2rem;
 }
 
 .rite__panel .kod-btn--folio[data-banner-submit] {
   --rite-banner: #a01818;
-  background: var(--rite-banner);
 }
 
 .rite__panel .kod-btn--folio[data-banner-submit]::before {
-  background:
-    var(--kod-soot),
-    linear-gradient(180deg, rgba(242, 239, 233, 0.14), transparent 42%),
-    var(--rite-banner);
+  background: color-mix(in srgb, var(--rite-banner) 42%, transparent);
+  mix-blend-mode: multiply;
 }
 
 .rite__panel .kod-btn--folio[data-banner-submit]:hover,
 .rite__panel .kod-btn--folio[data-banner-submit]:focus-visible {
-  background: var(--rite-banner);
-  filter: brightness(1.08);
+  filter: brightness(1.16) saturate(1.1);
 }
 
 .rite__panel .kod-btn--folio[data-banner-submit]:hover::before,
 .rite__panel .kod-btn--folio[data-banner-submit]:focus-visible::before {
-  background:
-    var(--kod-soot),
-    linear-gradient(180deg, rgba(242, 239, 233, 0.18), transparent 42%),
-    var(--rite-banner);
+  background: color-mix(in srgb, var(--rite-banner) 32%, transparent);
 }
 
 .rite[data-open='true'] .rite__panel {
@@ -2409,7 +2403,8 @@ a.member--pc:focus-visible {
   height: 1.9rem;
   min-height: 1.9rem;
   max-height: 1.9rem;
-  padding: 0 1.05rem;
+  border-width: 0.14rem 1.05rem;
+  padding: 0 0.15rem;
   font-size: 0.75rem;
 }
 
@@ -4424,7 +4419,8 @@ body.wanting-lock .wanting-scrim {
   height: auto;
   min-height: 2.55rem;
   max-height: none;
-  padding: 0.45rem 1.85rem;
+  border-width: 0.2rem 1.45rem;
+  padding: 0.45rem 0.25rem;
   white-space: nowrap;
 }
 

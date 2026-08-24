@@ -21,7 +21,7 @@ const ornamentSrc = join(src, 'ornament');
 const ornamentDest = join(dest, 'ornament');
 
 const cssFiles = ['tokens.css', 'primitives.css'];
-const requiredOrnament = ['btn-end-l.svg', 'btn-end-r.svg'];
+const requiredOrnament = ['btn-glass.png', 'btn-round.png', 'btn-end-l.png', 'btn-end-r.png'];
 
 for (const file of cssFiles) {
 	if (!existsSync(join(src, file))) {

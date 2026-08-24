@@ -20,9 +20,7 @@
 .kod-btn {
   --kod-soot-size: 0.55rem;
   --kod-corners: none;
-  --kod-btn-ends:
-    var(--kod-btn-end-l) left 0.1rem center / auto 50% no-repeat,
-    var(--kod-btn-end-r) right 0.1rem center / auto 50% no-repeat;
+  --kod-btn-glass-slice: 9% 14.5% 9% 14.5% fill;
   appearance: none;
   -webkit-appearance: none;
   box-sizing: border-box;
@@ -38,111 +36,86 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: none;
-  background: #5c5550;
-  color: var(--kod-silver);
+  border-style: solid;
+  border-color: transparent;
+  border-width: 0.2rem 1.35rem;
+  border-image-source: var(--kod-btn-glass);
+  border-image-slice: var(--kod-btn-glass-slice);
+  border-image-repeat: stretch;
+  background: none;
+  color: var(--kod-silver-bright);
   font-family: var(--kod-font-body);
   font-size: 0.88rem;
   line-height: 1;
   margin: 0;
-  padding: 0 1.35rem;
+  padding: 0 0.15rem;
   border-radius: 0;
   cursor: pointer;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.02em;
   white-space: nowrap;
   vertical-align: middle;
   text-decoration: none;
-  clip-path: var(--kod-cartouche);
-  transition: color 0.12s ease, background-color 0.12s ease;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
+  clip-path: none;
+  transition: color 0.14s ease, filter 0.14s ease;
 }
 
 .kod-btn:visited {
-  color: var(--kod-silver);
+  color: var(--kod-silver-bright);
   text-decoration: none;
 }
 
 .kod-btn::before {
   content: '';
   position: absolute;
-  inset: 1px;
-  z-index: -1;
-  clip-path: var(--kod-cartouche);
-  background:
-    var(--kod-soot),
-    linear-gradient(180deg, rgba(242, 239, 233, 0.12), transparent 42%),
-    #161412;
+  inset: 0;
+  z-index: 0;
   pointer-events: none;
+  background: transparent;
+  mix-blend-mode: overlay;
+}
+
+.kod-btn > * {
+  position: relative;
+  z-index: 1;
 }
 
 .kod-btn::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--kod-btn-ends);
-  pointer-events: none;
-  opacity: 0.88;
+  content: none;
 }
 
 .kod-btn:hover,
 .kod-btn:focus-visible {
   outline: none;
   color: #fff8f0;
-  background: #8a8580;
+  filter: brightness(1.18) saturate(1.08);
 }
 
 .kod-btn:hover::before,
 .kod-btn:focus-visible::before {
-  background:
-    var(--kod-soot),
-    linear-gradient(180deg, rgba(242, 239, 233, 0.16), transparent 42%),
-    #1c1916;
-}
-
-.kod-btn:hover::after,
-.kod-btn:focus-visible::after {
-  opacity: 1;
+  background: color-mix(in srgb, #fff8f0 18%, transparent);
 }
 
 .kod-btn[aria-pressed='true'],
 .kod-btn:active {
   color: #fff8f0;
-  background: #c4bfb6;
+  filter: brightness(1.48) saturate(1.22);
 }
 
 .kod-btn[aria-pressed='true']::before,
 .kod-btn:active::before {
-  background:
-    var(--kod-soot),
-    linear-gradient(180deg, rgba(242, 239, 233, 0.08), transparent 55%),
-    #2a2622;
-}
-
-.kod-btn[aria-pressed='true']::after,
-.kod-btn:active::after {
-  opacity: 1;
+  background: color-mix(in srgb, #f2d078 34%, transparent);
 }
 
 .kod-btn:disabled,
 .kod-btn[aria-disabled='true'] {
   opacity: 0.4;
   cursor: not-allowed;
+  filter: none;
 }
 
-/* Wide cartouche — notches hold the endcaps; padding keeps title clear of them. */
+/* Wide cartouche — 9-sliced glass; padding keeps the title clear of the knots. */
 .kod-btn--folio {
-  --kod-cartouche: polygon(
-    1.05rem 0,
-    calc(100% - 1.05rem) 0,
-    100% 0.85rem,
-    100% calc(100% - 0.85rem),
-    calc(100% - 1.05rem) 100%,
-    1.05rem 100%,
-    0 calc(100% - 0.85rem),
-    0 0.85rem
-  );
-  --kod-btn-ends:
-    var(--kod-btn-end-l) left 0.1rem center / auto 1.4rem no-repeat,
-    var(--kod-btn-end-r) right 0.1rem center / auto 1.4rem no-repeat;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -153,7 +126,8 @@
   max-width: none;
   height: auto;
   max-height: none;
-  padding: 1rem 2.85rem;
+  border-width: 0.32rem 2.55rem;
+  padding: 0.85rem 0.4rem;
   white-space: normal;
   text-decoration: none;
   text-align: center;
@@ -177,36 +151,10 @@
 .kod-btn--folio:focus-visible {
   outline: none;
   color: #fff8f0;
-  background: #8a8580;
-}
-
-.kod-btn--folio:hover::before,
-.kod-btn--folio:focus-visible::before {
-  background:
-    var(--kod-soot),
-    linear-gradient(180deg, rgba(242, 239, 233, 0.16), transparent 42%),
-    #1c1916;
-}
-
-.kod-btn--folio:hover::after,
-.kod-btn--folio:focus-visible::after {
-  opacity: 1;
 }
 
 .kod-btn--folio:active {
   color: #fff8f0;
-  background: #c4bfb6;
-}
-
-.kod-btn--folio:active::before {
-  background:
-    var(--kod-soot),
-    linear-gradient(180deg, rgba(242, 239, 233, 0.08), transparent 55%),
-    #2a2622;
-}
-
-.kod-btn--folio:active::after {
-  opacity: 1;
 }
 
 .kod-btn:hover .kod-btn__title,
@@ -218,16 +166,13 @@
 
 .kod-btn--blood,
 .kod-btn--folio.kod-btn--blood {
-  background: var(--kod-blood);
   color: #fff8f0;
 }
 
 .kod-btn--blood::before,
 .kod-btn--folio.kod-btn--blood::before {
-  background:
-    var(--kod-soot),
-    linear-gradient(180deg, color-mix(in srgb, var(--kod-blood-bright) 35%, transparent), transparent 46%),
-    var(--kod-blood);
+  background: color-mix(in srgb, var(--kod-blood) 42%, transparent);
+  mix-blend-mode: multiply;
 }
 
 .kod-btn--blood .kod-btn__title,
@@ -239,18 +184,15 @@
 .kod-btn--blood:focus-visible,
 .kod-btn--folio.kod-btn--blood:hover,
 .kod-btn--folio.kod-btn--blood:focus-visible {
-  background: var(--kod-blood-bright);
   color: #fff8f0;
+  filter: brightness(1.2) saturate(1.12);
 }
 
 .kod-btn--blood:hover::before,
 .kod-btn--blood:focus-visible::before,
 .kod-btn--folio.kod-btn--blood:hover::before,
 .kod-btn--folio.kod-btn--blood:focus-visible::before {
-  background:
-    var(--kod-soot),
-    linear-gradient(180deg, rgba(242, 239, 233, 0.16), transparent 42%),
-    var(--kod-blood-bright);
+  background: color-mix(in srgb, var(--kod-blood-bright) 38%, transparent);
 }
 
 .kod-btn--blood:hover .kod-btn__title,
@@ -264,16 +206,13 @@
 .kod-btn--blood[aria-pressed='true'],
 .kod-btn--folio.kod-btn--blood:active,
 .kod-btn--folio.kod-btn--blood[aria-pressed='true'] {
-  background: var(--kod-blood-deep);
   color: #fff8f0;
+  filter: brightness(1.08) saturate(1.18);
 }
 
 .kod-btn--blood:active::before,
 .kod-btn--blood[aria-pressed='true']::before,
 .kod-btn--folio.kod-btn--blood:active::before,
 .kod-btn--folio.kod-btn--blood[aria-pressed='true']::before {
-  background:
-    var(--kod-soot),
-    linear-gradient(180deg, rgba(242, 239, 233, 0.08), transparent 55%),
-    var(--kod-blood-deep);
+  background: color-mix(in srgb, var(--kod-blood-deep) 50%, transparent);
 }

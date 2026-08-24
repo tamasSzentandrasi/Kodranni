@@ -20,18 +20,26 @@
   align-self: stretch;
 }
 
-/* Afterglow that the epigraph sits in — title becomes the chapter's start, not a stamp. */
+/* Afterglow under the title — light through lead cames, not a uniform wash. */
 .kod-page-title::after {
   content: '';
   display: block;
-  width: min(24rem, 92%);
-  height: 4rem;
+  width: min(26rem, 96%);
+  height: 4.6rem;
   margin: 0.25rem auto -1.35rem;
-  background: radial-gradient(
-    ellipse 70% 100% at 50% 0%,
-    color-mix(in srgb, var(--kod-icon-hue, var(--kod-silver)) 26%, transparent),
-    transparent 72%
-  );
+  background:
+    repeating-conic-gradient(
+      from -8deg at 50% -10%,
+      color-mix(in srgb, var(--kod-icon-hue, var(--kod-silver)) 34%, transparent) 0deg 9deg,
+      transparent 9deg 18deg
+    ),
+    radial-gradient(
+      ellipse 68% 110% at 50% 0%,
+      color-mix(in srgb, var(--kod-icon-hue, var(--kod-silver)) 22%, transparent),
+      transparent 74%
+    );
+  -webkit-mask-image: radial-gradient(ellipse 72% 100% at 50% 0%, #000 28%, transparent 78%);
+  mask-image: radial-gradient(ellipse 72% 100% at 50% 0%, #000 28%, transparent 78%);
   pointer-events: none;
 }
 
@@ -48,16 +56,22 @@
 .kod-page-title__rose::before {
   content: '';
   position: absolute;
-  inset: 8%;
+  inset: 6%;
   border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    color-mix(in srgb, var(--kod-icon-hue, var(--kod-silver)) 90%, white) 0%,
-    color-mix(in srgb, var(--kod-icon-hue, var(--kod-silver)) 42%, transparent) 48%,
-    transparent 74%
-  );
-  filter: blur(26px);
-  opacity: 0.48;
+  background:
+    repeating-conic-gradient(
+      from -7deg,
+      color-mix(in srgb, var(--kod-icon-hue, var(--kod-silver)) 88%, white) 0deg 8deg,
+      color-mix(in srgb, var(--kod-icon-hue, var(--kod-silver)) 18%, transparent) 8deg 16deg
+    ),
+    radial-gradient(
+      circle,
+      color-mix(in srgb, var(--kod-icon-hue, var(--kod-silver)) 70%, white) 0%,
+      color-mix(in srgb, var(--kod-icon-hue, var(--kod-silver)) 28%, transparent) 52%,
+      transparent 74%
+    );
+  filter: blur(18px);
+  opacity: 0.55;
   pointer-events: none;
   z-index: 0;
 }
