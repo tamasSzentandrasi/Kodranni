@@ -401,12 +401,12 @@
   border: none;
   background-color: #0c1016;
   background-image:
-    radial-gradient(ellipse 58% 80% at 50% 50%, rgba(6, 8, 10, 0.72), transparent 74%),
+    radial-gradient(ellipse 52% 88% at 50% 50%, rgba(4, 5, 6, 0.9) 0%, rgba(4, 5, 6, 0.62) 58%, transparent 78%),
     var(--kod-btn-glass-tile);
   background-repeat: no-repeat, repeat-x;
   background-size: 100% 100%, auto 100%;
   background-position: center, center;
-  color: var(--kod-silver-bright);
+  color: #f4f0e8;
   font-family: var(--kod-font-body);
   font-size: 0.82rem;
   line-height: 1;
@@ -417,7 +417,11 @@
   letter-spacing: 0.02em;
   white-space: nowrap;
   vertical-align: middle;
-  text-shadow: 0 1px 3px #000, 0 0 10px rgba(0, 0, 0, 0.9);
+  text-shadow:
+    0 0 3px #000,
+    0 1px 2px #000,
+    0 0 10px #000,
+    0 0 18px rgba(0, 0, 0, 0.9);
   clip-path: var(--kod-cartouche);
   transition: color 0.14s ease, filter 0.14s ease, box-shadow 0.14s ease;
 }
@@ -457,31 +461,33 @@
 /* Scout Marks: moonlight roundels — too small for end-knots */
 .kod-widget[data-widget='marks-ladder'] .kod-widget__btn {
   --kod-end-w: 0;
-  width: 3.55rem;
-  min-width: 3.55rem;
-  max-width: 3.55rem;
-  height: 3.55rem;
-  min-height: 3.55rem;
-  max-height: 3.55rem;
-  padding: 0;
+  width: 3.4rem;
+  min-width: 3.4rem;
+  max-width: 3.4rem;
+  height: 3.4rem;
+  min-height: 3.4rem;
+  max-height: 3.4rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.18em 0 0;
   border: none;
   border-radius: 50%;
   clip-path: none;
-  background-color: transparent;
+  background-color: #0a0909;
   background-image: var(--kod-btn-round);
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
   font-family: var(--kod-font-display);
-  font-size: 1.15rem;
+  font-size: 1.12rem;
   letter-spacing: 0.04em;
   line-height: 1;
-  padding-top: 0.22em;
-  color: #f7f4ee;
-  -webkit-text-fill-color: #f7f4ee;
-  text-shadow: 0 0 8px #000, 0 1px 3px #000;
+  color: #f4f0e8;
+  -webkit-text-fill-color: #f4f0e8;
+  text-shadow: 0 0 6px #000, 0 1px 2px #000;
   filter: none;
-  opacity: 0.72;
+  opacity: 0.58;
 }
 
 .kod-widget[data-widget='marks-ladder'] .kod-widget__btn::before,
@@ -1346,13 +1352,16 @@
 }
 .kod-step-flow__track .kod-widget__btn {
   --kod-end-w: 0;
-  width: 3.55rem;
-  min-width: 3.55rem;
-  max-width: 3.55rem;
-  height: 3.55rem;
-  min-height: 3.55rem;
-  max-height: 3.55rem;
-  padding: 0;
+  width: 3.4rem;
+  min-width: 3.4rem;
+  max-width: 3.4rem;
+  height: 3.4rem;
+  min-height: 3.4rem;
+  max-height: 3.4rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.18em 0 0;
   border: none;
   border-radius: 50%;
   clip-path: none;
@@ -1360,18 +1369,17 @@
   font-size: 1.05rem;
   letter-spacing: 0.04em;
   line-height: 1;
-  padding-top: 0.22em;
-  background-color: transparent;
+  background-color: #0a0909;
   background-image: var(--kod-btn-round);
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
   box-shadow: none;
-  color: #f7f4ee;
-  -webkit-text-fill-color: #f7f4ee;
-  text-shadow: 0 0 8px #000, 0 1px 3px #000;
+  color: #f4f0e8;
+  -webkit-text-fill-color: #f4f0e8;
+  text-shadow: 0 0 6px #000, 0 1px 2px #000;
   filter: none;
-  opacity: 0.72;
+  opacity: 0.58;
 }
 .kod-step-flow__track .kod-widget__btn::before,
 .kod-step-flow__track .kod-widget__btn::after {
@@ -1426,12 +1434,12 @@
   border-radius: 0;
   background-color: #0c1016;
   background-image:
-    radial-gradient(ellipse 58% 80% at 50% 50%, rgba(6, 8, 10, 0.72), transparent 74%),
+    radial-gradient(ellipse 52% 88% at 50% 50%, rgba(4, 5, 6, 0.9) 0%, rgba(4, 5, 6, 0.62) 58%, transparent 78%),
     var(--kod-btn-glass-tile);
   background-repeat: no-repeat, repeat-x;
   background-size: 100% 100%, auto 100%;
   background-position: center, center;
-  color: var(--kod-silver-bright);
+  color: #f4f0e8;
   font-family: var(--kod-font-body);
   font-size: 0.9rem;
   cursor: pointer;

@@ -39,12 +39,12 @@
   border: none;
   background-color: #0c1016;
   background-image:
-    radial-gradient(ellipse 58% 80% at 50% 50%, rgba(6, 8, 10, 0.72), transparent 74%),
+    radial-gradient(ellipse 52% 88% at 50% 50%, rgba(4, 5, 6, 0.9) 0%, rgba(4, 5, 6, 0.62) 58%, transparent 78%),
     var(--kod-btn-glass-tile);
   background-repeat: no-repeat, repeat-x;
   background-size: 100% 100%, auto 100%;
   background-position: center, center;
-  color: var(--kod-silver-bright);
+  color: #f4f0e8;
   font-family: var(--kod-font-body);
   font-size: 0.88rem;
   line-height: 1;
@@ -56,7 +56,11 @@
   white-space: nowrap;
   vertical-align: middle;
   text-decoration: none;
-  text-shadow: 0 1px 3px #000, 0 0 10px rgba(0, 0, 0, 0.9);
+  text-shadow:
+    0 0 3px #000,
+    0 1px 2px #000,
+    0 0 10px #000,
+    0 0 18px rgba(0, 0, 0, 0.9);
   clip-path: var(--kod-cartouche);
   transition: color 0.14s ease, filter 0.14s ease, box-shadow 0.14s ease;
 }
