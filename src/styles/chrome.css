@@ -20,26 +20,17 @@
   align-self: stretch;
 }
 
-/* Afterglow under the title — light through lead cames, not a uniform wash. */
+/* Afterglow under the title — moonlight through glass, broken panes, thin leads. */
 .kod-page-title::after {
   content: '';
   display: block;
-  width: min(26rem, 96%);
-  height: 4.6rem;
-  margin: 0.25rem auto -1.35rem;
-  background:
-    repeating-conic-gradient(
-      from -8deg at 50% -10%,
-      color-mix(in srgb, var(--kod-icon-hue, var(--kod-silver)) 34%, transparent) 0deg 9deg,
-      transparent 9deg 18deg
-    ),
-    radial-gradient(
-      ellipse 68% 110% at 50% 0%,
-      color-mix(in srgb, var(--kod-icon-hue, var(--kod-silver)) 22%, transparent),
-      transparent 74%
-    );
-  -webkit-mask-image: radial-gradient(ellipse 72% 100% at 50% 0%, #000 28%, transparent 78%);
-  mask-image: radial-gradient(ellipse 72% 100% at 50% 0%, #000 28%, transparent 78%);
+  width: min(28rem, 98%);
+  height: 5.1rem;
+  margin: 0.15rem auto -1.45rem;
+  background: var(--kod-title-cast) center 18% / 115% 170% no-repeat;
+  -webkit-mask-image: radial-gradient(ellipse 58% 100% at 50% 0%, #000 12%, transparent 72%);
+  mask-image: radial-gradient(ellipse 58% 100% at 50% 0%, #000 12%, transparent 72%);
+  opacity: 0.78;
   pointer-events: none;
 }
 
@@ -56,22 +47,16 @@
 .kod-page-title__rose::before {
   content: '';
   position: absolute;
-  inset: 6%;
+  inset: 8%;
   border-radius: 50%;
-  background:
-    repeating-conic-gradient(
-      from -7deg,
-      color-mix(in srgb, var(--kod-icon-hue, var(--kod-silver)) 88%, white) 0deg 8deg,
-      color-mix(in srgb, var(--kod-icon-hue, var(--kod-silver)) 18%, transparent) 8deg 16deg
-    ),
-    radial-gradient(
-      circle,
-      color-mix(in srgb, var(--kod-icon-hue, var(--kod-silver)) 70%, white) 0%,
-      color-mix(in srgb, var(--kod-icon-hue, var(--kod-silver)) 28%, transparent) 52%,
-      transparent 74%
-    );
-  filter: blur(18px);
-  opacity: 0.55;
+  background: radial-gradient(
+    circle,
+    rgba(242, 239, 233, 0.22) 0%,
+    rgba(198, 193, 184, 0.08) 46%,
+    transparent 72%
+  );
+  filter: blur(22px);
+  opacity: 0.85;
   pointer-events: none;
   z-index: 0;
 }

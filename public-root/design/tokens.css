@@ -39,7 +39,9 @@
   --kod-btn-end-l: url('./ornament/btn-end-l.png');
   --kod-btn-end-r: url('./ornament/btn-end-r.png');
   --kod-btn-glass: url('./ornament/btn-glass.png');
+  --kod-btn-glass-tile: url('./ornament/btn-glass-mid.png');
   --kod-btn-round: url('./ornament/btn-round.png');
+  --kod-title-cast: url('./ornament/title-cast.png');
   --kod-plus-ring: url('./ornament/plus-ring.svg');
   --kod-fortune-vitality: url('./ornament/fortunes/vitality.png');
   --kod-fortune-cohesion: url('./ornament/fortunes/cohesion.png');
@@ -51,14 +53,14 @@
   --kod-armour-leather: url('./ornament/armour/leather.jpg');
   --kod-armour-mail: url('./ornament/armour/mail.jpg');
   --kod-cartouche: polygon(
-    0.58rem 0,
-    calc(100% - 0.58rem) 0,
-    100% 0.5rem,
-    100% calc(100% - 0.5rem),
-    calc(100% - 0.58rem) 100%,
-    0.58rem 100%,
-    0 calc(100% - 0.5rem),
-    0 0.5rem
+    0.72rem 0,
+    calc(100% - 0.72rem) 0,
+    100% 0.55rem,
+    100% calc(100% - 0.55rem),
+    calc(100% - 0.72rem) 100%,
+    0.72rem 100%,
+    0 calc(100% - 0.55rem),
+    0 0.55rem
   );
 
   --kod-soot:

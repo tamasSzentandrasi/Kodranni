@@ -92,10 +92,10 @@ Four steps. Walk them **in order**. Private rolls first; then the table speaks; 
 <p class="kod-widget__intro">Private points first. Then claims. Then Words spent on yourself — or lost.</p>
 <p class="kod-step-flow__label" data-step-label></p>
 <div class="kod-step-flow__track" role="group" aria-label="Weighing steps">
-<button type="button" class="kod-widget__btn" data-tab="w1" aria-pressed="true">1</button>
-<button type="button" class="kod-widget__btn" data-tab="w2">2</button>
-<button type="button" class="kod-widget__btn" data-tab="w3">3</button>
-<button type="button" class="kod-widget__btn" data-tab="w4">4</button>
+<button type="button" class="kod-widget__btn" data-tab="w1" aria-pressed="true">I</button>
+<button type="button" class="kod-widget__btn" data-tab="w2">II</button>
+<button type="button" class="kod-widget__btn" data-tab="w3">III</button>
+<button type="button" class="kod-widget__btn" data-tab="w4">IV</button>
 </div>
 
 <div class="kod-widget__panel" data-panel-id="w1" data-step-title="Birth Omen">

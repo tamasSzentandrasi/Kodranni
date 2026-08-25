@@ -140,9 +140,9 @@ A magas veleszületett lehetőség gyorsítja a tanulást. Az alacsony lassítja
 <p class="kod-widget__intro"><strong>Temur</strong>, ifjú íjkészítő, állóképesség 2, íj- és nyílkészítés 0 → 1 (küszöb <strong>24</strong>). <strong>Qara</strong>, az orda öreg íjkészítője, karizma 2, mentorálás 1 → 2 (küszöb <strong>48</strong>). Hun tábor. Szarv, ín, és egy makacs has.</p>
 <p class="kod-step-flow__label" data-step-label></p>
 <div class="kod-step-flow__track" role="group" aria-label="Gyakorlat lépései">
-<button type="button" class="kod-widget__btn" data-tab="p1" aria-pressed="true">1</button>
-<button type="button" class="kod-widget__btn" data-tab="p2">2</button>
-<button type="button" class="kod-widget__btn" data-tab="p3">3</button>
+<button type="button" class="kod-widget__btn" data-tab="p1" aria-pressed="true">I</button>
+<button type="button" class="kod-widget__btn" data-tab="p2">II</button>
+<button type="button" class="kod-widget__btn" data-tab="p3">III</button>
 </div>
 <div class="kod-widget__panel" data-panel-id="p1" data-step-title="Az első hajlítás">
 <p>Temur gőzöli a szarvat, és megpróbálja a reflexíj első hajlítását. A has ellenáll. Több kudarc, mint jel. Nem fektet bele erőfeszítést.</p>

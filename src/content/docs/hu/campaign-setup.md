@@ -135,15 +135,15 @@ A kidolgozott szál alább **A Vardmark Kelarn’s Bendnél** eredetet követi. 
 <p class="kod-widget__intro">Kilenc lépés. Elég anyag a súlyhoz és a választáshoz. Nem regény, amit a játékosoknak fel kell mondaniuk.</p>
 <p class="kod-step-flow__label" data-step-label></p>
 <div class="kod-step-flow__track" role="group" aria-label="Világépítési lépések">
-<button type="button" class="kod-widget__btn" data-tab="1" aria-pressed="true">1</button>
-<button type="button" class="kod-widget__btn" data-tab="2">2</button>
-<button type="button" class="kod-widget__btn" data-tab="3">3</button>
-<button type="button" class="kod-widget__btn" data-tab="4">4</button>
-<button type="button" class="kod-widget__btn" data-tab="5">5</button>
-<button type="button" class="kod-widget__btn" data-tab="6">6</button>
-<button type="button" class="kod-widget__btn" data-tab="7">7</button>
-<button type="button" class="kod-widget__btn" data-tab="8">8</button>
-<button type="button" class="kod-widget__btn" data-tab="9">9</button>
+<button type="button" class="kod-widget__btn" data-tab="1" aria-pressed="true">I</button>
+<button type="button" class="kod-widget__btn" data-tab="2">II</button>
+<button type="button" class="kod-widget__btn" data-tab="3">III</button>
+<button type="button" class="kod-widget__btn" data-tab="4">IV</button>
+<button type="button" class="kod-widget__btn" data-tab="5">V</button>
+<button type="button" class="kod-widget__btn" data-tab="6">VI</button>
+<button type="button" class="kod-widget__btn" data-tab="7">VII</button>
+<button type="button" class="kod-widget__btn" data-tab="8">VIII</button>
+<button type="button" class="kod-widget__btn" data-tab="9">IX</button>
 </div>
 
 <div class="kod-widget__panel" data-panel-id="1" data-step-title="Spektrum">

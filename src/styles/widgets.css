@@ -287,11 +287,10 @@
 /* Tier dial buttons with embedded die icons */
 .kod-widget__btn--die {
   width: auto !important;
-  min-width: 6.4rem !important;
+  min-width: 8.2rem !important;
   max-width: none !important;
   gap: 0.35rem;
-  border-width: 0.2rem 1.35rem !important;
-  padding: 0 0.2rem !important;
+  padding: 0 2.05rem !important;
   font-family: var(--kod-font-display);
   font-size: 1rem !important;
 }
@@ -381,85 +380,101 @@
 .kod-btn {
   --kod-soot-size: 0.55rem;
   --kod-corners: none;
-  --kod-btn-glass-slice: 9% 14.5% 9% 14.5% fill;
+  --kod-end-w: 1.85rem;
   appearance: none;
   -webkit-appearance: none;
   box-sizing: border-box;
   position: relative;
   isolation: isolate;
   flex: 0 0 auto;
-  width: 6.4rem;
-  height: 2.65rem;
-  min-width: 6.4rem;
-  min-height: 2.65rem;
-  max-width: 6.4rem;
-  max-height: 2.65rem;
+  width: auto;
+  height: 2.7rem;
+  min-width: 8.1rem;
+  min-height: 2.7rem;
+  max-width: none;
+  max-height: 2.7rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-style: solid;
-  border-color: transparent;
-  border-width: 0.2rem 1.28rem;
-  border-image-source: var(--kod-btn-glass);
-  border-image-slice: var(--kod-btn-glass-slice);
-  border-image-repeat: stretch;
-  background: none;
+  border: none;
+  background-color: #0a0c10;
+  background-image: var(--kod-btn-glass-tile);
+  background-repeat: repeat-x;
+  background-size: auto 100%;
+  background-position: center;
   color: var(--kod-silver-bright);
   font-family: var(--kod-font-body);
   font-size: 0.82rem;
   line-height: 1;
   margin: 0 !important; /* Starlight sibling gap would lift the first button */
-  padding: 0 0.12rem;
+  padding: 0 2.05rem;
   border-radius: 0;
   cursor: pointer;
   letter-spacing: 0.02em;
   white-space: nowrap;
   vertical-align: middle;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
-  clip-path: none;
-  transition: color 0.14s ease, filter 0.14s ease;
+  text-shadow: 0 1px 3px #000, 0 0 8px rgba(0, 0, 0, 0.85);
+  clip-path: var(--kod-cartouche);
+  transition: color 0.14s ease, filter 0.14s ease, box-shadow 0.14s ease;
+}
+
+.kod-widget__btn::before,
+.kod-btn::before,
+.kod-widget__btn::after,
+.kod-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: var(--kod-end-w);
+  pointer-events: none;
+  z-index: 1;
 }
 
 .kod-widget__btn::before,
 .kod-btn::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background: transparent;
-  mix-blend-mode: overlay;
+  left: 0;
+  background: var(--kod-btn-end-l) center / contain no-repeat;
 }
 
 .kod-widget__btn::after,
 .kod-btn::after {
-  content: none;
+  right: 0;
+  background: var(--kod-btn-end-r) center / contain no-repeat;
 }
 
-/* Scout Marks: number-only roundels — too small for end-knots */
+/* Scout Marks: moonlight roundels — too small for end-knots */
 .kod-widget[data-widget='marks-ladder'] .kod-widget__btn {
-  width: 2.7rem;
-  min-width: 2.7rem;
-  max-width: 2.7rem;
-  height: 2.7rem;
-  min-height: 2.7rem;
-  max-height: 2.7rem;
+  --kod-end-w: 0;
+  width: 2.85rem;
+  min-width: 2.85rem;
+  max-width: 2.85rem;
+  height: 2.85rem;
+  min-height: 2.85rem;
+  max-height: 2.85rem;
   padding: 0;
   border: none;
-  border-image: none;
   border-radius: 50%;
-  background: var(--kod-btn-round) center / contain no-repeat;
+  clip-path: none;
+  background-color: transparent;
+  background-image: var(--kod-btn-round);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
   font-family: var(--kod-font-display);
-  font-size: 1.12rem;
-  letter-spacing: 0.02em;
+  font-size: 0.92rem;
+  letter-spacing: 0.04em;
   color: var(--kod-silver-bright);
+}
+
+.kod-widget[data-widget='marks-ladder'] .kod-widget__btn::before,
+.kod-widget[data-widget='marks-ladder'] .kod-widget__btn::after {
+  content: none;
 }
 
 /* Tier dial: d6 / d8 / d12 */
 .kod-widget[data-widget='tier-dial'] .kod-widget__btn {
-  width: 6.5rem;
-  min-width: 6.5rem;
-  max-width: 6.5rem;
+  min-width: 8.2rem;
   font-family: var(--kod-font-display);
   font-size: 1.05rem;
   letter-spacing: 0.03em;
@@ -970,27 +985,15 @@
 .kod-btn:focus-visible {
   outline: none;
   color: #fff8f0;
-  filter: brightness(1.18) saturate(1.08);
-}
-
-.kod-widget__btn:hover::before,
-.kod-widget__btn:focus-visible::before,
-.kod-btn:hover::before,
-.kod-btn:focus-visible::before {
-  background: color-mix(in srgb, #fff8f0 18%, transparent);
+  filter: brightness(1.22);
 }
 
 .kod-widget__btn[aria-pressed='true'],
 .kod-btn[aria-pressed='true'],
 .kod-btn:active {
   color: #fff8f0;
-  filter: brightness(1.48) saturate(1.22);
-}
-
-.kod-widget__btn[aria-pressed='true']::before,
-.kod-btn[aria-pressed='true']::before,
-.kod-btn:active::before {
-  background: color-mix(in srgb, #f2d078 34%, transparent);
+  filter: brightness(1.4);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--kod-silver-bright) 42%, transparent);
 }
 
 .kod-widget__panel {
@@ -1093,13 +1096,12 @@
 }
 .kod-widget[data-widget='practice-award'] .kod-widget__btn {
   width: auto;
-  min-width: 7.1rem;
+  min-width: 8.2rem;
   max-width: none;
   height: auto;
   min-height: 2.7rem;
   max-height: none;
-  border-width: 0.2rem 1.45rem;
-  padding: 0.38rem 0.25rem;
+  padding: 0.4rem 2.05rem;
   white-space: normal;
   line-height: 1.25;
 }
@@ -1133,13 +1135,12 @@
 }
 .kod-widget[data-widget='content-tabs'] .kod-widget__btn {
   width: auto;
-  min-width: 7.1rem;
+  min-width: 10.2rem;
   max-width: none;
   height: auto;
   min-height: 2.7rem;
   max-height: none;
-  border-width: 0.2rem 1.45rem;
-  padding: 0.38rem 0.25rem;
+  padding: 0.4rem 2.5rem;
   white-space: normal;
   line-height: 1.25;
 }
@@ -1308,38 +1309,30 @@
   margin: 0 0 1rem;
 }
 .kod-step-flow__track .kod-widget__btn {
-  width: 2.55rem;
-  min-width: 2.55rem;
-  max-width: 2.55rem;
-  height: 2.55rem;
-  min-height: 2.55rem;
-  max-height: 2.55rem;
+  --kod-end-w: 0;
+  width: 2.9rem;
+  min-width: 2.9rem;
+  max-width: 2.9rem;
+  height: 2.9rem;
+  min-height: 2.9rem;
+  max-height: 2.9rem;
   padding: 0;
   border: none;
-  border-image: none;
   border-radius: 50%;
   clip-path: none;
   font-family: var(--kod-font-display);
-  font-size: 0.95rem;
-  background: var(--kod-btn-round) center / contain no-repeat;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  background-color: transparent;
+  background-image: var(--kod-btn-round);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
   box-shadow: none;
 }
-.kod-step-flow__track .kod-widget__btn::before {
-  inset: 18%;
-  border-radius: 50%;
-  clip-path: none;
-  background: transparent;
-  mix-blend-mode: overlay;
-}
+.kod-step-flow__track .kod-widget__btn::before,
 .kod-step-flow__track .kod-widget__btn::after {
   content: none;
-}
-.kod-step-flow__track .kod-widget__btn:hover::before,
-.kod-step-flow__track .kod-widget__btn:focus-visible::before {
-  background: color-mix(in srgb, #fff8f0 20%, transparent);
-}
-.kod-step-flow__track .kod-widget__btn[aria-pressed='true']::before {
-  background: color-mix(in srgb, #f2d078 24%, transparent);
 }
 .kod-step-flow__label {
   text-align: center;
@@ -1366,51 +1359,52 @@
 .kod-step-flow__nav button {
   --kod-soot-size: 0.55rem;
   --kod-corners: none;
-  --kod-btn-glass-slice: 9% 14.5% 9% 14.5% fill;
+  --kod-end-w: 1.85rem;
   appearance: none;
   box-sizing: border-box;
   position: relative;
   isolation: isolate;
   margin: 0;
-  padding: 0.38rem 0.3rem;
-  border-style: solid;
-  border-color: transparent;
-  border-width: 0.2rem 1.45rem;
-  border-image-source: var(--kod-btn-glass);
-  border-image-slice: var(--kod-btn-glass-slice);
-  border-image-repeat: stretch;
+  padding: 0.4rem 2.05rem;
+  border: none;
   border-radius: 0;
-  background: none;
+  background-color: #0a0c10;
+  background-image: var(--kod-btn-glass-tile);
+  background-repeat: repeat-x;
+  background-size: auto 100%;
+  background-position: center;
   color: var(--kod-silver-bright);
   font-family: var(--kod-font-body);
   font-size: 0.9rem;
   cursor: pointer;
   letter-spacing: 0.03em;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
-  clip-path: none;
+  text-shadow: 0 1px 3px #000, 0 0 8px rgba(0, 0, 0, 0.85);
+  clip-path: var(--kod-cartouche);
   transition: color 0.14s ease, filter 0.14s ease;
 }
-.kod-step-flow__nav button::before {
+.kod-step-flow__nav button::before,
+.kod-step-flow__nav button::after {
   content: '';
   position: absolute;
-  inset: 0;
-  z-index: 0;
+  top: 0;
+  bottom: 0;
+  width: var(--kod-end-w);
   pointer-events: none;
-  background: transparent;
-  mix-blend-mode: overlay;
+  z-index: 1;
+}
+.kod-step-flow__nav button::before {
+  left: 0;
+  background: var(--kod-btn-end-l) center / contain no-repeat;
 }
 .kod-step-flow__nav button::after {
-  content: none;
+  right: 0;
+  background: var(--kod-btn-end-r) center / contain no-repeat;
 }
 .kod-step-flow__nav button:hover:not(:disabled),
 .kod-step-flow__nav button:focus-visible:not(:disabled) {
   color: #fff8f0;
   outline: none;
-  filter: brightness(1.18) saturate(1.08);
-}
-.kod-step-flow__nav button:hover:not(:disabled)::before,
-.kod-step-flow__nav button:focus-visible:not(:disabled)::before {
-  background: color-mix(in srgb, #fff8f0 18%, transparent);
+  filter: brightness(1.22);
 }
 .kod-step-flow__nav button:disabled {
   opacity: 0.35;
@@ -1496,11 +1490,7 @@
 .kod-step-flow__track .kod-widget__btn.is-done,
 .kod-widget[data-widget='tide-demo'] .kod-widget__btn.is-done {
   color: var(--kod-silver-dim);
-  filter: brightness(0.78) saturate(0.7);
-}
-.kod-step-flow__track .kod-widget__btn.is-done::before,
-.kod-widget[data-widget='tide-demo'] .kod-widget__btn.is-done::before {
-  background: color-mix(in srgb, #000 28%, transparent);
+  filter: brightness(0.78);
 }
 
 .kod-widget[data-widget='step-flow']:focus-visible,

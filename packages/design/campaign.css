@@ -803,27 +803,17 @@ section.kod-plate {
 
 .rite__panel .kod-btn--folio {
   min-height: 3.9rem;
-  padding: 0.75rem 0.4rem;
-  border-width: 0.28rem 2.2rem;
+  padding: 0.75rem 2.6rem;
 }
 
 .rite__panel .kod-btn--folio[data-banner-submit] {
   --rite-banner: #a01818;
-}
-
-.rite__panel .kod-btn--folio[data-banner-submit]::before {
-  background: color-mix(in srgb, var(--rite-banner) 42%, transparent);
-  mix-blend-mode: multiply;
+  background-color: color-mix(in srgb, var(--rite-banner) 42%, #0a0c10);
 }
 
 .rite__panel .kod-btn--folio[data-banner-submit]:hover,
 .rite__panel .kod-btn--folio[data-banner-submit]:focus-visible {
-  filter: brightness(1.16) saturate(1.1);
-}
-
-.rite__panel .kod-btn--folio[data-banner-submit]:hover::before,
-.rite__panel .kod-btn--folio[data-banner-submit]:focus-visible::before {
-  background: color-mix(in srgb, var(--rite-banner) 32%, transparent);
+  filter: brightness(1.16);
 }
 
 .rite[data-open='true'] .rite__panel {
@@ -2397,14 +2387,14 @@ a.member--pc:focus-visible {
 }
 
 .avatar-upload .kod-btn {
+  --kod-end-w: 1.55rem;
   width: auto;
   min-width: 0;
   max-width: none;
   height: 1.9rem;
   min-height: 1.9rem;
   max-height: 1.9rem;
-  border-width: 0.14rem 1.05rem;
-  padding: 0 0.15rem;
+  padding: 0 1.7rem;
   font-size: 0.75rem;
 }
 
@@ -4419,8 +4409,7 @@ body.wanting-lock .wanting-scrim {
   height: auto;
   min-height: 2.55rem;
   max-height: none;
-  border-width: 0.2rem 1.45rem;
-  padding: 0.45rem 0.25rem;
+  padding: 0.45rem 2.45rem;
   white-space: nowrap;
 }
 

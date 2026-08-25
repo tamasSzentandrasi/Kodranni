@@ -140,9 +140,9 @@ High inborn potential accelerates learning. Low potential slows it. Automation h
 <p class="kod-widget__intro"><strong>Temur</strong>, young bowyer, Constitution 2, Bowyer &amp; Fletcher 0 → 1 (threshold <strong>24</strong>). <strong>Qara</strong>, old bowyer of the same orda, Charisma 2, Mentoring 1 → 2 (threshold <strong>48</strong>). Hunnic camp. Horn, sinew, and a stubborn belly.</p>
 <p class="kod-step-flow__label" data-step-label></p>
 <div class="kod-step-flow__track" role="group" aria-label="Practice steps">
-<button type="button" class="kod-widget__btn" data-tab="p1" aria-pressed="true">1</button>
-<button type="button" class="kod-widget__btn" data-tab="p2">2</button>
-<button type="button" class="kod-widget__btn" data-tab="p3">3</button>
+<button type="button" class="kod-widget__btn" data-tab="p1" aria-pressed="true">I</button>
+<button type="button" class="kod-widget__btn" data-tab="p2">II</button>
+<button type="button" class="kod-widget__btn" data-tab="p3">III</button>
 </div>
 <div class="kod-widget__panel" data-panel-id="p1" data-step-title="The first bend">
 <p>Temur steams the horn and tries the first reflex of a recurve. The belly fights him. More failures than Marks. He does not spend Exertion.</p>

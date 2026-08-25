@@ -107,10 +107,10 @@ Healing is not a superpower. Without the right knowledge and material — **[Her
 <p class="kod-widget__intro">A companion tries to keep them. Healing is a Skill, not a miracle.</p>
 <p class="kod-step-flow__label" data-step-label></p>
 <div class="kod-step-flow__track" role="group" aria-label="Dying steps">
-<button type="button" class="kod-widget__btn" data-tab="d1" aria-pressed="true">1</button>
-<button type="button" class="kod-widget__btn" data-tab="d2">2</button>
-<button type="button" class="kod-widget__btn" data-tab="d3">3</button>
-<button type="button" class="kod-widget__btn" data-tab="d4">4</button>
+<button type="button" class="kod-widget__btn" data-tab="d1" aria-pressed="true">I</button>
+<button type="button" class="kod-widget__btn" data-tab="d2">II</button>
+<button type="button" class="kod-widget__btn" data-tab="d3">III</button>
+<button type="button" class="kod-widget__btn" data-tab="d4">IV</button>
 </div>
 <div class="kod-widget__panel" data-panel-id="d1" data-step-title="Fever 3">
 <p>The wound went bad. <strong>Fever</strong> hits 3. The character is <strong>Dying</strong>. They can still speak. Every roll now costs Exertion. At Exertion 0 they die.</p>

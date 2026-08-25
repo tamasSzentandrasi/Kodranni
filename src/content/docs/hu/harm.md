@@ -107,10 +107,10 @@ A gyógyítás nem szuperképesség. A kellő tudás és anyag nélkül — **[f
 <p class="kod-widget__intro">Egy társ megpróbálja megtartani. A gyógyítás jártasság, nem csoda.</p>
 <p class="kod-step-flow__label" data-step-label></p>
 <div class="kod-step-flow__track" role="group" aria-label="Haldoklás lépései">
-<button type="button" class="kod-widget__btn" data-tab="d1" aria-pressed="true">1</button>
-<button type="button" class="kod-widget__btn" data-tab="d2">2</button>
-<button type="button" class="kod-widget__btn" data-tab="d3">3</button>
-<button type="button" class="kod-widget__btn" data-tab="d4">4</button>
+<button type="button" class="kod-widget__btn" data-tab="d1" aria-pressed="true">I</button>
+<button type="button" class="kod-widget__btn" data-tab="d2">II</button>
+<button type="button" class="kod-widget__btn" data-tab="d3">III</button>
+<button type="button" class="kod-widget__btn" data-tab="d4">IV</button>
 </div>
 <div class="kod-widget__panel" data-panel-id="d1" data-step-title="Láz 3">
 <p>A seb elromlott. A <strong>láz</strong> 3-ra ér. A karakter <strong>haldokló</strong>. Még beszélhet. Minden dobás most erőfeszítést kíván. Ha az erőfeszítés 0, meghal.</p>

@@ -65,10 +65,10 @@ Players act under incomplete knowledge. The Storyteller scales reward, cost, and
 <p class="kod-widget__intro"><strong>Scene:</strong> A young warrior is sent at night to observe an enemy camp. As he draws close, the Storyteller calls for Perception + Scouting — a pool of 4 dice. There is no hidden target number. Depending on how many Marks he rolls:</p>
 <div class="kod-widget__controls" role="group" aria-label="Marks of Success">
 <button type="button" class="kod-widget__btn" data-marks="0">0</button>
-<button type="button" class="kod-widget__btn" data-marks="1">1</button>
-<button type="button" class="kod-widget__btn" data-marks="2" aria-pressed="true">2</button>
-<button type="button" class="kod-widget__btn" data-marks="3">3</button>
-<button type="button" class="kod-widget__btn" data-marks="4">4</button>
+<button type="button" class="kod-widget__btn" data-marks="1">I</button>
+<button type="button" class="kod-widget__btn" data-marks="2" aria-pressed="true">II</button>
+<button type="button" class="kod-widget__btn" data-marks="3">III</button>
+<button type="button" class="kod-widget__btn" data-marks="4">IV</button>
 </div>
 <div class="kod-widget__panel" data-panel-id="0" hidden>
 <p><strong>0 Marks</strong> — The Scout gets lost in the woods, the player gains nothing.</p>

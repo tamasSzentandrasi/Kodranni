@@ -92,10 +92,10 @@ Négy lépés. Járjátok végig **sorrendben**. Először magán dobások; azt�
 <p class="kod-widget__intro">Először magán pontok. Aztán állítások. Aztán szavak a saját lapodon — vagy elvesznek.</p>
 <p class="kod-step-flow__label" data-step-label></p>
 <div class="kod-step-flow__track" role="group" aria-label="Megmérettetési lépések">
-<button type="button" class="kod-widget__btn" data-tab="w1" aria-pressed="true">1</button>
-<button type="button" class="kod-widget__btn" data-tab="w2">2</button>
-<button type="button" class="kod-widget__btn" data-tab="w3">3</button>
-<button type="button" class="kod-widget__btn" data-tab="w4">4</button>
+<button type="button" class="kod-widget__btn" data-tab="w1" aria-pressed="true">I</button>
+<button type="button" class="kod-widget__btn" data-tab="w2">II</button>
+<button type="button" class="kod-widget__btn" data-tab="w3">III</button>
+<button type="button" class="kod-widget__btn" data-tab="w4">IV</button>
 </div>
 
 <div class="kod-widget__panel" data-panel-id="w1" data-step-title="Születési ómen">

@@ -65,10 +65,10 @@ A játékosok hiányos tudással cselekszenek. A mesélő a jutalmat, az árat �
 <p class="kod-widget__intro"><strong>Jelenet:</strong> Egy fiatal harcost éjszaka ellenséges tábor megfigyelésére küldenek. Ahogy közelít, a mesélő észlelést + felderítést kér — 4 kockás készlet. Nincs rejtett célérték. Attól függően, hány jelet dob:</p>
 <div class="kod-widget__controls" role="group" aria-label="Sikerjelek">
 <button type="button" class="kod-widget__btn" data-marks="0">0</button>
-<button type="button" class="kod-widget__btn" data-marks="1">1</button>
-<button type="button" class="kod-widget__btn" data-marks="2" aria-pressed="true">2</button>
-<button type="button" class="kod-widget__btn" data-marks="3">3</button>
-<button type="button" class="kod-widget__btn" data-marks="4">4</button>
+<button type="button" class="kod-widget__btn" data-marks="1">I</button>
+<button type="button" class="kod-widget__btn" data-marks="2" aria-pressed="true">II</button>
+<button type="button" class="kod-widget__btn" data-marks="3">III</button>
+<button type="button" class="kod-widget__btn" data-marks="4">IV</button>
 </div>
 <div class="kod-widget__panel" data-panel-id="0" hidden>
 <p><strong>0 jel</strong> — A felderítő eltéved az erdőben, a játékos semmit sem nyer.</p>

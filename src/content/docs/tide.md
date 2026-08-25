@@ -364,14 +364,14 @@ Only **people** roll. When a roll is Tide-linked, its Marks margin (and sometime
 
 <p class="kod-step-flow__label" data-step-label></p>
 <div class="kod-step-flow__track" role="group" aria-label="Tide demo steps">
-<button type="button" class="kod-widget__btn" data-tab="t1" aria-pressed="true">1</button>
-<button type="button" class="kod-widget__btn" data-tab="t2">2</button>
-<button type="button" class="kod-widget__btn" data-tab="t3">3</button>
-<button type="button" class="kod-widget__btn" data-tab="t4">4</button>
-<button type="button" class="kod-widget__btn" data-tab="t5">5</button>
-<button type="button" class="kod-widget__btn" data-tab="t6">6</button>
-<button type="button" class="kod-widget__btn" data-tab="t7">7</button>
-<button type="button" class="kod-widget__btn" data-tab="t8">8</button>
+<button type="button" class="kod-widget__btn" data-tab="t1" aria-pressed="true">I</button>
+<button type="button" class="kod-widget__btn" data-tab="t2">II</button>
+<button type="button" class="kod-widget__btn" data-tab="t3">III</button>
+<button type="button" class="kod-widget__btn" data-tab="t4">IV</button>
+<button type="button" class="kod-widget__btn" data-tab="t5">V</button>
+<button type="button" class="kod-widget__btn" data-tab="t6">VI</button>
+<button type="button" class="kod-widget__btn" data-tab="t7">VII</button>
+<button type="button" class="kod-widget__btn" data-tab="t8">VIII</button>
 </div>
 
 <div class="kod-widget__panel" data-panel-id="t1" data-step-title="Open the Tide" data-tide-pos="6" data-tide-note="Position 6 / 17. Column opens at a disadvantage.">
