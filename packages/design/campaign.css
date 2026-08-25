@@ -351,8 +351,8 @@ section.kod-plate {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 1.05rem 0.65rem 0.8rem;
-  min-height: 12.2rem;
+  padding: 0.9rem 0.55rem 0.75rem;
+  min-height: 13.6rem;
   border-top-width: 4px;
   border-top-color: var(--kod-fortune-accent);
   background:
@@ -382,9 +382,9 @@ section.kod-plate {
 
 .fortune__icon {
   display: block;
-  width: 4.35rem;
-  height: 4.35rem;
-  margin: 0.05rem 0 0.55rem;
+  width: 2.85rem;
+  height: 2.85rem;
+  margin: 0.05rem 0 0.4rem;
   flex-shrink: 0;
   background-color: var(--kod-fortune-accent);
   -webkit-mask: center / contain no-repeat;
@@ -432,34 +432,48 @@ section.kod-plate {
   line-height: 1.15;
 }
 
-/* Soft weather column — four unmarked tiers, fill rises with the state. */
+/* Weather well — four bands, fill from the floor. Crisis empty + ember. */
+.fortune__well,
 .fortune__stack {
   display: flex;
   flex-direction: column-reverse;
-  width: 1.05rem;
-  height: 2.35rem;
+  width: 1.45rem;
+  height: 5.35rem;
   gap: 2px;
-  margin: 0 0 0.32rem;
+  margin: 0 0 0.4rem;
+  padding: 3px;
+  box-sizing: border-box;
+  border: 1px solid var(--kod-frame);
+  background: #080605;
+  box-shadow:
+    inset 0 2px 10px rgba(0, 0, 0, 0.72),
+    inset 0 1px 0 rgba(0, 0, 0, 0.4);
 }
 
+.fortune__well i,
 .fortune__stack i {
   display: block;
   flex: 1 1 auto;
-  background: color-mix(in srgb, var(--kod-fortune-accent) 9%, #0a0808);
+  background: color-mix(in srgb, var(--kod-fortune-accent) 8%, #0a0808);
 }
 
-.fortune[data-level='0'] .fortune__stack i:nth-child(1) {
-  background: color-mix(in srgb, var(--kod-blood) 55%, #1a1010);
+.fortune[data-level='0'] .fortune__well {
+  box-shadow:
+    inset 0 -2px 0 var(--kod-blood-bright),
+    inset 0 2px 10px rgba(0, 0, 0, 0.72);
 }
 
-.fortune[data-level='1'] .fortune__stack i:nth-child(-n + 2) {
+.fortune[data-level='1'] .fortune__well i:nth-child(1),
+.fortune[data-level='1'] .fortune__stack i:nth-child(1) {
   background: color-mix(in srgb, var(--kod-fortune-accent) 62%, #3a3430);
 }
 
-.fortune[data-level='2'] .fortune__stack i:nth-child(-n + 3) {
+.fortune[data-level='2'] .fortune__well i:nth-child(-n + 2),
+.fortune[data-level='2'] .fortune__stack i:nth-child(-n + 2) {
   background: var(--kod-fortune-accent);
 }
 
+.fortune[data-level='3'] .fortune__well i,
 .fortune[data-level='3'] .fortune__stack i {
   background: var(--kod-fortune-accent);
   box-shadow: inset 0 0 8px color-mix(in srgb, #fff8f0 16%, transparent);
@@ -530,7 +544,12 @@ section.kod-plate {
 }
 
 .fortune__blurb > summary {
-  display: none;
+  cursor: pointer;
+  list-style: none;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--kod-silver-dim);
 }
 
 .fortune__blurb > summary::-webkit-details-marker,
@@ -1383,14 +1402,12 @@ a.member--pc:focus-visible {
   padding: 0;
 }
 
-.outsider {
-  display: block;
-  padding: 0.55rem 0.55rem;
-  background: color-mix(in srgb, #0e0c0a 80%, transparent);
-  border-left: 3px solid hsl(var(--faction-h, 0) 28% 42%);
-  text-decoration: none;
-  color: inherit;
-  cursor: pointer;
+.outsider.member {
+  flex-wrap: wrap;
+  gap: 0.2rem 0.45rem;
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--kod-silver) 14%, transparent),
+    inset 3px 0 0 hsl(var(--faction-h, 0) 28% 42%);
 }
 
 .outsider:not([href]) {
@@ -1399,24 +1416,29 @@ a.member--pc:focus-visible {
 
 .outsider:hover,
 .outsider:focus-visible {
-  background: color-mix(in srgb, #161410 85%, transparent);
+  color: #fff8f0;
+  background: #181512;
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--kod-silver) 34%, transparent),
+    inset 3px 0 0 hsl(var(--faction-h, 0) 32% 52%);
 }
 
 .outsider__name {
   display: block;
-  color: var(--kod-silver-bright);
+  color: inherit;
   text-decoration: none;
-  font-size: 0.92rem;
+  font-size: inherit;
 }
 
 .outsider__faction {
   display: inline-block;
-  margin-top: 0.2rem;
-  padding: 0.05rem 0.35rem;
+  margin: 0;
+  padding: 0;
   font-size: 0.68rem;
-  letter-spacing: 0.04em;
-  color: hsl(var(--faction-h, 0) 28% 72%);
-  background: color-mix(in srgb, hsl(var(--faction-h, 0) 28% 25%) 45%, transparent);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: hsl(var(--faction-h, 0) 22% 68%);
+  background: none;
 }
 
 /* Myths */
@@ -1517,7 +1539,37 @@ a.member--pc:focus-visible {
   border-left-color: var(--kod-blood);
 }
 
-/* —— Hall search: right-edge dock, same anchoring as creation plates —— */
+/* —— Hall Find: hideable right dock. Iron edge, not a blood rail. —— */
+.hall-dock-toggle {
+  position: fixed;
+  z-index: 46;
+  right: 0.4rem;
+  top: 4.55rem;
+  appearance: none;
+  font: inherit;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--kod-silver);
+  background: var(--kod-plate-wash), #100e0c;
+  border: 1px solid var(--kod-frame);
+  padding: 0.42rem 0.7rem;
+  cursor: pointer;
+}
+
+.hall-dock-toggle:hover,
+.hall-dock-toggle:focus-visible {
+  color: #fff8f0;
+  border-color: var(--kod-frame-tick-hot);
+  outline: none;
+}
+
+@media (min-width: 56.01rem) {
+  body[data-find-open='true'] .hall-dock-toggle {
+    display: none;
+  }
+}
+
 .hall-search {
   --kod-soot-size: 0.85rem;
   --kod-corner-size: 0.88rem;
@@ -1532,19 +1584,47 @@ a.member--pc:focus-visible {
   gap: 0.7rem;
   padding: 1.05rem 0.8rem 0.9rem;
   overflow: auto;
-  border-top: 3px solid color-mix(in srgb, var(--kod-blood) 70%, var(--kod-frame));
+  border-top: 3px solid var(--kod-frame-tick);
+}
+
+.hall-search[hidden] {
+  display: none !important;
 }
 
 @media (min-width: 56.01rem) {
-  body:has(.hall-search) .app {
+  body[data-find-open='true'] .app {
     padding-right: 16.1rem;
   }
 }
 
 .hall-search__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
   margin: 0;
   padding-bottom: 0.45rem;
   border-bottom: 1px solid var(--kod-frame);
+}
+
+.hall-search__hide {
+  appearance: none;
+  font: inherit;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--kod-silver-dim);
+  background: transparent;
+  border: 1px solid transparent;
+  padding: 0.1rem 0.25rem;
+  cursor: pointer;
+}
+
+.hall-search__hide:hover,
+.hall-search__hide:focus-visible {
+  color: #fff8f0;
+  border-color: var(--kod-frame-tick);
+  outline: none;
 }
 
 .hall-search__kicker {
@@ -1552,7 +1632,7 @@ a.member--pc:focus-visible {
   font-size: 0.62rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--kod-blood-bright);
+  color: var(--kod-silver-dim);
 }
 
 .hall-search__title {
@@ -1586,7 +1666,6 @@ a.member--pc:focus-visible {
   background:
     linear-gradient(180deg, color-mix(in srgb, #141010 80%, transparent), #0c0a0a);
   border: 1px solid var(--kod-frame);
-  border-left: 3px solid var(--kod-blood);
   border-radius: 0;
   padding: 0.45rem 0.55rem;
   width: 100%;
@@ -1595,7 +1674,6 @@ a.member--pc:focus-visible {
 .hall-search__q:focus-visible {
   outline: none;
   border-color: var(--kod-frame-tick-hot);
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--kod-blood) 35%, transparent);
 }
 
 .hall-search__clear {
@@ -1616,7 +1694,7 @@ a.member--pc:focus-visible {
 .hall-search__clear:hover,
 .hall-search__clear:focus-visible {
   color: var(--kod-silver-bright);
-  border-bottom-color: var(--kod-blood-bright);
+  border-bottom-color: var(--kod-frame-tick-hot);
 }
 
 .hall-search__filters {
@@ -1741,6 +1819,17 @@ a.member--pc:focus-visible {
 }
 
 @media (max-width: 56rem) {
+  .hall-dock-toggle {
+    position: static;
+    display: block;
+    width: 100%;
+    margin: 0 0 0.55rem;
+  }
+
+  body[data-find-open='true'] .hall-dock-toggle {
+    right: auto;
+  }
+
   .hall-search {
     position: static;
     width: 100%;

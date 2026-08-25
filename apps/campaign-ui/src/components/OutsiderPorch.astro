@@ -33,7 +33,7 @@ const none = outsiders.length === 0;
           const hue = o.faction ? resolveFactionHue(o.faction, factions) : 0;
           const href = o.characterSlug ? `/characters/${o.characterSlug}/` : undefined;
           const attrs = {
-            class: 'outsider',
+            class: 'outsider member',
             style: o.faction ? `--faction-h: ${hue}` : undefined,
             'data-inspect-id': inspectId(o.name, o.characterSlug),
             'data-name': o.name,

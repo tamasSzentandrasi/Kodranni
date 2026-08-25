@@ -8,10 +8,29 @@ interface Props {
 const { axes, tiers, factions = [] } = Astro.props;
 ---
 
-<aside class="kod-plate hall-search" data-hall-search aria-label="Find someone in the hall">
+<button
+  type="button"
+  class="hall-dock-toggle"
+  data-hall-search-toggle
+  aria-expanded="true"
+  aria-controls="kod-hall-search"
+>
+  Find
+</button>
+<aside
+  class="kod-plate hall-search"
+  id="kod-hall-search"
+  data-hall-search
+  aria-label="Find someone in the hall"
+>
   <header class="hall-search__head">
-    <p class="hall-search__kicker">Hall</p>
-    <h2 class="hall-search__title">Find</h2>
+    <div>
+      <p class="hall-search__kicker">Hall</p>
+      <h2 class="hall-search__title">Find</h2>
+    </div>
+    <button type="button" class="hall-search__hide" data-hall-search-toggle>
+      Hide
+    </button>
   </header>
 
   <div class="hall-search__lookup">
