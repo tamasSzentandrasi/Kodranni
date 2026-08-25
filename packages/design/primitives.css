@@ -38,7 +38,9 @@
   justify-content: center;
   border: none;
   background-color: #10141a;
-  background-image: var(--kod-btn-glass-tile);
+  background-image:
+    linear-gradient(180deg, rgba(8, 10, 14, 0.38), rgba(8, 10, 14, 0.22) 42%, rgba(8, 10, 14, 0.42)),
+    var(--kod-btn-glass-tile);
   background-repeat: no-repeat;
   background-size: 100% 100%;
   background-position: center;

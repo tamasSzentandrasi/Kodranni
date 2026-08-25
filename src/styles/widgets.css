@@ -374,6 +374,8 @@
   align-content: center;
   gap: 0.7rem;
   margin: 0 auto 0.9rem;
+  padding: 0.45rem 0.2rem;
+  overflow: visible;
 }
 
 .kod-widget__btn,
@@ -398,7 +400,9 @@
   justify-content: center;
   border: none;
   background-color: #10141a;
-  background-image: var(--kod-btn-glass-tile);
+  background-image:
+    linear-gradient(180deg, rgba(8, 10, 14, 0.38), rgba(8, 10, 14, 0.22) 42%, rgba(8, 10, 14, 0.42)),
+    var(--kod-btn-glass-tile);
   background-repeat: no-repeat;
   background-size: 100% 100%;
   background-position: center;
@@ -469,12 +473,13 @@
   background-size: contain;
   background-position: center;
   font-family: var(--kod-font-display);
-  font-size: 1.2rem;
+  font-size: 1.15rem;
   letter-spacing: 0.06em;
   color: #f7f4ee;
   -webkit-text-fill-color: #f7f4ee;
   text-shadow: 0 0 8px #000, 0 1px 3px #000;
-  filter: brightness(0.88);
+  filter: none;
+  opacity: 0.82;
 }
 
 .kod-widget[data-widget='marks-ladder'] .kod-widget__btn::before,
@@ -482,11 +487,16 @@
   content: none;
 }
 
+.kod-widget[data-widget='marks-ladder'] .kod-widget__btn:hover,
+.kod-widget[data-widget='marks-ladder'] .kod-widget__btn:focus-visible {
+  filter: none;
+  opacity: 1;
+}
+
 .kod-widget[data-widget='marks-ladder'] .kod-widget__btn[aria-pressed='true'] {
-  filter: brightness(1.22);
-  box-shadow:
-    0 0 18px 4px rgba(242, 239, 233, 0.55),
-    0 0 36px 8px rgba(242, 239, 233, 0.22);
+  filter: none;
+  opacity: 1;
+  box-shadow: 0 0 16px 5px rgba(242, 239, 233, 0.48);
   color: #fff;
   -webkit-text-fill-color: #fff;
 }
@@ -1326,8 +1336,10 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 0.45rem;
+  gap: 0.55rem;
   margin: 0 0 1rem;
+  padding: 0.65rem 0.4rem;
+  overflow: visible;
 }
 .kod-step-flow__track .kod-widget__btn {
   --kod-end-w: 0;
@@ -1353,17 +1365,22 @@
   color: #f7f4ee;
   -webkit-text-fill-color: #f7f4ee;
   text-shadow: 0 0 8px #000, 0 1px 3px #000;
-  filter: brightness(0.88);
+  filter: none;
+  opacity: 0.82;
 }
 .kod-step-flow__track .kod-widget__btn::before,
 .kod-step-flow__track .kod-widget__btn::after {
   content: none;
 }
+.kod-step-flow__track .kod-widget__btn:hover,
+.kod-step-flow__track .kod-widget__btn:focus-visible {
+  filter: none;
+  opacity: 1;
+}
 .kod-step-flow__track .kod-widget__btn[aria-pressed='true'] {
-  filter: brightness(1.22);
-  box-shadow:
-    0 0 18px 4px rgba(242, 239, 233, 0.55),
-    0 0 36px 8px rgba(242, 239, 233, 0.22);
+  filter: none;
+  opacity: 1;
+  box-shadow: 0 0 16px 5px rgba(242, 239, 233, 0.48);
   color: #fff;
   -webkit-text-fill-color: #fff;
 }
@@ -1402,7 +1419,9 @@
   border: none;
   border-radius: 0;
   background-color: #10141a;
-  background-image: var(--kod-btn-glass-tile);
+  background-image:
+    linear-gradient(180deg, rgba(8, 10, 14, 0.38), rgba(8, 10, 14, 0.22) 42%, rgba(8, 10, 14, 0.42)),
+    var(--kod-btn-glass-tile);
   background-repeat: no-repeat;
   background-size: 100% 100%;
   background-position: center;
