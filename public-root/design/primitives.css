@@ -39,8 +39,8 @@
   border: none;
   background-color: #10141a;
   background-image: var(--kod-btn-glass-tile);
-  background-repeat: repeat-x;
-  background-size: auto 100%;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
   background-position: center;
   color: var(--kod-silver-bright);
   font-family: var(--kod-font-body);
@@ -81,11 +81,15 @@
 .kod-btn::before {
   left: 0;
   background-image: var(--kod-btn-end-l);
+  -webkit-mask-image: linear-gradient(to right, #000 42%, transparent 88%);
+  mask-image: linear-gradient(to right, #000 42%, transparent 88%);
 }
 
 .kod-btn::after {
   right: 0;
   background-image: var(--kod-btn-end-r);
+  -webkit-mask-image: linear-gradient(to left, #000 42%, transparent 88%);
+  mask-image: linear-gradient(to left, #000 42%, transparent 88%);
 }
 
 .kod-btn > * {
