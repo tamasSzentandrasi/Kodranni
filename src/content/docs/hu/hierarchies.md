@@ -10,13 +10,13 @@ description: Hierarchiák, hírnév, örökségek és az ábra.
 
 ## Hierarchiák, hírnév és örökségek
 
-A hierarchiák (Hierarchy) azok, ahol a közösség látja a sajátjait — elhitt, értett és elfogadott hely.
+A hierarchiák (Hierarchy) azt mutatják, hol áll valaki a közösség szemében — elhitt, értett, elfogadott hely.
 
 A hierarchia a közösségen belüli hatalom **egy tengelye** — nem a teljes társadalmi térkép. Minden kampány alapból négy tengellyel indul. A mesélő átnevezheti, hozzáadhatja vagy elveheti őket — kemény **maximum öt**.
 
 Egy ember **több** tengelyen is tarthat szintet egyszerre (**tisztelt** (Honoured) a **pénzen** (Coin), **elismert** (Acknowledged) a **fegyveren** (Arms)). Az emelkedés **tengelyenként** megy. Az **uralkodó** (Ruler) nem az ötödik fok egyik létrán sem — **egyetlen közös hely minden tengely fölött**. Csak egy ember ülhet rajta, bármelyik tengelyen emelkedett is.
 
-A [Kampányelőkészítésben](/hu/campaign-setup/) a tengelyeket nevektől üresen hagyjátok; az állás játékban derül ki, és akkor igényled.
+A [Kampányelőkészítésben](/hu/campaign-setup/) a tengelyeket hagyd név nélkül; az állás játékban derül ki, és akkor igényled.
 
 ### Szintek
 

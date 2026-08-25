@@ -23,7 +23,7 @@ description: Üdv a Kodranniban — iparosodás előtti, komor, emberi TTRPG-ren
 
 Ez a Guidebook adja a fogalmakat, eljárásokat és a közeget, amivel a **Kodrannit** — egy asztali szerepjáték-rendszert — vezetni és játszani lehet.
 
-Sok fogalom összekapcsolódik. A Guidebook úgy van rendezve, hogy minden fejezet az előzőekre épül; ha valami korán előkerül és később oldódik meg, a linkek előre mutatnak.
+Sok fogalom összekapcsolódik. A Guidebook úgy épül, hogy minden fejezet az előzőekre támaszkodik; ha egy fogalom korán felbukkan, a szabálya később jön — a linkek oda visznek.
 
 A **játékhoz** ezeket a fogalmakat érteni kell. A mechanikai teher könnyű marad, hogy az elmélyülést ne törje meg a folyamatos szabálykeresés.
 
@@ -56,7 +56,7 @@ Akár félig történelmi a kampány, akár kitalált fantasy, ha ez a három fe
 
 - **Elmélyülés**: A mechanika nem tolakodó, és magától értetődő. ***A szerepjáték megelőzi a mechanikát***.
 - **Az élet története**: A karakterek **halandó emberek**. Mágia, természetfeletti erő és hasonlók sem támogatottak, sem bátorítottak. A kampányt indítékok, küzdelmek, remények és álmok alkotják. A **halál** — akár öregségtől, akár csatában — **el fog jönni**.
-- **Előny a módosítók helyett**: A kontextus gyakran megszámlálhatatlan. Ahelyett, hogy módosítókat halmoznátok, az asztal megítéli, kinél van **[előny vagy hátrány](/hu/marks-and-tiers/#előny-és-hátrány)**, és ott tolja a **kockafokot** (**d6** · **d8** · **d12**), ahol számít.
+- **Előny a módosítók helyett**: A körülményeket gyakran nem lehet mind megszámolni. Ahelyett, hogy módosítókat halmoznátok, az asztal megítéli, kinél van **[előny vagy hátrány](/hu/marks-and-tiers/#előny-és-hátrány)**, és ott viszi fel vagy le a **kockafokot** (**d6** · **d8** · **d12**), ahol számít.
 
 > *„Mindössze azt kell eldöntenünk, mit kezdünk a ránk szabott idővel.”*
 > — *Szürke Gandalf*
@@ -66,7 +66,7 @@ Akár félig történelmi a kampány, akár kitalált fantasy, ha ez a három fe
 - **Játékosi szabadság**: A rendszer megengedő. A kreativitást, a kétségbeesett próbálkozást és a merész ötleteket bátorítja. Nem áll az utadba — de **a kockázat kezelése a te felelősséged**.
 - **Közös küzdelem**: A kampányok egy **közösség** körül forognak — törzs, falu, nemesi ház —, amelyet a játékosoknak gondozniuk kell. Tettek, becsületesek vagy sem, formálják annak jövőjét. **Ha a közösség elpusztul, a kampány véget ér.**
 - **Halál és folytonosság**: A játékos tettei túlélhetik a karakterét. Hősies cselekedetek, bölcs tanács és sorsdöntő események meghatározhatják a közösséget. Ezeknek a tetteknek a [**visszhangjai**](/hu/echoes/) erősítik és vezetik a későbbi karaktereket. [**Örökségek**](/hu/hierarchies/#örökségek) és [**alapítómítoszok**](/hu/echoes/#alapítómítoszok) viszik tovább a korábbi tettek eredményét.
-- **Automatizálás**: A könyvelést és a sűrű dobásköteget **automatizálás** teszi játszhatóvá. Lásd az [Automatizálást](/hu/automation/) az asztal felőli szerződéshez.
+- **Automatizálás**: A könyvelést és a sűrű dobásköteget **automatizálás** teszi játszhatóvá. Lásd az [Automatizálást](/hu/automation/) — mit lát belőle az asztal.
 
 ----------
 
@@ -74,7 +74,7 @@ Akár félig történelmi a kampány, akár kitalált fantasy, ha ez a három fe
 <img src="/scenes/magnificent.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
 </figure>
 
-## Hogyan van a Guidebook rendezve
+## Hogyan épül fel a Guidebook
 
 | Szakasz | Miről szól |
 |---------|------------|
@@ -83,7 +83,7 @@ Akár félig történelmi a kampány, akár kitalált fantasy, ha ez a három fe
 | [Visszhangok](/hu/echoes/) | Személyes tétek, sorsok, alapítómítoszok |
 | [Sérülés](/hu/harm/) | Sebesülés, haldoklás, felépülés |
 | [Hierarchiák](/hu/hierarchies/) | Ismertség, hírnév, örökségek, az ábra |
-| [Felszerelés](/hu/inventory/) | Kimondott birtoklás, páncél, étel, víz |
+| [Felszerelés](/hu/inventory/) | Amit kimondtatok: páncél, étel, víz |
 | [Kampányelőkészítés](/hu/campaign-setup/) | Mesélői munka, mielőtt karakterek léteznének |
 | [Karakteralkotás](/hu/character-creation/) | Koncepció, adottságok, jártasságok, A Megmérettetés |
 | [Automatizálás](/hu/automation/) | Közös lapok, botok, asztali menet |
@@ -98,11 +98,11 @@ Ez kulcs: enélkül a kampányok nem működnek ezzel a rendszerrel. A Kodranni 
 
 A szórakozás a kihívásban van, és abban, amit kiharcoltok. Az esélyek a karakterek **ellen szólnak**, a rendszer mégis azokat a lépéseket jutalmazza, amelyek **a kampányban maradnak**, függetlenül attól, mi történik az egyes karakterekkel.
 
-Mindenki akar időnként **hős** lenni, vagy a főszereplő. A Kodranni ezt nem tiltja. Azt biztosítja, hogy **ha elestél**, **folytathatod**, anélkül, hogy elveszne a kampányba már beépült **eredmények** értelme.
+Mindenki akar időnként **hős** lenni, vagy a főszereplő. A Kodranni ezt nem tiltja. Azt biztosítja, hogy **ha elestél**, **folytathatod**, anélkül, hogy elveszne, amit a kampányba már beépítettél.
 
 ### Két minta, ami tönkreteszi az asztalt
 
-**1. Játékosok, akik rövid távú káoszra halálra tervezett karaktereket ontanak.**  
+**1. Játékosok, akik rövid távú káosz kedvéért halálra tervezett karaktereket ontanak.**  
 _Miért törődnél egy karakterrel, aki halálra van ítélve?_
 
 <aside class="kod-counsel" aria-label="Tanács">

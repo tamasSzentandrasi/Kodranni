@@ -11,7 +11,7 @@ description: Mikor dobj — és hogyan van rendezve a többi réteg.
 
 Más TTRPG-khez hasonlóan a tettek feloldása kockával megy. Ha egy **játékosnak** vagy **mesélőnek** tettet kell feloldania, tisztázzák a szándékot, aztán dobják a megfelelő kockákat. Nagyon szokványos — *eddig*.
 
-Ez a fejezet az ajtó. A köteg a következő három fejezetben él:
+Ez a fejezet csak az ajtó. Maga a mechanika a következő háromban van:
 
 | Fejezet | Amit tanít |
 |---------|------------|
@@ -22,7 +22,7 @@ Ez a fejezet az ajtó. A köteg a következő három fejezetben él:
 <div class="kod-lanes not-content">
 <div class="kod-lane kod-lane--player">
 <p class="kod-lane__title">Játékos</p>
-<p>Mondd el a szándékot. Fektess bele <span class="kod-term" data-tip="Extra kockára fordítható készlet; egyben fáradtság, éhség, szomjúság.">erőfeszítést</span>, ha tolod. A jeleket úgy olvasd, ahogy a mesélő elmondja — nem rejtett célérték.</p>
+<p>Mondd el a szándékot. Fektess bele <span class="kod-term" data-tip="Extra kockára fordítható készlet; egyben fáradtság, éhség, szomjúság.">erőfeszítést</span>, ha belerakod magad. A jeleket úgy olvasd, ahogy a mesélő elmondja — nincs rejtett célérték.</p>
 </div>
 <div class="kod-lane kod-lane--st">
 <p class="kod-lane__title">Mesélő</p>
@@ -38,9 +38,9 @@ Ez a fejezet az ajtó. A köteg a következő három fejezetben él:
 
 ## Mikor dobj
 
-Ha egy tett kimenetele **jelentősen különbözhet** szerencse, véletlen vagy jártasság miatt — a mesélő **kérhet** dobást, és kiválasztja a ráillő jellemzőket. Ha a fikció már tiszta, **ne dobjatok**. Beszélgetést, tervezést és szerepjátékot nem helyettesít a kocka.
+Ha a tett kimenetele szerencsétől, véletlentől vagy jártasságtól **függően lényegesen más lehet** — a mesélő **kérhet** dobást, és kiválasztja a ráillő jellemzőket. Ha a fikció már tiszta, **ne dobjatok**. Beszélgetést, tervezést és szerepjátékot nem helyettesít a kocka.
 
-A mesélő mindig azt az [adottságot](/hu/foundations/) és (ha van) [jártasságot](/hu/skills/) választja, ami a leírt szándékhoz illik, és azt a **kockafokot**, amit a készlet használ — ez a fok az **[előny és hátrány](/hu/marks-and-tiers/#előny-és-hátrány)** mechanikai arca.
+A mesélő mindig azt az [adottságot](/hu/foundations/) és (ha van) [jártasságot](/hu/skills/) választja, ami a leírt szándékhoz illik, és azt a **kockafokot**, amit a készlet használ — ez az **[előny és hátrány](/hu/marks-and-tiers/#előny-és-hátrány)** mechanikája.
 
 Kapcsolódó: [Jelek és kockafokok](/hu/marks-and-tiers/), [Ómenek](/hu/omens/), [Sodrás](/hu/tide/).
 

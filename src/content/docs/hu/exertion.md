@@ -1,15 +1,15 @@
 ---
 title: Erőfeszítés
-description: A kapacitás, hogy a hétköznapi határokon túlra tolj.
+description: A kapacitás, hogy a hétköznapi határokon túlra menj.
 ---
 
 ----------
 
 ## Erőfeszítés
 
-Az **erőfeszítés** (Exertion) a karakter kapacitása, hogy **a hétköznapi határokon túlra tolsza magát**. Fáradtság, éhség és szomjúság mind ebbe az egy mértékbe fut, ha nem viseled.
+Az **erőfeszítés** (Exertion) a karakter kapacitása, hogy **túlmenjen a hétköznapi határokon**. Fáradtság, éhség és szomjúság mind ebbe az egy mértékbe fut, ha elhanyagolod.
 
-**Elsősorban a játékos kezében van**: mikor tolod, mikor pihensz, és hová fekteted az akaratot. Narratív események (éhezés, kényszermenet, elhúzódó harc) is apaszthatják, önkéntes belefektetés nélkül.
+**Elsősorban a játékos kezében van**: mikor erőlködsz, mikor pihensz, és hová fekteted az akaratot. Narratív események (éhezés, kényszermenet, elhúzódó harc) is apaszthatják, anélkül, hogy te tennéd bele.
 
 ### Készlet mérete
 
@@ -57,17 +57,17 @@ A [felszerelés](/hu/inventory/) étel- és víz-napjai mondják meg, ez a vissz
 
 ### Kimerülés
 
-Ha a készlet **nullára** esik, a karakter tartós **–2**-t szenved minden kockakészlet méretén. Ez a büntetés soha nem visz készletet **1** kocka alá. A karakter még cselekedhet; minden tett egyszerűen többe kerül, mint kellene, amíg fel nem épül.
+Ha a készlet **nullára** esik, minden kockakészlet tartósan **–2** kocka. A büntetés soha nem viszi **1** kocka alá. A karakter még cselekedhet; minden tett egyszerűen többe kerül, mint kellene, amíg fel nem épül.
 
 <aside class="kod-counsel" aria-label="Tanács">
-<p>Az üres erőfeszítés nem eszméletvesztés. Az a pont, ahol minden tett többe kerül, mint kellene. Aki üresen is tol tovább, már csak idegből és makacsságból él.</p>
+<p>Az üres erőfeszítés nem eszméletvesztés. Az a pont, ahol minden tett többe kerül, mint kellene. Aki üresen is megy tovább, már csak idegből és makacsságból él.</p>
 </aside>
 
-Az erőfeszítést tiszta narratív esemény is apaszthatja — étel vagy víz hiánya, vagy elhúzódó csetepaté. Ne tedd fel, hogy a készlet tele van, ha a fikció mást mond.
+Az erőfeszítést tiszta narratív esemény is apaszthatja — étel vagy víz hiánya, vagy elhúzódó csetepaté. Ne vedd magától értetődőnek, hogy a készlet tele van, ha a fikció mást mond.
 
 ### Gyakorlat
 
-A jártasságokon a jelekből [gyakorlat](/hu/skills/#fejlődés) csak akkor gyűlik, ha erőfeszítést fektettél bele — győzelem vagy vereség. Ellendobásos vereség **+2**-t is ad, ami ehhez a jel-jutalomhoz adódik. Ellendobás nélküli küzdelem (több kudarc, mint jel) továbbra is **+2**-t ad erőfeszítés nélkül. A tanuláshoz hozzátartozik a befektetett erő.
+A jártasságokon a jelekből [gyakorlat](/hu/skills/#fejlődés) csak akkor gyűlik, ha erőfeszítést fektettél bele — győzelem vagy vereség. Ellendobásos vereség **+2**-t is ad, ami ehhez hozzáadódik. Ellendobás nélküli küzdelem (több kudarc, mint jel) továbbra is **+2**-t ad erőfeszítés nélkül. A tanuláshoz hozzátartozik a befektetett erő.
 
 Kapcsolódó: [Emberi adottságok](/hu/human-potential/), [Kockamechanika](/hu/dice-mechanics/), [Automatizálás](/hu/automation/).
 

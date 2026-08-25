@@ -3,7 +3,7 @@ title: Visszhangok
 description: Visszhangok, sorsok és alapítómítoszok.
 ---
 
-> _*„A halottak élete az élők emlékezetében van elhelyezve.”*_  
+> _*„A halottak az élők emlékezetében élnek.”*_  
 > — Cicero
 
 ----------
@@ -12,7 +12,7 @@ description: Visszhangok, sorsok és alapítómítoszok.
 
 A **visszhang** (Echo) tett, döntés vagy esemény, amit a karakter **hordozni választ**. Ez annak a kézzelfogható nyoma, hogy mi számít neki — személyes, közös, vagy közösséget formáló —, és a **folytonosság** sarokköve, amikor az egyének elbuknak.
 
-A **játékos** kiemel egy pillanatot visszhanggá. A mesélő csak hangnem vagy nyílt ostobaság miatt vétózhat. Egy vagy két visszhang a [karakteralkotásnál](/hu/character-creation/#a-megmérettetés-után) kimondható; újak akkor születnek, amikor egy tett megérdemli.
+A **játékos** tesz visszhanggá egy pillanatot. A mesélő csak hangnem vagy nyílt ostobaság miatt vétózhat. Egy vagy két visszhang a [karakteralkotásnál](/hu/character-creation/#a-megmérettetés-után) kimondható; újak akkor születnek, amikor egy tett megérdemli.
 
 ### Súly és teherbírás
 
@@ -34,7 +34,7 @@ A **játékos** kiemel egy pillanatot visszhanggá. A mesélő csak hangnem vagy
 </figure>
 
 <aside class="kod-counsel" aria-label="Tanács">
-<p>A teher nem elvont. Túl sok gond kettétöri az embert. A semmi üregessé teszi.</p>
+<p>A teher nem elvont. Túl sok gond kettétöri az embert. Semmit sem viselni: üresen hagy.</p>
 </aside>
 
 ----------
@@ -57,7 +57,7 @@ A **felidézés** (Invocation): ha egy dobás kontextusa illik a karakter egyik 
 ----------
 
 <aside class="kod-example" aria-label="Példa">
-<p class="kod-example__scene">A múlt aratáskor Leif a csarnok előtt esküdött, hogy a hamuhegy fölötti forrás nem esik a felső törzsnek. Az eskü visszhang. Ma éjjel portyázók állnak a forrásnál. A mesélő egyetért: a jelenet illik. Leif többet fektethet a dobásba, mint amennyit az erőfeszítés rendesen enged.</p>
+<p class="kod-example__scene">A múlt aratáskor Leif a csarnok előtt esküdött, hogy a hamuhegy fölötti forrás nem jut a felső törzsnek. Az eskü visszhang. Ma éjjel portyázók állnak a forrásnál. A mesélő egyetért: a jelenet illik. Leif többet fektethet a dobásba, mint amennyit az erőfeszítés rendesen enged.</p>
 <ol class="kod-example__steps">
 <li><strong>Visszhang:</strong> „Tartsd a forrást a felső törzs ellen.”</li>
 <li><strong>Dobás:</strong> tekintély + vezénylés, d8 — a vonalat a víznél rendezi.</li>
@@ -86,9 +86,9 @@ A hierarchiaemelkedés gyakran akkor indul, ha pártfogás vagy horog visszhangg
 
 ## Sorsok
 
-A közösséget öt lágy mérték követi: a **sorsok** (Fortunes). Soha nem adnak abszolút számot (nincs marhalétszám, nincs pontos népszámlálás).
+A közösségnek öt lágy mértéke van: a **sorsok** (Fortunes). Soha nem adnak abszolút számot (nincs marhalétszám, nincs pontos népszámlálás).
 
-A sorsok **nem** második karakterlap. Öt van: **életerő** (Vitality), **összetartás** (Cohesion), **bőség** (Surplus), **ismertség** (Standing), **hagyomány** (Tradition). A közösséget írják le **egészében** — milyen egészséges, táplált, bízott, félt és magában biztos *átlagban*. Ez az olvasat **minden** találkozást színez: játékoskaraktert és NPC-t, barátot és ellenséget. Egy falu **bőség** 0-n nem „ugyanaz a jelenet más kockával”; az éhség, a vékony készlet és a hiány szaga bejár minden csarnokot és utat. Alacsony összetartás gyanút kever a beszédbe még szövetségesek között is. Magas ismertség azt jelenti, a kívülállók a közösség *bárkivel* óvatosabban vagy udvariasabban bánnak. A mesélő a sorsokat környezeti nyomásként és alkalomként használja — jelenetkeret, NPC-tartás, milyen a „hétköznapi élet” —, nem módosítóhalomként, amivel minden dobást őröl.
+A sorsok **nem** második karakterlap. Öt van: **életerő** (Vitality), **összetartás** (Cohesion), **bőség** (Surplus), **ismertség** (Standing), **hagyomány** (Tradition). A közösséget írják le **egészében** — milyen egészséges, táplált, összetartó, mennyire tartanak tőle, mennyire hisz magában *átlagban*. Ez az olvasat **minden** találkozást színez: játékoskaraktert és NPC-t, barátot és ellenséget. Egy falu **bőség** 0-n nem „ugyanaz a jelenet más kockával”; az éhség, a vékony készlet és a hiány szaga bejár minden csarnokot és utat. Alacsony összetartás gyanút kever a beszédbe még szövetségesek között is. Magas ismertség azt jelenti, a kívülállók a közösség *bárkivel* óvatosabban vagy udvariasabban bánnak. A mesélő a sorsokat környezeti nyomásként és alkalomként használja — jelenetkeret, NPC viselkedése, milyen a „hétköznapi élet” —, nem módosítóhalomként, amit minden dobásra rászór.
 
 <div class="kod-fortune-hall not-content" aria-label="Az öt sors">
 

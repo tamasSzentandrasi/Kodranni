@@ -1,17 +1,17 @@
 ---
 title: Felszerelés
-description: Kimondott birtoklás, páncél, étel, víz és megnevezett tárgyak.
+description: Amit kimondtatok, az van: páncél, étel, víz és megnevezett tárgyak.
 ---
 
 ----------
 
 ## Felszerelés
 
-A felszerelés könnyű marad. Csak az létezik, ami **ki van mondva és követve**.
+A felszerelés könnyű marad. Csak az létezik, **amit kimondtatok és a lapon vezettek**.
 
-**A birtoklás kimondott.** Ha nincs kimondva, hogy a karakter visz egy tárgyat, a karakternek **nincs meg**. Nincs visszamenőleges hozzáadás, ha a jelenet már elindult.
+**A birtoklást ki kell mondani.** Ha nincs kimondva, hogy a karakter visz egy tárgyat, a karakternek **nincs meg**. Nincs visszamenőleges hozzáadás, ha a jelenet már elindult.
 
-A [karakteralkotásnál](/hu/character-creation/#a-megmérettetés-után) csak azok a megnevezett tárgyak kerülnek listára, amelyek a koncepcióhoz már illenek. Nincs ingyen ellátmánycsomag. Minden más játék közben telik meg.
+A [karakteralkotásnál](/hu/character-creation/#a-megmérettetés-után) csak azok a megnevezett tárgyak kerülnek listára, amelyek a koncepcióhoz már illenek. Nincs ingyen ellátmánycsomag. Minden más játék közben kerül a lapra.
 
 <figure class="kod-breath not-content">
 <img src="/scenes/storeroom.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
@@ -49,14 +49,14 @@ Külön automatizálási parancs csak erre van:
 - Ételnapok  
 - Víznapok  
 
-Minden más utánpótlás (nyíl, fű, kötszer, anyag stb.) tiszta szerepjáték. A mesélő dönti el, mit enged a helyzet. A kötszer és a fű narratívan számít a [sérülés gyógyulásánál](/hu/harm/#felépülés), még ha nincsenek is tételsorként.
+Minden más utánpótlás (nyíl, fű, kötszer, anyag stb.) tiszta szerepjáték. A mesélő dönti el, mit enged a helyzet. A kötszer és a fű narratívan számít a [sérülés gyógyulásánál](/hu/harm/#felépülés), még ha nincsenek is sorként a lapon.
 
 ----------
 
 
 ### Teher és szállítás
 
-A teher nincs követve.  
+A terhet nem vezetjük.  
 Hogy valami észszerűen vihető, húzható vagy tárolható-e, a kontextus és a szerepjáték dönti el. Állatok, kocsik, rejtekek és tárolóhelyek tiszta fikció maradnak.
 
 ----------

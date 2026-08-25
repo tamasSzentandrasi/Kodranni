@@ -46,13 +46,13 @@ Bármely kocka, amely **5 vagy többet** mutat, <span class="kod-term" data-tip=
 | **d8** | 5–8 | ~50% |
 | **d12** | 5–12 | ~67% |
 
-### Célértékek a jelekkel szemben — gondolkodásváltás
+### Célérték helyett jelek — másfajta gondolkodás
 
-A legtöbb rendszer azt kérdezi: *eltaláltad a számot?* Siker vagy kudarc. A mesélő rejtett küszöböt tart; az asztal bináris válaszra vár.
+A legtöbb rendszer azt kérdezi: *eltaláltad a számot?* Siker vagy kudarc. A mesélő rejtett küszöböt tart; az asztal igenre vagy nemre vár.
 
-**A Kodranni feloldása értelmező.** Nincs **szigorú küszöb** bináris siker/kudarc döntéshez. A jelek **információ** — mennyit ért el a szándékból, milyen tisztán, milyen mélyre megy az olvasat. A mesélő **fokozatos eredményeket** dönt a jelek számából (és ellendobásnál a két szám **különbségéből**). Nincs egyetlen titkos célérték, amit a játékosnak „teljesítenie” kellene.
+**A Kodranni feloldása értelmezés.** Nincs **szigorú küszöb** siker/kudarc döntéshez. A jelek **információ** — mennyit ért el a szándékból, milyen tisztán, mennyire lehet belőle olvasni. A mesélő **fokozatos eredményeket** dönt a jelek számából (és ellendobásnál a két szám **különbségéből**). Nincs egyetlen titkos célérték, amit a játékosnak „teljesítenie” kellene.
 
-Ez váltást kíván: kevesebb „sikerült?”, több „**mit mond ennyi jel arról, hogyan ment?**” A nulla jel is színezett eredmény. Négy jel nem csupán „jobb siker” — tényeket nyithat, amelyeket vékonyabb siker soha nem tárt volna fel.
+Ez más gondolkodást kíván: kevesebb „sikerült?”, több „**mit mond ennyi jel arról, hogyan ment?**” A nulla jel is árnyalt eredmény. Négy jel nem csupán „jobb siker” — tényeket nyithat, amelyeket gyengébb siker soha nem tárt volna fel.
 
 A játékosok hiányos tudással cselekszenek. A mesélő a jutalmat, az árat és **amit a fikció feltár**, az asztalon lévő jelekhez szabja.
 
@@ -74,7 +74,7 @@ A játékosok hiányos tudással cselekszenek. A mesélő a jutalmat, az árat �
 <p><strong>0 jel</strong> — A felderítő eltéved az erdőben, a játékos semmit sem nyer.</p>
 </div>
 <div class="kod-widget__panel" data-panel-id="1" hidden>
-<p><strong>1 jel</strong> — A felderítő gyanakvó lesz az úton, fáklyák hunyorgó fényét látja az erdőben, meggyőződve, hogy járőr van a sarkában. Sietséggel tér vissza.</p>
+<p><strong>1 jel</strong> — A felderítő gyanakvó lesz az úton, fáklyák hunyorgó fényét látja az erdőben, meggyőződve, hogy járőr van a sarkában. Sietve tér vissza.</p>
 </div>
 <div class="kod-widget__panel" data-panel-id="2">
 <p><strong>2 jel</strong> — A felderítő távolról figyeli a tábort: észreveszi a megközelítéseket és a gyenge pontokat, de nem talál biztonságos utat közelebb.</p>
@@ -83,7 +83,7 @@ A játékosok hiányos tudással cselekszenek. A mesélő a jutalmat, az árat �
 <p><strong>3 jel</strong> — A felderítő megfigyeli a tábort és a környékét, a lehető legközelebb jut. Jegyez: létszám, táborrend; arra következtet, hogy a rossz időt akarják kivárni.</p>
 </div>
 <div class="kod-widget__panel" data-panel-id="4" hidden>
-<p><strong>4 jel</strong> — A felderítő csalást vesz észre: néhány emberen kívül a többi csalétek; valami nem stimmel; éjszakai rajtaütés készülhet. Határozott intés, hogy sietséggel térjen vissza, és figyelmeztesse a többieket.</p>
+<p><strong>4 jel</strong> — A felderítő csalást vesz észre: néhány emberen kívül a többi csalétek; valami nem stimmel; éjszakai rajtaütés készülhet. Határozott intés: sietve térjen vissza, és figyelmeztesse a többieket.</p>
 </div>
 </div>
 
@@ -97,7 +97,7 @@ A játékosok hiányos tudással cselekszenek. A mesélő a jutalmat, az árat �
 
 A dobást érintő kontextus gyakran **megszámlálhatatlan** — időjárás, talaj, létszám, szerszám, hírnév, sérülés, meglepetés, illő vagy ártó vonás. Ezeket pluszként és mínuszként halmozni könyvelés. A Kodranni ezt az utat elutasítja.
 
-**Ítélj egyszer a fölényről. Írd bele a kockatípusba.**
+**Ítélj egyszer a fölényről. Tedd a kockatípusba.**
 
 A mesélő **kockafokot** nevez a készletnek. Nincs automatikus leképezés a jártasság fokáról d6 / d8 / d12-re.
 
@@ -139,7 +139,7 @@ A mesélő **kockafokot** nevez a készletnek. Nincs automatikus leképezés a j
 | **Előny** (Advantage) | **Egy fokot** emelsz (d6→d8, vagy d8→d12) |
 | **Hátrány** (Disadvantage) | **Egy fokot** csökkentesz (d12→d8, vagy d8→d6) |
 | **Ki dönt** | A **mesélő**, minden dobáson |
-| **Halmozás** | Milyen keményen tol a fikció, a fölények kioltják-e egymást vagy két fokot másznak — a mesélő döntése arra a pillanatra |
+| **Halmozás** | Milyen keményen nyom a fikció, a fölények kioltják-e egymást, vagy két fokot lépnek — a mesélő döntése arra a pillanatra |
 
 A [vonások](/hu/traits/), a terep, a létszám, a páncél mint kontextus és a hírnév táplálják az ítéletet. **Nem** extra módosítók a jeleken. Nem adsz „+2-t magasságért és +1-et fedezékért.”
 
@@ -155,7 +155,7 @@ A készletek három forrásból állnak össze:
 |--------|-------|------|
 | **[Adottság](/hu/foundations/)** (Foundation) | jellemzően 1–3 (hatékony érték a [sérülés](/hu/harm/) után) | Veleszületett lehetőség; majdnem állandó |
 | **[Jártasság](/hu/skills/)** (Skill) | 0–3 | Gyakorolt képesség, a szándékhoz illő |
-| **[Erőfeszítés](/hu/exertion/)** (Exertion) | 0–1 kocka (2 illő [visszhangnál](/hu/echoes/#felidézés) (Echo)) | Opcionális játékosi beletevés |
+| **[Erőfeszítés](/hu/exertion/)** (Exertion) | 0–1 kocka (2 illő [visszhangnál](/hu/echoes/#felidézés) (Echo)) | Opcionális játékosi belefektetés |
 
 **Készlet mérete** = adottság + jártasság + opcionális erőfeszítés-kockák
 
@@ -176,7 +176,7 @@ A **primitív akciók** (primitive action) — futás, ugrás, cipelés, észrev
 </ol>
 </aside>
 
-További hatások, amelyek **zsugorítják a készletet** (ezek nem kockafok-váltások; azt változtatják, **hány** kockát dobsz):
+További hatások, amelyek **csökkentik a készletet** (ezek nem kockafok-váltások; azt változtatják, **hány** kockát dobsz):
 
 - Üres erőfeszítés: **–2** kocka (minimum 1) — lásd [Erőfeszítés](/hu/exertion/)
 - [Hanyatlás](/hu/echoes/#súly-és-teherbírás) (nincs visszhang): **–1** kocka minden dobáson

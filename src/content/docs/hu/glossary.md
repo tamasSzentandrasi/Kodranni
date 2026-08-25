@@ -16,7 +16,7 @@ Gyors hivatkozás. Minden tétel arra a fejezetre mutat, ahol a teljes szabály 
 | **Előny / Hátrány** | Azt ítélitek meg, kinél van a fölény, ahelyett, hogy módosítókat halmoznátok; a kockafokot emelitek vagy csökkentitek (**d6** ↔ **d8** ↔ **d12**). Biztonságos alapértelmezés **d8**. → [Jelek és kockafokok](/hu/marks-and-tiers/#előny-és-hátrány) |
 | **Kockafok** | Melyik akciókockát használja a készlet: **d6** (nehezebb), **d8** (hétköznapi alap), vagy **d12** (könnyebb). Előny / hátrány szabja meg — nem a jártasság foka. → [Jelek és kockafokok](/hu/marks-and-tiers/) |
 | **Sikerjel (jel)** | Kocka, amely 5+-t mutat. → [Jelek és kockafokok](/hu/marks-and-tiers/#sikerjelek) |
-| **Ómenkocka** | **d20** minden dobáson; következmények és a sodrás bemenete. → [Ómenek](/hu/omens/#az-ómenkocka-és-a-következmények) |
+| **Ómenkocka** | **d20** minden dobáson; következményeket hoz, és a sodrást is táplálja. → [Ómenek](/hu/omens/#az-ómenkocka-és-a-következmények) |
 | **Következmény** | Valódi mellékhatás az ómenkockából; nem írhatja felül az elsődleges dobást. → [Ómenek](/hu/omens/#az-ómenkocka-és-a-következmények) |
 | **Ellendobás** | Ha akaratok ütköznek; a jelek különbségét a válaszláncon hasonlítjátok. → [Sodrás](/hu/tide/#helyzeti-kockafeloldás) |
 | **Primitív akció** | Csak adottságból álló készlet (nincs jártasság). → [Jelek és kockafokok](/hu/marks-and-tiers/#a-kockakészlet-felépítése) |
@@ -42,7 +42,7 @@ Gyors hivatkozás. Minden tétel arra a fejezetre mutat, ahol a teljes szabály 
 | **Őstípus** | Hat elnevezett, rokon jártasságcsoport egyike (harcos, vándor, kézműves, anya, bölcs, cselszövő). Nem kaszt. → [Jártasságok](/hu/skills/) |
 | **Gyakorlat** | Haladás a jártasság emeléséhez. Jelek csak erőfeszítéssel válnak gyakorlattá (győzelem vagy vereség); ellendobásos vereség még +2-t ad. A pontos számok az élő lapon élnek; az adapterek nem írják ki őket. → [Jártasságok](/hu/skills/#fejlődés) |
 | **Vonás** | Egyedi jelleg: vagy megvan, vagy nincs; a kontextus szerint pozitív vagy negatív. → [Vonások](/hu/traits/) |
-| **Erőfeszítés** | Extra kockára belefektethető készlet; egyben fáradtság/éhség/szomjúság-könyv. Maximum = akarat + állóképesség + karizma. → [Erőfeszítés](/hu/exertion/) |
+| **Erőfeszítés** | Extra kockára belefektethető készlet; egyben a fáradtság, éhség és szomjúság könyvelése. Maximum = akarat + állóképesség + karizma. → [Erőfeszítés](/hu/exertion/) |
 
 ----------
 
@@ -63,7 +63,7 @@ Gyors hivatkozás. Minden tétel arra a fejezetre mutat, ahol a teljes szabály 
 | **Bőség** | Sors: anyagi tartalék. → [Visszhangok](/hu/echoes/#sorsok) |
 | **Ismertség** (sors) | A *közösség* külső híre. → [Visszhangok](/hu/echoes/#sorsok) |
 | **Hagyomány** | Sors: közös emlékezet és önhit. → [Visszhangok](/hu/echoes/#sorsok) |
-| **Sérülés** | Pont egy adottság megnevezett sávján (0–3). → [Sérülés](/hu/harm/) |
+| **Sérülés** | Adottság megnevezett sávja (0–3). → [Sérülés](/hu/harm/) |
 | **Haldoklás** | Bármely sérüléssáv 3-on; minden dobás erőfeszítést kíván; halál, ha az erőfeszítés 0. A gyógyítás nem szuperképesség. → [Sérülés](/hu/harm/#haldoklás) |
 | **Védelmi arány** | ÷1 / ÷2 / ÷3 páncéltól vagy hírnévtől, amikor a különbség sérüléssé válik. → [Sérülés](/hu/harm/#sérülés-okozása) |
 | **Hierarchia** | Állás tengelye (alapból fegyver, hit, pénz, vér). → [Hierarchiák](/hu/hierarchies/) |

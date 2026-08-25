@@ -10,9 +10,9 @@ description: A kilenc veleszületett adottság, amely a karaktert formálja.
 
 ## Adottságok
 
-Az **adottságok** (Foundations) minden karakter **veleszületett lehetősége**. Öregedést, traumát vagy ritka mesélői eseményt leszámítva nem mozdulnak ülésről ülésre. Minden **kockakészletet** táplálnak, és megszabják, milyen gyorsan javulnak a jártasságok [gyakorlattal](/hu/skills/#fejlődés).
+Az **adottságok** (Foundations) minden karakter **veleszületett lehetősége**. Öregedést, traumát vagy ritka mesélői eseményt leszámítva ülésről ülésre nem változnak. Minden **kockakészletbe beleszámítanak**, és megszabják, milyen gyorsan javulnak a jártasságok [gyakorlattal](/hu/skills/#fejlődés).
 
-Kilenc adottság van, három körre osztva:
+Kilenc adottság van, három csoportra osztva:
 
 <div class="kod-domain-stack not-content">
 <div class="kod-domain-lane kod-domain-lane--physical">
@@ -34,7 +34,7 @@ Kilenc adottság van, három körre osztva:
 <div class="kod-domain-lane kod-domain-lane--social">
 <p class="kod-domain-lane__label">Társas</p>
 <div class="kod-domain-lane__bricks">
-<div class="kod-brick"><strong>Karizma</strong><p>Jelenlét, személyiség ereje, mások odavonása</p></div>
+<div class="kod-brick"><strong>Karizma</strong><p>Jelenlét, személyiség ereje, mások magához vonása</p></div>
 <div class="kod-brick"><strong>Ravaszság</strong><p>Fondorlat, félrevezetés, megtévesztés</p></div>
 <div class="kod-brick"><strong>Tekintély</strong><p>Természetes parancsoló erő, súly</p></div>
 </div>
@@ -80,6 +80,6 @@ A **0** vagy **4** *technikailag lehetséges* — ritkaság szélső esetekre (s
 </ol>
 </aside>
 
-Lásd még: [Emberi adottságok](/hu/human-potential/) — hogyan állnak az adottságok a jártasságok, vonások és erőfeszítés mellett.
+Lásd még: [Emberi adottságok](/hu/human-potential/) — hogyan viszonyulnak az adottságok a jártasságokhoz, vonásokhoz és erőfeszítéshez.
 
 ----------

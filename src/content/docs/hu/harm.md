@@ -9,7 +9,7 @@ description: A kilenc sérüléssáv, a haldoklás, a felépülés és a védelm
 
 ----------
 
-A Kodranni **nem** követ találati pontot. A kilenc [adottság](/hu/foundations/) foszlását követi.
+A Kodranni **nem** életerőpontot számol. A kilenc [adottság](/hu/foundations/) kopását követi.
 
 A **sérülés** (Harm) kilenc megnevezett sávon van feljegyezve. Minden sáv egy adottsághoz van párosítva. Minden sérüléspont eggyel csökkenti azt az adottságot a kocka szempontjából.
 
@@ -72,16 +72,16 @@ Sérülés csak akkor keletkezik, ha a fikció **és** a kocka is indokolja a ma
 - A **mesélő választja a sérüléssávot**, ha a fikció kétértelmű.  
 - **Nincs kevert esemény:** egy adott okozás testi **vagy** társas/szellemi — nem mindkettő halmozva. A testi védelem a felvett [páncélt](/hu/inventory/) használja (Nincs / Könnyű / Nehéz). A társas és szellemi védelem a **hírnevet** (relatív [hierarchiahely](/hu/hierarchies/#hírnév)). A hírnév-rés a védelmi arányhoz legfeljebb két szint (pl. uralkodó a kitaszított ellen).
 
-Légy szűkmarkú. A legtöbb sikeres találat **0 vagy 1** pontot ad. Két pont figyelemre méltó. Három egyetlen váltásban ritka.
+Légy szűkmarkú. A legtöbb sikeres találat **0 vagy 1** pontot ad. Két pont figyelemre méltó. Három egyetlen cserében ritka.
 
 <aside class="kod-example">
-<p class="kod-example__scene">Az udvari harcban egy dárda rést talál a könnyű láncing széle alatt. Az ellendobásos váltás egyértelműen a támadónak ment (3 jel különbség). A páncél még számít: felezi a maradandó sérülést. A mesélő testi sebet olvas, amely a kéz finom uralmát lopja el — nem társas megaláztatást ugyanazon az ütésen.</p>
+<p class="kod-example__scene">Az udvari harcban egy dárda rést talál a könnyű láncing széle alatt. Az ellendobás egyértelműen a támadónak ment (3 jel különbség). A páncél még számít: felezi a maradandó sérülést. A mesélő testi sebet olvas, amely a kéz finom uralmát veszi el — nem társas megaláztatást ugyanazon az ütésen.</p>
 <ol class="kod-example__steps">
 <li><strong>Ellendobásos különbség:</strong> 3 jel (támadó előnyben).</li>
 <li><strong>Védelem:</strong> könnyű páncél → oszd 2-vel.</li>
 <li><strong>Sérüléspont:</strong> floor(3 ÷ 2) = <strong>1</strong>.</li>
 <li><strong>Sáv (a mesélő a fikcióból választ):</strong> Vérzés (ügyesség) +1 — a seb a karon van; a kéz reszket.</li>
-<li><strong>Nem kevert:</strong> ez az esemény nem rak társas vagy szellemi sávot is.</li>
+<li><strong>Nem kevert:</strong> ez az esemény nem tesz társas vagy szellemi sávot is.</li>
 </ol>
 </aside>
 
@@ -98,7 +98,7 @@ Ha bármely sérüléssáv **3**-ra ér, a karakter **haldokló** (Dying).
 - Haldoklás közben **minden dobás [erőfeszítést](/hu/exertion/) kíván**.  
 - Ha az erőfeszítés **0**-ra ér, a karakter **meghal**.
 
-Ez az ablak utolsó tetteket, utolsó szavakat vagy kétségbeesett stabilizálást enged. A stabilizálás sikeres **[gyógyítás](/hu/skills/#healing)** próbát kíván, és leveszi a haldoklást; a sáv 3-on marad a további felépülésig, és szinte mindig állandó **[vonást](/hu/traits/)** hagy.
+Ez az idő még enged utolsó tetteket, utolsó szavakat vagy kétségbeesett stabilizálást. A stabilizálás sikeres **[gyógyítás](/hu/skills/#healing)** próbát kíván, és leveszi a haldoklást; a sáv 3-on marad a további felépülésig, és szinte mindig állandó **[vonást](/hu/traits/)** hagy.
 
 A gyógyítás nem szuperképesség. A kellő tudás és anyag nélkül — **[füvészet](/hu/skills/#herbalism)**, kötszer, **[kézi készítés](/hu/skills/#handcrafting)** sínhez, és ami a sebnek tényleg kell — a próbát **[hátránynak](/hu/marks-and-tiers/#előny-és-hátrány)** vedd. A legjobb gondozással is van, hogy nincs mit tenni. Harcolj tovább. Mentsd, akit tudsz. Nincs történetpáncél. A halál mindenkit elvisz a végén.
 
@@ -120,10 +120,10 @@ A gyógyítás nem szuperképesség. A kellő tudás és anyag nélkül — **[f
 <p>Ha sem füve, sem jártassága nincs, ugyanaz a szándék <strong>d6</strong> lenne. A kívánság nem orvosság.</p>
 </div>
 <div class="kod-widget__panel" data-panel-id="d3" data-step-title="A próba" hidden>
-<p>Eltöltik az éjszakát. A jelek gyéren jönnek — 1. A láz annyira megtörik, hogy a haldoklás felenged. A sáv 3-on marad, amíg a felépülés le nem viszi a pontokat. Állandó vonás marad (gyengült mellkas). Él. Nincs jól.</p>
+<p>Eltöltik az éjszakát. A jelek gyéren jönnek — 1. A láz annyira megtörik, hogy a haldoklás véget ér. A sáv 3-on marad, amíg a felépülés le nem viszi a pontokat. Állandó vonás marad (gyengült mellkas). Él. Nincs jól.</p>
 </div>
 <div class="kod-widget__panel" data-panel-id="d4" data-step-title="Ha nem sikerül" hidden>
-<p>Nulla jel, vagy senki sem tud gyógyítást próbálni, mielőtt az erőfeszítés kimerül: halál. A társ nem videojáték-próbát rontott el. Néha a test kész. A játék folytatódik. A visszhangok és az örökségek maradnak.</p>
+<p>Nulla jel, vagy senki sem tud gyógyítást próbálni, mielőtt az erőfeszítés kimerül: halál. A társ nem videojáték-próbát rontott el. Néha a test feladja. A játék folytatódik. A visszhangok és az örökségek maradnak.</p>
 </div>
 <div class="kod-step-flow__nav">
 <button type="button" data-step-prev>← Vissza</button>

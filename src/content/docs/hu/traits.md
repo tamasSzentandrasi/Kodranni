@@ -9,7 +9,7 @@ description: Vonások, amelyek a karaktert konkréttá teszik — vagy megvannak
 
 A **vonások** **vagy megvannak, vagy nincsenek**, és teljesen egyediek. Ezek a részletek teszik a karaktert **konkréttá**, nem általánossá.
 
-**Két tág polaritás** van: **pozitív** és **negatív** — de a polaritás kontextuális.
+**Két oldaluk van**: **pozitív** és **negatív** — de hogy melyik, a helyzettől függ.
 
 - A vonás **pozitív** használata **narratív engedélyt** ad. Ami annak, akinek megvan, hétköznapi, dobás nélkül is sikerülhet, vagy [előnyt](/hu/marks-and-tiers/#előny-és-hátrány) kap, ha mégis dobni kell.
 - A **negatív** használat bonyodalmat szül, **hátrányt** kényszerít, vagy szélső esetben teljesen kizár egy tettet.
@@ -32,10 +32,10 @@ A vonásoknak **nincs foka**. Vagy érvényesek, vagy nem. A mesélő a játéko
 </figure>
 
 <aside class="kod-example">
-<p class="kod-example__scene">Egy kolostori írnok latin oklevelet tesz az asztalra, és vár. A karakternek megvan a „Tud latinul” vonása. A dokumentum elolvasása neki hétköznapi — nincs dobás. Később a kezet és a pecsétet hamis levélre akarja másolni: a nyelvismeret segíti a fikciót, de a hamisítás még mindig mesterség és ravaszság.</p>
+<p class="kod-example__scene">Egy kolostori írnok latin oklevelet tesz az asztalra, és vár. A karakternek megvan a „Tud latinul” vonása. A dokumentum elolvasása neki hétköznapi — nincs dobás. Később az írást és a pecsétet hamis levélre akarja másolni: a nyelvismeret segíti a fikciót, de a hamisítás még mindig mesterség és ravaszság.</p>
 <ol class="kod-example__steps">
 <li><strong>Az oklevél elolvasása:</strong> nincs dobás — a vonás engedélyt ad.</li>
-<li><strong>Illő kéz hamisítása:</strong> dobj <a href="/hu/skills/">hamisításra</a> (ravaszság). A vonás nem helyettesíti a jártasságot; legfeljebb **előnyt** indokol, ha a hamisítványnak tanultnak kell látszania.</li>
+<li><strong>Illő írás hamisítása:</strong> dobj <a href="/hu/skills/">hamisításra</a> (ravaszság). A vonás nem helyettesíti a jártasságot; legfeljebb **előnyt** indokol, ha a hamisítványnak tanultnak kell látszania.</li>
 </ol>
 </aside>
 

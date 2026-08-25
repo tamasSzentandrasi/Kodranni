@@ -9,7 +9,7 @@ description: Adottságok, jártasságok, vonások és erőfeszítés — az embe
 
 ## Az emberi adottság
 
-Az emberi kapacitást ábrázolni kényes. Korlátozottak vagyunk, mégis alkalmazkodók; specializálódunk; a hétköznapi határokon túlra tudunk tolni, ha az akarat és a test engedi.
+Az emberi lehetőséget szabályba önteni kényes. Korlátozottak vagyunk, mégis alkalmazkodók; specializálódunk; túl tudunk lépni a hétköznapi határokon, ha az akarat és a test engedi.
 
 A Kodranni ezt négy egymásba kapcsolódó mértékre bontja:
 
@@ -18,7 +18,7 @@ A Kodranni ezt négy egymásba kapcsolódó mértékre bontja:
 | **[Adottságok](/hu/foundations/)** | Veleszületett lehetőség. Majdnem állandó (öregedés és trauma elmozdíthatja). Megszabja, mi megy könnyen vagy nehezen — beleértve a [gyakorlat](/hu/skills/#fejlődés) küszöbeit. | A kilenc teljes listája |
 | **[Jártasságok](/hu/skills/)** | Fejleszthető, gyakorolt képesség, hat őstípus alá rendezve (nem kasztok). Gyakorlattal javul. | Teljes jártasságlisták |
 | **[Vonások](/hu/traits/)** | Igen-nem részletek — technikák, állapotok, nyelvek, fogyatékosságok. Vagy megvan, vagy nincs. | Egyedi, nincs foka |
-| **[Erőfeszítés](/hu/exertion/)** | Akarat, hogy a hétköznapin túlra tolsza magát. Egyben a fáradtság, éhség és szomjúság könyve. | Maximum = akarat + állóképesség + karizma |
+| **[Erőfeszítés](/hu/exertion/)** | Akarat, hogy a hétköznapi határon túlra menjen. Egyben a fáradtság, éhség és szomjúság könyvelése. | Maximum = akarat + állóképesség + karizma |
 
 ----------
 
@@ -26,18 +26,18 @@ A Kodranni ezt négy egymásba kapcsolódó mértékre bontja:
 <img src="/scenes/reeds.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
 </figure>
 
-### Hogyan találkoznak a kockával
+### Hogyan kerülnek a kockára
 
 Ha a karakter cselekszik, a mesélő a játékos leírt szándékából a legjobban illő **adottság + jártasság** párt választja (lásd [Jelek és kockafokok](/hu/marks-and-tiers/#a-kockakészlet-felépítése)).
 
-- Az **[előny / hátrány](/hu/marks-and-tiers/#előny-és-hátrány)** a kontextusból szabja a kockafokot (**d6** / **d8** / **d12**) — nem módosítóhalom.
-- A **vonások** rövidre zárhatják a dobást, vagy előnyt / hátrányt kényszeríthetnek.
+- Az **[előny / hátrány](/hu/marks-and-tiers/#előny-és-hátrány)** a kontextusból szabja a kockafokot (**d6** / **d8** / **d12**) — nem halmozott módosítók.
+- A **vonások** feleslegessé tehetik a dobást, vagy előnyt / hátrányt kényszeríthetnek.
 - Az **erőfeszítés** egy extra kockát adhat (kettőt, ha egy [visszhang](/hu/echoes/#felidézés) illik a pillanatra).
 - A **sérülés** adottságonként csökkenti a *hatékony* adottságot ([Sérülés](/hu/harm/)).
 
 A [visszhangok](/hu/echoes/) folytonosság — továbbvitt tettek —, nem ötödik potenciál-mérték.
 
-Primitív, állati szintű akciók (futás, ugrás, cipelés, észrevétel, visszaemlékezés, tartás) **csak adottságot** használnak, plusz opcionális erőfeszítést.
+Primitív, állati szintű akciók (futás, ugrás, cipelés, észrevétel, visszaemlékezés, nyugalom tartása) **csak adottságot** használnak, plusz opcionális erőfeszítést.
 
 ----------
 
