@@ -10,7 +10,7 @@
   const storageKey = 'kod-hall:' + slug;
   const POLL_MS = 8000;
 
-  /** @type {{ q: string, collapse: Record<string, boolean>, findOpen?: boolean }} */
+  /** @type {{ q: string, collapse: Record<string, boolean> }} */
   let bag = { q: '', collapse: {} };
 
   function loadBag() {
@@ -21,7 +21,6 @@
       bag.q = typeof parsed.q === 'string' ? parsed.q : '';
       bag.collapse =
         parsed.collapse && typeof parsed.collapse === 'object' ? parsed.collapse : {};
-      if (typeof parsed.findOpen === 'boolean') bag.findOpen = parsed.findOpen;
     } catch {
       /* ignore */
     }
@@ -215,31 +214,6 @@
       }
       hitsEl.appendChild(li);
     }
-  }
-
-  function setFindOpen(open) {
-    bag.findOpen = open;
-    saveBag();
-    document.body.setAttribute('data-find-open', open ? 'true' : 'false');
-    if (searchRoot) {
-      searchRoot.hidden = !open;
-    }
-    document.querySelectorAll('[data-hall-search-toggle]').forEach((toggle) => {
-      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-    });
-  }
-
-  function bindFindDock() {
-    const toggles = document.querySelectorAll('[data-hall-search-toggle]');
-    if (!toggles.length || !searchRoot) return;
-    const narrow = window.matchMedia('(max-width: 56rem)').matches;
-    const open = typeof bag.findOpen === 'boolean' ? bag.findOpen : !narrow;
-    setFindOpen(open);
-    toggles.forEach((toggle) => {
-      toggle.addEventListener('click', () => {
-        setFindOpen(document.body.getAttribute('data-find-open') !== 'true');
-      });
-    });
   }
 
   function bindSearch() {
@@ -686,7 +660,6 @@
     loadBag();
     restoreCollapse();
     bindRungPersist();
-    bindFindDock();
     bindSearch();
     bindRites();
     applySearch();

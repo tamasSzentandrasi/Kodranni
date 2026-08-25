@@ -126,7 +126,7 @@ Content: `src/content/docs/`. Deploy: GitHub Pages on `main`.
 | Archive publish + park hostname on same domain (U6 MVP) | Yes — `session end` / `campaign publish` |
 | Fluxer | Creds load; adapter pending |
 
-Plans: [visual-lock.md](docs/plans/visual-lock.md) · [automation-status.md](docs/plans/automation-status.md) · [bot-discord.md](docs/plans/bot-discord.md) · [live-tunnel.md](docs/plans/live-tunnel.md) · [automation-architecture.md](docs/plans/automation-architecture.md)
+Plans: [automation-status.md](docs/plans/automation-status.md) · [bot-discord.md](docs/plans/bot-discord.md) · [live-tunnel.md](docs/plans/live-tunnel.md) · [automation-architecture.md](docs/plans/automation-architecture.md)
 
 ## License
 

@@ -71,7 +71,7 @@ Type: Bellefair 400 only; `font-synthesis: none`. Guidebook root ~118.75%; campa
 
 Freeze the JPEGs and `chapterRoses` in `src/lib/chapter-icons.ts`.
 
-**Book chrome is the 0cfdb39 rose frontispiece.** A 2026-08-25 oculus / title-in-cast / sidebar-roundel / search-field / pagination-cartouche pass was reverted in full — it made the book worse. Do not retry those surfaces without a peak-effort composition that is *visibly better* than that commit in the browser, chapter by chapter. Leave the roses, floor-cast, sidebar woodcuts, search, and prev/next **alone** until then.
+**Product code is the 0cfdb39 face.** The 2026-08-25 implementation attempt (Guidebook oculus, hall wells/Find, pagination cartouches, invoke rail) was reverted in full. Only this lock remains. Do not start from those diffs.
 
 - `kod-breath` is illustration, not a second title. First breath after the first divider.
 
