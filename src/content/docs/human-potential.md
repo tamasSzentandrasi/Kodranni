@@ -41,6 +41,10 @@ Primitive animal-tier actions (run, jump, haul, notice, recall, hold composure) 
 
 ----------
 
+<figure class="kod-breath not-content">
+<img src="/scenes/hermit.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
+</figure>
+
 ### Reading Order
 
 If you have not yet: start with [Dice Mechanics](/dice-mechanics/) (when to roll), then [Marks & Tiers](/marks-and-tiers/), [Omens](/omens/), and [Tide](/tide/).

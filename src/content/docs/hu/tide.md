@@ -57,6 +57,10 @@ A sodrás **közös** nyomássáv egy egész oldalnak, ha az összecsapás nagyo
 
 **Nem** második karakterlap, és **nem** ugyanaz, mint személyes előny egy dobáson. Az egyéni akciók továbbra is magukban oldódnak. Ezek közül némelyik **sodráshoz kötött**: a jelek különbsége (és néha az ómen) egy **egyetlen jelölőt** mozdít egy közös sávon. Ha a jelölő végét éri, az a **közös** oldal fut. Emberek még állhatnak, menekülhetnek, meghalhatnak, vagy személyes célt teljesíthetnek a futásban.
 
+<figure class="kod-breath not-content">
+<img src="/scenes/siege.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
+</figure>
+
 ### Felállítás
 
 Mindkét oldal **egy** sávot oszt. A mesélő mindkét oldalnak lágy **súlyt** ad (létszám, talaj, morál, kinek jobb a talaja mint erő — nem az adottságértékek összege).

@@ -27,7 +27,12 @@
   width: min(22rem, 86%);
   height: 4.4rem;
   margin: 0.05rem auto -1.25rem;
-  background: linear-gradient(to bottom, #f2efe9 0%, #c6c1b8 55%, transparent 100%);
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--kod-icon-hue, #c6c1b8) 32%, #f2efe9) 0%,
+    color-mix(in srgb, var(--kod-icon-hue, #c6c1b8) 14%, #c6c1b8) 55%,
+    transparent 100%
+  );
   -webkit-mask-image: var(--kod-rose);
   mask-image: var(--kod-rose);
   -webkit-mask-mode: luminance;

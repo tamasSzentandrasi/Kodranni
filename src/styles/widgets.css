@@ -290,7 +290,7 @@
   min-width: 8.2rem !important;
   max-width: none !important;
   gap: 0.35rem;
-  padding: 0 2.05rem !important;
+  padding: 0 3.2rem !important;
   font-family: var(--kod-font-display);
   font-size: 1rem !important;
 }
@@ -380,11 +380,7 @@
 .kod-btn {
   --kod-soot-size: 0.55rem;
   --kod-corners: none;
-  --kod-end-w: 2.65rem;
-  --kod-glass-leads:
-    repeating-linear-gradient(45deg, transparent 0 0.68rem, #050505 0.68rem 0.78rem),
-    repeating-linear-gradient(-45deg, transparent 0 0.68rem, #050505 0.68rem 0.78rem),
-    linear-gradient(180deg, rgba(198, 193, 184, 0.2), transparent 44%, rgba(0, 0, 0, 0.5));
+  --kod-end-w: 3.1rem;
   appearance: none;
   -webkit-appearance: none;
   box-sizing: border-box;
@@ -392,11 +388,11 @@
   isolation: isolate;
   flex: 0 0 auto;
   width: auto;
-  height: 3.05rem;
-  min-width: 9.2rem;
-  min-height: 3.05rem;
+  height: 3.1rem;
+  min-width: 10.4rem;
+  min-height: 3.1rem;
   max-width: none;
-  max-height: 3.05rem;
+  max-height: 3.1rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -408,7 +404,7 @@
   font-size: 0.82rem;
   line-height: 1;
   margin: 0 !important; /* Starlight sibling gap would lift the first button */
-  padding: 0 2.85rem;
+  padding: 0 3.2rem;
   border-radius: 0;
   cursor: pointer;
   letter-spacing: 0.02em;
@@ -426,22 +422,25 @@
   content: '';
   position: absolute;
   top: 0;
-  bottom: 0;
-  width: var(--kod-end-w);
+  height: 100%;
+  width: auto;
+  aspect-ratio: var(--kod-end-ratio);
   pointer-events: none;
   z-index: 1;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
 }
 
 .kod-widget__btn::before,
 .kod-btn::before {
   left: 0;
-  background: var(--kod-btn-end-l) center / contain no-repeat;
+  background-image: var(--kod-btn-end-l);
 }
 
 .kod-widget__btn::after,
 .kod-btn::after {
   right: 0;
-  background: var(--kod-btn-end-r) center / contain no-repeat;
+  background-image: var(--kod-btn-end-r);
 }
 
 /* Scout Marks: moonlight roundels — too small for end-knots */
@@ -463,19 +462,40 @@
   background-size: contain;
   background-position: center;
   font-family: var(--kod-font-display);
-  font-size: 0.88rem;
+  font-size: 1rem;
   letter-spacing: 0.04em;
-  color: var(--kod-silver-bright);
+  color: #f2efe9;
+  -webkit-text-fill-color: #f2efe9;
+  text-shadow: 0 0 6px #000, 0 1px 2px #000, 0 0 14px #000;
+  filter: brightness(0.84);
 }
 
-.kod-widget[data-widget='marks-ladder'] .kod-widget__btn::before,
+.kod-widget[data-widget='marks-ladder'] .kod-widget__btn::before {
+  content: '';
+  inset: 27%;
+  width: auto;
+  height: auto;
+  aspect-ratio: auto;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(6, 6, 6, 0.84) 52%, transparent 74%);
+  background-image: none;
+  z-index: 0;
+}
+
 .kod-widget[data-widget='marks-ladder'] .kod-widget__btn::after {
   content: none;
 }
 
+.kod-widget[data-widget='marks-ladder'] .kod-widget__btn[aria-pressed='true'] {
+  filter: brightness(1.32);
+  box-shadow: 0 0 0 2px #f2efe9, 0 0 16px rgba(242, 239, 233, 0.45);
+  color: #fff;
+  -webkit-text-fill-color: #fff;
+}
+
 /* Tier dial: d6 / d8 / d12 */
 .kod-widget[data-widget='tier-dial'] .kod-widget__btn {
-  min-width: 8.2rem;
+  min-width: 10.4rem;
   font-family: var(--kod-font-display);
   font-size: 1.05rem;
   letter-spacing: 0.03em;
@@ -1136,12 +1156,12 @@
 }
 .kod-widget[data-widget='content-tabs'] .kod-widget__btn {
   width: auto;
-  min-width: 10.2rem;
+  min-width: 11.2rem;
   max-width: none;
-  height: auto;
-  min-height: 2.7rem;
-  max-height: none;
-  padding: 0.4rem 2.9rem;
+  height: 3.1rem;
+  min-height: 3.1rem;
+  max-height: 3.1rem;
+  padding: 0.35rem 3.3rem;
   white-space: normal;
   line-height: 1.25;
 }
@@ -1322,7 +1342,7 @@
   border-radius: 50%;
   clip-path: none;
   font-family: var(--kod-font-display);
-  font-size: 0.8rem;
+  font-size: 0.92rem;
   letter-spacing: 0.04em;
   background-color: transparent;
   background-image: var(--kod-btn-round);
@@ -1330,10 +1350,30 @@
   background-size: contain;
   background-position: center;
   box-shadow: none;
+  color: #f2efe9;
+  -webkit-text-fill-color: #f2efe9;
+  text-shadow: 0 0 6px #000, 0 1px 2px #000, 0 0 14px #000;
+  filter: brightness(0.84);
 }
-.kod-step-flow__track .kod-widget__btn::before,
+.kod-step-flow__track .kod-widget__btn::before {
+  content: '';
+  inset: 27%;
+  width: auto;
+  height: auto;
+  aspect-ratio: auto;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(6, 6, 6, 0.84) 52%, transparent 74%);
+  background-image: none;
+  z-index: 0;
+}
 .kod-step-flow__track .kod-widget__btn::after {
   content: none;
+}
+.kod-step-flow__track .kod-widget__btn[aria-pressed='true'] {
+  filter: brightness(1.32);
+  box-shadow: 0 0 0 2px #f2efe9, 0 0 16px rgba(242, 239, 233, 0.45);
+  color: #fff;
+  -webkit-text-fill-color: #fff;
 }
 .kod-step-flow__label {
   text-align: center;
@@ -1360,13 +1400,13 @@
 .kod-step-flow__nav button {
   --kod-soot-size: 0.55rem;
   --kod-corners: none;
-  --kod-end-w: 2.65rem;
   appearance: none;
   box-sizing: border-box;
   position: relative;
   isolation: isolate;
   margin: 0;
-  padding: 0.4rem 2.85rem;
+  padding: 0.4rem 3.2rem;
+  height: 3.1rem;
   border: none;
   border-radius: 0;
   background-color: #10141a;
@@ -1385,18 +1425,21 @@
   content: '';
   position: absolute;
   top: 0;
-  bottom: 0;
-  width: var(--kod-end-w);
+  height: 100%;
+  width: auto;
+  aspect-ratio: var(--kod-end-ratio);
   pointer-events: none;
   z-index: 1;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
 }
 .kod-step-flow__nav button::before {
   left: 0;
-  background: var(--kod-btn-end-l) center / contain no-repeat;
+  background-image: var(--kod-btn-end-l);
 }
 .kod-step-flow__nav button::after {
   right: 0;
-  background: var(--kod-btn-end-r) center / contain no-repeat;
+  background-image: var(--kod-btn-end-r);
 }
 .kod-step-flow__nav button:hover:not(:disabled),
 .kod-step-flow__nav button:focus-visible:not(:disabled) {

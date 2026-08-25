@@ -70,6 +70,10 @@ Whether the campaign is semi-historical or invented fantasy, if those three cond
 
 ----------
 
+<figure class="kod-breath not-content">
+<img src="/scenes/magnificent.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
+</figure>
+
 ## How the Guide is organised
 
 | Section | What it covers |

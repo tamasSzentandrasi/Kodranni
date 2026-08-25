@@ -41,6 +41,10 @@ Primitív, állati szintű akciók (futás, ugrás, cipelés, észrevétel, viss
 
 ----------
 
+<figure class="kod-breath not-content">
+<img src="/scenes/hermit.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
+</figure>
+
 ### Olvasási rend
 
 Ha még nem tetted: kezdd a [Kockamechanikával](/hu/dice-mechanics/) (mikor dobj), aztán [Jelek és kockafokok](/hu/marks-and-tiers/), [Ómenek](/hu/omens/) és [Sodrás](/hu/tide/).

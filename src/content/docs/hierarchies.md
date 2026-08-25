@@ -105,6 +105,10 @@ Nothing else is mechanically attached to tier. Influence in fiction remains free
 
 ----------
 
+<figure class="kod-breath not-content">
+<img src="/scenes/kingsgambit.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
+</figure>
+
 ### Advancement
 
 Rising usually begins with **patronage** or a **hook**.

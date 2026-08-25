@@ -55,15 +55,14 @@
   --kod-armour-linen: url('./ornament/armour/linen.jpg');
   --kod-armour-leather: url('./ornament/armour/leather.jpg');
   --kod-armour-mail: url('./ornament/armour/mail.jpg');
+  --kod-end-ratio: 1 / 1;
   --kod-cartouche: polygon(
-    0.72rem 0,
-    calc(100% - 0.72rem) 0,
-    100% 0.55rem,
-    100% calc(100% - 0.55rem),
-    calc(100% - 0.72rem) 100%,
-    0.72rem 100%,
-    0 calc(100% - 0.55rem),
-    0 0.55rem
+    1.1rem 0,
+    calc(100% - 1.1rem) 0,
+    100% 50%,
+    calc(100% - 1.1rem) 100%,
+    1.1rem 100%,
+    0 50%
   );
 
   --kod-soot:

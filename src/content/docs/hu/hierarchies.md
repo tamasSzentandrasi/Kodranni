@@ -105,6 +105,10 @@ Más mechanika nincs a szinthez kötve. A fikcióbeli befolyás szabad szerepjá
 
 ----------
 
+<figure class="kod-breath not-content">
+<img src="/scenes/kingsgambit.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
+</figure>
+
 ### Emelkedés
 
 Az emelkedés általában **pártfogással** vagy **horoggal** indul.
