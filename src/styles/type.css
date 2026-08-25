@@ -70,7 +70,6 @@ site-title,
 
 .sl-markdown-content a:not(.sl-link-button):hover {
   color: #ff8f8f;
-  text-decoration: none;
 }
 
 .sidebar-content a {
