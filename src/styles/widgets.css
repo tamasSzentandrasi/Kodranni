@@ -398,7 +398,10 @@
   justify-content: center;
   border: none;
   background-color: #10141a;
-  background-image: var(--kod-glass-leads);
+  background-image: var(--kod-btn-glass-tile);
+  background-repeat: repeat-x;
+  background-size: auto 100%;
+  background-position: center;
   color: var(--kod-silver-bright);
   font-family: var(--kod-font-body);
   font-size: 0.82rem;
@@ -446,12 +449,12 @@
 /* Scout Marks: moonlight roundels — too small for end-knots */
 .kod-widget[data-widget='marks-ladder'] .kod-widget__btn {
   --kod-end-w: 0;
-  width: 3.15rem;
-  min-width: 3.15rem;
-  max-width: 3.15rem;
-  height: 3.15rem;
-  min-height: 3.15rem;
-  max-height: 3.15rem;
+  width: 3.55rem;
+  min-width: 3.55rem;
+  max-width: 3.55rem;
+  height: 3.55rem;
+  min-height: 3.55rem;
+  max-height: 3.55rem;
   padding: 0;
   border: none;
   border-radius: 50%;
@@ -462,33 +465,24 @@
   background-size: contain;
   background-position: center;
   font-family: var(--kod-font-display);
-  font-size: 1rem;
-  letter-spacing: 0.04em;
-  color: #f2efe9;
-  -webkit-text-fill-color: #f2efe9;
-  text-shadow: 0 0 6px #000, 0 1px 2px #000, 0 0 14px #000;
-  filter: brightness(0.84);
+  font-size: 1.2rem;
+  letter-spacing: 0.06em;
+  color: #f7f4ee;
+  -webkit-text-fill-color: #f7f4ee;
+  text-shadow: 0 0 8px #000, 0 1px 3px #000;
+  filter: brightness(0.88);
 }
 
-.kod-widget[data-widget='marks-ladder'] .kod-widget__btn::before {
-  content: '';
-  inset: 27%;
-  width: auto;
-  height: auto;
-  aspect-ratio: auto;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(6, 6, 6, 0.84) 52%, transparent 74%);
-  background-image: none;
-  z-index: 0;
-}
-
+.kod-widget[data-widget='marks-ladder'] .kod-widget__btn::before,
 .kod-widget[data-widget='marks-ladder'] .kod-widget__btn::after {
   content: none;
 }
 
 .kod-widget[data-widget='marks-ladder'] .kod-widget__btn[aria-pressed='true'] {
-  filter: brightness(1.32);
-  box-shadow: 0 0 0 2px #f2efe9, 0 0 16px rgba(242, 239, 233, 0.45);
+  filter: brightness(1.22);
+  box-shadow:
+    0 0 18px 4px rgba(242, 239, 233, 0.55),
+    0 0 36px 8px rgba(242, 239, 233, 0.22);
   color: #fff;
   -webkit-text-fill-color: #fff;
 }
@@ -1013,8 +1007,10 @@
 .kod-btn[aria-pressed='true'],
 .kod-btn:active {
   color: #fff8f0;
-  filter: brightness(1.4);
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--kod-silver-bright) 42%, transparent);
+  filter: brightness(1.28);
+  box-shadow:
+    0 0 14px 2px rgba(242, 239, 233, 0.38),
+    0 0 28px 6px rgba(242, 239, 233, 0.16);
 }
 
 .kod-widget__panel {
@@ -1331,47 +1327,39 @@
 }
 .kod-step-flow__track .kod-widget__btn {
   --kod-end-w: 0;
-  width: 3.15rem;
-  min-width: 3.15rem;
-  max-width: 3.15rem;
-  height: 3.15rem;
-  min-height: 3.15rem;
-  max-height: 3.15rem;
+  width: 3.55rem;
+  min-width: 3.55rem;
+  max-width: 3.55rem;
+  height: 3.55rem;
+  min-height: 3.55rem;
+  max-height: 3.55rem;
   padding: 0;
   border: none;
   border-radius: 50%;
   clip-path: none;
   font-family: var(--kod-font-display);
-  font-size: 0.92rem;
-  letter-spacing: 0.04em;
+  font-size: 1.05rem;
+  letter-spacing: 0.06em;
   background-color: transparent;
   background-image: var(--kod-btn-round);
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
   box-shadow: none;
-  color: #f2efe9;
-  -webkit-text-fill-color: #f2efe9;
-  text-shadow: 0 0 6px #000, 0 1px 2px #000, 0 0 14px #000;
-  filter: brightness(0.84);
+  color: #f7f4ee;
+  -webkit-text-fill-color: #f7f4ee;
+  text-shadow: 0 0 8px #000, 0 1px 3px #000;
+  filter: brightness(0.88);
 }
-.kod-step-flow__track .kod-widget__btn::before {
-  content: '';
-  inset: 27%;
-  width: auto;
-  height: auto;
-  aspect-ratio: auto;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(6, 6, 6, 0.84) 52%, transparent 74%);
-  background-image: none;
-  z-index: 0;
-}
+.kod-step-flow__track .kod-widget__btn::before,
 .kod-step-flow__track .kod-widget__btn::after {
   content: none;
 }
 .kod-step-flow__track .kod-widget__btn[aria-pressed='true'] {
-  filter: brightness(1.32);
-  box-shadow: 0 0 0 2px #f2efe9, 0 0 16px rgba(242, 239, 233, 0.45);
+  filter: brightness(1.22);
+  box-shadow:
+    0 0 18px 4px rgba(242, 239, 233, 0.55),
+    0 0 36px 8px rgba(242, 239, 233, 0.22);
   color: #fff;
   -webkit-text-fill-color: #fff;
 }
@@ -1410,7 +1398,10 @@
   border: none;
   border-radius: 0;
   background-color: #10141a;
-  background-image: var(--kod-glass-leads);
+  background-image: var(--kod-btn-glass-tile);
+  background-repeat: repeat-x;
+  background-size: auto 100%;
+  background-position: center;
   color: var(--kod-silver-bright);
   font-family: var(--kod-font-body);
   font-size: 0.9rem;

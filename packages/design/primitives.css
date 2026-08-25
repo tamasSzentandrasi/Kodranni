@@ -38,7 +38,10 @@
   justify-content: center;
   border: none;
   background-color: #10141a;
-  background-image: var(--kod-glass-leads);
+  background-image: var(--kod-btn-glass-tile);
+  background-repeat: repeat-x;
+  background-size: auto 100%;
+  background-position: center;
   color: var(--kod-silver-bright);
   font-family: var(--kod-font-body);
   font-size: 0.88rem;
@@ -100,8 +103,10 @@
 .kod-btn[aria-pressed='true'],
 .kod-btn:active {
   color: #fff8f0;
-  filter: brightness(1.38);
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--kod-silver-bright) 40%, transparent);
+  filter: brightness(1.28);
+  box-shadow:
+    0 0 14px 2px rgba(242, 239, 233, 0.38),
+    0 0 28px 6px rgba(242, 239, 233, 0.16);
 }
 
 .kod-btn:disabled,
