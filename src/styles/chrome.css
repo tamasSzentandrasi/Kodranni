@@ -20,32 +20,34 @@
   align-self: stretch;
 }
 
-/* Moonlight thrown by THIS rose: luminance of the glass as a floor-cast. */
+/* Moonlight thrown by THIS rose: hue tints the glass, then fades into black. */
 .kod-page-title:has(.kod-page-title__rose)::after {
   content: '';
   display: block;
   width: min(22rem, 86%);
   height: 4.4rem;
   margin: 0.05rem auto -1.25rem;
-  background: linear-gradient(
-    to bottom,
-    color-mix(in srgb, var(--kod-icon-hue, #c6c1b8) 32%, #f2efe9) 0%,
-    color-mix(in srgb, var(--kod-icon-hue, #c6c1b8) 14%, #c6c1b8) 55%,
-    transparent 100%
+  background-color: color-mix(in srgb, var(--kod-icon-hue, #c6c1b8) 42%, #f2efe9);
+  background-image: var(--kod-rose);
+  background-repeat: no-repeat;
+  background-size: 145% auto;
+  background-position: center 8%;
+  background-blend-mode: luminosity;
+  -webkit-mask-image: radial-gradient(
+    ellipse 70% 120% at 50% 0%,
+    #000 6%,
+    #000 38%,
+    transparent 76%
   );
-  -webkit-mask-image: var(--kod-rose);
-  mask-image: var(--kod-rose);
-  -webkit-mask-mode: luminance;
-  mask-mode: luminance;
-  -webkit-mask-size: 145% auto;
-  mask-size: 145% auto;
-  -webkit-mask-position: center 8%;
-  mask-position: center 8%;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  filter: blur(4px) contrast(1.55);
+  mask-image: radial-gradient(
+    ellipse 70% 120% at 50% 0%,
+    #000 6%,
+    #000 38%,
+    transparent 76%
+  );
+  filter: blur(5px) contrast(1.65) brightness(1.08);
   mix-blend-mode: screen;
-  opacity: 0.78;
+  opacity: 0.86;
   transform: scaleY(0.42);
   transform-origin: top center;
   pointer-events: none;

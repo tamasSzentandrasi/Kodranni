@@ -385,6 +385,7 @@
   --kod-end-w: 3.1rem;
   --kod-well: rgba(4, 5, 6, 0.9);
   --kod-well-mid: rgba(4, 5, 6, 0.62);
+  --kod-knot: 0.52;
   appearance: none;
   -webkit-appearance: none;
   box-sizing: border-box;
@@ -419,6 +420,7 @@
   letter-spacing: 0.02em;
   white-space: nowrap;
   vertical-align: middle;
+  text-decoration: none;
   text-shadow:
     0 0 3px #000,
     0 1px 2px #000,
@@ -442,6 +444,8 @@
   z-index: 1;
   background-size: 100% 100%;
   background-repeat: no-repeat;
+  opacity: var(--kod-knot);
+  transition: opacity 0.14s ease;
 }
 
 .kod-widget__btn::before,
@@ -1029,27 +1033,29 @@
 .kod-btn:focus-visible {
   outline: none;
   color: #fff8f0;
+  text-decoration: none;
   opacity: 1;
   --kod-well: rgba(4, 5, 6, 0.42);
   --kod-well-mid: rgba(4, 5, 6, 0.18);
+  --kod-knot: 1;
   filter:
-    drop-shadow(1px 0 0 rgba(242, 239, 233, 0.95))
-    drop-shadow(-1px 0 0 rgba(242, 239, 233, 0.95))
-    drop-shadow(0 1px 0 rgba(242, 239, 233, 0.95))
-    drop-shadow(0 -1px 0 rgba(242, 239, 233, 0.95))
-    drop-shadow(0 0 10px rgba(242, 239, 233, 0.5));
+    drop-shadow(0 0 5px rgba(242, 239, 233, 0.82))
+    drop-shadow(0 0 14px rgba(242, 239, 233, 0.5))
+    drop-shadow(0 0 28px rgba(242, 239, 233, 0.28));
 }
 
 .kod-widget__btn[aria-pressed='true'],
 .kod-btn[aria-pressed='true'],
 .kod-btn:active {
   color: #fff8f0;
+  text-decoration: none;
   opacity: 1;
   --kod-well: rgba(12, 10, 8, 0.28);
   --kod-well-mid: rgba(12, 10, 8, 0.08);
+  --kod-knot: 1;
   filter:
-    drop-shadow(0 0 8px rgba(242, 239, 233, 0.65))
-    drop-shadow(0 0 20px rgba(242, 239, 233, 0.32));
+    drop-shadow(0 0 8px rgba(242, 239, 233, 0.7))
+    drop-shadow(0 0 22px rgba(242, 239, 233, 0.38));
   box-shadow: none;
 }
 
@@ -1442,6 +1448,7 @@
   --kod-corners: none;
   --kod-well: rgba(4, 5, 6, 0.9);
   --kod-well-mid: rgba(4, 5, 6, 0.62);
+  --kod-knot: 0.52;
   appearance: none;
   box-sizing: border-box;
   position: relative;
@@ -1479,6 +1486,8 @@
   z-index: 1;
   background-size: 100% 100%;
   background-repeat: no-repeat;
+  opacity: var(--kod-knot);
+  transition: opacity 0.14s ease;
 }
 .kod-step-flow__nav button::before {
   left: 0;
@@ -1499,12 +1508,11 @@
   opacity: 1;
   --kod-well: rgba(4, 5, 6, 0.42);
   --kod-well-mid: rgba(4, 5, 6, 0.18);
+  --kod-knot: 1;
   filter:
-    drop-shadow(1px 0 0 rgba(242, 239, 233, 0.95))
-    drop-shadow(-1px 0 0 rgba(242, 239, 233, 0.95))
-    drop-shadow(0 1px 0 rgba(242, 239, 233, 0.95))
-    drop-shadow(0 -1px 0 rgba(242, 239, 233, 0.95))
-    drop-shadow(0 0 10px rgba(242, 239, 233, 0.5));
+    drop-shadow(0 0 5px rgba(242, 239, 233, 0.82))
+    drop-shadow(0 0 14px rgba(242, 239, 233, 0.5))
+    drop-shadow(0 0 28px rgba(242, 239, 233, 0.28));
 }
 .kod-step-flow__nav button:disabled {
   opacity: 0.35;
