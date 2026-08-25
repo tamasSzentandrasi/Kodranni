@@ -20,35 +20,40 @@
   align-self: stretch;
 }
 
-/* Moonlight thrown by THIS rose: luminance of the glass as a floor-cast. */
+/* Rose + its thrown light + the title share one grid: window, then pool. */
+.kod-page-title:has(.kod-page-title__rose) {
+  display: grid;
+  justify-items: center;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    'rose'
+    'pool';
+}
+
+.kod-page-title:has(.kod-page-title__rose) .kod-page-title__rose {
+  grid-area: rose;
+}
+
+/* The rose’s own glass, flattened — not a silver remix of chapter hue.
+ * Height is the layout box (scaleY would leave a void under the window). */
 .kod-page-title:has(.kod-page-title__rose)::after {
   content: '';
+  grid-area: pool;
   display: block;
-  width: min(26rem, 90%);
-  height: 6rem;
-  margin: 1.4rem auto -0.4rem;
-  background: radial-gradient(
-    ellipse 115% 135% at 50% 0%,
-    color-mix(in srgb, var(--kod-icon-hue, #c6c1b8) 32%, #f2efe9) 0%,
-    color-mix(in srgb, var(--kod-icon-hue, #c6c1b8) 14%, #c6c1b8) 52%,
-    transparent 86%
-  );
-  -webkit-mask-image: var(--kod-rose);
-  mask-image: var(--kod-rose);
-  -webkit-mask-mode: luminance;
-  mask-mode: luminance;
-  -webkit-mask-size: 145% auto;
-  mask-size: 145% auto;
-  -webkit-mask-position: center 8%;
-  mask-position: center 8%;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  filter: blur(4px) contrast(1.55);
+  width: min(24rem, 88%);
+  height: 3.35rem;
+  margin: -0.2rem auto 0;
+  background-image: var(--kod-rose);
+  background-repeat: no-repeat;
+  background-size: 150% auto;
+  background-position: center 20%;
+  filter: blur(9px) saturate(1.22) brightness(1.22);
   mix-blend-mode: screen;
-  opacity: 0.78;
-  transform: scaleY(0.48);
-  transform-origin: top center;
+  opacity: 0.74;
   pointer-events: none;
+  z-index: 0;
+  -webkit-mask-image: radial-gradient(ellipse 92% 90% at 50% 28%, #000 18%, #000 42%, transparent 78%);
+  mask-image: radial-gradient(ellipse 92% 90% at 50% 28%, #000 18%, #000 42%, transparent 78%);
 }
 
 .kod-page-title:not(:has(.kod-page-title__rose))::after {
@@ -82,6 +87,18 @@
   z-index: 0;
 }
 
+/* Seal-ring as the oculus — outside the painting, so the JPEG does not shrink. */
+.kod-page-title__rose::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: var(--kod-seal-ring) center / contain no-repeat;
+  opacity: 0.9;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.7));
+}
+
 .kod-page-title__rose img {
   position: relative;
   z-index: 1;
@@ -101,6 +118,17 @@
   min-width: 0;
   width: fit-content;
   max-width: 100%;
+}
+
+.kod-page-title:has(.kod-page-title__rose) .kod-page-title__text {
+  grid-area: pool;
+  align-self: start;
+  z-index: 2;
+  padding: 0.35rem 0.85rem 0.2rem;
+  text-shadow:
+    0 0 14px #050505,
+    0 1px 2px #050505,
+    0 0 36px rgba(5, 5, 5, 0.85);
 }
 
 .kod-page-title__kicker {
@@ -321,13 +349,31 @@ a.kod-page-title__kicker:focus-visible {
 
 .sidebar-content a[href] .kod-sidebar-icon {
   flex-shrink: 0;
-  width: 1.4rem;
-  height: 1.4rem;
-  display: inline-block;
+  width: 1.55rem;
+  height: 1.55rem;
+  display: inline-grid;
+  place-items: center;
   vertical-align: middle;
+  border-radius: 50%;
+  background:
+    var(--kod-btn-round) center / 118% 118% no-repeat,
+    #0a0c10;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--kod-silver) 18%, transparent);
+}
+
+.sidebar-content a[href] .kod-sidebar-icon::after {
+  content: '';
+  width: 0.92rem;
+  height: 0.92rem;
   background-color: var(--kod-icon-hue, var(--kod-silver));
   -webkit-mask: var(--kod-icon-mask) center / contain no-repeat;
   mask: var(--kod-icon-mask) center / contain no-repeat;
+}
+
+.sidebar-content a[aria-current='page'] .kod-sidebar-icon {
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--kod-silver) 28%, transparent),
+    0 0 10px color-mix(in srgb, var(--kod-icon-hue, var(--kod-silver)) 38%, transparent);
 }
 
 /* Chapter hues — wayfinding. Title rose glow + sidebar mark share the map. */
@@ -668,6 +714,27 @@ site-title img,
 header.header {
   border-bottom: 1px solid color-mix(in srgb, var(--kod-blood) 35%, #1a1414);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+}
+
+/* Search — iron field, not a rounded pill */
+site-search button,
+header.header site-search button,
+.header site-search > button {
+  border-radius: 0 !important;
+  border: 1px solid var(--kod-frame, #3a3330) !important;
+  background: #0c1016 !important;
+  color: var(--kod-silver) !important;
+  box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.4) !important;
+}
+
+site-search button:hover,
+header.header site-search button:hover,
+.header site-search > button:hover,
+site-search button:focus-visible,
+header.header site-search button:focus-visible {
+  border-color: var(--kod-frame-tick, #6a6560) !important;
+  color: var(--kod-silver-bright) !important;
+  outline: none !important;
 }
 
 /* Site logo mark */

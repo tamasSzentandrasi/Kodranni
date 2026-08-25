@@ -6,6 +6,8 @@ Kodranni assumes **automation** so hybrid play stays immersive: one living recor
 
 **Status (2026-08):** **This repository is the product entry** (Guidebook + bot + install/setup). A **campaign** is a *spawned public presentation instance*. **SoT + private data on ST machine.** Live + archive campaign UI = **Astro + Guidebook design system** (Starlight remains Guidebook-only). **Discord and Fluxer both from P0.** Approvals = **buttons**. **Tests first-class.** No throwaway midstep UIs.
 
+Visual + ST-desk lock (2026-08-25): [`visual-lock.md`](./visual-lock.md). Archive is a read-only twin of the live hall/sheets (same Find / wayfinding, no writes). Storyteller web edit extends the existing bot-issued `kod_setup` cookie — not a new login, not `kod_edit` for community writes. Mid-scene rolls, Harm, and request Approve cards stay on the table bot.
+
 Highest principles: **clarity**, **intuitiveness**, **one shared source of truth per community**, **platform-native UX first**, **zero always-on SaaS by default**.
 
 ---

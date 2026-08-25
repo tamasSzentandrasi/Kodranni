@@ -123,14 +123,14 @@ Living checklist. Author marks: **✅** pursue · **🚫** do not pursue · **�
 | Omen wording | A Consequence is a **genuine side-effect**. It cannot rewrite Marks. No theatrical “what the night brought.” |
 | Practice award (opposed) | Exertion spent → **+ Marks difference** on win **and** on loss. Loss also **+2**, Exertion or not. They stack. Margin 0 = not lost, no automatic award. |
 | Practice award (unopposed) | More failures than Marks → **+2** (Exertion free). Exertion spent → **+ floor(Marks ÷ 2)** in addition. |
-| Interactive chrome | Iron-silver, not blood hover. Blood stays on identity surfaces (runes, example boxes, ST lanes, current sidebar). |
+| Interactive chrome | Iron + glass, not blood hover. Blood stays on identity surfaces (runes, example boxes, ST lanes, current sidebar). Living lock: [`visual-lock.md`](./visual-lock.md). |
 | Scrollbar | Simple fuller + lozenge. Pewter hover. Never pink / blood. |
 | Prev / next | Folio plates, corner ticks, silver hover. |
 | Heading IDs | Auto slug only. No `{#slug}` in source. |
 | Medallions | Artisan / Trickster / Sage remakes **accepted**. |
-| Identity chrome | Tables, example boxes, `hr` runes, ST lanes stay **blood**. Interactive widgets stay iron-silver. |
+| Identity chrome | Tables, example boxes, `hr` runes, ST lanes stay **blood**. Interactive widgets stay iron + glass (not blood hover). |
 | Social thumbnail | Site-wide `og.jpg` (1200×630 falcon card) on Guidebook pages and the portal. |
-| Ornament | Soot/smoke plates. Thin forged L-straps (rivet + inner scroll). Title stamp: no straps. Title fade follows the word. |
+| Ornament | Soot/smoke plates. Thin forged L-straps (rivet + inner scroll). Chapter title is a frozen rose in an iron oculus; floor-cast keeps the rose’s own colour. |
 
 ### Still open
 

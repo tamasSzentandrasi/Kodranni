@@ -52,13 +52,13 @@ Each deployment binds platform credentials, **guild / server ID** (or Fluxer equ
 
 Bots are thin clients over the community store. Bare slash-only bots are not enough: player-facing UI must make Foundation, Skill, tier, Exertion, Echo/Myth tags, and approvals **easy to select**, using each platform’s built-in strengths first (menus, buttons for Storyteller **approve/deny**, reply threads) — researched, innovative, high-quality UX, not a wall of flags.
 
-Between and during sessions, players also use a **pretty shared view** of sheets and the community tracker: a **live** URL while the Storyteller’s session is running, and a **public archive** URL (campaign presentation site) when it is not. Platform account maps and full audit trails stay on the Storyteller’s machine — not on the public site.
+Between and during sessions, players also use a **pretty shared view** of sheets and the community tracker: a **live** URL while the Storyteller’s session is running, and a **public archive** URL (campaign presentation site) when it is not. Live and archive are the **same face** — Find, hall, and sheets — except the archive does not run automation and does not accept changes. Platform account maps and full audit trails stay on the Storyteller’s machine — not on the public site. During a live session the Storyteller can change the living record from that same view (signed link from the table), as well as from the table itself.
 
 ----------
 
 ## Design Principles
 
-1. **Storyteller authority** — Lasting mutations require Storyteller approval where the rules say so (Hierarchy, inventory, and similar). Approvals use **Storyteller-role buttons** (approve / deny) on the request message.  
+1. **Storyteller authority** — Lasting mutations require Storyteller approval where the rules say so (Hierarchy, inventory, and similar). On the table, approvals use **Storyteller-role buttons** (approve / deny) on the request message. On the live hall and sheets, the Storyteller’s signed desk is the same authority (add people, correct Fortunes, edit sheets) when the table is not mid-scene.  
 2. **Fiction first, then instruction** — In narration the Storyteller names Foundation and Skill (or Foundation alone for Primitive). The **player** initiates the roll instruction with that agreed configuration. Automation already knows the mapped user, their character, Exertion, Echoes (selectable), and community Myths that can be tagged.  
 3. **Die tier is declared** — Safe default **d8**; ultimate choice is the Storyteller’s via [Advantage and Disadvantage](/marks-and-tiers/#advantage-and-disadvantage).  
 4. **Infer when safe; field when narrative** — States such as Decadence or over-capacity can be inferred during interactions to cut admin overhead. **Armour** and **Reputation** still need explicit fields: their presence is resolved in fiction before any ratio is applied. Hierarchy **tiers** are full ladders, not only Outsider/Ruler; relative tier difference is established narratively, then applied in instructions.  

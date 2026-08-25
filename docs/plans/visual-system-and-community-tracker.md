@@ -4,10 +4,12 @@
 |-------|--------|
 | **Author** | _TBD_ |
 | **Date** | 2026-08-23 |
-| **Status** | Approved |
+| **Status** | **Historical.** Chrome and several product sentences are **superseded** by [`visual-lock.md`](./visual-lock.md) (2026-08-25). Keep this file for jobs, store fields, and the PR history of the 23 Aug programme. Do not implement new chrome from this document. |
 | **Surfaces** | Landing (`public-root/index.html`), community tracker, character sheets, creation docks |
-| **Source of visual grammar** | Guidebook ornament lock (2026-08-18 chrome, 2026-08-22 plates) — **not** a finished pinnacle; **yes** the grammar other surfaces inherit |
-| **Related** | [`docs/plans/starlight-guidebook.md`](docs/plans/starlight-guidebook.md), [`src/content/docs/automation.md`](src/content/docs/automation.md), [`docs/plans/automation-architecture.md`](docs/plans/automation-architecture.md) |
+| **Source of visual grammar** | **Was** Guidebook iron-silver plates (2026-08-18 / 08-22). **Now** iron structure + glass light + blood identity — see [`visual-lock.md`](./visual-lock.md). |
+| **Related** | [`visual-lock.md`](./visual-lock.md), [`docs/plans/starlight-guidebook.md`](docs/plans/starlight-guidebook.md), [`src/content/docs/automation.md`](src/content/docs/automation.md), [`docs/plans/automation-architecture.md`](docs/plans/automation-architecture.md) |
+
+**Superseded here (do not follow):** no stained-glass chrome; archive as a thinner face; play-time mutation bot-only / no ST web token; inspect drawer; Practice as a casual HUD-or-rose swap; Find as an always-on blood dock or a hidden-until-busy meta row. **Still true:** Fortune purpose; Wanting as a rite; founding as one board of five; Bellefair-only; falcon as the hall/sheet mark; Guidebook is purpose not a wireframe.
 
 ---
 
@@ -1301,12 +1303,12 @@ Staged depth: landing buttons can ship before the tracker hall; the hall visual 
 
 ## Open Questions
 
-Author lock 2026-08-23, extended the same day. All four are **Resolved**. Do not reopen.
+Author lock 2026-08-23, extended the same day. Items 1–2 still stand. Items 3–4 are **superseded** by [`visual-lock.md`](./visual-lock.md) (2026-08-25).
 
 1. **Seal-ring behind the community name — Resolved: NONE.** The falcon is already the mark. Do not add a pewter stamp.
-2. **Budget remaining-points numeral — Resolved: KEEP BLOOD NUMERAL, PEWTER BAR.** Blood as identity; fill bar and hover stay iron-silver.
-3. **Archive `fortuneMeta` — Resolved: STRIP FROM ARCHIVE.** Also strip `fortunesFoundedAt`. Live tracker may show last-change. `toPublicSnapshot()` deletes weather-log fields.
-4. **ST Fortune mutation — Resolved: PLAY-TIME BOT ONLY; FOUNDING ON THE BOARD ONCE.** Live adjust, Myth craft, and hierarchy approve stay on the table bot. **Starting Fortunes** (Campaign Setup step 9) are a one-shot founding board on the sky: live store, unfounded only, `setStartingFortunes`, then gone. No PR 9, no ST web token, no play-time delta endpoint.
+2. **Budget remaining-points numeral — Resolved: KEEP BLOOD NUMERAL, PEWTER / GLASS BAR.** Blood as identity; fill bar and hover stay iron-silver (glass field allowed).
+3. **Archive `fortuneMeta` — Historical: strip weather-log fields from the snapshot.** The archive **face** (Find, hall, sheets) is now a read-only twin of live. See `visual-lock.md`.
+4. **ST Fortune mutation — Historical: 23 Aug said bot-only.** **Now:** founding is still one-shot; later correction may be ST web via `kod_setup` as well as the table bot. See `visual-lock.md`.
 
 ---
 
