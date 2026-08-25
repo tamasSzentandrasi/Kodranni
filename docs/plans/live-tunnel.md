@@ -1,6 +1,10 @@
 # Mid-session live tunnel (Cloudflare)
 
-Players open the **live** campaign-ui while the Storyteller’s session process is running. Between sessions they use the **archive** (GitHub Pages) — not the tunnel.
+**Hosting lock:** [`infra-devsecops.md`](./infra-devsecops.md) (2026-08-25). One public hostname; archive is KV snapshot + Pages Function, not GitHub Pages and not a parked local process. Tunnel is live-only. This file’s U6 “park hostname” section is superseded.
+
+Players open the **live** campaign-ui while the Storyteller’s session process is running. Between sessions the **same hostname** serves the archive from the edge. The tunnel is down.
+
+**Current code (interim):** named-tunnel + `session end` park process, ST-supplied `cf-tunnel-token`. That is not the locked product. The rest of this file documents how the interim tunnel modes work until the kernel/edge land.
 
 ## Modes
 
@@ -97,30 +101,26 @@ Cloudflare still serves it; the name is yours.
 - Named hostnames are guessable if short; prefer long labels. Sheet tokens gate mutations without Cloudflare Access.
 - Do not put tunnel or sheet secrets in a public git repo; `~/.kodranni` is private on the ST machine.
 
-## Archive vs live
+## Archive vs live (locked)
 
-| | Live (tunnel) | Archive (Pages) |
-|--|---------------|-----------------|
-| When | Session running | Always (after publish) |
-| Writes | No (read-only UI) | No |
-| Hostname | trycloudflare **or** your domain | Pages URL |
+One hostname. DNS stays on **Cloudflare Pages** (our zone). The Function either proxies to the tunnel or serves `public.json` + the archive app.
 
-## Same hostname: live ↔ archive (U6)
+| | Live | Archive |
+|--|------|---------|
+| When | Session running (KV `origin` set) | Else (laptop off, crash, session ended) |
+| Origin | Tunnel → host `127.0.0.1` | KV snapshot + product archive app |
+| Tunnel process | Up | **Down** |
+| Writes | Sheet/ST tokens on the host; unsigned live is read-only | None |
 
-Public host (e.g. `https://kodranni.cosimomedia.com`) should keep answering when the table is dark.
+See [`infra-devsecops.md`](./infra-devsecops.md) §3.2 for the presence protocol.
 
-| Mode | What serves the hostname |
-|------|---------------------------|
-| **Session up** | Named tunnel → live Astro on `live_bind` |
-| **Session end** (default for named) | Publish `archive/`, serve it on the same `live_bind`, **keep or restart** the named tunnel → same URL shows the snapshot |
+## Same hostname — current code (interim, do not extend)
+
+Until the edge Function exists, `session end` (named default) still **parks**: local static `archive/` + keep `cloudflared` up. That requires the ST machine to stay on. Do not add features on this path. `--no-park` is the closer analogue to the lock (tunnel dies; hostname goes dark until the Function exists).
 
 ```bash
-npm run kodranni -- session end --slug vardmark          # park hostname (named default)
-npm run kodranni -- session end --slug vardmark --no-park  # tear down tunnel too
-npm run kodranni -- campaign publish --slug vardmark       # archive only
+npm run kodranni -- campaign publish --slug vardmark       # local archive/ only (interim)
+npm run kodranni -- session end --slug vardmark            # still parks (interim)
+npm run kodranni -- session end --slug vardmark --no-park  # tunnel down
 npm run kodranni -- session start --slug vardmark --tunnel --bot --force
 ```
-
-Cloudflare DNS for that hostname should stay pointed at the **tunnel**. Do not also attach Pages to the same hostname while the tunnel owns it — Pages push is optional later as a cold standby.
-
-Session end should publish the archive; named setups park the hostname on that archive until the next `session start --force`.

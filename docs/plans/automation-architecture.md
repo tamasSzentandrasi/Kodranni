@@ -8,6 +8,8 @@ Kodranni assumes **automation** so hybrid play stays immersive: one living recor
 
 Visual + ST-desk lock (2026-08-25): [`visual-lock.md`](./visual-lock.md). Archive is a read-only twin of the live hall/sheets (same Find / wayfinding, no writes). Storyteller web edit extends the existing bot-issued `kod_setup` cookie — not a new login, not `kod_edit` for community writes. Mid-scene rolls, Harm, and request Approve cards stay on the table bot.
 
+**Hosting / DevSecOps lock (2026-08-25):** [`infra-devsecops.md`](./infra-devsecops.md). One public hostname; archive = KV `public.json` + product archive app on Cloudflare Pages; no campaign git repo in v1; park-process is not the archive. This document’s L2, L5, L6, O12, D3, D4, campaign-repo wizard, and two-URL split are **superseded** there. Local SQLite as SoT, session-scoped automation, and privacy split are not.
+
 Highest principles: **clarity**, **intuitiveness**, **one shared source of truth per community**, **platform-native UX first**, **zero always-on SaaS by default**.
 
 ---
@@ -155,7 +157,7 @@ From this product (clone or release):
 ```bash
 # once on ST machine
 npm install   # or packaged installer later
-kodranni doctor              # node, git, gh auth checks
+kodranni emissary            # readiness (not “doctor”; git/gh not required)
 kodranni campaign create     # interactive wizard
 kodranni session start       # run bot + live renderer
 ```
@@ -341,7 +343,7 @@ Because the bot **must** modify the pretty view mid-session **faster than git ho
 ```text
 apps/
   guidebook/           # Astro + Starlight (may remain at repo root initially)
-  cli/                 # doctor, campaign create, session start/end, publish
+  cli/                 # emissary, campaign init, session start/end, publish
   bot-runtime/         # session loop; Discord + Fluxer adapters
   campaign-ui/         # Astro live SSR + static export (sheets, tracker)
 packages/
@@ -589,11 +591,11 @@ Use this as the pre-implementation gate. **Locked** = do not re-litigate without
 | ID | Decision |
 |----|----------|
 | L1 | This repo is the product entry (Guidebook + automation + CLI). |
-| L2 | Campaign = spawned **public presentation** repo + local private SoT. |
+| L2 | ~~Campaign = spawned **public presentation** repo + local private SoT.~~ **Superseded (I2):** local SoT + KV snapshot + our Pages archive app. No campaign git repo in v1. See [`infra-devsecops.md`](./infra-devsecops.md). |
 | L3 | SoT is **local only**; never Git/Pages as mechanical authority. |
 | L4 | Bot runs **session-scoped** on ST machine; no ST → no automation. |
-| L5 | **Live** pretty UI from ST process; optional **hashed tunnel URL** (no custom domain). |
-| L6 | **Public archive** URL via campaign repo → GitHub Pages; redacted state only. |
+| L5 | ~~**Live** pretty UI from ST process; optional **hashed tunnel URL** (no custom domain).~~ **Superseded (I1/I4):** live UI from the host process, reached through a tunnel **behind one public hostname**. |
+| L6 | ~~**Public archive** URL via campaign repo → GitHub Pages; redacted state only.~~ **Superseded (I3/I4):** redacted `public.json` in KV; archive app shipped with the product; same hostname as live. |
 | L7 | Private on ST PC: tokens, MemberMap, full audit, bindings. |
 | L8 | Approve / deny / oppose primary UX = **buttons**, not reactions. |
 | L9 | Hexagonal: pure domain, app services, platform adapters. |
@@ -625,7 +627,7 @@ Use this as the pre-implementation gate. **Locked** = do not re-litigate without
 | O9 | **Schema versioning** | `schema_version` in store + migrations folder from day one | Avoid paint-in corner |
 | O10 | **Single-flight session** | Second `session start` on same slug fails unless `--force` | Prevent dual writers |
 | O11 | **Platforms** | **LOCKED L19:** Discord **and** Fluxer both implemented against ChatPort from the start | Product promise |
-| O12 | **Repo naming** | `kodranni-<slug>` public under ST user; slug kebab-case validated | Predictable Pages URL |
+| O12 | **Repo naming** | ~~`kodranni-<slug>` public under ST user~~ **Dropped (I2).** Optional git export later, not v1. | No ST GitHub account required |
 
 ### 17.3 Open — decide early P1 (shape UX hard)
 
@@ -649,10 +651,10 @@ Use this as the pre-implementation gate. **Locked** = do not re-litigate without
 
 | ID | Topic | Notes |
 |----|-------|-------|
-| D1 | Packaged binary / installer | `npm`/clone fine for pilots |
+| D1 | Packaged binary / installer | **In scope** (`infra-devsecops.md` step 6). `npm`/clone remains the author/dev lane. |
 | D2 | Co-ST / handoff protocol | Single writer only until demanded |
-| D3 | Named stable tunnel hostname | Optional: ST domain via `tunnel_mode=named`; default remains quick tunnel |
-| D4 | Custom domain for campaign Pages | Optional ST concern |
+| D3 | Named stable tunnel hostname | **Superseded (I1):** one hostname on our zone; ST does not create tunnels. Quick vs named is an implementation detail. |
+| D4 | Custom domain for campaign Pages | **Superseded (I1):** one hostname is v1. ST-owned domain remains later. |
 | D5 | Exhaustive Fluxer edge-case matrix beyond ChatPort | Both adapters ship P0; deep gap doc can grow |
 | D6 | Encrypted audit at rest | Optional later |
 | D7 | i18n of bot + live UI | English first |
@@ -660,7 +662,7 @@ Use this as the pre-implementation gate. **Locked** = do not re-litigate without
 | D9 | Litestream / remote private backup | Document manual folder backup |
 | D10 | Multi-campaign bot process | One campaign per process first; CLI selects slug |
 | D11 | Visual art direction peak | Structure + solid CSS first; craft pass P4 |
-| D12 | OAuth device flow for gh without `gh` CLI | Prefer `gh auth` in doctor |
+| D12 | OAuth device flow for gh without `gh` CLI | **Dropped with campaign git repo (I2).** ST GitHub is not v1. Readiness is **emissary**, not doctor. |
 
 ### 17.5 Quality checklist — easy to forget
 
@@ -687,8 +689,8 @@ Use this as the pre-implementation gate. **Locked** = do not re-litigate without
 - [ ] Graceful shutdown: flush debounce publish, close tunnel, disconnect gateway
 - [ ] Clock: store UTC; display local optional
 - [ ] “As of” on live and archive
-- [ ] Doctor: node version, git, gh auth, cloudflared optional, token present, guild reachable
-- [ ] Backup docs: copy `~/.kodranni/campaigns/<slug>/`
+- [ ] Emissary: kernel, device key, Function reachable, origin vs session, Discord bound, tunnel child iff live, last snapshot time
+- [ ] Backup: copy XDG campaign data dir (today `~/.kodranni/campaigns/<slug>/`)
 - [ ] Upgrade path: product version vs store schema_version
 
 **Security / privacy**

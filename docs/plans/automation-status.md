@@ -1,6 +1,6 @@
 # Automation status, process lanes & backlog
 
-**Updated:** 2026-08-22
+**Updated:** 2026-08-25
 
 ---
 
@@ -13,7 +13,7 @@
 | **U3** | Wanting + who-we-see | **Shipped** (polish continues on sheet) |
 | **U4** | Echoes / Inventory / Traits editors | **Shipped** (UX craft ongoing) |
 | **U5** | Discord Intent∥free-roll, autocomplete, confirm, Link buttons, remove `kod-*` | **Shipped** — restart bot to re-register slash cmds |
-| **U6** | Archive publish + same-hostname park | **MVP shipped** — Pages push later |
+| **U6** | Archive publish + same-hostname park | **Superseded** — park-process is not the archive. See [`infra-devsecops.md`](./infra-devsecops.md) |
 
 Sheet creation UX **theorycraft** (highest visual bar) is queued **after U6** (or after a short QoL lane if U6 waits on ops).
 
@@ -28,10 +28,10 @@ Use **one active lane** at a time. Park ideas in the backlog; do not start a sec
 | **A · Table (Discord)** | Rolls, Intent, Harm, bot UX | Done for U5; bugfixes only until U6 |
 | **B · Sheet craft** | Creation UX, Wanting, inventory, ink fields | Theorycraft after U6; hotfixes anytime |
 | **C · Session ops** | Secrets auto-fill, **one CLI supervisor** (`session start --tunnel --bot`), logs | **Active QoL now** |
-| **D · Archive / hostname** | U6 publish + CF failover | Next major after C supervisor MVP |
+| **D · Archive / hostname** | One hostname + KV snapshot; no campaign git repo | Locked: [`infra-devsecops.md`](./infra-devsecops.md) |
 | **E · Debt / polish** | Explicit debt tickets below | Pull between lanes, not mid-feature |
 
-**North star for C:** one CLI supervisor process that owns live UI + tunnel + bot as **child processes**, multiplexed logs, one Ctrl+C stops all. Still separate OS processes (correct isolation) — not one Node mega-process.
+**North star for C (updated 2026-08-25):** one production host process (store + campaign-ui + Discord handler). `cloudflared` is the only extra child, session-scoped. systemd --user on Linux. The current CLI spawning `astro dev` + `npm -w` bot + PID files is interim — see [`infra-devsecops.md`](./infra-devsecops.md) I6.
 
 ---
 
@@ -67,15 +67,15 @@ Tunnel **token is never written** into `campaign.toml`.
 5. Avatar upload — retest with edit link (client hardened)
 6. Confirm: Echo select = named Echoes from sheet (not boolean)
 7. Group Echo stakeholders seeded from community hierarchy
-8. Archive → real Pages deploy (park process is interim only)
+8. Archive → one hostname + KV snapshot (park process is not the product) — [`infra-devsecops.md`](./infra-devsecops.md)
 9. `/exertion-reclaim` (or ST tool) with exact amounts
 10. README clarity rewrite (again) after ops settle
 
-### P1 — U6
+### P1 — U6 / infra (see infra-devsecops.md)
 
-5. `packages/publish` redacted snapshot → campaign Pages
-6. Session-end force publish
-7. One-hostname CF failover runbook (tunnel up → live; down → archive)
+5. `public.json` + archive-mode campaign-ui (same components); KV snapshot, not a second HTML site
+6. Session-end publish to KV; presence origin=null (not park-process)
+7. One hostname: Pages Function proxy ↔ tunnel; fail-closed to snapshot
 
 ### P2 — sheet creation theorycraft
 
@@ -117,5 +117,6 @@ npm run kodranni -- campaign seed-demo --force   # or sync-defaults only
 | Intent ∥ free-roll | Equal paths; confirm shared; Echo = agreed apply |
 | Foundation ≠ guiding | Common; all 9 on confirm |
 | Hexagonal | Adapters → `packages/app`; CLI = ST ops only |
-| Live access | CF quick or named; secrets for token/hostname |
-| Session shape | **Supervisor CLI** (live+tunnel+bot children), not one Node blob |
+| Live access | One hostname; tunnel behind Pages Function ([`infra-devsecops.md`](./infra-devsecops.md) I1/I4). ST-supplied named-tunnel secrets are interim. |
+| Session shape | One production process + session-only `cloudflared` (I6). Current npm-child supervisor is interim. |
+| Archive | KV `public.json` + product archive app. No campaign git repo (I2). Park-process is not the archive. |
