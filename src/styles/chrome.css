@@ -24,14 +24,14 @@
 .kod-page-title:has(.kod-page-title__rose)::after {
   content: '';
   display: block;
-  width: min(22rem, 86%);
-  height: 4.4rem;
-  margin: 0.05rem auto -1.25rem;
+  width: min(30rem, 94%);
+  height: 7.2rem;
+  margin: 1.1rem auto -0.4rem;
   background: radial-gradient(
-    ellipse 78% 100% at 50% 0%,
+    ellipse 115% 135% at 50% 0%,
     color-mix(in srgb, var(--kod-icon-hue, #c6c1b8) 32%, #f2efe9) 0%,
-    color-mix(in srgb, var(--kod-icon-hue, #c6c1b8) 14%, #c6c1b8) 42%,
-    transparent 78%
+    color-mix(in srgb, var(--kod-icon-hue, #c6c1b8) 14%, #c6c1b8) 52%,
+    transparent 86%
   );
   -webkit-mask-image: var(--kod-rose);
   mask-image: var(--kod-rose);
@@ -46,7 +46,7 @@
   filter: blur(4px) contrast(1.55);
   mix-blend-mode: screen;
   opacity: 0.78;
-  transform: scaleY(0.42);
+  transform: scaleY(0.52);
   transform-origin: top center;
   pointer-events: none;
 }
