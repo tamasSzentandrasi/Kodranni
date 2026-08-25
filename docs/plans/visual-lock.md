@@ -71,12 +71,8 @@ Type: Bellefair 400 only; `font-synthesis: none`. Guidebook root ~118.75%; campa
 
 Freeze the JPEGs and `chapterRoses` in `src/lib/chapter-icons.ts`.
 
-- Rose sits in an **oculus** (existing seal-ring as the stone/lead that holds the painting). Do not shrink the picture to make room.
-- Floor-cast **keeps the rose’s own colour**. Do not remix it into silver.
-- Kicker + title sit in that pool of light if it can be made *very well*; if a chapter clips the painting, stack the title **under** the cast. Never regenerate the JPEG.
-- Prose column after the Futhark `hr` remains black / silver / blood.
-- Woodcut sidebar icons stay (they read at 1.4rem); each sits in a small glass roundel. Current page: blood identity + the roundel lights.
-- Starlight search: iron field, not a rounded pill.
+**Book chrome is the 0cfdb39 rose frontispiece.** A 2026-08-25 oculus / title-in-cast / sidebar-roundel / search-field / pagination-cartouche pass was reverted in full — it made the book worse. Do not retry those surfaces without a peak-effort composition that is *visibly better* than that commit in the browser, chapter by chapter. Leave the roses, floor-cast, sidebar woodcuts, search, and prev/next **alone** until then.
+
 - `kod-breath` is illustration, not a second title. First breath after the first divider.
 
 No new Markdown class. Widget contract unchanged. Product surfaces do **not** wear chapter roses; the falcon is the hall/sheet mark.

@@ -448,14 +448,12 @@
 
 .kod-fortune-pillar__name {
   font-family: var(--kod-font-display);
-  font-size: 1.02rem;
-  letter-spacing: 0.06em;
+  font-size: 1.38rem;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--kod-silver-bright);
   margin: 0 0 0.45rem;
   line-height: 1.15;
-  max-width: 100%;
-  overflow-wrap: anywhere;
 }
 
 .kod-fortune-pillar__blurb {
