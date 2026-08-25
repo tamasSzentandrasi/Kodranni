@@ -20,18 +20,34 @@
   align-self: stretch;
 }
 
-/* Afterglow under the title — moonlight through glass, broken panes, thin leads. */
-.kod-page-title::after {
+/* Moonlight thrown by THIS rose: luminance of the glass as a floor-cast. */
+.kod-page-title:has(.kod-page-title__rose)::after {
   content: '';
   display: block;
-  width: min(28rem, 98%);
-  height: 5.1rem;
-  margin: 0.15rem auto -1.45rem;
-  background: var(--kod-title-cast) center 18% / 115% 170% no-repeat;
-  -webkit-mask-image: radial-gradient(ellipse 58% 100% at 50% 0%, #000 12%, transparent 72%);
-  mask-image: radial-gradient(ellipse 58% 100% at 50% 0%, #000 12%, transparent 72%);
+  width: min(22rem, 86%);
+  height: 4.4rem;
+  margin: 0.05rem auto -1.25rem;
+  background: linear-gradient(to bottom, #f2efe9 0%, #c6c1b8 55%, transparent 100%);
+  -webkit-mask-image: var(--kod-rose);
+  mask-image: var(--kod-rose);
+  -webkit-mask-mode: luminance;
+  mask-mode: luminance;
+  -webkit-mask-size: 145% auto;
+  mask-size: 145% auto;
+  -webkit-mask-position: center 8%;
+  mask-position: center 8%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  filter: blur(4px) contrast(1.55);
+  mix-blend-mode: screen;
   opacity: 0.78;
+  transform: scaleY(0.42);
+  transform-origin: top center;
   pointer-events: none;
+}
+
+.kod-page-title:not(:has(.kod-page-title__rose))::after {
+  content: none;
 }
 
 .kod-page-title__rose {

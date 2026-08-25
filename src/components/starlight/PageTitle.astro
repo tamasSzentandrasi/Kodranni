@@ -22,7 +22,11 @@ const parentHref = parentSlug
 	: null;
 ---
 
-<header class="kod-page-title" data-slug={slug}>
+<header
+	class="kod-page-title"
+	data-slug={slug}
+	style={roseSrc ? `--kod-rose: url("${roseSrc}")` : undefined}
+>
 	{
 		roseSrc ? (
 			<figure class="kod-page-title__rose">

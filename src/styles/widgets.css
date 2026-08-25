@@ -380,7 +380,11 @@
 .kod-btn {
   --kod-soot-size: 0.55rem;
   --kod-corners: none;
-  --kod-end-w: 1.85rem;
+  --kod-end-w: 2.65rem;
+  --kod-glass-leads:
+    repeating-linear-gradient(45deg, transparent 0 0.68rem, #050505 0.68rem 0.78rem),
+    repeating-linear-gradient(-45deg, transparent 0 0.68rem, #050505 0.68rem 0.78rem),
+    linear-gradient(180deg, rgba(198, 193, 184, 0.2), transparent 44%, rgba(0, 0, 0, 0.5));
   appearance: none;
   -webkit-appearance: none;
   box-sizing: border-box;
@@ -388,32 +392,29 @@
   isolation: isolate;
   flex: 0 0 auto;
   width: auto;
-  height: 2.7rem;
-  min-width: 8.1rem;
-  min-height: 2.7rem;
+  height: 3.05rem;
+  min-width: 9.2rem;
+  min-height: 3.05rem;
   max-width: none;
-  max-height: 2.7rem;
+  max-height: 3.05rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   border: none;
-  background-color: #0a0c10;
-  background-image: var(--kod-btn-glass-tile);
-  background-repeat: repeat-x;
-  background-size: auto 100%;
-  background-position: center;
+  background-color: #10141a;
+  background-image: var(--kod-glass-leads);
   color: var(--kod-silver-bright);
   font-family: var(--kod-font-body);
   font-size: 0.82rem;
   line-height: 1;
   margin: 0 !important; /* Starlight sibling gap would lift the first button */
-  padding: 0 2.05rem;
+  padding: 0 2.85rem;
   border-radius: 0;
   cursor: pointer;
   letter-spacing: 0.02em;
   white-space: nowrap;
   vertical-align: middle;
-  text-shadow: 0 1px 3px #000, 0 0 8px rgba(0, 0, 0, 0.85);
+  text-shadow: 0 1px 3px #000, 0 0 10px rgba(0, 0, 0, 0.9);
   clip-path: var(--kod-cartouche);
   transition: color 0.14s ease, filter 0.14s ease, box-shadow 0.14s ease;
 }
@@ -446,12 +447,12 @@
 /* Scout Marks: moonlight roundels — too small for end-knots */
 .kod-widget[data-widget='marks-ladder'] .kod-widget__btn {
   --kod-end-w: 0;
-  width: 2.85rem;
-  min-width: 2.85rem;
-  max-width: 2.85rem;
-  height: 2.85rem;
-  min-height: 2.85rem;
-  max-height: 2.85rem;
+  width: 3.15rem;
+  min-width: 3.15rem;
+  max-width: 3.15rem;
+  height: 3.15rem;
+  min-height: 3.15rem;
+  max-height: 3.15rem;
   padding: 0;
   border: none;
   border-radius: 50%;
@@ -462,7 +463,7 @@
   background-size: contain;
   background-position: center;
   font-family: var(--kod-font-display);
-  font-size: 0.92rem;
+  font-size: 0.88rem;
   letter-spacing: 0.04em;
   color: var(--kod-silver-bright);
 }
@@ -1140,7 +1141,7 @@
   height: auto;
   min-height: 2.7rem;
   max-height: none;
-  padding: 0.4rem 2.5rem;
+  padding: 0.4rem 2.9rem;
   white-space: normal;
   line-height: 1.25;
 }
@@ -1310,18 +1311,18 @@
 }
 .kod-step-flow__track .kod-widget__btn {
   --kod-end-w: 0;
-  width: 2.9rem;
-  min-width: 2.9rem;
-  max-width: 2.9rem;
-  height: 2.9rem;
-  min-height: 2.9rem;
-  max-height: 2.9rem;
+  width: 3.15rem;
+  min-width: 3.15rem;
+  max-width: 3.15rem;
+  height: 3.15rem;
+  min-height: 3.15rem;
+  max-height: 3.15rem;
   padding: 0;
   border: none;
   border-radius: 50%;
   clip-path: none;
   font-family: var(--kod-font-display);
-  font-size: 0.78rem;
+  font-size: 0.8rem;
   letter-spacing: 0.04em;
   background-color: transparent;
   background-image: var(--kod-btn-round);
@@ -1359,20 +1360,17 @@
 .kod-step-flow__nav button {
   --kod-soot-size: 0.55rem;
   --kod-corners: none;
-  --kod-end-w: 1.85rem;
+  --kod-end-w: 2.65rem;
   appearance: none;
   box-sizing: border-box;
   position: relative;
   isolation: isolate;
   margin: 0;
-  padding: 0.4rem 2.05rem;
+  padding: 0.4rem 2.85rem;
   border: none;
   border-radius: 0;
-  background-color: #0a0c10;
-  background-image: var(--kod-btn-glass-tile);
-  background-repeat: repeat-x;
-  background-size: auto 100%;
-  background-position: center;
+  background-color: #10141a;
+  background-image: var(--kod-glass-leads);
   color: var(--kod-silver-bright);
   font-family: var(--kod-font-body);
   font-size: 0.9rem;

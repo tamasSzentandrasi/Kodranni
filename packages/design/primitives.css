@@ -20,7 +20,11 @@
 .kod-btn {
   --kod-soot-size: 0.55rem;
   --kod-corners: none;
-  --kod-end-w: 1.85rem;
+  --kod-end-w: 2.65rem;
+  --kod-glass-leads:
+    repeating-linear-gradient(45deg, transparent 0 0.68rem, #050505 0.68rem 0.78rem),
+    repeating-linear-gradient(-45deg, transparent 0 0.68rem, #050505 0.68rem 0.78rem),
+    linear-gradient(180deg, rgba(198, 193, 184, 0.2), transparent 44%, rgba(0, 0, 0, 0.5));
   appearance: none;
   -webkit-appearance: none;
   box-sizing: border-box;
@@ -28,33 +32,30 @@
   isolation: isolate;
   flex: 0 0 auto;
   width: auto;
-  height: 2.75rem;
-  min-width: 8.1rem;
-  min-height: 2.75rem;
+  height: 3.05rem;
+  min-width: 9.2rem;
+  min-height: 3.05rem;
   max-width: none;
-  max-height: 2.75rem;
+  max-height: 3.05rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   border: none;
-  background-color: #0a0c10;
-  background-image: var(--kod-btn-glass-tile);
-  background-repeat: repeat-x;
-  background-size: auto 100%;
-  background-position: center;
+  background-color: #10141a;
+  background-image: var(--kod-glass-leads);
   color: var(--kod-silver-bright);
   font-family: var(--kod-font-body);
   font-size: 0.88rem;
   line-height: 1;
   margin: 0;
-  padding: 0 2.05rem;
+  padding: 0 2.85rem;
   border-radius: 0;
   cursor: pointer;
   letter-spacing: 0.02em;
   white-space: nowrap;
   vertical-align: middle;
   text-decoration: none;
-  text-shadow: 0 1px 3px #000, 0 0 8px rgba(0, 0, 0, 0.85);
+  text-shadow: 0 1px 3px #000, 0 0 10px rgba(0, 0, 0, 0.9);
   clip-path: var(--kod-cartouche);
   transition: color 0.14s ease, filter 0.14s ease, box-shadow 0.14s ease;
 }
@@ -114,7 +115,7 @@
 
 /* Wide cartouche — knots stay contain-sized; glass tile fills the bar. */
 .kod-btn--folio {
-  --kod-end-w: 2.55rem;
+  --kod-end-w: 3.1rem;
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -41,7 +41,10 @@
   --kod-btn-glass: url('./ornament/btn-glass.png');
   --kod-btn-glass-tile: url('./ornament/btn-glass-mid.png');
   --kod-btn-round: url('./ornament/btn-round.png');
-  --kod-title-cast: url('./ornament/title-cast.png');
+  --kod-glass-leads:
+    repeating-linear-gradient(45deg, transparent 0 0.68rem, #050505 0.68rem 0.78rem),
+    repeating-linear-gradient(-45deg, transparent 0 0.68rem, #050505 0.68rem 0.78rem),
+    linear-gradient(180deg, rgba(198, 193, 184, 0.2), transparent 44%, rgba(0, 0, 0, 0.5));
   --kod-plus-ring: url('./ornament/plus-ring.svg');
   --kod-fortune-vitality: url('./ornament/fortunes/vitality.png');
   --kod-fortune-cohesion: url('./ornament/fortunes/cohesion.png');
