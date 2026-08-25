@@ -24,9 +24,9 @@
 .kod-page-title:has(.kod-page-title__rose)::after {
   content: '';
   display: block;
-  width: min(30rem, 94%);
-  height: 7.2rem;
-  margin: 1.1rem auto -0.4rem;
+  width: min(26rem, 90%);
+  height: 6rem;
+  margin: 1.4rem auto -0.4rem;
   background: radial-gradient(
     ellipse 115% 135% at 50% 0%,
     color-mix(in srgb, var(--kod-icon-hue, #c6c1b8) 32%, #f2efe9) 0%,
@@ -46,7 +46,7 @@
   filter: blur(4px) contrast(1.55);
   mix-blend-mode: screen;
   opacity: 0.78;
-  transform: scaleY(0.52);
+  transform: scaleY(0.48);
   transform-origin: top center;
   pointer-events: none;
 }
