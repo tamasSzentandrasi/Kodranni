@@ -3683,11 +3683,11 @@ select.kod-ink option[value=''],
 .echo__invoke {
   margin: 0 0 0.55rem;
   padding: 0.5rem 0.65rem;
-  background: color-mix(in srgb, var(--kod-blood-deep) 35%, #0a0808);
+  background: color-mix(in srgb, #0c0a0a 70%, transparent);
   border-left: 3px solid var(--kod-blood);
   font-size: 0.98rem;
   line-height: 1.45;
-  color: #e8dcd0;
+  color: var(--kod-silver);
 }
 
 .echo__invoke-lab {
