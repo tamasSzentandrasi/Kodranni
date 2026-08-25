@@ -23,6 +23,7 @@
   --kod-end-w: 3.1rem;
   --kod-well: rgba(4, 5, 6, 0.9);
   --kod-well-mid: rgba(4, 5, 6, 0.62);
+  --kod-knot-soot: #2e3136;
   appearance: none;
   -webkit-appearance: none;
   box-sizing: border-box;
@@ -82,8 +83,11 @@
   aspect-ratio: var(--kod-end-ratio);
   pointer-events: none;
   z-index: 1;
+  background-color: var(--kod-knot-soot);
   background-size: 100% 100%;
   background-repeat: no-repeat;
+  background-blend-mode: multiply;
+  transition: background-color 0.14s ease;
 }
 
 .kod-btn::before {
@@ -109,21 +113,22 @@
 .kod-btn:focus-visible {
   outline: none;
   color: #fff8f0;
+  text-decoration: none;
   --kod-well: rgba(4, 5, 6, 0.42);
   --kod-well-mid: rgba(4, 5, 6, 0.18);
+  --kod-knot-soot: #fff;
   filter:
-    drop-shadow(1px 0 0 rgba(242, 239, 233, 0.95))
-    drop-shadow(-1px 0 0 rgba(242, 239, 233, 0.95))
-    drop-shadow(0 1px 0 rgba(242, 239, 233, 0.95))
-    drop-shadow(0 -1px 0 rgba(242, 239, 233, 0.95))
-    drop-shadow(0 0 10px rgba(242, 239, 233, 0.5));
+    drop-shadow(0 0 8px rgba(242, 239, 233, 0.55))
+    drop-shadow(0 0 16px rgba(242, 239, 233, 0.28));
 }
 
 .kod-btn[aria-pressed='true'],
 .kod-btn:active {
   color: #fff8f0;
+  text-decoration: none;
   --kod-well: rgba(12, 10, 8, 0.28);
   --kod-well-mid: rgba(12, 10, 8, 0.08);
+  --kod-knot-soot: #fff;
   filter:
     drop-shadow(0 0 8px rgba(242, 239, 233, 0.65))
     drop-shadow(0 0 20px rgba(242, 239, 233, 0.32));
@@ -205,12 +210,10 @@
   color: #fff8f0;
   --kod-well: rgba(4, 5, 6, 0.42);
   --kod-well-mid: rgba(4, 5, 6, 0.18);
+  --kod-knot-soot: #fff;
   filter:
-    drop-shadow(1px 0 0 rgba(242, 239, 233, 0.95))
-    drop-shadow(-1px 0 0 rgba(242, 239, 233, 0.95))
-    drop-shadow(0 1px 0 rgba(242, 239, 233, 0.95))
-    drop-shadow(0 -1px 0 rgba(242, 239, 233, 0.95))
-    drop-shadow(0 0 10px rgba(242, 239, 233, 0.5));
+    drop-shadow(0 0 8px rgba(242, 239, 233, 0.55))
+    drop-shadow(0 0 16px rgba(242, 239, 233, 0.28));
 }
 
 .kod-btn--blood:hover .kod-btn__title,
@@ -225,5 +228,6 @@
 .kod-btn--folio.kod-btn--blood:active,
 .kod-btn--folio.kod-btn--blood[aria-pressed='true'] {
   color: #fff8f0;
-  filter: drop-shadow(0 0 8px rgba(242, 239, 233, 0.58)) drop-shadow(0 0 18px rgba(242, 239, 233, 0.3));
+  --kod-knot-soot: #fff;
+  filter: drop-shadow(0 0 8px rgba(242, 239, 233, 0.65)) drop-shadow(0 0 20px rgba(242, 239, 233, 0.32));
 }
