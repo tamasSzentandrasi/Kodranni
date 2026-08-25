@@ -141,7 +141,7 @@ A mesélő **kockafokot** nevez a készletnek. Nincs automatikus leképezés a j
 | **Ki dönt** | A **mesélő**, minden dobáson |
 | **Halmozás** | Milyen keményen nyom a fikció, a fölények kioltják-e egymást, vagy két fokot lépnek — a mesélő döntése arra a pillanatra |
 
-A [vonások](/hu/traits/), a terep, a létszám, a páncél mint kontextus és a hírnév táplálják az ítéletet. **Nem** extra módosítók a jeleken. Nem adsz „+2-t magasságért és +1-et fedezékért.”
+A [vonások](/hu/traits/), a terep, a létszám, a páncél mint kontextus és a hírnév alakítják az ítéletet. **Nem** extra módosítók a jeleken. Nem adsz „+2-t magasságért és +1-et fedezékért.”
 
 Többoldalú kavarodásban **minden tett önmagában áll**. Az előnyt és hátrányt **annak** a tettnek a kontextusából olvasd — nem a mező átlagából. A közös nyomás a [sodráson](/hu/tide/) él.
 
@@ -153,7 +153,7 @@ A készletek három forrásból állnak össze:
 
 | Forrás | Tartomány | Szerep |
 |--------|-------|------|
-| **[Adottság](/hu/foundations/)** (Foundation) | jellemzően 1–3 (hatékony érték a [sérülés](/hu/harm/) után) | Veleszületett lehetőség; majdnem állandó |
+| **[Adottság](/hu/foundations/)** (Foundation) | jellemzően 1–3 (hatékony érték a [sérülés](/hu/harm/) után) | Ami veleszületett; majdnem állandó |
 | **[Jártasság](/hu/skills/)** (Skill) | 0–3 | Gyakorolt képesség, a szándékhoz illő |
 | **[Erőfeszítés](/hu/exertion/)** (Exertion) | 0–1 kocka (2 illő [visszhangnál](/hu/echoes/#felidézés) (Echo)) | Opcionális játékosi belefektetés |
 

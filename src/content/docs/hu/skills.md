@@ -85,7 +85,7 @@ A gyakorlat szorosan az **[erőfeszítéshez](/hu/exertion/)** kötött. A **jel
 </div>
 <div class="kod-widget__panel" data-panel-id="opposed-lost-yes" hidden>
 <p class="kod-practice-award__total"><strong>+4</strong></p>
-<p>Ugyanaz a 2–4 vereség. Erőfeszítés belefektetve, a jelek különbsége <strong>2</strong> átvált. A vereség <strong>+2</strong>-t ad. Összeadódnak: <strong>2 + 2 = 4</strong>.</p>
+<p>Ugyanaz a 2–4 vereség. Erőfeszítés belefektetve, a jelek különbsége <strong>2</strong> gyakorlattá válik. A vereség <strong>+2</strong>-t ad. Összeadódnak: <strong>2 + 2 = 4</strong>.</p>
 </div>
 <div class="kod-widget__panel" data-panel-id="opposed-tie-no" hidden>
 <p class="kod-practice-award__total"><strong>+0</strong></p>
@@ -93,7 +93,7 @@ A gyakorlat szorosan az **[erőfeszítéshez](/hu/exertion/)** kötött. A **jel
 </div>
 <div class="kod-widget__panel" data-panel-id="opposed-tie-yes" hidden>
 <p class="kod-practice-award__total"><strong>+0</strong></p>
-<p>Különbség <strong>0</strong>. Az erőfeszítés a döntetlent nem mozdítja. Nincs különbség, ami átváltson. Nincs +2.</p>
+<p>Különbség <strong>0</strong>. Az erőfeszítés a döntetlent nem mozdítja. Nincs különbség, ami gyakorlattá válhatna. Nincs +2.</p>
 </div>
 <div class="kod-widget__panel" data-panel-id="unopposed-struggle-no" hidden>
 <p class="kod-practice-award__total"><strong>+2</strong></p>
@@ -105,15 +105,15 @@ A gyakorlat szorosan az **[erőfeszítéshez](/hu/exertion/)** kötött. A **jel
 </div>
 <div class="kod-widget__panel" data-panel-id="unopposed-held-no" hidden>
 <p class="kod-practice-award__total"><strong>+0</strong></p>
-<p>4 jel, 1 kudarc — a jelek nyerik a számolást. Nincs küzdelmi jutalom. Nincs erőfeszítés, ezek a jelek nem válnak gyakorlattá.</p>
+<p>4 jel, 1 kudarc — a jelek nyerik a számolást. Nincs küzdelmi +2. Nincs erőfeszítés, ezek a jelek nem válnak gyakorlattá.</p>
 </div>
 <div class="kod-widget__panel" data-panel-id="unopposed-held-yes" hidden>
 <p class="kod-practice-award__total"><strong>+2</strong></p>
-<p>Ugyanaz a 4 jel. Erőfeszítés belefektetve. floor(4 ÷ 2) = <strong>+2</strong>. Nincs küzdelmi jutalom — a jelek már verték a kudarcokat.</p>
+<p>Ugyanaz a 4 jel. Erőfeszítés belefektetve. floor(4 ÷ 2) = <strong>+2</strong>. Nincs küzdelmi +2 — a jelek már verték a kudarcokat.</p>
 </div>
 </div>
 
-A gyakorlat küszöbök ellen gyűlik:
+A gyakorlat a következő fok küszöbéig gyűlik:
 
 | Jelenlegi jártasság | Alapküszöb |
 |---------------------|------------|
@@ -121,7 +121,7 @@ A gyakorlat küszöbök ellen gyűlik:
 | 1 → 2               | 48         |
 | 2 → 3               | 72         |
 
-Ezeket a küszöböket a jártasság uralkodó **adottsága** módosítja:
+Ezeket a küszöböket a jártasság irányító **adottsága** módosítja:
 
 | Adottság | Küszöbmódosító |
 |----------|----------------|
@@ -129,7 +129,7 @@ Ezeket a küszöböket a jártasság uralkodó **adottsága** módosítja:
 | **2** (átlagos) | Alapértékek |
 | **1** (átlag alatti) | Duplázva |
 
-A magas veleszületett lehetőség gyorsítja a tanulást. Az alacsony lassítja. Az automatizálás kezeli a gyűjtést és az emelést. A pontos gyakorlat az **élő lapon** (live character sheet) látszik. Az adapterek nem írják ki a gyakorlat mennyiségét — nézd a lapot.
+A magas veleszületett adottság gyorsítja a tanulást. Az alacsony lassítja. Az automatizálás kezeli a gyűjtést és a fokemelést. A pontos gyakorlat az **élő lapon** (live character sheet) látszik. A csevegőfelületek nem írják ki a gyakorlat mennyiségét — nézd a lapot.
 
 <figure class="kod-breath not-content">
 <img src="/scenes/practice.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
@@ -146,12 +146,12 @@ A magas veleszületett lehetőség gyorsítja a tanulást. Az alacsony lassítja
 </div>
 <div class="kod-widget__panel" data-panel-id="p1" data-step-title="Az első hajlítás">
 <p>Temur gőzöli a szarvat, és megpróbálja a reflexíj első hajlítását. A has ellenáll. Több kudarc, mint jel. Nem fektet bele erőfeszítést.</p>
-<p><strong>Temur</strong> · szembenállás nélkül állóképesség + íj- és nyílkészítés · több kudarc, mint jel · nincs erőfeszítés → <strong>+2 gyakorlat</strong> (íj- és nyílkészítés).</p>
+<p><strong>Temur</strong> · ellendobás nélkül állóképesség + íj- és nyílkészítés · több kudarc, mint jel · nincs erőfeszítés → <strong>+2 gyakorlat</strong> (íj- és nyílkészítés).</p>
 <p>Temur: <strong>2 / 24</strong>. Qara még nem dobott.</p>
 </div>
 <div class="kod-widget__panel" data-panel-id="p2" data-step-title="Az öreg leül" hidden>
 <p>Qara leül. Megnevezi az utolsó réteg hibáját, és érezteti Temurral a fában. Akarat + mentorálás, <strong>d8</strong>. Erőfeszítést fektet bele. <strong>3 jel</strong>.</p>
-<p><strong>Qara</strong> · szembenállás nélkül · erőfeszítés belefektetve · floor(3 ÷ 2) → <strong>+1 gyakorlat</strong> (mentorálás). Qara: <strong>1 / 48</strong>.</p>
+<p><strong>Qara</strong> · ellendobás nélkül · erőfeszítés belefektetve · floor(3 ÷ 2) → <strong>+1 gyakorlat</strong> (mentorálás). Qara: <strong>1 / 48</strong>.</p>
 <p>Temur még az este újra nekilát a hasnak, most erőfeszítést fektet bele. <strong>4 jel</strong> → <strong>+2 gyakorlat</strong> (íj- és nyílkészítés). Temur: <strong>4 / 24</strong>.</p>
 </div>
 <div class="kod-widget__panel" data-panel-id="p3" data-step-title="Íjazd fel" hidden>
@@ -171,7 +171,7 @@ A magas veleszületett lehetőség gyorsítja a tanulást. Az alacsony lassítja
 
 ### Romlás (csak kérésre)
 
-A jártasságok akkor veszíthetnek haladást, ha a mesélő az automatizálástól időugrás vagy hasonló narratív szakasz értékelését kéri — nem folyamatosan a háttérben.
+A jártasságok akkor veszíthetnek a haladásukból, ha a mesélő az automatizálástól időugrás vagy hasonló narratív szakasz értékelését kéri — nem folyamatosan a háttérben.
 
 **Szokványos időugrás**
 
@@ -195,12 +195,12 @@ Ugyanaz az ötös készlet, de csak:
 | 1–10 | 0 |
 | 11–20 | 1 |
 
-A fikció dönti el, *miért* ült rá a rozsda; az automatizálás csak a kért eljárást alkalmazza.
+A fikció dönti el, *miért* kopott el a jártasság; az automatizálás csak a kért eljárást alkalmazza.
 
 <aside class="kod-example">
 <p class="kod-example__scene">Temur első hajlítása csúnya. Qara tanít. Egy csendes tél után ugyanazokon a legelőkön a mesélő rövid időugrást kér az automatizálástól az elhanyagolt jártasságokra.</p>
 <ol class="kod-example__steps">
-<li><strong>Temur, szembenállás nélküli íj- és nyílkészítés:</strong> több kudarc, mint jel, nincs erőfeszítés → <strong>+2 gyakorlat</strong>.</li>
+<li><strong>Temur, ellendobás nélküli íj- és nyílkészítés:</strong> több kudarc, mint jel, nincs erőfeszítés → <strong>+2 gyakorlat</strong>.</li>
 <li><strong>Qara, mentorálás erőfeszítéssel, 3 jel:</strong> <strong>+1 gyakorlat</strong> (floor 3÷2). Temur később ugyanazon az estén, erőfeszítés, 4 jel → <strong>+2 gyakorlat</strong>.</li>
 <li><strong>Rövid időugrás (a mesélő kéri):</strong> vedd az öt legalacsonyabb haladású jártasságot; ómen 1–10 → egyet sem ront; ómen 11–20 → egyet ront az ötből, véletlenszerűen.</li>
 </ol>
@@ -221,20 +221,20 @@ Minden őstípus egy szerepet nevez meg, és listázza a hozzá tartozó jártas
 <span class="kod-archetype__tag">Harc és fegyveres fenyegetés</span>
 </summary>
 <div class="kod-archetype__body">
-<p>A harcos a küzdelmet és az erőszak uralását fedi: fegyverek, védelem, megfélemlítés, harctéri parancs, és a harc olvasása. Ezek a harc jártasságai, és azé, hogy azonnali testi fenyegetés alatt embereket rendezz.</p>
+<p>A harcos a küzdelem és az erőszak uralása: fegyverek, védelem, megfélemlítés, harctéri parancs, és a harc átlátása. Ezek a harc jártasságai, és azoké, amelyekkel azonnali testi fenyegetés alatt rendezel embereket.</p>
 <ol>
-<li><strong>Vágás</strong> (erő) — vágóélek aprító vagy söprő vágásra</li>
-<li><strong>Szúrás</strong> (ügyesség) — hegy és döfések</li>
+<li><strong>Vágás</strong> (erő) — pengék, amelyekkel aprítasz vagy söpörsz</li>
+<li><strong>Szúrás</strong> (ügyesség) — döfés, hegyes fegyver</li>
 <li><strong>Zúzás</strong> (erő) — tompa ütőfegyverek és csapások</li>
 <li><strong>Fegyvertelen</strong> (erő) — ütés és birkózás fegyver nélkül</li>
-<li><strong>Megfélemlítés</strong> (tekintély) — fenyegetés kivetítése kimutatott vagy sejtett erőszakos kapacitással</li>
-<li><strong>Elhárítás</strong> (akarat) — aktív átirányítás fegyverrel vagy pajzzsal</li>
-<li><strong>Riposzt</strong> (akarat) — a gyakorolt azonnali válasz sikeres elhárítás vagy kitérés után</li>
+<li><strong>Megfélemlítés</strong> (tekintély) — fenyegetés kimutatott vagy sejtett erőszakkal</li>
+<li><strong>Elhárítás</strong> (akarat) — ütés eltérítése fegyverrel vagy pajzzsal</li>
+<li><strong>Riposzt</strong> (akarat) — azonnali válasz sikeres elhárítás vagy kitérés után</li>
 <li><strong>Vezénylés</strong> (tekintély) — parancsok, amelyeknek a harc hevében vagy azonnali testi fenyegetés alatt engedelmeskednek</li>
-<li><strong>Taktika</strong> (értelem) — a harc alakjának olvasása, helyzet, a terep és a létszám kihasználása</li>
+<li><strong>Taktika</strong> (értelem) — a harc lefolyásának átlátása, helyzet, a terep és a létszám kihasználása</li>
 <li><strong>Pozicionálás</strong> (ügyesség) — mozgékonyság, egyensúly és helyzet a harcban</li>
 <li><strong>Harci éberség</strong> (észlelés) — nyílások, fenyegetések és váltások észlelése a közvetlen harcban</li>
-<li><strong>Hajítás</strong> (állóképesség) — bármely dobott fegyver vagy tárgy, amivel ütni vagy harcképtelenné tenni lehet</li>
+<li><strong>Hajítás</strong> (állóképesség) — bármely dobott fegyver vagy tárgy, amivel megütsz vagy kiveszel valakit</li>
 </ol>
 </div>
 </details>
@@ -246,16 +246,16 @@ Minden őstípus egy szerepet nevez meg, és listázza a hozzá tartozó jártas
 <span class="kod-archetype__tag">Utazás és a szabad ég</span>
 </summary>
 <div class="kod-archetype__body">
-<p>A vándor az utazást és a földből élést fedi: felderítés, vadászat, hátasok, kis hajók, vadonismeret és út menti csere. Ezek az ösvény, a tábor és a mező jártasságai — nem a háztartásé, és nem a formális tanulásé.</p>
+<p>A vándor az utazás és a földből élés: felderítés, vadászat, hátasok, kis hajók, vadonismeret és út menti csere. Ezek az ösvény, a tábor és a mező jártasságai — nem a háztartásé, és nem a formális tanulásé.</p>
 <ol>
-<li><strong>Felderítés</strong> (észlelés) — útkeresés, tájékozódás csillagok, tájjelek és ösvények alapján, terep olvasása utazáshoz</li>
+<li><strong>Felderítés</strong> (észlelés) — útkeresés; tájékozódás csillagok, tájjelek és ösvények alapján; terep átlátása utazáshoz</li>
 <li><strong>Csapdázás és nyomolvasás</strong> (észlelés) — megtalálás, követés, csapdák tervezése és használata</li>
 <li><strong>Gyűjtögetés és halászat</strong> (állóképesség) — ehető növények, gombák, vízforrások és halászat</li>
 <li><strong>Íjászat</strong> (észlelés) — minden íj</li>
-<li><strong>Hajózás és navigáció</strong> (észlelés) — kis hajók, folyók, tavak és alap tengerészet</li>
-<li><strong>Állatkezelés</strong> (akarat) — vadállatok, és társállatok idomítása vagy kezelése</li>
-<li><strong>Kitérés</strong> (ügyesség) — tiszta kitérés, testmozgás a támadás vonalából</li>
-<li><strong>Lovaglás</strong> (tekintély) — hátas uralása harci és utazási nyomás alatt</li>
+<li><strong>Hajózás és navigáció</strong> (észlelés) — kis hajók, folyók, tavak és egyszerű tengeri hajózás</li>
+<li><strong>Állatkezelés</strong> (akarat) — vadállatok kezelése; társállatok idomítása</li>
+<li><strong>Kitérés</strong> (ügyesség) — kitérés a támadás elől, a test kivonása a csapás vonalából</li>
+<li><strong>Lovaglás</strong> (tekintély) — hátas irányítása harci és úti nyomás alatt</li>
 <li><strong>Lesállás és álcázás</strong> (ravaszság) — terep választása és természetes fedés meglepetéshez vagy rejtőzéshez</li>
 <li><strong>Úszás</strong> (állóképesség) — mozgás és túlélés vízben</li>
 <li><strong>Vadonismeret</strong> (állóképesség) — a természet, a terep és az élő világ ismerete</li>
@@ -271,7 +271,7 @@ Minden őstípus egy szerepet nevez meg, és listázza a hozzá tartozó jártas
 <span class="kod-archetype__tag">Készítés és építés</span>
 </summary>
 <div class="kod-archetype__body">
-<p>A kézműves a fizikai munka készítését és javítását fedi: fém, fa, szövet, hajók, szerszámok, finom mesterség, és a munka irányítása. Ezek a műhely, az udvar és a kohó jártasságai.</p>
+<p>A kézműves a fizikai munka készítése és javítása: fém, fa, szövet, hajók, szerszámok, finom mesterség, és a munka irányítása. Ezek a műhely, az udvar és a kohó jártasságai.</p>
 <ol>
 <li><strong>Szabászat és vért</strong> (állóképesség) — szövet, bőr, puha anyagok, és védőfelszerelés készítése vagy javítása</li>
 <li><strong>Kovácsolás</strong> (erő) — fém megmunkálása a kohónál</li>
@@ -284,7 +284,7 @@ Minden őstípus egy szerepet nevez meg, és listázza a hozzá tartozó jártas
 <li><strong>Értékbecslés</strong> (észlelés) — tárgyak és anyagok értékének, hitelességének és minőségének megítélése</li>
 <li id="handcrafting"><strong>Kézi készítés</strong> (ügyesség) — rögtönzött szerszámok és tárgyak csontból, fából, ínból, kőből és elérhető anyagokból</li>
 <li><strong>Felügyelet</strong> (tekintély) — munkáscsoportok irányítása és összehangolása</li>
-<li><strong>Szerelés és javítás</strong> (állóképesség) — meglévő szerszámok, mechanizmusok és tárgyak hibakeresése, igazítása, helyreállítása</li>
+<li><strong>Szerelés és javítás</strong> (állóképesség) — meglévő szerszámok, szerkezetek és tárgyak javítása, igazítása, helyreállítása</li>
 </ol>
 </div>
 </details>
@@ -296,19 +296,19 @@ Minden őstípus egy szerepet nevez meg, és listázza a hozzá tartozó jártas
 <span class="kod-archetype__tag">Háztartás és gondoskodás</span>
 </summary>
 <div class="kod-archetype__body">
-<p>Az anya a háztartást és az emberek gondozását fedi: étel, gyógyítás, gyerekek, földművelés, háziállatok, és személyes befolyás a rokonságban és a házban. Nem nem, nem csak szülőké — a háztartás és a benne élők életben tartásának és összetartásának jártasságai.</p>
+<p>Az anya a háztartás és az emberek gondozása: étel, gyógyítás, gyerekek, földművelés, háziállatok, és személyes befolyás a rokonságban és a házban. Nem nemi szerep, és nem csak szülőké — a háztartás és a benne élők életben tartásának és összetartásának jártasságai.</p>
 <ol>
 <li><strong>Főzés és tartósítás</strong> (akarat) — étel készítése és tartósítása</li>
 <li id="herbalism"><strong>Füvészet</strong> (értelem) — gyógynövények és mérgek</li>
 <li><strong>Gyermekgondozás</strong> (akarat) — gyereknevelés és bábáskodás</li>
 <li><strong>Állattenyésztés</strong> (akarat) — háziállatok tenyésztése, gondozása és kezelése</li>
 <li><strong>Földművelés</strong> (erő) — talaj, termény, mező</li>
-<li><strong>Empátia</strong> (karizma) — érzelmi állapotok olvasása és személyes támasz</li>
+<li><strong>Empátia</strong> (karizma) — érzelmi állapotok felismerése és személyes támasz</li>
 <li><strong>Előadás</strong> (karizma) — kifejezés hangon (ének), testen (tánc) és jelenléten (színjáték)</li>
 <li id="healing"><strong>Gyógyítás</strong> (akarat) — a test, sebek és sérülések fizikai kezelése (kritikus a <a href="/hu/harm/#haldoklás">haldoklás</a> stabilizálásához)</li>
-<li><strong>Illem</strong> (akarat) — illő formák, módok és társas viselkedés otthoni és kapcsolati helyzetekben</li>
+<li><strong>Illem</strong> (akarat) — illő formák, módok és társas viselkedés otthoni és társas helyzetekben</li>
 <li><strong>Csábítás</strong> (karizma) — intim befolyás, báj és érzelmi nyomás személyes kapcsolatokban</li>
-<li><strong>Befolyás</strong> (tekintély) — kapcsolati helyzet, kötelezettségek és családi horogok használata</li>
+<li><strong>Befolyás</strong> (tekintély) — kapcsolati helyzet, kötelezettségek és rokonsági szálak használata</li>
 <li><strong>Ihletés</strong> (tekintély) — mások tettekre, érzésre vagy alkotásra indítása</li>
 </ol>
 </div>
@@ -321,19 +321,19 @@ Minden őstípus egy szerepet nevez meg, és listázza a hozzá tartozó jártas
 <span class="kod-archetype__tag">Tudás és tanács</span>
 </summary>
 <div class="kod-archetype__body">
-<p>A bölcs a tudást, a feljegyzést és a formális tanácsot fedi: számítás, hagyomány, térképek, tanítás, nyomozás, tárgyalás, rítusok és hosszú távú tervezés. Ezek a tanulás, a beszéd és az emlékezet jártasságai. A stratégia itt hosszú távú tervezés; a harcos <strong>taktikája</strong> a közvetlen harcot fedi.</p>
+<p>A bölcs a tudás, a feljegyzés és a formális tanács: számítás, hagyomány, térképek, tanítás, nyomozás, tárgyalás, rítusok és hosszú távú tervezés. Ezek a tanulás, a beszéd és az emlékezet jártasságai. A stratégia itt hosszú távú tervezés; a harcos <strong>taktikája</strong> a közvetlen harcé.</p>
 <ol>
-<li><strong>Vita és szónoklat</strong> (karizma) — szerkesztett érvelés és meggyőző beszéd</li>
+<li><strong>Vita és szónoklat</strong> (karizma) — felépített érvelés és meggyőző beszéd</li>
 <li><strong>Számvetés és könyvelés</strong> (értelem) — számok, főkönyvek, részesedések és gyakorlati számolás</li>
-<li><strong>Nyomozás</strong> (észlelés) — rendszeres vizsgálat események, helyek és bizonyítékok után</li>
+<li><strong>Nyomozás</strong> (észlelés) — módszeres vizsgálat események, helyek és bizonyítékok után</li>
 <li><strong>Néphagyomány és címertan</strong> (értelem) — helyi hagyomány, nemzetségek, jelek és emlékezett szokás</li>
 <li><strong>Térképészet</strong> (értelem) — térképek, távolságok és feljegyzett földrajz</li>
 <li><strong>Mentorálás</strong> (karizma) — mások tanítása, hogy a jártasság és az ítélet gyökeret verjen</li>
 <li><strong>Ábrázolás</strong> (értelem) — műszaki rajz, ábrák, sémák és a tudás vizuális feljegyzése</li>
 <li><strong>Tárgyalás</strong> (tekintély) — formális alku megállapodás felé a felek között</li>
-<li><strong>Emberismeret</strong> (észlelés) — indítékok, érzelmi állapot és kimondatlan helyzet olvasása</li>
+<li><strong>Emberismeret</strong> (észlelés) — indítékok, érzelmi állapot és kimondatlan helyzet felismerése</li>
 <li><strong>Stratégia</strong> (értelem) — hosszú távú tervezés a közvetlen harcon túl</li>
-<li><strong>Szertartás</strong> (tekintély) — közösségi rítusok, temetések, eskük és formális tartás</li>
+<li><strong>Szertartás</strong> (tekintély) — közösségi rítusok, temetések, eskük és ünnepélyes tartás</li>
 <li><strong>Prédikáció</strong> (karizma) — nyilvános erkölcsi vagy szellemi beszéd, amely megmozdít egy tömeget</li>
 </ol>
 </div>
@@ -346,16 +346,16 @@ Minden őstípus egy szerepet nevez meg, és listázza a hozzá tartozó jártas
 <span class="kod-archetype__tag">Titok és megtévesztés</span>
 </summary>
 <div class="kod-archetype__body">
-<p>A cselszövő a lopakodást, a lopást, a hamisítást, a csempészetet, a megtévesztést és a kapcsolódó alattomos munkát fedi. A karakternek nem kell hivatásos tolvajnak lennie ezekhez a jártasságokhoz — a titok, a félrevezetés, és az őrökön túljutás jártasságai.</p>
+<p>A cselszövő a lopakodás, a lopás, a hamisítás, a csempészet, a megtévesztés és a kapcsolódó alattomos munka. A karakternek nem kell hivatásos tolvajnak lennie ezekhez a jártasságokhoz — a titok, a félrevezetés, és az őrökön túljutás jártasságai.</p>
 <ol>
-<li><strong>Zárnyitás</strong> (ravaszság) — zárak, reteszek és egyszerű mechanikus pecsétek legyőzése</li>
+<li><strong>Zárnyitás</strong> (ravaszság) — zárak, reteszek és egyszerű mechanikus pecsétek kinyitása</li>
 <li><strong>Zsebtolvajlás</strong> (ravaszság) — tárgyak levétele valakiről, anélkül hogy észrevenné</li>
 <li><strong>Lopakodás</strong> (ügyesség) — csendes mozgás és rejtve maradás mozgás közben</li>
 <li><strong>Hamisítás</strong> (ravaszság) — hamis iratok, pecsétek, jelek, és írás vagy mesterségjelek meggyőző utánzata</li>
 <li><strong>Rágalom és gúny</strong> (karizma) — nyilvános vagy suttogott támadás a hírnév ellen szavakkal</li>
 <li><strong>Csempészet</strong> (ravaszság) — áru vagy emberek juttatása őrök, vámok és motozók mellett</li>
-<li><strong>Megtévesztés</strong> (ravaszság) — hazugság, hamis személyek és szándékos félrevezetés</li>
-<li><strong>Utcai tájékozódás</strong> (ravaszság) — városok, alvilági csatornák és informális városi hatalom olvasása</li>
+<li><strong>Megtévesztés</strong> (ravaszság) — hazugság, hamis személyazonosság és szándékos félrevezetés</li>
+<li><strong>Utcai tájékozódás</strong> (ravaszság) — városok, alvilági utak és a város informális hatalmának ismerete</li>
 <li><strong>Akrobatika</strong> (ügyesség) — ugrás, egyensúly, hajlékonyság és atletikus mozgás nyomás alatt</li>
 <li><strong>Kézügyesség</strong> (ravaszság) — tenyérbe rejtés, csere, elrejtés, apró manipulációk</li>
 <li><strong>Mellék- és rögtönzött harc</strong> (ügyesség) — másodlagos fegyverek és tárgyak, amelyek nem fegyvernek készültek</li>

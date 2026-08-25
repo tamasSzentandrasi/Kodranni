@@ -58,7 +58,7 @@ Sérülés csak akkor keletkezik, ha a fikció **és** a kocka is indokolja a ma
 
 | Dobás típusa | Sérüléspont |
 |-----------|-------------|
-| **[Ellendobás](/hu/tide/#helyzeti-kockafeloldás)** | Jelek különbsége ÷ védelmi arány (**mindig lefelé kerekítve**) |
+| **[Ellendobás](/hu/tide/#helyzet-szerinti-kockafeloldás)** | Jelek különbsége ÷ védelmi arány (**mindig lefelé kerekítve**) |
 | **Ellendobás nélkül** (esés, környezet, veszélyes tettek) | (kudarcok − jelek) ÷ védelmi arány (**mindig lefelé kerekítve**, minimum 0) |
 
 **Védelmi arányok** (protection ratio)
@@ -72,10 +72,10 @@ Sérülés csak akkor keletkezik, ha a fikció **és** a kocka is indokolja a ma
 - A **mesélő választja a sérüléssávot**, ha a fikció kétértelmű.  
 - **Nincs kevert esemény:** egy adott okozás testi **vagy** társas/szellemi — nem mindkettő halmozva. A testi védelem a felvett [páncélt](/hu/inventory/) használja (Nincs / Könnyű / Nehéz). A társas és szellemi védelem a **hírnevet** (relatív [hierarchiahely](/hu/hierarchies/#hírnév)). A hírnév-rés a védelmi arányhoz legfeljebb két szint (pl. uralkodó a kitaszított ellen).
 
-Légy szűkmarkú. A legtöbb sikeres találat **0 vagy 1** pontot ad. Két pont figyelemre méltó. Három egyetlen cserében ritka.
+Légy szűkmarkú. A legtöbb sikeres találat **0 vagy 1** pontot ad. Két pont figyelemre méltó. Három egyetlen ütésben ritka.
 
 <aside class="kod-example">
-<p class="kod-example__scene">Az udvari harcban egy dárda rést talál a könnyű láncing széle alatt. Az ellendobás egyértelműen a támadónak ment (3 jel különbség). A páncél még számít: felezi a maradandó sérülést. A mesélő testi sebet olvas, amely a kéz finom uralmát veszi el — nem társas megaláztatást ugyanazon az ütésen.</p>
+<p class="kod-example__scene">Az udvari harcban egy dárda rést talál a könnyű láncing széle alatt. Az ellendobás egyértelműen a támadónak ment (3 jel különbség). A páncél még számít: felezi a maradandó sérülést. A mesélő testi sebet ítél, amely a kéz finom uralmát veszi el — nem társas megaláztatást ugyanazon az ütésen.</p>
 <ol class="kod-example__steps">
 <li><strong>Ellendobásos különbség:</strong> 3 jel (támadó előnyben).</li>
 <li><strong>Védelem:</strong> könnyű páncél → oszd 2-vel.</li>
@@ -164,7 +164,7 @@ A [felszerelés](/hu/inventory/) (kötszer, fű, tiszta víz, menedék mint fikc
 
 Minden sérülés rosszabbodhat.
 
-A mesélő egyedi [ómen](/hu/omens/#az-ómenkocka-és-a-következmények) lapokat tölthet be fertőzésre, másodlagos vérzésre, terjedő lázra, növekvő szégyenre és hasonló romlásra. Ha azok a lapok előjönnek, további sérülés jár. Pozitív következmény csökkentheti vagy megelőzheti a sérülést.
+A mesélő egyedi [ómen](/hu/omens/#az-ómenkocka-és-a-következmények) lapokat tehet fel fertőzésre, másodlagos vérzésre, terjedő lázra, növekvő szégyenre és hasonló romlásra. Ha azok a lapok előjönnek, további sérülés jár. Pozitív következmény csökkentheti vagy megelőzheti a sérülést.
 
 A hétköznapi **7**-es és **13**-as lap ugyanerre a célra a mesélő belátása szerint továbbra is elérhető.
 

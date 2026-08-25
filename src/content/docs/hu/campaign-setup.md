@@ -14,7 +14,7 @@ Ha játékosként olvasol előre: csak a korlátokra és azokra az eredetekre va
 
 ----------
 
-## Érdeklődési jel
+## Amit előre adsz
 
 A játékosok csak a kampányeredetek rangsorolt listáját kapják és a rendszerkorlátokat. Semmi más írásban. Ha valaki egy konkrét névről kérdez, legfeljebb két kimondott mondattal válaszolj.
 
@@ -25,7 +25,7 @@ A játékosok csak a kampányeredetek rangsorolt listáját kapják és a rendsz
 </div>
 <div class="kod-lane kod-lane--player">
 <p class="kod-lane__title">Amit a játékosok csinálnak</p>
-<p>Rangsorold a három kedvenc eredeted. Bármely névről legfeljebb két kimondott mondatot kérdezz. Várd, amíg a mesélő keretbe teszi a közösséget — aztán alkossatok karaktereket.</p>
+<p>Rangsorold a három kedvenc eredeted. Bármely névről legfeljebb két kimondott mondatot kérdezz. Várd, amíg a mesélő felállítja a közösség keretét — aztán alkossatok karaktereket.</p>
 </div>
 </div>
 
@@ -36,8 +36,8 @@ Egy jó **eredet** **valódi vagy kitalált helynevet** használ (nem homályos 
 ### Kampányeredetek
 
 <div class="kod-widget not-content" data-widget="content-tabs">
-<p class="kod-widget__title">Böngészés a közeg típusa szerint</p>
-<p class="kod-widget__intro">Történelmi: zárt hely és év. Félig történelmi: egy tiszta törés egy valós helyzettől. Kitalált: ugyanaz a súly, mint a történelemé, a nyomort nem effektnek öltöztetve.</p>
+<p class="kod-widget__title">Nézd közeg szerint</p>
+<p class="kod-widget__intro">Történelmi: zárt hely és év. Félig történelmi: egy tiszta törés egy valós helyzettől. Kitalált: ugyanaz a súly, mint a történelemé — a nyomort nem látványosságnak öltöztetve.</p>
 <div class="kod-widget__controls" role="group" aria-label="Eredet típusa">
 <button type="button" class="kod-widget__btn" data-tab="hist" aria-pressed="true">Szorosan történelmi</button>
 <button type="button" class="kod-widget__btn" data-tab="semi">Félig történelmi</button>
@@ -126,13 +126,13 @@ Egy jó **eredet** **valódi vagy kitalált helynevet** használ (nem homályos 
 
 ## Világépítési eljárások
 
-Csináld **sorrendben**. **Helyzeteket** készíts — instabil körülményeket, célokkal bíró embereket, nyomás alatt álló helyeket — nem rögzített jelenetsort. A történet az, ami történik, amikor az asztal cselekszik. Tudhatsz többet, mint amennyit mutatsz; nem háttérdömpinggel nyitsz.
+Csináld **sorrendben**. **Helyzeteket** készíts — instabil körülményeket, célokkal bíró embereket, nyomás alatt álló helyeket — nem rögzített jelenetsort. A történet az, ami történik, amikor az asztal cselekszik. Tudhatsz többet, mint amennyit mutatsz; ne háttérrel nyiss.
 
 A kidolgozott szál alább **A Vardmark Kelarn’s Bendnél** eredetet követi. Cseréld az eredetet; a módszert tartsd.
 
 <div class="kod-widget not-content" data-widget="step-flow">
-<p class="kod-widget__title">Világépítés végigvezetve</p>
-<p class="kod-widget__intro">Kilenc lépés. Elég anyag a súlyhoz és a választáshoz. Nem regény, amit a játékosoknak fel kell mondaniuk.</p>
+<p class="kod-widget__title">Világépítés végigjárva</p>
+<p class="kod-widget__intro">Kilenc lépés. Annyi anyag, amennyi a súlyhoz és a választáshoz kell. Nem regény, amit a játékosok felmondanak.</p>
 <p class="kod-step-flow__label" data-step-label></p>
 <div class="kod-step-flow__track" role="group" aria-label="Világépítési lépések">
 <button type="button" class="kod-widget__btn" data-tab="1" aria-pressed="true">I</button>
@@ -149,37 +149,37 @@ A kidolgozott szál alább **A Vardmark Kelarn’s Bendnél** eredetet követi. 
 <div class="kod-widget__panel" data-panel-id="1" data-step-title="Spektrum">
 <p><strong>Zárd le a spektrumot</strong> — szorosan történelmi, félig történelmi, vagy teljesen kitalált —, és tartsd az egész kampányra.</p>
 <div class="kod-step-example"><strong>Példa</strong>Teljesen kitalált: a Vardmark elfoglalja Kelarn’s Bendet, miután segített kifosztani Kelarnt — hódítók földön, amelyet nem tudnak megművelni. A kitalált nevek rendben vannak; az éhség, az időjárás és a fegyveres szomszédok ugyanúgy működnek, mint a történelemben.</div>
-<div class="kod-step-best"><strong>Jó gyakorlat</strong>Írd a spektrumot a jegyzeted első sorára. Történelmi: valós évszakok, törvény és seregek kötnek — használd. Félig történelmi: változtass egy sarokpontot, aztán tartsd a következményeket. Kitalált: ugyanaz az éhség, időjárás és hatalom súlya. Ne vedd ki a világból az élet árát, és ne találd ki a kegyetlenséget látványosságra.</div>
+<div class="kod-step-best"><strong>Jó gyakorlat</strong>Írd a spektrumot a jegyzeted első sorára. Történelmi: valós évszakok, törvény és seregek kötnek — használd. Félig történelmi: változtass egy sarokpontot, aztán tartsd a következményeket. Kitalált: ugyanaz az éhség, időjárás és hatalom súlya. Ne vedd ki a világból az élet árát, és ne találd ki a kegyetlenséget látványosságnak.</div>
 </div>
 
 <div class="kod-widget__panel" data-panel-id="2" data-step-title="Hogyan élnek" hidden>
-<p><strong>Hogyan marad életben ez a nép évszakról évszakra?</strong> Munka, étel, menedék, ki rendezi a viszályt. Hol „kellene” lenniük a karaktereknek, amikor nincsenek feladaton.</p>
+<p><strong>Hogyan marad életben ez a nép évszakról évszakra?</strong> Munka, étel, menedék, ki rendezi a viszályt. Hol „kellene” lenniük a karaktereknek, amikor nincs külön dolguk.</p>
 <div class="kod-step-example"><strong>Példa</strong>A Vardmark nagy része még mindig hadikíséretként él: kocsik, bőrsátrak és félig emelt csarnokok Kelarn’s Bendnél. Zsákmányolt gabonát esznek, lopott marhát hajtanak, a nád szélén vadásznak, és gyűjtőcsapatokat küldenek. Néhány kovács harcképesen tartja a felszerelést a következő harchoz. A gyerekek a menetből maradt állatot őrzik. Nem szántanak; aki ezeket a földeket ismerte, halott, menekült, vagy fogoly. Kevés a ráérő idő — csak a következő zsákmány, a következő őrség, a következő vita arról, kié a lopott.</div>
-<div class="kod-step-best"><strong>Jó gyakorlat</strong>Az anyagi élet tartja a világot. Ismerd a kemény évszakot, és ki szabad akkor. Ha a játék soha nem érinti, hogyan esznek és dolgoznak, a hely üresnek hat. Ha a játékosi tervek lehúzzák az embereket az őrségről vagy a gyűjtésről, a közösségnek észre kell vennie — ez a súrlódás a történet. Ha nem tudod megmondani, hogyan vészelik át a tél végét, előbb azt javítsd ki, mielőtt újabb csoportot találsz ki. Ne add a hódítóknak azoknak a jártasságait, akiket épp elpusztítottak, hacsak a játék ki nem érdemli a változást.</div>
+<div class="kod-step-best"><strong>Jó gyakorlat</strong>Az anyagi élet tartja a világot. Ismerd a kemény évszakot, és hogy akkor ki ér rá. Ha a játék soha nem érinti, hogyan esznek és dolgoznak, a hely üresnek hat. Ha a játékosi tervek elvonják az embereket az őrségről vagy a gyűjtésről, a közösségnek észre kell vennie — ez a súrlódás a történet. Ha nem tudod megmondani, hogyan vészelik át a tél végét, előbb azt javítsd ki, mielőtt újabb csoportot találsz ki. Ne add a hódítóknak azoknak a jártasságait, akiket épp elpusztítottak, hacsak a játék ki nem érdemli a változást.</div>
 </div>
 
 <div class="kod-widget__panel" data-panel-id="3" data-step-title="Ami nem bukhat el" hidden>
-<p><strong>Nevezd meg a konkrét dolgokat, amelyeknek a bukása ennek a közösségnek közösségként véget vet.</strong> Készletek, jogok, helyek, szerszámok, kötelékek — megszámlálhatók, és kockán forognak.</p>
+<p><strong>Nevezd meg, minek a bukása ennek a népnek közösségként véget vet.</strong> Készletek, jogok, helyek, szerszámok, kötelékek — megszámlálhatók, és mind kockán forog.</p>
 <div class="kod-step-example"><strong>Példa</strong>A Kelarn’s Bendnél maradt zsákmányolt gabona és marha; a gázló Kelarn’s Bendnél; a kocsik és hátasok, amelyekkel még hadicsapatként mozoghatnak; a foglyok fölötti uralom, akik ismerik a földeket és a gázlókat; az igény a felégetett főváros megmaradt készleteire; Kelarn bármely élő királyának hiánya, aki törvényesen újraadományozhatná vagy kiválthatná a földet.</div>
-<div class="kod-step-best"><strong>Jó gyakorlat</strong>Öt–nyolc tétel. Mindegyiknek el kell tudnia vinni egy ülést, ha fenyegetik, ellopják, alkuba teszik vagy védik. Olyan dolgokat részesíts előnyben, amelyek választásra kényszerítenek háztartások között (ki eszi az utolsó zsák gabonát? ki tartja a gázlót éjjel? kié a fogoly, aki művelheti a földet?). Az üres trón lehet ezek egyike — nem felmondandó háttérként, hanem résként, amelyet mindenki érez, amikor egy döntéshez név kell.</div>
+<div class="kod-step-best"><strong>Jó gyakorlat</strong>Öt–nyolc tétel. Mindegyik el tudjon tartani egy ülést, ha fenyegetik, ellopják, alkuba teszik vagy védik. Olyan dolgokat részesíts előnyben, amelyek választásra kényszerítenek háztartások között (ki eszi az utolsó zsák gabonát? ki tartja a gázlót éjjel? kié a fogoly, aki művelheti a földet?). Az üres trón lehet ezek egyike — nem felmondott háttérként, hanem résként, amelyet mindenki érez, amikor egy döntéshez név kell.</div>
 </div>
 
 <div class="kod-widget__panel" data-panel-id="4" data-step-title="Nyomás most" hidden>
-<p><strong>Egy jelen idejű nyomásmondat tételenként.</strong> Mi a baj ebben az évszakban. Ki szorít. Ami nem várhat.</p>
+<p><strong>Jelen időben egy mondat nyomás tételenként.</strong> Mi a baj ebben az évszakban. Ki szorít. Ami nem várhat.</p>
 <div class="kod-step-example"><strong>Példa</strong>A zsákmányolt gabona nem tartja el a kíséretet a tél végéig. A Vörös Zászló egy napi lovaglásra táborozott fölfelé a folyón, és ugyanazt a vidéket fosztja. A mocsári túlélők csak akkor cserélnek halat, ha a Vardmark visszaadja a fosztás foglyait. A gázló sötétedés után még vitatott. Kelarn királya nélkül semmilyen pecsét nem teheti „törvényessé” a megszállást — minden alku személyes, és a következő erősebb kéz felbonthatja.</div>
-<div class="kod-step-best"><strong>Jó gyakorlat</strong>A nyomás helyzet, amibe a játékosok bele tudnak sétálni, nem monológ. Határidőket, arcokat és szorítást részesíts előnyben a melléknevekkel szemben. Ha senki nem cselekszik a következő holdig, a közösség lehetőségeket veszít — ételt, földet vagy egységet. Készítsd elő, mi történne, ha az asztal semmit sem tenne. Ha a mondat bármely térképen megállna, tedd helyivé <em>ehhez</em> a helyhez és évszakhoz — használj valódi vagy kitalált neveket, ne homályos címkéket.</div>
+<div class="kod-step-best"><strong>Jó gyakorlat</strong>A nyomás helyzet, amibe a játékosok bele tudnak sétálni, nem monológ. Határidőket, arcokat és szorítást részesíts előnyben a melléknevekkel szemben. Ha senki nem cselekszik a következő holdig, a közösség lehetőségeket veszít — ételt, földet vagy egységet. Készítsd elő, mi történne, ha az asztal semmit sem tenne. Ha a mondat bármely helyen igaz lenne, tedd <em>ehhez</em> a helyhez és évszakhoz — használj valódi vagy kitalált neveket, ne homályos címkéket.</div>
 </div>
 
 <div class="kod-widget__panel" data-panel-id="5" data-step-title="Ki tartja" hidden>
-<p><strong>Csak azokat az embereket nevezd meg, akik kellenek, hogy ezek a nyomások játszhatók legyenek.</strong> Néhány egyén és ház akarattal és félelemmel — elég, hogy a jeleneteket összekösse, nem regény-szereposztás.</p>
+<p><strong>Csak azokat az embereket nevezd meg, akik kellenek, hogy ezek a nyomások játszhatók legyenek.</strong> Néhány egyén és ház akarattal és félelemmel — elég, hogy a jeleneteket összekösse, nem regényszereposztás.</p>
 <div class="kod-step-example"><strong>Példa</strong>Hadvezér Torven, aki tiszta hadicsapatként akarja tartani a kíséretet, és nem marad egy helyben. House Asren, amely a megmaradt zsákmány és a legjobb foglyok java részét tartja, és úgy akarja dolgoztatni őket, mint tulajdont — nem szabadon engedni vagy olcsón elcserélni. Mocsári vén Sera a Kelarn-maradékból, csak akkor hajlandó alkura, ha a foglyok hazajönnek. Vetélytárs kapitány Jorun a Vörös Zászlótól, aki magának akarja a gázlót. A távollévő Kelarn-király csak tény: nincs pecsét, nincs udvar, minden ígéret gyengébb miatta.</div>
-<div class="kod-step-best"><strong>Jó gyakorlat</strong><em>Emberekkel készülj, akiknek súlyuk és céljuk van</em>, nem felmondandó rangokkal vagy címekkel. Mindegyiknél: mit akar ebben az évszakban, mit nem bocsát meg, mit csinál, ha békén hagyják. Helyeket és embereket akkor nevezz, ha a történetet köti — ne azért, hogy az első ülésen helynévtárat dömpingelj. Hagyj teret, hogy az asztal játékban találkozzon velük, és saját ítéletet alkosson.</div>
+<div class="kod-step-best"><strong>Jó gyakorlat</strong><em>Emberekkel készülj, akiknek súlyuk és céljuk van</em>, nem felmondott rangokkal vagy címekkel. Mindegyiknél: mit akar ebben az évszakban, mit nem bocsát meg, mit csinál, ha békén hagyják. Helyet és embert akkor nevezz, ha a történetet köti — ne zúdj rájuk helynévtárat az első ülésen. Hagyj teret, hogy az asztal játékban találkozzon velük, és saját ítéletet alkosson.</div>
 </div>
 
 <div class="kod-widget__panel" data-panel-id="6" data-step-title="Hagyj üresen" hidden>
 <p><strong>Ne oldd meg előre a társas térképet a játékosoknak.</strong> Kit bíznak, ki vezet, kinek tartoznak — ezt a játékban a tett, a hír és a következmény fedi fel a legjobban. Tarthatsz magánjegyzeteket. Nem előadással nyitsz arról, ki hol ül.</p>
 <div class="kod-step-example"><strong>Példa</strong>Tudod, hogy Torven engedelmességet vár, House Asren pedig beleszólást a zsákmányba és a foglyokba. Nem mondod el az asztalnak az <strong>ismertség</strong> (Standing) rendjét. Akkor tanulják, amikor valaki parancsot ad, és engedelmeskednek — vagy nem —, és amikor egy alku tart vagy törik.</div>
-<div class="kod-step-best"><strong>Jó gyakorlat</strong>A kapcsolatok, az ismertség és a <strong>hierarchia</strong> a fikcióból nőnek. A hatalom minden fokát előre megnevezni háttérdömping: megöli az elmélyülést, és ellopja a felfedezést. Tartsd, ami a következetességhez kell; jeleneteken keresztül fedd fel. Ha van könyvelési ábrád az ismertséghez a saját használatodra, tartsd az asztalon kívül, amíg a játék ki nem érdemli, hogy kitöltsék. Ennek a lépésnek a lényege az üres tér, amibe a játékosok belépnek.</div>
+<div class="kod-step-best"><strong>Jó gyakorlat</strong>A kapcsolatok, az ismertség és a <strong>hierarchia</strong> a fikcióból nőnek. A hatalom minden fokát előre megnevezni felmondott háttér: megöli az elmélyülést, és ellopja a felfedezést. Tartsd, ami a következetességhez kell; jeleneteken keresztül fedd fel. Ha van saját ábrád az ismertséghez, tartsd az asztalon kívül, amíg a játék ki nem érdemli, hogy kitöltsék. Ennek a lépésnek a lényege az üres tér, amibe a játékosok belépnek.</div>
 </div>
 
 <div class="kod-widget__panel" data-panel-id="7" data-step-title="Amit láthatnak" hidden>
@@ -190,14 +190,14 @@ A kidolgozott szál alább **A Vardmark Kelarn’s Bendnél** eredetet követi. 
 
 <div class="kod-widget__panel" data-panel-id="8" data-step-title="Témák és szálak" hidden>
 <p><strong>Faragj témákat és mellékszálakat — aztán a belépést hagyd a játékosokra.</strong> Sződd őket a fő nyomáson át, hogy a világ mélynek hasson. Ne kényszeríts utat rajtuk keresztül.</p>
-<div class="kod-step-example"><strong>Példa</strong>Szálak, amelyeket készen tartasz: Sera maradéka a foglyok hazatérését akarja; a Vörös Zászló a gázlót akarja; Torven még egy hadjáratot akar, mielőtt a zsákmány elfogy; House Asren a foglyokat földmunkára akarja törni; egy írnok még mindig a halott Kelarn-király pecsétjének nevében beszél. Témák alattuk: megszállás anélkül, hogy tudnák, hogyan uralkodjanak; bűntudat vagy tagadás a fosztásért; legitimitás trón nélkül; a győzelem ára. Ezek közül egyik sem kötelező út. Bármelyik felemelkedhet, ha a játékosok arra hajlanak — és mindegyik halad, ha nem.</div>
-<div class="kod-step-best"><strong>Jó gyakorlat</strong>A melléktörténetek nem zsúfoltság; ettől hat megéltnek a kampány. Minden szálat <em>helyzetként</em> készíts: emberek célokkal, nyomás, amely rosszabbodik, ha figyelmen kívül hagyják, több bejárattal. Sződd a témákat a fő nyomáson át — étel, föld, legitimitás, a hódítás ára —, anélkül, hogy előírnád, mely jeleneteket kell játszania az asztalnak. A részvétel a játékosoké. Ez nem „nincsenek mellékszálak”; ez az, hogy nincs sínes vezetés. Ha soha nem vesznek fel egy szálat, a világ akkor is mozog; ha felveszik, már tudod, ki mit akar.</div>
+<div class="kod-step-example"><strong>Példa</strong>Szálak, amelyeket készen tartasz: Sera maradéka a foglyok hazatérését akarja; a Vörös Zászló a gázlót akarja; Torven még egy hadjáratot akar, mielőtt a zsákmány elfogy; House Asren a foglyokat földmunkára akarja törni; egy írnok még mindig a halott Kelarn-király pecsétjének nevében beszél. Témák alattuk: megszállás anélkül, hogy tudnák, hogyan uralkodjanak; bűntudat vagy tagadás a fosztásért; legitimitás trón nélkül; a győzelem ára. Ezek közül egyik sem kötelező út. Bármelyik felemelkedhet, ha a játékosok arra hajlanak — és akkor is haladnak, ha nem nyúlnak hozzájuk.</div>
+<div class="kod-step-best"><strong>Jó gyakorlat</strong>A melléktörténetek nem zsúfoltság; ettől hat élőnek a kampány. Minden szálat <em>helyzetként</em> készíts: emberek célokkal, nyomás, amely rosszabbodik, ha figyelmen kívül hagyják, több bejárattal. Sződd a témákat a fő nyomáson át — étel, föld, legitimitás, a hódítás ára —, anélkül, hogy előírnád, mely jeleneteket kell játszania az asztalnak. A részvétel a játékosoké. Ez nem „nincsenek mellékszálak”; ez az, hogy nincs sínre ültetés. Ha soha nem nyúlnak egy szálhoz, a világ akkor is mozog; ha felveszik, már tudod, ki mit akar.</div>
 </div>
 
 <div class="kod-widget__panel" data-panel-id="9" data-step-title="Sorsok" hidden>
-<p><strong>Állítsd be a kiinduló <a href="/hu/echoes/#sorsok">sorsokat</a></strong> (Fortunes) — <strong>életerő</strong> (Vitality), <strong>összetartás</strong> (Cohesion), <strong>bőség</strong> (Surplus), ismertség, <strong>hagyomány</strong> (Tradition) — lágy 0–3-ként a fenti tényekből. Tárold őket, amikor a kampányfeljegyzés létrejön. A korai játék javíthatja őket.</p>
+<p><strong>Állítsd be a kiinduló <a href="/hu/echoes/#sorsok">sorsokat</a></strong> (Fortunes) — <strong>életerő</strong> (Vitality), <strong>összetartás</strong> (Cohesion), <strong>bőség</strong> (Surplus), ismertség, <strong>hagyomány</strong> (Tradition) — lágy 0–3-ként a fenti tényekből. Jegyezd fel őket, amikor a kampányfeljegyzés létrejön. A korai játék javíthatja őket.</p>
 <div class="kod-step-example"><strong>Példa</strong>Életerő 2 (háborúban edzett, de kopott). Összetartás 1 (Torven tiszta hadicsapata és House Asren fogolyhajtói már húznak szét). Bőség 1 (vékony zsákmány, nincs saját igazi aratás). Ismertség 1 (a szomszédok fosztogatóknak és pusztítóknak tartják a Vardmarkot, nem országnak). Hagyomány 2 (még tudják, kik voltak a meneten — azt még nem, mivé teszi őket a megszállás).</div>
-<div class="kod-step-best"><strong>Jó gyakorlat</strong>A sorsok a közösség időjárása minden jelenetben — játékosnak és mesélői szereplőnek. Anyagi tényekből vezesd le őket, ne abból a vágyból, hogy epikusnak hangozzanak. Ha a tábla kényelmesnek látszik hódítás és tél után, ellenőrizd újra a nyomáslistát.</div>
+<div class="kod-step-best"><strong>Jó gyakorlat</strong>A sorsok a közösség időjárása minden jelenetben — játékosnak és mesélői szereplőnek. Anyagi tényekből vezesd le őket, ne abból a vágyból, hogy epikusnak hangozzanak. Ha a sorsok kényelmesnek látszanak hódítás és tél után, nézd újra a nyomáslistát.</div>
 </div>
 
 <div class="kod-step-flow__nav">

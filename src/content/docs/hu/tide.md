@@ -9,23 +9,23 @@ description: Közös nyomás, ha az összecsapás nagyobb, mint tiszta 1v1 — f
 
 ----------
 
-## Helyzeti kockafeloldás
+## Helyzet szerinti kockafeloldás
 
-Közös sáv előtt minden akció magában áll. A primitív, az ellendobás nélküli és az ellendobás ugyanazt a jelolvasatot használja. A **sodrás** (Tide) az, amit akkor nyitsz, ha a *közös* összecsapás nagyobb, mint tiszta 1v1.
+Közös sáv előtt minden akció önmagában oldódik. A primitív, az ellendobás nélküli és az ellendobás ugyanúgy olvassa a jeleket. A **sodrás** (Tide) az, amit akkor nyitsz, ha a *közös* összecsapás nagyobb, mint tiszta 1v1.
 
 | Mód | Mikor | Olvasat |
 |------|------|---------|
 | **Primitív** | Állati szintű akció | Csak adottságból álló készlet; a jelek fokozatos hasznot adnak; nincs gyakorlat |
 | **Ellendobás nélkül** | Nincs ellentétes karakter | Teljes készlet; a jelek fokozatos hasznot adnak |
-| **Ellendobás** | Akaratok ütköznek (1v1 vagy sok szereplő) | Teljes készletek (a pároknak nem kell illeszkedniük); minden akció **egyénileg** oldódik; a **jelek különbségét** a válaszláncon hasonlítjátok |
+| **Ellendobás** | Akaratok ütköznek (1v1 vagy sok szereplő) | Teljes készletek (a pároknak nem kell egyezniük); minden akció **egyénileg** oldódik; a **jelek különbségét** a válaszláncon hasonlítjátok |
 | **Sodrás** | Nagyobb, mint tiszta 1v1, mint *közös* összecsapás | Az egyéni ellendobások egy közös sávot is mozdítanak |
 
 Támpontok:
 
 - Az ellendobásokat **válaszként** kezeled egy korábbi dobásra, hogy az automatizálás számolhassa a különbséget.
-- 1vSok vagy SokvSok zűrben **minden akció magában áll**. Előny és hátrány annak az akciónak a kontextusából olvasható — nem a mezőn átlagolva.
-- Szándékot és kontextust kezeld a különbség olvasásakor: állapotok, sebek, belátás — mind érvényes mesélői eszköz.
-- Társas, szellemi és testi összecsapások **ugyanazt** a feloldási alakot használják.
+- 1vSok vagy SokvSok zűrben **minden akció önmagában oldódik**. Előny és hátrány annak az akció helyzetéből jön — nem a mezőn átlagolva.
+- A különbség értelmezésekor vedd figyelembe a szándékot és a helyzetet: állapotok, sebek, belátás — mind érvényes mesélői eszköz.
+- A társas, szellemi és testi összecsapások **ugyanúgy** oldódnak fel.
 - Páncél, hírnév, szívességek, létszám és terep **kontextus** az előnyhöz / hátrányhoz és a különbség értelmezéséhez — nem külön alrendszerek —, kivéve ahol a [sérülés](/hu/harm/) páncél **vagy** hírnév **védelmi arányait** használja (nem mindkettőt ugyanazon az eseményen; a mesélő választja az összecsapás típusát).
 
 <aside class="kod-example" aria-label="Példa">
@@ -33,7 +33,7 @@ Támpontok:
 <ol class="kod-example__steps">
 <li><strong>Szándék:</strong> rábeszélni a földbirtokost, hogy nyissa ki a termet.</li>
 <li><strong>Játékos:</strong> karizma + tárgyalás, <strong>d8</strong> → 3 jel.</li>
-<li><strong>Válasz (földbirtokos):</strong> akarat + emberismeret, <strong>d8</strong> → 1 jel. (A pároknak nem kell illeszkedniük.)</li>
+<li><strong>Válasz (földbirtokos):</strong> akarat + emberismeret, <strong>d8</strong> → 1 jel. (A pároknak nem kell egyezniük.)</li>
 <li><strong>Különbség:</strong> 3 − 1 = <strong>2</strong> a játékosnak.</li>
 <li><strong>Kimenetel:</strong> az ajtó kinyílik; a földbirtokos meg van győzve, nem megalázva. <a href="/hu/harm/">Sérülés</a> csak akkor, ha a mesélő később tartós kárt ítél állásban vagy testben.</li>
 </ol>
@@ -43,7 +43,7 @@ Támpontok:
 <p><strong>A szerepjátékon legyen a súly, ne a kockajátékon.</strong> A kockakimenetel <strong>soha</strong> nem helyettesít beszélgetést, döntést és tervezést. A dobás a tett <strong>hatását</strong> adja, soha a tartalmát.</p>
 </aside>
 
-Ha sok akarat tol egyszerre — zaklatott oszlop, teremnyi vita — az egyéni ellendobás-olvasat nem elég. Az a sodrás.
+Ha sok akarat szorít egyszerre — zaklatott oszlop, teremnyi vita — az egyéni ellendobás nem elég. Az a sodrás.
 
 ----------
 
@@ -55,7 +55,7 @@ Ha sok akarat tol egyszerre — zaklatott oszlop, teremnyi vita — az egyéni e
 
 A sodrás **közös** nyomássáv egy egész oldalnak, ha az összecsapás nagyobb, mint tiszta 1v1 — csetepaté, futó harc, teremnyi vita, üldözés, zaklatott oszlop.
 
-**Nem** második karakterlap, és **nem** ugyanaz, mint személyes előny egy dobáson. Az egyéni akciók továbbra is magukban oldódnak. Ezek közül némelyik **sodráshoz kötött**: a jelek különbsége (és néha az ómen) egy **egyetlen jelölőt** mozdít egy közös sávon. Ha a jelölő végét éri, az a **közös** oldal fut. Emberek még állhatnak, menekülhetnek, meghalhatnak, vagy személyes célt teljesíthetnek a futásban.
+**Nem** második karakterlap, és **nem** ugyanaz, mint személyes előny egy dobáson. Az egyéni akciók továbbra is magukban oldódnak. Ezek közül némelyik **sodráshoz kötött**: a jelek különbsége (és néha az ómen) egy **egyetlen jelölőt** mozdít egy közös sávon. Ha a jelölő végét éri, az az oldal **közösen** fut. Emberek még állhatnak, menekülhetnek, meghalhatnak, vagy személyes célt teljesíthetnek a futásban.
 
 <figure class="kod-breath not-content">
 <img src="/scenes/siege.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
@@ -63,14 +63,14 @@ A sodrás **közös** nyomássáv egy egész oldalnak, ha az összecsapás nagyo
 
 ### Felállítás
 
-Mindkét oldal **egy** sávot oszt. A mesélő mindkét oldalnak lágy **súlyt** ad (létszám, talaj, morál, kinek jobb a talaja mint erő — nem az adottságértékek összege).
+Mindkét oldal **egy** sávot oszt. A mesélő mindkét oldalnak lágy **súlyt** ad (létszám, talaj, morál, melyik oldal áll szilárdabban, mint erő — nem az adottságok összege).
 
 | Fogalom | Jelentés |
 |------|---------|
-| **Súly** | Lágy mesélői olvasat az oldal közös talajáról (magasabb = erősebb mint erő) |
+| **Súly** | A mesélő lágy olvasata, milyen szilárd az oldal talaja (magasabb = erősebb, mint erő) |
 | **Sáv hossza** | `weight_A + weight_B − 1` — milyen hosszú a sáv |
 | **Kezdés** | `weight_A`-nál, A oldal összeomlási végétől számolva — A távolabb kezd az összeomlástól, ha nehezebb |
-| **Csetepaté mérete** | Mennyire nehéz a sávot mozdítani: jelkülönbség lépésenként (külön a sáv hosszától) |
+| **Csetepaté mérete** | Mennyire nehéz a sávot mozdítani: hány jelnyi különbség kell egy lépéshez (ez nem a sáv hossza) |
 
 | Helyzet | Súlyok (A vs B) | Sáv hossza | Kezdés (A végétől) |
 |-----------|------------------|--------------|----------------------|
@@ -113,7 +113,7 @@ A Zhao/Wei oszlop később ebben a fejezetben az utolsó sort használja. Biroda
       <span class="kod-tide__marker-foot"></span>
     </div>
   </div>
-  <p class="kod-tide__readout">A karmazsin a birodalmi talaj. Már vékony. Ez a felállítás — még senki nem dobott.</p>
+  <p class="kod-tide__readout">A karmazsin a birodalmi talaj. Már vékony. Ez a felállítás — még senki sem dobott.</p>
 </div>
 
 **Három** méret van. Nincs nagyobb skála a csatánál.
@@ -124,11 +124,11 @@ A Zhao/Wei oszlop később ebben a fejezetben az utolsó sort használja. Biroda
 | Csetepaté | 2 |
 | Csata | 3 |
 
-### Jelekkel tolni
+### A jelek mozdítják
 
-Sodráshoz kötött ellendobásos cserén vedd a **jelek különbségét**. Elmozdított lépések = `floor(margin ÷ Marks needed)`. Irány: a csere nyertese felé.
+Sodráshoz kötött ellendobáskor vedd a **jelek különbségét**. Elmozdított lépések = `floor(különbség ÷ szükséges jelek)`. Irány: a nyertes felé.
 
-Ami **nem** sodráshoz kötött dobás (helyi harc, kimenekítés, személyes cél), nem mozdítja a sávot.
+A **nem** sodráshoz kötött dobás (helyi harc, kimenekítés, személyes cél) nem mozdítja a sávot.
 
 A birodalmi úton: Zhao első parancsa sodráshoz kötött — az üldözés nyílást nyitna a vonalban —, és a sáv **6 → 5**-re mozdul. Későbbi tartása a medernél személyes. A sáv **2**-n marad.
 
@@ -169,7 +169,7 @@ A birodalmi úton: Zhao első parancsa sodráshoz kötött — az üldözés ny�
       <span class="kod-tide__marker-foot"></span>
     </div>
   </div>
-  <p class="kod-tide__readout">Egy lóhosszal hátravetik. Az oszlop sávját ez nem érdekli.</p>
+  <p class="kod-tide__readout">Egy lóhosszal hátravetik. A közös sávot ez nem érinti.</p>
 </div>
 </div>
 
@@ -244,7 +244,7 @@ Zhao utolsó vágása, bekerítve a medernél: különbség 4 → egy lépés (*
       <span class="kod-tide__marker-foot"></span>
     </div>
   </div>
-  <p class="kod-tide__readout">Az oszlop fut. Zhao megadása narráció, miután a sáv már halott.</p>
+  <p class="kod-tide__readout">Az oszlop fut. Zhao megadása már csak narráció: a sáv addigra véget ért.</p>
 </div>
 </div>
 </div>
@@ -279,21 +279,21 @@ Zhao utolsó vágása, bekerítve a medernél: különbség 4 → egy lépés (*
 
 ### Egyensúlytalanság — ugyanaz a létra, mint a kockafokoknál
 
-Személyes előny egy dobáson továbbra is esetenként ítélhető. A közös egyensúlytalanság más: azt változtatja, **mely ómenlapok** tolják a közös sávot.
+Személyes előny egy dobáson továbbra is dobásonként dönthető. A közös egyensúlytalanság más: azt változtatja, **mely ómenlapok** tolják a közös sávot.
 
-A közös talajt a kockafok-létraként kezeld:
+A közös talajt ugyanazon a létrán mérd, mint a kockafokot:
 
 - **Egyenlő** — mindkét oldal hétköznapi
 - **Enyhe** — egy lépés (`d8` vs `d12`, vagy `d6` vs `d8`)
 - **Súlyos** — két lépés (`d6` vs `d12`)
 
-**Eljárás.** A nyomás alatt álló oldal **megtartja a rossz sávját** a jelenlegi csetepaté-méreten. A **jó sávját N mérettel kisebbről veszi** az egyenlő talaj táblázatán (enyhe N=1, súlyos N=2).
+**Eljárás.** A szorított oldal **rossz ómenjei** a jelenlegi méret szerint maradnak. A **jó ómenjeit** úgy vedd, mintha a csetepaté N mérettel kisebb lenne — az egyenlő talaj táblázatán (enyhe N=1, súlyos N=2).
 
-Nincs méret a kis csetepaté alatt. A jó sáv **nem zsugorodhat egy lap alá**.
+Kis csetepaténél kisebb méret nincs. A jó sáv **legalább egy lap** marad.
 
 <div class="kod-widget not-content" data-widget="content-tabs">
 <p class="kod-widget__title">Sodrás talaja — mely lapok mozdítják a sávot</p>
-<p class="kod-widget__intro">Válassz méretet. Minden sor közös talaj. A karmazsin lapok A összeomlása felé tolnak; a türkiz B felé. A közép üres. A Zhao-oszlop csata, súlyos, A hátrányban — csak <strong>1–3</strong> és <strong>20</strong> gyullad.</p>
+<p class="kod-widget__intro">Válassz méretet. Minden sor közös talaj. A karmazsin lapok A összeomlása felé tolnak; a türkiz B felé. A közép üres. A Zhao-oszlop csata, súlyos, A hátrányban — csak <strong>1–3</strong> és <strong>20</strong> számít.</p>
 <div class="kod-widget__controls" role="group" aria-label="Méret">
 <button type="button" class="kod-widget__btn" data-tab="small">Kis csetepaté</button>
 <button type="button" class="kod-widget__btn" data-tab="skirmish">Csetepaté</button>
@@ -307,7 +307,7 @@ Nincs méret a kis csetepaté alatt. A jó sáv **nem zsugorodhat egy lap alá**
 <div class="kod-omen-row"><span class="kod-omen-row__lab">Súlyos A</span><ol class="kod-omen-faces" data-a="1-1" data-b="20-20"></ol></div>
 <div class="kod-omen-row"><span class="kod-omen-row__lab">Súlyos B</span><ol class="kod-omen-faces" data-a="1-1" data-b="20-20"></ol></div>
 </div>
-<p class="kod-omen-note">Alsó határ: semmi sem szűkebb egy lapnál mindkét végen.</p>
+<p class="kod-omen-note">Alsó határ: mindkét végen legalább egy lap marad.</p>
 </div>
 <div class="kod-widget__panel" data-panel-id="skirmish" hidden>
 <div class="kod-omen-stack">
@@ -397,7 +397,7 @@ Csak **emberek** dobnak. Ha a dobás sodráshoz kötött, a jelek különbsége 
 <tr><td>Sodrás</td><td></td><td><strong>6 → 5</strong></td></tr>
 </tbody>
 </table>
-<p>A csapat java tart. Két lovas még a porba üldöz.</p>
+<p>A csapat java megáll. Két lovas még a porba üldöz.</p>
 </div>
 
 <div class="kod-widget__panel" data-panel-id="t3" data-step-title="Nyíleső" data-tide-pos="4" data-tide-note="Különbség 3 → 1 lépés. 5 → 4." hidden>
@@ -418,7 +418,7 @@ Csak **emberek** dobnak. Ha a dobás sodráshoz kötött, a jelek különbsége 
 
 <div class="kod-widget__panel" data-panel-id="t4" data-step-title="Következmény" data-tide-pos="3" data-tide-note="Különbség 3 → 1 lépés (4→3). Ómen 13: ló meghal Zhao alatt." hidden>
 <p>Zhao nyílást zárni lovagol. Egy nyíl a lova nyakát találja.</p>
-<p class="kod-tide-line"><strong>Zhao — sodráshoz kötött</strong> · Formáld újra az előőrt takaróvonalnak.</p>
+<p class="kod-tide-line"><strong>Zhao — sodráshoz kötött</strong> · Állítsd az előőrt takaróvonallá.</p>
 <table>
 <thead><tr><th></th><th>Dobás</th><th>Jelek</th></tr></thead>
 <tbody>
@@ -444,11 +444,11 @@ Csak **emberek** dobnak. Ha a dobás sodráshoz kötött, a jelek különbsége 
 <tr><td>Ómen</td><td><strong>4</strong></td><td>Jelenetlap: <em>lovasok a bal száraz mederben</em> · nem sodrásómen (az oszlop elleni sáv 1–3)</td></tr>
 </tbody>
 </table>
-<p>A lesállás megindul. A jelenetlap nyitja a medret; a különbség már tolta a sávot.</p>
+<p>A lesállás megindul. A jelenetlap a medret hozza játékba; a különbség már tolta a sávot.</p>
 </div>
 
 <div class="kod-widget__panel" data-panel-id="t6" data-step-title="Zhao tartása" data-tide-pos="2" data-tide-note="Helyi harc. A sodrás 2-n marad." hidden>
-<p>Zhao gazdátlan lovat ragad, és a mederből előjövő első embereknek megy. Helyi harc az árok szélén — nem tolás az egész oszlopért.</p>
+<p>Zhao gazdátlan lovat ragad, és a mederből előjövő első embereknek megy. Helyi harc az árok szélén — nem az egész oszlopért megy.</p>
 <p class="kod-tide-line"><strong>Zhao — személyes</strong> · Tartsd a meder szélét, amíg a többiek mozdulnak.</p>
 <table>
 <thead><tr><th></th><th>Dobás</th><th>Jelek</th></tr></thead>
@@ -502,10 +502,10 @@ Csak **emberek** dobnak. Ha a dobás sodráshoz kötött, a jelek különbsége 
 
 ### Futás
 
-Ha a sodrás egyik végét éri, az a közös oldal **fut**. A morál törik. A csoport szétomlik vagy menekül. Egyének még állhatnak, megtagadhatják a futást, hősiesen vagy ostobán meghalhatnak, személyes célt teljesíthetnek, vagy nagy csapást szenvedhetnek — a sodrás a **közös** akaratot töri, nem a személyes cselekvőképességet.
+Ha a sodrás egyik végét éri, az az oldal **közösen fut**. A morál törik. A csoport szétomlik vagy menekül. Egyének még állhatnak, megtagadhatják a futást, hősiesen vagy ostobán meghalhatnak, személyes célt teljesíthetnek, vagy nagy csapást szenvedhetnek — a sodrás a **közös** akaratot töri, nem azt, hogy az egyes ember mit tehet még.
 
 <aside class="kod-counsel" aria-label="Tanács">
-<p>Megtehetsz mindent, ami tőled telik; ha az oldalad javát levágják, akkor is oldalba kerülsz. Ne daráld a kockacsatákat önmagukért. Töltsd fel az ómenlapokat, amik számítanak. Engedd a játékosokat elhagyni a sodrást, ha a fikció engedi (zsákmány, leválás, a főember megmentése, személyes cél).</p>
+<p>Megtehetsz mindent, ami tőled telik; ha az oldalad javát levágják, akkor is oldalba kerülsz. Ne daráld a kockacsatákat önmagukért. Töltsd fel az ómenlapokat, amik számítanak. Hagyd, hogy a játékosok kilépjenek a sodrásból, ha a fikció engedi (zsákmány, leválás, a főember megmentése, személyes cél).</p>
 </aside>
 
 Kapcsolódó: [Kockamechanika](/hu/dice-mechanics/), [Jelek és kockafokok](/hu/marks-and-tiers/), [Ómenek](/hu/omens/), [Sérülés](/hu/harm/).

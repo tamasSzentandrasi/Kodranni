@@ -16,9 +16,9 @@ Gyors hivatkozás. Minden tétel arra a fejezetre mutat, ahol a teljes szabály 
 | **Előny / Hátrány** | Azt ítélitek meg, kinél van a fölény, ahelyett, hogy módosítókat halmoznátok; a kockafokot emelitek vagy csökkentitek (**d6** ↔ **d8** ↔ **d12**). Biztonságos alapértelmezés **d8**. → [Jelek és kockafokok](/hu/marks-and-tiers/#előny-és-hátrány) |
 | **Kockafok** | Melyik akciókockát használja a készlet: **d6** (nehezebb), **d8** (hétköznapi alap), vagy **d12** (könnyebb). Előny / hátrány szabja meg — nem a jártasság foka. → [Jelek és kockafokok](/hu/marks-and-tiers/) |
 | **Sikerjel (jel)** | Kocka, amely 5+-t mutat. → [Jelek és kockafokok](/hu/marks-and-tiers/#sikerjelek) |
-| **Ómenkocka** | **d20** minden dobáson; következményeket hoz, és a sodrást is táplálja. → [Ómenek](/hu/omens/#az-ómenkocka-és-a-következmények) |
+| **Ómenkocka** | **d20** minden dobáson; következményeket hoz, és a sodrást is mozdítja. → [Ómenek](/hu/omens/#az-ómenkocka-és-a-következmények) |
 | **Következmény** | Valódi mellékhatás az ómenkockából; nem írhatja felül az elsődleges dobást. → [Ómenek](/hu/omens/#az-ómenkocka-és-a-következmények) |
-| **Ellendobás** | Ha akaratok ütköznek; a jelek különbségét a válaszláncon hasonlítjátok. → [Sodrás](/hu/tide/#helyzeti-kockafeloldás) |
+| **Ellendobás** | Ha akaratok ütköznek; a jelek különbségét a válaszláncon hasonlítjátok. → [Sodrás](/hu/tide/#helyzet-szerinti-kockafeloldás) |
 | **Primitív akció** | Csak adottságból álló készlet (nincs jártasság). → [Jelek és kockafokok](/hu/marks-and-tiers/#a-kockakészlet-felépítése) |
 | **Sodrás** | Közös nyomássáv többoldalú összecsapásokhoz. Három méret: kis csetepaté, csetepaté, csata. → [Sodrás](/hu/tide/) |
 

@@ -10,7 +10,7 @@ description: A kilenc veleszületett adottság, amely a karaktert formálja.
 
 ## Adottságok
 
-Az **adottságok** (Foundations) minden karakter **veleszületett lehetősége**. Öregedést, traumát vagy ritka mesélői eseményt leszámítva ülésről ülésre nem változnak. Minden **kockakészletbe beleszámítanak**, és megszabják, milyen gyorsan javulnak a jártasságok [gyakorlattal](/hu/skills/#fejlődés).
+Az **adottságok** (Foundations) minden karakter **veleszületett mértéke**. Öregedést, traumát vagy ritka mesélői eseményt leszámítva ülésről ülésre nem változnak. Minden **kockakészletbe beleszámítanak**, és megszabják, milyen gyorsan javulnak a jártasságok [gyakorlattal](/hu/skills/#fejlődés).
 
 Kilenc adottság van, három csoportra osztva:
 

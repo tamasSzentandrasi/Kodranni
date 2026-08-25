@@ -1,6 +1,6 @@
 ---
 title: Felszerelés
-description: Amit kimondtatok, az van: páncél, étel, víz és megnevezett tárgyak.
+description: "Amit kimondtatok, az van: páncél, étel, víz és megnevezett tárgyak."
 ---
 
 ----------
@@ -21,7 +21,7 @@ A [karakteralkotásnál](/hu/character-creation/#a-megmérettetés-után) csak a
 
 | Elem | Részletek |
 |------|-----------|
-| **Páncél** | Nincs / könnyű / nehéz. Csak akkor számít, ha **fel van véve**. A [sérülés](/hu/harm/#sérülés-okozása) védelmi arányait táplálja. |
+| **Páncél** | Nincs / könnyű / nehéz. Csak akkor számít, ha **fel van véve**. A [sérülés](/hu/harm/#sérülés-okozása) védelmi arányait adja. |
 | **Étel** | Hátralévő napok. Az [erőfeszítés](/hu/exertion/) pihenő-visszatöltésével és a sérülés gyógyulásával kapcsolódik. |
 | **Víz** | Hátralévő napok. Ugyanazok a kapcsolatok, mint az ételnél. |
 | **Megnevezett tárgyak** | Csak jellegzetes vagy fontos tárgyak. |

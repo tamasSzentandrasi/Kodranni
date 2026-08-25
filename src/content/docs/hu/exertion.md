@@ -19,7 +19,7 @@ Az **erőfeszítés** (Exertion) a karakter kapacitása, hogy **túlmenjen a hé
 
 - Fektess bele **1 erőfeszítést**, hogy **egy extra kockát** tegyél bármely kockakészletbe.
 - Illő [visszhangnál](/hu/echoes/#felidézés) **második** erőfeszítés-kockát is belefektethetsz arra a dobásra (a rendes határ egy).
-- [Haldokló](/hu/harm/#haldoklás) karakternek **minden** dobásra erőfeszítést kell beletennie; a halál akkor jön, ha a készlet nullára esik haldoklás közben.
+- [Haldokló](/hu/harm/#haldoklás) karakternek **minden** dobásra erőfeszítést kell beletennie; a halál akkor jön, ha a készlet kimerül haldoklás közben.
 
 
 <aside class="kod-example">

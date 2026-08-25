@@ -88,7 +88,7 @@ A hierarchiaemelkedés gyakran akkor indul, ha pártfogás vagy horog visszhangg
 
 A közösségnek öt lágy mértéke van: a **sorsok** (Fortunes). Soha nem adnak abszolút számot (nincs marhalétszám, nincs pontos népszámlálás).
 
-A sorsok **nem** második karakterlap. Öt van: **életerő** (Vitality), **összetartás** (Cohesion), **bőség** (Surplus), **ismertség** (Standing), **hagyomány** (Tradition). A közösséget írják le **egészében** — milyen egészséges, táplált, összetartó, mennyire tartanak tőle, mennyire hisz magában *átlagban*. Ez az olvasat **minden** találkozást színez: játékoskaraktert és NPC-t, barátot és ellenséget. Egy falu **bőség** 0-n nem „ugyanaz a jelenet más kockával”; az éhség, a vékony készlet és a hiány szaga bejár minden csarnokot és utat. Alacsony összetartás gyanút kever a beszédbe még szövetségesek között is. Magas ismertség azt jelenti, a kívülállók a közösség *bárkivel* óvatosabban vagy udvariasabban bánnak. A mesélő a sorsokat környezeti nyomásként és alkalomként használja — jelenetkeret, NPC viselkedése, milyen a „hétköznapi élet” —, nem módosítóhalomként, amit minden dobásra rászór.
+A sorsok **nem** második karakterlap. Öt van: **életerő** (Vitality), **összetartás** (Cohesion), **bőség** (Surplus), **ismertség** (Standing), **hagyomány** (Tradition). A közösséget írják le **egészében** — milyen egészséges, táplált, összetartó, mennyire tartanak tőle, mennyire hisz magában *átlagban*. Ez **minden** találkozást színez: játékoskaraktert és NPC-t, barátot és ellenséget. Egy falu **bőség** 0-n nem „ugyanaz a jelenet más kockával”; az éhség, a vékony készlet és a hiány szaga bejár minden csarnokot és utat. Alacsony összetartás gyanút kever a beszédbe még szövetségesek között is. Magas ismertség azt jelenti, a kívülállók a közösség *bárkivel* óvatosabban vagy udvariasabban bánnak. A mesélő a sorsokat környezeti nyomásként és alkalomként használja — jelenetkeret, NPC viselkedése, milyen a „hétköznapi élet” —, nem módosítók halmazaként, amit minden dobásra rászór.
 
 <div class="kod-fortune-hall not-content" aria-label="Az öt sors">
 
@@ -133,9 +133,9 @@ Mind az öt sors **ugyanazt** a lágy skálát használja. A fenti oszlopok a *m
 | **0** | Válság | A hiány látható és állandó — szinte minden jelenetet nyomjon, ami azt a sorsot érinti. |
 | **1** | Szűkös | Vékony tartalék; az emberek érzik; a hétköznapi terv több ideget és több gondot kíván. |
 | **2** | Tartós | Ennél a népnél a rendes — sem lakoma, sem zuhanás. |
-| **3** | Bőséges | Van levegő; kívülálló és tag egyaránt többletet, magabiztosságot vagy erőt olvas abban a tartományban. |
+| **3** | Bőséges | Van levegő; kívülálló és tag egyaránt többletet, magabiztosságot vagy erőt lát abban a tartományban. |
 
-A kezdő sorsokat lágy benyomásként szabjátok meg a [Kampányelőkészítésben](/hu/campaign-setup/#világépítési-eljárások). A korai játék megerősíti vagy javítja őket. Az automatizálás tárolja az öt értéket az aktív közösséghez.
+A kezdő sorsokat lágy benyomásként szabjátok meg a [Kampányelőkészítésben](/hu/campaign-setup/#világépítési-eljárások). A korai játék megerősíti vagy javítja őket. Az automatizálás jegyzi az öt értéket az aktív közösséghez.
 
 ----------
 
@@ -152,7 +152,7 @@ Az alapítómítosz lényeges, **szűk** hatást gyakorol egy meghatározott tet
 - hatás a [sodrás](/hu/tide/) kiindulópontjára és váltási küszöbeire  
 - ideiglenes vagy állandó [vonás](/hu/traits/), ami a közösség minden tagjának jár (vagy tilos)  
 
-**Kiváltás:** mint a [visszhang felidézése](#felidézés), a dobásnak **kifejezetten jelölnie** kell, hogy egy alapítómítosz érvényes (mesélő vagy automatizálási dobásmenet). A szabad próza önmagában nem sül el.
+**Kiváltás:** mint a [visszhang felidézése](#felidézés), a dobásnak **kifejezetten jelölnie** kell, hogy egy alapítómítosz érvényes (mesélő vagy automatizálási dobásmenet). A szabad próza önmagában nem indít hatást.
 
 <figure class="kod-breath not-content">
 <img src="/scenes/price-we-paid.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
@@ -169,13 +169,13 @@ Egy veterán, akit gyerekként rabszolgatartók vittek el — szülei megölve, 
 
 <div class="kod-widget not-content" data-widget="content-tabs">
 <p class="kod-widget__title">Ugyanaz a dobás — mítosz ki / be</p>
-<p class="kod-widget__intro">Egy közösségtag rabszolgatartó tábort olvas ki a város sikátoraiból. Utcai tájékozódás, ravaszság 2. Csak akkor jelölve a rabszolgatartók ellen, ha a mítosz be van kapcsolva.</p>
+<p class="kod-widget__intro">Egy közösségtag rabszolgatartó tábort keres a város sikátoraiban. Utcai tájékozódás, ravaszság 2. Csak akkor jelölve a rabszolgatartók ellen, ha a mítosz be van kapcsolva.</p>
 <div class="kod-widget__controls" role="group" aria-label="Mítosz kapcsoló">
 <button type="button" class="kod-widget__btn" data-tab="myth-off" aria-pressed="true">Mítosz ki</button>
 <button type="button" class="kod-widget__btn" data-tab="myth-on">Mítosz be</button>
 </div>
 <div class="kod-widget__panel" data-panel-id="myth-off">
-<p><strong>Jelölés:</strong> nincs. Hétköznapi utcai tájékozódás. Erőfeszítés, ha a készletből fektet bele. Gyakorlat az adottság-2 küszöb ellen (alap 24 vagy 48, a jelenlegi foktól függően).</p>
+<p><strong>Jelölés:</strong> nincs. Hétköznapi utcai tájékozódás. Erőfeszítés, ha a készletből fektet bele. Gyakorlat az adottság-2 küszöbön (alap 24 vagy 48, a jelenlegi foktól függően).</p>
 <p>A tábor csak még egy veszélyes sikátor. A közösség emlékezete nem segít a kockán.</p>
 </div>
 <div class="kod-widget__panel" data-panel-id="myth-on" hidden>

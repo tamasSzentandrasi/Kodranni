@@ -3,7 +3,7 @@ title: Karakteralkotás
 description: Koncepció, adottságok, jártasságok, A Megmérettetés, és ami utána jön.
 ---
 
-> _*„A régi ősök az utódaikban éltek, betöltötték őket az akaratukkal, és tetteiket rajtuk keresztül újra véghezvitték.”*_  
+> _*„A régi ősök az utódaikban éltek, az akaratukkal töltötték meg őket, és tetteiket rajtuk keresztül újra véghezvitték.”*_  
 > — Vilhelm Grønbech
 
 ----------
@@ -31,13 +31,13 @@ A karakterfeljegyzés **piszkozatként** (draft) nyílik (automatizálás, ha el
 
 ### Koncepció
 
-Írj vagy mondj rövid koncepciót. **Két–öt mondat.** A hosszabb általában rosszabb.
+Írj vagy mondj rövid koncepciót. **Két–öt mondat.** Minél hosszabb, annál rosszabb.
 
 Konkrét **kötés kell a közösséghez** — vér, adósság, házasság, pártfogás, közös veszteség, kényszerszolgálat, vagy valami ugyanilyen szilárd. Idegen megérkezhet; **kívülálló** (Outsider) nem maradhat. A gyenge vagy elvont kötést elutasítják.
 
-Mondd el a mesélőnek azt is, mit akarsz a játéktól: milyen történeteket, mit félsz ezért az emberért, mit kockáztatsz. Így tud veled dolgozni.
+Mondd el a mesélőnek azt is, mit akarsz a játéktól: milyen történeteket, mitől félsz ezért az emberért, mit kockáztatsz. Így tud veled dolgozni.
 
-A mesélő elutasíthat koncepciót, amely nem illik a keretbe, vagy rosszhiszeműen jön. Ez a döntés végleges.
+A mesélő elutasíthat koncepciót, amely nem illik a keretbe, vagy rosszhiszemű. Ez a döntés végleges.
 
 ----------
 
@@ -52,7 +52,7 @@ Kapsz **4 szabad pontot**.
 | 1 → 2 | 1 |
 | 2 → 3 | 2 |
 
-Maximum **3**. A **0** vagy **4** mesélői engedélyt kíván és illő [vonást](/hu/traits/) (Trait).
+Maximum **3**. A **0** vagy **4** mesélői engedélyt kíván, és illő [vonást](/hu/traits/) (Trait).
 
 ### Jártasságok
 
@@ -101,16 +101,16 @@ Négy lépés. Járjátok végig **sorrendben**. Először magán dobások; azt�
 <div class="kod-widget__panel" data-panel-id="w1" data-step-title="Születési ómen">
 <p><strong>Mi:</strong> Dobj egy <strong>d20</strong>-at (<a href="/hu/omens/">ómen</a>). Csak te és a mesélő látjátok.</p>
 <p><strong>Pontok:</strong> az eredmény fele, felfelé kerekítve → <strong>1–10</strong> adottságpont. Az adottságokra teszed a szokásos költségeken (1→2 1-be kerül; 2→3 2-be).</p>
-<p><strong>Miért:</strong> magán dobás a karakter veleszületett tartományára. Nem nyilvános jóslat. Ne beszéljétek meg a számot az asztalnál.</p>
+<p><strong>Miért:</strong> magán dobás a karakter veleszületett mértékére. Nem nyilvános jóslat. Ne beszéljétek meg a számot az asztalnál.</p>
 <div class="kod-step-example"><strong>Példa</strong>A kocka 11-et mutat → 6 adottságpont. Mara 2-t tesz akaratra 1→2, 2-t ravaszságra 1→2, 2-t értelemre 1→2. A dobást senki más nem hallja.</div>
-<div class="kod-step-best"><strong>Jó gyakorlat</strong>A már megírt koncepció felé tedd. Ne dobj újra a szín kedvéért. Az asztal a 3. lépésben a beszéddel határozza meg az embert, nem ettől a kockától.</div>
+<div class="kod-step-best"><strong>Jó gyakorlat</strong>A már megírt koncepcióra tedd. Ne dobj újra, csak hogy szebb legyen. Az asztal a 3. lépésben a beszéddel határozza meg az embert, nem ettől a kockától.</div>
 </div>
 
 <div class="kod-widget__panel" data-panel-id="w2" data-step-title="Vezető kéz" hidden>
 <p><strong>Mi:</strong> Dobj egy második <strong>d20</strong>-at jártasságokra. A teljes eredmény (<strong>1–20</strong>) extra jártasságpont. A szokásos halmozódó költségeken teszed (0→1 = 1, 1→2 = 2, 2→3 = 3).</p>
 <p><strong>Még mindig magán</strong> a 3. lépésig.</p>
 <div class="kod-step-example"><strong>Példa</strong>A kocka 9-et mutat. Mara 6-ot tesz tárgyalásba 0→3 (1+2+3) és 3-at kereskedésbe 0→2 (1+2).</div>
-<div class="kod-step-best"><strong>Jó gyakorlat</strong>Ugyanazt a koncepciót tápláld. A vezető kéz nem második piszkozat arról, ki a karakter.</div>
+<div class="kod-step-best"><strong>Jó gyakorlat</strong>Ugyanazt a koncepciót erősítsd. A vezető kéz nem második nekifutás arról, ki a karakter.</div>
 </div>
 
 <div class="kod-widget__panel" data-panel-id="w3" data-step-title="Kit látunk" hidden>
@@ -128,7 +128,7 @@ Négy lépés. Járjátok végig **sorrendben**. Először magán dobások; azt�
 <li>A <strong>beszélő</strong> kap egy <strong>szót</strong> (Word) — később A Kívánásban *a saját* karakterére teszi, nem a célpontra.</li>
 <li>A <strong>mesélő</strong> <strong>jegyet tesz a célpontra most</strong>: jártasságpontokat illő <a href="/hu/skills/">őstípusban</a>, kis adottságeltolást, vonást, kiinduló <a href="/hu/harm/">sérülést</a>, vagy más következményt, amely élesíti, hogy ki ő. A cél a <strong>meghatározás</strong>, nem a büntetés. A beszélő <strong>nem</strong> választja a jegyet.</li>
 </ol>
-<p>A mesélő akkor zár, amikor a kör teljes fordulója semmi további elfogadhatót nem hoz.</p>
+<p>A mesélő akkor zár, amikor egy teljes körben nincs több elfogadható állítás.</p>
 <div class="kod-lanes not-content" style="margin-top:0.85rem">
 <div class="kod-lane kod-lane--violet">
 <p class="kod-lane__title">A beszélő kap</p>
@@ -146,7 +146,7 @@ Négy lépés. Járjátok végig **sorrendben**. Először magán dobások; azt�
 <div class="kod-widget__panel" data-panel-id="w4" data-step-title="A Kívánás" hidden>
 <p>A <strong>szavak</strong> csak azokból az állításokból jönnek, amelyeket <strong>más emberekről</strong> tettél a 3. lépésben. Itt <strong>a saját karakteredre</strong> teszed őket — vagy otthagyod és <strong>elveszted</strong>.</p>
 <p>Arról, akiről beszéltél, már jegy került, amikor az állítást elfogadták. A Kívánás az ő lapját nem érinti. A <strong>tiedet</strong> formálja újra.</p>
-<p>Minden szó <strong>egy</strong> menüpontot vesz. Te nevezed meg az adottságokat vagy jártasságokat <strong>a te</strong> lapodon. A mesélő jóváhagy vagy elutasít. Ha negatív vonás kell, a mesélő választja.</p>
+<p>Minden szó <strong>egy</strong> tételt vesz a menüből. Te nevezed meg az adottságokat vagy jártasságokat <strong>a te</strong> lapodon. A mesélő jóváhagy vagy elutasít. Ha negatív vonás kell, a mesélő választja.</p>
 <div class="kod-menu-grid not-content">
 <div class="kod-menu-item">
 <p class="kod-menu-item__buy">+1 egy megnevezett adottságra</p>
@@ -201,7 +201,7 @@ Ez az alkotás nyilvános fele. Egy karakterenként.
 1. A **beszélő** kap egy **szót** — később A Kívánásban *a saját* karakterére teszi, nem a célpontra.
 2. A **mesélő** **jegyet tesz a célpontra most**: jártasságpontokat illő [őstípusban](/hu/skills/), kis adottságeltolást, vonást, kiinduló [sérülést](/hu/harm/), vagy más következményt, amely élesíti, hogy ki ő. A cél a **meghatározás**, nem a büntetés. A beszélő **nem** választja a jegyet.
 
-A mesélő akkor zár, amikor a kör teljes fordulója semmi további elfogadhatót nem hoz.
+A mesélő akkor zár, amikor egy teljes körben nincs több elfogadható állítás.
 
 <div class="kod-lanes not-content">
 <div class="kod-lane kod-lane--violet">
@@ -225,7 +225,7 @@ A **szavak** csak azokból az állításokból jönnek, amelyeket **más emberek
 
 Arról, akiről beszéltél, már jegy került, amikor az állítást elfogadták. A Kívánás az ő lapját nem érinti. A **tiedet** formálja újra.
 
-Minden szó **egy** menüpontot vesz. Te nevezed meg az adottságokat vagy jártasságokat **a te** lapodon. A mesélő jóváhagy vagy elutasít. Ha negatív vonás kell, a mesélő választja.
+Minden szó **egy** tételt vesz a menüből. Te nevezed meg az adottságokat vagy jártasságokat **a te** lapodon. A mesélő jóváhagy vagy elutasít. Ha negatív vonás kell, a mesélő választja.
 
 <div class="kod-menu-grid not-content">
 <div class="kod-menu-item">
@@ -260,7 +260,7 @@ Ezeket zárd le, mielőtt a karakter bekerül a kampányfeljegyzésbe:
 | Tétel | Szabály |
 |------|------|
 | **[Visszhangok](/hu/echoes/)** | A koncepcióból és az elfogadott állításokból. Közösségi kötés kell. **Teherbírás** (Capacity) = **max(erő, ügyesség) + értelem + tekintély**. **Nulla visszhang = hanyatlás (Decadence).** |
-| **[Hierarchia](/hu/hierarchies/)** | Állás, ha van; alapból **kitaszított** (Outcast). Az **ismertség** (Standing) játékban igényelt, nem teljes létraként kitalált az alkotáskor. |
+| **[Hierarchia](/hu/hierarchies/)** | Állás, ha van; alapból **kitaszított** (Outcast). Az **ismertség** (Standing) játékban dől el, nem teljes létraként kitalálva az alkotáskor. |
 | **[Vonások](/hu/traits/)** | Lezárva. |
 | **[Felszerelés](/hu/inventory/)** | Csak megnevezett tárgyak, amelyek a koncepcióhoz már illenek. Nincs ingyen ellátmánycsomag. A többi játékban kerül elő vagy veszik meg. |
 

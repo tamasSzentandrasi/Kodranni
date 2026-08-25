@@ -1,6 +1,6 @@
 ---
 title: Emberi adottságok
-description: Adottságok, jártasságok, vonások és erőfeszítés — az emberi kapacitás ábrázolása.
+description: Adottságok, jártasságok, vonások és erőfeszítés — az emberi képesség ábrázolása.
 ---
 
 > *„Mi…tesz valakit egyedi egyénné? Természetes hajlam? Egy arc? A gesztusok nyelve? Egyénnek születünk…vagy magunkat formáljuk egyedi lénnyé a tapasztalatainkkal és azzal, amit elértünk?”*
@@ -9,13 +9,13 @@ description: Adottságok, jártasságok, vonások és erőfeszítés — az embe
 
 ## Az emberi adottság
 
-Az emberi lehetőséget szabályba önteni kényes. Korlátozottak vagyunk, mégis alkalmazkodók; specializálódunk; túl tudunk lépni a hétköznapi határokon, ha az akarat és a test engedi.
+Az emberi képességet szabályba önteni kényes. Korlátozottak vagyunk, mégis alkalmazkodók; specializálódunk; túl tudunk lépni a hétköznapi határokon, ha az akarat és a test engedi.
 
 A Kodranni ezt négy egymásba kapcsolódó mértékre bontja:
 
 | Mérték | Szerep | Fejezet |
 |--------|--------|---------|
-| **[Adottságok](/hu/foundations/)** | Veleszületett lehetőség. Majdnem állandó (öregedés és trauma elmozdíthatja). Megszabja, mi megy könnyen vagy nehezen — beleértve a [gyakorlat](/hu/skills/#fejlődés) küszöbeit. | A kilenc teljes listája |
+| **[Adottságok](/hu/foundations/)** | Ami veleszületett. Majdnem állandó (öregedés és trauma elmozdíthatja). Megszabja, mi megy könnyen vagy nehezen — beleértve a [gyakorlat](/hu/skills/#fejlődés) küszöbeit. | A kilenc teljes listája |
 | **[Jártasságok](/hu/skills/)** | Fejleszthető, gyakorolt képesség, hat őstípus alá rendezve (nem kasztok). Gyakorlattal javul. | Teljes jártasságlisták |
 | **[Vonások](/hu/traits/)** | Igen-nem részletek — technikák, állapotok, nyelvek, fogyatékosságok. Vagy megvan, vagy nincs. | Egyedi, nincs foka |
 | **[Erőfeszítés](/hu/exertion/)** | Akarat, hogy a hétköznapi határon túlra menjen. Egyben a fáradtság, éhség és szomjúság könyvelése. | Maximum = akarat + állóképesség + karizma |
@@ -35,7 +35,7 @@ Ha a karakter cselekszik, a mesélő a játékos leírt szándékából a legjob
 - Az **erőfeszítés** egy extra kockát adhat (kettőt, ha egy [visszhang](/hu/echoes/#felidézés) illik a pillanatra).
 - A **sérülés** adottságonként csökkenti a *hatékony* adottságot ([Sérülés](/hu/harm/)).
 
-A [visszhangok](/hu/echoes/) folytonosság — továbbvitt tettek —, nem ötödik potenciál-mérték.
+A [visszhangok](/hu/echoes/) folytonosság — továbbvitt tettek —, nem ötödik képességmérték.
 
 Primitív, állati szintű akciók (futás, ugrás, cipelés, észrevétel, visszaemlékezés, nyugalom tartása) **csak adottságot** használnak, plusz opcionális erőfeszítést.
 
@@ -45,7 +45,7 @@ Primitív, állati szintű akciók (futás, ugrás, cipelés, észrevétel, viss
 <img src="/scenes/hermit.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
 </figure>
 
-### Olvasási rend
+### Milyen sorrendben olvasd
 
 Ha még nem tetted: kezdd a [Kockamechanikával](/hu/dice-mechanics/) (mikor dobj), aztán [Jelek és kockafokok](/hu/marks-and-tiers/), [Ómenek](/hu/omens/) és [Sodrás](/hu/tide/).
 
@@ -53,7 +53,7 @@ Aztán:
 
 1. [Adottságok](/hu/foundations/) — a kilenc veleszületett érték  
 2. [Jártasságok](/hu/skills/) — őstípusok, gyakorlat, teljes listák  
-3. [Vonások](/hu/traits/) — szín és engedély: vagy megvan, vagy nincs  
+3. [Vonások](/hu/traits/) — jelleg és engedély: vagy megvan, vagy nincs  
 4. [Erőfeszítés](/hu/exertion/) — belefektetni, visszatölteni, üres készlet büntetése
 
 ----------

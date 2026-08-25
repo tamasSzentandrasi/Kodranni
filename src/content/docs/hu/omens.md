@@ -17,9 +17,9 @@ description: Az ómenkocka és a mellékesemények — a jelektől függetlenül
 
 A mesélő által kiosztott lapok jelenthetnek hirtelen érkezést, szerkezeti hibát, időjárásváltást, fertőzést és hasonlót. A kiosztást [automatizáláson](/hu/automation/) keresztül állítod és törlöd.
 
-Ha következmény sül el, a mesélő értelmezi. Kötés: **mellékhatás** maradjon — nem írhatja felül annak a dobásnak az elsődleges kimenetelét, amelyhez tartozik. A megfelelő mellékhatást a mesélő a narrációban találja ki: előre nem látott bonyodalmak és ajándékok, nem második siker/kudarc.
+Ha következmény jön, a mesélő értelmezi. Kötés: **mellékhatás** maradjon — nem írhatja felül annak a dobásnak az elsődleges kimenetelét, amelyhez tartozik. A megfelelő mellékhatást a mesélő a narrációban találja ki: előre nem látott bonyodalmak és ajándékok, nem második siker/kudarc.
 
-Többoldalú összecsapásokban az ómenek a **[sodrást](/hu/tide/)** is táplálják. A primitív, ellendobásos és közös dobások olvasása ott van, a sodrás előszavaként.
+Többoldalú összecsapásokban az ómenek a **[sodrást](/hu/tide/)** is mozdítják. A primitív, ellendobásos és közös dobások olvasása ott van, a sodrás előszavaként.
 
 ----------
 
@@ -33,7 +33,7 @@ Ugyanaz a dobás. Ugyanazok a jelek. A penge jól sikerült. Csak az ómenlap ad
 
 <div class="kod-widget not-content" data-widget="content-tabs">
 <p class="kod-widget__title">Tomas a kohónál</p>
-<p class="kod-widget__intro">Tomas az éjszakát egy hosszúkardon tölti. Erő + kovácsolás, <strong>d8</strong>. <strong>2 jel</strong> — a penge jól sikerül. Ez az olvasat nem mozdul. Válassz ómenlapot.</p>
+<p class="kod-widget__intro">Tomas az éjszakát egy hosszúkardon tölti. Erő + kovácsolás, <strong>d8</strong>. <strong>2 jel</strong> — a penge jól sikerül. Ez a számolás nem mozdul. Válassz ómenlapot.</p>
 <div class="kod-widget__controls" role="group" aria-label="Ómenlap">
 <button type="button" class="kod-widget__btn" data-tab="blank" aria-pressed="true">Üres</button>
 <button type="button" class="kod-widget__btn" data-tab="seven">7-es lap</button>

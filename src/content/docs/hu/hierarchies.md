@@ -86,7 +86,7 @@ Az ábrát (Diagram) fentről lefelé olvasd: egy korona, aztán párhuzamos lé
 </ol>
 </div>
 </div>
-<p class="kod-hier-caption">Ugyanaz a négy fok minden tengelyen. Egy karakter állhat magasan az egyiken és alacsonyan a másikon. Az uralkodói hely egyetlen, és az egész készlet fölött ül.</p>
+<p class="kod-hier-caption">Ugyanaz a négy fok minden tengelyen. Egy karakter állhat magasan az egyiken és alacsonyan a másikon. Az uralkodói hely egyetlen, és minden tengely fölött ül.</p>
 </div>
 
 Akik soha nem tartoztak a közösséghez, **kívülállók** (Outsider). Az ábrán **külön** ülnek (egyik tengelyen sem), amíg belépnek; akkor **kitaszítottként** indulnak a rájuk illő tengelyeken.
@@ -127,7 +127,7 @@ Ugyanazon a szinten a versengés és az együttműködés szerepjáték marad.
 <li><strong>Horog:</strong> Tisztelt (Pénz) nyilvánosan a malomkönyv visszaszerzését bízza rájuk az Althing előtt.</li>
 <li><strong>Visszhang születik:</strong> „Hozd vissza a malomkönyvet az Althing előtt” (súlyt az asztal szabja).</li>
 <li><strong>Ha jól zárul:</strong> a mesélő hierarchiaemelkedést hagyhat jóvá (pl. kitaszított → elismert a Pénzen).</li>
-<li><strong>Hírnév a társas sérüléshez:</strong> a relatív szintrés játékban rögzül, aztán védelmi arányként megy, amikor társas vagy szellemi sérülés jár.</li>
+<li><strong>Hírnév a társas sérüléshez:</strong> a relatív szintrés játékban rögzül, aztán védelmi arányként érvényesül, amikor társas vagy szellemi sérülés jár.</li>
 </ol>
 </aside>
 
@@ -162,7 +162,7 @@ Menet (ugyanaz a minta, mint a [felszerelésnél](/hu/inventory/#kezelés)):
 A halott karakterek törlődnek. Egyetlen maradék jelenlétük a visszhangokon át van, amelyeket az élők még hordoznak.
 
 <aside class="kod-counsel" aria-label="Tanács">
-<p>Bármely Kodranni-történet nagyobb közösséget követ, mégis elágazhat egyéni szálakra. Szándék szerint minden játékos története a közös legendát táplálja.</p>
+<p>Bármely Kodranni-történet nagyobb közösséget követ, mégis elágazhat egyéni szálakra. Szándék szerint minden játékos története a közös legendát erősíti.</p>
 <p><em>A történet csak félig van elmondva, ha csak egy ember mondja.</em></p>
 </aside>
 
