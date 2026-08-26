@@ -25,6 +25,7 @@ const requiredOrnament = [
 	'btn-glass.png',
 	'btn-glass-mid.png',
 	'btn-round.png',
+	'btn-round-moon.png',
 	'btn-end-l.png',
 	'btn-end-r.png',
 	'btn-bar-night.png',
