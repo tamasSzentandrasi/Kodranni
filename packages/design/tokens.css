@@ -40,6 +40,8 @@
   --kod-btn-end-r: url('./ornament/btn-end-r.png');
   --kod-btn-glass: url('./ornament/btn-glass.png');
   --kod-btn-glass-tile: url('./ornament/btn-glass-mid.png');
+  --kod-btn-night: url('./ornament/btn-bar-night.png');
+  --kod-btn-moon: url('./ornament/btn-bar-moon.png');
   --kod-btn-round: url('./ornament/btn-round.png');
   --kod-glass-leads:
     repeating-linear-gradient(45deg, transparent 0 0.68rem, #050505 0.68rem 0.78rem),

@@ -27,6 +27,8 @@ const requiredOrnament = [
 	'btn-round.png',
 	'btn-end-l.png',
 	'btn-end-r.png',
+	'btn-bar-night.png',
+	'btn-bar-moon.png',
 	'title-cast.png',
 ];
 

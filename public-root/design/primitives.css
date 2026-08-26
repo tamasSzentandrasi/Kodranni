@@ -20,10 +20,8 @@
 .kod-btn {
   --kod-soot-size: 0.55rem;
   --kod-corners: none;
-  --kod-end-w: 3.1rem;
-  --kod-well: rgba(4, 5, 6, 0.9);
-  --kod-well-mid: rgba(4, 5, 6, 0.62);
-  --kod-knot-soot: #2e3136;
+  --kod-end-w: 3.75rem;
+  --kod-btn-bar: var(--kod-btn-night);
   appearance: none;
   -webkit-appearance: none;
   box-sizing: border-box;
@@ -32,27 +30,28 @@
   flex: 0 0 auto;
   width: auto;
   height: 3.1rem;
-  min-width: 10.4rem;
+  min-width: 11.2rem;
   min-height: 3.1rem;
   max-width: none;
   max-height: 3.1rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: none;
-  background-color: #0c1016;
-  background-image:
-    radial-gradient(ellipse 52% 88% at 50% 50%, var(--kod-well) 0%, var(--kod-well-mid) 58%, transparent 78%),
-    var(--kod-btn-glass-tile);
-  background-repeat: no-repeat, repeat-x;
-  background-size: 100% 100%, auto 100%;
-  background-position: center, center;
+  border-style: solid;
+  border-color: transparent;
+  border-width: 0 var(--kod-end-w);
+  border-image-source: var(--kod-btn-bar);
+  border-image-slice: 0 18.5% 0 18.5% fill;
+  border-image-width: 0 var(--kod-end-w);
+  border-image-repeat: stretch;
+  background: none;
+  background-color: transparent;
   color: #f4f0e8;
   font-family: var(--kod-font-body);
   font-size: 0.88rem;
   line-height: 1;
   margin: 0;
-  padding: 0 3.2rem;
+  padding: 0 0.4rem;
   border-radius: 0;
   cursor: pointer;
   letter-spacing: 0.02em;
@@ -64,8 +63,8 @@
     0 1px 2px #000,
     0 0 10px #000,
     0 0 18px rgba(0, 0, 0, 0.9);
-  clip-path: var(--kod-cartouche);
-  transition: color 0.14s ease, filter 0.14s ease, box-shadow 0.14s ease;
+  clip-path: none;
+  transition: color 0.14s ease, filter 0.14s ease;
 }
 
 .kod-btn:visited {
@@ -75,33 +74,7 @@
 
 .kod-btn::before,
 .kod-btn::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  height: 100%;
-  width: auto;
-  aspect-ratio: var(--kod-end-ratio);
-  pointer-events: none;
-  z-index: 1;
-  background-color: var(--kod-knot-soot);
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
-  background-blend-mode: multiply;
-  transition: background-color 0.14s ease;
-}
-
-.kod-btn::before {
-  left: 0;
-  background-image: var(--kod-btn-end-l);
-  -webkit-mask-image: linear-gradient(to right, #000 42%, transparent 88%);
-  mask-image: linear-gradient(to right, #000 42%, transparent 88%);
-}
-
-.kod-btn::after {
-  right: 0;
-  background-image: var(--kod-btn-end-r);
-  -webkit-mask-image: linear-gradient(to left, #000 42%, transparent 88%);
-  mask-image: linear-gradient(to left, #000 42%, transparent 88%);
+  content: none;
 }
 
 .kod-btn > * {
@@ -114,24 +87,20 @@
   outline: none;
   color: #fff8f0;
   text-decoration: none;
-  --kod-well: rgba(4, 5, 6, 0.42);
-  --kod-well-mid: rgba(4, 5, 6, 0.18);
-  --kod-knot-soot: #fff;
+  --kod-btn-bar: var(--kod-btn-moon);
   filter:
-    drop-shadow(0 0 8px rgba(242, 239, 233, 0.55))
-    drop-shadow(0 0 16px rgba(242, 239, 233, 0.28));
+    drop-shadow(0 0 8px rgba(242, 239, 233, 0.5))
+    drop-shadow(0 0 16px rgba(242, 239, 233, 0.22));
 }
 
 .kod-btn[aria-pressed='true'],
 .kod-btn:active {
   color: #fff8f0;
   text-decoration: none;
-  --kod-well: rgba(12, 10, 8, 0.28);
-  --kod-well-mid: rgba(12, 10, 8, 0.08);
-  --kod-knot-soot: #fff;
+  --kod-btn-bar: var(--kod-btn-moon);
   filter:
-    drop-shadow(0 0 8px rgba(242, 239, 233, 0.65))
-    drop-shadow(0 0 20px rgba(242, 239, 233, 0.32));
+    drop-shadow(0 0 8px rgba(242, 239, 233, 0.62))
+    drop-shadow(0 0 18px rgba(242, 239, 233, 0.3));
   box-shadow: none;
 }
 
@@ -143,7 +112,7 @@
   box-shadow: none;
 }
 
-/* Wide cartouche — knots stay contain-sized; glass tile fills the bar. */
+/* Wide cartouche — 9-slice ends scale with height. */
 .kod-btn--folio {
   display: flex;
   flex-direction: column;
@@ -155,7 +124,8 @@
   min-height: 3.7rem;
   max-height: 3.7rem;
   max-width: none;
-  padding: 0.3rem 3.85rem;
+  --kod-end-w: 4.45rem;
+  padding: 0.3rem 0.45rem;
   white-space: normal;
   text-decoration: none;
   text-align: center;
@@ -208,12 +178,10 @@
 .kod-btn--folio.kod-btn--blood:hover,
 .kod-btn--folio.kod-btn--blood:focus-visible {
   color: #fff8f0;
-  --kod-well: rgba(4, 5, 6, 0.42);
-  --kod-well-mid: rgba(4, 5, 6, 0.18);
-  --kod-knot-soot: #fff;
+  --kod-btn-bar: var(--kod-btn-moon);
   filter:
-    drop-shadow(0 0 8px rgba(242, 239, 233, 0.55))
-    drop-shadow(0 0 16px rgba(242, 239, 233, 0.28));
+    drop-shadow(0 0 8px rgba(242, 239, 233, 0.5))
+    drop-shadow(0 0 16px rgba(242, 239, 233, 0.22));
 }
 
 .kod-btn--blood:hover .kod-btn__title,
@@ -228,6 +196,6 @@
 .kod-btn--folio.kod-btn--blood:active,
 .kod-btn--folio.kod-btn--blood[aria-pressed='true'] {
   color: #fff8f0;
-  --kod-knot-soot: #fff;
-  filter: drop-shadow(0 0 8px rgba(242, 239, 233, 0.65)) drop-shadow(0 0 20px rgba(242, 239, 233, 0.32));
+  --kod-btn-bar: var(--kod-btn-moon);
+  filter: drop-shadow(0 0 8px rgba(242, 239, 233, 0.62)) drop-shadow(0 0 18px rgba(242, 239, 233, 0.3));
 }

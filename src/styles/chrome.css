@@ -11,48 +11,13 @@
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
-  margin: 0.15rem 0 0.85rem;
+  margin: 0.15rem 0 1.15rem;
   padding: 0;
   border-bottom: none;
   background: none;
   box-shadow: none;
   position: relative;
   align-self: stretch;
-}
-
-/* Moonlight thrown by THIS rose: luminance of the glass as a floor-cast. */
-.kod-page-title:has(.kod-page-title__rose)::after {
-  content: '';
-  display: block;
-  width: min(26rem, 90%);
-  height: 6rem;
-  margin: 1.4rem auto -0.4rem;
-  background: radial-gradient(
-    ellipse 115% 135% at 50% 0%,
-    color-mix(in srgb, var(--kod-icon-hue, #c6c1b8) 32%, #f2efe9) 0%,
-    color-mix(in srgb, var(--kod-icon-hue, #c6c1b8) 14%, #c6c1b8) 52%,
-    transparent 86%
-  );
-  -webkit-mask-image: var(--kod-rose);
-  mask-image: var(--kod-rose);
-  -webkit-mask-mode: luminance;
-  mask-mode: luminance;
-  -webkit-mask-size: 145% auto;
-  mask-size: 145% auto;
-  -webkit-mask-position: center 8%;
-  mask-position: center 8%;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  filter: blur(4px) contrast(1.55);
-  mix-blend-mode: screen;
-  opacity: 0.78;
-  transform: scaleY(0.48);
-  transform-origin: top center;
-  pointer-events: none;
-}
-
-.kod-page-title:not(:has(.kod-page-title__rose))::after {
-  content: none;
 }
 
 .kod-page-title__rose {
