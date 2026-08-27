@@ -1,6 +1,6 @@
 import { createHmac } from 'node:crypto';
 import { describe, expect, it } from 'vitest';
-import { handleEdgeRequest, kvKey, type KvLike } from '../src/handler.js';
+import { campaignFromUrl, handleEdgeRequest, kvKey, type KvLike } from '../src/handler.js';
 
 class MemoryKv implements KvLike {
   store = new Map<string, string>();
@@ -19,6 +19,26 @@ function sign(key: string, body: string) {
 function env() {
   return { CAMPAIGNS: new MemoryKv(), DEVICE_KEYS: new MemoryKv() };
 }
+
+describe('campaignFromUrl', () => {
+  it('prefers ?campaign=', () => {
+    expect(
+      campaignFromUrl(new URL('https://vardmark.kodranni.com/?campaign=other'), 'vardmark'),
+    ).toBe('other');
+  });
+
+  it('uses the kodranni.com subdomain', () => {
+    expect(campaignFromUrl(new URL('https://vardmark.kodranni.com/community/'))).toBe(
+      'vardmark',
+    );
+  });
+
+  it('falls back to DEFAULT_CAMPAIGN on workers.dev', () => {
+    expect(
+      campaignFromUrl(new URL('https://kodranni-edge.kodranni.workers.dev/'), 'vardmark'),
+    ).toBe('vardmark');
+  });
+});
 
 describe('edge handler', () => {
   it('registers, stores a snapshot, and serves it when origin is unset', async () => {

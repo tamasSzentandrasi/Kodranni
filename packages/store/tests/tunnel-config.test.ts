@@ -84,4 +84,21 @@ describe('applyMachineDefaults', () => {
     expect(text).toContain('discord_storyteller_role_id');
     expect(text).toContain('tunnel_mode = "named"');
   });
+
+  it('clears named tunnel leftover when secrets and named tunnel fields are gone', () => {
+    const cfg = applyMachineDefaults(
+      {
+        ...base,
+        tunnelMode: 'named',
+        tunnelHostname: 'https://vardmark.kodranni.com',
+        liveBaseUrl: 'https://kodranni.com',
+        edgeUrl: 'https://kodranni-edge.kodranni.workers.dev',
+      },
+      {},
+    );
+    expect(cfg.tunnelMode).toBe('quick');
+    expect(cfg.tunnelHostname).toBeUndefined();
+    expect(cfg.liveBaseUrl).toBe('http://127.0.0.1:8742');
+    expect(cfg.edgeUrl).toBe('https://kodranni-edge.kodranni.workers.dev');
+  });
 });

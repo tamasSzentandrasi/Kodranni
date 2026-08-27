@@ -278,10 +278,16 @@ async function main(): Promise<void> {
     const r = publishCampaignArchive({
       slug,
       storePath: cfg.storePath,
-      publicHost: cfg.tunnelHostname ?? cfg.liveBaseUrl,
+      publicHost: cfg.edgeUrl ?? cfg.tunnelHostname ?? cfg.liveBaseUrl,
     });
     console.log(`Published archive → ${r.dir}`);
     console.log(`  ${r.characterCount} characters · ${r.generatedAt}`);
+    const { publishSnapshotToEdge } = await import('./edge-publish.js');
+    try {
+      await publishSnapshotToEdge(slug, cfg);
+    } catch (e) {
+      console.error(`  edge: ${e instanceof Error ? e.message : e}`);
+    }
     return;
   }
 

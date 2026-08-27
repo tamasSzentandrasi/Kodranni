@@ -3,7 +3,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
 import { openSqliteStore, seedDemoCampaign } from '@kodranni/store';
-import { writeArchiveFiles } from '../src/index.js';
+import { edgeOriginWouldLoop, writeArchiveFiles } from '../src/index.js';
 
 const dirs: string[] = [];
 afterEach(() => {
@@ -33,5 +33,20 @@ describe('publish archive', () => {
     const json = JSON.parse(readFileSync(r.snapshotPath, 'utf8'));
     expect(json.characters.every((c: { status: string }) => c.status !== 'draft')).toBe(true);
     expect(json.characters.every((c: { initiator?: unknown }) => !c.initiator)).toBe(true);
+  });
+
+  it('detects an origin that would loop the public hostname', () => {
+    expect(
+      edgeOriginWouldLoop(
+        'https://vardmark.kodranni.com',
+        'https://vardmark.kodranni.com/',
+      ),
+    ).toBe(true);
+    expect(
+      edgeOriginWouldLoop(
+        'https://vardmark.kodranni.com',
+        'https://random.trycloudflare.com',
+      ),
+    ).toBe(false);
   });
 });

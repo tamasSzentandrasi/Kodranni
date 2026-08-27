@@ -317,6 +317,38 @@ export async function putSnapshotToEdge(opts: {
   }
 }
 
+export function edgeOriginWouldLoop(edgeUrl: string, origin: string): boolean {
+  try {
+    return new URL(origin).host === new URL(edgeUrl).host;
+  } catch {
+    return true;
+  }
+}
+
+export async function announceEdgeLive(opts: {
+  edgeUrl: string;
+  campaignId: string;
+  deviceKey: string;
+  origin: string;
+}): Promise<void> {
+  if (edgeOriginWouldLoop(opts.edgeUrl, opts.origin)) {
+    throw new Error(
+      'refusing to set edge origin: it matches the public hostname (proxy loop). Use a quick tunnel or a private tunnel hostname.',
+    );
+  }
+  await registerEdgeCampaign({
+    edgeUrl: opts.edgeUrl,
+    campaignId: opts.campaignId,
+    deviceKey: opts.deviceKey,
+  });
+  await setEdgeOrigin({
+    edgeUrl: opts.edgeUrl,
+    campaignId: opts.campaignId,
+    deviceKey: opts.deviceKey,
+    origin: opts.origin,
+  });
+}
+
 export async function setEdgeOrigin(opts: {
   edgeUrl: string;
   campaignId: string;

@@ -246,10 +246,18 @@ export function applyMachineDefaults(
   const stRole = env.DISCORD_STORYTELLER_ROLE_ID?.trim();
   const fluxerStRole = env.FLUXER_STORYTELLER_ROLE_ID?.trim();
 
-  if (tunnelToken || tunnelHost || out.cloudflareTunnelName || out.cloudflareTunnelConfig) {
+  const hasNamedCreds = Boolean(
+    tunnelToken || tunnelHost || out.cloudflareTunnelName || out.cloudflareTunnelConfig,
+  );
+  if (hasNamedCreds) {
     out.tunnelMode = 'named';
-  } else if (!out.tunnelMode) {
+  } else {
+    // Deleting cf-tunnel-* secrets must demote named leftover in campaign.toml.
     out.tunnelMode = DEFAULTS.tunnelMode;
+    delete out.tunnelHostname;
+    if (out.liveBaseUrl.startsWith('https://')) {
+      out.liveBaseUrl = DEFAULTS.liveBaseUrl;
+    }
   }
 
   const edgeUrl = env.KODRANNI_EDGE_URL?.trim();

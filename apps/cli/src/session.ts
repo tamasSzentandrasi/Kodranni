@@ -2,24 +2,18 @@ import { type ChildProcess, spawn } from 'node:child_process';
 import { openSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import {
-  publishCampaignArchive,
-  putSnapshotToEdge,
-  registerEdgeCampaign,
-  setEdgeOrigin,
-} from '@kodranni/publish';
+import { publishCampaignArchive } from '@kodranni/publish';
 import {
   campaignArchiveDir,
   campaignRuntimeLogsDir,
   ensureCampaignRuntime,
-  ensureEdgeDeviceKey,
-  openSqliteStore,
   readLiveUrl,
   readSessionState,
   writeLiveUrl,
   writeSessionState,
   type CampaignConfig,
 } from '@kodranni/store';
+import { clearEdgeOrigin, publishSnapshotToEdge } from './edge-publish.js';
 import { spawnArchiveServer } from './archive-server.js';
 import { probeHttp, processAlive } from './http.js';
 import {
@@ -199,33 +193,11 @@ export async function sessionEnd(
       publicHost: cfg.edgeUrl ?? cfg.tunnelHostname ?? (cfg.liveBaseUrl.startsWith('https://') ? cfg.liveBaseUrl : undefined),
     });
     console.log(`  snapshot: ${pub.snapshotPath} (${pub.characterCount} characters)`);
-    const edgeUrl = cfg.edgeUrl ?? process.env.KODRANNI_EDGE_URL?.trim();
-    if (edgeUrl) {
-      const key = ensureEdgeDeviceKey();
-      const store = openSqliteStore(cfg.storePath);
-      try {
-        const snap = store.toPublicSnapshot();
-        await registerEdgeCampaign({
-          edgeUrl,
-          campaignId: slug,
-          deviceKey: key,
-        });
-        await putSnapshotToEdge({
-          edgeUrl,
-          campaignId: slug,
-          deviceKey: key,
-          snapshot: snap,
-        });
-        await setEdgeOrigin({
-          edgeUrl,
-          campaignId: slug,
-          deviceKey: key,
-          origin: null,
-        });
-        console.log(`  edge: snapshot published · origin cleared (${edgeUrl})`);
-      } finally {
-        store.close();
-      }
+    try {
+      await publishSnapshotToEdge(slug, cfg);
+      await clearEdgeOrigin(slug, cfg);
+    } catch (edgeErr) {
+      console.error(`  edge: ${edgeErr instanceof Error ? edgeErr.message : edgeErr}`);
     }
   } catch (e) {
     console.error(`  archive publish failed: ${e instanceof Error ? e.message : e}`);

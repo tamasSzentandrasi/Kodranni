@@ -1,11 +1,19 @@
 name = "kodranni-edge"
 main = "src/index.ts"
 compatibility_date = "2026-01-01"
+workers_dev = true
 
-# Bind KV namespaces in the Cloudflare dashboard (or `wrangler kv namespace create`).
-# [[kv_namespaces]]
-# binding = "CAMPAIGNS"
-# id = "…"
-# [[kv_namespaces]]
-# binding = "DEVICE_KEYS"
-# id = "…"
+[vars]
+DEFAULT_CAMPAIGN = "vardmark"
+
+# Campaign public hostname (zone kodranni.com on this account).
+[[routes]]
+pattern = "vardmark.kodranni.com"
+custom_domain = true
+
+[[kv_namespaces]]
+binding = "CAMPAIGNS"
+id = "27f3b198669e4a619ed2645ae56b0365"
+[[kv_namespaces]]
+binding = "DEVICE_KEYS"
+id = "033fbf4914bf4ebe8ebb391b69ae7972"

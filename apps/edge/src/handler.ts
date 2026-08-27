@@ -15,6 +15,8 @@ export interface EdgeEnv {
   /** HMAC keys keyed by campaign id. */
   DEVICE_KEYS: KvLike;
   LIVE_PROXY_TIMEOUT_MS?: string;
+  /** Used when Host has no campaign label and ?campaign= is absent. */
+  DEFAULT_CAMPAIGN?: string;
 }
 
 export function kvKey(campaign: string, field: 'origin' | 'snapshot' | 'meta'): string {
@@ -57,9 +59,14 @@ async function authorize(
   return timingSafeEqualHex(expected, m[2]!.toLowerCase());
 }
 
-function campaignFrom(url: URL): string | null {
+export function campaignFromUrl(url: URL, defaultCampaign?: string): string | null {
   const q = url.searchParams.get('campaign')?.trim();
-  return q || null;
+  if (q) return q;
+  const host = url.hostname.toLowerCase().replace(/\.$/, '');
+  const sub = /^([a-z0-9-]+)\.kodranni\.com$/.exec(host);
+  if (sub && sub[1] !== 'www') return sub[1];
+  const fallback = defaultCampaign?.trim();
+  return fallback || null;
 }
 
 const SNOWFLAKE = /\b\d{17,20}\b/;
@@ -70,7 +77,7 @@ function snapshotLooksPrivate(json: string): boolean {
 
 export async function handleEdgeRequest(request: Request, env: EdgeEnv): Promise<Response> {
   const url = new URL(request.url);
-  const campaign = campaignFrom(url);
+  const campaign = campaignFromUrl(url, env.DEFAULT_CAMPAIGN);
 
   if (url.pathname === '/api/snapshot' && request.method === 'GET') {
     if (!campaign) return json({ error: 'missing campaign' }, 400);

@@ -5,10 +5,12 @@ import { type ChildProcess, spawn, spawnSync } from 'node:child_process';
 import { createWriteStream, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { startBotRuntime } from '@kodranni/bot-runtime';
+import { announceEdgeLive } from '@kodranni/publish';
 import type { CampaignConfig } from '@kodranni/store';
 import {
   campaignRuntimeLogsDir,
   ensureCampaignRuntime,
+  ensureEdgeDeviceKey,
   readLiveUrl,
   readSessionState,
   writeLiveUrl,
@@ -229,6 +231,20 @@ export async function runLiveKernel(opts: {
         console.log(`  public: ${publicUrl}`);
         console.log('  (tunnel is live-only — session end tears it down; archive is the edge)');
         console.log(`  log:    ${tunnelLog}`);
+        const edgeUrl = cfg.edgeUrl ?? process.env.KODRANNI_EDGE_URL?.trim();
+        if (edgeUrl && publicUrl.startsWith('https://')) {
+          try {
+            await announceEdgeLive({
+              edgeUrl,
+              campaignId: slug,
+              deviceKey: ensureEdgeDeviceKey(),
+              origin: publicUrl,
+            });
+            console.log(`  edge: origin → tunnel (${edgeUrl})`);
+          } catch (e) {
+            console.error(`  edge origin: ${e instanceof Error ? e.message : e}`);
+          }
+        }
       } catch (e) {
         killChild(tunnelChild);
         tunnelChild = undefined;
