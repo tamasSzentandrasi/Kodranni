@@ -38,13 +38,13 @@ describe('publish archive', () => {
   it('detects an origin that would loop the public hostname', () => {
     expect(
       edgeOriginWouldLoop(
-        'https://vardmark.kodranni.com',
-        'https://vardmark.kodranni.com/',
+        'https://play.kodranni.com',
+        'https://play.kodranni.com/',
       ),
     ).toBe(true);
     expect(
       edgeOriginWouldLoop(
-        'https://vardmark.kodranni.com',
+        'https://play.kodranni.com',
         'https://random.trycloudflare.com',
       ),
     ).toBe(false);

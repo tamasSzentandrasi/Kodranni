@@ -90,7 +90,7 @@ describe('applyMachineDefaults', () => {
       {
         ...base,
         tunnelMode: 'named',
-        tunnelHostname: 'https://vardmark.kodranni.com',
+        tunnelHostname: 'https://play.kodranni.com',
         liveBaseUrl: 'https://kodranni.com',
         edgeUrl: 'https://kodranni-edge.kodranni.workers.dev',
       },

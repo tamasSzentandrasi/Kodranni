@@ -23,14 +23,18 @@ function env() {
 describe('campaignFromUrl', () => {
   it('prefers ?campaign=', () => {
     expect(
-      campaignFromUrl(new URL('https://vardmark.kodranni.com/?campaign=other'), 'vardmark'),
+      campaignFromUrl(new URL('https://play.kodranni.com/?campaign=other'), 'vardmark'),
     ).toBe('other');
   });
 
-  it('uses the kodranni.com subdomain', () => {
-    expect(campaignFromUrl(new URL('https://vardmark.kodranni.com/community/'))).toBe(
+  it('maps play.kodranni.com to the default campaign, not slug play', () => {
+    expect(campaignFromUrl(new URL('https://play.kodranni.com/community/'), 'vardmark')).toBe(
       'vardmark',
     );
+  });
+
+  it('maps a campaign-named subdomain to that slug', () => {
+    expect(campaignFromUrl(new URL('https://ash-hill.kodranni.com/'))).toBe('ash-hill');
   });
 
   it('falls back to DEFAULT_CAMPAIGN on workers.dev', () => {

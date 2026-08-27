@@ -59,14 +59,18 @@ async function authorize(
   return timingSafeEqualHex(expected, m[2]!.toLowerCase());
 }
 
+/** Host labels that mean “the current table”, not a campaign slug. */
+const PLAY_HOSTS = new Set(['play', 'www']);
+
 export function campaignFromUrl(url: URL, defaultCampaign?: string): string | null {
   const q = url.searchParams.get('campaign')?.trim();
   if (q) return q;
+  const fallback = defaultCampaign?.trim() || null;
   const host = url.hostname.toLowerCase().replace(/\.$/, '');
+  if (host === 'kodranni.com') return fallback;
   const sub = /^([a-z0-9-]+)\.kodranni\.com$/.exec(host);
-  if (sub && sub[1] !== 'www') return sub[1];
-  const fallback = defaultCampaign?.trim();
-  return fallback || null;
+  if (sub && !PLAY_HOSTS.has(sub[1]!)) return sub[1]!;
+  return fallback;
 }
 
 const SNOWFLAKE = /\b\d{17,20}\b/;

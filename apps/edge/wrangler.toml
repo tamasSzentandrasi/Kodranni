@@ -6,9 +6,9 @@ workers_dev = true
 [vars]
 DEFAULT_CAMPAIGN = "vardmark"
 
-# Campaign public hostname (zone kodranni.com on this account).
+# Stable player hostname. Campaign id is DEFAULT_CAMPAIGN, not the subdomain.
 [[routes]]
-pattern = "vardmark.kodranni.com"
+pattern = "play.kodranni.com"
 custom_domain = true
 
 [[kv_namespaces]]
