@@ -5,10 +5,10 @@ on:
     branches: [main]
   workflow_dispatch:
 
+# Branch publish needs contents:write. The Actions Pages API (deploy-pages)
+# has been hanging on a blank status until the 10-minute cancel.
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 concurrency:
   group: pages
@@ -49,18 +49,12 @@ jobs:
           grep -q '/Kodranni/Guidebook/_astro/' publish/Guidebook/introduction/index.html
           grep -q 'https://kodranni.com/Guidebook' publish/Guidebook/introduction/index.html
 
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Publish gh-pages
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          path: publish
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./publish
+          publish_branch: gh-pages
+          force_orphan: true
+          user_name: github-actions[bot]
+          user_email: 41898282+github-actions[bot]@users.noreply.github.com
