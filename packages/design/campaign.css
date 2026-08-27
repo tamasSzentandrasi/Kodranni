@@ -809,6 +809,7 @@ section.kod-plate {
 .rite__panel .kod-btn--folio[data-banner-submit] {
   --rite-banner: #a01818;
   background-color: color-mix(in srgb, var(--rite-banner) 42%, #0a0c10);
+  background-clip: padding-box;
 }
 
 .rite__panel .kod-btn--folio[data-banner-submit]:hover,

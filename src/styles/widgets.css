@@ -402,12 +402,10 @@
   border-style: solid;
   border-color: transparent;
   border-width: 0 var(--kod-end-w);
-  border-image-source: var(--kod-btn-bar);
-  border-image-slice: 0 18.5% 0 18.5% fill;
-  border-image-width: 0 var(--kod-end-w);
-  border-image-repeat: stretch;
+  /* Chrome lives on ::before so filter: drop-shadow can follow the cartouche alpha. */
+  border-image: none;
   background: none;
-  background-color: #0a0c10;
+  background-color: transparent;
   color: #f4f0e8;
   font-family: var(--kod-font-body);
   font-size: 0.82rem;
@@ -426,14 +424,38 @@
     0 0 10px #000,
     0 0 18px rgba(0, 0, 0, 0.9);
   clip-path: none;
+  overflow: visible;
   transition: color 0.14s ease, filter 0.14s ease;
 }
 
-.kod-widget__btn::before,
-.kod-btn::before,
+.kod-widget__btn > *,
+.kod-btn > * {
+  position: relative;
+  z-index: 2;
+}
+
 .kod-widget__btn::after,
 .kod-btn::after {
   content: none;
+}
+
+.kod-widget__btn::before,
+.kod-btn::before {
+  content: '';
+  position: absolute;
+  box-sizing: border-box;
+  inset: 0 calc(-1 * var(--kod-end-w));
+  z-index: -1;
+  pointer-events: none;
+  border-style: solid;
+  border-color: transparent;
+  border-width: 0 var(--kod-end-w);
+  border-image-source: var(--kod-btn-bar);
+  border-image-slice: 0 18.5% 0 18.5% fill;
+  border-image-width: 0 var(--kod-end-w);
+  border-image-repeat: stretch;
+  background: transparent;
+  clip-path: var(--kod-cartouche);
 }
 
 /* Scout Marks: stained-glass roundels — soot well is in the disc */
@@ -1455,6 +1477,7 @@
   --kod-end-w: 3.75rem;
   --kod-btn-bar: var(--kod-btn-night);
   appearance: none;
+  -webkit-appearance: none;
   box-sizing: border-box;
   position: relative;
   isolation: isolate;
@@ -1465,13 +1488,10 @@
   border-style: solid;
   border-color: transparent;
   border-width: 0 var(--kod-end-w);
-  border-image-source: var(--kod-btn-bar);
-  border-image-slice: 0 18.5% 0 18.5% fill;
-  border-image-width: 0 var(--kod-end-w);
-  border-image-repeat: stretch;
+  border-image: none;
   border-radius: 0;
   background: none;
-  background-color: #0a0c10;
+  background-color: transparent;
   color: #f4f0e8;
   font-family: var(--kod-font-body);
   font-size: 0.9rem;
@@ -1479,11 +1499,28 @@
   letter-spacing: 0.03em;
   text-shadow: 0 1px 3px #000, 0 0 8px rgba(0, 0, 0, 0.85);
   clip-path: none;
+  overflow: visible;
   transition: color 0.14s ease, filter 0.14s ease;
 }
-.kod-step-flow__nav button::before,
 .kod-step-flow__nav button::after {
   content: none;
+}
+.kod-step-flow__nav button::before {
+  content: '';
+  position: absolute;
+  box-sizing: border-box;
+  inset: 0 calc(-1 * var(--kod-end-w));
+  z-index: -1;
+  pointer-events: none;
+  border-style: solid;
+  border-color: transparent;
+  border-width: 0 var(--kod-end-w);
+  border-image-source: var(--kod-btn-bar);
+  border-image-slice: 0 18.5% 0 18.5% fill;
+  border-image-width: 0 var(--kod-end-w);
+  border-image-repeat: stretch;
+  background: transparent;
+  clip-path: var(--kod-cartouche);
 }
 .kod-step-flow__nav button:hover:not(:disabled),
 .kod-step-flow__nav button:focus-visible:not(:disabled) {
