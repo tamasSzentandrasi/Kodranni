@@ -16,6 +16,7 @@ packages/**/dist/
 .env
 .env.*
 !.env.example
+.wrangler/
 
 # Logs
 npm-debug.log*
