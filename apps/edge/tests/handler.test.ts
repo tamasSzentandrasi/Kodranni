@@ -33,6 +33,13 @@ describe('campaignFromUrl', () => {
     );
   });
 
+  it('requires ?campaign= on kodranni.com (product lives at /)', () => {
+    expect(campaignFromUrl(new URL('https://kodranni.com/'), 'vardmark')).toBeNull();
+    expect(campaignFromUrl(new URL('https://kodranni.com/?campaign=vardmark'), 'vardmark')).toBe(
+      'vardmark',
+    );
+  });
+
   it('maps a campaign-named subdomain to that slug', () => {
     expect(campaignFromUrl(new URL('https://ash-hill.kodranni.com/'))).toBe('ash-hill');
   });

@@ -10,10 +10,17 @@ run_worker_first = true
 
 [vars]
 DEFAULT_CAMPAIGN = "vardmark"
+GUIDE_ORIGIN = "https://tamasszentandrasi.github.io/Kodranni"
 
-# Stable player hostname. Campaign id is DEFAULT_CAMPAIGN, not the subdomain.
+# demo = showcase (implied campaign). Apex = product + ?campaign= for tables.
 [[routes]]
 pattern = "demo.kodranni.com"
+custom_domain = true
+[[routes]]
+pattern = "kodranni.com"
+custom_domain = true
+[[routes]]
+pattern = "www.kodranni.com"
 custom_domain = true
 
 [[kv_namespaces]]

@@ -17,6 +17,8 @@ export interface EdgeEnv {
   LIVE_PROXY_TIMEOUT_MS?: string;
   /** Used when Host has no campaign label and ?campaign= is absent. */
   DEFAULT_CAMPAIGN?: string;
+  /** GitHub Pages origin for the product (landing + Guidebook), no trailing slash. */
+  GUIDE_ORIGIN?: string;
   ASSETS?: { fetch(request: Request): Promise<Response> };
 }
 
@@ -63,18 +65,47 @@ async function authorize(
   return timingSafeEqualHex(expected, m[2]!.toLowerCase());
 }
 
-/** Host labels that mean “the current table”, not a campaign slug. */
-const PLAY_HOSTS = new Set(['play', 'demo', 'www']);
-
 export function campaignFromUrl(url: URL, defaultCampaign?: string): string | null {
   const q = url.searchParams.get('campaign')?.trim();
   if (q) return q;
   const fallback = defaultCampaign?.trim() || null;
   const host = url.hostname.toLowerCase().replace(/\.$/, '');
-  if (host === 'kodranni.com') return fallback;
+  if (host === 'kodranni.com' || host === 'www.kodranni.com') return null;
+  if (host === 'demo.kodranni.com' || host === 'play.kodranni.com') return fallback;
+  if (host.endsWith('.workers.dev')) return fallback;
   const sub = /^([a-z0-9-]+)\.kodranni\.com$/.exec(host);
-  if (sub && !PLAY_HOSTS.has(sub[1]!)) return sub[1]!;
+  if (sub) return sub[1]!;
   return fallback;
+}
+
+function isProductPath(url: URL, campaign: string | null): boolean {
+  const p = url.pathname;
+  if (p.startsWith('/Guidebook')) return true;
+  if (campaign) return false;
+  const host = url.hostname.toLowerCase();
+  if (host !== 'kodranni.com' && host !== 'www.kodranni.com') return false;
+  if (p === '/' || p === '/index.html') return true;
+  if (p.startsWith('/design/')) return true;
+  if (p.startsWith('/pagefind')) return true;
+  if (p === '/favicon.ico' || p.startsWith('/favicon') || p === '/apple-touch-icon.png') return true;
+  if (p.startsWith('/og') || p.endsWith('.xml')) return true;
+  return false;
+}
+
+async function proxyProduct(request: Request, env: EdgeEnv, url: URL): Promise<Response> {
+  const origin = (env.GUIDE_ORIGIN ?? '').replace(/\/$/, '');
+  if (!origin) return json({ error: 'product origin unset' }, 404);
+  const dest = `${origin}${url.pathname}${url.search}`;
+  const res = await fetch(dest, {
+    method: request.method,
+    headers: { accept: request.headers.get('accept') ?? '*/*' },
+    redirect: 'follow',
+    signal: AbortSignal.timeout(10_000),
+  });
+  const headers = new Headers(res.headers);
+  headers.delete('content-encoding');
+  headers.delete('content-length');
+  return new Response(res.body, { status: res.status, headers });
 }
 
 const SNOWFLAKE = /\b\d{17,20}\b/;
@@ -86,6 +117,17 @@ function snapshotLooksPrivate(json: string): boolean {
 export async function handleEdgeRequest(request: Request, env: EdgeEnv): Promise<Response> {
   const url = new URL(request.url);
   const campaign = campaignFromUrl(url, env.DEFAULT_CAMPAIGN);
+
+  if (
+    (request.method === 'GET' || request.method === 'HEAD') &&
+    isProductPath(url, campaign)
+  ) {
+    if (env.ASSETS) {
+      const asset = await env.ASSETS.fetch(request);
+      if (asset.status !== 404) return asset;
+    }
+    return proxyProduct(request, env, url);
+  }
 
   if (url.pathname === '/api/snapshot' && request.method === 'GET') {
     if (!campaign) return json({ error: 'missing campaign' }, 400);

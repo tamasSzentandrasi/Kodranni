@@ -38,7 +38,6 @@ jobs:
           mkdir -p publish/Guidebook
           cp -a dist/. publish/Guidebook/
           cp public-root/index.html publish/index.html
-          printf 'kodranni.com\n' > publish/CNAME
           cp -a public-root/design publish/design
           test -f publish/design/primitives.css
           test -f publish/design/tokens.css
