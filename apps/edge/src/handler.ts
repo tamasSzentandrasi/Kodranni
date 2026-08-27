@@ -157,7 +157,14 @@ export async function handleEdgeRequest(request: Request, env: EdgeEnv): Promise
     }
   }
 
-  if (url.pathname === '/' || url.pathname === '/index.html') {
+  if (
+    url.pathname === '/' ||
+    url.pathname === '/index.html' ||
+    url.pathname === '/community' ||
+    url.pathname === '/community/' ||
+    url.pathname === '/characters' ||
+    url.pathname === '/characters/'
+  ) {
     if (!campaign) {
       return new Response(archiveShell(null), {
         headers: { 'content-type': 'text/html; charset=utf-8' },

@@ -18,8 +18,13 @@ export interface CampaignConfig {
   liveBaseUrl: string;
   publicRepo?: string;
   publicBaseUrl?: string;
-  /** Edge Function origin (one hostname). Snapshot PUT + session presence. */
+  /** Player-facing public hostname (custom domain). */
   edgeUrl?: string;
+  /**
+   * Worker URL the CLI uses for snapshot/origin API.
+   * Must resolve on the ST machine (workers.dev). Defaults to edge_url.
+   */
+  edgeControlUrl?: string;
   publishDebounceMs: number;
   platforms: string[];
   /**
@@ -73,6 +78,7 @@ export function serializeCampaignToml(cfg: CampaignConfig): string {
   if (cfg.publicRepo) lines.push(`public_repo = ${tomlString(cfg.publicRepo)}`);
   if (cfg.publicBaseUrl) lines.push(`public_base_url = ${tomlString(cfg.publicBaseUrl)}`);
   if (cfg.edgeUrl) lines.push(`edge_url = ${tomlString(cfg.edgeUrl)}`);
+  if (cfg.edgeControlUrl) lines.push(`edge_control_url = ${tomlString(cfg.edgeControlUrl)}`);
   lines.push('', `publish_debounce_ms = ${cfg.publishDebounceMs}`);
   if (cfg.platforms.length) {
     lines.push(`platforms = [${cfg.platforms.map(tomlString).join(', ')}]`);
@@ -137,6 +143,9 @@ export function parseCampaignToml(text: string): CampaignConfig {
     publicRepo: map.has('public_repo') ? unquote(map.get('public_repo')!) : undefined,
     publicBaseUrl: map.has('public_base_url') ? unquote(map.get('public_base_url')!) : undefined,
     edgeUrl: map.has('edge_url') ? unquote(map.get('edge_url')!) : undefined,
+    edgeControlUrl: map.has('edge_control_url')
+      ? unquote(map.get('edge_control_url')!)
+      : undefined,
     publishDebounceMs: Number(map.get('publish_debounce_ms') ?? DEFAULTS.publishDebounceMs),
     platforms: parseArray(map.get('platforms') ?? '[]'),
     tunnelMode,
@@ -262,6 +271,8 @@ export function applyMachineDefaults(
 
   const edgeUrl = env.KODRANNI_EDGE_URL?.trim();
   if (edgeUrl) out.edgeUrl = edgeUrl.replace(/\/$/, '');
+  const edgeControl = env.KODRANNI_EDGE_CONTROL_URL?.trim();
+  if (edgeControl) out.edgeControlUrl = edgeControl.replace(/\/$/, '');
 
   if (tunnelHost) {
     out.tunnelHostname = tunnelHost.replace(/\/$/, '');

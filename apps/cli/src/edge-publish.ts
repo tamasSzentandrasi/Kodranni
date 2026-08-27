@@ -14,8 +14,17 @@ export function resolveEdgeUrl(cfg: CampaignConfig): string | undefined {
   return raw ? raw.replace(/\/$/, '') : undefined;
 }
 
+/** URL the ST machine must be able to resolve (usually workers.dev). */
+export function resolveEdgeControlUrl(cfg: CampaignConfig): string | undefined {
+  const raw =
+    cfg.edgeControlUrl ??
+    process.env.KODRANNI_EDGE_CONTROL_URL?.trim() ??
+    resolveEdgeUrl(cfg);
+  return raw ? raw.replace(/\/$/, '') : undefined;
+}
+
 export async function publishSnapshotToEdge(slug: string, cfg: CampaignConfig): Promise<void> {
-  const edgeUrl = resolveEdgeUrl(cfg);
+  const edgeUrl = resolveEdgeControlUrl(cfg);
   if (!edgeUrl) {
     console.log('  edge: skipped (no edge_url / KODRANNI_EDGE_URL)');
     return;

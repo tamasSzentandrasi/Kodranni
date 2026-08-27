@@ -231,7 +231,11 @@ export async function runLiveKernel(opts: {
         console.log(`  public: ${publicUrl}`);
         console.log('  (tunnel is live-only — session end tears it down; archive is the edge)');
         console.log(`  log:    ${tunnelLog}`);
-        const edgeUrl = cfg.edgeUrl ?? process.env.KODRANNI_EDGE_URL?.trim();
+        const edgeUrl =
+          cfg.edgeControlUrl ??
+          process.env.KODRANNI_EDGE_CONTROL_URL?.trim() ??
+          cfg.edgeUrl ??
+          process.env.KODRANNI_EDGE_URL?.trim();
         if (edgeUrl && publicUrl.startsWith('https://')) {
           try {
             await announceEdgeLive({
