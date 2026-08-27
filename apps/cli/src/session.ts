@@ -2,14 +2,20 @@ import { type ChildProcess, spawn } from 'node:child_process';
 import { openSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { publishCampaignArchive } from '@kodranni/publish';
+import {
+  publishCampaignArchive,
+  putSnapshotToEdge,
+  registerEdgeCampaign,
+  setEdgeOrigin,
+} from '@kodranni/publish';
 import {
   campaignArchiveDir,
   campaignRuntimeLogsDir,
   ensureCampaignRuntime,
+  ensureEdgeDeviceKey,
+  openSqliteStore,
   readLiveUrl,
   readSessionState,
-  resolveTunnelMode,
   writeLiveUrl,
   writeSessionState,
   type CampaignConfig,
@@ -171,9 +177,8 @@ export async function sessionEnd(
 ): Promise<void> {
   const state = readSessionState(slug);
   const localUrl = localHttpUrlFromBind(cfg.liveBind);
-  const park =
-    opts?.parkHostname ??
-    (resolveTunnelMode(cfg) === 'named' && Boolean(cfg.tunnelHostname || cfg.liveBaseUrl?.startsWith('https://')));
+  // Default: tunnel dies. --park-hostname is a local-only mercy path (not the archive).
+  const park = opts?.parkHostname === true;
 
   if (!state?.pids?.live && !state?.pids?.tunnel && !state?.pids?.bot && !state?.pids?.archive) {
     console.log(`No running session pids for ${slug} — publishing archive only`);
@@ -191,9 +196,37 @@ export async function sessionEnd(
     pub = publishCampaignArchive({
       slug,
       storePath: cfg.storePath,
-      publicHost: cfg.tunnelHostname ?? (cfg.liveBaseUrl.startsWith('https://') ? cfg.liveBaseUrl : undefined),
+      publicHost: cfg.edgeUrl ?? cfg.tunnelHostname ?? (cfg.liveBaseUrl.startsWith('https://') ? cfg.liveBaseUrl : undefined),
     });
-    console.log(`  archive: ${pub.dir} (${pub.characterCount} characters)`);
+    console.log(`  snapshot: ${pub.snapshotPath} (${pub.characterCount} characters)`);
+    const edgeUrl = cfg.edgeUrl ?? process.env.KODRANNI_EDGE_URL?.trim();
+    if (edgeUrl) {
+      const key = ensureEdgeDeviceKey();
+      const store = openSqliteStore(cfg.storePath);
+      try {
+        const snap = store.toPublicSnapshot();
+        await registerEdgeCampaign({
+          edgeUrl,
+          campaignId: slug,
+          deviceKey: key,
+        });
+        await putSnapshotToEdge({
+          edgeUrl,
+          campaignId: slug,
+          deviceKey: key,
+          snapshot: snap,
+        });
+        await setEdgeOrigin({
+          edgeUrl,
+          campaignId: slug,
+          deviceKey: key,
+          origin: null,
+        });
+        console.log(`  edge: snapshot published · origin cleared (${edgeUrl})`);
+      } finally {
+        store.close();
+      }
+    }
   } catch (e) {
     console.error(`  archive publish failed: ${e instanceof Error ? e.message : e}`);
   }
@@ -210,7 +243,7 @@ export async function sessionEnd(
       tunnel: false,
       parked: false,
     });
-    console.log('  stopped live/tunnel; hostname not parked');
+    console.log('  stopped live/tunnel; public hostname should serve the edge archive');
     return;
   }
 

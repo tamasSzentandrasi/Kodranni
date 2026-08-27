@@ -18,6 +18,8 @@ export interface CampaignConfig {
   liveBaseUrl: string;
   publicRepo?: string;
   publicBaseUrl?: string;
+  /** Edge Function origin (one hostname). Snapshot PUT + session presence. */
+  edgeUrl?: string;
   publishDebounceMs: number;
   platforms: string[];
   /**
@@ -70,6 +72,7 @@ export function serializeCampaignToml(cfg: CampaignConfig): string {
   ];
   if (cfg.publicRepo) lines.push(`public_repo = ${tomlString(cfg.publicRepo)}`);
   if (cfg.publicBaseUrl) lines.push(`public_base_url = ${tomlString(cfg.publicBaseUrl)}`);
+  if (cfg.edgeUrl) lines.push(`edge_url = ${tomlString(cfg.edgeUrl)}`);
   lines.push('', `publish_debounce_ms = ${cfg.publishDebounceMs}`);
   if (cfg.platforms.length) {
     lines.push(`platforms = [${cfg.platforms.map(tomlString).join(', ')}]`);
@@ -133,6 +136,7 @@ export function parseCampaignToml(text: string): CampaignConfig {
     liveBaseUrl: unquote(map.get('live_base_url') ?? DEFAULTS.liveBaseUrl),
     publicRepo: map.has('public_repo') ? unquote(map.get('public_repo')!) : undefined,
     publicBaseUrl: map.has('public_base_url') ? unquote(map.get('public_base_url')!) : undefined,
+    edgeUrl: map.has('edge_url') ? unquote(map.get('edge_url')!) : undefined,
     publishDebounceMs: Number(map.get('publish_debounce_ms') ?? DEFAULTS.publishDebounceMs),
     platforms: parseArray(map.get('platforms') ?? '[]'),
     tunnelMode,
@@ -247,6 +251,9 @@ export function applyMachineDefaults(
   } else if (!out.tunnelMode) {
     out.tunnelMode = DEFAULTS.tunnelMode;
   }
+
+  const edgeUrl = env.KODRANNI_EDGE_URL?.trim();
+  if (edgeUrl) out.edgeUrl = edgeUrl.replace(/\/$/, '');
 
   if (tunnelHost) {
     out.tunnelHostname = tunnelHost.replace(/\/$/, '');

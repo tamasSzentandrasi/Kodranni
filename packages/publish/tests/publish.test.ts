@@ -32,5 +32,6 @@ describe('publish archive', () => {
     expect(roster).toContain('Roster');
     const json = JSON.parse(readFileSync(r.snapshotPath, 'utf8'));
     expect(json.characters.every((c: { status: string }) => c.status !== 'draft')).toBe(true);
+    expect(json.characters.every((c: { initiator?: unknown }) => !c.initiator)).toBe(true);
   });
 });

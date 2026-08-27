@@ -1,5 +1,5 @@
-import { type ChildProcess, spawn } from 'node:child_process';
-import { createWriteStream, existsSync, writeFileSync } from 'node:fs';
+import { spawn } from 'node:child_process';
+import { existsSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { cryptoRng, mulberry32 } from '@kodranni/domain';
@@ -7,7 +7,6 @@ import { executePlayerRoll, executeStorytellerNpcRoll } from '@kodranni/app';
 import {
   DEMO_NAME,
   DEMO_SLUG,
-  campaignRuntimeLogsDir,
   defaultCampaignTomlPath,
   destroyCampaignDir,
   applyMachineDefaults,
@@ -19,23 +18,13 @@ import {
   platformCredentialStatus,
   readCampaignConfig,
   readLiveUrl,
-  readSessionState,
   seedDemoCampaign,
   writeCampaignConfig,
-  writeLiveUrl,
-  writeSessionState,
   type CampaignConfig,
 } from '@kodranni/store';
 import { printEmissaryReport, runEmissary } from './emissary.js';
-import { waitForHttp } from './http.js';
+import { runLiveKernel } from './kernel.js';
 import { printSessionStatus, sessionEnd, sessionStart } from './session.js';
-import {
-  findCloudflared,
-  localHttpUrlFromBind,
-  startCloudflaredNamedTunnel,
-  startCloudflaredQuickTunnel,
-  tunnelCredentialsFromConfig,
-} from './tunnel.js';
 
 function usage(code = 1): never {
   console.log(`kodranni — local automation CLI
@@ -62,10 +51,10 @@ Usage:
   kodranni session start --slug <slug> [--tunnel] [--bot] [--detach] [--force]
       Supervisor: live (+ optional tunnel + bot). One process tree; --detach backgrounds it.
   kodranni session status --slug <slug>
-  kodranni session end --slug <slug> [--park-hostname|--no-park]
-      Stop live/bot; publish archive. Named tunnels default to parking the public hostname on the archive.
+  kodranni session end --slug <slug> [--park-hostname]
+      Stop live/bot/tunnel; publish snapshot. Default: tunnel dies (no park). --park-hostname is a local-only mercy path.
   kodranni campaign publish [--slug <slug>]
-      Write redacted archive/ (snapshot.json + index.html) without ending a session.
+      Write redacted snapshot.json (and local offline HTML) without ending a session.
   kodranni emissary [--slug <slug>]
       Readiness + live/archive access (what players should open).
   kodranni bot --slug <slug>
@@ -114,15 +103,6 @@ function rngFromArgs(args: string[]) {
     return mulberry32(Number(debug));
   }
   return cryptoRng();
-}
-
-function killChild(child: ChildProcess | undefined): void {
-  if (!child || child.killed) return;
-  try {
-    child.kill('SIGTERM');
-  } catch {
-    /* ignore */
-  }
 }
 
 async function main(): Promise<void> {
@@ -286,7 +266,7 @@ async function main(): Promise<void> {
   if (cmd === 'session' && args[1] === 'end') {
     const slug = arg(args, '--slug') ?? DEMO_SLUG;
     const cfg = await loadConfig(slug);
-    const parkHostname = has(args, '--no-park') ? false : has(args, '--park-hostname') ? true : undefined;
+    const parkHostname = has(args, '--park-hostname');
     await sessionEnd(slug, cfg, { parkHostname });
     return;
   }
@@ -317,7 +297,6 @@ async function main(): Promise<void> {
       force: has(args, '--force'),
     });
     if (mode === 'detached') return;
-    // foreground: fall through to the same live block below
   }
 
   if (
@@ -325,284 +304,14 @@ async function main(): Promise<void> {
     (cmd === 'session' && args[1] === 'start' && !has(args, '--detach'))
   ) {
     const slug = arg(args, '--slug') ?? DEMO_SLUG;
-    const useTunnel = has(args, '--tunnel');
-    const useBot = has(args, '--bot');
     const cfg = await loadConfig(slug);
-    const repoRoot = resolveRepoRoot();
-    ensureCampaignRuntime(slug);
-    const logsDir = campaignRuntimeLogsDir(slug);
-    const localUrl = localHttpUrlFromBind(cfg.liveBind);
-    const communityUrl = localUrl.replace(/\/$/, '') + '/community/';
-    const startedAt = new Date().toISOString();
-
-    // session start may have already checked force; live alone still replaces via --force on astro
-    // Local until tunnel proves itself — avoid advertising a dead public URL
-    writeLiveUrl(slug, localUrl);
-    writeSessionState(slug, {
+    await runLiveKernel({
       slug,
-      startedAt,
-      localUrl,
-      liveUrl: localUrl,
-      tunnel: false,
+      cfg,
+      repoRoot: resolveRepoRoot(),
+      tunnel: has(args, '--tunnel'),
+      bot: has(args, '--bot'),
     });
-
-    console.log(`Live campaign-ui for ${cfg.slug}`);
-    console.log(`  store: ${cfg.storePath}`);
-    console.log(`  local: ${localUrl}`);
-    console.log(`  repo:  ${repoRoot}`);
-
-    const liveLogPath = join(logsDir, 'live.log');
-    const liveLog = createWriteStream(liveLogPath, { flags: 'a' });
-    liveLog.write(`\n--- live start ${startedAt} ---\n`);
-
-    // Start UI first (astro --force replaces a stale instance on 8742), then tunnel.
-    const npmBin = process.platform === 'win32' ? 'npm.cmd' : 'npm';
-    const child = spawn(
-      npmBin,
-      ['run', 'dev', '-w', '@kodranni/campaign-ui'],
-      {
-        cwd: repoRoot,
-        stdio: ['inherit', 'pipe', 'pipe'],
-        env: {
-          ...process.env,
-          KODRANNI_STORE_PATH: cfg.storePath,
-          KODRANNI_CAMPAIGN_SLUG: cfg.slug,
-          NODE_OPTIONS: [process.env.NODE_OPTIONS, '--experimental-sqlite']
-            .filter(Boolean)
-            .join(' '),
-        },
-        shell: false,
-      },
-    );
-
-    let tunnelChild: ChildProcess | undefined;
-    let botChild: ChildProcess | undefined;
-    let uiReady = false;
-
-    child.stdout?.on('data', (b: Buffer) => {
-      process.stdout.write(b);
-      liveLog.write(b);
-    });
-    child.stderr?.on('data', (b: Buffer) => {
-      process.stderr.write(b);
-      liveLog.write(b);
-    });
-
-    const shutdown = () => {
-      killChild(botChild);
-      killChild(tunnelChild);
-      killChild(child);
-    };
-    // Exit 0 on Ctrl+C so npm does not print a scary "Lifecycle script failed" for a clean stop.
-    process.on('SIGINT', () => {
-      shutdown();
-      process.exit(0);
-    });
-    process.on('SIGTERM', () => {
-      shutdown();
-      process.exit(0);
-    });
-
-    const uiExit = new Promise<number | null>((resolve, reject) => {
-      child.on('exit', (code) => resolve(code));
-      child.on('error', reject);
-    });
-
-    // Fail fast if UI dies before becoming ready
-    const earlyDeath = uiExit.then((code) => {
-      if (!uiReady) {
-        throw new Error(`campaign-ui exited ${code} before becoming ready`);
-      }
-      return code;
-    });
-
-    try {
-      console.log('  waiting for local UI…');
-      await Promise.race([
-        waitForHttp(communityUrl, { timeoutMs: 90_000 }),
-        earlyDeath,
-      ]);
-      uiReady = true;
-      console.log('  local UI ready');
-    } catch (e) {
-      killChild(tunnelChild);
-      killChild(child);
-      liveLog.write(`\n--- live failed: ${e instanceof Error ? e.message : e} ---\n`);
-      liveLog.end();
-      writeSessionState(slug, {
-        slug,
-        startedAt,
-        localUrl,
-        liveUrl: localUrl,
-        tunnel: false,
-        lastError: e instanceof Error ? e.message : String(e),
-      });
-      writeLiveUrl(slug, localUrl);
-      console.error(e instanceof Error ? e.message : e);
-      process.exit(1);
-    }
-
-    writeSessionState(slug, {
-      slug,
-      startedAt,
-      localUrl,
-      liveUrl: localUrl,
-      tunnel: false,
-      pids: { live: child.pid },
-    });
-
-    if (useTunnel) {
-      const bin = await findCloudflared();
-      if (!bin) {
-        console.error(
-          'cloudflared not found on PATH.\n' +
-            '  Local UI is running; install cloudflared and re-run with --tunnel.',
-        );
-      } else {
-        const tunnelLog = join(logsDir, 'tunnel.log');
-        const creds = tunnelCredentialsFromConfig(cfg);
-        console.log(`  tunnel: starting (${bin}, mode=${creds.mode})…`);
-        try {
-          const tunnel =
-            creds.mode === 'named'
-              ? startCloudflaredNamedTunnel({
-                  cloudflaredBin: bin,
-                  logPath: tunnelLog,
-                  publicUrl: creds.publicUrl!,
-                  token: creds.token,
-                  tunnelName: creds.tunnelName,
-                  configPath: creds.configPath,
-                })
-              : startCloudflaredQuickTunnel({
-                  cloudflaredBin: bin,
-                  localUrl,
-                  logPath: tunnelLog,
-                });
-          tunnelChild = tunnel.child;
-          const publicUrl = await Promise.race([
-            tunnel.url,
-            new Promise<string>((_, rej) =>
-              setTimeout(
-                () => rej(new Error('Timed out waiting for tunnel URL (45s)')),
-                45_000,
-              ),
-            ),
-          ]);
-          writeLiveUrl(slug, publicUrl);
-          writeSessionState(slug, {
-            slug,
-            startedAt,
-            localUrl,
-            liveUrl: publicUrl,
-            tunnel: true,
-            pids: { live: child.pid, tunnel: tunnelChild.pid },
-          });
-          console.log(`  public: ${publicUrl}`);
-          if (creds.mode === 'named') {
-            console.log(
-              '  (named tunnel — your domain/subdomain; share only while this process runs)',
-            );
-          } else {
-            console.log(
-              '  (Cloudflare quick tunnel — random trycloudflare name; share only while this process runs)',
-            );
-            console.log(
-              '  (for your own domain: set tunnel_mode=named + token/hostname in campaign.toml)',
-            );
-          }
-          console.log(`  log:    ${tunnelLog}`);
-        } catch (e) {
-          killChild(tunnelChild);
-          tunnelChild = undefined;
-          writeSessionState(slug, {
-            slug,
-            startedAt,
-            localUrl,
-            liveUrl: localUrl,
-            tunnel: false,
-            pids: { live: child.pid, bot: botChild?.pid },
-            lastError: e instanceof Error ? e.message : String(e),
-          });
-          console.error(
-            `  tunnel failed: ${e instanceof Error ? e.message : e}\n` +
-              '  Local UI still running.',
-          );
-        }
-      }
-    }
-
-    if (useBot) {
-      if (!process.env.DISCORD_BOT_TOKEN || !process.env.DISCORD_GUILD_ID) {
-        console.error(
-          '  bot: skipped — Discord not ready (secrets discord-botToken + discord-serverID).',
-        );
-      } else {
-        const botLogPath = join(logsDir, 'bot.log');
-        const botLog = createWriteStream(botLogPath, { flags: 'a' });
-        botLog.write(`\n--- bot start ${new Date().toISOString()} ---\n`);
-        const liveUrlNow = readLiveUrl(slug) ?? localUrl;
-        console.log('  bot: starting Discord runtime…');
-        botChild = spawn(npmBin, ['run', 'start', '-w', '@kodranni/bot-runtime'], {
-          cwd: repoRoot,
-          stdio: ['ignore', 'pipe', 'pipe'],
-          env: {
-            ...process.env,
-            KODRANNI_STORE_PATH: cfg.storePath,
-            KODRANNI_CAMPAIGN_SLUG: cfg.slug,
-            KODRANNI_LIVE_BASE_URL: liveUrlNow,
-            KODRANNI_PUBLIC_BASE_URL: cfg.publicBaseUrl ?? '',
-            NODE_OPTIONS: [process.env.NODE_OPTIONS, '--experimental-sqlite']
-              .filter(Boolean)
-              .join(' '),
-          },
-          shell: false,
-        });
-        botChild.stdout?.on('data', (b: Buffer) => {
-          process.stdout.write(b);
-          botLog.write(b);
-        });
-        botChild.stderr?.on('data', (b: Buffer) => {
-          process.stderr.write(b);
-          botLog.write(b);
-        });
-        botChild.on('exit', (code) => {
-          botLog.write(`\n--- bot exit code=${code} ---\n`);
-          botLog.end();
-        });
-        const prev = readSessionState(slug);
-        writeSessionState(slug, {
-          slug,
-          startedAt,
-          localUrl,
-          liveUrl: liveUrlNow,
-          tunnel: Boolean(prev?.tunnel),
-          pids: {
-            live: child.pid,
-            tunnel: tunnelChild?.pid ?? prev?.pids?.tunnel,
-            bot: botChild.pid,
-          },
-        });
-        console.log(`  bot: pid ${botChild.pid} · log ${botLogPath}`);
-      }
-    }
-
-    const code = await uiExit;
-    killChild(botChild);
-    killChild(tunnelChild);
-    liveLog.write(`\n--- live exit code=${code} ---\n`);
-    liveLog.end();
-    writeLiveUrl(slug, localUrl);
-    writeSessionState(slug, {
-      slug,
-      startedAt,
-      localUrl,
-      liveUrl: localUrl,
-      tunnel: false,
-      lastError: code && code !== 0 ? `campaign-ui exited ${code}` : undefined,
-    });
-    if (code !== 0 && code !== null) {
-      throw new Error(`campaign-ui exited ${code}`);
-    }
     return;
   }
 

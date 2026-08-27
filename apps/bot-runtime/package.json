@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "private": true,
   "type": "module",
+  "exports": {
+    ".": "./src/runtime.ts"
+  },
   "scripts": {
     "start": "node --experimental-sqlite --import tsx ./src/main.ts",
     "test": "NODE_OPTIONS='--experimental-sqlite' vitest run"

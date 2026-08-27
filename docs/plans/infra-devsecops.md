@@ -295,10 +295,10 @@ Fix actions in the local UI, not a 12-row lecture. No `doctor` command.
 
 Each step is independently shippable and testable. Do not start distribution before (1).
 
-1. **Kernel** — production campaign-ui server in-process with the CLI; session state machine; kill `astro dev` as the table path.
-2. **Archive mode** — same components, `public.json` adapter, no writes; snapshot schema tests (O23).
-3. **Edge** — Pages project + Function: KV snapshot serve + origin proxy + fail-closed. Contract tests with a fake origin.
-4. **Tunnel mint** — Function + vendored cloudflared; session start/end as in §3.2.
+1. **Kernel** — production campaign-ui server (not `astro dev`); Discord in-process; `cloudflared` session-only. **In repo.**
+2. **Archive mode** — `toPublicSnapshot()` allowlist (no initiator / accountId / snowflakes); `snapshot.json` primary. **In repo.** Full same-component archive app still to land.
+3. **Edge** — `apps/edge` Function: KV snapshot + origin proxy + fail-closed; tests with memory KV. **In repo.** Deploy + CF KV bindings still required.
+4. **Tunnel mint** — Function mints tunnel token; session start/end as in §3.2.
 5. **Discord HTTP** — official app to Function; defer; autocomplete breaker; dark replies.
 6. **Linux dist** — systemd user unit, XDG, libsecret, AppImage on Releases. Operator UI + **emissary**.
 7. **Optional later** — GitHub snapshot export; ST-owned Discord gateway; Quadlet; ST-owned Cloudflare running the same Function; avatar blobs if we accept a store.

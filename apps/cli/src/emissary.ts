@@ -1,5 +1,4 @@
 import { existsSync } from 'node:fs';
-import { execFileSync } from 'node:child_process';
 import {
   defaultCampaignTomlPath,
   defaultStorePath,
@@ -141,25 +140,21 @@ export async function runEmissary(opts: {
     );
   }
 
-  let ghOk = false;
-  let ghDetail = 'gh not found';
-  try {
-    const out = execFileSync('gh', ['auth', 'status'], {
-      encoding: 'utf8',
-      stdio: ['ignore', 'pipe', 'pipe'],
-    });
-    ghOk = true;
-    ghDetail = out.split('\n')[0] ?? 'gh auth ok';
-  } catch {
-    try {
-      execFileSync('git', ['--version'], { encoding: 'utf8' });
-      ghDetail = 'git present; gh auth not confirmed (archive publish later)';
-      ghOk = true;
-    } catch {
-      ghDetail = 'neither gh auth nor git available';
-    }
+  const edgeUrl = cfg.edgeUrl ?? process.env.KODRANNI_EDGE_URL?.trim();
+  if (edgeUrl) {
+    const edgeProbe = await probeHttp(edgeUrl.replace(/\/$/, '') + '/');
+    checks.push(
+      check(
+        'edge',
+        edgeProbe.ok,
+        edgeProbe.ok ? `${edgeUrl} · ${edgeProbe.detail}` : `${edgeUrl} · ${edgeProbe.detail}`,
+      ),
+    );
+  } else {
+    checks.push(
+      check('edge', true, 'KODRANNI_EDGE_URL / edge_url unset — public archive not pushed'),
+    );
   }
-  checks.push(check('git/gh', ghOk, ghDetail));
 
   const localUrl = localHttpUrlFromBind(cfg.liveBind);
   const communityLocal = localUrl.replace(/\/$/, '') + '/community/';
@@ -229,11 +224,12 @@ export async function runEmissary(opts: {
     checks.push(check('session', true, 'no active session.json'));
   }
 
-  if (cfg.publicBaseUrl) {
-    checks.push(check('archive', true, cfg.publicBaseUrl));
+  const archiveUrl = edgeUrl ?? cfg.publicBaseUrl;
+  if (archiveUrl) {
+    checks.push(check('archive', true, archiveUrl));
   } else {
     checks.push(
-      check('archive', true, 'public_base_url unset — between-session Pages not configured'),
+      check('archive', true, 'no edge_url — between-session face is local snapshot only'),
     );
   }
 
@@ -257,7 +253,7 @@ export async function runEmissary(opts: {
     checks,
     liveUrl: shareUrl,
     localUrl,
-    archiveUrl: cfg.publicBaseUrl,
+    archiveUrl,
   };
 }
 
@@ -279,7 +275,7 @@ export function printEmissaryReport(report: EmissaryReport, slug: string): void 
   console.log('');
   console.log(
     report.ok
-      ? 'Access ready. Share the public live URL only while the tunnel/session is up.'
+      ? 'Access ready. Share the public hostname (live while the session is up; archive when it is not).'
       : 'Not ready — fix !! checks before inviting players.',
   );
 }

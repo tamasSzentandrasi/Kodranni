@@ -6,6 +6,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { emptyCommunity, openSqliteStore } from '../src/sqlite.js';
 import { seedDemoCampaign } from '../src/seed.js';
 import { parseCampaignToml, serializeCampaignToml } from '../src/campaign-toml.js';
+import { publicSnapshotViolations } from '../src/redact.js';
 
 const dirs: string[] = [];
 
@@ -26,10 +27,24 @@ describe('sqlite store', () => {
     const path = join(dir, 'community.sqlite');
     const store = openSqliteStore(path);
     seedDemoCampaign(store);
+    const torvaldRec = store.getCharacterBySlug('torvald')!;
+    store.putCharacter({
+      ...torvaldRec,
+      player: {
+        platform: 'discord',
+        displayName: 'Torvald',
+        accountId: '123456789012345678',
+      },
+      initiator: {
+        platform: 'discord',
+        displayName: 'Torvald',
+        accountId: '123456789012345678',
+      },
+    });
     store.putMember({
       platform: 'discord',
       accountId: '123456789012345678',
-      characterId: store.getCharacterBySlug('torvald')!.id,
+      characterId: torvaldRec.id,
       role: 'player',
     });
 
@@ -52,7 +67,10 @@ describe('sqlite store', () => {
     expect(leifr.echoWeight).toBe(6);
     const json = JSON.stringify(snap);
     expect(json).not.toContain('123456789012345678');
+    expect(json).not.toContain('demo-discord-leifr');
+    expect(snap.characters.every((c) => !c.initiator && !c.player?.accountId)).toBe(true);
     expect(store.listMembers()).toHaveLength(1);
+    expect(publicSnapshotViolations(snap)).toEqual([]);
 
     // idempotent client event
     const a = store.appendEvent({

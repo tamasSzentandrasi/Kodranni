@@ -123,10 +123,10 @@ Content: `src/content/docs/`. Deploy: GitHub Pages on `main`.
 | Discord bot (create / roll / intent / Wanting / Harm) | Yes — restart bot after pulls to refresh slash cmds |
 | Reconstructible demo + secret auto-fill | Yes |
 | Session supervisor (`session start --tunnel --bot`) | Yes |
-| Archive publish + park hostname on same domain (U6 MVP) | Yes — `session end` / `campaign publish` |
+| Archive / one hostname | Kernel + snapshot + edge Function in-repo. `session end` no longer parks by default. See [infra-devsecops.md](docs/plans/infra-devsecops.md) |
 | Fluxer | Creds load; adapter pending |
 
-Plans: [automation-status.md](docs/plans/automation-status.md) · [bot-discord.md](docs/plans/bot-discord.md) · [live-tunnel.md](docs/plans/live-tunnel.md) · [automation-architecture.md](docs/plans/automation-architecture.md)
+Plans: [infra-devsecops.md](docs/plans/infra-devsecops.md) · [automation-status.md](docs/plans/automation-status.md) · [bot-discord.md](docs/plans/bot-discord.md) · [live-tunnel.md](docs/plans/live-tunnel.md) · [automation-architecture.md](docs/plans/automation-architecture.md)
 
 ## License
 

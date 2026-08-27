@@ -15,6 +15,7 @@ export * from './port.js';
 export * from './echo-effects.js';
 export * from './runtime.js';
 export * from './secrets.js';
+export * from './redact.js';
 
 // --- lightweight memory store (tests / early adapters) ---
 

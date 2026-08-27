@@ -8,7 +8,7 @@ export default defineConfig({
   adapter: node({ mode: 'standalone' }),
   server: {
     port: 8742,
-    host: true,
+    host: '127.0.0.1',
   },
   vite: {
     ssr: {

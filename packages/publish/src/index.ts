@@ -1,11 +1,12 @@
 /**
- * Local redacted archive for between-session / same-hostname parking.
- * Writes a small static site under campaigns/<slug>/archive/ so
- * /community/ and /characters/ resolve (not a single orphan index).
+ * Redacted public snapshot writer.
+ * Primary artifact is snapshot.json. Static HTML under archive/ is the offline adapter only.
  */
+import { createHmac, randomBytes } from 'node:crypto';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import {
+  assertPublicSnapshot,
   campaignArchiveDir,
   openSqliteStore,
   type CharacterRecord,
@@ -185,18 +186,25 @@ export function renderArchiveCharacter(
   return shell(`${ch.name} · Archive`, body, opts);
 }
 
+export function writeSnapshotFile(outDir: string, snap: PublicSnapshot): string {
+  assertPublicSnapshot(snap);
+  mkdirSync(outDir, { recursive: true });
+  const snapshotPath = join(outDir, 'snapshot.json');
+  writeFileSync(snapshotPath, JSON.stringify(snap, null, 2) + '\n', 'utf8');
+  return snapshotPath;
+}
+
 export function writeArchiveFiles(
   outDir: string,
   snap: PublicSnapshot,
   opts?: { publicHost?: string },
 ): PublishResult {
+  const snapshotPath = writeSnapshotFile(outDir, snap);
   mkdirSync(outDir, { recursive: true });
   mkdirSync(join(outDir, 'community'), { recursive: true });
   mkdirSync(join(outDir, 'characters'), { recursive: true });
 
-  const snapshotPath = join(outDir, 'snapshot.json');
   const indexPath = join(outDir, 'index.html');
-  writeFileSync(snapshotPath, JSON.stringify(snap, null, 2) + '\n', 'utf8');
   writeFileSync(indexPath, renderArchiveHome(snap, opts), 'utf8');
   writeFileSync(join(outDir, 'community', 'index.html'), renderArchiveCommunity(snap, opts), 'utf8');
   writeFileSync(join(outDir, 'characters', 'index.html'), renderArchiveCharacters(snap, opts), 'utf8');
@@ -232,9 +240,24 @@ export function publishCampaignArchive(opts: {
   storePath: string;
   publicHost?: string;
   env?: NodeJS.ProcessEnv;
+  /** When false, write snapshot.json only (no offline HTML tree). Default true. */
+  offlineHtml?: boolean;
 }): PublishResult {
   const store = openSqliteStore(opts.storePath);
   try {
+    if (opts.offlineHtml === false) {
+      const snap = store.toPublicSnapshot();
+      assertPublicSnapshot(snap);
+      const dir = campaignArchiveDir(opts.slug, opts.env);
+      const snapshotPath = writeSnapshotFile(dir, snap);
+      return {
+        dir,
+        snapshotPath,
+        indexPath: snapshotPath,
+        generatedAt: snap.generatedAt,
+        characterCount: snap.characters.length,
+      };
+    }
     return publishLocalArchive({
       slug: opts.slug,
       store,
@@ -243,5 +266,76 @@ export function publishCampaignArchive(opts: {
     });
   } finally {
     store.close();
+  }
+}
+
+export function signSnapshotBody(deviceKey: string, body: string): string {
+  return createHmac('sha256', deviceKey).update(body).digest('hex');
+}
+
+export function newDeviceKey(): string {
+  return randomBytes(32).toString('hex');
+}
+
+export async function registerEdgeCampaign(opts: {
+  edgeUrl: string;
+  campaignId: string;
+  deviceKey: string;
+}): Promise<void> {
+  const url = `${opts.edgeUrl.replace(/\/$/, '')}/control/register?campaign=${encodeURIComponent(opts.campaignId)}`;
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ deviceKey: opts.deviceKey }),
+  });
+  if (res.status === 409 || res.ok) return;
+  const text = await res.text().catch(() => '');
+  throw new Error(`edge register ${res.status}: ${text.slice(0, 240)}`);
+}
+
+export async function putSnapshotToEdge(opts: {
+  edgeUrl: string;
+  campaignId: string;
+  deviceKey: string;
+  snapshot: PublicSnapshot;
+}): Promise<void> {
+  assertPublicSnapshot(opts.snapshot);
+  const body = JSON.stringify(opts.snapshot);
+  const sig = signSnapshotBody(opts.deviceKey, body);
+  const url = `${opts.edgeUrl.replace(/\/$/, '')}/api/snapshot?campaign=${encodeURIComponent(opts.campaignId)}`;
+  const res = await fetch(url, {
+    method: 'PUT',
+    headers: {
+      'content-type': 'application/json',
+      authorization: `Bearer ${opts.campaignId}:${sig}`,
+    },
+    body,
+  });
+  if (!res.ok) {
+    const text = await res.text().catch(() => '');
+    throw new Error(`edge snapshot PUT ${res.status}: ${text.slice(0, 240)}`);
+  }
+}
+
+export async function setEdgeOrigin(opts: {
+  edgeUrl: string;
+  campaignId: string;
+  deviceKey: string;
+  origin: string | null;
+}): Promise<void> {
+  const body = JSON.stringify({ origin: opts.origin });
+  const sig = signSnapshotBody(opts.deviceKey, body);
+  const url = `${opts.edgeUrl.replace(/\/$/, '')}/control/session?campaign=${encodeURIComponent(opts.campaignId)}`;
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+      authorization: `Bearer ${opts.campaignId}:${sig}`,
+    },
+    body,
+  });
+  if (!res.ok) {
+    const text = await res.text().catch(() => '');
+    throw new Error(`edge session POST ${res.status}: ${text.slice(0, 240)}`);
   }
 }

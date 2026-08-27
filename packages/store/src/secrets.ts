@@ -2,7 +2,8 @@
  * Load ~/.kodranni/secrets/<name> into process env.
  * Existing env vars win. Values are never logged.
  */
-import { chmodSync, existsSync, readFileSync, statSync } from 'node:fs';
+import { randomBytes } from 'node:crypto';
+import { chmodSync, existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { secretsDir } from './paths.js';
 
@@ -25,6 +26,7 @@ export const SECRET_FILE_TO_ENV = {
   /** Public hostname for named tunnels, e.g. live.example.com */
   'cf-tunnel-hostname': 'KODRANNI_TUNNEL_HOSTNAME',
   'sheet-token-secret': 'KODRANNI_SHEET_TOKEN_SECRET',
+  'edge-device-key': 'KODRANNI_EDGE_DEVICE_KEY',
 } as const;
 
 export type SecretFileName = keyof typeof SECRET_FILE_TO_ENV;
@@ -157,6 +159,25 @@ function bits(p: PlatformCreds): string {
     p.playChannel ? 'play-channel' : null,
   ].filter(Boolean);
   return parts.length ? parts.join('+') : 'none';
+}
+
+/** Create or load the HMAC key used to PUT snapshots / presence to the edge Function. */
+export function ensureEdgeDeviceKey(env: NodeJS.ProcessEnv = process.env): string {
+  loadSecretsIntoEnv(env);
+  const existing = env.KODRANNI_EDGE_DEVICE_KEY?.trim();
+  if (existing) return existing;
+  const dir = secretsDir(env);
+  mkdirSync(dir, { recursive: true });
+  try {
+    chmodSync(dir, 0o700);
+  } catch {
+    /* ignore */
+  }
+  const path = join(dir, 'edge-device-key');
+  const key = randomBytes(32).toString('hex');
+  writeFileSync(path, `${key}\n`, { encoding: 'utf8', mode: 0o600 });
+  env.KODRANNI_EDGE_DEVICE_KEY = key;
+  return key;
 }
 
 /** Human status line — names only, never values. */

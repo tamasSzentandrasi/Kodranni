@@ -15,6 +15,7 @@ import { refreshCharacterDerived } from './derived.js';
 import { completeMemberPlacements } from './hierarchy.js';
 import { normalizeEcho } from './echo-effects.js';
 import type { CommunityStorePort } from './port.js';
+import { redactCharacterForPublic } from './redact.js';
 
 /** @deprecated Prefer CommunityStorePort — SQLite is one adapter. */
 export type SqliteCommunityStore = CommunityStorePort;
@@ -271,7 +272,9 @@ export function openSqliteStore(path: string): CommunityStorePort {
         db.prepare(`SELECT data FROM characters WHERE status != 'draft' ORDER BY name`).all() as {
           data: string;
         }[]
-      ).map((r) => normalizeCharacter(JSON.parse(r.data) as CharacterRecord));
+      ).map((r) =>
+        redactCharacterForPublic(normalizeCharacter(JSON.parse(r.data) as CharacterRecord)),
+      );
       community.placements = completeMemberPlacements(community, characters);
       // Weather-log fields stay on the live hall; the archive does not carry them.
       delete community.pendingMoves;
