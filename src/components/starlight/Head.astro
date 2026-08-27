@@ -1,5 +1,10 @@
 ---
 import Default from '@astrojs/starlight/components/Head.astro';
+import barNight from '@kodranni/design/ornament/btn-bar-night.png?url';
+import barMoon from '@kodranni/design/ornament/btn-bar-moon.png?url';
+import roundNight from '@kodranni/design/ornament/btn-round.png?url';
+import roundMoon from '@kodranni/design/ornament/btn-round-moon.png?url';
+import { chapterRoses, slugFromEntryId } from '../../lib/chapter-icons';
 
 const base = import.meta.env.BASE_URL.endsWith('/')
 	? import.meta.env.BASE_URL
@@ -8,6 +13,13 @@ const icon = (name: string) => `${base}${name}`;
 const fontBellefairLatin = icon('fonts/bellefair/bellefair-latin-400-normal.woff2');
 const fontBellefairLatinExt = icon('fonts/bellefair/bellefair-latin-ext-400-normal.woff2');
 const fontRunic = icon('fonts/noto-sans-runic/noto-sans-runic-400-normal.woff2');
+let roseSrc: string | undefined;
+try {
+	const entry = Astro.locals.starlightRoute?.entry;
+	if (entry) roseSrc = chapterRoses[slugFromEntryId(entry.id)];
+} catch {
+	roseSrc = undefined;
+}
 const ogImage = Astro.site
 	? new URL(`${base}og.jpg`, Astro.site).href
 	: icon('og.jpg');
@@ -40,6 +52,13 @@ const fontFacesCss = `
 }
 `;
 ---
+
+<link rel="preload" href={fontBellefairLatin} as="font" type="font/woff2" crossorigin />
+<link rel="preload" href={barNight} as="image" />
+<link rel="preload" href={roundNight} as="image" />
+{roseSrc ? <link rel="preload" href={roseSrc} as="image" fetchpriority="high" /> : null}
+<link rel="prefetch" href={barMoon} as="image" />
+<link rel="prefetch" href={roundMoon} as="image" />
 
 <style is:global set:html={fontFacesCss} />
 

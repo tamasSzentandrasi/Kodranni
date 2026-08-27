@@ -23,7 +23,15 @@
 	<link rel="icon" type="image/png" sizes="32x32" href="./Guidebook/favicon-32x32.png" />
 	<link rel="apple-touch-icon" sizes="180x180" href="./Guidebook/apple-touch-icon.png" />
 	<meta name="theme-color" content="#a01818" />
+	<link rel="preload" href="./Guidebook/fonts/bellefair/bellefair-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+	<link rel="preload" href="./Guidebook/scenes/falconer.jpg" as="image" fetchpriority="high" />
+	<link rel="preload" href="./Guidebook/falcon-logo.png" as="image" />
+	<link rel="preload" href="./design/ornament/btn-bar-night.png" as="image" />
+	<link rel="prefetch" href="./design/ornament/btn-bar-moon.png" as="image" />
 	<link rel="stylesheet" href="./design/primitives.css" />
+	<script>
+		document.documentElement.classList.add('js');
+	</script>
 	<style>
 		@font-face {
 			font-family: "Bellefair";
@@ -154,11 +162,71 @@
 		@media (min-width: 36rem) {
 			.folios { grid-template-columns: 1fr 1fr; }
 		}
+
+		.js .bg,
+		.js .brand,
+		.js .lede,
+		.js .constraints,
+		.js .folios .kod-btn {
+			opacity: 0;
+		}
+		.js.is-settled .bg {
+			animation: kod-land-bg 1.45s ease both;
+		}
+		.js.is-settled .bg img {
+			animation: kod-land-bg-img 2.4s ease both;
+		}
+		.js.is-settled .brand {
+			animation: kod-land-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+		}
+		.js.is-settled .lede {
+			animation: kod-land-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.12s both;
+		}
+		.js.is-settled .constraints {
+			animation: kod-land-rise 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.22s both;
+		}
+		.js.is-settled .folios .kod-btn:nth-child(1) {
+			animation: kod-land-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.34s both;
+		}
+		.js.is-settled .folios .kod-btn:nth-child(2) {
+			animation: kod-land-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.44s both;
+		}
+
+		@keyframes kod-land-bg {
+			from { opacity: 0; }
+			to { opacity: 1; }
+		}
+		@keyframes kod-land-bg-img {
+			from { transform: scale(1.045); }
+			to { transform: none; }
+		}
+		@keyframes kod-land-rise {
+			from {
+				opacity: 0;
+				transform: translateY(0.65rem);
+			}
+			to {
+				opacity: 1;
+				transform: none;
+			}
+		}
+		@media (prefers-reduced-motion: reduce) {
+			.js .bg,
+			.js .brand,
+			.js .lede,
+			.js .constraints,
+			.js .folios,
+			.js .folios .kod-btn {
+				opacity: 1 !important;
+				animation: none !important;
+				transform: none !important;
+			}
+		}
 	</style>
 </head>
 <body>
 	<div class="bg" aria-hidden="true">
-		<img src="./Guidebook/scenes/falconer.jpg" width="1168" height="784" alt="" />
+		<img src="./Guidebook/scenes/falconer.jpg" width="1168" height="784" alt="" fetchpriority="high" decoding="async" />
 	</div>
 	<main>
 		<div class="scrim">
@@ -185,5 +253,35 @@
 			</nav>
 		</div>
 	</main>
+	<script>
+		(function () {
+			var html = document.documentElement;
+			var done = false;
+			function settle() {
+				if (done) return;
+				done = true;
+				html.classList.add('is-settled');
+			}
+			var tasks = [];
+			if (document.fonts && document.fonts.ready) tasks.push(document.fonts.ready.catch(function () {}));
+			document.querySelectorAll('img').forEach(function (img) {
+				if (!img.complete) {
+					tasks.push(new Promise(function (resolve) {
+						img.addEventListener('load', resolve, { once: true });
+						img.addEventListener('error', resolve, { once: true });
+					}));
+				}
+			});
+			var bar = new Image();
+			bar.src = './design/ornament/btn-bar-night.png';
+			if (!bar.complete) {
+				tasks.push(new Promise(function (resolve) {
+					bar.onload = bar.onerror = resolve;
+				}));
+			}
+			Promise.all(tasks).then(settle);
+			setTimeout(settle, 1100);
+		})();
+	</script>
 </body>
 </html>

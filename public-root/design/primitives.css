@@ -45,7 +45,7 @@
   border-image-width: 0 var(--kod-end-w);
   border-image-repeat: stretch;
   background: none;
-  background-color: transparent;
+  background-color: #0a0c10;
   color: #f4f0e8;
   font-family: var(--kod-font-body);
   font-size: 0.88rem;

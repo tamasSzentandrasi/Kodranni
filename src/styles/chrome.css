@@ -167,7 +167,7 @@ a.kod-page-title__kicker:focus-visible {
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .kod-page-title__rose {
+  .kod-page-title__rose img {
     animation: kod-rose-in 1.15s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
   .kod-page-title__rose::before {
@@ -268,6 +268,7 @@ a.kod-page-title__kicker:focus-visible {
 
 @media (prefers-reduced-motion: reduce) {
   .kod-page-title__rose,
+  .kod-page-title__rose img,
   .kod-page-title__text,
   .sl-markdown-content > blockquote.kod-epigraph {
     animation: none !important;
@@ -277,22 +278,39 @@ a.kod-page-title__kicker:focus-visible {
   }
 }
 
-/* Sidebar chapter icons */
+/* Sidebar chapter icons — reserve the mark so JS injection does not shove the label. */
 .sidebar-content a[href] {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1.4rem 1fr;
   align-items: center;
-  gap: 0.45rem;
+  column-gap: 0.45rem;
+}
+
+.sidebar-content a[href]::before {
+  content: '';
+  grid-column: 1;
+  grid-row: 1;
+  width: 1.4rem;
+  height: 1.4rem;
 }
 
 .sidebar-content a[href] .kod-sidebar-icon {
-  flex-shrink: 0;
+  grid-column: 1;
+  grid-row: 1;
   width: 1.4rem;
   height: 1.4rem;
   display: inline-block;
-  vertical-align: middle;
   background-color: var(--kod-icon-hue, var(--kod-silver));
   -webkit-mask: var(--kod-icon-mask) center / contain no-repeat;
   mask: var(--kod-icon-mask) center / contain no-repeat;
+}
+
+.sidebar-content a[href]:has(.kod-sidebar-icon)::before {
+  visibility: hidden;
+}
+
+.sidebar-content a[href] > :not(.kod-sidebar-icon) {
+  grid-column: 2;
 }
 
 /* Chapter hues — wayfinding. Title rose glow + sidebar mark share the map. */
