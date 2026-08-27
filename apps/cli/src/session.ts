@@ -13,7 +13,7 @@ import {
   writeSessionState,
   type CampaignConfig,
 } from '@kodranni/store';
-import { clearEdgeOrigin, publishSnapshotToEdge } from './edge-publish.js';
+import { publishEdgeArchive } from './edge-publish.js';
 import { spawnArchiveServer } from './archive-server.js';
 import { probeHttp, processAlive } from './http.js';
 import {
@@ -180,10 +180,7 @@ export async function sessionEnd(
     console.log(`Ending session ${slug}…`);
   }
   killPid(state?.pids?.bot);
-  killPid(state?.pids?.live);
-  // Keep tunnel briefly if we will re-point; else kill now
   if (!park) killPid(state?.pids?.tunnel);
-  await new Promise((r) => setTimeout(r, 600));
 
   let pub;
   try {
@@ -194,14 +191,16 @@ export async function sessionEnd(
     });
     console.log(`  snapshot: ${pub.snapshotPath} (${pub.characterCount} characters)`);
     try {
-      await publishSnapshotToEdge(slug, cfg);
-      await clearEdgeOrigin(slug, cfg);
+      await publishEdgeArchive(slug, cfg, localUrl);
     } catch (edgeErr) {
       console.error(`  edge: ${edgeErr instanceof Error ? edgeErr.message : edgeErr}`);
     }
   } catch (e) {
     console.error(`  archive publish failed: ${e instanceof Error ? e.message : e}`);
   }
+
+  killPid(state?.pids?.live);
+  await new Promise((r) => setTimeout(r, 600));
 
   if (!park) {
     killPid(state?.pids?.tunnel);

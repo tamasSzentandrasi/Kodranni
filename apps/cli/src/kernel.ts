@@ -6,6 +6,7 @@ import { createWriteStream, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { startBotRuntime } from '@kodranni/bot-runtime';
 import { announceEdgeLive } from '@kodranni/publish';
+import { publishEdgeArchive } from './edge-publish.js';
 import type { CampaignConfig } from '@kodranni/store';
 import {
   campaignRuntimeLogsDir,
@@ -135,14 +136,21 @@ export async function runLiveKernel(opts: {
     killChild(tunnelChild);
     killChild(ui);
   };
-  process.on('SIGINT', () => {
+  let stopping = false;
+  const graceful = async () => {
+    if (stopping) return;
+    stopping = true;
+    console.log('\n  publishing archive to the edge…');
+    try {
+      await publishEdgeArchive(slug, cfg, localUrl);
+    } catch (e) {
+      console.error(`  archive: ${e instanceof Error ? e.message : e}`);
+    }
     shutdown();
     process.exit(0);
-  });
-  process.on('SIGTERM', () => {
-    shutdown();
-    process.exit(0);
-  });
+  };
+  process.on('SIGINT', () => void graceful());
+  process.on('SIGTERM', () => void graceful());
 
   const uiExit = new Promise<number | null>((resolve, reject) => {
     ui.on('exit', (code) => resolve(code));

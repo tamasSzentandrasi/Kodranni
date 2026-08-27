@@ -6,7 +6,7 @@
 import { readdirSync, readFileSync, writeFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 
-const BASE = '/Kodranni/Guidebook'; // must match astro.config.mjs base
+const BASE = '/Guidebook'; // must match astro.config.mjs base
 
 if (!BASE || BASE === '/') {
 	console.log('prefix-base: no base prefix needed, skip');
@@ -26,7 +26,7 @@ function walk(dir) {
 function rewrite(file) {
 	let html = readFileSync(file, 'utf8');
 
-	// Only prefix root-absolute paths that are NOT already under /Kodranni/
+	// Only prefix root-absolute paths that are NOT already under the book base.
 	const next = html.replace(/(href|src)="(\/[^"]*)"/g, (full, attr, path) => {
 		if (path === bare || path.startsWith(bare + '/')) return full;
 		// path is like "/icons/x.svg" or "/foundations/"

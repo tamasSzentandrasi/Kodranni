@@ -7,6 +7,8 @@
     ".": "./src/handler.ts"
   },
   "scripts": {
+    "sync-public": "node ./sync-public.mjs",
+    "deploy": "node ./sync-public.mjs && wrangler deploy",
     "test": "vitest run"
   },
   "devDependencies": {

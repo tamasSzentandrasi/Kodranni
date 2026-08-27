@@ -42,7 +42,7 @@ export async function publishSnapshotToEdge(slug: string, cfg: CampaignConfig): 
 }
 
 export async function clearEdgeOrigin(slug: string, cfg: CampaignConfig): Promise<void> {
-  const edgeUrl = resolveEdgeUrl(cfg);
+  const edgeUrl = resolveEdgeControlUrl(cfg);
   if (!edgeUrl) return;
   await setEdgeOrigin({
     edgeUrl,
@@ -51,4 +51,71 @@ export async function clearEdgeOrigin(slug: string, cfg: CampaignConfig): Promis
     origin: null,
   });
   console.log('  edge: origin cleared');
+}
+
+export async function captureArchiveToEdge(
+  slug: string,
+  cfg: CampaignConfig,
+  localUrl: string,
+): Promise<void> {
+  const edgeUrl = resolveEdgeControlUrl(cfg);
+  if (!edgeUrl) return;
+  const { signSnapshotBody } = await import('@kodranni/publish');
+  const store = openSqliteStore(cfg.storePath);
+  let paths: string[];
+  try {
+    const snap = store.toPublicSnapshot();
+    paths = [
+      '/',
+      '/community/',
+      '/characters/',
+      ...snap.characters.map((ch) => `/characters/${ch.slug}/`),
+    ];
+  } finally {
+    store.close();
+  }
+  const pages: Record<string, string> = {};
+  const base = localUrl.replace(/\/$/, '');
+  for (const path of paths) {
+    try {
+      const res = await fetch(`${base}${path}`, {
+        headers: { 'x-kodranni-archive': '1' },
+        signal: AbortSignal.timeout(15_000),
+      });
+      if (res.ok) pages[path] = await res.text();
+    } catch {
+      /* skip */
+    }
+  }
+  if (!Object.keys(pages).length) {
+    console.log('  edge: no archive HTML captured (is live UI up?)');
+    return;
+  }
+  const key = ensureEdgeDeviceKey();
+  const body = JSON.stringify(pages);
+  const sig = signSnapshotBody(key, body);
+  const url = `${edgeUrl}/api/pages?campaign=${encodeURIComponent(slug)}`;
+  const res = await fetch(url, {
+    method: 'PUT',
+    headers: {
+      'content-type': 'application/json',
+      authorization: `Bearer ${slug}:${sig}`,
+    },
+    body,
+  });
+  if (!res.ok) {
+    const text = await res.text().catch(() => '');
+    throw new Error(`edge pages PUT ${res.status}: ${text.slice(0, 240)}`);
+  }
+  console.log(`  edge: archive HTML ${Object.keys(pages).length} pages`);
+}
+
+export async function publishEdgeArchive(
+  slug: string,
+  cfg: CampaignConfig,
+  localUrl?: string,
+): Promise<void> {
+  await publishSnapshotToEdge(slug, cfg);
+  if (localUrl) await captureArchiveToEdge(slug, cfg, localUrl);
+  await clearEdgeOrigin(slug, cfg);
 }

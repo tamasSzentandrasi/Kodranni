@@ -17,6 +17,7 @@ packages/**/dist/
 .env.*
 !.env.example
 .wrangler/
+apps/edge/public/
 
 # Logs
 npm-debug.log*

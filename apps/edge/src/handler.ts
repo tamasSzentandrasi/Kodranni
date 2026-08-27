@@ -17,9 +17,13 @@ export interface EdgeEnv {
   LIVE_PROXY_TIMEOUT_MS?: string;
   /** Used when Host has no campaign label and ?campaign= is absent. */
   DEFAULT_CAMPAIGN?: string;
+  ASSETS?: { fetch(request: Request): Promise<Response> };
 }
 
-export function kvKey(campaign: string, field: 'origin' | 'snapshot' | 'meta'): string {
+export function kvKey(
+  campaign: string,
+  field: 'origin' | 'snapshot' | 'meta' | 'pages',
+): string {
   return `campaign:${campaign}:${field}`;
 }
 
@@ -60,7 +64,7 @@ async function authorize(
 }
 
 /** Host labels that mean “the current table”, not a campaign slug. */
-const PLAY_HOSTS = new Set(['play', 'www']);
+const PLAY_HOSTS = new Set(['play', 'demo', 'www']);
 
 export function campaignFromUrl(url: URL, defaultCampaign?: string): string | null {
   const q = url.searchParams.get('campaign')?.trim();
@@ -105,6 +109,16 @@ export async function handleEdgeRequest(request: Request, env: EdgeEnv): Promise
     return json({ ok: true });
   }
 
+  if (url.pathname === '/api/pages' && request.method === 'PUT') {
+    if (!campaign) return json({ error: 'missing campaign' }, 400);
+    const body = await request.text();
+    if (!(await authorize(request, env, campaign, body))) {
+      return json({ error: 'unauthorized' }, 401);
+    }
+    await env.CAMPAIGNS.put(kvKey(campaign, 'pages'), body);
+    return json({ ok: true });
+  }
+
   if (url.pathname === '/control/session' && request.method === 'POST') {
     if (!campaign) return json({ error: 'missing campaign' }, 400);
     const body = await request.text();
@@ -145,7 +159,7 @@ export async function handleEdgeRequest(request: Request, env: EdgeEnv): Promise
   if (campaign && (request.method === 'GET' || request.method === 'HEAD')) {
     const origin = await env.CAMPAIGNS.get(kvKey(campaign, 'origin'));
     if (origin) {
-      const timeoutMs = Number(env.LIVE_PROXY_TIMEOUT_MS ?? 1500);
+      const timeoutMs = Number(env.LIVE_PROXY_TIMEOUT_MS ?? 4000);
       try {
         const dest = new URL(url.pathname + url.search, origin);
         const proxied = await fetch(dest, {
@@ -159,6 +173,30 @@ export async function handleEdgeRequest(request: Request, env: EdgeEnv): Promise
         await env.CAMPAIGNS.put(kvKey(campaign, 'origin'), '');
       }
     }
+  }
+
+  if (campaign && (request.method === 'GET' || request.method === 'HEAD')) {
+    const pagesJson = await env.CAMPAIGNS.get(kvKey(campaign, 'pages'));
+    if (pagesJson) {
+      try {
+        const pages = JSON.parse(pagesJson) as Record<string, string>;
+        const html =
+          pages[url.pathname] ??
+          pages[url.pathname.endsWith('/') ? url.pathname.slice(0, -1) : `${url.pathname}/`];
+        if (html) {
+          return new Response(html, {
+            headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-store' },
+          });
+        }
+      } catch {
+        /* fall through */
+      }
+    }
+  }
+
+  if (env.ASSETS && (request.method === 'GET' || request.method === 'HEAD')) {
+    const asset = await env.ASSETS.fetch(request);
+    if (asset.status !== 404) return asset;
   }
 
   if (

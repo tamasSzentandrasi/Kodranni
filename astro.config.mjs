@@ -2,15 +2,10 @@ import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 
 export default defineConfig({
-  // Project Pages:
-  //   https://tamasszentandrasi.github.io/Kodranni/           → repo portal
-  //   https://tamasszentandrasi.github.io/Kodranni/Guidebook/ → this site
-  // When you attach a custom domain (e.g. kodranni.com), set:
-  //   site: 'https://kodranni.com',
-  //   base: '/',
-  // and put that hostname in public/CNAME (see README). Deploy then uploads dist flat.
-  site: 'https://tamasszentandrasi.github.io',
-  base: '/Kodranni/Guidebook',
+  // Custom domain kodranni.com: portal at /, book at /Guidebook/.
+  // GitHub Pages still builds the same tree; attach the domain in repo Settings → Pages.
+  site: 'https://kodranni.com',
+  base: '/Guidebook',
   integrations: [
     starlight({
       title: 'Kodranni',

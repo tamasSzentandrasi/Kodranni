@@ -23,12 +23,12 @@ function env() {
 describe('campaignFromUrl', () => {
   it('prefers ?campaign=', () => {
     expect(
-      campaignFromUrl(new URL('https://play.kodranni.com/?campaign=other'), 'vardmark'),
+      campaignFromUrl(new URL('https://demo.kodranni.com/?campaign=other'), 'vardmark'),
     ).toBe('other');
   });
 
-  it('maps play.kodranni.com to the default campaign, not slug play', () => {
-    expect(campaignFromUrl(new URL('https://play.kodranni.com/community/'), 'vardmark')).toBe(
+  it('maps demo.kodranni.com to the default campaign, not slug demo', () => {
+    expect(campaignFromUrl(new URL('https://demo.kodranni.com/community/'), 'vardmark')).toBe(
       'vardmark',
     );
   });

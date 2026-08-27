@@ -1,3 +1,4 @@
+import { AsyncLocalStorage } from 'node:async_hooks';
 import { existsSync, readFileSync } from 'node:fs';
 import {
   SCHEMA_VERSION,
@@ -103,6 +104,25 @@ function fromSnapshot(
   return communityBase;
 }
 
+const archiveScope = new AsyncLocalStorage<boolean>();
+
+export function withArchiveScope<T>(fn: () => T): T {
+  return archiveScope.run(true, fn);
+}
+
+export function isArchiveScope(): boolean {
+  return archiveScope.getStore() === true;
+}
+
+function fromArchiveStore(storePath: string): ViewCommunity {
+  const store = openSqliteStore(storePath);
+  try {
+    return fromSnapshot(store.toPublicSnapshot(), 'snapshot', storePath);
+  } finally {
+    store.close();
+  }
+}
+
 function fromLiveStore(storePath: string): ViewCommunity {
   const store = openSqliteStore(storePath);
   try {
@@ -125,7 +145,7 @@ function fromLiveStore(storePath: string): ViewCommunity {
 export function loadCommunity(): ViewCommunity {
   const storePath = process.env.KODRANNI_STORE_PATH;
   if (storePath && existsSync(storePath)) {
-    return fromLiveStore(storePath);
+    return isArchiveScope() ? fromArchiveStore(storePath) : fromLiveStore(storePath);
   }
 
   const slug = process.env.KODRANNI_CAMPAIGN_SLUG;

@@ -1,5 +1,5 @@
 ---
-import '@kodranni/design/campaign.css';
+import LiveStyles from '../components/LiveStyles.astro';
 
 interface Props {
   title: string;
@@ -16,8 +16,8 @@ const asOf = new Date(generatedAt).toLocaleString(undefined, {
   timeStyle: 'short',
 });
 
-const sourceLabel =
-  source === 'live' ? 'live store' : source === 'snapshot' ? 'export' : 'fixture';
+const archive = source === 'snapshot';
+const sourceLabel = archive ? 'archive' : source === 'live' ? 'live store' : 'fixture';
 ---
 
 <!doctype html>
@@ -28,6 +28,7 @@ const sourceLabel =
     <meta name="color-scheme" content="dark" />
     <meta name="robots" content="noindex" />
     <link rel="icon" href="/brand/falcon-logo.png" type="image/png" />
+    {archive ? <link rel="stylesheet" href="/design/campaign.css" /> : <LiveStyles />}
     <title>{title} · {communityName}</title>
   </head>
   <body>
