@@ -17,7 +17,11 @@ function sign(key: string, body: string) {
 }
 
 function env() {
-  return { CAMPAIGNS: new MemoryKv(), DEVICE_KEYS: new MemoryKv() };
+  return {
+    CAMPAIGNS: new MemoryKv(),
+    DEVICE_KEYS: new MemoryKv(),
+    DEFAULT_CAMPAIGN: 'vardmark',
+  };
 }
 
 describe('campaignFromUrl', () => {
@@ -33,11 +37,33 @@ describe('campaignFromUrl', () => {
     );
   });
 
+  it('aliases demo/play query slugs to DEFAULT_CAMPAIGN', () => {
+    expect(campaignFromUrl(new URL('https://kodranni.com/?campaign=demo'), 'vardmark')).toBe(
+      'vardmark',
+    );
+    expect(campaignFromUrl(new URL('https://kodranni.com/?campaign=play'), 'vardmark')).toBe(
+      'vardmark',
+    );
+  });
+
   it('requires ?campaign= on kodranni.com (product lives at /)', () => {
     expect(campaignFromUrl(new URL('https://kodranni.com/'), 'vardmark')).toBeNull();
     expect(campaignFromUrl(new URL('https://kodranni.com/?campaign=vardmark'), 'vardmark')).toBe(
       'vardmark',
     );
+  });
+
+  it('treats apex /community and /characters as the default campaign', () => {
+    expect(campaignFromUrl(new URL('https://kodranni.com/community/'), 'vardmark')).toBe(
+      'vardmark',
+    );
+    expect(
+      campaignFromUrl(
+        new URL('https://kodranni.com/characters/torvald/'),
+        'vardmark',
+        'kodranni_campaign=ash-hill',
+      ),
+    ).toBe('ash-hill');
   });
 
   it('maps a campaign-named subdomain to that slug', () => {
@@ -91,8 +117,15 @@ describe('edge handler', () => {
     const got = (await get.json()) as { community: { name: string } };
     expect(got.community.name).toBe('The Vardmark');
 
-    const html = await handleEdgeRequest(
+    const home = await handleEdgeRequest(
       new Request(`https://face.example/?campaign=${campaign}`),
+      e,
+    );
+    expect(home.status).toBe(302);
+    expect(home.headers.get('location')).toBe(`/community/?campaign=${campaign}`);
+
+    const html = await handleEdgeRequest(
+      new Request(`https://face.example/community/?campaign=${campaign}`),
       e,
     );
     expect(html.status).toBe(200);
@@ -163,12 +196,201 @@ describe('edge handler', () => {
     expect(await e.CAMPAIGNS.get(kvKey(campaign, 'origin'))).toBe('https://127.0.0.1:9');
 
     const page = await handleEdgeRequest(
-      new Request(`https://face.example/?campaign=${campaign}`),
+      new Request(`https://face.example/community/?campaign=${campaign}`),
       { ...e, LIVE_PROXY_TIMEOUT_MS: '50' },
     );
     expect(page.status).toBe(200);
     expect(await page.text()).toContain('Y');
     expect(await e.CAMPAIGNS.get(kvKey(campaign, 'origin'))).toBe('');
+  });
+
+  it('keeps ?campaign= across live redirects on the product host', async () => {
+    const e = env();
+    const campaign = 'y';
+    const deviceKey = 'c'.repeat(32);
+    await handleEdgeRequest(
+      new Request(`https://kodranni.com/control/register?campaign=${campaign}`, {
+        method: 'POST',
+        body: JSON.stringify({ deviceKey }),
+      }),
+      e,
+    );
+    const originBody = JSON.stringify({ origin: 'https://origin.example' });
+    await handleEdgeRequest(
+      new Request(`https://kodranni.com/control/session?campaign=${campaign}`, {
+        method: 'POST',
+        headers: { authorization: `Bearer ${campaign}:${sign(deviceKey, originBody)}` },
+        body: originBody,
+      }),
+      e,
+    );
+
+    const prev = globalThis.fetch;
+    globalThis.fetch = async (input) => {
+      const u = String(input instanceof Request ? input.url : input);
+      expect(u).toBe('https://origin.example/community/');
+      return new Response('<html><a href="/characters/torvald/">sheet</a></html>', {
+        status: 200,
+        headers: { 'content-type': 'text/html' },
+      });
+    };
+    try {
+      const home = await handleEdgeRequest(
+        new Request(`https://kodranni.com/?campaign=${campaign}`),
+        e,
+      );
+      expect(home.status).toBe(302);
+      expect(home.headers.get('location')).toBe(`/community/?campaign=${campaign}`);
+
+      const live = await handleEdgeRequest(
+        new Request(`https://kodranni.com/community/?campaign=${campaign}`),
+        e,
+      );
+      expect(live.status).toBe(200);
+      expect(await live.text()).toContain('href="/characters/torvald/?campaign=y"');
+      expect(live.headers.get('set-cookie') ?? '').toContain('kodranni_campaign=y');
+    } finally {
+      globalThis.fetch = prev;
+    }
+  });
+
+  it('fail-closes to archive instead of returning Cloudflare origin errors', async () => {
+    const e = env();
+    const campaign = 'y';
+    const deviceKey = 'c'.repeat(32);
+    await handleEdgeRequest(
+      new Request(`https://face.example/control/register?campaign=${campaign}`, {
+        method: 'POST',
+        body: JSON.stringify({ deviceKey }),
+      }),
+      e,
+    );
+    const snapBody = JSON.stringify({
+      generatedAt: 't',
+      community: { slug: 'y', name: 'Y' },
+      characters: [],
+    });
+    await handleEdgeRequest(
+      new Request(`https://face.example/api/snapshot?campaign=${campaign}`, {
+        method: 'PUT',
+        headers: { authorization: `Bearer ${campaign}:${sign(deviceKey, snapBody)}` },
+        body: snapBody,
+      }),
+      e,
+    );
+    const originBody = JSON.stringify({ origin: 'https://origin.example' });
+    await handleEdgeRequest(
+      new Request(`https://face.example/control/session?campaign=${campaign}`, {
+        method: 'POST',
+        headers: { authorization: `Bearer ${campaign}:${sign(deviceKey, originBody)}` },
+        body: originBody,
+      }),
+      e,
+    );
+
+    const prev = globalThis.fetch;
+    globalThis.fetch = async () =>
+      new Response('<h1>Error 1016</h1><p>Origin DNS error</p>', { status: 530 });
+    try {
+      const page = await handleEdgeRequest(
+        new Request(`https://face.example/community/?campaign=${campaign}`),
+        e,
+      );
+      expect(page.status).toBe(200);
+      expect(await page.text()).toContain('Y');
+      expect(await e.CAMPAIGNS.get(kvKey(campaign, 'origin'))).toBe('');
+    } finally {
+      globalThis.fetch = prev;
+    }
+  });
+
+  it('serves captured hall HTML instead of the dummy shell', async () => {
+    const e = env();
+    const campaign = 'vardmark';
+    const deviceKey = 'a'.repeat(32);
+    await handleEdgeRequest(
+      new Request(`https://demo.kodranni.com/control/register?campaign=${campaign}`, {
+        method: 'POST',
+        body: JSON.stringify({ deviceKey }),
+      }),
+      e,
+    );
+    const pages = JSON.stringify({
+      '/community/':
+        '<!doctype html><html><body><h1>The Vardmark</h1><p class="src">archive</p><aside data-hall-search>Find</aside></body></html>',
+    });
+    const put = await handleEdgeRequest(
+      new Request(`https://demo.kodranni.com/api/pages?campaign=${campaign}`, {
+        method: 'PUT',
+        headers: { authorization: `Bearer ${campaign}:${sign(deviceKey, pages)}` },
+        body: pages,
+      }),
+      e,
+    );
+    expect(put.status).toBe(200);
+    const html = await handleEdgeRequest(
+      new Request('https://demo.kodranni.com/community/'),
+      e,
+    );
+    const body = await html.text();
+    expect(body).toContain('data-hall-search');
+    expect(body).not.toContain('No archive yet');
+  });
+
+  it('maps GitHub Pages /Kodranni/Guidebook assets onto kodranni.com/Guidebook', async () => {
+    const e = {
+      ...env(),
+      GUIDE_ORIGIN: 'https://tamasszentandrasi.github.io/Kodranni',
+    };
+    const prev = globalThis.fetch;
+    globalThis.fetch = async (input) => {
+      const u = String(input instanceof Request ? input.url : input);
+      expect(u).toBe(
+        'https://tamasszentandrasi.github.io/Kodranni/Guidebook/introduction/',
+      );
+      return new Response('<link href="/Kodranni/Guidebook/_astro/x.css" rel="stylesheet"/>', {
+        status: 200,
+        headers: { 'content-type': 'text/html; charset=utf-8' },
+      });
+    };
+    try {
+      const res = await handleEdgeRequest(
+        new Request('https://kodranni.com/Guidebook/introduction/'),
+        e,
+      );
+      expect(res.status).toBe(200);
+      expect(await res.text()).toContain('href="/Guidebook/_astro/x.css"');
+    } finally {
+      globalThis.fetch = prev;
+    }
+  });
+
+  it('fetches GitHub project paths without doubling /Kodranni', async () => {
+    const e = {
+      ...env(),
+      GUIDE_ORIGIN: 'https://tamasszentandrasi.github.io/Kodranni',
+    };
+    const prev = globalThis.fetch;
+    globalThis.fetch = async (input) => {
+      const u = String(input instanceof Request ? input.url : input);
+      expect(u).toBe(
+        'https://tamasszentandrasi.github.io/Kodranni/Guidebook/_astro/x.css',
+      );
+      return new Response('body{color:red}', {
+        status: 200,
+        headers: { 'content-type': 'text/css' },
+      });
+    };
+    try {
+      const res = await handleEdgeRequest(
+        new Request('https://kodranni.com/Kodranni/Guidebook/_astro/x.css'),
+        e,
+      );
+      expect(res.status).toBe(200);
+      expect(await res.text()).toBe('body{color:red}');
+    } finally {
+      globalThis.fetch = prev;
+    }
   });
 
   it('rejects unauthorized snapshot PUT', async () => {

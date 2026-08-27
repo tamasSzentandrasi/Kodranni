@@ -48,5 +48,14 @@ describe('publish archive', () => {
         'https://random.trycloudflare.com',
       ),
     ).toBe(false);
+    expect(
+      edgeOriginWouldLoop('https://demo.kodranni.com', 'https://kodranni.com/'),
+    ).toBe(true);
+    expect(
+      edgeOriginWouldLoop(
+        'https://kodranni-edge.kodranni.workers.dev',
+        'https://demo.kodranni.com',
+      ),
+    ).toBe(true);
   });
 });

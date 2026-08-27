@@ -69,7 +69,12 @@ export async function captureArchiveToEdge(
       '/',
       '/community/',
       '/characters/',
-      ...snap.characters.map((ch) => `/characters/${ch.slug}/`),
+      ...snap.characters.flatMap((ch) => [
+        `/characters/${ch.slug}/`,
+        `/characters/${ch.slug}/burden/`,
+        `/characters/${ch.slug}/echoes/`,
+        `/characters/${ch.slug}/inventory/`,
+      ]),
     ];
   } finally {
     store.close();
@@ -81,10 +86,17 @@ export async function captureArchiveToEdge(
       const res = await fetch(`${base}${path}`, {
         headers: { 'x-kodranni-archive': '1' },
         signal: AbortSignal.timeout(15_000),
+        redirect: 'follow',
       });
-      if (res.ok) pages[path] = await res.text();
-    } catch {
-      /* skip */
+      if (!res.ok) {
+        console.log(`  edge: capture ${path} HTTP ${res.status}`);
+        continue;
+      }
+      const html = await res.text();
+      pages[path] = html;
+      if (path === '/' && !pages['/community/']) pages['/community/'] = html;
+    } catch (e) {
+      console.log(`  edge: capture ${path} failed: ${e instanceof Error ? e.message : e}`);
     }
   }
   if (!Object.keys(pages).length) {

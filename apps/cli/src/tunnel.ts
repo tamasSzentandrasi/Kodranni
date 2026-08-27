@@ -50,6 +50,7 @@ function spawnCloudflared(
   const log = createWriteStream(logPath, { flags: 'a' });
   log.write(`\n--- ${new Date().toISOString()} cloudflared ${args.join(' ')} ---\n`);
   const child = spawn(bin, args, {
+    detached: true,
     stdio: ['ignore', 'pipe', 'pipe'],
     shell: false,
   });

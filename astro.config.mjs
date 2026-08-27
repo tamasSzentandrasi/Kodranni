@@ -2,8 +2,9 @@ import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 
 export default defineConfig({
-  // Custom domain kodranni.com: portal at /, book at /Guidebook/.
-  // GitHub Pages still builds the same tree; attach the domain in repo Settings → Pages.
+  // Public book is kodranni.com/Guidebook. GitHub project Pages is
+  // tamasszentandrasi.github.io/Kodranni/Guidebook — deploy.yml prefixes
+  // root-absolute /Guidebook assets with /Kodranni so github.io can load them.
   site: 'https://kodranni.com',
   base: '/Guidebook',
   integrations: [

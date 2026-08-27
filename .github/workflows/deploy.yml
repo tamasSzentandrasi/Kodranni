@@ -39,11 +39,15 @@ jobs:
           cp -a dist/. publish/Guidebook/
           cp public-root/index.html publish/index.html
           cp -a public-root/design publish/design
+          node scripts/github-pages-prefix.mjs --self-test
+          node scripts/github-pages-prefix.mjs publish/Guidebook
           test -f publish/design/primitives.css
           test -f publish/design/tokens.css
           test -f publish/design/ornament/btn-end-l.svg
           test -f publish/design/ornament/btn-end-r.svg
           test -f publish/design/ornament/corner-tl.svg
+          grep -q '/Kodranni/Guidebook/_astro/' publish/Guidebook/introduction/index.html
+          grep -q 'https://kodranni.com/Guidebook' publish/Guidebook/introduction/index.html
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

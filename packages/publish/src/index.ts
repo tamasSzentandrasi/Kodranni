@@ -319,7 +319,18 @@ export async function putSnapshotToEdge(opts: {
 
 export function edgeOriginWouldLoop(edgeUrl: string, origin: string): boolean {
   try {
-    return new URL(origin).host === new URL(edgeUrl).host;
+    const o = new URL(origin).hostname.replace(/\.$/, '').toLowerCase();
+    if (
+      o === 'kodranni.com' ||
+      o === 'www.kodranni.com' ||
+      o === 'demo.kodranni.com' ||
+      o === 'play.kodranni.com' ||
+      o.endsWith('.kodranni.com') ||
+      o.endsWith('.workers.dev')
+    ) {
+      return true;
+    }
+    return o === new URL(edgeUrl).hostname.replace(/\.$/, '').toLowerCase();
   } catch {
     return true;
   }

@@ -58,11 +58,15 @@ export function ensureCampaignUiBuilt(repoRoot: string): void {
 }
 
 function killChild(child: ChildProcess | undefined): void {
-  if (!child || child.killed) return;
+  if (!child || child.pid == null) return;
   try {
-    child.kill('SIGTERM');
+    process.kill(-child.pid, 'SIGTERM');
   } catch {
-    /* already dead */
+    try {
+      child.kill('SIGTERM');
+    } catch {
+      /* already dead */
+    }
   }
 }
 
@@ -103,7 +107,8 @@ export async function runLiveKernel(opts: {
 
   const ui = spawn(process.execPath, ['--experimental-sqlite', entry], {
     cwd: join(repoRoot, 'apps/campaign-ui'),
-    stdio: ['inherit', 'pipe', 'pipe'],
+    detached: true,
+    stdio: ['ignore', 'pipe', 'pipe'],
     env: {
       ...process.env,
       HOST: host,
@@ -147,6 +152,7 @@ export async function runLiveKernel(opts: {
       console.error(`  archive: ${e instanceof Error ? e.message : e}`);
     }
     shutdown();
+    await new Promise((r) => setTimeout(r, 300));
     process.exit(0);
   };
   process.on('SIGINT', () => void graceful());
