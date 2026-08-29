@@ -4,7 +4,9 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./http": "./src/http.ts",
+    "./commands": "./src/commands.ts"
   },
   "scripts": {
     "test": "vitest run"
@@ -12,6 +14,7 @@
   "dependencies": {
     "@kodranni/chat-port": "*",
     "@kodranni/chat-ui": "*",
+    "@kodranni/domain": "*",
     "discord.js": "^14.18.0"
   },
   "devDependencies": {

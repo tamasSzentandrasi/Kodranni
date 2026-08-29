@@ -415,6 +415,51 @@ describe('edge handler', () => {
     }
   });
 
+  it('proxies Discord channel send through the Worker bot token', async () => {
+    const e = {
+      ...env(),
+      DISCORD_BOT_TOKEN: 'bot-secret',
+    };
+    const campaign = 'vardmark';
+    const deviceKey = 'e'.repeat(32);
+    await handleEdgeRequest(
+      new Request(`https://face.example/control/register?campaign=${campaign}`, {
+        method: 'POST',
+        body: JSON.stringify({ deviceKey }),
+      }),
+      e,
+    );
+    const body = JSON.stringify({
+      op: 'send',
+      channelId: '123456789012345678',
+      payload: { content: 'hi' },
+    });
+    const prev = globalThis.fetch;
+    globalThis.fetch = async (input, init) => {
+      const u = String(input instanceof Request ? input.url : input);
+      expect(u).toBe('https://discord.com/api/v10/channels/123456789012345678/messages');
+      expect((init?.headers as Record<string, string>).authorization).toBe('Bot bot-secret');
+      return new Response(JSON.stringify({ id: 'm1' }), {
+        status: 200,
+        headers: { 'content-type': 'application/json' },
+      });
+    };
+    try {
+      const res = await handleEdgeRequest(
+        new Request(`https://face.example/control/discord/rest?campaign=${campaign}`, {
+          method: 'POST',
+          headers: { authorization: `Bearer ${campaign}:${sign(deviceKey, body)}` },
+          body,
+        }),
+        e,
+      );
+      expect(res.status).toBe(200);
+      expect(await res.json()).toEqual({ id: 'm1' });
+    } finally {
+      globalThis.fetch = prev;
+    }
+  });
+
   it('rejects unauthorized snapshot PUT', async () => {
     const e = env();
     const campaign = 'z';

@@ -1,6 +1,7 @@
 /**
- * Kodranni bot-runtime — session chat loop (Discord first).
- * Prefer `kodranni session start --bot` so the kernel owns this in-process.
+ * Kodranni bot-runtime — gateway hatch only.
+ * Default Discord is HTTP inside campaign-ui (`kodranni live --bot`).
+ * Set KODRANNI_DISCORD_GATEWAY=1 to run this process.
  */
 import { startBotRuntime } from './runtime.js';
 

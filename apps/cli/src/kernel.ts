@@ -1,10 +1,10 @@
 /**
- * Host kernel: production campaign-ui + optional in-process Discord + session-only tunnel.
+ * Host kernel: production campaign-ui + session-only tunnel.
+ * Discord HTTP runs inside campaign-ui (same BotContext as sqlite).
  */
 import { type ChildProcess, spawn, spawnSync } from 'node:child_process';
 import { createWriteStream, existsSync } from 'node:fs';
 import { join } from 'node:path';
-import { startBotRuntime } from '@kodranni/bot-runtime';
 import { startEdgeSession } from '@kodranni/publish';
 import { publishEdgeArchive, publishSnapshotToEdge } from './edge-publish.js';
 import type { CampaignConfig } from '@kodranni/store';
@@ -18,11 +18,49 @@ import {
   writeSessionState,
 } from '@kodranni/store';
 import { waitForHttp } from './http.js';
+import { notifySystemd } from './linux-notify.js';
 import {
   findCloudflared,
-  localHttpUrlFromBind,
   startCloudflaredTokenTunnel,
 } from './tunnel.js';
+
+export function campaignUiEnv(
+  base: NodeJS.ProcessEnv,
+  opts: {
+    host: string;
+    port: number;
+    storePath: string;
+    slug: string;
+    bot: boolean;
+    edgeControlUrl?: string;
+    publicBaseUrl?: string;
+  },
+): NodeJS.ProcessEnv {
+  const env: NodeJS.ProcessEnv = {
+    ...base,
+    HOST: opts.host,
+    PORT: String(opts.port),
+    KODRANNI_STORE_PATH: opts.storePath,
+    KODRANNI_CAMPAIGN_SLUG: opts.slug,
+    ASTRO_NODE_LOGGING: 'disabled',
+    NODE_OPTIONS: [base.NODE_OPTIONS, '--experimental-sqlite'].filter(Boolean).join(' '),
+  };
+  if (opts.edgeControlUrl) env.KODRANNI_EDGE_CONTROL_URL = opts.edgeControlUrl;
+  if (opts.publicBaseUrl) {
+    env.KODRANNI_PUBLIC_BASE_URL = opts.publicBaseUrl;
+    env.KODRANNI_LIVE_BASE_URL = opts.publicBaseUrl;
+  }
+  if (opts.bot) {
+    env.KODRANNI_EDGE_DEVICE_KEY = ensureEdgeDeviceKey(env);
+    if (base.KODRANNI_DISCORD_GATEWAY === '1') {
+      env.KODRANNI_DISCORD_GATEWAY = '1';
+    } else {
+      env.KODRANNI_DISCORD_HTTP = '1';
+      delete env.DISCORD_BOT_TOKEN;
+    }
+  }
+  return env;
+}
 
 export function parseBind(bind: string): { host: string; port: number } {
   const i = bind.lastIndexOf(':');
@@ -103,26 +141,29 @@ export async function runLiveKernel(opts: {
   const liveLog = createWriteStream(liveLogPath, { flags: 'a' });
   liveLog.write(`\n--- live start ${startedAt} (production) ---\n`);
 
+  const edgeControl =
+    cfg.edgeControlUrl ??
+    process.env.KODRANNI_EDGE_CONTROL_URL?.trim() ??
+    cfg.edgeUrl ??
+    process.env.KODRANNI_EDGE_URL?.trim();
+
   const ui = spawn(process.execPath, ['--experimental-sqlite', entry], {
     cwd: join(repoRoot, 'apps/campaign-ui'),
     detached: true,
     stdio: ['ignore', 'pipe', 'pipe'],
-    env: {
-      ...process.env,
-      HOST: host,
-      PORT: String(port),
-      KODRANNI_STORE_PATH: cfg.storePath,
-      KODRANNI_CAMPAIGN_SLUG: cfg.slug,
-      ASTRO_NODE_LOGGING: 'disabled',
-      NODE_OPTIONS: [process.env.NODE_OPTIONS, '--experimental-sqlite']
-        .filter(Boolean)
-        .join(' '),
-    },
+    env: campaignUiEnv(process.env, {
+      host,
+      port,
+      storePath: cfg.storePath,
+      slug: cfg.slug,
+      bot,
+      edgeControlUrl: edgeControl,
+      publicBaseUrl: cfg.edgeUrl ?? cfg.publicBaseUrl,
+    }),
     shell: false,
   });
 
   let tunnelChild: ChildProcess | undefined;
-  let botHandle: { stop: () => Promise<void> } | undefined;
   let uiReady = false;
 
   ui.stdout?.on('data', (b: Buffer) => {
@@ -135,7 +176,6 @@ export async function runLiveKernel(opts: {
   });
 
   const shutdown = () => {
-    void botHandle?.stop();
     killChild(tunnelChild);
     killChild(ui);
   };
@@ -173,6 +213,7 @@ export async function runLiveKernel(opts: {
     await Promise.race([waitForHttp(communityUrl, { timeoutMs: 90_000 }), earlyDeath]);
     uiReady = true;
     console.log('  local UI ready');
+    notifySystemd('READY=1');
   } catch (e) {
     killChild(ui);
     liveLog.write(`\n--- live failed: ${e instanceof Error ? e.message : e} ---\n`);
@@ -199,11 +240,7 @@ export async function runLiveKernel(opts: {
 
   if (tunnel) {
     const bin = await findCloudflared();
-    const edgeUrl =
-      cfg.edgeControlUrl ??
-      process.env.KODRANNI_EDGE_CONTROL_URL?.trim() ??
-      cfg.edgeUrl ??
-      process.env.KODRANNI_EDGE_URL?.trim();
+    const edgeUrl = edgeControl;
     if (!bin) {
       console.error(
         'cloudflared not found on PATH.\n' +
@@ -263,41 +300,41 @@ export async function runLiveKernel(opts: {
   }
 
   if (bot) {
-    if (!process.env.DISCORD_BOT_TOKEN || !process.env.DISCORD_GUILD_ID) {
-      console.error(
-        '  bot: skipped — Discord not ready (secrets discord-botToken + discord-serverID).',
-      );
-    } else {
-      const liveUrlNow = readLiveUrl(slug) ?? localUrl;
-      process.env.KODRANNI_STORE_PATH = cfg.storePath;
-      process.env.KODRANNI_CAMPAIGN_SLUG = cfg.slug;
-      process.env.KODRANNI_LIVE_BASE_URL = liveUrlNow;
-      if (cfg.edgeUrl) process.env.KODRANNI_PUBLIC_BASE_URL = cfg.edgeUrl;
-      console.log('  bot: starting Discord runtime in-process…');
-      try {
-        botHandle = await startBotRuntime();
-        const prev = readSessionState(slug);
-        writeSessionState(slug, {
-          slug,
-          startedAt,
-          localUrl,
-          liveUrl: liveUrlNow,
-          tunnel: Boolean(prev?.tunnel),
-          pids: {
-            live: ui.pid,
-            tunnel: tunnelChild?.pid ?? prev?.pids?.tunnel,
-            bot: process.pid,
-          },
-        });
-        console.log('  bot: in-process');
-      } catch (e) {
-        console.error(`  bot: ${e instanceof Error ? e.message : e}`);
+    const liveUrlNow = readLiveUrl(slug) ?? localUrl;
+    const prev = readSessionState(slug);
+    writeSessionState(slug, {
+      slug,
+      startedAt,
+      localUrl,
+      liveUrl: liveUrlNow,
+      tunnel: Boolean(prev?.tunnel),
+      pids: {
+        live: ui.pid,
+        tunnel: tunnelChild?.pid ?? prev?.pids?.tunnel,
+        bot: ui.pid,
+      },
+    });
+    try {
+      const boot = await fetch(`${localUrl}/internal/discord/boot`, {
+        method: 'GET',
+        headers: { origin: localUrl, accept: 'application/json' },
+        signal: AbortSignal.timeout(15_000),
+      });
+      if (!boot.ok) {
+        const text = await boot.text().catch(() => '');
+        throw new Error(`HTTP ${boot.status} ${text.slice(0, 120)}`);
       }
+      if (process.env.KODRANNI_DISCORD_GATEWAY === '1') {
+        console.log('  bot: gateway hatch in campaign-ui (KODRANNI_DISCORD_GATEWAY=1)');
+      } else {
+        console.log('  bot: HTTP interactions in campaign-ui (no bot token on the host)');
+      }
+    } catch (e) {
+      console.error(`  bot: ${e instanceof Error ? e.message : e}`);
     }
   }
 
   const code = await uiExit;
-  await botHandle?.stop();
   killChild(tunnelChild);
   liveLog.write(`\n--- live exit code=${code} ---\n`);
   liveLog.end();

@@ -316,6 +316,55 @@ export async function handleEdgeRequest(
     return json({ ok: true, origin: parsed.origin });
   }
 
+  if (url.pathname === '/control/discord/rest' && request.method === 'POST') {
+    if (!campaign) return json({ error: 'missing campaign' }, 400);
+    const body = await request.text();
+    if (!(await authorize(request, env, campaign, body))) {
+      return json({ error: 'unauthorized' }, 401);
+    }
+    const token = env.DISCORD_BOT_TOKEN?.trim();
+    if (!token) return json({ error: 'discord bot token unset on worker' }, 503);
+    let parsed: {
+      op?: string;
+      channelId?: string;
+      messageId?: string;
+      payload?: unknown;
+    };
+    try {
+      parsed = JSON.parse(body) as typeof parsed;
+    } catch {
+      return json({ error: 'invalid json' }, 400);
+    }
+    const snowflake = /^\d{17,20}$/;
+    if (parsed.op !== 'send' && parsed.op !== 'edit') {
+      return json({ error: 'op must be send or edit' }, 400);
+    }
+    if (!parsed.channelId || !snowflake.test(parsed.channelId)) {
+      return json({ error: 'invalid channelId' }, 400);
+    }
+    if (parsed.op === 'edit' && (!parsed.messageId || !snowflake.test(parsed.messageId))) {
+      return json({ error: 'invalid messageId' }, 400);
+    }
+    const dest =
+      parsed.op === 'send'
+        ? `https://discord.com/api/v10/channels/${parsed.channelId}/messages`
+        : `https://discord.com/api/v10/channels/${parsed.channelId}/messages/${parsed.messageId}`;
+    const discord = await fetch(dest, {
+      method: parsed.op === 'send' ? 'POST' : 'PATCH',
+      headers: {
+        authorization: `Bot ${token}`,
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify(parsed.payload ?? {}),
+      signal: AbortSignal.timeout(10_000),
+    });
+    const text = await discord.text();
+    return new Response(text || '{}', {
+      status: discord.status,
+      headers: { 'content-type': 'application/json', 'cache-control': 'no-store' },
+    });
+  }
+
   if (url.pathname === '/control/register' && request.method === 'POST') {
     if (!campaign) return json({ error: 'missing campaign' }, 400);
     const body = await request.text();

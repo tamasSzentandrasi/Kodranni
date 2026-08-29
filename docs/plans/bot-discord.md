@@ -4,36 +4,38 @@ Bots call **`@kodranni/app` in-process** — never the CLI.
 
 ## Run
 
-Terminal A (live UI + tunnel):
+Default Discord is **HTTP interactions** on the official app. The host never holds the bot token.
+
+Discord Developer Portal → Interactions Endpoint URL: `https://kodranni.com/interactions`
 
 ```bash
-npm run kodranni -- live --slug vardmark --tunnel
+npm run kodranni -- live --slug vardmark --tunnel --bot
 ```
 
-Terminal B (bot):
+`--bot` starts the HTTP ChatPort **inside campaign-ui** (same process as sqlite / roll confirms). Channel cards go Worker → Discord REST. The bot token lives on the Worker (`DISCORD_BOT_TOKEN` secret) and in GitHub Actions for command registration.
 
-Secrets are files under `~/.kodranni/secrets/` (never in git). The CLI and bot-runtime load them into env; an already-set env var wins.
+Secrets are files under the config secrets dir (`~/.kodranni/secrets/` if that tree exists; otherwise `$XDG_CONFIG_HOME/kodranni/secrets`). libsecret (`secret-tool`) wins over files. An already-set env var wins over both.
 
-| File | Env |
-|------|-----|
-| `discord-botToken` | `DISCORD_BOT_TOKEN` |
-| `discord-serverID` | `DISCORD_GUILD_ID` |
-| `discord-playChannelID` | `DISCORD_PLAY_CHANNEL_ID` (access card on start) |
-| `discord-appID` | `DISCORD_APP_ID` |
-| `discord-publicKey` | `DISCORD_PUBLIC_KEY` (gateway unused) |
-| `fluxer-botToken` | `FLUXER_BOT_TOKEN` |
-| `fluxer-serverID` | `FLUXER_GUILD_ID` |
-| `fluxer-playChannelID` | `FLUXER_PLAY_CHANNEL_ID` |
-| `fluxer-appID` | `FLUXER_APP_ID` |
-| `fluxer-clientSecret` | `FLUXER_CLIENT_SECRET` |
-| `cf-tunnel-token` | `KODRANNI_CF_TUNNEL_TOKEN` |
+| File | Env | On the host? |
+|------|-----|----------------|
+| `discord-serverID` | `DISCORD_GUILD_ID` | yes |
+| `discord-playChannelID` | `DISCORD_PLAY_CHANNEL_ID` | yes (access card on start) |
+| `discord-appID` | `DISCORD_APP_ID` | optional (payload carries it) |
+| `discord-storytellerRoleID` | `DISCORD_STORYTELLER_ROLE_ID` | yes |
+| `discord-botToken` | `DISCORD_BOT_TOKEN` | **no** (Worker / CI). Hatch only: `KODRANNI_DISCORD_GATEWAY=1` |
+| `discord-publicKey` | `DISCORD_PUBLIC_KEY` | Worker secret (Ed25519 verify) |
+| `fluxer-botToken` | `FLUXER_BOT_TOKEN` | later adapter |
+| `fluxer-serverID` | `FLUXER_GUILD_ID` | later adapter |
+| `fluxer-playChannelID` | `FLUXER_PLAY_CHANNEL_ID` | later adapter |
+| `fluxer-appID` | `FLUXER_APP_ID` | later adapter |
+| `fluxer-clientSecret` | `FLUXER_CLIENT_SECRET` | later adapter |
 
 ```bash
-# optional: source ~/.kodranni/secrets/env.sh
-npm run kodranni -- bot --slug vardmark
+# gateway hatch only (ST-owned token)
+KODRANNI_DISCORD_GATEWAY=1 npm run kodranni -- bot --slug vardmark
 ```
 
-Invite the bot with `applications.commands` + `bot` scopes; guild commands register on connect.
+Invite with `applications.commands` + `bot` scopes. Slash commands register from CI (`adapters/discord/src/register-commands.ts`), not from the host.
 
 Fluxer files load the same way. The Fluxer adapter is not connected yet — credentials sit in env until that gateway is wired.
 

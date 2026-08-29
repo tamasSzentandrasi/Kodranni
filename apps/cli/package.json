@@ -12,7 +12,6 @@
   },
   "dependencies": {
     "@kodranni/app": "*",
-    "@kodranni/bot-runtime": "*",
     "@kodranni/domain": "*",
     "@kodranni/publish": "*",
     "@kodranni/store": "*",

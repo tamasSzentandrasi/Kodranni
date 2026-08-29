@@ -1,270 +1,34 @@
 import {
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle,
   Client,
-  EmbedBuilder,
   Events,
   GatewayIntentBits,
   Partials,
   REST,
   Routes,
-  SlashCommandBuilder,
-  StringSelectMenuBuilder,
   type ChatInputCommandInteraction,
   type Interaction,
   type Message,
 } from 'discord.js';
-import { FOUNDATION_NAMES, filterSkillSuggestions } from '@kodranni/domain';
+import { filterSkillSuggestions } from '@kodranni/domain';
 import type {
   ChatCard,
   ChatInteraction,
   ChatMessageRef,
   ChatPort,
-  ChatSelect,
   ChatUserRef,
   CommandInteraction,
 } from '@kodranni/chat-port';
+import { SLASH } from './commands.js';
+import { mapCardToDiscordPayload } from './card.js';
 
-const foundationChoices = () =>
-  FOUNDATION_NAMES.map((f) => ({ name: f, value: f }));
-
-const STYLE: Record<string, ButtonStyle> = {
-  primary: ButtonStyle.Primary,
-  secondary: ButtonStyle.Secondary,
-  success: ButtonStyle.Success,
-  danger: ButtonStyle.Danger,
-};
-
-export function mapCardToDiscordPayload(card: ChatCard): {
-  embeds: EmbedBuilder[];
-  components: ActionRowBuilder<ButtonBuilder | StringSelectMenuBuilder>[];
-} {
-  const color = card.accent === 'blood' ? 0x8a1515 : 0x2a2222;
-  const embed = new EmbedBuilder().setColor(color);
-  if (card.title) embed.setTitle(card.title);
-  if (card.description) embed.setDescription(card.description);
-  if (card.fields?.length) {
-    embed.addFields(
-      card.fields.map((f) => ({
-        name: f.name,
-        value: f.value.slice(0, 1024),
-        inline: f.inline ?? false,
-      })),
-    );
-  }
-  if (card.footer) embed.setFooter({ text: card.footer.slice(0, 2048) });
-
-  const components: ActionRowBuilder<ButtonBuilder | StringSelectMenuBuilder>[] = [];
-
-  if (card.buttons?.length) {
-    const row = new ActionRowBuilder<ButtonBuilder>();
-    for (const b of card.buttons.slice(0, 5)) {
-      row.addComponents(
-        new ButtonBuilder()
-          .setCustomId(b.id.slice(0, 100))
-          .setLabel(b.label.slice(0, 80))
-          .setStyle(STYLE[b.style ?? 'secondary'] ?? ButtonStyle.Secondary)
-          .setDisabled(Boolean(b.disabled)),
-      );
-    }
-    components.push(row);
-  }
-
-  if (card.links?.length) {
-    const linkRow = new ActionRowBuilder<ButtonBuilder>();
-    for (const l of card.links.slice(0, 5)) {
-      linkRow.addComponents(
-        new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(l.label.slice(0, 80)).setURL(l.url),
-      );
-    }
-    components.push(linkRow);
-  }
-
-  if (card.selects?.length) {
-    for (const sel of card.selects.slice(0, 3)) {
-      components.push(selectToRow(sel));
-    }
-  }
-
-  return { embeds: [embed], components };
-}
-
-function selectToRow(sel: ChatSelect): ActionRowBuilder<StringSelectMenuBuilder> {
-  const menu = new StringSelectMenuBuilder()
-    .setCustomId(sel.id.slice(0, 100))
-    .setPlaceholder((sel.placeholder ?? 'Choose…').slice(0, 150))
-    .setMinValues(sel.minValues ?? 1)
-    .setMaxValues(sel.maxValues ?? 1)
-    .addOptions(
-      sel.options.slice(0, 25).map((o) => {
-        const opt: {
-          label: string;
-          value: string;
-          description?: string;
-          default?: boolean;
-          emoji?: string;
-        } = {
-          label: o.label.slice(0, 100),
-          value: o.value.slice(0, 100),
-        };
-        if (o.description) opt.description = o.description.slice(0, 100);
-        if (o.default) opt.default = true;
-        if (o.emoji) opt.emoji = o.emoji;
-        return opt;
-      }),
-    );
-  return new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(menu);
-}
-
-const dieTier = (o: {
-  setName: (n: string) => typeof o;
-  setDescription: (d: string) => typeof o;
-  addChoices: (...c: { name: string; value: number }[]) => typeof o;
-}) =>
-  o
-    .setName('tier')
-    .setDescription('Die tier (ST agreement; default d8 Ordinary)')
-    .addChoices(
-      { name: 'd6 · Disadvantage', value: 6 },
-      { name: 'd8 · Equal', value: 8 },
-      { name: 'd12 · Advantage', value: 12 },
-    );
-
-const SLASH = [
-  new SlashCommandBuilder()
-    .setName('roll')
-    .setDescription('Roll what the table agreed — skill autocomplete, then confirm')
-    .addStringOption((o) =>
-      o
-        .setName('skill')
-        .setDescription('Skill (type to search; omit → pick Archetype)')
-        .setAutocomplete(true),
-    )
-    .addStringOption((o) =>
-      o
-        .setName('foundation')
-        .setDescription('Foundation (often not the guiding one)')
-        .addChoices(...foundationChoices()),
-    )
-    .addIntegerOption((o) => dieTier(o))
-    .addIntegerOption((o) =>
-      o
-        .setName('exertion')
-        .setDescription('Exertion dice to spend (0–2; 2 needs Echo applies)')
-        .setMinValue(0)
-        .setMaxValue(2),
-    )
-    .addBooleanOption((o) =>
-      o.setName('echo').setDescription('Echo applies — only if the table agreed it matches'),
-    )
-    .addStringOption((o) =>
-      o.setName('character').setDescription('Character slug if you have more than one'),
-    ),
-  new SlashCommandBuilder()
-    .setName('intent')
-    .setDescription('ST: post the agreed pool for a player to Roll')
-    .addUserOption((o) =>
-      o.setName('player').setDescription('Player who should roll').setRequired(true),
-    )
-    .addStringOption((o) =>
-      o.setName('skill').setDescription('Skill (type to search)').setAutocomplete(true),
-    )
-    .addStringOption((o) =>
-      o
-        .setName('foundation')
-        .setDescription('Foundation (often not the guiding one)')
-        .addChoices(...foundationChoices()),
-    )
-    .addIntegerOption((o) => dieTier(o))
-    .addStringOption((o) =>
-      o.setName('character').setDescription('Optional character slug for the player'),
-    ),
-  new SlashCommandBuilder()
-    .setName('create')
-    .setDescription('Start a character draft bound to you (edit on the live sheet)')
-    .addStringOption((o) => o.setName('name').setDescription('Provisional character name')),
-  new SlashCommandBuilder()
-    .setName('claim')
-    .setDescription('Claim an ST prebuilt / guest character')
-    .addStringOption((o) =>
-      o.setName('character').setDescription('Claimable character slug').setRequired(true),
-    ),
-  new SlashCommandBuilder()
-    .setName('focus')
-    .setDescription('Set which of your characters is active for rolls')
-    .addStringOption((o) =>
-      o.setName('character').setDescription('Character slug').setRequired(true),
-    ),
-  new SlashCommandBuilder()
-    .setName('birth-omen')
-    .setDescription('Weighing: private Birth Omen d20 → Foundation points on sheet')
-    .addStringOption((o) =>
-      o.setName('character').setDescription('Draft character slug').setRequired(true),
-    )
-    .addIntegerOption((o) =>
-      o
-        .setName('face')
-        .setDescription('Optional fixed face 1–20 (tests); omit to roll')
-        .setMinValue(1)
-        .setMaxValue(20),
-    ),
-  new SlashCommandBuilder()
-    .setName('guiding-hand')
-    .setDescription('Weighing: private Guiding Hand d20 → Skill points on sheet')
-    .addStringOption((o) =>
-      o.setName('character').setDescription('Draft character slug').setRequired(true),
-    )
-    .addIntegerOption((o) =>
-      o
-        .setName('face')
-        .setDescription('Optional fixed face 1–20; omit to roll')
-        .setMinValue(1)
-        .setMaxValue(20),
-    ),
-  new SlashCommandBuilder()
-    .setName('award-word')
-    .setDescription('ST: award 1 Word to a speaker after an accepted claim')
-    .addStringOption((o) =>
-      o.setName('character').setDescription('Speaker character slug').setRequired(true),
-    ),
-  new SlashCommandBuilder()
-    .setName('review')
-    .setDescription('ST: post Approve/Changes/Deny cards for pending drafts')
-    .addStringOption((o) =>
-      o.setName('character').setDescription('Optional slug; omit to post all pending'),
-    ),
-  new SlashCommandBuilder()
-    .setName('st-roll')
-    .setDescription('ST NPC roll (numeric pool, no PC sheet)')
-    .addIntegerOption((o) =>
-      o.setName('foundation').setDescription('Foundation dice').setRequired(true),
-    )
-    .addIntegerOption((o) =>
-      o.setName('skill').setDescription('Skill dice').setRequired(true),
-    )
-    .addStringOption((o) => o.setName('label').setDescription('NPC label'))
-    .addIntegerOption((o) => dieTier(o)),
-  new SlashCommandBuilder()
-    .setName('live')
-    .setDescription('Show live / archive sheet URLs'),
-  new SlashCommandBuilder()
-    .setName('map')
-    .setDescription('Emergency: map user → character (prefer /create + Confirm)')
-    .addUserOption((o) => o.setName('user').setDescription('Discord user').setRequired(true))
-    .addStringOption((o) =>
-      o.setName('character').setDescription('Character slug').setRequired(true),
-    )
-    .addStringOption((o) =>
-      o
-        .setName('role')
-        .setDescription('player or storyteller')
-        .addChoices(
-          { name: 'player', value: 'player' },
-          { name: 'storyteller', value: 'storyteller' },
-        ),
-    ),
-].map((c) => c.toJSON());
+export { SLASH } from './commands.js';
+export { mapCardToDiscordPayload, mapCardToDiscordRest } from './card.js';
+export {
+  createDiscordHttpAdapter,
+  mapRawDiscordInteraction,
+  type DiscordHttpOpts,
+  type RawDiscordInteraction,
+} from './http.js';
 
 export function createDiscordAdapter(opts: {
   token: string;

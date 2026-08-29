@@ -47,7 +47,7 @@ Usage:
   kodranni st-roll --slug <slug> --label <name> --foundation <n> --skill <n>
                 [--tier 6|8|12] [--exertion 0|1] [--debug-seed N]
   kodranni live --slug <slug> [--tunnel] [--bot]
-      Live campaign-ui. --tunnel: Cloudflare (named if secrets present). --bot: also start Discord.
+      Live campaign-ui. --tunnel: Cloudflare. --bot: Discord HTTP in the UI process (no bot token).
   kodranni session start --slug <slug> [--tunnel] [--bot] [--detach] [--force]
       Supervisor: live (+ optional tunnel + bot). One process tree; --detach backgrounds it.
   kodranni session status --slug <slug>
@@ -58,7 +58,7 @@ Usage:
   kodranni emissary [--slug <slug>]
       Readiness + live/archive access (what players should open).
   kodranni bot --slug <slug>
-      Discord bot-runtime alone. Prefer session start --bot for table play.
+      Gateway hatch only (KODRANNI_DISCORD_GATEWAY=1). Prefer live --bot.
   kodranni help
 
 RNG: production rolls use crypto. --debug-seed is for verification only.
@@ -215,15 +215,20 @@ async function main(): Promise<void> {
     ensureCampaignRuntime(slug);
     const liveUrl = readLiveUrl(slug) ?? cfg.liveBaseUrl;
     const npmBin = process.platform === 'win32' ? 'npm.cmd' : 'npm';
-    console.log(`Bot-runtime for ${slug}`);
+    if (process.env.KODRANNI_DISCORD_GATEWAY !== '1') {
+      console.log(`Discord HTTP is served by campaign-ui (kodranni live --slug ${slug} --bot).`);
+      console.log('  The official bot token stays on the Worker.');
+      console.log('  Gateway hatch: KODRANNI_DISCORD_GATEWAY=1 kodranni bot --slug ' + slug);
+      return;
+    }
+    console.log(`Bot-runtime gateway hatch for ${slug}`);
     console.log(`  store: ${cfg.storePath}`);
     console.log(`  live:  ${liveUrl}`);
     console.log(`  creds: ${formatCredentialStatus(platformCredentialStatus())}`);
     if (!process.env.DISCORD_BOT_TOKEN || !process.env.DISCORD_GUILD_ID) {
       console.error(
-        'Discord is not ready. Add ~/.kodranni/secrets/discord-botToken and discord-serverID\n' +
-          '  (or export DISCORD_BOT_TOKEN and DISCORD_GUILD_ID). Fluxer creds load the same way\n' +
-          '  but that adapter is not connected yet.',
+        'Gateway hatch needs discord-botToken + discord-serverID under the secrets dir\n' +
+          '  (or DISCORD_BOT_TOKEN and DISCORD_GUILD_ID). Default play uses live --bot instead.',
       );
       process.exit(1);
     }

@@ -1,13 +1,14 @@
 /**
- * Discord bot loop — callable in-process from the CLI kernel (no extra npm child).
+ * Discord bot loop — HTTP ChatPort in campaign-ui (default), gateway hatch optional.
  */
 import { appendFileSync, mkdirSync } from 'node:fs';
 import { dirname } from 'node:path';
-import { createDiscordAdapter } from '@kodranni/adapter-discord';
+import { createDiscordAdapter, createDiscordHttpAdapter } from '@kodranni/adapter-discord';
 import {
   DEMO_SLUG,
   defaultCampaignTomlPath,
   ensureCampaignRuntime,
+  ensureEdgeDeviceKey,
   formatCredentialStatus,
   loadSecretsIntoEnv,
   openSqliteStore,
@@ -36,19 +37,27 @@ function logLine(logPath: string, line: string): void {
   console.log(line);
 }
 
+export type BotMode = 'http' | 'gateway';
+
 export interface BotHandle {
   stop: () => Promise<void>;
+  receiveInteraction: (raw: unknown) => Promise<void>;
 }
 
-export async function startBotRuntime(): Promise<BotHandle> {
+export function resolveBotMode(env: NodeJS.ProcessEnv = process.env): BotMode {
+  return env.KODRANNI_DISCORD_GATEWAY === '1' ? 'gateway' : 'http';
+}
+
+export async function startBotRuntime(opts?: { mode?: BotMode }): Promise<BotHandle> {
   const loaded = loadSecretsIntoEnv();
   const slug = process.env.KODRANNI_CAMPAIGN_SLUG ?? DEMO_SLUG;
   const creds = platformCredentialStatus();
+  const mode = opts?.mode ?? resolveBotMode();
   const token = process.env.DISCORD_BOT_TOKEN;
   const guildId = process.env.DISCORD_GUILD_ID;
-  if (!token || !guildId) {
+  if (mode === 'gateway' && (!token || !guildId)) {
     throw new Error(
-      `bot-runtime requires Discord token + guild (files under ${loaded.dir}: discord-botToken, discord-serverID)`,
+      `bot-runtime gateway requires Discord token + guild (files under ${loaded.dir}: discord-botToken, discord-serverID)`,
     );
   }
 
@@ -58,6 +67,8 @@ export async function startBotRuntime(): Promise<BotHandle> {
   let publicUrl = process.env.KODRANNI_PUBLIC_BASE_URL;
   let discordStorytellerRoleId: string | undefined;
   let fluxerStorytellerRoleId: string | undefined;
+  let edgeUrl =
+    process.env.KODRANNI_EDGE_CONTROL_URL?.trim() || process.env.KODRANNI_EDGE_URL?.trim();
 
   try {
     const cfg = await readCampaignConfig(defaultCampaignTomlPath(slug));
@@ -67,6 +78,7 @@ export async function startBotRuntime(): Promise<BotHandle> {
       cfg.discordStorytellerRoleId ?? process.env.DISCORD_STORYTELLER_ROLE_ID?.trim();
     fluxerStorytellerRoleId =
       cfg.fluxerStorytellerRoleId ?? process.env.FLUXER_STORYTELLER_ROLE_ID?.trim();
+    edgeUrl = edgeUrl ?? cfg.edgeControlUrl ?? cfg.edgeUrl;
     if (!process.env.KODRANNI_LIVE_BASE_URL) {
       liveBase = readLiveUrl(slug) ?? cfg.liveBaseUrl;
     }
@@ -83,11 +95,22 @@ export async function startBotRuntime(): Promise<BotHandle> {
   mkdirSync(dirname(logPath), { recursive: true });
 
   const store = openSqliteStore(storePath);
-  const port = createDiscordAdapter({
-    token,
-    guildId,
-    playChannelId: process.env.DISCORD_PLAY_CHANNEL_ID,
-  });
+  const httpPort =
+    mode === 'http'
+      ? createDiscordHttpAdapter({
+          campaignId: slug,
+          edgeUrl,
+          deviceKey: ensureEdgeDeviceKey(),
+          applicationId: process.env.DISCORD_APP_ID,
+        })
+      : null;
+  const port =
+    httpPort ??
+    createDiscordAdapter({
+      token: token!,
+      guildId: guildId!,
+      playChannelId: process.env.DISCORD_PLAY_CHANNEL_ID,
+    });
 
   const shareUrl = (publicUrl || liveBase).replace(/\/$/, '');
 
@@ -104,7 +127,7 @@ export async function startBotRuntime(): Promise<BotHandle> {
 
   port.onInteraction((i) => handleInteraction(ctx, i));
 
-  ctx.log(`starting bot for campaign ${slug}`);
+  ctx.log(`starting bot for campaign ${slug} (${mode})`);
   ctx.log(`creds ${formatCredentialStatus(creds)}`);
   if (discordStorytellerRoleId) {
     ctx.log(`ST Discord role id: ${discordStorytellerRoleId}`);
@@ -196,11 +219,18 @@ export async function startBotRuntime(): Promise<BotHandle> {
     );
   };
   const reviewTimer = setInterval(() => {
+    if (stopped) return;
     void announcePendingReviews();
   }, 2000);
 
+  let stopped = false;
   return {
+    receiveInteraction: async (raw: unknown) => {
+      if (httpPort) await httpPort.receive(raw);
+    },
     stop: async () => {
+      if (stopped) return;
+      stopped = true;
       ctx.log('stopping');
       clearInterval(reviewTimer);
       await port.stop();
