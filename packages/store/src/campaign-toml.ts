@@ -290,7 +290,7 @@ export function applyMachineDefaults(
   if (fluxerStRole) out.fluxerStorytellerRoleId = fluxerStRole;
 
   const platforms = new Set(out.platforms ?? []);
-  if (env.DISCORD_BOT_TOKEN?.trim() && env.DISCORD_GUILD_ID?.trim()) {
+  if (env.DISCORD_GUILD_ID?.trim()) {
     platforms.add('discord');
   }
   if (env.FLUXER_BOT_TOKEN?.trim() && env.FLUXER_GUILD_ID?.trim()) {

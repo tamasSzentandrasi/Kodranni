@@ -1,0 +1,66 @@
+---
+export const prerender = false;
+
+import CampaignLayout from '../layouts/CampaignLayout.astro';
+import { loadCommunity } from '../data/load';
+import { isLocalDeskRequest } from '../lib/loopback';
+import { resolveCampaignSlug } from '../lib/campaign-paths';
+import { readLiveUrl, readSessionState } from '@kodranni/store';
+
+if (!isLocalDeskRequest(Astro.request)) {
+  return new Response('Not found', { status: 404 });
+}
+
+const c = loadCommunity();
+const slug = resolveCampaignSlug() ?? c.slug;
+const session = readSessionState(slug);
+const live = readLiveUrl(slug);
+const local = session?.localUrl ?? 'http://127.0.0.1:8742';
+const invite = process.env.DISCORD_APP_ID
+  ? `https://discord.com/oauth2/authorize?client_id=${process.env.DISCORD_APP_ID}&scope=bot%20applications.commands`
+  : null;
+---
+
+<CampaignLayout
+  title="Operator"
+  communityName={c.name}
+  generatedAt={c.generatedAt}
+  primary="community"
+  source={c.source}
+>
+  <section class="kod-plate">
+    <h2>Operator desk</h2>
+    <p class="app__meta">Loopback only · this page is not on the public hostname.</p>
+    <p><strong>Campaign</strong> {slug}</p>
+    <p><strong>Local</strong> <a href={local + '/community/'}>{local}</a></p>
+    {
+      live && live !== local ? (
+        <p>
+          <strong>Public</strong> <a href={live}>{live}</a>
+        </p>
+      ) : null
+    }
+    <p>
+      <strong>Session</strong>
+      {session?.startedAt ?? 'none'}
+      {session?.tunnel ? ' · tunnel' : ''}
+    </p>
+    <p>
+      <a href="/emissary">Emissary (JSON)</a>
+      ·
+      <a href="/operator/snapshot">Download snapshot.json</a>
+      ·
+      <a href="/community/setup/">Storyteller desk</a>
+    </p>
+    {
+      invite ? (
+        <p>
+          Discord invite:{' '}
+          <a href={invite}>{invite}</a>
+        </p>
+      ) : (
+        <p class="empty">Discord app id unset — invite URL is minted from the official application.</p>
+      )
+    }
+  </section>
+</CampaignLayout>

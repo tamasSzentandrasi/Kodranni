@@ -71,12 +71,18 @@ export function openSqliteStore(path: string): CommunityStorePort {
   }
   const db = new DatabaseSync(path);
   db.exec('PRAGMA journal_mode = WAL;');
+  db.exec('PRAGMA busy_timeout = 5000;');
   db.exec('PRAGMA foreign_keys = ON;');
   migrate(db);
+  let open = true;
 
   return {
     path,
-    close: () => db.close(),
+    close: () => {
+      if (!open) return;
+      open = false;
+      db.close();
+    },
     getCommunity: () => {
       const row = db.prepare(`SELECT data FROM community WHERE id = 'main'`).get() as
         | { data: string }

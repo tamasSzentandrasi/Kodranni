@@ -230,4 +230,13 @@ describe('campaign.toml', () => {
     expect(cfg.tunnelHostname).toBe('https://live.example.com');
     expect(cfg.cloudflareTunnelToken).toBe('tok');
   });
+
+  it('close is idempotent', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'kodranni-store-'));
+    dirs.push(dir);
+    const store = openSqliteStore(join(dir, 'community.sqlite'));
+    seedDemoCampaign(store);
+    store.close();
+    expect(() => store.close()).not.toThrow();
+  });
 });

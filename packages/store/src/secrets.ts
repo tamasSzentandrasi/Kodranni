@@ -1,11 +1,54 @@
 /**
- * Load ~/.kodranni/secrets/<name> into process env.
- * Existing env vars win. Values are never logged.
+ * Load secrets into process env: existing env, then libsecret, then 0600 files.
+ * Values are never logged.
  */
 import { randomBytes } from 'node:crypto';
+import { spawnSync } from 'node:child_process';
 import { chmodSync, existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { secretsDir } from './paths.js';
+
+/** Tests and sparse env copies must not write the user keyring. */
+export function libsecretEnabled(env: NodeJS.ProcessEnv = process.env): boolean {
+  if (env.KODRANNI_LIBSECRET === '0' || process.env.KODRANNI_LIBSECRET === '0') return false;
+  if (env.KODRANNI_LIBSECRET === '1') return true;
+  if (env.VITEST || process.env.VITEST) return false;
+  return process.platform === 'linux';
+}
+
+function libsecretGet(file: string): string | undefined {
+  try {
+    const r = spawnSync(
+      'secret-tool',
+      ['lookup', 'service', 'kodranni', 'key', file],
+      { encoding: 'utf8', timeout: 1500, stdio: ['ignore', 'pipe', 'ignore'] },
+    );
+    if (r.status === 0) {
+      const v = (r.stdout ?? '').trim();
+      return v || undefined;
+    }
+  } catch {
+    /* no libsecret */
+  }
+  return undefined;
+}
+
+function libsecretSet(file: string, value: string): void {
+  try {
+    spawnSync(
+      'secret-tool',
+      ['store', '--label', `Kodranni ${file}`, 'service', 'kodranni', 'key', file],
+      {
+        input: value,
+        encoding: 'utf8',
+        timeout: 1500,
+        stdio: ['pipe', 'ignore', 'ignore'],
+      },
+    );
+  } catch {
+    /* ignore */
+  }
+}
 
 /** Filename on disk → env var. Names match the ST's self-descriptive files. */
 export const SECRET_FILE_TO_ENV = {
@@ -100,11 +143,28 @@ export function loadSecretsIntoEnv(env: NodeJS.ProcessEnv = process.env): Loaded
       present.push(key);
       continue;
     }
+    // File wins over libsecret. A test run once wrote a different device key
+    // into the user keyring; the Worker still has the file key (register is 409).
     const value = readSecretValue(path);
     if (value) {
       env[key] = value;
       setFromFiles.push(key);
       present.push(key);
+      if (libsecretEnabled(env)) libsecretSet(file, value);
+      continue;
+    }
+    const fromSecret = libsecretEnabled(env) ? libsecretGet(file) : undefined;
+    if (fromSecret) {
+      env[key] = fromSecret;
+      present.push(key);
+      try {
+        mkdirSync(dir, { recursive: true });
+        chmodSync(dir, 0o700);
+        writeFileSync(path, `${fromSecret}\n`, { encoding: 'utf8', mode: 0o600 });
+        setFromFiles.push(key);
+      } catch {
+        /* file fallback is best-effort */
+      }
     }
   }
 
@@ -137,7 +197,7 @@ export function platformCredentialStatus(
     playChannel: flag(env, 'DISCORD_PLAY_CHANNEL_ID'),
     ready: false,
   };
-  discord.ready = discord.token && discord.guild;
+  discord.ready = discord.guild;
   const fluxer = {
     token: flag(env, 'FLUXER_BOT_TOKEN'),
     guild: flag(env, 'FLUXER_GUILD_ID'),
@@ -176,6 +236,7 @@ export function ensureEdgeDeviceKey(env: NodeJS.ProcessEnv = process.env): strin
   const path = join(dir, 'edge-device-key');
   const key = randomBytes(32).toString('hex');
   writeFileSync(path, `${key}\n`, { encoding: 'utf8', mode: 0o600 });
+  if (libsecretEnabled(env)) libsecretSet('edge-device-key', key);
   env.KODRANNI_EDGE_DEVICE_KEY = key;
   return key;
 }

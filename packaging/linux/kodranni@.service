@@ -1,0 +1,18 @@
+[Unit]
+Description=Kodranni table (%i)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=notify
+NotifyAccess=main
+EnvironmentFile=-%E/kodranni/service.env
+ExecStart=kodranni live --slug %i --tunnel --bot
+Restart=on-failure
+RestartSec=3
+TimeoutStartSec=120
+TimeoutStopSec=60
+KillMode=mixed
+
+[Install]
+WantedBy=default.target

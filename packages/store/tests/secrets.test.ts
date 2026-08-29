@@ -5,6 +5,7 @@ import { join } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
 import {
   formatCredentialStatus,
+  libsecretEnabled,
   loadSecretsIntoEnv,
   platformCredentialStatus,
 } from '../src/secrets.js';
@@ -79,5 +80,17 @@ describe('loadSecretsIntoEnv', () => {
     expect(line).not.toContain('disc-secret-value');
     expect(line).not.toContain('guild-id-value');
     expect(line).not.toContain('flux-secret-value');
+  });
+
+  it('treats Discord as ready from guild alone (HTTP path; token is Worker-side)', () => {
+    const s = platformCredentialStatus({ DISCORD_GUILD_ID: 'guild-id-value' });
+    expect(s.discord.ready).toBe(true);
+    expect(s.discord.token).toBe(false);
+    expect(formatCredentialStatus(s)).toMatch(/discord guild \(ready\)/);
+  });
+
+  it('never touches libsecret under Vitest, even if the passed env omits VITEST', () => {
+    expect(libsecretEnabled({ KODRANNI_HOME: '/tmp/x' })).toBe(false);
+    expect(libsecretEnabled({ KODRANNI_LIBSECRET: '0' })).toBe(false);
   });
 });

@@ -44,8 +44,8 @@ export async function runEmissary(opts: {
       'discord secrets',
       creds.discord.ready,
       creds.discord.ready
-        ? `token+guild${creds.discord.playChannel ? '+play-channel' : ''} · ${secrets.dir}`
-        : `missing token/guild under ${secrets.dir} (discord-botToken, discord-serverID)`,
+        ? `guild${creds.discord.token ? '+token(hatch)' : ''}${creds.discord.playChannel ? '+play-channel' : ''} · ${secrets.dir}`
+        : `missing discord-serverID under ${secrets.dir} (bot token is Worker-only unless KODRANNI_DISCORD_GATEWAY=1)`,
     ),
   );
   const fluxerPartial = creds.fluxer.token !== creds.fluxer.guild;
