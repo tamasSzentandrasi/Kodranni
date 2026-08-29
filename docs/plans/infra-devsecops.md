@@ -295,13 +295,15 @@ Fix actions in the local UI, not a 12-row lecture. No `doctor` command.
 
 Each step is independently shippable and testable. Do not start distribution before (1).
 
-1. **Kernel** — production campaign-ui server (not `astro dev`); Discord in-process; `cloudflared` session-only. **In repo.**
-2. **Archive mode** — `toPublicSnapshot()` allowlist (no initiator / accountId / snowflakes); `snapshot.json` primary. **In repo.** Full same-component archive app still to land.
-3. **Edge** — `apps/edge` Function: KV snapshot + origin proxy + fail-closed; tests with memory KV. **In repo.** Deploy + CF KV bindings still required.
-4. **Tunnel mint** — Function mints tunnel token; session start/end as in §3.2.
-5. **Discord HTTP** — official app to Function; defer; autocomplete breaker; dark replies.
-6. **Linux dist** — systemd user unit, XDG, libsecret, AppImage on Releases. Operator UI + **emissary**.
-7. **Optional later** — GitHub snapshot export; ST-owned Discord gateway; Quadlet; ST-owned Cloudflare running the same Function; avatar blobs if we accept a store.
+1. **Kernel** — production campaign-ui server (not `astro dev`); Discord HTTP in the UI process; `cloudflared` session-only. **In repo.**
+2. **Archive mode** — `toPublicSnapshot()` allowlist; hall-render from KV snapshot. **In repo.**
+3. **Edge** — `apps/edge` Function: KV snapshot + origin proxy + fail-closed. **In repo and deployed.**
+4. **Tunnel mint** — Function mints a remotely-managed tunnel; private `origin-<slug>.kodranni.com`. **In repo.**
+5. **Discord HTTP** — official app → Function (`POST /interactions`); 3s ACK; autocomplete on the Worker; live forward to `POST /internal/discord` (HMAC). Channel send/edit via Worker `POST /control/discord/rest` (bot token stays on the Worker). Default `--bot` does not put `DISCORD_BOT_TOKEN` on the host. Hatch: `KODRANNI_DISCORD_GATEWAY=1`. **In repo.** Set the Discord portal Interactions URL to `https://kodranni.com/interactions`. Worker secrets: `DISCORD_PUBLIC_KEY`, `DISCORD_BOT_TOKEN`, `DISCORD_APP_ID`.
+6. **Linux dist** — `systemd --user` `Type=notify` (`packaging/linux/kodranni@.service`); XDG data/config/state (existing `~/.kodranni` still wins); libsecret via `secret-tool` with 0600 file fallback; `GET /emissary` and `/operator` loopback-only; host tarball + OCI on Releases. **In repo.**
+7. **Optional later** — GitHub snapshot export; Quadlet; ST-owned Cloudflare running the same Function; avatar blobs if we accept a store.
+
+CI: `.github/workflows/test.yml`, `edge.yml` (wrangler + command register), `release.yml` (tarball + GHCR). Actions are pinned to commit SHAs. GitHub secrets: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`, `DISCORD_BOT_TOKEN`, `DISCORD_APP_ID`.
 
 ---
 

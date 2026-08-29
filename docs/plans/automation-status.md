@@ -1,6 +1,6 @@
 # Automation status, process lanes & backlog
 
-**Updated:** 2026-08-25
+**Updated:** 2026-08-29
 
 ---
 
@@ -31,7 +31,7 @@ Use **one active lane** at a time. Park ideas in the backlog; do not start a sec
 | **D · Archive / hostname** | One hostname + KV snapshot; no campaign git repo | Locked: [`infra-devsecops.md`](./infra-devsecops.md) |
 | **E · Debt / polish** | Explicit debt tickets below | Pull between lanes, not mid-feature |
 
-**North star for C (updated 2026-08-25):** one production host process (store + campaign-ui + Discord handler). `cloudflared` is the only extra child, session-scoped. systemd --user on Linux. The current CLI spawning `astro dev` + `npm -w` bot + PID files is interim — see [`infra-devsecops.md`](./infra-devsecops.md) I6.
+**North star for C (updated 2026-08-29):** one production host process (store + campaign-ui + Discord HTTP handler). `cloudflared` is the only extra child, session-scoped. systemd --user, XDG, libsecret. See [`infra-devsecops.md`](./infra-devsecops.md) I6–I8.
 
 ---
 
