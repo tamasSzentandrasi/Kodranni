@@ -1,5 +1,8 @@
 /** Paths the Worker may reverse-proxy to a live origin. Setup/operator stay loopback. */
 
+const STATIC_FILE =
+  /\.(css|js|mjs|map|png|jpe?g|gif|webp|svg|ico|woff2?|ttf|otf)$/i;
+
 export function livePathAllowed(method: string, pathname: string): boolean {
   const m = method.toUpperCase();
   const p = pathname.endsWith('/') && pathname.length > 1 ? pathname.slice(0, -1) : pathname;
@@ -25,6 +28,10 @@ export function livePathAllowed(method: string, pathname: string): boolean {
   if (p.startsWith('/design/') || p.startsWith('/brand/') || p.startsWith('/_astro/')) {
     return m === 'GET' || m === 'HEAD';
   }
+  if (p.startsWith('/archetypes/') || p.startsWith('/icons/') || p.startsWith('/fonts/')) {
+    return m === 'GET' || m === 'HEAD';
+  }
+  if ((m === 'GET' || m === 'HEAD') && STATIC_FILE.test(p)) return true;
   if (p === '/hall-client.js' || p.startsWith('/favicon') || p === '/apple-touch-icon.png') {
     return m === 'GET' || m === 'HEAD';
   }

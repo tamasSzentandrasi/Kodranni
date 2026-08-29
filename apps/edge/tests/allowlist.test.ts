@@ -9,6 +9,10 @@ describe('livePathAllowed', () => {
     expect(livePathAllowed('GET', '/api/community/rev')).toBe(true);
     expect(livePathAllowed('POST', '/api/character/torvald')).toBe(true);
     expect(livePathAllowed('GET', '/hall-client.js')).toBe(true);
+    expect(livePathAllowed('GET', '/archetypes/warrior.jpg')).toBe(true);
+    expect(livePathAllowed('GET', '/_astro/leather.CO0ifLnA.jpg')).toBe(true);
+    expect(livePathAllowed('GET', '/sheet-edit-inventory.js')).toBe(true);
+    expect(livePathAllowed('GET', '/icons/skills.svg')).toBe(true);
   });
 
   it('denies setup, operator, and ST community writes', () => {
