@@ -1,3 +1,8 @@
+import { renderArchivePage } from '@kodranni/hall-render';
+import { livePathAllowed } from './allowlist.js';
+import { handleDiscordInteraction } from './discord.js';
+import { mintCampaignTunnel, type CampaignMeta } from './tunnel-mint.js';
+
 /**
  * Cloudflare Pages Function / Worker: one hostname.
  * Live: proxy to tunnel origin in KV. Dark: serve snapshot JSON (+ archive app assets).
@@ -19,6 +24,12 @@ export interface EdgeEnv {
   DEFAULT_CAMPAIGN?: string;
   /** GitHub Pages origin for the product (landing + Guidebook), no trailing slash. */
   GUIDE_ORIGIN?: string;
+  CF_API_TOKEN?: string;
+  CF_ACCOUNT_ID?: string;
+  CF_ZONE_ID?: string;
+  DISCORD_PUBLIC_KEY?: string;
+  DISCORD_BOT_TOKEN?: string;
+  DISCORD_APP_ID?: string;
   ASSETS?: { fetch(request: Request): Promise<Response> };
 }
 
@@ -189,9 +200,17 @@ function snapshotLooksPrivate(json: string): boolean {
   return SNOWFLAKE.test(json) || json.includes('"initiator"') || json.includes('pendingMoves');
 }
 
-export async function handleEdgeRequest(request: Request, env: EdgeEnv): Promise<Response> {
+export async function handleEdgeRequest(
+  request: Request,
+  env: EdgeEnv,
+  ctx?: { waitUntil(p: Promise<unknown>): void },
+): Promise<Response> {
   const url = new URL(request.url);
   const campaign = campaignFromUrl(url, env.DEFAULT_CAMPAIGN, request.headers.get('cookie'));
+
+  if (url.pathname === '/interactions' && request.method === 'POST') {
+    return handleDiscordInteraction(request, env, ctx?.waitUntil.bind(ctx));
+  }
 
   if (
     (request.method === 'GET' || request.method === 'HEAD') &&
@@ -234,6 +253,48 @@ export async function handleEdgeRequest(request: Request, env: EdgeEnv): Promise
     }
     await env.CAMPAIGNS.put(kvKey(campaign, 'pages'), body);
     return json({ ok: true });
+  }
+
+  if (url.pathname === '/control/session/start' && request.method === 'POST') {
+    if (!campaign) return json({ error: 'missing campaign' }, 400);
+    const body = await request.text();
+    if (!(await authorize(request, env, campaign, body))) {
+      return json({ error: 'unauthorized' }, 401);
+    }
+    let guildId: string | undefined;
+    try {
+      const parsed = JSON.parse(body || '{}') as { guildId?: string };
+      guildId = parsed.guildId?.trim() || undefined;
+    } catch {
+      return json({ error: 'invalid json' }, 400);
+    }
+    const rawMeta = await env.CAMPAIGNS.get(kvKey(campaign, 'meta'));
+    let meta: CampaignMeta = {};
+    if (rawMeta) {
+      try {
+        meta = JSON.parse(rawMeta) as CampaignMeta;
+      } catch {
+        meta = {};
+      }
+    }
+    try {
+      const minted = await mintCampaignTunnel(campaign, env, meta);
+      meta.tunnelId = minted.tunnelId;
+      meta.originHost = new URL(minted.origin).hostname;
+      if (guildId) meta.guildId = guildId;
+      await env.CAMPAIGNS.put(kvKey(campaign, 'meta'), JSON.stringify(meta));
+      await env.CAMPAIGNS.put(kvKey(campaign, 'origin'), minted.origin);
+      if (guildId) await env.CAMPAIGNS.put(`guild:${guildId}`, campaign);
+      return json({
+        ok: true,
+        origin: minted.origin,
+        token: minted.token,
+        tunnelId: minted.tunnelId,
+        created: minted.created,
+      });
+    } catch (e) {
+      return json({ error: e instanceof Error ? e.message : String(e) }, 502);
+    }
   }
 
   if (url.pathname === '/control/session' && request.method === 'POST') {
@@ -287,16 +348,14 @@ export async function handleEdgeRequest(request: Request, env: EdgeEnv): Promise
   }
 
   if (campaign && (request.method === 'GET' || request.method === 'HEAD')) {
-    const pagesJson = await env.CAMPAIGNS.get(kvKey(campaign, 'pages'));
-    if (pagesJson) {
-      try {
-        const pages = JSON.parse(pagesJson) as Record<string, string>;
-        const html =
-          pages[url.pathname] ??
-          pages[url.pathname.endsWith('/') ? url.pathname.slice(0, -1) : `${url.pathname}/`];
-        if (html) return serveArchiveHtml(html, url, campaign);
-      } catch {
-        /* fall through */
+    const snap = await env.CAMPAIGNS.get(kvKey(campaign, 'snapshot'));
+    if (snap) {
+      const page = renderArchivePage(snap, url.pathname, url.searchParams);
+      if (page && page.status !== 404) {
+        return serveArchiveHtml(page.html, url, campaign);
+      }
+      if (page?.status === 404) {
+        return new Response(page.html || 'not found', { status: 404 });
       }
     }
   }
@@ -352,6 +411,9 @@ async function proxyLive(
 ): Promise<Response | null> {
   const origin = await env.CAMPAIGNS.get(kvKey(campaign, 'origin'));
   if (!origin) return null;
+  if (!livePathAllowed(request.method, url.pathname)) {
+    return json({ error: 'not found' }, 404);
+  }
   const timeoutMs = Number(env.LIVE_PROXY_TIMEOUT_MS ?? 4000);
   try {
     const dest = new URL(origin);
@@ -505,7 +567,7 @@ function archiveShell(snapshotJson: string | null): string {
 }
 
 export default {
-  fetch(request: Request, env: EdgeEnv): Promise<Response> {
-    return handleEdgeRequest(request, env);
+  fetch(request: Request, env: EdgeEnv, ctx: { waitUntil(p: Promise<unknown>): void }): Promise<Response> {
+    return handleEdgeRequest(request, env, ctx);
   },
 };

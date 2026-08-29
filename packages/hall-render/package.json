@@ -1,19 +1,17 @@
 {
-  "name": "@kodranni/edge",
+  "name": "@kodranni/hall-render",
   "version": "0.0.1",
   "private": true,
   "type": "module",
   "exports": {
-    ".": "./src/handler.ts"
+    ".": "./src/index.ts"
   },
   "scripts": {
-    "sync-public": "node ./sync-public.mjs",
-    "deploy": "node ./sync-public.mjs && wrangler deploy",
     "test": "vitest run"
   },
   "dependencies": {
     "@kodranni/domain": "*",
-    "@kodranni/hall-render": "*"
+    "@kodranni/store": "*"
   },
   "devDependencies": {
     "vitest": "^3.0.9"

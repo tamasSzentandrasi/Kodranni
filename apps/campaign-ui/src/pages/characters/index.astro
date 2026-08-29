@@ -1,77 +1,31 @@
 ---
 export const prerender = false;
 
+import { rosterInner, type HallView } from '@kodranni/hall-render';
 import CampaignLayout from '../../layouts/CampaignLayout.astro';
 import { loadCommunity } from '../../data/load';
-import { avatarUrl, monogram, resolveFactionHue, rosterCaption } from '../../lib/format';
 
-const PAGE = 8;
 const c = loadCommunity();
-const selected = Astro.url.searchParams.get('sel') ?? '';
-const factions = c.factions ?? [];
-
-type Row = {
-  key: string;
-  name: string;
-  href?: string;
-  kind: 'main' | 'npc' | 'outsider';
-  line: string;
-  placeholder: boolean;
-  status?: string;
-  dying?: boolean;
-  avatar?: string | null;
-  factionHue?: number;
+const view: HallView = {
+  generatedAt: c.generatedAt,
+  community: {
+    slug: c.slug,
+    name: c.name,
+    fortunes: c.fortunes,
+    myths: c.myths,
+    hierarchyAxes: c.hierarchyAxes,
+    ruler: c.ruler,
+    rulerCharacterSlug: c.rulerCharacterSlug,
+    placements: c.placements,
+    outsiders: c.outsiders ?? [],
+    factions: c.factions,
+  },
+  characters: c.characters,
 };
-
-const outsiderByName = new Map(
-  (c.outsiders ?? []).map((o) => [o.name.toLowerCase(), o] as const),
-);
-const sheetRows: Row[] = c.characters.map((ch) => {
-  const cap = rosterCaption(ch);
-  const npc = ch.kind === 'npc' || ch.kind === 'notable';
-  const porch = outsiderByName.get(ch.name.toLowerCase());
-  const kind: Row['kind'] = !npc ? 'main' : porch ? 'outsider' : 'npc';
-  return {
-    key: ch.slug,
-    name: ch.name,
-    href: `/characters/${ch.slug}/`,
-    kind,
-    line: porch ? (porch.faction ? `Outsider · ${porch.faction}` : 'Outsider') : cap.line,
-    placeholder: cap.placeholder,
-    status: ch.status === 'pending_review' ? 'pending review' : ch.status,
-    dying: ch.dying,
-    avatar: avatarUrl(ch.slug, ch.avatar),
-    factionHue: porch?.faction ? resolveFactionHue(porch.faction, factions) : undefined,
-  };
+const rosterHtml = rosterInner(view, {
+  page: Number(Astro.url.searchParams.get('p') || '1'),
+  selected: Astro.url.searchParams.get('sel') ?? undefined,
 });
-const sheetNames = new Set(c.characters.map((ch) => ch.name.toLowerCase()));
-const outsiderRows: Row[] = (c.outsiders ?? [])
-  .filter((o) => !sheetNames.has(o.name.toLowerCase()))
-  .map((o) => ({
-    key: `out-${o.name}`,
-    name: o.name,
-    href: o.characterSlug ? `/characters/${o.characterSlug}/` : undefined,
-    kind: 'outsider' as const,
-    line: o.faction ? `Outsider · ${o.faction}` : 'Outsider',
-    placeholder: false,
-    factionHue: o.faction ? resolveFactionHue(o.faction, factions) : undefined,
-  }));
-
-const roster = [...sheetRows, ...outsiderRows].sort((a, b) => {
-  const rank = { main: 0, npc: 1, outsider: 2 };
-  if (rank[a.kind] !== rank[b.kind]) return rank[a.kind] - rank[b.kind];
-  return a.name.localeCompare(b.name);
-});
-
-const pages = Math.max(1, Math.ceil(roster.length / PAGE));
-let page = Number(Astro.url.searchParams.get('p') || '1');
-if (selected) {
-  const idx = roster.findIndex((r) => r.key === selected);
-  if (idx >= 0) page = Math.floor(idx / PAGE) + 1;
-}
-if (!Number.isFinite(page) || page < 1) page = 1;
-if (page > pages) page = pages;
-const slice = roster.slice((page - 1) * PAGE, page * PAGE);
 ---
 
 <CampaignLayout
@@ -81,88 +35,5 @@ const slice = roster.slice((page - 1) * PAGE, page * PAGE);
   primary="characters"
   source={c.source}
 >
-  {
-    roster.length === 0 ? (
-      <p class="empty">No names on the roster yet.</p>
-    ) : (
-      <>
-        <ul class="char-list">
-          {slice.map((row) => {
-            const cls = [
-              'char-row',
-              row.kind === 'main' && 'char-row--main',
-              row.kind === 'outsider' && 'char-row--outsider',
-            ];
-            const inner = (
-              <>
-                {row.avatar ? (
-                  <img class="avatar" src={row.avatar} alt="" width="40" height="40" loading="lazy" />
-                ) : (
-                  <span class="avatar avatar--mono" aria-hidden="true">
-                    {monogram(row.name)}
-                  </span>
-                )}
-                <span class="char-row__body">
-                  <span class="char-row__name">{row.name}</span>
-                  <span
-                    class:list={[
-                      'char-row__meta',
-                      row.placeholder && 'char-row__meta--placeholder',
-                    ]}
-                  >
-                    {row.line}
-                  </span>
-                </span>
-                {row.status && (
-                  <span
-                    class:list={['char-card__status', row.dying && 'char-card__status--dying']}
-                    data-status={row.status}
-                  >
-                    {row.status}
-                    {row.dying ? ' · dying' : ''}
-                  </span>
-                )}
-              </>
-            );
-            return (
-              <li>
-                {row.href ? (
-                  <a
-                    class:list={cls}
-                    href={row.href}
-                    data-selected={selected === row.key ? 'true' : 'false'}
-                    style={row.factionHue != null ? `--faction-h: ${row.factionHue}` : undefined}
-                  >
-                    {inner}
-                  </a>
-                ) : (
-                  <div
-                    class:list={cls}
-                    data-selected={selected === row.key ? 'true' : 'false'}
-                    style={row.factionHue != null ? `--faction-h: ${row.factionHue}` : undefined}
-                  >
-                    {inner}
-                  </div>
-                )}
-              </li>
-            );
-          })}
-        </ul>
-        {
-          pages > 1 && (
-            <nav class="char-pager" aria-label="Roster pages">
-              {Array.from({ length: pages }, (_, i) => i + 1).map((n) => (
-                <a
-                  href={n === 1 ? '/characters/' : `/characters/?p=${n}`}
-                  aria-current={n === page ? 'page' : undefined}
-                >
-                  {n}
-                </a>
-              ))}
-            </nav>
-          )
-        }
-      </>
-    )
-  }
+  <Fragment set:html={rosterHtml} />
 </CampaignLayout>

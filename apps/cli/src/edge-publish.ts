@@ -128,6 +128,6 @@ export async function publishEdgeArchive(
   localUrl?: string,
 ): Promise<void> {
   await publishSnapshotToEdge(slug, cfg);
-  if (localUrl) await captureArchiveToEdge(slug, cfg, localUrl);
+  void localUrl;
   await clearEdgeOrigin(slug, cfg);
 }

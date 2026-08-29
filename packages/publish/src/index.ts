@@ -320,20 +320,46 @@ export async function putSnapshotToEdge(opts: {
 export function edgeOriginWouldLoop(edgeUrl: string, origin: string): boolean {
   try {
     const o = new URL(origin).hostname.replace(/\.$/, '').toLowerCase();
-    if (
-      o === 'kodranni.com' ||
-      o === 'www.kodranni.com' ||
-      o === 'demo.kodranni.com' ||
-      o === 'play.kodranni.com' ||
-      o.endsWith('.kodranni.com') ||
-      o.endsWith('.workers.dev')
-    ) {
-      return true;
-    }
+    if (o === 'kodranni.com' || o === 'www.kodranni.com') return true;
+    if (o === 'demo.kodranni.com' || o === 'play.kodranni.com') return true;
+    if (o.endsWith('.workers.dev')) return true;
+    if (/^origin-[a-z0-9-]+\.kodranni\.com$/.test(o)) return false;
+    if (o.endsWith('.kodranni.com')) return true;
     return o === new URL(edgeUrl).hostname.replace(/\.$/, '').toLowerCase();
   } catch {
     return true;
   }
+}
+
+export async function startEdgeSession(opts: {
+  edgeUrl: string;
+  campaignId: string;
+  deviceKey: string;
+  guildId?: string;
+}): Promise<{ origin: string; token: string; tunnelId: string }> {
+  await registerEdgeCampaign({
+    edgeUrl: opts.edgeUrl,
+    campaignId: opts.campaignId,
+    deviceKey: opts.deviceKey,
+  });
+  const body = JSON.stringify({ guildId: opts.guildId ?? null });
+  const sig = signSnapshotBody(opts.deviceKey, body);
+  const url = `${opts.edgeUrl.replace(/\/$/, '')}/control/session/start?campaign=${encodeURIComponent(opts.campaignId)}`;
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+      authorization: `Bearer ${opts.campaignId}:${sig}`,
+    },
+    body,
+  });
+  if (!res.ok) {
+    const text = await res.text().catch(() => '');
+    throw new Error(`edge session start ${res.status}: ${text.slice(0, 240)}`);
+  }
+  const data = (await res.json()) as { origin?: string; token?: string; tunnelId?: string };
+  if (!data.origin || !data.token) throw new Error('edge session start missing origin/token');
+  return { origin: data.origin, token: data.token, tunnelId: data.tunnelId ?? '' };
 }
 
 export async function announceEdgeLive(opts: {

@@ -5,8 +5,8 @@ import { type ChildProcess, spawn, spawnSync } from 'node:child_process';
 import { createWriteStream, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { startBotRuntime } from '@kodranni/bot-runtime';
-import { announceEdgeLive } from '@kodranni/publish';
-import { publishEdgeArchive } from './edge-publish.js';
+import { startEdgeSession } from '@kodranni/publish';
+import { publishEdgeArchive, publishSnapshotToEdge } from './edge-publish.js';
 import type { CampaignConfig } from '@kodranni/store';
 import {
   campaignRuntimeLogsDir,
@@ -21,9 +21,7 @@ import { waitForHttp } from './http.js';
 import {
   findCloudflared,
   localHttpUrlFromBind,
-  startCloudflaredNamedTunnel,
-  startCloudflaredQuickTunnel,
-  tunnelCredentialsFromConfig,
+  startCloudflaredTokenTunnel,
 } from './tunnel.js';
 
 export function parseBind(bind: string): { host: string; port: number } {
@@ -201,38 +199,36 @@ export async function runLiveKernel(opts: {
 
   if (tunnel) {
     const bin = await findCloudflared();
+    const edgeUrl =
+      cfg.edgeControlUrl ??
+      process.env.KODRANNI_EDGE_CONTROL_URL?.trim() ??
+      cfg.edgeUrl ??
+      process.env.KODRANNI_EDGE_URL?.trim();
     if (!bin) {
       console.error(
         'cloudflared not found on PATH.\n' +
           '  Local UI is running; install cloudflared and re-run with --tunnel.',
       );
+    } else if (!edgeUrl) {
+      console.error('  tunnel: skipped — set edge_control_url so the Worker can mint a token.');
     } else {
       const tunnelLog = join(logsDir, 'tunnel.log');
-      const creds = tunnelCredentialsFromConfig(cfg);
-      console.log(`  tunnel: starting (${bin}, mode=${creds.mode})…`);
+      console.log(`  tunnel: minting from edge (${edgeUrl})…`);
       try {
-        const t =
-          creds.mode === 'named'
-            ? startCloudflaredNamedTunnel({
-                cloudflaredBin: bin,
-                logPath: tunnelLog,
-                publicUrl: creds.publicUrl!,
-                token: creds.token,
-                tunnelName: creds.tunnelName,
-                configPath: creds.configPath,
-              })
-            : startCloudflaredQuickTunnel({
-                cloudflaredBin: bin,
-                localUrl: localHttpUrlFromBind(`${host}:${port}`),
-                logPath: tunnelLog,
-              });
+        await publishSnapshotToEdge(slug, cfg);
+        const minted = await startEdgeSession({
+          edgeUrl,
+          campaignId: slug,
+          deviceKey: ensureEdgeDeviceKey(),
+          guildId: process.env.DISCORD_GUILD_ID?.trim(),
+        });
+        const t = startCloudflaredTokenTunnel({
+          cloudflaredBin: bin,
+          token: minted.token,
+          logPath: tunnelLog,
+        });
         tunnelChild = t.child;
-        const publicUrl = await Promise.race([
-          t.url,
-          new Promise<string>((_, rej) =>
-            setTimeout(() => rej(new Error('Timed out waiting for tunnel URL (45s)')), 45_000),
-          ),
-        ]);
+        const publicUrl = (cfg.edgeUrl ?? edgeUrl).replace(/\/$/, '');
         writeLiveUrl(slug, publicUrl);
         writeSessionState(slug, {
           slug,
@@ -243,26 +239,9 @@ export async function runLiveKernel(opts: {
           pids: { live: ui.pid, tunnel: tunnelChild.pid },
         });
         console.log(`  public: ${publicUrl}`);
+        console.log(`  origin: ${minted.origin} (Worker only)`);
         console.log('  (tunnel is live-only — session end tears it down; archive is the edge)');
         console.log(`  log:    ${tunnelLog}`);
-        const edgeUrl =
-          cfg.edgeControlUrl ??
-          process.env.KODRANNI_EDGE_CONTROL_URL?.trim() ??
-          cfg.edgeUrl ??
-          process.env.KODRANNI_EDGE_URL?.trim();
-        if (edgeUrl && publicUrl.startsWith('https://')) {
-          try {
-            await announceEdgeLive({
-              edgeUrl,
-              campaignId: slug,
-              deviceKey: ensureEdgeDeviceKey(),
-              origin: publicUrl,
-            });
-            console.log(`  edge: origin → tunnel (${edgeUrl})`);
-          } catch (e) {
-            console.error(`  edge origin: ${e instanceof Error ? e.message : e}`);
-          }
-        }
       } catch (e) {
         killChild(tunnelChild);
         tunnelChild = undefined;

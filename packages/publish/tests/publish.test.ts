@@ -57,5 +57,11 @@ describe('publish archive', () => {
         'https://demo.kodranni.com',
       ),
     ).toBe(true);
+    expect(
+      edgeOriginWouldLoop(
+        'https://demo.kodranni.com',
+        'https://origin-vardmark.kodranni.com',
+      ),
+    ).toBe(false);
   });
 });

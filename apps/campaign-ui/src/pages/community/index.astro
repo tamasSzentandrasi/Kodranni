@@ -1,31 +1,32 @@
 ---
 export const prerender = false;
 
-import { HIERARCHY_TIERS } from '@kodranni/domain';
+import { communityInner, type HallView } from '@kodranni/hall-render';
 import CampaignLayout from '../../layouts/CampaignLayout.astro';
-import FortuneHall from '../../components/FortuneHall.astro';
-import HallSearch from '../../components/HallSearch.astro';
-import HierarchyBoard from '../../components/HierarchyBoard.astro';
-import OutsiderPorch from '../../components/OutsiderPorch.astro';
-import FactionList from '../../components/FactionList.astro';
 import HallRites from '../../components/HallRites.astro';
-import MythList from '../../components/MythList.astro';
-import InspectDrawer from '../../components/InspectDrawer.astro';
 import { collectFactions } from '../../lib/format';
-import { loadCommunity, whoWeSeeMap } from '../../data/load';
-import { buildInspectPeople, peopleJson } from '../../lib/hall-inspect';
+import { loadCommunity } from '../../data/load';
 
 const c = loadCommunity();
-const tips = whoWeSeeMap(c);
-const people = buildInspectPeople(c);
-const showSearch = true;
-const tiers = [...HIERARCHY_TIERS];
-const founded = Boolean(c.fortunesFoundedAt);
 const live = c.source === 'live';
 const factions = collectFactions(c.factions, c.outsiders ?? []);
-const pcSlugs = c.characters
-  .filter((ch) => (ch.kind ?? 'pc') !== 'npc')
-  .map((ch) => ch.slug);
+const view: HallView = {
+  generatedAt: c.generatedAt,
+  community: {
+    slug: c.slug,
+    name: c.name,
+    fortunes: c.fortunes,
+    myths: c.myths,
+    hierarchyAxes: c.hierarchyAxes,
+    ruler: c.ruler,
+    rulerCharacterSlug: c.rulerCharacterSlug,
+    placements: c.placements,
+    outsiders: c.outsiders ?? [],
+    factions: c.factions,
+  },
+  characters: c.characters,
+};
+const hallHtml = communityInner(view, { live });
 ---
 
 <CampaignLayout
@@ -35,40 +36,10 @@ const pcSlugs = c.characters
   primary="community"
   source={c.source}
 >
-  {
-    showSearch && (
-      <HallSearch axes={c.hierarchyAxes} tiers={tiers} factions={factions} />
-    )
-  }
-  <div
-    class="hall"
-    data-slug={c.slug}
-    data-source={c.source ?? 'fixture'}
-    data-founded={c.fortunesFoundedAt ?? ''}
-  >
-    <FortuneHall fortunes={c.fortunes} founded={founded || c.source !== 'live'} />
-    <HierarchyBoard
-      axes={c.hierarchyAxes}
-      ruler={c.ruler}
-      rulerCharacterSlug={c.rulerCharacterSlug}
-      placements={c.placements}
-      pendingMoves={c.pendingMoves ?? []}
-      tips={tips}
-      live={live}
-      pcSlugs={pcSlugs}
-    />
-    <div class="hall__porch">
-      <OutsiderPorch outsiders={c.outsiders ?? []} factions={factions} />
-      <FactionList factions={factions} live={live} />
-    </div>
-    <MythList myths={c.myths} />
-  </div>
+  <Fragment set:html={hallHtml} />
   <HallRites live={live} factions={factions} />
 
   <button type="button" id="kod-hall-banner" class="hall-banner" hidden>
     Record changed — refresh
   </button>
-
-  <InspectDrawer peopleJson={peopleJson(people)} />
-  <script is:inline src="/hall-client.js"></script>
 </CampaignLayout>

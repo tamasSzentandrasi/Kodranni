@@ -11,6 +11,8 @@ run_worker_first = true
 [vars]
 DEFAULT_CAMPAIGN = "vardmark"
 GUIDE_ORIGIN = "https://tamasszentandrasi.github.io/Kodranni"
+CF_ACCOUNT_ID = "2c8b5f57594572118945ab99b8b0fd57"
+CF_ZONE_ID = "300c5a80cf9b8d58bc108089621439e3"
 
 # demo = showcase (implied campaign). Apex = product + ?campaign= for tables.
 [[routes]]

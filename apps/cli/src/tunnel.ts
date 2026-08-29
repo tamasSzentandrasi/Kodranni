@@ -48,7 +48,8 @@ function spawnCloudflared(
   logPath: string,
 ): { child: ChildProcess; log: ReturnType<typeof createWriteStream> } {
   const log = createWriteStream(logPath, { flags: 'a' });
-  log.write(`\n--- ${new Date().toISOString()} cloudflared ${args.join(' ')} ---\n`);
+  const redacted = args.map((a, i) => (args[i - 1] === '--token' ? '[redacted]' : a)).join(' ');
+  log.write(`\n--- ${new Date().toISOString()} cloudflared ${redacted} ---\n`);
   const child = spawn(bin, args, {
     detached: true,
     stdio: ['ignore', 'pipe', 'pipe'],
@@ -61,6 +62,27 @@ function spawnCloudflared(
  * Free quick tunnel → random *.trycloudflare.com (Cloudflare word names).
  * --http-host-header keeps origin Host as localhost for Vite/Astro.
  */
+/** Remotely-managed tunnel: Worker minted the token; no public URL from logs. */
+export function startCloudflaredTokenTunnel(opts: {
+  cloudflaredBin: string;
+  token: string;
+  logPath: string;
+}): TunnelHandle {
+  const { child, log } = spawnCloudflared(
+    opts.cloudflaredBin,
+    ['tunnel', '--no-autoupdate', 'run', '--token', opts.token],
+    opts.logPath,
+  );
+  const url = Promise.resolve('');
+  child.stdout?.on('data', (buf: Buffer) => log.write(buf));
+  child.stderr?.on('data', (buf: Buffer) => log.write(buf));
+  child.on('exit', (code) => {
+    log.write(`\n[exit] code=${code}\n`);
+    log.end();
+  });
+  return { child, mode: 'named', url };
+}
+
 export function startCloudflaredQuickTunnel(opts: {
   cloudflaredBin: string;
   localUrl: string;

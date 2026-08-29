@@ -129,7 +129,10 @@ describe('edge handler', () => {
       e,
     );
     expect(html.status).toBe(200);
-    expect(await html.text()).toContain('The Vardmark');
+    const pageHtml = await html.text();
+    expect(pageHtml).toContain('The Vardmark');
+    expect(pageHtml).toContain('data-hall-search');
+    expect(pageHtml).toContain('Fortunes');
   });
 
   it('rejects snapshots that look unredacted', async () => {
@@ -200,7 +203,7 @@ describe('edge handler', () => {
       { ...e, LIVE_PROXY_TIMEOUT_MS: '50' },
     );
     expect(page.status).toBe(200);
-    expect(await page.text()).toContain('Y');
+    expect(await page.text()).toContain('Fortunes');
     expect(await e.CAMPAIGNS.get(kvKey(campaign, 'origin'))).toBe('');
   });
 
@@ -297,44 +300,63 @@ describe('edge handler', () => {
         e,
       );
       expect(page.status).toBe(200);
-      expect(await page.text()).toContain('Y');
+      expect(await page.text()).toContain('Fortunes');
       expect(await e.CAMPAIGNS.get(kvKey(campaign, 'origin'))).toBe('');
     } finally {
       globalThis.fetch = prev;
     }
   });
 
-  it('serves captured hall HTML instead of the dummy shell', async () => {
+  it('serves hall-render HTML from the snapshot, not a dummy shell', async () => {
     const e = env();
     const campaign = 'vardmark';
-    const deviceKey = 'a'.repeat(32);
-    await handleEdgeRequest(
-      new Request(`https://demo.kodranni.com/control/register?campaign=${campaign}`, {
-        method: 'POST',
-        body: JSON.stringify({ deviceKey }),
-      }),
-      e,
-    );
-    const pages = JSON.stringify({
-      '/community/':
-        '<!doctype html><html><body><h1>The Vardmark</h1><p class="src">archive</p><aside data-hall-search>Find</aside></body></html>',
+    const snap = JSON.stringify({
+      generatedAt: '2026-08-27T00:00:00.000Z',
+      schemaVersion: 1,
+      community: {
+        slug: 'vardmark',
+        name: 'The Vardmark',
+        fortunes: { vitality: 2, cohesion: 2, surplus: 2, standing: 2, tradition: 2 },
+        myths: [],
+        hierarchyAxes: ['Arms'],
+        ruler: null,
+        placements: [],
+        outsiders: [],
+      },
+      characters: [],
     });
-    const put = await handleEdgeRequest(
-      new Request(`https://demo.kodranni.com/api/pages?campaign=${campaign}`, {
-        method: 'PUT',
-        headers: { authorization: `Bearer ${campaign}:${sign(deviceKey, pages)}` },
-        body: pages,
-      }),
-      e,
-    );
-    expect(put.status).toBe(200);
+    await e.CAMPAIGNS.put(kvKey(campaign, 'snapshot'), snap);
     const html = await handleEdgeRequest(
       new Request('https://demo.kodranni.com/community/'),
       e,
     );
     const body = await html.text();
     expect(body).toContain('data-hall-search');
+    expect(body).toContain('Fortunes');
+    expect(body).toContain('The Vardmark');
     expect(body).not.toContain('No archive yet');
+  });
+
+  it('does not proxy setup or operator paths while live', async () => {
+    const e = env();
+    const campaign = 'y';
+    await e.CAMPAIGNS.put(kvKey(campaign, 'origin'), 'https://origin.example');
+    const prev = globalThis.fetch;
+    let hit = false;
+    globalThis.fetch = async () => {
+      hit = true;
+      return new Response('secret', { status: 200 });
+    };
+    try {
+      const res = await handleEdgeRequest(
+        new Request('https://demo.kodranni.com/community/setup/'),
+        e,
+      );
+      expect(res.status).toBe(404);
+      expect(hit).toBe(false);
+    } finally {
+      globalThis.fetch = prev;
+    }
   });
 
   it('maps GitHub Pages /Kodranni/Guidebook assets onto kodranni.com/Guidebook', async () => {
