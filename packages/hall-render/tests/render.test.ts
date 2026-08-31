@@ -66,7 +66,11 @@ const snap: PublicSnapshot = {
       dying: false,
       hierarchy: [{ axis: 'Coin', tier: 'Trusted' }],
       armour: { kind: 'none', donned: false },
-      inventory: { foodDays: 2, waterDays: 2, items: [{ name: 'Adze' }] },
+      inventory: {
+        foodDays: 2,
+        waterDays: 2,
+        items: [{ name: 'Adze', note: 'Edge needs re-peening.' }],
+      },
       flags: { decadence: false, overCapacity: false },
     },
   ],
@@ -122,6 +126,16 @@ describe('renderArchivePage', () => {
     expect(sheet?.html).toContain('found-groups');
     expect(sheet?.html).toContain('sheet-identity__text');
     expect(sheet?.html).not.toContain('data-wanting');
+    const inv = renderArchivePage(
+      JSON.stringify(snap),
+      '/characters/torvald/inventory/',
+      new URLSearchParams(),
+    );
+    expect(inv?.html).toContain('class="item__name"');
+    expect(inv?.html).toContain('Adze');
+    expect(inv?.html).toContain('data-tip="Edge needs re-peening."');
+    expect(inv?.html).not.toContain('item__note');
+    expect(inv?.html).not.toContain('Edge needs re-peening.</span>');
   });
 
   it('404s unknown characters', () => {

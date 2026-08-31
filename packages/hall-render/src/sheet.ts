@@ -271,10 +271,12 @@ export function sheetInventoryInner(ch: CharacterRecord): string {
     kind === 'none' ? 'None worn' : donned ? 'Donned' : 'Carried';
   const itemList = items.length
     ? items
-        .map(
-          (i) =>
-            `<li class="kod-plate item"><span class="item__name">${esc(i.name)}</span>${i.note ? `<span class="item__note">${esc(i.note)}</span>` : ''}</li>`,
-        )
+        .map((i) => {
+          const note = i.note
+            ? `<button type="button" class="info" data-tip="${escAttr(i.note)}" aria-label="${escAttr(`${i.name} note`)}">i</button>`
+            : '';
+          return `<li class="kod-plate item"><span class="item__name">${esc(i.name)}${note}</span></li>`;
+        })
         .join('')
     : '<li class="empty">None declared.</li>';
   return `${sheetTabs(ch.slug, 'inventory')}
