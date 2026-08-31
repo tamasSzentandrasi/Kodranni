@@ -1,181 +1,153 @@
 # Documentation gaps (2026-08-31)
 
-Living inventory of Guidebook teaching, examples, interactivity, and open design questions.
+Replaces the 2026-08-18 checklist. Architecture: [`starlight-guidebook.md`](./starlight-guidebook.md). Product: [`visual-lock.md`](./visual-lock.md) V19–V20, V26–V27.
 
-**This file replaces** the 2026-08-18 checklist. Do not treat those ✅/🚫 marks as current. Architecture: [`starlight-guidebook.md`](./starlight-guidebook.md). Visual + product: [`visual-lock.md`](./visual-lock.md).
+Cold-reader failure: no playtest → cannot assemble Hierarchies, social Harm, Fortunes 0–3, Myths, or a first roll. Work: `kod-example` plates, visible widget panels, hierarchy/fortune/myth HTML.
 
-A reader without a playtest could not navigate or understand the system. That is a teaching and interactivity failure. Prime target: **example quality**. Second: **widgets that engage**. Hierarchy, Fortune, and Myth **pictures** are part of teaching, not chrome extras.
-
-Incoming: a thorough external critique. Wholesale prose rewrite waits on that. Pictures, widget highlight, and known example holes do not.
+Prose rewrite waits on the incoming critique. V8/V19/V20/V26 and the holes in §C do not wait.
 
 ---
 
-## A. Locked game design (C1–C12)
+## A. Rules locks (C1–C12)
 
-Unchanged. These are rules, not visual work.
+Unchanged.
 
-**C1.** Base dice tier — ST declares every time; safe default **d8**. Advantage / Disadvantage (die tier), not a Skill→die map.
+**C1.** ST declares die tier; default **d8**. Advantage/Disadvantage = tier, not Skill→die.
 
-**C2.** Advantage stacking — ST call for that moment. Automation stores the declared tier.
+**C2.** Advantage stacking = ST call. Store the declared tier.
 
-**C3.** Tide arithmetic — Descriptive + worked example. Footing in C11.
+**C3.** Tide arithmetic: descriptive + worked example. Footing C11.
 
-**C4.** Opposed 1vMany / ManyvMany — Each action is individual; Tide holds collective pressure.
+**C4.** 1vMany / ManyvMany: per-action rolls; Tide = collective.
 
-**C5.** Practice edge cases — Margin 0 → no forced award. Primitive → no Practice. Degrade prompted only; five lowest-progress Skills; Omen selects how many (bands in C11). Marks convert on win and loss when Exertion was spent. Opposed loss also adds +2; the two stack. See C12.
+**C5.** Margin 0 → no forced Practice. Primitive → no Practice. Degrade prompted; five lowest-progress Skills; Omen band (C11) picks how many. Exertion spent → Marks convert on win and loss. Opposed loss also +2; stack. C12.
 
-**C6.** Harm & protection — ST chooses track; no mixed physical+social events; floor rounding.
+**C6.** ST chooses Harm track. No mixed physical+social. Floor rounding.
 
-**C7.** Foundation Myths — Toggleable, compoundable; ST-only craft; trigger by **explicit tag** on the roll.
+**C7.** Myths: toggleable, compoundable; ST craft; fire only if the roll tags the Myth.
 
-**C8.** Weighing automation — Created at Concept with budgets; Omen rolls automated; Words spent on the **speaker’s** sheet; ST marks the **target**.
+**C8.** Weighing: budgets at Concept; Omen rolls automated; Words on **speaker**; ST marks **target**.
 
-**C9.** Rest & food — Separate commands for Exertion reclaim and Harm heal. Narrative first.
+**C9.** Exertion reclaim ≠ Harm heal. Narrative first.
 
-**C10.** Maximum Hierarchies — Hard cap **five**. Diagram on the community tracker.
+**C10.** ≤5 hierarchy axes. Diagram on the tracker.
 
-**C11 (2026-08-18 morning)**
+**C11**
 
-| Lock | Decision |
-|------|----------|
-| Practice visibility | Exact progress on the **live sheet only**. Adapters do **not** print Practice amounts. |
-| Degrade bands (d20 1–20) | Standard: 1–5 → 0, 6–10 → 1, 11–15 → 2, 16–20 → 3. Short: 1–10 → 0, 11–20 → 1. |
-| Tide sizes | **Small skirmish**, **Skirmish**, **Battle** only. |
-| Tide imbalance | Same ladder as die tiers. Disadvantaged side keeps its **bad** band; **good** band from N sizes smaller (slight N=1, severe N=2). Floor: good band cannot shrink below one face. |
-| HP pillars | Four: Foundations, Skills, Traits, Exertion. Echoes is continuity. |
-| Echoes placement | First chapter of Resolution & Continuity. |
-| Glossary | Last group, **Reference**. |
-| Dice split | Hub · Marks & Tiers · Omens · Tide. Situational resolution under Tide. |
+| Lock | Value |
+|------|--------|
+| Practice in adapters | Not printed. Exact progress on live sheet only. |
+| Degrade d20 | 1–5→0, 6–10→1, 11–15→2, 16–20→3. Short: 1–10→0, 11–20→1. |
+| Tide sizes | Small skirmish, Skirmish, Battle. |
+| Tide imbalance | Disadvantaged keeps bad band; good band from N sizes smaller (slight 1, severe 2). Good band ≥ 1 face. |
+| HP | Foundations, Skills, Traits, Exertion. Echoes = continuity chapter. |
+| Echoes | First in Resolution & Continuity. |
+| Glossary | Last, Reference. |
+| Dice pages | Hub · Marks & Tiers · Omens · Tide. Situational under Tide. |
 | lastUpdated | Off. |
-| Splash | Rejected. Portal is a landing, not a splash. |
-| Humour | Keep the two authorial lines. Do not add more by default. |
-| Automation chapter | Frozen except game-rule contradictions, repo paths, code CSS — **until** the chat/ST-desk split is product-real, then the table-facing contract must match. |
-| Foundation Myth example | The Price We Paid (bounty hunter / slavers). Free extra Exertion vs slavers; Streetwise Practice as if ruling Foundation were 3. |
-| Healing / Dying | Healing is not a superpower. Without the right Skills/kit, Disadvantage. Best care can still fail. |
-| Portal actions | Guidebook and Repository are the same tier. |
+| Splash | Rejected. |
+| Humour | Two authorial lines only. |
+| Automation.md | Frozen except rule contradictions / paths / code CSS until V13/V22/V24 exist, then match. |
+| Myth example | The Price We Paid: free extra Exertion vs slavers; Streetwise Practice as Foundation 3. |
+| Healing | Not a superpower. Missing kit → Disadvantage. Can fail. |
+| Portal | Guidebook = Repository tier. |
 | Bellefair | Display and body. |
-| Practice teaching | Hunnic: Temur (Bowyer) and Qara (Mentoring). |
+| Practice teaching | Temur Bowyer, Qara Mentoring. |
 
-**C12 (2026-08-18 evening)**
+**C12**
 
-| Lock | Decision |
-|------|----------|
-| Omen wording | A Consequence is a **genuine side-effect**. It cannot rewrite Marks. No theatrical “what the night brought.” |
-| Practice award (opposed) | Exertion spent → **+ Marks difference** on win **and** on loss. Loss also **+2**, Exertion or not. They stack. Margin 0 = not lost, no automatic award. |
-| Practice award (unopposed) | More failures than Marks → **+2** (Exertion free). Exertion spent → **+ floor(Marks ÷ 2)** in addition. |
-| Interactive chrome | Iron + glass, not blood hover. Blood stays on identity. Living lock: [`visual-lock.md`](./visual-lock.md). |
-| Scrollbar | Pewter. Never pink / blood. |
-| Prev / next | Folio plates, silver hover. |
-| Heading IDs | Auto slug only. No `{#slug}` in source. |
-| Medallions | Artisan / Trickster / Sage **accepted**. |
-| Identity chrome | Tables, example boxes, `hr` runes, ST lanes stay **blood**. |
-| Social thumbnail | Site-wide `og.jpg`. |
-| Ornament | Soot/smoke plates, L-straps. **Oculus / title-in-cast is not current work** (25 Aug revert; rose-cast later lifted). Roses frozen. |
-
----
-
-## B. Chapter teaching (honest, 2026-08-31)
-
-| Chapter | What still works | What fails a reader without a playtest |
-|---------|------------------|----------------------------------------|
-| Introduction | Voice; organisation table matches sidebar | Destinations, not a first procedure. Echoes / Myths / Legacies named before they are taught. |
-| Dice Mechanics | Door page | No sample roll. “When to roll” is a paragraph. |
-| Marks & Tiers | Ladder + tier dial + Tomas roof example | Strongest dice teaching. |
-| Omens | Tomas forge widget; Consequence = side-effect | No boxed `kod-example`. |
-| Tide | Zhao/Wei, footing faces, sizes | Long; Bellefair taxes it. Taught if the reader uses the widgets. |
-| Human Potential | Four pillars | Reading-order list only. |
-| Foundations | Domain lanes + one Primitive shove | No Foundation 3 vs 1 Practice-threshold case here (math is in Skills). |
-| Skills | Practice award widget + Hunnic track + degrade | Catalogue-heavy; improvement taught. |
-| Traits | One Speaks Latin case | Thin. |
-| Exertion | Ford-cart spend | Empty-pool is a note. |
-| Echoes | Capacity + invoke examples; Myth off/on widget | Fortunes: pillars with **no 0–3 on the object**. Myths: ingredient bullets, not a target table. |
-| Harm | Physical spear; Dying stepper | **No social/Reputation Harm numbers.** Hierarchy’s only mechanic is unworked. |
-| Hierarchies | One patronage → Echo scene | Diagram is four pastel text columns, identical blurbs, no occupancy, no Outsider, no dual-axis. Fortune **Standing** vs Hierarchy **Reputation** not warned. |
-| Inventory | One ambush/bow case | Fine as a short chapter. |
-| Campaign Setup | Nine-step widget; author accepted the method | Step 6 “leave axes empty” never joins Hierarchies as a worked blank→first rung. |
-| Character Creation | Weighing stepper — strongest chapter | After Weighing, Hierarchy is one line. |
-| Automation | Table-facing contract | Frozen; will need a revision when ST desk / whisper policy / token evaluation land. |
-| Glossary | Grouped Reference | Working. Not exhaustive. |
-
-**How-to-play chapter:** previously 🚫. **Re-evaluate** — do not inherit the rejection. If teaching is repaired *inside* existing chapters (examples, visible widgets, pictures), a new chapter may still be unnecessary. That is a decision after the critique, not a lock.
-
-**Splash:** still rejected.
-
-**Storyteller standalone chapter:** still not required if Intro + Dice “when to roll” + Campaign Setup carry it — but they currently do not, for a cold reader.
+| Lock | Value |
+|------|--------|
+| Omen | Side-effect. Cannot rewrite Marks. |
+| Practice opposed | Exertion → +margin win and loss. Loss +2 always. Stack. Margin 0 = no auto award. |
+| Practice unopposed | Failures > Marks → +2. Exertion → +floor(Marks/2) extra. |
+| Interactive CSS | Iron+glass. Blood = identity. [`visual-lock.md`](./visual-lock.md) V1. |
+| Scrollbar | Pewter. |
+| Prev/next | `.kod-btn--folio`. |
+| Heading IDs | Auto slug. No `{#slug}`. |
+| Medallions | Artisan / Trickster / Sage accepted. |
+| Identity CSS | Tables, `.kod-example`, `hr`, ST lanes = blood. |
+| og | `og.jpg`. |
+| Title roses | Frozen JPEGs. No oculus work. |
 
 ---
 
-## C. Example inventory
+## B. Per chapter (2026-08-31)
 
-English `aside.kod-example` today: Foundations 1, Skills 1, Traits 1, Exertion 1, Tide 1, Echoes 2, Harm 2, Hierarchies 1, Inventory 1, Marks & Tiers 1. **Zero** on Introduction, Dice hub, Omens, Human Potential, Campaign Setup, Character Creation, Automation, Glossary.
+| File | Present | Missing |
+|------|---------|---------|
+| `introduction.md` | Org table = sidebar | No procedure. Echoes/Myths/Legacies named before those chapters. |
+| `dice-mechanics.md` | Hub | No sample roll. |
+| `marks-and-tiers.md` | Ladder, tier dial, Tomas `kod-example` | — |
+| `omens.md` | Forge widget | No `kod-example`. |
+| `tide.md` | Zhao/Wei, footing, sizes | Length; widgets hold the lesson. |
+| `human-potential.md` | Four pillars | List only. |
+| `foundations.md` | Domain lanes, Primitive example | No F3 vs F1 threshold example (that math is in `skills.md`). |
+| `skills.md` | Award widget, Hunnic track, degrade | Catalogue. |
+| `traits.md` | Speaks Latin example | One case. |
+| `exertion.md` | Ford-cart example | Empty-pool note only. |
+| `echoes.md` | Capacity + invoke examples, Myth off/on | Fortune pillars: no 0–3 fill. Myths: bullets, not effect-target table. |
+| `harm.md` | Physical example, Dying stepper | No Reputation protection ratio as numbers (`÷1/÷2/÷3`). |
+| `hierarchies.md` | Patronage example | `.kod-hier-diagram`: 4 pastel columns, copy-pasted rungs, no names, no outsider, no dual-axis. No Standing vs Reputation warning. |
+| `inventory.md` | Ambush/bow example | — |
+| `campaign-setup.md` | 9-step widget | Step 6 (empty axes) not joined to a first claimed rung. |
+| `character-creation.md` | Weighing stepper | Hierarchy = one line after Weighing. |
+| `automation.md` | Contract | Update when V13/V22/V24 ship. |
+| `glossary.md` | Grouped | Not exhaustive. |
 
-Widgets (interactive) exist on Marks, Omens, Tide, Skills, Echoes (Myth toggle), Harm (Dying), Campaign Setup, Character Creation (Weighing). Several start with later panels `hidden`. A skimmer who never presses a tab never sees the taught state.
-
-**Holes that already justify work (do not wait on the critique to list them):**
-
-| Hole | Why it kills navigation |
-|------|-------------------------|
-| Dice hub: no sample roll | First mechanical door has no worked action |
-| Hierarchies: no occupancy, no multi-axis, no induction | Schema without people |
-| Harm: no social/Reputation ratio as numbers | The only Hierarchy mechanic is never computed |
-| Fortunes: scale not on the pillar | Reader cannot see Crisis vs Abundance |
-| Myths: no effect-target table | Ingredients are a list; networking (Echo → Pivotal → Fortune + Myth slot → tag on roll) is prose |
-| Widgets hidden by default | Interactivity failure |
-
-When the critique lands: prefer more worked `kod-example` plates and widgets whose **taught state is visible**, not more theory. HU twin.
-
----
-
-## D. Interactivity
-
-Required ([`visual-lock.md`](./visual-lock.md)):
-
-- Widgets engage; do not make the only full case a hidden tab.
-- After load: **subtle glow/wave** on interactive options so the reader sees they can act. `prefers-reduced-motion`: no wave; options still visually distinct.
-- Myths in the book: table of effects with clear targets and system networking — not a bullet list plus one toggle as the whole teaching.
-- Hierarchy and Fortune **pictures** redesigned with the hall (shared tokens). Occupancy in the book. Scale on Fortune objects.
-
-Do not restart oculus, title-in-cast, sidebar roundels, or pagination-as-glass-tile as a teaching fix.
+How-to-play page: 2026-08-18 🚫 is **not** inherited. Decide after critique + §C. Splash remains rejected.
 
 ---
 
-## E. Integrity (still required on every Guidebook edit)
+## C. Counts and holes
 
-- Anchor IDs match Starlight’s slugger and land on **visible** headings (not hidden widget panels).
-- **Never** write `{#slug}` in Markdown.
-- No orphan pages.
-- No `` `docs/plans/…` `` on player-facing pages.
-- Intro organisation table must match sidebar order.
-- “automation” in player text, not “bot,” unless naming a slash command.
-- Theatrical rules copy: strip. Name the mechanic.
-- Bold: term or number, not the clause.
+`aside.kod-example` (en): Marks 1, Foundations 1, Skills 1, Traits 1, Exertion 1, Tide 1, Echoes 2, Harm 2, Hierarchies 1, Inventory 1. Zero: Introduction, Dice hub, Omens, Human Potential, Campaign Setup, Character Creation, Automation, Glossary.
 
-IA (unchanged): Introduction → Dice (hub → Marks → Omens → Tide) → Human Potential → Resolution & Continuity (**Echoes first**) → Campaign & Character Creation → Automation → Glossary.
+Widgets: Marks, Omens, Tide, Skills, Echoes Myth toggle, Harm Dying, Campaign Setup, Weighing. Panels after the first often `hidden`.
 
----
+Do not wait on the critique for:
 
-## F. Open / re-evaluate
+| Gap | File |
+|-----|------|
+| Sample roll | `dice-mechanics.md` |
+| Occupancy + dual-axis + induction | `hierarchies.md` + `diagrams.css` |
+| Social Harm ratio numbers | `harm.md` ↔ `hierarchies.md` |
+| Fortune 0–3 on the pillar | `echoes.md` + `diagrams.css` |
+| Myth effect-target table + Echo→Pivotal→Fortune+slot | `echoes.md` |
+| First widget panel = the lesson (`hidden` off) | `src/scripts/guidebook/enhance.ts` + Markdown |
 
-| Item | Lean |
-|------|------|
-| How-to-play chapter | **Re-evaluate** after critique + example pass. Not inherited 🚫. |
-| Storyteller standalone page | Only if Intro + Dice + Setup still fail a cold ST. |
-| Aging / trauma Foundation shifts | Mentioned; no procedure. ❓ |
-| Language / literacy | Trait-only. ❓ |
-| Trait catalogue | Custom-first. Do not bloat. |
-| Echo wording catalogue | Custom-first. |
-| Glossary Tide second-tier | Do not bloat unless the critique shows a real lookup miss. |
-| Automation chapter rewrite | When ST desk, whisper policy, and token evaluation are real. |
-| Print CSS | Later. |
-| Demo campaign | Vardmark **2/10**. Replacement is a **story seed** (Campaign Setup standard), not a mechanical fixture. See visual-lock. |
-| Character / community sheet pages in the book | Product surfaces, not rules pages. |
-
-Authorial humour lines stay. Medallions stay. Tables/identity chrome stay blood. Guidebook scrollbar silver.
+HU twin on every Markdown/widget edit.
 
 ---
 
-## G. Capability ↔ doc coverage
+## D. Edit rules
 
-Rules homes are unchanged (Marks, Omens, Tide, Skills, Exertion, Echoes, Harm, Hierarchies, Inventory, Character Creation, Campaign Setup, Automation). Coverage **exists**; teaching **quality** is the gap (examples, pictures, interactivity), not missing chapters — except the holes in §C.
+- Anchors = Starlight slugger; land on visible headings.
+- No `{#slug}` in source.
+- No `docs/plans/` paths in player Markdown.
+- Intro org table = `astro.config.mjs` sidebar.
+- Player prose: “automation”, not “bot”, except slash command names.
+- Bold: term or number.
 
-Product (hall, sheets, cards, ST desk) is specified in [`visual-lock.md`](./visual-lock.md), not here.
+IA: Introduction → Dice (hub → Marks → Omens → Tide) → Human Potential → Resolution (Echoes first) → Campaign & Creation → Automation → Glossary.
+
+---
+
+## E. Open
+
+| Item | Status |
+|------|--------|
+| How-to-play page | Re-evaluate after critique + §C |
+| ST-only Guidebook page | Only if Intro + Dice + Setup still fail |
+| Aging/trauma Foundation | Mentioned; no procedure |
+| Literacy | Trait-only |
+| Trait / Echo catalogues | Custom-first |
+| Glossary Tide extras | Only if critique shows a lookup miss |
+| `automation.md` rewrite | After V13/V22/V24 |
+| Print CSS | Later |
+| Demo sqlite | V27: S1 seed + plots; not Vardmark |
+| Sheet/tracker pages in the book | No; product surfaces |
+
+---
+
+Rules live in the chapter files above. Product UI: [`visual-lock.md`](./visual-lock.md).

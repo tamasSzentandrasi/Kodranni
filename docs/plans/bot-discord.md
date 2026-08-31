@@ -41,7 +41,7 @@ Fluxer files load the same way. The Fluxer adapter is not connected yet — cred
 
 ## Table flow (lightweight)
 
-Product direction for cards, whispers, and what leaves Discord: [`visual-lock.md`](./visual-lock.md) (2026-08-31). This section is the **current** bot-runtime behaviour, not the destination.
+Product: [`visual-lock.md`](./visual-lock.md) V21–V24. Below is **shipped** `bot-runtime` behaviour.
 
 1. **Startup:** bot posts **live sheet URL** card in play channel (if configured).
 2. **Player:** `/create name:…` → draft + personal sheet link (identity for Confirm @mention).  
@@ -59,7 +59,7 @@ Emergency only: `/map`. Prefer create → Confirm → Approve.
 
 Live sheet links use `runtime/live.url` or campaign `live_base_url`.
 
-**Destination (not shipped):** skill select is **two-tier** (Archetype, then skills of that archetype). Confirm/result visibility and selection UX are redesigned for Discord **and** Fluxer (one model). Ephemerals are a minority (Weighing privacy, personal edit URL if the token command still exists, command-author errors, not-live). ST campaign mutation moves to the ST desk; **Harm apply stays on the card and also exists on the desk.** `/live`, edit-token links, and `/map` are **evaluated** against [`infra-devsecops.md`](./infra-devsecops.md) before they are kept.
+Not shipped (V21–V24): Archetype `<select>` then skill `<select>` filtered by archetype (`packages/chat-ui`). Ephemeral only for Weighing results, edit URL if V24 keeps it, command-author errors, not-live. Harm button remains on the result card (also on ST desk, Pass 6). `/live`, `?edit=`, `/map`: evaluate vs I1–I10 before removal.
 
 ## Storyteller recognition
 

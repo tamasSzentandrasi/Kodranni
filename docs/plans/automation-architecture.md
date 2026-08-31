@@ -6,7 +6,7 @@ Kodranni assumes **automation** so hybrid play stays immersive: one living recor
 
 **Status (2026-08):** **This repository is the product entry** (Guidebook + bot + install/setup). A **campaign** is a *spawned public presentation instance*. **SoT + private data on ST machine.** Live + archive campaign UI = **Astro + Guidebook design system** (Starlight remains Guidebook-only). **Discord and Fluxer both from P0.** Approvals = **buttons**. **Tests first-class.** No throwaway midstep UIs.
 
-Visual + product lock (2026-08-31): [`visual-lock.md`](./visual-lock.md). Archive is a read-only twin of the player hall/sheets. Storyteller desk is a **clone** of that site, built last, authed with `kod_setup` — not a new login, not `kod_edit` for community writes. Chat is table dice and talk; ST campaign mutation belongs on the desk. **Harm apply stays on the result card and also exists on the desk.** Discord/Fluxer cards, whisper policy, and token-command evaluation vs [`infra-devsecops.md`](./infra-devsecops.md) are in that lock.
+Product: [`visual-lock.md`](./visual-lock.md) V11–V24. Archive = read-only twin. ST desk = clone, last, `kod_setup`. Harm apply: result card and desk. Cards/whispers/token eval: V21–V24.
 
 **Hosting / DevSecOps lock (2026-08-25):** [`infra-devsecops.md`](./infra-devsecops.md). One public hostname; archive = KV `public.json` + product archive app on Cloudflare Pages; no campaign git repo in v1; park-process is not the archive. This document’s L2, L5, L6, O12, D3, D4, campaign-repo wizard, and two-URL split are **superseded** there. Local SQLite as SoT, session-scoped automation, and privacy split are not.
 

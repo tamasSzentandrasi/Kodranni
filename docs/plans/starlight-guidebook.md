@@ -1,10 +1,8 @@
 # Plan: Astro + Starlight Guidebook
 
-Living architecture for the Kodranni Guidebook. Rules locks and residual gaps live in [documentation-gaps.md](./documentation-gaps.md) (rewritten 2026-08-31; do not use the 2026-08-18 checkmarks).
+Guidebook architecture (Astro + Starlight). Rules + teaching holes: [documentation-gaps.md](./documentation-gaps.md) (2026-08-31). Product UI: [`visual-lock.md`](./visual-lock.md) (2026-08-31).
 
-**Status (2026-08-18, evening):** Harden-and-raise packages 0–8 are **shipped**. This file no longer describes upcoming work as if it were unstarted. The book is a coherent grim Guidebook. It is **not** at the pinnacle-peak look or the process standard we set. Verdict is in §Verdict.
-
-Chrome after 2026-08-22 (roses, glass cartouches, Marks roundels) and the living visual + product lock: [`visual-lock.md`](./visual-lock.md) (2026-08-31). Teaching, examples, hierarchy/fortune pictures, and widget interactivity are **in scope**. Oculus / title-in-cast is **not** current work.
+**Status (2026-08-18, evening):** Harden-and-raise packages 0–8 shipped. Verdict: §Verdict (pinnacle not reached). 2026-08-31: teaching/examples/pictures in scope; oculus/title-in-cast not a work item.
 
 ---
 

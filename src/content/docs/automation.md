@@ -16,7 +16,7 @@ Kodranni is a **hybrid** tabletop system: storytelling first, software as ledger
 - **State at the moment of action** — who is rolling, Exertion left, Echoes, Myths — without retyping sheets into chat.
 - **Online continuity** between sessions on shared sheets and a community tracker.
 
-This page is the **table-facing** contract. Engineering direction lives with the project source and will change as the product UI is defined. Storyteller campaign tools are moving onto a web desk that clones the shared tracker and sheets; Discord and Fluxer remain the table’s conversation and dice. Harm apply can exist in both places.
+This page is the **table-facing** contract. Engineering direction lives with the project source and will change as the product UI is defined. Storyteller record edits move to a web desk (clone of the tracker and sheets). Discord and Fluxer keep rolls. Harm apply exists on the result card and on that desk.
 
 ----------
 
