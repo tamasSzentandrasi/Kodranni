@@ -28,7 +28,7 @@ export function communityInner(
   const people = inspectPeopleJson({ ...view, community: c });
   const source = live ? 'live' : 'snapshot';
   const founded = live && c.fortunesFoundedAt ? c.fortunesFoundedAt : '';
-  return `${findPanel(c.hierarchyAxes ?? [])}
+  return `${findToggle()}${findPanel(c)}
 <div class="hall" data-slug="${escAttr(c.slug)}" data-source="${escAttr(source)}" data-founded="${escAttr(founded)}" data-view-group="${escAttr(FACTION_GROUP_ID)}">
   ${fortunePlates(c.fortunes)}
   ${aspectsRail(c)}
@@ -94,7 +94,15 @@ function markVars(labels: Label[]): { n: number; style: string; ids: string } {
   };
 }
 
-function findPanel(axes: string[]): string {
+function findToggle(): string {
+  return `<button type="button" class="hall-find-toggle" data-find-toggle aria-controls="kod-hall-find" aria-expanded="true">
+  <span class="hall-find-toggle__kicker">Hall</span>
+  <span class="hall-find-toggle__title">Find</span>
+</button>`;
+}
+
+function findPanel(c: HallView['community']): string {
+  const axes = c.hierarchyAxes ?? [];
   const axisChips = axes
     .map(
       (axis) =>
@@ -105,17 +113,36 @@ function findPanel(axes: string[]): string {
     (tier) =>
       `<button type="button" class="hall-search__chip" data-filter="tier" data-value="${escAttr(tier)}" aria-pressed="false">${esc(tier)}</button>`,
   ).join('');
-  return `<aside class="kod-plate hall-search" data-hall-search aria-label="Find someone in the hall">
+  const groups = (c.labelGroups ?? []).filter((g) => (c.labels ?? []).some((l) => l.groupId === g.id));
+  const labelBlocks = groups
+    .map((g) => {
+      const labs = (c.labels ?? []).filter((l) => l.groupId === g.id);
+      const chips = labs
+        .map((l) => {
+          const hue = l.hue != null ? ` style="--label-h:${l.hue}"` : '';
+          const cls =
+            l.hue != null ? 'hall-search__chip hall-search__chip--hue' : 'hall-search__chip';
+          return `<button type="button" class="${cls}" data-filter="label" data-value="${escAttr(l.id)}" data-group="${escAttr(g.id)}" aria-pressed="false"${hue}>${esc(l.name)}</button>`;
+        })
+        .join('');
+      return `<div class="hall-search__group" role="group" aria-label="${escAttr(g.name)}" data-label-group="${escAttr(g.id)}">
+      <p class="hall-search__legend">${esc(g.name)}</p>${chips}
+    </div>`;
+    })
+    .join('');
+  return `<aside class="kod-plate hall-search" id="kod-hall-find" data-hall-search aria-label="Find someone in the hall">
   <header class="hall-search__head">
     <p class="hall-search__kicker">Hall</p>
     <h2 class="hall-search__title">Find</h2>
+    <button type="button" class="hall-search__hide" data-find-hide aria-label="Hide Find">Hide</button>
   </header>
   <div class="hall-search__lookup">
-    <label class="hall-search__label" for="kod-hall-q">Name</label>
-    <input id="kod-hall-q" class="hall-search__q" type="search" name="hall-q" autocomplete="off" placeholder="Optional — filters still list" data-hall-q/>
-    <button type="button" class="hall-search__clear" data-hall-clear aria-label="Clear search">Clear</button>
+    <label class="hall-search__label" for="kod-hall-q">Name or banner</label>
+    <input id="kod-hall-q" class="hall-search__q" type="search" name="hall-q" autocomplete="off" placeholder="Name or banner…" data-hall-q/>
+    <button type="button" class="hall-search__clear" data-hall-clear aria-label="Clear Find">Clear</button>
   </div>
   <div class="hall-search__filters" data-hall-filters>
+    ${labelBlocks}
     <div class="hall-search__group" role="group" aria-label="Axis">
       <p class="hall-search__legend">Axis</p>${axisChips}
     </div>
@@ -125,9 +152,11 @@ function findPanel(axes: string[]): string {
     <div class="hall-search__group" role="group" aria-label="Kind">
       <p class="hall-search__legend">Kind</p>
       <button type="button" class="hall-search__chip" data-filter="kind" data-value="pc" aria-pressed="false">Player</button>
+      <button type="button" class="hall-search__chip" data-filter="kind" data-value="outsider" aria-pressed="false">Outsider</button>
       <button type="button" class="hall-search__chip" data-filter="kind" data-value="npc" aria-pressed="false">NPC</button>
     </div>
   </div>
+  <p class="hall-search__count" data-hall-count hidden></p>
   <ul class="hall-search__hits" data-hall-hits hidden></ul>
 </aside>`;
 }

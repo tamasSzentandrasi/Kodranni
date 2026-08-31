@@ -10,8 +10,18 @@
   const storageKey = 'kod-hall:' + slug;
   const POLL_MS = 8000;
 
-  /** @type {{ q: string, collapse: Record<string, boolean>, group: string, labels: string[], axis: string }} */
-  let bag = { q: '', collapse: {}, group: 'g-faction', labels: [], axis: '' };
+  /** @type {{ q: string, collapse: Record<string, boolean>, group: string, labels: string[], axis: string, axes: string[], tiers: string[], kinds: string[], findOpen: boolean | null }} */
+  let bag = {
+    q: '',
+    collapse: {},
+    group: 'g-faction',
+    labels: [],
+    axis: '',
+    axes: [],
+    tiers: [],
+    kinds: [],
+    findOpen: null,
+  };
 
   function loadBag() {
     try {
@@ -24,6 +34,10 @@
       bag.group = typeof parsed.group === 'string' && parsed.group ? parsed.group : 'g-faction';
       bag.labels = Array.isArray(parsed.labels) ? parsed.labels.map(String) : [];
       bag.axis = typeof parsed.axis === 'string' ? parsed.axis : '';
+      bag.axes = Array.isArray(parsed.axes) ? parsed.axes.map(String) : [];
+      bag.tiers = Array.isArray(parsed.tiers) ? parsed.tiers.map(String) : [];
+      bag.kinds = Array.isArray(parsed.kinds) ? parsed.kinds.map(String) : [];
+      if (typeof parsed.findOpen === 'boolean') bag.findOpen = parsed.findOpen;
     } catch {
       /* ignore */
     }
@@ -93,54 +107,148 @@
   const searchRoot = document.querySelector('[data-hall-search]');
   const qInput = document.querySelector('[data-hall-q]');
   const hitsEl = document.querySelector('[data-hall-hits]');
-  const filters = { axis: '', tier: '', kind: '' };
+  const countEl = document.querySelector('[data-hall-count]');
+  const findToggle = document.querySelector('[data-find-toggle]');
 
-  function activeFilters() {
-    return Boolean(
-      filters.axis || filters.tier || filters.kind || (qInput && qInput.value.trim()),
-    );
+  const labelNameById = new Map();
+  const labelGroupById = new Map();
+  document.querySelectorAll('[data-filter="label"]').forEach((btn) => {
+    const id = btn.getAttribute('data-value') || '';
+    if (!id) return;
+    labelNameById.set(id, (btn.textContent || '').trim());
+    labelGroupById.set(id, btn.getAttribute('data-group') || '');
+  });
+
+  function tokens(q) {
+    return String(q || '')
+      .toLowerCase()
+      .split(/\s+/)
+      .filter(Boolean);
   }
 
   function kindOf(el) {
     return el.getAttribute('data-kind') || (el.classList.contains('member--pc') ? 'pc' : 'npc');
   }
 
+  function labelIdsOf(el) {
+    return (el.getAttribute('data-label-ids') || '').split(/\s+/).filter(Boolean);
+  }
+
+  function haystackPerson(p) {
+    const names = (Array.isArray(p.labelIds) ? p.labelIds : [])
+      .map((id) => labelNameById.get(id) || '')
+      .join(' ');
+    return (String(p.name || '') + ' ' + names).toLowerCase();
+  }
+
+  function haystackEl(el) {
+    const names = labelIdsOf(el)
+      .map((id) => labelNameById.get(id) || '')
+      .join(' ');
+    return ((el.getAttribute('data-name') || '') + ' ' + names).toLowerCase();
+  }
+
+  function queryOk(hay) {
+    const ts = tokens(qInput && qInput.value);
+    if (!ts.length) return true;
+    return ts.every((t) => hay.includes(t));
+  }
+
+  function labelsOk(ids) {
+    const selected = bag.labels;
+    if (!selected.length) return true;
+    const byGroup = new Map();
+    for (const id of selected) {
+      const g = labelGroupById.get(id) || '_';
+      if (!byGroup.has(g)) byGroup.set(g, []);
+      byGroup.get(g).push(id);
+    }
+    for (const need of byGroup.values()) {
+      if (!need.some((id) => ids.includes(id))) return false;
+    }
+    return true;
+  }
+
+  function placesOk(places) {
+    const axes = bag.axes;
+    const tiers = bag.tiers;
+    if (!axes.length && !tiers.length) return true;
+    if (!places.length) return false;
+    return places.some(
+      (pl) =>
+        (!axes.length || axes.includes(pl.axis)) && (!tiers.length || tiers.includes(pl.tier)),
+    );
+  }
+
+  function kindOk(kind, pc) {
+    const kinds = bag.kinds;
+    if (!kinds.length) return true;
+    if (kinds.includes('pc') && (kind === 'pc' || pc)) return true;
+    if (kinds.includes('outsider') && kind === 'outsider') return true;
+    if (kinds.includes('npc') && kind !== 'pc' && kind !== 'outsider' && !pc) return true;
+    return false;
+  }
+
+  function activeFilters() {
+    return Boolean(
+      tokens(qInput && qInput.value).length ||
+        bag.axes.length ||
+        bag.tiers.length ||
+        bag.kinds.length ||
+        bag.labels.length,
+    );
+  }
+
   function chipMatch(el) {
-    const name = (el.getAttribute('data-name') || el.textContent || '').toLowerCase();
-    const q = (qInput && qInput.value.trim().toLowerCase()) || '';
     const axisEl = el.closest('.hier-axis');
     const rung = el.closest('.hier-rung');
     const elAxis = (axisEl && axisEl.getAttribute('data-axis-name')) || '';
     const elTier = (rung && rung.getAttribute('data-tier')) || '';
     const kind = kindOf(el);
-    if (q && !name.includes(q)) return false;
-    if (filters.axis && elAxis !== filters.axis) return false;
-    if (filters.tier && elTier !== filters.tier) return false;
-    if (filters.kind === 'pc' && kind !== 'pc') return false;
-    if (filters.kind === 'npc' && kind === 'pc') return false;
+    const places = elAxis ? [{ axis: elAxis, tier: elTier }] : [];
+    if (!queryOk(haystackEl(el))) return false;
+    if (!labelsOk(labelIdsOf(el))) return false;
+    if (!placesOk(places) && (bag.axes.length || bag.tiers.length)) {
+      if (kind === 'outsider') return false;
+      return false;
+    }
+    if (!kindOk(kind, el.classList.contains('member--pc'))) return false;
     return true;
   }
 
   function personMatches(p) {
-    const q = (qInput && qInput.value.trim().toLowerCase()) || '';
-    if (q && !String(p.name || '').toLowerCase().includes(q)) return false;
-    if (filters.kind === 'pc' && !p.pc) return false;
-    if (filters.kind === 'npc' && p.pc) return false;
-    if (filters.axis || filters.tier) {
-      const places = Array.isArray(p.placements) ? p.placements : [];
-      const hit = places.some(
-        (pl) =>
-          (!filters.axis || pl.axis === filters.axis) &&
-          (!filters.tier || pl.tier === filters.tier),
-      );
-      if (!hit) return false;
-    }
+    const kind = p.kind === 'outsider' ? 'outsider' : p.pc ? 'pc' : 'npc';
+    const places = Array.isArray(p.placements) ? p.placements : [];
+    if (!queryOk(haystackPerson(p))) return false;
+    if (!labelsOk(Array.isArray(p.labelIds) ? p.labelIds : [])) return false;
+    if (!placesOk(places)) return false;
+    if (!kindOk(kind, p.pc)) return false;
     return true;
+  }
+
+  function syncFacetButtons() {
+    if (!searchRoot) return;
+    searchRoot.querySelectorAll('[data-filter]').forEach((btn) => {
+      const key = btn.getAttribute('data-filter');
+      const value = btn.getAttribute('data-value') || '';
+      let on = false;
+      if (key === 'axis') on = bag.axes.includes(value);
+      else if (key === 'tier') on = bag.tiers.includes(value);
+      else if (key === 'kind') on = bag.kinds.includes(value);
+      else if (key === 'label') on = bag.labels.includes(value);
+      btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+  }
+
+  function toggleIn(arr, value) {
+    const i = arr.indexOf(value);
+    if (i >= 0) arr.splice(i, 1);
+    else arr.push(value);
   }
 
   function applySearch() {
     const on = activeFilters();
-    document.querySelectorAll('.member[data-inspect-id], .outsider[data-inspect-id]').forEach((el) => {
+    document.querySelectorAll('.member[data-inspect-id]').forEach((el) => {
       if (!on) {
         el.removeAttribute('data-search');
         return;
@@ -151,9 +259,23 @@
       document.querySelectorAll('.hier-rung').forEach((rung) => {
         if (rung.querySelector('[data-search="hit"]')) setCollapsed(rung, false);
       });
-      const firstHit = document.querySelector('[data-search="hit"]');
-      if (firstHit instanceof HTMLElement) {
-        firstHit.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+    }
+
+    const seen = new Set();
+    const hits = [];
+    people.forEach((p, key) => {
+      if (seen.has(p)) return;
+      if (key !== p.id) return;
+      seen.add(p);
+      if (personMatches(p)) hits.push(p);
+    });
+
+    if (countEl) {
+      if (!on) {
+        countEl.hidden = true;
+      } else {
+        countEl.hidden = false;
+        countEl.textContent = hits.length === 1 ? '1 person' : hits.length + ' people';
       }
     }
 
@@ -163,53 +285,58 @@
       hitsEl.hidden = true;
       return;
     }
-    const seen = new Set();
-    const hits = [];
-    people.forEach((p, key) => {
-      if (seen.has(p)) return;
-      if (key !== p.id) return;
-      seen.add(p);
-      if (personMatches(p)) hits.push(p);
-    });
     if (hits.length === 0) {
-      hitsEl.hidden = true;
+      hitsEl.hidden = false;
+      const li = document.createElement('li');
+      li.className = 'hall-search__empty';
+      li.textContent = 'No one matches.';
+      hitsEl.appendChild(li);
       return;
     }
     hitsEl.hidden = false;
-    for (const p of hits) {
+    hits.forEach((p, i) => {
       const li = document.createElement('li');
-      const tag = p.kind === 'outsider' ? ' (outsider)' : p.pc ? '' : ' (npc)';
-      const label = p.name + tag;
-      if (p.slug) {
-        const a = document.createElement('a');
-        a.className = 'hall-search__hit';
-        a.href = '/characters/' + encodeURIComponent(String(p.slug)) + '/';
-        a.textContent = label;
-        li.appendChild(a);
-      } else {
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'hall-search__hit';
-        btn.textContent = label;
-        btn.setAttribute('data-name', p.name);
-        btn.addEventListener('click', () => {
-          const el = document.querySelector(
-            '.member[data-name="' +
-              String(p.name).replace(/"/g, '') +
-              '"], .outsider[data-name="' +
-              String(p.name).replace(/"/g, '') +
-              '"]',
-          );
+      const meta =
+        p.kind === 'outsider' ? 'Outsider' : p.pc ? 'Player' : 'NPC';
+      const node = p.slug ? document.createElement('a') : document.createElement('button');
+      if (!p.slug) node.type = 'button';
+      node.className = 'hall-search__hit';
+      node.setAttribute('data-hit-index', String(i));
+      if (p.slug) node.href = '/characters/' + encodeURIComponent(String(p.slug)) + '/';
+      node.innerHTML =
+        '<span class="hall-search__hit-name"></span><span class="hall-search__hit-meta"></span>';
+      node.querySelector('.hall-search__hit-name').textContent = String(p.name);
+      node.querySelector('.hall-search__hit-meta').textContent = meta;
+      if (!p.slug) {
+        node.addEventListener('click', () => {
+          const el = document.querySelector('.member[data-inspect-id="' + String(p.id).replace(/"/g, '') + '"]');
           if (el instanceof HTMLElement) el.scrollIntoView({ block: 'nearest', inline: 'nearest' });
         });
-        li.appendChild(btn);
       }
+      li.appendChild(node);
       hitsEl.appendChild(li);
-    }
+    });
+  }
+
+  function findIsOpen() {
+    if (bag.findOpen === true) return true;
+    if (bag.findOpen === false) return false;
+    return window.matchMedia('(min-width: 56.01rem)').matches;
+  }
+
+  function setFindOpen(open) {
+    bag.findOpen = open;
+    document.documentElement.classList.toggle('find-closed', !open);
+    if (searchRoot) searchRoot.hidden = !open;
+    if (findToggle) findToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    const hide = searchRoot && searchRoot.querySelector('[data-find-hide]');
+    if (hide) hide.hidden = !open;
+    saveBag();
   }
 
   function bindSearch() {
     if (!searchRoot) return;
+    setFindOpen(findIsOpen());
     if (qInput) {
       qInput.value = bag.q;
       qInput.addEventListener('input', () => {
@@ -218,19 +345,20 @@
         applySearch();
       });
     }
+    syncFacetButtons();
     const clearBtn = searchRoot.querySelector('[data-hall-clear]');
     if (clearBtn) {
       clearBtn.addEventListener('click', () => {
         if (qInput) qInput.value = '';
         bag.q = '';
-        filters.axis = '';
-        filters.tier = '';
-        filters.kind = '';
-        searchRoot.querySelectorAll('[data-filter]').forEach((btn) => {
-          btn.setAttribute('aria-pressed', 'false');
-        });
+        bag.axes = [];
+        bag.tiers = [];
+        bag.kinds = [];
+        bag.labels = [];
+        syncFacetButtons();
         saveBag();
         applySearch();
+        applyView();
         if (qInput) qInput.focus();
       });
     }
@@ -238,14 +366,55 @@
       btn.addEventListener('click', () => {
         const key = btn.getAttribute('data-filter');
         const value = btn.getAttribute('data-value') || '';
-        if (!key || !(key in filters)) return;
-        const on = filters[key] === value;
-        filters[key] = on ? '' : value;
-        searchRoot.querySelectorAll('[data-filter="' + key + '"]').forEach((b) => {
-          b.setAttribute('aria-pressed', b.getAttribute('data-value') === filters[key] ? 'true' : 'false');
-        });
+        if (key === 'axis') toggleIn(bag.axes, value);
+        else if (key === 'tier') toggleIn(bag.tiers, value);
+        else if (key === 'kind') toggleIn(bag.kinds, value);
+        else if (key === 'label') toggleIn(bag.labels, value);
+        else return;
+        syncFacetButtons();
+        saveBag();
         applySearch();
+        applyView();
       });
+    });
+    const hideBtn = searchRoot.querySelector('[data-find-hide]');
+    if (hideBtn) hideBtn.addEventListener('click', () => setFindOpen(false));
+    if (findToggle) {
+      findToggle.addEventListener('click', () => {
+        const open = !findIsOpen();
+        setFindOpen(open);
+        if (open && qInput) qInput.focus();
+      });
+    }
+    document.addEventListener('keydown', (e) => {
+      if (e.defaultPrevented) return;
+      const t = e.target;
+      const typing =
+        t &&
+        (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.tagName === 'SELECT' || t.isContentEditable);
+      if ((e.key === '/' || e.key === 'f' || e.key === 'F') && !typing && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        e.preventDefault();
+        setFindOpen(true);
+        if (qInput) qInput.focus();
+        return;
+      }
+      if (e.key === 'Escape' && searchRoot && !searchRoot.hidden) {
+        if (activeFilters()) {
+          if (qInput) qInput.value = '';
+          bag.q = '';
+          bag.axes = [];
+          bag.tiers = [];
+          bag.kinds = [];
+          bag.labels = [];
+          syncFacetButtons();
+          saveBag();
+          applySearch();
+          applyView();
+        } else {
+          setFindOpen(false);
+        }
+        e.preventDefault();
+      }
     });
   }
 
@@ -623,10 +792,6 @@
     if (document.visibilityState === 'visible') startPoll();
   }
 
-  function labelIdsOf(el) {
-    return (el.getAttribute('data-label-ids') || '').split(/\s+/).filter(Boolean);
-  }
-
   function applyView() {
     const group = bag.group || 'g-faction';
     const selected = new Set(bag.labels || []);
@@ -676,7 +841,6 @@
         const id = tab.getAttribute('data-aspect-group') || '';
         if (!id) return;
         bag.group = id;
-        bag.labels = [];
         saveBag();
         applyView();
       });
@@ -685,11 +849,11 @@
       btn.addEventListener('click', () => {
         const id = btn.getAttribute('data-label-id') || '';
         if (!id) return;
-        const i = bag.labels.indexOf(id);
-        if (i >= 0) bag.labels.splice(i, 1);
-        else bag.labels.push(id);
+        toggleIn(bag.labels, id);
+        syncFacetButtons();
         saveBag();
         applyView();
+        applySearch();
       });
     });
     applyView();

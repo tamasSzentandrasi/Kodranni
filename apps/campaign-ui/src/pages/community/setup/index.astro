@@ -60,7 +60,12 @@ const pcSlugs = c.characters
     ) : (
       <>
         {showSearch && (
-          <HallSearch axes={c.hierarchyAxes} tiers={tiers} factions={factions} />
+          <HallSearch
+            axes={c.hierarchyAxes}
+            tiers={tiers}
+            labels={c.labels ?? []}
+            labelGroups={c.labelGroups ?? []}
+          />
         )}
         <p class="app__meta">Storyteller desk · signed access · changes land on the hall</p>
         <div

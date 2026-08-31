@@ -113,7 +113,9 @@ describe('renderArchivePage', () => {
     expect(html).not.toContain('data-rite-open');
     expect(html).toContain('data-hall-aspects');
     expect(html).not.toContain('data-preview-faction');
-    expect(html).not.toContain('aria-label="Faction"');
+    expect(html).toContain('data-find-toggle');
+    expect(html).toContain('data-filter="label"');
+    expect(html).toContain('data-value="fac-ash-fen"');
   });
 
   it('renders the roster and a read-only sheet', () => {

@@ -2,35 +2,64 @@
 interface Props {
   axes: string[];
   tiers: string[];
-  factions?: { name: string; hue: number }[];
+  labels?: { id: string; groupId: string; name: string; hue?: number }[];
+  labelGroups?: { id: string; name: string }[];
 }
 
-const { axes, tiers, factions = [] } = Astro.props;
+const { axes, tiers, labels = [], labelGroups = [] } = Astro.props;
+const groups = labelGroups.filter((g) => labels.some((l) => l.groupId === g.id));
 ---
 
-<aside class="kod-plate hall-search" data-hall-search aria-label="Find someone in the hall">
+<button type="button" class="hall-find-toggle" data-find-toggle aria-controls="kod-hall-find" aria-expanded="true">
+  <span class="hall-find-toggle__kicker">Hall</span>
+  <span class="hall-find-toggle__title">Find</span>
+</button>
+<aside class="kod-plate hall-search" id="kod-hall-find" data-hall-search aria-label="Find someone in the hall">
   <header class="hall-search__head">
     <p class="hall-search__kicker">Hall</p>
     <h2 class="hall-search__title">Find</h2>
+    <button type="button" class="hall-search__hide" data-find-hide aria-label="Hide Find">Hide</button>
   </header>
 
   <div class="hall-search__lookup">
-    <label class="hall-search__label" for="kod-hall-q">Name</label>
+    <label class="hall-search__label" for="kod-hall-q">Name or banner</label>
     <input
       id="kod-hall-q"
       class="hall-search__q"
       type="search"
       name="hall-q"
       autocomplete="off"
-      placeholder="Optional — filters still list"
+      placeholder="Name or banner…"
       data-hall-q
     />
-    <button type="button" class="hall-search__clear" data-hall-clear aria-label="Clear search">
+    <button type="button" class="hall-search__clear" data-hall-clear aria-label="Clear Find">
       Clear
     </button>
   </div>
 
   <div class="hall-search__filters" data-hall-filters>
+    {
+      groups.map((g) => (
+        <div class="hall-search__group" role="group" aria-label={g.name} data-label-group={g.id}>
+          <p class="hall-search__legend">{g.name}</p>
+          {labels
+            .filter((l) => l.groupId === g.id)
+            .map((l) => (
+              <button
+                type="button"
+                class:list={['hall-search__chip', l.hue != null && 'hall-search__chip--hue']}
+                data-filter="label"
+                data-value={l.id}
+                data-group={g.id}
+                aria-pressed="false"
+                style={l.hue != null ? `--label-h:${l.hue}` : undefined}
+              >
+                {l.name}
+              </button>
+            ))}
+        </div>
+      ))
+    }
     <div class="hall-search__group" role="group" aria-label="Axis">
       <p class="hall-search__legend">Axis</p>
       {axes.map((axis) => (
@@ -52,11 +81,15 @@ const { axes, tiers, factions = [] } = Astro.props;
       <button type="button" class="hall-search__chip" data-filter="kind" data-value="pc" aria-pressed="false">
         Player
       </button>
+      <button type="button" class="hall-search__chip" data-filter="kind" data-value="outsider" aria-pressed="false">
+        Outsider
+      </button>
       <button type="button" class="hall-search__chip" data-filter="kind" data-value="npc" aria-pressed="false">
         NPC
       </button>
     </div>
   </div>
 
+  <p class="hall-search__count" data-hall-count hidden></p>
   <ul class="hall-search__hits" data-hall-hits hidden></ul>
 </aside>
