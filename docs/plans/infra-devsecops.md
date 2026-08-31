@@ -303,7 +303,7 @@ Each step is independently shippable and testable. Do not start distribution bef
 6. **Linux dist** — `systemd --user` `Type=notify` (`packaging/linux/kodranni@.service`); XDG data/config/state (existing `~/.kodranni` still wins); libsecret via `secret-tool` with 0600 file fallback; `GET /emissary` and `/operator` loopback-only; host tarball + OCI on Releases. **In repo.**
 7. **Optional later** — GitHub snapshot export; Quadlet; ST-owned Cloudflare running the same Function; avatar blobs if we accept a store.
 
-CI: `.github/workflows/test.yml`, `edge.yml` (wrangler + command register), `release.yml` (tarball + GHCR). Actions are pinned to commit SHAs. GitHub secrets: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`, `DISCORD_BOT_TOKEN`, `DISCORD_APP_ID`.
+CI: `.github/workflows/test.yml`, `edge.yml` (`npx wrangler deploy` with `CLOUDFLARE_API_TOKEN` in the job env — wrangler-action dropped an empty token), `release.yml` (tarball + GHCR). Actions are pinned to commit SHAs. GitHub secrets (Settings → Secrets and variables → Actions): `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`, `DISCORD_BOT_TOKEN`, `DISCORD_APP_ID`.
 
 ---
 
