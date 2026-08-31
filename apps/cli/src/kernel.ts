@@ -195,7 +195,18 @@ export async function runLiveKernel(opts: {
       console.error(`  archive: ${e instanceof Error ? e.message : e}`);
     }
     shutdown();
-    await new Promise((r) => setTimeout(r, 300));
+    await new Promise((r) => setTimeout(r, 400));
+    if (ui.pid) {
+      try {
+        process.kill(-ui.pid, 'SIGKILL');
+      } catch {
+        try {
+          process.kill(ui.pid, 'SIGKILL');
+        } catch {
+          /* gone */
+        }
+      }
+    }
     process.exit(0);
   };
   process.on('SIGINT', () => void graceful());
