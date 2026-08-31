@@ -9,9 +9,12 @@ import { startEdgeSession } from '@kodranni/publish';
 import { publishEdgeArchive, publishSnapshotToEdge } from './edge-publish.js';
 import type { CampaignConfig } from '@kodranni/store';
 import {
+  applyMachineDefaults,
   campaignRuntimeLogsDir,
   ensureCampaignRuntime,
   ensureEdgeDeviceKey,
+  PRODUCT_EDGE_CONTROL_URL,
+  productPublicEdgeUrl,
   readLiveUrl,
   readSessionState,
   writeLiveUrl,
@@ -113,7 +116,8 @@ export async function runLiveKernel(opts: {
   tunnel: boolean;
   bot: boolean;
 }): Promise<void> {
-  const { slug, cfg, repoRoot, tunnel, bot } = opts;
+  const { slug, repoRoot, tunnel, bot } = opts;
+  const cfg = applyMachineDefaults(opts.cfg);
   ensureCampaignRuntime(slug);
   const logsDir = campaignRuntimeLogsDir(slug);
   const { host, port } = parseBind(cfg.liveBind);
@@ -144,8 +148,9 @@ export async function runLiveKernel(opts: {
   const edgeControl =
     cfg.edgeControlUrl ??
     process.env.KODRANNI_EDGE_CONTROL_URL?.trim() ??
-    cfg.edgeUrl ??
-    process.env.KODRANNI_EDGE_URL?.trim();
+    PRODUCT_EDGE_CONTROL_URL;
+  const publicEdge =
+    cfg.edgeUrl ?? process.env.KODRANNI_EDGE_URL?.trim() ?? productPublicEdgeUrl(cfg.slug);
 
   const ui = spawn(process.execPath, ['--experimental-sqlite', entry], {
     cwd: join(repoRoot, 'apps/campaign-ui'),
@@ -158,7 +163,7 @@ export async function runLiveKernel(opts: {
       slug: cfg.slug,
       bot,
       edgeControlUrl: edgeControl,
-      publicBaseUrl: cfg.edgeUrl ?? cfg.publicBaseUrl,
+      publicBaseUrl: publicEdge,
     }),
     shell: false,
   });
@@ -265,7 +270,7 @@ export async function runLiveKernel(opts: {
           logPath: tunnelLog,
         });
         tunnelChild = t.child;
-        const publicUrl = (cfg.edgeUrl ?? edgeUrl).replace(/\/$/, '');
+        const publicUrl = publicEdge.replace(/\/$/, '');
         writeLiveUrl(slug, publicUrl);
         writeSessionState(slug, {
           slug,

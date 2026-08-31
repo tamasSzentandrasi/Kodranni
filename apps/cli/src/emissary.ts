@@ -1,5 +1,6 @@
 import { existsSync } from 'node:fs';
 import {
+  applyMachineDefaults,
   defaultCampaignTomlPath,
   defaultStorePath,
   liveUrlPath,
@@ -78,7 +79,7 @@ export async function runEmissary(opts: {
       return { ok: false, checks };
     }
     try {
-      cfg = await readCampaignConfig(tomlPath);
+      cfg = applyMachineDefaults(await readCampaignConfig(tomlPath));
       checks.push(check('campaign.toml', true, tomlPath));
     } catch (e) {
       checks.push(
@@ -135,24 +136,28 @@ export async function runEmissary(opts: {
       check(
         'tunnel mode',
         true,
-        'quick (trycloudflare.com). Optional: named + your domain in campaign.toml',
+        'Worker-minted (session only). ST does not create a named tunnel.',
       ),
     );
   }
 
-  const edgeUrl = cfg.edgeUrl ?? process.env.KODRANNI_EDGE_URL?.trim();
-  if (edgeUrl) {
-    const edgeProbe = await probeHttp(edgeUrl.replace(/\/$/, '') + '/');
+  const edgeUrl = (cfg.edgeUrl ?? process.env.KODRANNI_EDGE_URL?.trim() ?? '').replace(/\/$/, '');
+  const edgeControl = (cfg.edgeControlUrl ?? process.env.KODRANNI_EDGE_CONTROL_URL?.trim() ?? '').replace(
+    /\/$/,
+    '',
+  );
+  if (!edgeUrl || !edgeControl) {
+    checks.push(
+      check('edge', false, 'edge_url / edge_control_url unset — run: kodranni campaign sync-defaults'),
+    );
+  } else {
+    const edgeProbe = await probeHttp(`${edgeUrl}/`);
     checks.push(
       check(
         'edge',
         edgeProbe.ok,
-        edgeProbe.ok ? `${edgeUrl} · ${edgeProbe.detail}` : `${edgeUrl} · ${edgeProbe.detail}`,
+        `${edgeUrl} (control ${edgeControl}) · ${edgeProbe.detail}`,
       ),
-    );
-  } else {
-    checks.push(
-      check('edge', true, 'KODRANNI_EDGE_URL / edge_url unset — public archive not pushed'),
     );
   }
 
@@ -162,13 +167,16 @@ export async function runEmissary(opts: {
   const session = readSessionState(opts.slug);
 
   const localProbe = await probeHttp(communityLocal);
+  const livePidAlive = processAlive(session?.pids?.live);
   checks.push(
     check(
       'local UI',
-      localProbe.ok,
+      livePidAlive ? localProbe.ok : true,
       localProbe.ok
         ? `${communityLocal} · ${localProbe.detail}`
-        : `${communityLocal} · ${localProbe.detail} — run: kodranni live --slug ${opts.slug}`,
+        : livePidAlive
+          ? `${communityLocal} · ${localProbe.detail} — live pid is up but UI did not answer`
+          : `${communityLocal} · down (dark — public hostname should serve the archive)`,
     ),
   );
 
@@ -209,10 +217,10 @@ export async function runEmissary(opts: {
       parts.push(`tunnel pid ${session.pids.tunnel}${tunnelAlive ? '' : ' (dead)'}`);
     }
     if (session.lastError) parts.push(`lastError: ${session.lastError}`);
-    const sessionOk =
-      localProbe.ok &&
-      (session.pids?.live == null || liveAlive) &&
-      !session.lastError?.includes('exited');
+    let sessionOk = true;
+    if (session.pids?.live != null && !liveAlive) sessionOk = false;
+    if (liveAlive && session.pids?.tunnel != null && !tunnelAlive) sessionOk = false;
+    if (liveAlive && !localProbe.ok) sessionOk = false;
     checks.push(
       check(
         'session',
@@ -224,20 +232,18 @@ export async function runEmissary(opts: {
     checks.push(check('session', true, 'no active session.json'));
   }
 
-  const archiveUrl = edgeUrl ?? cfg.publicBaseUrl;
+  const archiveUrl = edgeUrl || cfg.publicBaseUrl;
   if (archiveUrl) {
     checks.push(check('archive', true, archiveUrl));
   } else {
     checks.push(
-      check('archive', true, 'no edge_url — between-session face is local snapshot only'),
+      check('archive', false, 'no edge_url — public archive cannot be shared'),
     );
   }
 
-  const hardOk = checks
-    .filter((c) =>
-      ['campaign.toml', 'store', 'node', 'local UI'].includes(c.name),
-    )
-    .every((c) => c.ok);
+  const required = ['campaign.toml', 'store', 'node', 'edge', 'session'];
+  if (livePidAlive) required.push('local UI');
+  const hardOk = required.every((name) => checks.find((c) => c.name === name)?.ok !== false);
 
   const shareUrl =
     hashed &&

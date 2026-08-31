@@ -94,7 +94,8 @@ function resolveRepoRoot(): string {
 }
 
 async function loadConfig(slug: string): Promise<CampaignConfig> {
-  return readCampaignConfig(defaultCampaignTomlPath(slug));
+  loadSecretsIntoEnv();
+  return applyMachineDefaults(await readCampaignConfig(defaultCampaignTomlPath(slug)));
 }
 
 function rngFromArgs(args: string[]) {

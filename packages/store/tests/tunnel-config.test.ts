@@ -2,6 +2,8 @@ import { describe, expect, it } from 'vitest';
 import {
   applyMachineDefaults,
   parseCampaignToml,
+  PRODUCT_EDGE_CONTROL_URL,
+  productPublicEdgeUrl,
   resolveNamedTunnelPublicUrl,
   resolveTunnelMode,
   serializeCampaignToml,
@@ -79,6 +81,7 @@ describe('applyMachineDefaults', () => {
     expect(cfg.discordStorytellerRoleId).toBe('999888777');
     expect(cfg.platforms).toContain('discord');
     expect(cfg.cloudflareTunnelToken).toBeUndefined();
+    expect(cfg.edgeControlUrl).toBe(PRODUCT_EDGE_CONTROL_URL);
     const text = serializeCampaignToml(cfg);
     expect(text).not.toContain('eyJsecret');
     expect(text).toContain('discord_storyteller_role_id');
@@ -100,5 +103,21 @@ describe('applyMachineDefaults', () => {
     expect(cfg.tunnelHostname).toBeUndefined();
     expect(cfg.liveBaseUrl).toBe('http://127.0.0.1:8742');
     expect(cfg.edgeUrl).toBe('https://kodranni-edge.kodranni.workers.dev');
+  });
+
+  it('fills product edge URLs when toml/env omit them', () => {
+    const cfg = applyMachineDefaults({ ...base, slug: 'vardmark' }, {});
+    expect(cfg.edgeUrl).toBe(productPublicEdgeUrl('vardmark'));
+    expect(cfg.edgeControlUrl).toBe(PRODUCT_EDGE_CONTROL_URL);
+    expect(cfg.edgeUrl).toBe('https://demo.kodranni.com');
+  });
+
+  it('does not overwrite an explicit edge_url', () => {
+    const cfg = applyMachineDefaults(
+      { ...base, slug: 'ash-hill', edgeUrl: 'https://kodranni.com' },
+      {},
+    );
+    expect(cfg.edgeUrl).toBe('https://kodranni.com');
+    expect(cfg.edgeControlUrl).toBe(PRODUCT_EDGE_CONTROL_URL);
   });
 });

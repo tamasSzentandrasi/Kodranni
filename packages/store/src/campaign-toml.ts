@@ -64,6 +64,17 @@ const DEFAULTS = {
   tunnelMode: 'quick' as TunnelMode,
 };
 
+/** Worker control plane the host talks to (never the public hostname). */
+export const PRODUCT_EDGE_CONTROL_URL = 'https://kodranni-edge.kodranni.workers.dev';
+
+/** Player-facing hostname on our zone. Showcase slug uses demo.; tables use apex + ?campaign=. */
+export function productPublicEdgeUrl(slug: string): string {
+  if (slug === 'vardmark' || slug === 'demo' || slug === 'play') {
+    return 'https://demo.kodranni.com';
+  }
+  return 'https://kodranni.com';
+}
+
 /** Minimal TOML writer/reader for our fixed keys (no third-party TOML dep). */
 export function serializeCampaignToml(cfg: CampaignConfig): string {
   const lines = [
@@ -269,10 +280,12 @@ export function applyMachineDefaults(
     }
   }
 
-  const edgeUrl = env.KODRANNI_EDGE_URL?.trim();
-  if (edgeUrl) out.edgeUrl = edgeUrl.replace(/\/$/, '');
-  const edgeControl = env.KODRANNI_EDGE_CONTROL_URL?.trim();
-  if (edgeControl) out.edgeControlUrl = edgeControl.replace(/\/$/, '');
+  const edgeUrl =
+    env.KODRANNI_EDGE_URL?.trim() || out.edgeUrl || productPublicEdgeUrl(out.slug);
+  out.edgeUrl = edgeUrl.replace(/\/$/, '');
+  const edgeControl =
+    env.KODRANNI_EDGE_CONTROL_URL?.trim() || out.edgeControlUrl || PRODUCT_EDGE_CONTROL_URL;
+  out.edgeControlUrl = edgeControl.replace(/\/$/, '');
 
   if (tunnelHost) {
     out.tunnelHostname = tunnelHost.replace(/\/$/, '');

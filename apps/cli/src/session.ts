@@ -37,9 +37,13 @@ function resolveRepoRoot(): string {
 function killPid(pid: number | undefined): void {
   if (pid == null || pid <= 0) return;
   try {
-    process.kill(pid, 'SIGTERM');
+    process.kill(-pid, 'SIGTERM');
   } catch {
-    /* already dead */
+    try {
+      process.kill(pid, 'SIGTERM');
+    } catch {
+      /* already dead */
+    }
   }
 }
 
