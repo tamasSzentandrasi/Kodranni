@@ -35,7 +35,7 @@ jobs:
         run: |
           gh release create "${GITHUB_REF_NAME}" dist-linux/*.tar.gz \
             --title "${GITHUB_REF_NAME}" \
-            --notes "Linux host tarball. Unpack, npm ci --omit=dev, packaging/linux/install-user.sh." \
+            --notes "Linux host tarball. Unpack and run packaging/linux/install-user.sh. Then: kodranni --name \"Your campaign\" · kodranni start · kodranni stop." \
             --verify-tag || gh release upload "${GITHUB_REF_NAME}" dist-linux/*.tar.gz --clobber
 
   oci:

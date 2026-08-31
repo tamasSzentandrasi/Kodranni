@@ -1,5 +1,5 @@
 #!/bin/sh
-# Host tarball: production campaign-ui + CLI + packages. Requires Node 22 on the target.
+# Host tarball: vendored Node + production campaign-ui + CLI. No npm on the target.
 set -eu
 root=$(CDPATH= cd -- "$(dirname "$0")/.." && pwd)
 version=$(node -p "require('$root/package.json').version")
@@ -8,26 +8,47 @@ name="kodranni-host-${version}-linux"
 stage=$(mktemp -d)
 trap 'rm -rf "$stage"' EXIT
 
-mkdir -p "$stage/$name" "$out_dir"
+mkdir -p "$stage/$name/lib" "$stage/$name/bin" "$out_dir"
 cd "$root"
 npm ci
 NODE_OPTIONS='--experimental-sqlite' npm run build:campaign-ui
 
 tar -C "$root" -cf - \
   --exclude='.git' \
-  --exclude='node_modules' \
-  --exclude='apps/campaign-ui/node_modules' \
-  --exclude='apps/edge/node_modules' \
-  --exclude='dist' \
   --exclude='apps/edge/public' \
+  --exclude='docs' \
+  --exclude='Guidebook' \
+  --exclude='src' \
   package.json package-lock.json \
-  apps packages adapters packaging scripts \
+  node_modules \
+  apps packages adapters packaging \
   | tar -C "$stage/$name" -xf -
 
 cp -a "$root/apps/campaign-ui/dist" "$stage/$name/apps/campaign-ui/dist"
-printf 'KODRANNI_REPO=.\n' > "$stage/$name/packaging/linux/service.env.example"
+
+node_bin=$(command -v node)
+cp "$node_bin" "$stage/$name/lib/node"
+chmod +x "$stage/$name/lib/node"
+
+if command -v cloudflared >/dev/null 2>&1; then
+  cp "$(command -v cloudflared)" "$stage/$name/lib/cloudflared"
+  chmod +x "$stage/$name/lib/cloudflared"
+fi
+
+cat > "$stage/$name/bin/kodranni" <<'WRAP'
+#!/bin/sh
+set -eu
+root=$(CDPATH= cd -- "$(dirname "$0")/.." && pwd)
+export KODRANNI_REPO="$root"
+export PATH="$root/lib:$PATH"
+exec "$root/lib/node" --experimental-sqlite --import tsx \
+  "$root/apps/cli/src/main.ts" "$@"
+WRAP
+chmod +x "$stage/$name/bin/kodranni"
+
 printf '%s\n' "$version" > "$stage/$name/VERSION"
 
 tar -C "$stage" -czf "$out_dir/$name.tar.gz" "$name"
 echo "Wrote $out_dir/$name.tar.gz"
-echo "On the host: tar xf $name.tar.gz && cd $name && npm ci --omit=dev && packaging/linux/install-user.sh"
+echo "On the host: tar xf $name.tar.gz && cd $name && packaging/linux/install-user.sh"
+echo "Then: kodranni --name \"Your campaign\""
