@@ -134,6 +134,9 @@ export function openSqliteStore(path: string): CommunityStorePort {
         JSON.stringify(normalized),
       );
     },
+    deleteCharacter: (slug) => {
+      db.prepare(`DELETE FROM characters WHERE slug = ?`).run(slug);
+    },
     listMembers: () => {
       const rows = db
         .prepare(

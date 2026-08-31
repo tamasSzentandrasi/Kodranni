@@ -1,4 +1,4 @@
-import { existsSync, rmSync } from 'node:fs';
+import { existsSync, readdirSync, rmSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { join } from 'node:path';
 
@@ -40,6 +40,19 @@ export function kodranniHome(env: NodeJS.ProcessEnv = process.env): string {
 
 export function campaignDir(slug: string, env?: NodeJS.ProcessEnv): string {
   return join(kodranniDataHome(env), 'campaigns', slug);
+}
+
+export function campaignsRoot(env?: NodeJS.ProcessEnv): string {
+  return join(kodranniDataHome(env), 'campaigns');
+}
+
+export function listCampaignSlugs(env?: NodeJS.ProcessEnv): string[] {
+  const root = campaignsRoot(env);
+  if (!existsSync(root)) return [];
+  return readdirSync(root, { withFileTypes: true })
+    .filter((d) => d.isDirectory() && existsSync(join(root, d.name, 'campaign.toml')))
+    .map((d) => d.name)
+    .sort();
 }
 
 /** ST-machine secrets: libsecret first, 0600 files under config. */

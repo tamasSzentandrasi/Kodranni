@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
+  applyCampaignDiscordEnv,
   applyMachineDefaults,
   parseCampaignToml,
   PRODUCT_EDGE_CONTROL_URL,
@@ -85,7 +86,46 @@ describe('applyMachineDefaults', () => {
     const text = serializeCampaignToml(cfg);
     expect(text).not.toContain('eyJsecret');
     expect(text).toContain('discord_storyteller_role_id');
+    expect(text).toContain('discord_guild_id');
     expect(text).toContain('tunnel_mode = "named"');
+  });
+
+  it('round-trips Discord bind from the desk picker', () => {
+    const text = serializeCampaignToml({
+      ...base,
+      discordGuildId: '111',
+      discordPlayChannelId: '222',
+      discordStorytellerRoleId: '333',
+    });
+    const cfg = parseCampaignToml(text);
+    expect(cfg.discordGuildId).toBe('111');
+    expect(cfg.discordPlayChannelId).toBe('222');
+    expect(cfg.discordStorytellerRoleId).toBe('333');
+    expect(text).not.toContain('botToken');
+  });
+
+  it('fills Discord env from campaign.toml when secret files are absent', () => {
+    const env: NodeJS.ProcessEnv = {};
+    applyCampaignDiscordEnv(
+      {
+        ...base,
+        discordGuildId: 'g1',
+        discordPlayChannelId: 'c1',
+        discordStorytellerRoleId: 'r1',
+      },
+      env,
+    );
+    expect(env.DISCORD_GUILD_ID).toBe('g1');
+    expect(env.DISCORD_PLAY_CHANNEL_ID).toBe('c1');
+    expect(env.DISCORD_STORYTELLER_ROLE_ID).toBe('r1');
+    applyCampaignDiscordEnv(
+      {
+        ...base,
+        discordGuildId: 'other',
+      },
+      env,
+    );
+    expect(env.DISCORD_GUILD_ID).toBe('g1');
   });
 
   it('clears named tunnel leftover when secrets and named tunnel fields are gone', () => {

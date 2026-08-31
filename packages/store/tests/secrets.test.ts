@@ -71,22 +71,26 @@ describe('loadSecretsIntoEnv', () => {
     const s = platformCredentialStatus({
       DISCORD_BOT_TOKEN: 'disc-secret-value',
       DISCORD_GUILD_ID: 'guild-id-value',
+      DISCORD_PLAY_CHANNEL_ID: 'channel-id-value',
       FLUXER_BOT_TOKEN: 'flux-secret-value',
     });
     expect(s.discord.ready).toBe(true);
     expect(s.fluxer.ready).toBe(false);
     const line = formatCredentialStatus(s);
-    expect(line).toMatch(/discord token\+guild \(ready\)/);
+    expect(line).toMatch(/discord token\+guild\+play-channel \(ready\)/);
     expect(line).not.toContain('disc-secret-value');
     expect(line).not.toContain('guild-id-value');
     expect(line).not.toContain('flux-secret-value');
   });
 
-  it('treats Discord as ready from guild alone (HTTP path; token is Worker-side)', () => {
-    const s = platformCredentialStatus({ DISCORD_GUILD_ID: 'guild-id-value' });
+  it('treats Discord as ready from guild + play channel (token is Worker-side)', () => {
+    const s = platformCredentialStatus({
+      DISCORD_GUILD_ID: 'guild-id-value',
+      DISCORD_PLAY_CHANNEL_ID: 'channel-id-value',
+    });
     expect(s.discord.ready).toBe(true);
     expect(s.discord.token).toBe(false);
-    expect(formatCredentialStatus(s)).toMatch(/discord guild \(ready\)/);
+    expect(formatCredentialStatus(s)).toMatch(/discord guild\+play-channel \(ready\)/);
   });
 
   it('never touches libsecret under Vitest, even if the passed env omits VITEST', () => {

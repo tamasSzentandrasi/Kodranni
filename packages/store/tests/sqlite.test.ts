@@ -7,6 +7,7 @@ import { emptyCommunity, openSqliteStore } from '../src/sqlite.js';
 import { demoCharactersPresent, seedDemoCampaign } from '../src/seed.js';
 import { parseCampaignToml, serializeCampaignToml } from '../src/campaign-toml.js';
 import { publicSnapshotViolations } from '../src/redact.js';
+import { applyPublicSnapshot, slugFromCampaignName } from '../src/snapshot.js';
 
 const dirs: string[] = [];
 
@@ -190,6 +191,32 @@ describe('sqlite store', () => {
     expect(json).not.toContain('fortuneMeta');
     expect(json).not.toContain('pendingMoves');
     store.close();
+  });
+
+  it('repopulates a campaign from a public snapshot under a new campaign slug', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'kodranni-store-'));
+    dirs.push(dir);
+    const src = openSqliteStore(join(dir, 'src.sqlite'));
+    seedDemoCampaign(src, 'vardmark', 'The Vardmark');
+    const snap = src.toPublicSnapshot();
+    src.close();
+
+    const dest = openSqliteStore(join(dir, 'dest.sqlite'));
+    dest.putCommunity(emptyCommunity('ash-hill', 'placeholder'));
+    applyPublicSnapshot(dest, snap, 'ash-hill');
+    const c = dest.getCommunity();
+    expect(c.slug).toBe('ash-hill');
+    expect(c.name).toBe('The Vardmark');
+    expect(dest.getCharacterBySlug('torvald')?.name).toMatch(/Torvald/i);
+    expect(dest.listCharacters().some((ch) => ch.status === 'draft')).toBe(false);
+    dest.close();
+  });
+});
+
+describe('slugFromCampaignName', () => {
+  it('turns a campaign title into a slug', () => {
+    expect(slugFromCampaignName('The Ash Hill')).toBe('the-ash-hill');
+    expect(slugFromCampaignName('  Vardmark  ')).toBe('vardmark');
   });
 });
 

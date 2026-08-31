@@ -197,7 +197,7 @@ export function platformCredentialStatus(
     playChannel: flag(env, 'DISCORD_PLAY_CHANNEL_ID'),
     ready: false,
   };
-  discord.ready = discord.guild;
+  discord.ready = discord.guild && discord.playChannel;
   const fluxer = {
     token: flag(env, 'FLUXER_BOT_TOKEN'),
     guild: flag(env, 'FLUXER_GUILD_ID'),

@@ -46,6 +46,10 @@ export interface CampaignConfig {
   cloudflareTunnelName?: string;
   /** Optional path to cloudflared config.yml */
   cloudflareTunnelConfig?: string;
+  /** Bound Discord guild (picker). Not a secret. */
+  discordGuildId?: string;
+  /** Play channel for the session card. */
+  discordPlayChannelId?: string;
   /**
    * Discord guild role ID whose holders are Storytellers (preferred over /map).
    * Snowflakes as strings.
@@ -107,8 +111,14 @@ export function serializeCampaignToml(cfg: CampaignConfig): string {
   if (cfg.cloudflareTunnelConfig) {
     lines.push(`cloudflare_tunnel_config = ${tomlString(cfg.cloudflareTunnelConfig)}`);
   }
-  if (cfg.discordStorytellerRoleId || cfg.fluxerStorytellerRoleId) {
-    lines.push('', '# Storyteller recognition (platform role IDs)');
+  if (cfg.discordGuildId || cfg.discordPlayChannelId || cfg.discordStorytellerRoleId) {
+    lines.push('', '# Discord bind (desk picker — not tokens)');
+  }
+  if (cfg.discordGuildId) {
+    lines.push(`discord_guild_id = ${tomlString(cfg.discordGuildId)}`);
+  }
+  if (cfg.discordPlayChannelId) {
+    lines.push(`discord_play_channel_id = ${tomlString(cfg.discordPlayChannelId)}`);
   }
   if (cfg.discordStorytellerRoleId) {
     lines.push(`discord_storyteller_role_id = ${tomlString(cfg.discordStorytellerRoleId)}`);
@@ -171,6 +181,12 @@ export function parseCampaignToml(text: string): CampaignConfig {
       : undefined,
     cloudflareTunnelConfig: map.has('cloudflare_tunnel_config')
       ? unquote(map.get('cloudflare_tunnel_config')!)
+      : undefined,
+    discordGuildId: map.has('discord_guild_id')
+      ? unquote(map.get('discord_guild_id')!)
+      : undefined,
+    discordPlayChannelId: map.has('discord_play_channel_id')
+      ? unquote(map.get('discord_play_channel_id')!)
       : undefined,
     discordStorytellerRoleId: map.has('discord_storyteller_role_id')
       ? unquote(map.get('discord_storyteller_role_id')!)
@@ -301,9 +317,13 @@ export function applyMachineDefaults(
 
   if (stRole) out.discordStorytellerRoleId = stRole;
   if (fluxerStRole) out.fluxerStorytellerRoleId = fluxerStRole;
+  const guild = env.DISCORD_GUILD_ID?.trim();
+  const play = env.DISCORD_PLAY_CHANNEL_ID?.trim();
+  if (guild) out.discordGuildId = guild;
+  if (play) out.discordPlayChannelId = play;
 
   const platforms = new Set(out.platforms ?? []);
-  if (env.DISCORD_GUILD_ID?.trim()) {
+  if (out.discordGuildId || env.DISCORD_GUILD_ID?.trim()) {
     platforms.add('discord');
   }
   if (env.FLUXER_BOT_TOKEN?.trim() && env.FLUXER_GUILD_ID?.trim()) {
@@ -312,6 +332,22 @@ export function applyMachineDefaults(
   out.platforms = [...platforms];
 
   return out;
+}
+
+/** Picker writes toml; files/env remain a hatch. Fill env from toml when unset. */
+export function applyCampaignDiscordEnv(
+  cfg: CampaignConfig,
+  env: NodeJS.ProcessEnv = process.env,
+): void {
+  if (!env.DISCORD_GUILD_ID?.trim() && cfg.discordGuildId) {
+    env.DISCORD_GUILD_ID = cfg.discordGuildId;
+  }
+  if (!env.DISCORD_PLAY_CHANNEL_ID?.trim() && cfg.discordPlayChannelId) {
+    env.DISCORD_PLAY_CHANNEL_ID = cfg.discordPlayChannelId;
+  }
+  if (!env.DISCORD_STORYTELLER_ROLE_ID?.trim() && cfg.discordStorytellerRoleId) {
+    env.DISCORD_STORYTELLER_ROLE_ID = cfg.discordStorytellerRoleId;
+  }
 }
 
 export async function ensureCampaignLayout(slug: string, name: string): Promise<CampaignConfig> {

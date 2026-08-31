@@ -20,6 +20,7 @@ export interface CommunityStorePort {
   getCharacterBySlug(slug: string): CharacterRecord | undefined;
   getCharacterById(id: string): CharacterRecord | undefined;
   putCharacter(c: CharacterRecord): void;
+  deleteCharacter(slug: string): void;
   listMembers(): MemberRecord[];
   putMember(m: MemberRecord): void;
   appendEvent(event: Omit<AuditEvent, 'id' | 'ts'> & { id?: string; ts?: string }): AuditEvent;
