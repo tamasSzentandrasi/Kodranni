@@ -5,7 +5,13 @@ import CampaignLayout from '../layouts/CampaignLayout.astro';
 import { loadCommunity } from '../data/load';
 import { isLocalDeskRequest } from '../lib/loopback';
 import { resolveCampaignSlug } from '../lib/campaign-paths';
-import { readLiveUrl, readSessionState } from '@kodranni/store';
+import {
+  defaultCampaignTomlPath,
+  productPublicEdgeUrl,
+  readCampaignConfig,
+  readLiveUrl,
+  readSessionState,
+} from '@kodranni/store';
 
 if (!isLocalDeskRequest(Astro.request)) {
   return new Response('Not found', { status: 404 });
@@ -16,9 +22,26 @@ const slug = resolveCampaignSlug() ?? c.slug;
 const session = readSessionState(slug);
 const live = readLiveUrl(slug);
 const local = session?.localUrl ?? 'http://127.0.0.1:8742';
-const invite = process.env.DISCORD_APP_ID
-  ? `https://discord.com/oauth2/authorize?client_id=${process.env.DISCORD_APP_ID}&scope=bot%20applications.commands`
-  : null;
+const publicHost = productPublicEdgeUrl(slug).replace(/\/$/, '');
+const publicTable =
+  slug === 'vardmark' || slug === 'demo' || slug === 'play'
+    ? `${publicHost}/community/`
+    : `${publicHost}/community/?campaign=${encodeURIComponent(slug)}`;
+let bound = { guild: '', channel: '', role: '' };
+try {
+  const toml = await readCampaignConfig(defaultCampaignTomlPath(slug));
+  bound = {
+    guild: toml.discordGuildId ?? process.env.DISCORD_GUILD_ID ?? '',
+    channel: toml.discordPlayChannelId ?? process.env.DISCORD_PLAY_CHANNEL_ID ?? '',
+    role: toml.discordStorytellerRoleId ?? process.env.DISCORD_STORYTELLER_ROLE_ID ?? '',
+  };
+} catch {
+  bound = {
+    guild: process.env.DISCORD_GUILD_ID ?? '',
+    channel: process.env.DISCORD_PLAY_CHANNEL_ID ?? '',
+    role: process.env.DISCORD_STORYTELLER_ROLE_ID ?? '',
+  };
+}
 ---
 
 <CampaignLayout
@@ -31,12 +54,15 @@ const invite = process.env.DISCORD_APP_ID
   <section class="kod-plate">
     <h2>Operator desk</h2>
     <p class="app__meta">Loopback only · this page is not on the public hostname.</p>
-    <p><strong>Campaign</strong> {slug}</p>
+    <p><strong>Campaign</strong> {c.name} <span class="app__meta">({slug})</span></p>
     <p><strong>Local</strong> <a href={local + '/community/'}>{local}</a></p>
+    <p>
+      <strong>Public</strong> <a href={publicTable}>{publicTable}</a>
+    </p>
     {
       live && live !== local ? (
         <p>
-          <strong>Public</strong> <a href={live}>{live}</a>
+          <strong>Live origin</strong> {live}
         </p>
       ) : null
     }
@@ -48,19 +74,132 @@ const invite = process.env.DISCORD_APP_ID
     <p>
       <a href="/emissary">Emissary (JSON)</a>
       ·
-      <a href="/operator/snapshot">Download snapshot.json</a>
+      <a href="/operator/snapshot">Download snapshot</a>
       ·
       <a href="/community/setup/">Storyteller desk</a>
     </p>
-    {
-      invite ? (
-        <p>
-          Discord invite:{' '}
-          <a href={invite}>{invite}</a>
-        </p>
-      ) : (
-        <p class="empty">Discord app id unset — invite URL is minted from the official application.</p>
-      )
-    }
+    <form class="kod-plate" method="post" action="/operator/restore" enctype="multipart/form-data">
+      <p><strong>Restore from snapshot</strong></p>
+      <p class="app__meta">Repopulates this campaign from a public.json (no drafts, no Discord ids).</p>
+      <p>
+        <input type="file" name="snapshot" accept="application/json,.json" required />
+        <button type="submit" class="kod-btn">Restore</button>
+      </p>
+    </form>
+
+    <section class="kod-plate" id="discord-bind" data-bound-guild={bound.guild} data-bound-channel={bound.channel} data-bound-role={bound.role}>
+      <p><strong>Discord</strong></p>
+      <p class="app__meta">Invite the official app, then pick guild, play channel, and Storyteller role. No tokens on this machine.</p>
+      <p><a id="discord-invite" href="#" target="_blank" rel="noreferrer">Invite the bot</a></p>
+      <p>
+        <label>
+          Guild
+          <select id="discord-guild"></select>
+        </label>
+      </p>
+      <p>
+        <label>
+          Play channel
+          <select id="discord-channel"></select>
+        </label>
+      </p>
+      <p>
+        <label>
+          Storyteller role
+          <select id="discord-role"></select>
+        </label>
+      </p>
+      <p>
+        <button type="button" class="kod-btn" id="discord-refresh">Refresh lists</button>
+        <button type="button" class="kod-btn" id="discord-save">Save bind</button>
+        <span id="discord-msg" class="app__meta"></span>
+      </p>
+    </section>
   </section>
 </CampaignLayout>
+
+<script is:inline>
+  (function () {
+    const root = document.getElementById('discord-bind');
+    if (!root) return;
+    const invite = document.getElementById('discord-invite');
+    const guildSel = document.getElementById('discord-guild');
+    const channelSel = document.getElementById('discord-channel');
+    const roleSel = document.getElementById('discord-role');
+    const msg = document.getElementById('discord-msg');
+    const boundGuild = root.getAttribute('data-bound-guild') || '';
+    const boundChannel = root.getAttribute('data-bound-channel') || '';
+    const boundRole = root.getAttribute('data-bound-role') || '';
+
+    function fill(sel, items, current) {
+      sel.innerHTML = '<option value="">Choose…</option>';
+      (items || []).forEach(function (it) {
+        const o = document.createElement('option');
+        o.value = it.id;
+        o.textContent = it.name;
+        if (it.id === current) o.selected = true;
+        sel.appendChild(o);
+      });
+    }
+
+    async function api(op, guild) {
+      const u = '/operator/discord?op=' + encodeURIComponent(op) + (guild ? '&guild=' + encodeURIComponent(guild) : '');
+      const res = await fetch(u);
+      return res.json();
+    }
+
+    async function loadApp() {
+      const j = await api('app');
+      if (j.invite && invite) {
+        invite.href = j.invite;
+        invite.textContent = 'Invite the bot';
+      } else if (invite) {
+        invite.textContent = 'Invite unavailable — start the desk with edge control';
+        invite.removeAttribute('href');
+      }
+    }
+
+    async function loadGuilds() {
+      msg.textContent = 'Loading guilds…';
+      const j = await api('guilds');
+      if (!j.guilds) {
+        msg.textContent = j.error || 'Could not list guilds. Invite the bot, then refresh.';
+        return;
+      }
+      fill(guildSel, j.guilds, boundGuild || guildSel.value);
+      msg.textContent = j.guilds.length ? 'Pick guild, channel, role.' : 'No guilds yet — invite the bot first.';
+      if (guildSel.value) await loadGuildBits();
+    }
+
+    async function loadGuildBits() {
+      const g = guildSel.value;
+      if (!g) return;
+      const ch = await api('channels', g);
+      const rl = await api('roles', g);
+      fill(channelSel, ch.channels, boundChannel || channelSel.value);
+      fill(roleSel, rl.roles, boundRole || roleSel.value);
+    }
+
+    document.getElementById('discord-refresh').addEventListener('click', function () {
+      loadGuilds();
+    });
+    guildSel.addEventListener('change', function () {
+      loadGuildBits();
+    });
+    document.getElementById('discord-save').addEventListener('click', async function () {
+      msg.textContent = 'Saving…';
+      const res = await fetch('/operator/discord', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          guildId: guildSel.value,
+          channelId: channelSel.value,
+          roleId: roleSel.value,
+        }),
+      });
+      const j = await res.json().catch(function () { return {}; });
+      msg.textContent = res.ok ? 'Saved. Use kodranni start for the next session.' : (j.error || 'Save failed');
+    });
+    loadApp().then(loadGuilds);
+  })();
+</script>

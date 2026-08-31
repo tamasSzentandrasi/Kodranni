@@ -62,10 +62,11 @@ export async function GET({ request }: { request: Request }) {
 
   checks.push({
     name: 'discord',
-    ok: creds.discord.ready,
-    detail: creds.discord.ready
-      ? `${creds.discord.token ? 'token+' : ''}guild${creds.discord.playChannel ? '+play-channel' : ''} · HTTP in this process`
-      : `need discord-serverID under ${secrets.dir} (bot token is Worker-only unless KODRANNI_DISCORD_GATEWAY=1)`,
+    ok: Boolean(creds.discord.guild && creds.discord.playChannel),
+    detail:
+      creds.discord.guild && creds.discord.playChannel
+        ? `guild+play-channel bound${creds.discord.token ? ' · token hatch' : ''}`
+        : 'not bound — invite and pick guild/channel/role on /operator',
   });
 
   checks.push({
