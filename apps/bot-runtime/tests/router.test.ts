@@ -248,6 +248,125 @@ describe('bot router', () => {
     store.close();
   });
 
+  it('/roll without a skill opens the Archetype picker', async () => {
+    const dir = mkdtempSync(join(tmpdir(), 'kod-bot-'));
+    dirs.push(dir);
+    const store = openSqliteStore(join(dir, 'c.sqlite'));
+    seedDemoCampaign(store);
+    mapMember(store, {
+      platform: 'discord',
+      accountId: 'user-1',
+      characterSlug: 'leifr',
+      role: 'player',
+    });
+    const port = mockPort();
+    const ctx: BotContext = {
+      store,
+      port,
+      liveBaseUrl: 'http://127.0.0.1:8742',
+      prompts: new Map(),
+      log: () => {},
+    };
+    await handleInteraction(ctx, {
+      type: 'command',
+      id: 'arch1',
+      clientEventId: 'arch1',
+      user: { platform: 'discord', accountId: 'user-1', displayName: 'Player' },
+      channelId: 'ch',
+      name: 'roll',
+      options: {},
+    });
+    expect(port.replies[0]?.title).toMatch(/^Archetype ·/);
+    expect(port.replies[0]?.description).not.toMatch(/Forgot/i);
+    store.close();
+  });
+
+  it('posts the Marks card to the play channel when the interaction has no channel', async () => {
+    const dir = mkdtempSync(join(tmpdir(), 'kod-bot-'));
+    dirs.push(dir);
+    const store = openSqliteStore(join(dir, 'c.sqlite'));
+    seedDemoCampaign(store);
+    mapMember(store, {
+      platform: 'discord',
+      accountId: 'user-1',
+      characterSlug: 'leifr',
+      role: 'player',
+    });
+    const prev = process.env.DISCORD_PLAY_CHANNEL_ID;
+    process.env.DISCORD_PLAY_CHANNEL_ID = 'play-ch';
+    const dests: string[] = [];
+    const port = mockPort();
+    const inner = port.sendCard.bind(port);
+    port.sendCard = async (ch, card) => {
+      dests.push(ch);
+      return inner(ch, card);
+    };
+    const ctx: BotContext = {
+      store,
+      port,
+      liveBaseUrl: 'http://127.0.0.1:8742',
+      prompts: new Map(),
+      log: () => {},
+    };
+    await handleInteraction(ctx, {
+      type: 'command',
+      id: 'roll-empty-ch',
+      clientEventId: 'rec1',
+      user: { platform: 'discord', accountId: 'user-1', displayName: 'Player' },
+      channelId: '',
+      name: 'roll',
+      options: { foundation: 'Authority', skill: 'Command', tier: 8, exertion: 0 },
+    });
+    const castId = port.replies[0]!.buttons?.find((b) => b.id.startsWith('roll-cast:'))?.id;
+    expect(castId).toBeTruthy();
+    await handleInteraction(ctx, {
+      type: 'button',
+      id: 'roll-empty-ch-b',
+      clientEventId: 'rec1b',
+      user: { platform: 'discord', accountId: 'user-1', displayName: 'Player' },
+      channelId: '',
+      customId: castId!,
+    });
+    expect(dests).toEqual(['play-ch']);
+    expect(port.cards[0]?.fields?.[0]?.name).toBe('Marks');
+    if (prev === undefined) delete process.env.DISCORD_PLAY_CHANNEL_ID;
+    else process.env.DISCORD_PLAY_CHANNEL_ID = prev;
+    store.close();
+  });
+
+  it('ST /reclaim restores Exertion and posts to the table', async () => {
+    const dir = mkdtempSync(join(tmpdir(), 'kod-bot-'));
+    dirs.push(dir);
+    const store = openSqliteStore(join(dir, 'c.sqlite'));
+    seedDemoCampaign(store);
+    mapMember(store, {
+      platform: 'discord',
+      accountId: 'st-1',
+      characterSlug: 'torvald',
+      role: 'storyteller',
+    });
+    const port = mockPort();
+    const ctx: BotContext = {
+      store,
+      port,
+      liveBaseUrl: 'http://127.0.0.1:8742',
+      prompts: new Map(),
+      log: () => {},
+    };
+    await handleInteraction(ctx, {
+      type: 'command',
+      id: 'reclaim1',
+      clientEventId: 'rc1',
+      user: { platform: 'discord', accountId: 'st-1', displayName: 'ST' },
+      channelId: 'ch',
+      name: 'reclaim',
+      options: { character: 'leifr', points: 1 },
+    });
+    expect(port.cards[0]?.title).toMatch(/Exertion restored/);
+    expect(port.ephemerals.some((e) => e.includes('Posted to the table'))).toBe(true);
+    store.close();
+  });
+
   it('announces each pending review once until it leaves the queue', () => {
     const announced = new Set<string>();
     expect(slugsNeedingReviewCard(['regis'], announced)).toEqual(['regis']);

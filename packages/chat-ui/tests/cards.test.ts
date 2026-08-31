@@ -25,6 +25,20 @@ describe('chat-ui cards', () => {
     expect(card.fields?.[0]?.value).toContain('2');
     expect(card.fields?.find((f) => f.name === 'Dice')?.value).toContain(dieTierLabel(8));
     expect(card.buttons?.some((b) => b.id === 'oppose:r1')).toBe(true);
+    const withSt = buildRollResultCard({
+      characterName: 'Tomas',
+      intentLine: 'x',
+      poolFormula: '4d8',
+      dieTier: 8,
+      faces: [8],
+      marks: 1,
+      omen: null,
+      omenHit: null,
+      rollId: 'r2',
+      showStPalette: true,
+    });
+    expect(withSt.buttons?.some((b) => b.id.startsWith('st-harm:'))).toBe(true);
+    expect(withSt.buttons?.some((b) => b.id.startsWith('st-exert:'))).toBe(false);
     expect(card.links?.[0]?.label).toBe('Live sheet');
     expect(card.accent).toBe('blood');
   });

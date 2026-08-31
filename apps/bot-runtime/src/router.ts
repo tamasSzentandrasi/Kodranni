@@ -110,6 +110,10 @@ function sheetUrl(
   }
 }
 
+function tableChannel(i: ChatInteraction, stored?: string): string {
+  return (stored || i.channelId || process.env.DISCORD_PLAY_CHANNEL_ID || '').trim();
+}
+
 function isSt(
   ctx: BotContext,
   user: { platform: string; accountId: string; roleIds?: string[] },
@@ -223,8 +227,10 @@ async function castConfirm(
     showOppose: true,
     showStPalette: true,
   });
-  await ctx.port.sendCard(c.channelId, card);
-  await ctx.port.replyEphemeral(i, `Rolled **${result.marks}** Marks.`);
+  const dest = tableChannel(i, c.channelId);
+  if (!dest) throw new Error('no Discord channel on this interaction — cannot post the roll');
+  await ctx.port.sendCard(dest, card);
+  await ctx.port.replyEphemeral(i, `Rolled **${result.marks}** Marks — posted to the table.`);
   if (ctx.port.editReplyCard) {
     await ctx.port.editReplyCard(i, {
       title: 'Cast',
@@ -514,6 +520,41 @@ async function handleCommand(
     return;
   }
 
+  if (name === 'reclaim') {
+    if (!isSt(ctx, user)) {
+      const anySt = ctx.store.listMembers().some((m) => m.role === 'storyteller');
+      if (anySt) {
+        await ctx.port.replyEphemeral(i, 'Storyteller only.');
+        return;
+      }
+    }
+    const characterSlug = String(options.character ?? '');
+    if (!characterSlug) {
+      await ctx.port.replyEphemeral(i, 'Need `character:` slug.');
+      return;
+    }
+    const points = options.points != null ? Number(options.points) : undefined;
+    const ch = reclaimExertion(ctx.store, {
+      characterSlug,
+      points,
+      actor: user.accountId,
+      clientEventId: i.clientEventId,
+    });
+    await ctx.port.sendCard(tableChannel(i, channelId), {
+      title: `Exertion restored · ${ch.name}`,
+      description: `Now **${ch.exertion.current}/${ch.exertion.max}**${
+        points != null ? ` (+${points})` : ' (filled)'
+      }.`,
+      accent: 'neutral',
+      links: [{ label: 'Live sheet', url: sheetUrl(ctx.liveBaseUrl, ch.slug) }],
+    });
+    await ctx.port.replyEphemeral(
+      i,
+      `${ch.name} Exertion now ${ch.exertion.current}/${ch.exertion.max}. Posted to the table.`,
+    );
+    return;
+  }
+
   if (name === 'map') {
     if (!isSt(ctx, user)) {
       await ctx.port.replyEphemeral(
@@ -650,9 +691,9 @@ async function handleCommand(
     if (!skill) {
       // Fallback: Archetype → Skill, then same confirm card
       const card: ChatCard = {
-        title: `Pick skill · ${resolved.name}`,
+        title: `Archetype · ${resolved.name}`,
         description:
-          'Forgot the skill name? Choose an Archetype — then you’ll land on the same confirm card as typing `/roll skill:…`.',
+          'Pick an Archetype, then a skill. You’ll get the same confirm card as `/roll skill:…`.',
         accent: 'blood',
         selects: [
           {
@@ -1038,14 +1079,9 @@ async function handleButton(
       await ctx.port.replyEphemeral(i, 'No character on this roll.');
       return;
     }
-    const ch = reclaimExertion(ctx.store, {
-      characterSlug: slug,
-      actor: i.user.accountId,
-      note: `from roll ${rollId}`,
-    });
     await ctx.port.replyEphemeral(
       i,
-      `${ch.name} Exertion now ${ch.exertion.current}/${ch.exertion.max}.`,
+      'Use `/reclaim character:…` (optional `points:`) — Exertion is not restored from the roll card.',
     );
     return;
   }

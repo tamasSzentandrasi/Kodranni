@@ -42,6 +42,7 @@ export type RawDiscordInteraction = {
   application_id?: string;
   guild_id?: string;
   channel_id?: string;
+  channel?: { id?: string };
   member?: {
     user?: { id?: string; username?: string };
     roles?: string[];
@@ -54,7 +55,7 @@ export type RawDiscordInteraction = {
     values?: string[];
     options?: RawOption[];
   };
-  message?: { id?: string };
+  message?: { id?: string; channel_id?: string };
 };
 
 type RawOption = {
@@ -68,7 +69,7 @@ export function mapRawDiscordInteraction(raw: RawDiscordInteraction): ChatIntera
   const id = raw.id;
   if (!id || (raw.type !== TYPE_COMMAND && raw.type !== TYPE_COMPONENT)) return null;
   const user = mapRawUser(raw);
-  const channelId = raw.channel_id ?? '';
+  const channelId = raw.channel_id ?? raw.channel?.id ?? raw.message?.channel_id ?? '';
   const guildId = raw.guild_id;
   if (raw.type === TYPE_COMMAND) {
     return mapRawCommand(raw, id, user, channelId, guildId);

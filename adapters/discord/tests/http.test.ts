@@ -28,9 +28,32 @@ describe('mapRawDiscordInteraction', () => {
     expect(mapped).toMatchObject({
       type: 'command',
       name: 'intent',
+      channelId: 'c1',
       user: { accountId: 'u1', roleIds: ['st'] },
       options: { player: 'u2', skill: 'Craft' },
     });
+    expect(
+      mapRawDiscordInteraction({
+        id: 'ix2',
+        type: 2,
+        token: 'tok',
+        application_id: 'app',
+        channel: { id: 'from-nested' },
+        user: { id: 'u1' },
+        data: { name: 'roll' },
+      })?.channelId,
+    ).toBe('from-nested');
+    expect(
+      mapRawDiscordInteraction({
+        id: 'ix3',
+        type: 3,
+        token: 'tok',
+        application_id: 'app',
+        user: { id: 'u1' },
+        data: { custom_id: 'roll-cast:x', component_type: 2 },
+        message: { id: 'm1', channel_id: 'from-message' },
+      })?.channelId,
+    ).toBe('from-message');
   });
 
   it('maps buttons and selects', () => {

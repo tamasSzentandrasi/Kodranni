@@ -67,10 +67,7 @@ export function buildRollResultCard(input: RollCardInput): ChatCard {
     style: 'secondary' as const,
   });
   if (input.showStPalette) {
-    buttons.push(
-      { id: `st-harm:${input.rollId}`, label: 'Harm', style: 'secondary' as const },
-      { id: `st-exert:${input.rollId}`, label: 'Exertion', style: 'secondary' as const },
-    );
+    buttons.push({ id: `st-harm:${input.rollId}`, label: 'Harm', style: 'secondary' as const });
   }
 
   const links = [];

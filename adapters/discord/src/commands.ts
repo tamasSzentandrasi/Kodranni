@@ -115,6 +115,19 @@ export const SLASH = [
       o.setName('character').setDescription('Speaker character slug').setRequired(true),
     ),
   new SlashCommandBuilder()
+    .setName('reclaim')
+    .setDescription('ST: restore Exertion on a character (not a roll-card button)')
+    .addStringOption((o) =>
+      o.setName('character').setDescription('Character slug').setRequired(true),
+    )
+    .addIntegerOption((o) =>
+      o
+        .setName('points')
+        .setDescription('Points to restore (omit = fill to max)')
+        .setMinValue(1)
+        .setMaxValue(20),
+    ),
+  new SlashCommandBuilder()
     .setName('review')
     .setDescription('ST: post Approve/Changes/Deny cards for pending drafts')
     .addStringOption((o) =>
