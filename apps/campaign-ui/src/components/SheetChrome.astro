@@ -38,18 +38,32 @@ const {
 const av = avatarUrl(slug, avatar);
 const statusLabel = status === 'pending_review' ? 'pending review' : status;
 const showPortraitEdit = Boolean(live && canEdit && (tab === 'core' || tab === 'draft'));
+const campaignQ = Astro.url.searchParams.get('campaign');
+const tabQ = campaignQ ? `?campaign=${encodeURIComponent(campaignQ)}` : '';
 ---
 
+<script is:inline>
+  (function () {
+    const u = new URL(location.href);
+    const q = u.searchParams.get('edit');
+    if (!q) return;
+    document.cookie =
+      'kod_edit=' + encodeURIComponent(q) + '; Path=/; Max-Age=86400; SameSite=Lax';
+    u.searchParams.delete('edit');
+    history.replaceState({}, '', u.pathname + u.search + u.hash);
+  })();
+</script>
+
 <nav class="sheet-tabs" aria-label="Sheet sections">
-  <a href={`/characters/${slug}/`} aria-current={tab === 'core' ? 'page' : undefined}>Core</a>
+  <a href={`/characters/${slug}/${tabQ}`} aria-current={tab === 'core' ? 'page' : undefined}>Core</a>
   <a
-    href={`/characters/${slug}/echoes/`}
+    href={`/characters/${slug}/echoes/${tabQ}`}
     aria-current={tab === 'echoes' ? 'page' : undefined}
   >
     Echoes · Traits
   </a>
   <a
-    href={`/characters/${slug}/inventory/`}
+    href={`/characters/${slug}/inventory/${tabQ}`}
     aria-current={tab === 'inventory' ? 'page' : undefined}
   >
     Inventory
@@ -57,7 +71,7 @@ const showPortraitEdit = Boolean(live && canEdit && (tab === 'core' || tab === '
   {
     showDraftTab && tab === 'draft' && (
       <a
-        href={`/characters/${slug}/draft/`}
+        href={`/characters/${slug}/draft/${tabQ}`}
         aria-current="page"
       >
         Who do we see?

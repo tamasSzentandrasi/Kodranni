@@ -16,7 +16,7 @@ if (!ch) {
 const live = c.source === 'live';
 const unlocked = Boolean(live && ch.creation && !ch.creation.locked);
 const auth = resolveSheetEdit(Astro.request, Astro.url, ch.slug);
-if (auth.canEdit && auth.token && Astro.url.searchParams.has('edit')) {
+if (auth.canEdit && auth.token) {
   Astro.response.headers.append('Set-Cookie', editCookieHeader(auth.token));
 }
 const canEdit = unlocked && auth.canEdit;

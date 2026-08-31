@@ -26,7 +26,7 @@ const echoSegs = segments(ch.echoWeight, ch.echoCapacity);
 const live = c.source === 'live';
 const unlocked = Boolean(live && ch.creation && !ch.creation.locked);
 const auth = resolveSheetEdit(Astro.request, Astro.url, ch.slug);
-if (auth.canEdit && auth.token && Astro.url.searchParams.has('edit')) {
+if (auth.canEdit && auth.token) {
   Astro.response.headers.append('Set-Cookie', editCookieHeader(auth.token));
 }
 /** Unlocked sheet + valid bot-signed edit token. */
