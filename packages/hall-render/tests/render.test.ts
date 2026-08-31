@@ -115,6 +115,12 @@ describe('renderArchivePage', () => {
     );
     expect(sheet?.html).toContain('A quiet man who measures twice.');
     expect(sheet?.html).toContain('Craft');
+    expect(sheet?.html).toContain('core-grid');
+    expect(sheet?.html).toContain('skill-wheel');
+    expect(sheet?.html).toContain('/archetypes/warrior.jpg');
+    expect(sheet?.html).toContain('vtrack--echo');
+    expect(sheet?.html).toContain('found-groups');
+    expect(sheet?.html).toContain('sheet-identity__text');
     expect(sheet?.html).not.toContain('data-wanting');
   });
 

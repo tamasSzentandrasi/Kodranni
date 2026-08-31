@@ -111,6 +111,25 @@ export function roman(n: number): string {
   return ['∅', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'][n] ?? String(n);
 }
 
+export function segments(filled: number, total: number): { on: boolean; over: boolean }[] {
+  const n = Math.max(0, total);
+  const f = Math.max(0, filled);
+  return Array.from({ length: Math.max(n, f) }, (_, i) => ({
+    on: i < Math.min(f, n),
+    over: i >= n && i < f,
+  }));
+}
+
+export function harmPips(n: number, max = 3): boolean[] {
+  return Array.from({ length: max }, (_, i) => i < Math.min(max, Math.max(0, n)));
+}
+
+export const WEIGHT_BAND: Record<1 | 2 | 3, string> = {
+  1: 'Individual',
+  2: 'Group',
+  3: 'Pivotal',
+};
+
 export function rosterCaption(ch: CharacterRecord): { line: string; placeholder: boolean } {
   const npc = ch.kind === 'npc' || ch.kind === 'notable';
   const placeholder = Boolean(ch.creation?.placeholder);
