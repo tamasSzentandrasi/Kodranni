@@ -156,8 +156,8 @@ export async function sessionStart(opts: {
   console.log(`  supervisor pid: ${child.pid}`);
   console.log(`  flags:   ${[tunnel && 'tunnel', bot && 'bot'].filter(Boolean).join('+') || 'live-only'}`);
   console.log(`  log: ${logPath}`);
-  console.log(`  status: npm run kodranni -- session status --slug ${slug}`);
-  console.log(`  end:    npm run kodranni -- session end --slug ${slug}`);
+  console.log(`  status: kodranni status --slug ${slug}`);
+  console.log(`  end:    kodranni stop --slug ${slug}`);
 
   // Give live a moment to bind and (optionally) open the tunnel / bot
   await new Promise((r) => setTimeout(r, bot || tunnel ? 6000 : 4000));

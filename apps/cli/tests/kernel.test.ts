@@ -45,6 +45,24 @@ describe('campaignUiEnv', () => {
     expect(env.KODRANNI_EDGE_DEVICE_KEY).toBeTruthy();
   });
 
+  it('mints a device key for the desk even when Discord HTTP is off', () => {
+    const home = mkdtempSync(join(tmpdir(), 'kod-ui-env-'));
+    dirs.push(home);
+    const env = campaignUiEnv(
+      { KODRANNI_HOME: home },
+      {
+        host: '127.0.0.1',
+        port: 8742,
+        storePath: '/tmp/x.sqlite',
+        slug: 'vardmark',
+        bot: false,
+        edgeControlUrl: 'https://edge.test',
+      },
+    );
+    expect(env.KODRANNI_EDGE_DEVICE_KEY).toBeTruthy();
+    expect(env.KODRANNI_DISCORD_HTTP).toBeUndefined();
+  });
+
   it('keeps the token for the gateway hatch', () => {
     const home = mkdtempSync(join(tmpdir(), 'kod-ui-env-'));
     dirs.push(home);

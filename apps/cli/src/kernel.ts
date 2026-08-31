@@ -2,10 +2,11 @@
  * Host kernel: production campaign-ui + session-only tunnel.
  * Discord HTTP runs inside campaign-ui (same BotContext as sqlite).
  */
-import { type ChildProcess, spawn, spawnSync } from 'node:child_process';
+import { type ChildProcess, spawnSync } from 'node:child_process';
 import { createWriteStream, existsSync } from 'node:fs';
 import { join } from 'node:path';
-import { startEdgeSession } from '@kodranni/publish';
+import { pathToFileURL } from 'node:url';
+import { registerEdgeCampaign, startEdgeSession } from '@kodranni/publish';
 import { publishEdgeArchive, publishSnapshotToEdge } from './edge-publish.js';
 import type { CampaignConfig } from '@kodranni/store';
 import {
@@ -53,8 +54,8 @@ export function campaignUiEnv(
     env.KODRANNI_PUBLIC_BASE_URL = opts.publicBaseUrl;
     env.KODRANNI_LIVE_BASE_URL = opts.publicBaseUrl;
   }
+  env.KODRANNI_EDGE_DEVICE_KEY = ensureEdgeDeviceKey(env);
   if (opts.bot) {
-    env.KODRANNI_EDGE_DEVICE_KEY = ensureEdgeDeviceKey(env);
     if (base.KODRANNI_DISCORD_GATEWAY === '1') {
       env.KODRANNI_DISCORD_GATEWAY = '1';
     } else {
@@ -115,8 +116,10 @@ export async function runLiveKernel(opts: {
   repoRoot: string;
   tunnel: boolean;
   bot: boolean;
+  /** Desk: operator only, no tunnel, Ctrl+C does not publish. */
+  desk?: boolean;
 }): Promise<void> {
-  const { slug, repoRoot, tunnel, bot } = opts;
+  const { slug, repoRoot, tunnel, bot, desk = false } = opts;
   const cfg = applyMachineDefaults(opts.cfg);
   ensureCampaignRuntime(slug);
   const logsDir = campaignRuntimeLogsDir(slug);
@@ -124,6 +127,12 @@ export async function runLiveKernel(opts: {
   const localUrl = `http://${host}:${port}`;
   const communityUrl = `${localUrl}/community/`;
   const startedAt = new Date().toISOString();
+  const publicEdge =
+    cfg.edgeUrl ?? process.env.KODRANNI_EDGE_URL?.trim() ?? productPublicEdgeUrl(cfg.slug);
+  const edgeControl =
+    cfg.edgeControlUrl ??
+    process.env.KODRANNI_EDGE_CONTROL_URL?.trim() ??
+    PRODUCT_EDGE_CONTROL_URL;
 
   writeLiveUrl(slug, localUrl);
   writeSessionState(slug, {
@@ -132,118 +141,93 @@ export async function runLiveKernel(opts: {
     localUrl,
     liveUrl: localUrl,
     tunnel: false,
+    pids: { live: process.pid },
   });
 
-  console.log(`Live campaign-ui for ${cfg.slug}`);
+  console.log(desk ? `Desk for ${cfg.name} (${cfg.slug})` : `Live table for ${cfg.name} (${cfg.slug})`);
   console.log(`  store: ${cfg.storePath}`);
-  console.log(`  local: ${localUrl}`);
-  console.log(`  bind:  ${host}:${port}`);
+  console.log(`  local: ${localUrl}/operator`);
+  const tableUrl = `${publicEdge.replace(/\/$/, '')}/community/?campaign=${encodeURIComponent(slug)}`;
+  if (slug !== 'vardmark' && slug !== 'demo' && slug !== 'play') {
+    console.log(`  public: ${tableUrl}`);
+  } else {
+    console.log(`  public: ${publicEdge.replace(/\/$/, '')}/community/`);
+  }
 
   ensureCampaignUiBuilt(repoRoot);
   const entry = campaignUiEntry(repoRoot);
   const liveLogPath = join(logsDir, 'live.log');
   const liveLog = createWriteStream(liveLogPath, { flags: 'a' });
-  liveLog.write(`\n--- live start ${startedAt} (production) ---\n`);
+  liveLog.write(`\n--- ${desk ? 'desk' : 'live'} start ${startedAt} ---\n`);
 
-  const edgeControl =
-    cfg.edgeControlUrl ??
-    process.env.KODRANNI_EDGE_CONTROL_URL?.trim() ??
-    PRODUCT_EDGE_CONTROL_URL;
-  const publicEdge =
-    cfg.edgeUrl ?? process.env.KODRANNI_EDGE_URL?.trim() ?? productPublicEdgeUrl(cfg.slug);
-
-  const ui = spawn(process.execPath, ['--experimental-sqlite', entry], {
-    cwd: join(repoRoot, 'apps/campaign-ui'),
-    detached: true,
-    stdio: ['ignore', 'pipe', 'pipe'],
-    env: campaignUiEnv(process.env, {
-      host,
-      port,
-      storePath: cfg.storePath,
-      slug: cfg.slug,
-      bot,
-      edgeControlUrl: edgeControl,
-      publicBaseUrl: publicEdge,
-    }),
-    shell: false,
+  const env = campaignUiEnv(process.env, {
+    host,
+    port,
+    storePath: cfg.storePath,
+    slug: cfg.slug,
+    bot: desk ? false : bot,
+    edgeControlUrl: edgeControl,
+    publicBaseUrl: publicEdge,
   });
+  for (const [k, v] of Object.entries(env)) {
+    if (k === 'NODE_OPTIONS') continue;
+    if (v === undefined) delete process.env[k];
+    else process.env[k] = v;
+  }
 
   let tunnelChild: ChildProcess | undefined;
-  let uiReady = false;
-
-  ui.stdout?.on('data', (b: Buffer) => {
-    process.stdout.write(b);
-    liveLog.write(b);
-  });
-  ui.stderr?.on('data', (b: Buffer) => {
-    process.stderr.write(b);
-    liveLog.write(b);
-  });
-
   const shutdown = () => {
     killChild(tunnelChild);
-    killChild(ui);
   };
   let stopping = false;
   const graceful = async () => {
     if (stopping) return;
     stopping = true;
-    console.log('\n  publishing archive to the edge…');
-    try {
-      await publishEdgeArchive(slug, cfg, localUrl);
-    } catch (e) {
-      console.error(`  archive: ${e instanceof Error ? e.message : e}`);
-    }
-    shutdown();
-    await new Promise((r) => setTimeout(r, 400));
-    if (ui.pid) {
+    if (!desk) {
+      console.log('\n  publishing archive to the edge…');
       try {
-        process.kill(-ui.pid, 'SIGKILL');
-      } catch {
-        try {
-          process.kill(ui.pid, 'SIGKILL');
-        } catch {
-          /* gone */
-        }
+        await publishEdgeArchive(slug, cfg, localUrl);
+      } catch (e) {
+        console.error(`  archive: ${e instanceof Error ? e.message : e}`);
       }
     }
-    process.exit(0);
-  };
-  process.on('SIGINT', () => void graceful());
-  process.on('SIGTERM', () => void graceful());
-
-  const uiExit = new Promise<number | null>((resolve, reject) => {
-    ui.on('exit', (code) => resolve(code));
-    ui.on('error', reject);
-  });
-
-  const earlyDeath = uiExit.then((code) => {
-    if (!uiReady) {
-      throw new Error(`campaign-ui exited ${code} before becoming ready`);
-    }
-    return code;
-  });
-
-  try {
-    console.log('  waiting for local UI (production)…');
-    await Promise.race([waitForHttp(communityUrl, { timeoutMs: 90_000 }), earlyDeath]);
-    uiReady = true;
-    console.log('  local UI ready');
-    notifySystemd('READY=1');
-  } catch (e) {
-    killChild(ui);
-    liveLog.write(`\n--- live failed: ${e instanceof Error ? e.message : e} ---\n`);
-    liveLog.end();
+    shutdown();
+    writeLiveUrl(slug, localUrl);
     writeSessionState(slug, {
       slug,
       startedAt,
       localUrl,
       liveUrl: localUrl,
       tunnel: false,
-      lastError: e instanceof Error ? e.message : e,
     });
+    liveLog.end();
+    process.exit(0);
+  };
+  process.on('SIGINT', () => void graceful());
+  process.on('SIGTERM', () => void graceful());
+
+  try {
+    await import(pathToFileURL(entry).href);
+  } catch (e) {
+    liveLog.write(`\n--- import failed: ${e instanceof Error ? e.message : e} ---\n`);
+    liveLog.end();
     throw e;
   }
+
+  try {
+    await registerEdgeCampaign({
+      edgeUrl: edgeControl,
+      campaignId: slug,
+      deviceKey: ensureEdgeDeviceKey(),
+    });
+  } catch (e) {
+    console.error(`  edge register: ${e instanceof Error ? e.message : e}`);
+  }
+
+  console.log('  waiting for local UI (production)…');
+  await waitForHttp(communityUrl, { timeoutMs: 90_000 });
+  console.log('  local UI ready');
+  notifySystemd('READY=1');
 
   writeSessionState(slug, {
     slug,
@@ -251,16 +235,16 @@ export async function runLiveKernel(opts: {
     localUrl,
     liveUrl: localUrl,
     tunnel: false,
-    pids: { live: ui.pid },
+    pids: { live: process.pid },
   });
 
-  if (tunnel) {
+  if (tunnel && !desk) {
     const bin = await findCloudflared();
     const edgeUrl = edgeControl;
     if (!bin) {
       console.error(
         'cloudflared not found on PATH.\n' +
-          '  Local UI is running; install cloudflared and re-run with --tunnel.',
+          '  Local UI is running; install cloudflared and re-run start.',
       );
     } else if (!edgeUrl) {
       console.error('  tunnel: skipped — set edge_control_url so the Worker can mint a token.');
@@ -289,11 +273,10 @@ export async function runLiveKernel(opts: {
           localUrl,
           liveUrl: publicUrl,
           tunnel: true,
-          pids: { live: ui.pid, tunnel: tunnelChild.pid },
+          pids: { live: process.pid, tunnel: tunnelChild.pid },
         });
         console.log(`  public: ${publicUrl}`);
         console.log(`  origin: ${minted.origin} (Worker only)`);
-        console.log('  (tunnel is live-only — session end tears it down; archive is the edge)');
         console.log(`  log:    ${tunnelLog}`);
       } catch (e) {
         killChild(tunnelChild);
@@ -304,18 +287,18 @@ export async function runLiveKernel(opts: {
           localUrl,
           liveUrl: localUrl,
           tunnel: false,
-          pids: { live: ui.pid },
+          pids: { live: process.pid },
           lastError: e instanceof Error ? e.message : String(e),
         });
         console.error(
           `  tunnel failed: ${e instanceof Error ? e.message : e}\n` +
-            '  Local UI still running.',
+            '  Desk still running locally.',
         );
       }
     }
   }
 
-  if (bot) {
+  if (bot && !desk) {
     const liveUrlNow = readLiveUrl(slug) ?? localUrl;
     const prev = readSessionState(slug);
     writeSessionState(slug, {
@@ -325,9 +308,9 @@ export async function runLiveKernel(opts: {
       liveUrl: liveUrlNow,
       tunnel: Boolean(prev?.tunnel),
       pids: {
-        live: ui.pid,
+        live: process.pid,
         tunnel: tunnelChild?.pid ?? prev?.pids?.tunnel,
-        bot: ui.pid,
+        bot: process.pid,
       },
     });
     try {
@@ -340,30 +323,13 @@ export async function runLiveKernel(opts: {
         const text = await boot.text().catch(() => '');
         throw new Error(`HTTP ${boot.status} ${text.slice(0, 120)}`);
       }
-      if (process.env.KODRANNI_DISCORD_GATEWAY === '1') {
-        console.log('  bot: gateway hatch in campaign-ui (KODRANNI_DISCORD_GATEWAY=1)');
-      } else {
-        console.log('  bot: HTTP interactions in campaign-ui (no bot token on the host)');
-      }
+      console.log('  bot: HTTP interactions in campaign-ui (no bot token on the host)');
     } catch (e) {
       console.error(`  bot: ${e instanceof Error ? e.message : e}`);
     }
   }
 
-  const code = await uiExit;
-  killChild(tunnelChild);
-  liveLog.write(`\n--- live exit code=${code} ---\n`);
-  liveLog.end();
-  writeLiveUrl(slug, localUrl);
-  writeSessionState(slug, {
-    slug,
-    startedAt,
-    localUrl,
-    liveUrl: localUrl,
-    tunnel: false,
-    lastError: code && code !== 0 ? `campaign-ui exited ${code}` : undefined,
+  await new Promise(() => {
+    /* run until SIGINT / SIGTERM */
   });
-  if (code !== 0 && code !== null) {
-    throw new Error(`campaign-ui exited ${code}`);
-  }
 }

@@ -1,5 +1,6 @@
 import { existsSync } from 'node:fs';
 import {
+  applyCampaignDiscordEnv,
   applyMachineDefaults,
   defaultCampaignTomlPath,
   defaultStorePath,
@@ -38,38 +39,7 @@ export async function runEmissary(opts: {
     check('node', true, `v${nodeV} (experimental-sqlite required for store)`),
   );
 
-  const secrets = loadSecretsIntoEnv();
-  const creds = platformCredentialStatus();
-  checks.push(
-    check(
-      'discord secrets',
-      creds.discord.ready,
-      creds.discord.ready
-        ? `guild${creds.discord.token ? '+token(hatch)' : ''}${creds.discord.playChannel ? '+play-channel' : ''} · ${secrets.dir}`
-        : `missing discord-serverID under ${secrets.dir} (bot token is Worker-only unless KODRANNI_DISCORD_GATEWAY=1)`,
-    ),
-  );
-  const fluxerPartial = creds.fluxer.token !== creds.fluxer.guild;
-  checks.push(
-    check(
-      'fluxer secrets',
-      !fluxerPartial,
-      creds.fluxer.ready
-        ? `token+guild${creds.fluxer.playChannel ? '+play-channel' : ''} loaded · adapter pending`
-        : fluxerPartial
-          ? 'partial — need both fluxer-botToken and fluxer-serverID'
-          : `none under ${secrets.dir} (optional until Fluxer adapter ships)`,
-    ),
-  );
-  checks.push(
-    check(
-      'tunnel token',
-      true,
-      creds.tunnelToken
-        ? 'KODRANNI_CF_TUNNEL_TOKEN set (named tunnel)'
-        : 'unset — quick tunnel does not need it',
-    ),
-  );
+  loadSecretsIntoEnv();
 
   let cfg = opts.cfg;
   const tomlPath = defaultCampaignTomlPath(opts.slug);
@@ -90,6 +60,39 @@ export async function runEmissary(opts: {
   } else {
     checks.push(check('campaign.toml', true, tomlPath));
   }
+
+  applyCampaignDiscordEnv(cfg);
+  const creds = platformCredentialStatus();
+  checks.push(
+    check(
+      'discord',
+      creds.discord.guild && creds.discord.playChannel,
+      creds.discord.guild
+        ? `guild${creds.discord.playChannel ? '+play-channel' : ''} bound${creds.discord.token ? ' · token hatch' : ''}`
+        : 'not bound — invite and pick on the operator desk',
+    ),
+  );
+  const fluxerPartial = creds.fluxer.token !== creds.fluxer.guild;
+  checks.push(
+    check(
+      'fluxer',
+      !fluxerPartial,
+      creds.fluxer.ready
+        ? `token+guild${creds.fluxer.playChannel ? '+play-channel' : ''} · adapter pending`
+        : fluxerPartial
+          ? 'partial — need both fluxer-botToken and fluxer-serverID'
+          : 'none (optional)',
+    ),
+  );
+  checks.push(
+    check(
+      'tunnel token',
+      true,
+      creds.tunnelToken
+        ? 'KODRANNI_CF_TUNNEL_TOKEN set (named-tunnel hatch)'
+        : 'unset — product path mints a tunnel',
+    ),
+  );
 
   const storePath = cfg.storePath || defaultStorePath(opts.slug);
   if (!existsSync(storePath)) {
@@ -112,7 +115,7 @@ export async function runEmissary(opts: {
     check(
       'cloudflared',
       Boolean(cf),
-      cf ? cf : 'not on PATH — install for live --tunnel',
+      cf ? cf : 'not on PATH — needed for kodranni start',
     ),
   );
 

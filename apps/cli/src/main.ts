@@ -1,5 +1,5 @@
 import { spawn } from 'node:child_process';
-import { existsSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { cryptoRng, mulberry32 } from '@kodranni/domain';
@@ -9,17 +9,24 @@ import {
   DEMO_SLUG,
   defaultCampaignTomlPath,
   destroyCampaignDir,
+  applyCampaignDiscordEnv,
   applyMachineDefaults,
+  applyPublicSnapshot,
+  emptyCommunity,
   ensureCampaignLayout,
   ensureCampaignRuntime,
   formatCredentialStatus,
+  listCampaignSlugs,
   loadSecretsIntoEnv,
   openSqliteStore,
+  parsePublicSnapshot,
   platformCredentialStatus,
+  productPublicEdgeUrl,
   readCampaignConfig,
   readLiveUrl,
   seedDemoCampaign,
   demoCharactersPresent,
+  slugFromCampaignName,
   writeCampaignConfig,
   type CampaignConfig,
 } from '@kodranni/store';
@@ -28,42 +35,24 @@ import { runLiveKernel } from './kernel.js';
 import { printSessionStatus, sessionEnd, sessionStart } from './session.js';
 
 function usage(code = 1): never {
-  console.log(`kodranni — local automation CLI
+  console.log(`kodranni — Storyteller host
 
-Adapters and bots call application services in-process — not this CLI.
-The CLI is for ST ops, session orchestration, and verification.
+  kodranni [--name <campaign name>] [--from snapshot.json]
+      Desk (Found if needed). No public tunnel.
+  kodranni start [--slug <id>]
+      Open the table. Players use kodranni.com/?campaign=<id>
+  kodranni stop [--slug <id>]
+      Publish archive and stop.
+  kodranni status [--slug <id>]
+  kodranni emissary [--slug <id>]
 
-Usage:
-  kodranni campaign init --slug <slug> --name <name>
-  kodranni campaign seed-demo [--slug ${DEMO_SLUG}] [--force]
-      Fresh demo (Guidebook: The Vardmark at Kelarn’s Bend). --force destroys first.
-      Auto-fills tunnel_mode / ST role from ~/.kodranni/secrets/ or env.
-  kodranni campaign sync-defaults [--slug <slug>]
-      Re-apply secrets/env into existing campaign.toml (no data wipe).
-  kodranni campaign destroy --slug <slug> [--yes]
-      Delete ~/.kodranni/campaigns/<slug> entirely (reconstruct with seed-demo).
-  kodranni campaign export-json --slug <slug> [--out path]
-  kodranni roll --slug <slug> --character <slug> --foundation <Name> [--skill <Name>]
-                [--tier 6|8|12] [--exertion 0|1|2] [--echo] [--debug-seed N]
-  kodranni st-roll --slug <slug> --label <name> --foundation <n> --skill <n>
-                [--tier 6|8|12] [--exertion 0|1] [--debug-seed N]
-  kodranni live --slug <slug> [--tunnel] [--bot]
-      Live campaign-ui. --tunnel: Cloudflare. --bot: Discord HTTP in the UI process (no bot token).
-  kodranni session start --slug <slug> [--tunnel] [--bot] [--detach] [--force]
-      Supervisor: live (+ optional tunnel + bot). One process tree; --detach backgrounds it.
-  kodranni session status --slug <slug>
-  kodranni session end --slug <slug> [--park-hostname]
-      Stop live/bot/tunnel; publish snapshot. Default: tunnel dies (no park). --park-hostname is a local-only mercy path.
-  kodranni campaign publish [--slug <slug>]
-      Write redacted snapshot.json (and local offline HTML) without ending a session.
-  kodranni emissary [--slug <slug>]
-      Readiness + live/archive access (what players should open).
-  kodranni bot --slug <slug>
-      Gateway hatch only (KODRANNI_DISCORD_GATEWAY=1). Prefer live --bot.
-  kodranni help
+Found:
+  kodranni --name "The Ash Hill"
+  kodranni --name "The Ash Hill" --from ./snapshot.json
 
-RNG: production rolls use crypto. --debug-seed is for verification only.
-Adapters/bots call packages/app in-process — not this CLI.
+Dev (same binary): campaign init|destroy|export-json|publish|seed-demo, session *, live, roll.
+
+No npm at the table. Bot token stays on the Worker.
 `);
   process.exit(code);
 }
@@ -95,7 +84,47 @@ function resolveRepoRoot(): string {
 
 async function loadConfig(slug: string): Promise<CampaignConfig> {
   loadSecretsIntoEnv();
-  return applyMachineDefaults(await readCampaignConfig(defaultCampaignTomlPath(slug)));
+  const cfg = applyMachineDefaults(await readCampaignConfig(defaultCampaignTomlPath(slug)));
+  applyCampaignDiscordEnv(cfg);
+  return cfg;
+}
+
+function publicTableUrl(slug: string): string {
+  const host = productPublicEdgeUrl(slug).replace(/\/$/, '');
+  if (slug === 'vardmark' || slug === 'demo' || slug === 'play') return `${host}/community/`;
+  return `${host}/community/?campaign=${encodeURIComponent(slug)}`;
+}
+
+function resolveSlug(args: string[]): string {
+  const s = arg(args, '--slug');
+  if (s) return s;
+  const all = listCampaignSlugs();
+  if (all.length === 1) return all[0]!;
+  if (all.includes(DEMO_SLUG)) return DEMO_SLUG;
+  if (all.length === 0) {
+    console.error('No campaign yet. Found one: kodranni --name "Your campaign"');
+    process.exit(1);
+  }
+  console.error(`Several campaigns (${all.join(', ')}). Pass --slug.`);
+  process.exit(1);
+}
+
+async function foundCampaign(name: string, snapshotPath?: string): Promise<string> {
+  const slug = slugFromCampaignName(name);
+  const cfg = await ensureCampaignLayout(slug, name);
+  const store = openSqliteStore(cfg.storePath);
+  if (snapshotPath) {
+    const raw = readFileSync(snapshotPath, 'utf8');
+    applyPublicSnapshot(store, parsePublicSnapshot(raw), slug);
+    console.log(`Restored campaign “${name}” (${slug}) from snapshot`);
+  } else {
+    store.putCommunity(emptyCommunity(slug, name));
+    console.log(`Found campaign “${name}” (${slug})`);
+  }
+  store.close();
+  console.log(`  public: ${publicTableUrl(slug)}`);
+  console.log(`  store:  ${cfg.storePath}`);
+  return slug;
 }
 
 function rngFromArgs(args: string[]) {
@@ -111,7 +140,60 @@ async function main(): Promise<void> {
   loadSecretsIntoEnv();
   const args = process.argv.slice(2);
   const cmd = args[0];
-  if (!cmd || cmd === 'help' || cmd === '-h' || cmd === '--help') usage(0);
+  if (cmd === 'help' || cmd === '-h' || cmd === '--help') usage(0);
+
+  if (!cmd || cmd === 'desk' || cmd.startsWith('-')) {
+    const name = arg(args, '--name');
+    const from = arg(args, '--from');
+    let slug = arg(args, '--slug');
+    if (!slug && name) slug = await foundCampaign(name, from);
+    else if (!slug) slug = resolveSlug(args);
+    else if (from) {
+      const cfg = await loadConfig(slug);
+      const store = openSqliteStore(cfg.storePath);
+      applyPublicSnapshot(store, parsePublicSnapshot(readFileSync(from, 'utf8')), slug);
+      store.close();
+      console.log(`Restored ${slug} from snapshot`);
+    }
+    const cfg = await loadConfig(slug);
+    await runLiveKernel({
+      slug,
+      cfg,
+      repoRoot: resolveRepoRoot(),
+      tunnel: false,
+      bot: false,
+      desk: true,
+    });
+    return;
+  }
+
+  if (cmd === 'start') {
+    const slug = resolveSlug(args);
+    const cfg = await loadConfig(slug);
+    await runLiveKernel({
+      slug,
+      cfg,
+      repoRoot: resolveRepoRoot(),
+      tunnel: !has(args, '--no-tunnel'),
+      bot: !has(args, '--no-bot'),
+      desk: false,
+    });
+    return;
+  }
+
+  if (cmd === 'stop') {
+    const slug = resolveSlug(args);
+    const cfg = await loadConfig(slug);
+    await sessionEnd(slug, cfg, { parkHostname: false });
+    return;
+  }
+
+  if (cmd === 'status') {
+    const slug = resolveSlug(args);
+    const cfg = await loadConfig(slug);
+    await printSessionStatus(slug, cfg);
+    return;
+  }
 
   if (cmd === 'campaign' && args[1] === 'init') {
     const slug = arg(args, '--slug');
@@ -162,7 +244,7 @@ async function main(): Promise<void> {
       console.log(`Demo already present for ${slug} (torvald, leifr).`);
       console.log(`  store: ${cfg.storePath}`);
       console.log(
-        `  Recreate (destroys the campaign directory): npm run kodranni -- campaign seed-demo --slug ${slug} --force`,
+        `  Recreate (destroys the campaign directory): kodranni campaign seed-demo --slug ${slug} --force`,
       );
       return;
     }
@@ -177,9 +259,9 @@ async function main(): Promise<void> {
         (process.env.KODRANNI_CF_TUNNEL_TOKEN ? ' · token from secrets/env' : ''),
     );
     console.log(
-      `  ST role: ${cfg.discordStorytellerRoleId ? 'discord set' : 'unset — add ~/.kodranni/secrets/discord-storytellerRoleID'}`,
+      `  ST role: ${cfg.discordStorytellerRoleId ? 'set' : 'unset — pick on the operator desk'}`,
     );
-    console.log(`  recreate: npm run kodranni -- campaign seed-demo --slug ${slug} --force`);
+    console.log(`  recreate: kodranni campaign seed-demo --slug ${slug} --force`);
     return;
   }
 
@@ -209,6 +291,30 @@ async function main(): Promise<void> {
     const out = arg(args, '--out') ?? join(process.cwd(), `${slug}-public.json`);
     writeFileSync(out, JSON.stringify(snap, null, 2));
     console.log(`Wrote ${out}`);
+    return;
+  }
+
+  if (cmd === 'campaign' && args[1] === 'restore') {
+    const from = arg(args, '--from');
+    if (!from) {
+      console.error('Need --from snapshot.json');
+      process.exit(1);
+    }
+    const name = arg(args, '--name');
+    let slug = arg(args, '--slug');
+    const raw = readFileSync(from, 'utf8');
+    const snap = parsePublicSnapshot(raw);
+    if (!slug) {
+      if (name) slug = slugFromCampaignName(name);
+      else slug = slugFromCampaignName(String(snap.community.name ?? snap.community.slug ?? ''));
+    }
+    const campaignName = name ?? String(snap.community.name ?? slug);
+    const cfg = await ensureCampaignLayout(slug, campaignName);
+    const store = openSqliteStore(cfg.storePath);
+    applyPublicSnapshot(store, snap, slug);
+    store.close();
+    console.log(`Restored campaign “${campaignName}” (${slug})`);
+    console.log(`  public: ${publicTableUrl(slug)}`);
     return;
   }
 
