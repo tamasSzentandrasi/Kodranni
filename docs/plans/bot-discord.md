@@ -9,19 +9,19 @@ Default Discord is **HTTP interactions** on the official app. The host never hol
 Discord Developer Portal → Interactions Endpoint URL: `https://kodranni.com/interactions`
 
 ```bash
-npm run kodranni -- live --slug vardmark --tunnel --bot
+kodranni start
 ```
 
-`--bot` starts the HTTP ChatPort **inside campaign-ui** (same process as sqlite / roll confirms). Channel cards go Worker → Discord REST. The bot token lives on the Worker (`DISCORD_BOT_TOKEN` secret) and in GitHub Actions for command registration.
+HTTP ChatPort runs **inside campaign-ui**. Channel cards go Worker → Discord REST. Bind guild / play channel / ST role from the **operator desk picker** (saved in `campaign.toml`). The bot token lives on the Worker and in GitHub Actions for command registration.
 
-Secrets are files under the config secrets dir (`~/.kodranni/secrets/` if that tree exists; otherwise `$XDG_CONFIG_HOME/kodranni/secrets`). libsecret (`secret-tool`) wins over files. An already-set env var wins over both.
+Snowflake files under the secrets dir remain a **hatch** (env > file > toml). Default path: no `printf`.
 
-| File | Env | On the host? |
+| File (hatch) | Env | On the host? |
 |------|-----|----------------|
-| `discord-serverID` | `DISCORD_GUILD_ID` | yes |
-| `discord-playChannelID` | `DISCORD_PLAY_CHANNEL_ID` | yes (access card on start) |
-| `discord-appID` | `DISCORD_APP_ID` | optional (payload carries it) |
-| `discord-storytellerRoleID` | `DISCORD_STORYTELLER_ROLE_ID` | yes |
+| `discord-serverID` | `DISCORD_GUILD_ID` | picker writes toml instead |
+| `discord-playChannelID` | `DISCORD_PLAY_CHANNEL_ID` | picker writes toml instead |
+| `discord-appID` | `DISCORD_APP_ID` | Worker (invite URL) |
+| `discord-storytellerRoleID` | `DISCORD_STORYTELLER_ROLE_ID` | picker writes toml instead |
 | `discord-botToken` | `DISCORD_BOT_TOKEN` | **no** (Worker / CI). Hatch only: `KODRANNI_DISCORD_GATEWAY=1` |
 | `discord-publicKey` | `DISCORD_PUBLIC_KEY` | Worker secret (Ed25519 verify) |
 | `fluxer-botToken` | `FLUXER_BOT_TOKEN` | later adapter |
@@ -59,18 +59,7 @@ Live sheet links use `runtime/live.url` or campaign `live_base_url`.
 
 ## Storyteller recognition
 
-Prefer a durable Storyteller role ID that survives campaign recreate:
-
-| File under `~/.kodranni/secrets/` | Env | Also written into |
-|-----------------------------------|-----|-------------------|
-| `discord-storytellerRoleID` | `DISCORD_STORYTELLER_ROLE_ID` | `campaign.toml` → `discord_storyteller_role_id` via seed/sync-defaults |
-| `fluxer-storytellerRoleID` | `FLUXER_STORYTELLER_ROLE_ID` | `fluxer_storyteller_role_id` |
-
-```bash
-printf '%s\n' '123456789012345678' > ~/.kodranni/secrets/discord-storytellerRoleID
-chmod 600 ~/.kodranni/secrets/discord-storytellerRoleID
-npm run kodranni -- campaign sync-defaults --slug vardmark
-```
+Prefer the operator desk picker (guild + play channel + ST role) written into `campaign.toml`. Hatch: secret files + `campaign sync-defaults`.
 
 Anyone with that guild role is treated as Storyteller for `/review`, Harm, `/intent`, Approve buttons, etc. Fallback remains `MemberRecord.role = storyteller` from emergency `/map`.
 

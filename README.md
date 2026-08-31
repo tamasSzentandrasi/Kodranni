@@ -20,59 +20,31 @@ Guidebook truth: fiction names Foundation + Skill + die tier → player confirms
 
 ---
 
-## One-time machine setup
+## Storyteller host (no npm at the table)
+
+Install the Linux tarball, then:
 
 ```bash
-cd /path/to/Kodranni
-npm install
-
-mkdir -p ~/.kodranni/secrets && chmod 700 ~/.kodranni/secrets
-# Discord
-printf '%s\n' '<bot-token>'     > ~/.kodranni/secrets/discord-botToken
-printf '%s\n' '<guild-id>'      > ~/.kodranni/secrets/discord-serverID
-printf '%s\n' '<play-channel>'  > ~/.kodranni/secrets/discord-playChannelID
-printf '%s\n' '<st-role-id>'    > ~/.kodranni/secrets/discord-storytellerRoleID
-# Named Cloudflare tunnel (optional but recommended)
-printf '%s\n' '<cf-run-token>'                > ~/.kodranni/secrets/cf-tunnel-token
-printf '%s\n' 'https://kodranni.yourdomain.com' > ~/.kodranni/secrets/cf-tunnel-hostname
-# Sheet edit HMAC
-printf '%s\n' "$(openssl rand -hex 32)" > ~/.kodranni/secrets/sheet-token-secret
-chmod 600 ~/.kodranni/secrets/*
+packaging/linux/install-user.sh
+kodranni --name "Your campaign"
+# optional restore: kodranni --name "Your campaign" --from ./snapshot.json
+kodranni start
+kodranni stop
 ```
 
-Secrets survive `campaign destroy` / `seed-demo --force`. Tokens are **not** written into `campaign.toml`.
+Players open `https://kodranni.com/community/?campaign=<id>` (Vardmark showcase is `https://demo.kodranni.com/community/`). On the operator desk: invite the official Discord app, then pick guild, play channel, and Storyteller role. The bot token stays on the Worker.
 
----
+Own domain means **own hosting** (deploy `apps/edge` on your Cloudflare). See `docs/plans/storyteller-host.md`.
 
-## Session (Storyteller)
+### Dev (this repo)
 
 ```bash
-# Reconstructible demo (auto-fills tunnel mode, hostname, ST role from secrets)
-npm run kodranni -- campaign seed-demo --force
-
-# Preferred: one supervisor — live UI + named tunnel + Discord bot
-npm run kodranni -- session start --slug vardmark --tunnel --bot
-
-# Status / stop
-npm run kodranni -- session status --slug vardmark
-npm run kodranni -- session end --slug vardmark
-
-# Readiness (what to share mid-session)
-npm run kodranni -- emissary --slug vardmark
+npm ci
+npm run kodranni -- --name "Your campaign"
+npm run kodranni -- start
 ```
 
-Re-apply secrets into an existing campaign without wiping data:
-
-```bash
-npm run kodranni -- campaign sync-defaults --slug vardmark
-```
-
-Still works as separate processes if you prefer:
-
-```bash
-npm run kodranni -- live --slug vardmark --tunnel   # terminal A
-npm run kodranni -- bot --slug vardmark               # terminal B
-```
+Vardmark demo (author machine): `npm run kodranni -- campaign seed-demo` then `kodranni start --slug vardmark`.
 
 ---
 
@@ -84,7 +56,7 @@ npm run kodranni -- bot --slug vardmark               # terminal B
 4. Rolls — **two equal paths**:
    - ST `/intent @player skill:…` (autocomplete) → player **Roll** → confirm → Cast
    - Player `/roll skill:…` (autocomplete) → same confirm (all **9** Foundations easy to change; Echo = **applies when agreed**) → Cast
-5. Result card: **Marks first**, die-tier language, sheet Link button, ST Harm / Exertion tools.
+5. Result card: **Marks first**, die-tier language, sheet Link, ST **Harm**. Exertion restore is `/reclaim`, not a result-card button.
 
 ---
 
@@ -119,11 +91,11 @@ Content: `src/content/docs/`. Deploy: GitHub Pages on `main`.
 | Area | State |
 |------|--------|
 | Guidebook | Living |
-| Live UI + named tunnel + emissary | Yes |
-| Discord bot (create / roll / intent / Wanting / Harm) | Yes — restart bot after pulls to refresh slash cmds |
-| Reconstructible demo + secret auto-fill | Yes |
-| Session supervisor (`session start --tunnel --bot`) | Yes |
-| Archive / one hostname | Kernel + snapshot + edge Function in-repo. `session end` no longer parks by default. See [infra-devsecops.md](docs/plans/infra-devsecops.md) |
+| Live UI + tunnel + emissary | Yes — `kodranni start` / `stop` |
+| Discord (create / roll / intent / Harm / `/reclaim`) | Yes — bind from the operator desk picker |
+| Reconstructible demo | `campaign seed-demo` (author). Players Found a **campaign name** |
+| Archive / one hostname | KV snapshot + Worker. Dark = no host process |
+| DevSecOps | **Verify-ready** — [manual-test-plan.md](docs/plans/manual-test-plan.md) |
 | Fluxer | Creds load; adapter pending |
 
 Plans: [infra-devsecops.md](docs/plans/infra-devsecops.md) · [automation-status.md](docs/plans/automation-status.md) · [bot-discord.md](docs/plans/bot-discord.md) · [live-tunnel.md](docs/plans/live-tunnel.md) · [automation-architecture.md](docs/plans/automation-architecture.md)

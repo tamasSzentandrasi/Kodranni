@@ -118,5 +118,5 @@ npm run kodranni -- campaign seed-demo --force   # or sync-defaults only
 | Foundation ≠ guiding | Common; all 9 on confirm |
 | Hexagonal | Adapters → `packages/app`; CLI = ST ops only |
 | Live access | One hostname; tunnel behind Pages Function ([`infra-devsecops.md`](./infra-devsecops.md) I1/I4). ST-supplied named-tunnel secrets are interim. |
-| Session shape | One production process + session-only `cloudflared` (I6). Current npm-child supervisor is interim. |
+| Session shape | One production process + session-only `cloudflared` (I6). `kodranni start` / `stop`. |
 | Archive | KV `public.json` + product archive app. No campaign git repo (I2). Park-process is not the archive. |
