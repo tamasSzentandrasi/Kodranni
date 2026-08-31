@@ -4245,6 +4245,16 @@ body.wanting-lock .wanting-scrim {
   display: block;
 }
 
+/* Pay happens on Core. The scrim must not eat those clicks (or treat them as Cancel). */
+body.wanting-pay .wanting-scrim {
+  pointer-events: none;
+  background: rgba(5, 5, 5, 0.12);
+}
+
+body.wanting-pay .skill__more {
+  display: none;
+}
+
 .wanting-panel {
   --kod-corner-size: 0.82rem;
   position: fixed;
@@ -4327,6 +4337,8 @@ body.wanting-lock .wanting-scrim {
 
 .wanting-menu__item {
   --kod-plate-wash: var(--kod-soot), var(--kod-tool);
+  position: relative;
+  z-index: 1;
   display: grid;
   gap: 0.15rem;
   margin: 0;
@@ -4341,10 +4353,15 @@ body.wanting-lock .wanting-scrim {
 }
 
 .wanting-menu__item:hover,
-.wanting-menu__item:focus-visible {
+.wanting-menu__item:focus-visible,
+.wanting-menu__item--active {
   --kod-tool: linear-gradient(180deg, rgba(0, 0, 0, 0.12), transparent 42%);
   border-color: var(--kod-frame-tick-hot);
   background: var(--kod-plate-wash), #161412;
+}
+
+.wanting-menu__item--active {
+  border-color: var(--kod-blood-bright);
 }
 
 .wanting-menu__buy {

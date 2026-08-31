@@ -203,6 +203,7 @@
     patch(wanting);
 
     refreshAffordability(fp, sp);
+    syncWantingMenuAfford();
   }
 
   async function pollCreation() {
@@ -550,6 +551,11 @@
     payPick = null;
     foundPick = null;
     document.body.classList.remove('wanting-pay');
+    if (wanting) {
+      wanting.querySelectorAll('[data-wanting-menu]').forEach((btn) => {
+        btn.classList.remove('wanting-menu__item--active');
+      });
+    }
     updatePayPickUi();
   }
 
@@ -882,6 +888,10 @@
     fields.innerHTML = '';
     clearPayPick();
     document.body.classList.add('wanting-pay');
+    wanting.querySelectorAll('[data-wanting-menu]').forEach((btn) => {
+      if (!(btn instanceof HTMLElement)) return;
+      btn.classList.toggle('wanting-menu__item--active', btn.getAttribute('data-wanting-menu') === menu);
+    });
 
     const labels = {
       plus_one_foundation: '+1 Foundation · pick Found + 3 skill ranks on Core',
