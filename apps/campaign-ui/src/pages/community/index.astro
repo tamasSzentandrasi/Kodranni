@@ -3,13 +3,10 @@ export const prerender = false;
 
 import { communityInner, type HallView } from '@kodranni/hall-render';
 import CampaignLayout from '../../layouts/CampaignLayout.astro';
-import HallRites from '../../components/HallRites.astro';
-import { collectFactions } from '../../lib/format';
 import { loadCommunity } from '../../data/load';
 
 const c = loadCommunity();
 const live = c.source === 'live';
-const factions = collectFactions(c.factions, c.outsiders ?? []);
 const view: HallView = {
   generatedAt: c.generatedAt,
   community: {
@@ -23,10 +20,11 @@ const view: HallView = {
     placements: c.placements,
     outsiders: c.outsiders ?? [],
     factions: c.factions,
+    fortunesFoundedAt: live ? c.fortunesFoundedAt : undefined,
   },
   characters: c.characters,
 };
-const hallHtml = communityInner(view, { live });
+const hallHtml = communityInner(view, { live, canEdit: false });
 ---
 
 <CampaignLayout
@@ -37,7 +35,6 @@ const hallHtml = communityInner(view, { live });
   source={c.source}
 >
   <Fragment set:html={hallHtml} />
-  <HallRites live={live} factions={factions} />
 
   <button type="button" id="kod-hall-banner" class="hall-banner" hidden>
     Record changed — refresh

@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import type { PublicSnapshot } from '@kodranni/store';
+import { communityInner } from '../src/hall.js';
+import { hallViewFromSnapshot } from '../src/format.js';
 import { archiveRoute, renderArchivePage } from '../src/pages.js';
 
 const snap: PublicSnapshot = {
@@ -107,6 +109,8 @@ describe('renderArchivePage', () => {
     expect(html).toContain('/design/campaign.css');
     expect(html).toContain('/hall-client.js');
     expect(html).not.toContain('No archive yet');
+    expect(html).toContain('data-source="snapshot"');
+    expect(html).not.toContain('data-rite-open');
   });
 
   it('renders the roster and a read-only sheet', () => {
@@ -151,5 +155,27 @@ describe('renderArchivePage', () => {
     expect(renderArchivePage(JSON.stringify(snap), '/design/campaign.css', new URLSearchParams())).toBeNull();
     expect(renderArchivePage(JSON.stringify(snap), '/hall-client.js', new URLSearchParams())).toBeNull();
     expect(renderArchivePage(JSON.stringify(snap), '/brand/falcon-logo.png', new URLSearchParams())).toBeNull();
+  });
+});
+
+describe('communityInner', () => {
+  it('sets live source and founding stamp; plus only when canEdit', () => {
+    const view = hallViewFromSnapshot({
+      ...snap,
+      community: { ...snap.community, fortunesFoundedAt: '2026-08-01T00:00:00.000Z' },
+    });
+    const unsigned = communityInner(view, { live: true, canEdit: false });
+    expect(unsigned).toContain('data-source="live"');
+    expect(unsigned).toContain('data-founded="2026-08-01T00:00:00.000Z"');
+    expect(unsigned).not.toContain('data-rite-open');
+
+    const signed = communityInner(view, { live: true, canEdit: true });
+    expect(signed).toContain('data-rite-open="figure"');
+    expect(signed).toContain('data-rite-open="faction"');
+
+    const archive = communityInner(view);
+    expect(archive).toContain('data-source="snapshot"');
+    expect(archive).toContain('data-founded=""');
+    expect(archive).not.toContain('data-rite-open');
   });
 });

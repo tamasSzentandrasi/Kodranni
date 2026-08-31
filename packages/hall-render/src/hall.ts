@@ -15,8 +15,12 @@ import {
 } from './format.js';
 import { infoBtn, sectionHead } from './layout.js';
 
-export function communityInner(view: HallView, opts?: { live?: boolean }): string {
+export function communityInner(
+  view: HallView,
+  opts?: { live?: boolean; canEdit?: boolean },
+): string {
   const live = opts?.live === true;
+  const canEdit = live && opts?.canEdit === true;
   const c = view.community;
   const factions = collectFactions(c.factions, c.outsiders ?? []);
   const tips = whoWeSeeMap(view.characters, c.placements ?? [], c.outsiders ?? []);
@@ -24,13 +28,15 @@ export function communityInner(view: HallView, opts?: { live?: boolean }): strin
     view.characters.filter((ch) => (ch.kind ?? 'pc') !== 'npc' && ch.kind !== 'notable').map((ch) => ch.slug),
   );
   const people = inspectPeopleJson(view, factions);
+  const source = live ? 'live' : 'snapshot';
+  const founded = live && c.fortunesFoundedAt ? c.fortunesFoundedAt : '';
   return `${findPanel(c.hierarchyAxes ?? [], factions)}
-<div class="hall" data-slug="${escAttr(c.slug)}" data-source="snapshot" data-founded="">
+<div class="hall" data-slug="${escAttr(c.slug)}" data-source="${escAttr(source)}" data-founded="${escAttr(founded)}">
   ${fortunePlates(c.fortunes)}
-  ${hierarchy(c, tips, pcSlugs, live)}
+  ${hierarchy(c, tips, pcSlugs, canEdit)}
   <div class="hall__porch">
     ${outsiders(c.outsiders ?? [], factions)}
-    ${factionList(factions, live)}
+    ${factionList(factions, canEdit)}
   </div>
   ${myths(c.myths ?? [])}
 </div>
