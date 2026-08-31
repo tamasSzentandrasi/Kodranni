@@ -129,9 +129,13 @@ export function campaignFromUrl(
   if (host === 'kodranni.com' || host === 'www.kodranni.com') {
     if (url.pathname.startsWith('/Guidebook')) return null;
     if (url.pathname === '/' || url.pathname === '/index.html') return null;
+    const fromCookie = aliasCampaign(campaignFromCookie(cookieHeader), fallback);
     if (isCampaignAppPath(url.pathname)) {
-      return aliasCampaign(campaignFromCookie(cookieHeader), fallback) ?? fallback;
+      return fromCookie ?? fallback;
     }
+    // Live CSS/JS/images have no ?campaign= — use the hall cookie so the
+    // Worker still proxies them to the tunnel (demo.* always has a campaign).
+    if (fromCookie) return fromCookie;
     return null;
   }
   if (host === 'demo.kodranni.com' || host === 'play.kodranni.com') return fallback;
@@ -441,7 +445,15 @@ function withForwarded(request: Request, dest: URL): Headers {
   h.set('host', dest.host);
   h.set('x-forwarded-host', new URL(request.url).host);
   h.set('x-forwarded-proto', new URL(request.url).protocol.replace(':', ''));
-  h.delete('cookie');
+  const kept: string[] = [];
+  for (const part of (request.headers.get('cookie') ?? '').split(';')) {
+    const name = part.trim().split('=')[0];
+    if (name === 'kod_edit' || name === 'kod_setup' || name === 'kodranni_campaign') {
+      kept.push(part.trim());
+    }
+  }
+  if (kept.length) h.set('cookie', kept.join('; '));
+  else h.delete('cookie');
   return h;
 }
 

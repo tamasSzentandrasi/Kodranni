@@ -82,6 +82,19 @@ describe('campaignFromUrl', () => {
     ).toBe('ash-hill');
   });
 
+  it('uses the campaign cookie for live CSS on kodranni.com', () => {
+    expect(
+      campaignFromUrl(
+        new URL('https://kodranni.com/_astro/CampaignLayout.css'),
+        'vardmark',
+        'kodranni_campaign=vardmark',
+      ),
+    ).toBe('vardmark');
+    expect(
+      campaignFromUrl(new URL('https://kodranni.com/_astro/CampaignLayout.css'), 'vardmark'),
+    ).toBeNull();
+  });
+
   it('maps a campaign-named subdomain to that slug', () => {
     expect(campaignFromUrl(new URL('https://ash-hill.kodranni.com/'))).toBe('ash-hill');
   });
@@ -268,6 +281,96 @@ describe('edge handler', () => {
       expect(live.status).toBe(200);
       expect(await live.text()).toContain('href="/characters/torvald/?campaign=y"');
       expect(live.headers.get('set-cookie') ?? '').toContain('kodranni_campaign=y');
+    } finally {
+      globalThis.fetch = prev;
+    }
+  });
+
+  it('forwards sheet and campaign cookies to the live origin', async () => {
+    const e = env();
+    const campaign = 'y';
+    const deviceKey = 'c'.repeat(32);
+    await handleEdgeRequest(
+      new Request(`https://kodranni.com/control/register?campaign=${campaign}`, {
+        method: 'POST',
+        body: JSON.stringify({ deviceKey }),
+      }),
+      e,
+    );
+    const originBody = JSON.stringify({ origin: 'https://origin.example' });
+    await handleEdgeRequest(
+      new Request(`https://kodranni.com/control/session?campaign=${campaign}`, {
+        method: 'POST',
+        headers: { authorization: `Bearer ${campaign}:${sign(deviceKey, originBody)}` },
+        body: originBody,
+      }),
+      e,
+    );
+
+    const prev = globalThis.fetch;
+    let seenCookie = '';
+    globalThis.fetch = async (_input, init) => {
+      const headers = init?.headers;
+      seenCookie = headers instanceof Headers ? (headers.get('cookie') ?? '') : '';
+      return new Response('ok', { status: 200, headers: { 'content-type': 'text/html' } });
+    };
+    try {
+      await handleEdgeRequest(
+        new Request('https://kodranni.com/characters/torvald/?campaign=y', {
+          headers: { cookie: 'kod_edit=tok; kodranni_campaign=y; other=nope' },
+        }),
+        e,
+      );
+      expect(seenCookie).toContain('kod_edit=tok');
+      expect(seenCookie).toContain('kodranni_campaign=y');
+      expect(seenCookie).not.toContain('other=nope');
+    } finally {
+      globalThis.fetch = prev;
+    }
+  });
+
+  it('proxies live CSS on kodranni.com from the campaign cookie', async () => {
+    const e = env();
+    const campaign = 'y';
+    const deviceKey = 'c'.repeat(32);
+    await handleEdgeRequest(
+      new Request(`https://kodranni.com/control/register?campaign=${campaign}`, {
+        method: 'POST',
+        body: JSON.stringify({ deviceKey }),
+      }),
+      e,
+    );
+    const originBody = JSON.stringify({ origin: 'https://origin.example' });
+    await handleEdgeRequest(
+      new Request(`https://kodranni.com/control/session?campaign=${campaign}`, {
+        method: 'POST',
+        headers: { authorization: `Bearer ${campaign}:${sign(deviceKey, originBody)}` },
+        body: originBody,
+      }),
+      e,
+    );
+
+    const prev = globalThis.fetch;
+    const fetched: string[] = [];
+    globalThis.fetch = async (input) => {
+      fetched.push(String(input instanceof Request ? input.url : input));
+      return new Response('body{color:red}', {
+        status: 200,
+        headers: { 'content-type': 'text/css' },
+      });
+    };
+    try {
+      const res = await handleEdgeRequest(
+        new Request('https://kodranni.com/_astro/CampaignLayout.css', {
+          headers: { cookie: 'kodranni_campaign=y' },
+        }),
+        e,
+      );
+      expect(fetched.some((u) => u.includes('origin.example/_astro/CampaignLayout.css'))).toBe(
+        true,
+      );
+      expect(res.status).toBe(200);
+      expect(await res.text()).toBe('body{color:red}');
     } finally {
       globalThis.fetch = prev;
     }
