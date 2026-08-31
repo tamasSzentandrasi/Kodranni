@@ -16,26 +16,26 @@ import { completeMemberPlacements } from './hierarchy.js';
 import { normalizeEcho } from './echo-effects.js';
 import type { CommunityStorePort } from './port.js';
 import { redactCharacterForPublic } from './redact.js';
+import { DEFAULT_LABEL_GROUPS, migrateCommunityLabels } from './labels.js';
 
 /** @deprecated Prefer CommunityStorePort — SQLite is one adapter. */
 export type SqliteCommunityStore = CommunityStorePort;
 
 function normalizeCommunity(raw: CommunityRecord): CommunityRecord {
-  return {
+  const myths = (raw.myths ?? []).map((m) => {
+    if ('effects' in m && Array.isArray(m.effects)) return m;
+    const legacy = m as { title: string; summary?: string };
+    return { title: legacy.title, summary: legacy.summary, effects: [] };
+  });
+  return migrateCommunityLabels({
     ...raw,
-    myths: (raw.myths ?? []).map((m) => {
-      if ('effects' in m && Array.isArray(m.effects)) return m;
-      // Legacy { title, summary } → empty effects
-      const legacy = m as { title: string; summary?: string };
-      return { title: legacy.title, summary: legacy.summary, effects: [] };
-    }),
+    myths,
     outsiders: raw.outsiders ?? [],
-    factions: raw.factions ?? [],
     placements: raw.placements ?? [],
     hierarchyAxes: raw.hierarchyAxes ?? ['Arms', 'Faith', 'Coin', 'Blood'],
     pendingMoves: raw.pendingMoves ?? [],
     fortuneMeta: raw.fortuneMeta ?? {},
-  };
+  });
 }
 
 function normalizeCharacter(raw: CharacterRecord): CharacterRecord {
@@ -61,6 +61,7 @@ function normalizeCharacter(raw: CharacterRecord): CharacterRecord {
     },
     echoCapacity: raw.echoCapacity ?? 0,
     echoWeight: raw.echoWeight ?? 0,
+    labelIds: raw.labelIds ?? [],
   };
   return refreshCharacterDerived(ch);
 }
@@ -342,5 +343,8 @@ export function emptyCommunity(slug: string, name: string): CommunityRecord {
     ruler: null,
     placements: [],
     outsiders: [],
+    labelGroups: DEFAULT_LABEL_GROUPS.map((g) => ({ ...g })),
+    labels: [],
+    factions: [],
   };
 }

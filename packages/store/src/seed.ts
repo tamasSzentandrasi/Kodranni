@@ -4,6 +4,7 @@ import type { CommunityStorePort } from './port.js';
 import { emptyCommunity } from './sqlite.js';
 import { refreshCharacterDerived } from './derived.js';
 import { makeEcho } from './echo-effects.js';
+import { upsertFactionLabel, upsertTagLabel } from './labels.js';
 
 /** Demo identity: Guidebook seed “The Vardmark at Kelarn’s Bend”. */
 export const DEMO_SEED_ID = 'vardmark-kelarns-bend';
@@ -539,28 +540,37 @@ export function seedDemoCampaign(
       })),
     ),
   ];
+  const reed = upsertFactionLabel(community, 'Reed-marsh folk', 142);
+  const rival = upsertFactionLabel(community, 'Rival war-band', 18);
+  const grain = upsertTagLabel(community, 'Grain store');
+  const ford = upsertTagLabel(community, 'Ford watch');
+  const captives = upsertTagLabel(community, 'Captives');
   community.outsiders = [
     {
       name: 'Mara of the Reeds',
-      faction: 'Reed-marsh folk',
       note: 'Speaks for grain and silence; will not bleed free for foreign occupiers at the Bend.',
+      labelIds: [reed.id],
     },
     {
       name: 'Jorun of the Channels',
-      faction: 'Reed-marsh folk',
       note: 'Scout of the channels; knows every path that can starve or feed the ford.',
+      labelIds: [reed.id],
     },
     {
       name: 'Skard Ketilsson',
-      faction: 'Rival war-band',
       note: 'Same campaign of conquest; means to stake the next ford before the Vardmark hardens theirs.',
+      labelIds: [rival.id, ford.id],
     },
     {
       name: 'Inga Skardsdottir',
-      faction: 'Rival war-band',
       note: 'Herald and bargainer for the rival band — offers terms that never quite favour the Vardmark.',
+      labelIds: [rival.id],
     },
   ];
+  torvald.labelIds = [grain.id];
+  leifr.labelIds = [ford.id];
+  sten.labelIds = [ford.id];
+  bera.labelIds = [captives.id];
   community.ruler = null;
 
   store.putCommunity(community);

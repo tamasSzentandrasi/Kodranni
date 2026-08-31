@@ -42,7 +42,10 @@ describe('addHallOutsider', () => {
     const store = demoStore();
     const community = addHallOutsider(store, { name: 'Ash-horn', faction: 'Reed-marsh folk' });
     const row = community.outsiders.find((o) => o.name === 'Ash-horn');
-    expect(row).toEqual({ name: 'Ash-horn', faction: 'Reed-marsh folk' });
+    const reed = community.labels?.find((l) => l.name === 'Reed-marsh folk');
+    expect(reed).toBeTruthy();
+    expect(row?.labelIds).toContain(reed!.id);
+    expect(row?.faction).toBeUndefined();
     const placed = completeMemberPlacements(community, store.listCharacters()).filter(
       (p) => p.name === 'Ash-horn',
     );
@@ -61,9 +64,10 @@ describe('addHallOutsider', () => {
 describe('addCommunityFaction', () => {
   it('stores a named hue and rejects duplicates', () => {
     const store = demoStore();
-    const community = addCommunityFaction(store, { name: 'Reed-marsh folk', hue: 142 });
-    expect(community.factions).toEqual([{ name: 'Reed-marsh folk', hue: 142 }]);
-    expect(() => addCommunityFaction(store, { name: 'reed-marsh folk', hue: 10 })).toThrow(
+    const community = addCommunityFaction(store, { name: 'Ash banner', hue: 28 });
+    expect(community.labels?.some((l) => l.name === 'Ash banner' && l.hue === 28)).toBe(true);
+    expect(community.factions?.some((f) => f.name === 'Ash banner' && f.hue === 28)).toBe(true);
+    expect(() => addCommunityFaction(store, { name: 'ash banner', hue: 10 })).toThrow(
       /already listed/i,
     );
     store.close();

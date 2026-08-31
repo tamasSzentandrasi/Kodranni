@@ -11,6 +11,7 @@ export * from './sqlite.js';
 export * from './seed.js';
 export * from './derived.js';
 export * from './hierarchy.js';
+export * from './labels.js';
 export * from './port.js';
 export * from './echo-effects.js';
 export * from './runtime.js';

@@ -38,6 +38,23 @@ export interface FoundationMyth {
   effects: MythEffect[];
 }
 
+export type LabelKind = 'faction' | 'tag';
+
+/** Viewer aspect: Factions (world groups) or ST tags. Not a hierarchy axis. */
+export interface LabelGroup {
+  id: string;
+  name: string;
+  kind: LabelKind;
+}
+
+export interface Label {
+  id: string;
+  groupId: string;
+  name: string;
+  /** 0–360. Required for faction labels; omitted on tags. */
+  hue?: number;
+}
+
 export interface HierarchyPlacement {
   name: string;
   axis: string;
@@ -46,15 +63,21 @@ export interface HierarchyPlacement {
   characterSlug?: string;
   /** Short who-we-see / flavour for diagram hover (NPCs without a full sheet). */
   note?: string;
+  /** Unsheeted kin only; sheeted people use CharacterRecord.labelIds. */
+  labelIds?: string[];
 }
 
 export interface OutsiderRecord {
   /** Always a person — never a faction label as the name. */
   name: string;
-  /** Faction / banner this person answers to (colour-coded in the UI). */
-  faction?: string;
   note?: string;
   characterSlug?: string;
+  labelIds?: string[];
+  /**
+   * @deprecated Migrated to labelIds by normalizeCommunity.
+   * Keep optional so old sqlite JSON parses.
+   */
+  faction?: string;
 }
 
 export type FortuneKey = 'vitality' | 'cohesion' | 'surplus' | 'standing' | 'tradition';
@@ -96,7 +119,12 @@ export interface CommunityRecord {
   rulerCharacterSlug?: string;
   placements: HierarchyPlacement[];
   outsiders: OutsiderRecord[];
-  /** Named outsider banners with a chosen hue (0–360). */
+  labelGroups?: LabelGroup[];
+  labels?: Label[];
+  /**
+   * Derived from faction labels on read. Do not treat as source of truth.
+   * @deprecated Use labels + labelGroups.
+   */
   factions?: { name: string; hue: number }[];
   /** ISO. Absent until founding; live hall only. */
   fortunesFoundedAt?: string;
@@ -277,6 +305,8 @@ export interface CharacterRecord {
     items: InventoryItem[];
   };
   flags: { decadence: boolean; overCapacity: boolean };
+  /** Faction and tag memberships. Multi. */
+  labelIds?: string[];
 }
 
 export interface MemberRecord {

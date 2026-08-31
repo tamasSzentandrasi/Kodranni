@@ -1,5 +1,7 @@
 import {
   refreshCharacterDerived,
+  FACTION_GROUP_ID,
+  upsertFactionLabel,
   type CharacterRecord,
   type CommunityRecord,
   type CommunityStorePort,
@@ -258,7 +260,9 @@ export function setFortunes(store: CommunityStorePort, cmd: SetFortunesCommand):
 
 export interface AddHallOutsiderCommand {
   name: string;
+  /** Faction name — upserts a faction label and attaches it. */
   faction?: string;
+  labelIds?: string[];
   actor?: string;
 }
 
@@ -273,18 +277,23 @@ export function addHallOutsider(
     (o) => o.name.toLowerCase() === name.toLowerCase(),
   );
   if (exists) throw new Error('that outsider is already on the porch');
+  const labelIds = [...(cmd.labelIds ?? [])];
   const faction = cmd.faction?.trim();
+  if (faction) {
+    const lab = upsertFactionLabel(community, faction);
+    if (!labelIds.includes(lab.id)) labelIds.push(lab.id);
+  }
   community.outsiders = [
     ...(community.outsiders ?? []),
-    { name, faction: faction || undefined },
+    { name, labelIds: labelIds.length ? labelIds : undefined },
   ];
   store.putCommunity(community);
   store.appendEvent({
     type: 'ResourceChanged',
     actor: cmd.actor,
-    payload: { kind: 'outsider_added', name, faction },
+    payload: { kind: 'outsider_added', name, labelIds, faction },
   });
-  return community;
+  return store.getCommunity();
 }
 
 export interface AddCommunityFactionCommand {
@@ -301,19 +310,18 @@ export function addCommunityFaction(
   if (!name) throw new Error('faction name required');
   const hue = Number.isFinite(cmd.hue) ? ((cmd.hue % 360) + 360) % 360 : 0;
   const community = store.getCommunity();
-  const factions = [...(community.factions ?? [])];
-  if (factions.some((f) => f.name.toLowerCase() === name.toLowerCase())) {
-    throw new Error('faction already listed');
-  }
-  factions.push({ name, hue });
-  community.factions = factions;
+  const existing = (community.labels ?? []).find(
+    (l) => l.groupId === FACTION_GROUP_ID && l.name.toLowerCase() === name.toLowerCase(),
+  );
+  if (existing) throw new Error('faction already listed');
+  upsertFactionLabel(community, name, hue);
   store.putCommunity(community);
   store.appendEvent({
     type: 'ResourceChanged',
     actor: cmd.actor,
     payload: { kind: 'faction_added', name, hue },
   });
-  return community;
+  return store.getCommunity();
 }
 
 export interface SetSuppliesCommand {
