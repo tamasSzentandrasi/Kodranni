@@ -84,5 +84,5 @@ export function renderArchivePage(
       }),
     };
   }
-  return { status: 404, html: '' };
+  return null;
 }

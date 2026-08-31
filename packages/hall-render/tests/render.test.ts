@@ -126,4 +126,10 @@ describe('renderArchivePage', () => {
     );
     expect(page?.status).toBe(404);
   });
+
+  it('returns null for chrome assets so the Worker can serve files', () => {
+    expect(renderArchivePage(JSON.stringify(snap), '/design/campaign.css', new URLSearchParams())).toBeNull();
+    expect(renderArchivePage(JSON.stringify(snap), '/hall-client.js', new URLSearchParams())).toBeNull();
+    expect(renderArchivePage(JSON.stringify(snap), '/brand/falcon-logo.png', new URLSearchParams())).toBeNull();
+  });
 });

@@ -216,10 +216,8 @@ export async function handleEdgeRequest(
     (request.method === 'GET' || request.method === 'HEAD') &&
     isProductPath(url, campaign)
   ) {
-    if (env.ASSETS) {
-      const asset = await env.ASSETS.fetch(request);
-      if (asset.status !== 404) return asset;
-    }
+    const asset = await serveStaticAsset(request, env);
+    if (asset) return asset;
     return proxyProduct(request, env, url);
   }
 
@@ -409,9 +407,9 @@ export async function handleEdgeRequest(
     }
   }
 
-  if (env.ASSETS && (request.method === 'GET' || request.method === 'HEAD')) {
-    const asset = await env.ASSETS.fetch(request);
-    if (asset.status !== 404) return asset;
+  if (request.method === 'GET' || request.method === 'HEAD') {
+    const asset = await serveStaticAsset(request, env);
+    if (asset) return asset;
   }
 
   if (
@@ -491,6 +489,15 @@ async function proxyLive(
   }
 }
 
+async function serveStaticAsset(request: Request, env: EdgeEnv): Promise<Response | null> {
+  if (!env.ASSETS) return null;
+  const url = new URL(request.url);
+  url.searchParams.delete('campaign');
+  const asset = await env.ASSETS.fetch(new Request(url, request));
+  if (asset.status === 404) return null;
+  return asset;
+}
+
 function publicLocation(requestUrl: URL, location: string, campaign: string): string {
   const next = new URL(location, requestUrl);
   next.protocol = requestUrl.protocol;
@@ -518,12 +525,23 @@ function campaignHomeRedirect(url: URL, campaign: string): Response {
   return new Response(null, { status: 302, headers });
 }
 
+/** Hall/roster/sheet keep ?campaign= on the product host. CSS, fonts, and images do not. */
+export function shouldStampCampaign(path: string): boolean {
+  const p = path.split('?')[0] ?? path;
+  const bare = p.endsWith('/') && p.length > 1 ? p.slice(0, -1) : p;
+  if (bare === '' || bare === '/' || bare === '/index.html') return true;
+  if (bare === '/community' || bare.startsWith('/community/')) return true;
+  if (bare === '/characters' || bare.startsWith('/characters/')) return true;
+  return false;
+}
+
 function stampCampaignLinks(html: string, campaign: string, hostname: string): string {
   if (!isPublicProductHost(hostname)) return html;
   return html.replace(/\b(href|src|action)="(\/[^"]*)"/gi, (full, attr: string, path: string) => {
     if (path.startsWith('//')) return full;
     if (/[?&]campaign=/.test(path)) return full;
     if (path.startsWith('/Guidebook')) return full;
+    if (!shouldStampCampaign(path)) return full;
     const sep = path.includes('?') ? '&' : '?';
     return `${attr}="${path}${sep}campaign=${encodeURIComponent(campaign)}"`;
   });

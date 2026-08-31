@@ -1,6 +1,12 @@
 import { createHmac } from 'node:crypto';
 import { describe, expect, it } from 'vitest';
-import { campaignFromUrl, handleEdgeRequest, kvKey, type KvLike } from '../src/handler.js';
+import {
+  campaignFromUrl,
+  handleEdgeRequest,
+  kvKey,
+  shouldStampCampaign,
+  type KvLike,
+} from '../src/handler.js';
 
 class MemoryKv implements KvLike {
   store = new Map<string, string>();
@@ -23,6 +29,16 @@ function env() {
     DEFAULT_CAMPAIGN: 'vardmark',
   };
 }
+
+describe('shouldStampCampaign', () => {
+  it('stamps hall routes and leaves chrome files alone', () => {
+    expect(shouldStampCampaign('/community/')).toBe(true);
+    expect(shouldStampCampaign('/characters/torvald/')).toBe(true);
+    expect(shouldStampCampaign('/design/campaign.css')).toBe(false);
+    expect(shouldStampCampaign('/hall-client.js')).toBe(false);
+    expect(shouldStampCampaign('/brand/falcon-logo.png')).toBe(false);
+  });
+});
 
 describe('campaignFromUrl', () => {
   it('prefers ?campaign=', () => {
@@ -305,6 +321,54 @@ describe('edge handler', () => {
     } finally {
       globalThis.fetch = prev;
     }
+  });
+
+  it('serves archive CSS and images from ASSETS instead of a 404 page', async () => {
+    const e = {
+      ...env(),
+      ASSETS: {
+        async fetch(request: Request) {
+          const path = new URL(request.url).pathname;
+          if (path === '/design/campaign.css') {
+            return new Response('body{color:red}', {
+              status: 200,
+              headers: { 'content-type': 'text/css' },
+            });
+          }
+          return new Response('missing', { status: 404 });
+        },
+      },
+    };
+    const snap = JSON.stringify({
+      generatedAt: 't',
+      schemaVersion: 1,
+      community: { slug: 'vardmark', name: 'The Vardmark', fortunes: {} },
+      characters: [],
+    });
+    await e.CAMPAIGNS.put(kvKey('vardmark', 'snapshot'), snap);
+
+    const css = await handleEdgeRequest(
+      new Request('https://demo.kodranni.com/design/campaign.css'),
+      e,
+    );
+    expect(css.status).toBe(200);
+    expect(await css.text()).toBe('body{color:red}');
+
+    const stamped = await handleEdgeRequest(
+      new Request('https://kodranni.com/design/campaign.css?campaign=vardmark'),
+      e,
+    );
+    expect(stamped.status).toBe(200);
+    expect(await stamped.text()).toBe('body{color:red}');
+
+    const html = await handleEdgeRequest(
+      new Request('https://kodranni.com/community/?campaign=vardmark'),
+      e,
+    );
+    const body = await html.text();
+    expect(body).toContain('href="/design/campaign.css"');
+    expect(body).not.toContain('/design/campaign.css?campaign=');
+    expect(body).toContain('href="/community/?campaign=vardmark"');
   });
 
   it('serves hall-render HTML from the snapshot, not a dummy shell', async () => {
