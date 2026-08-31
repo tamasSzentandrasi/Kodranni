@@ -1,296 +1,335 @@
-# Manual test plan — Kodranni table stack
+# Manual test — Kodranni table (current stack)
 
-**Build:** post-merge (`7264cdc`+) — plate/hall UI + table stack (U5/U6/supervisor)  
-**Goal:** Fresh pass after reconcile with Guidebook visuals. Capture results for triage.
+**What this is:** one evening at the table, in order. Dark archive first, then live, Discord, sheets, then the same URL becoming archive again.
 
-**Archive / hostname:** locked target is [`infra-devsecops.md`](./infra-devsecops.md) (one hostname, KV snapshot, no park-process, no campaign git repo). Section I still exercises **current interim park**. Do not mark park-as-product as `pass`.
+**Architecture lock:** [`infra-devsecops.md`](./infra-devsecops.md). Live and archive are **one hostname** in two states. There is no campaign git repo, no park-process, no bot token on the laptop (default path).
 
-### How to mark
+**Do not use:** `session end --park-hostname` as the product. Named-tunnel tokens and `KODRANNI_DISCORD_GATEWAY=1` are hatches, not this run.
+
+---
+
+## How to mark
 
 | Status | Meaning |
 |--------|---------|
-| `pass` | Works as expected |
+| `pass` | Worked as described |
 | `fail` | Broken or wrong |
-| `skip` | Not exercised this run |
-| `n/a` | Not applicable in this setup |
+| `skip` | You did not try it |
+| `n/a` | Does not apply to this machine/guild |
 
-Leave **Status** blank until you run the check. Put notes only in **Notes** (not in the Status cell).
+Leave **Status** blank until you run the row. Write only in **Notes** (and the **Feedback** block under each section).
 
-For every `fail`, tag severity in Notes: **Blocker** · **Major** · **Minor** · **Nit** — plus where, steps, expected, actual.
+For every `fail`, start Notes with **Blocker** / **Major** / **Minor** / **Nit**, then: where, what you did, what you expected, what happened.
+
+Hard-refresh (or a private window) after session start and after Ctrl+C so you are not looking at a cached live page while the table is dark, or the reverse.
 
 ---
 
 ## Meta
 
-| | |
+| | Your fill |
 |--|--|
 | Tester | |
 | Date | |
-| Commit / branch | |
-| Public host | e.g. `https://kodranni.cosimomedia.com` |
+| Commit (`git rev-parse --short HEAD`) | |
 | Campaign slug | `vardmark` (or: ) |
+| Table URL | `https://kodranni.com/community/?campaign=vardmark` |
+| Showcase URL | `https://demo.kodranni.com/community/` |
+| Local UI | `http://127.0.0.1:8742/community/` |
+| Discord guild | |
+| Overall (fill last) | `ship` / `fix-then-ship` / `blocked` |
+
+**Run-wide notes**
+
+```
+(free write — surprises, mood, “this is the product” / “this is still a workshop”)
+```
 
 ---
 
-## A. Machine & secrets
+## 0. Before you sit down
+
+You need, on this machine:
+
+- Repo at a commit that includes archive sheets + Discord HTTP (anything on `main` after `a61f777` is fine).
+- Node 22, `npm ci` already done.
+- `~/.kodranni/campaigns/vardmark/` with sqlite. If empty: `npm run kodranni -- campaign seed-demo --slug vardmark`. If it says the demo is already present, leave it — only `--force` wipes the campaign.
+- Host secrets (files under `~/.kodranni/secrets/`, mode `600`):
+
+  | File | Needed for this run |
+  |------|---------------------|
+  | `discord-serverID` | yes |
+  | `discord-playChannelID` | yes (session card) |
+  | `discord-storytellerRoleID` | yes (ST commands) |
+  | `sheet-token-secret` | yes (edit links) |
+  | `edge-device-key` | created automatically if missing |
+  | `discord-botToken` | **no** — Worker only |
+
+- Discord Developer Portal → app → **Interactions Endpoint URL** = `https://kodranni.com/interactions`.
+- Two Discord accounts if you can: one with the ST role, one without.
+- A browser at desktop width, then once at a phone width (DevTools is enough).
+
+Commands are from the repo root.
+
+---
+
+## 1. Dark archive (laptop “off”)
+
+Do **not** start a session yet. If a leftover session is up:
+
+```bash
+npm run kodranni -- session end --slug vardmark
+```
+
+Wait ~5s. Then open the public URLs in a **private window**.
+
+| ID | Try this | Status | Notes |
+|----|----------|--------|-------|
+| 1.1 | `https://kodranni.com/community/?campaign=vardmark` loads a hall (Fortunes, hierarchy, Find), marked **archive** | | |
+| 1.2 | Same hall at `https://demo.kodranni.com/community/` | | |
+| 1.3 | Plate chrome, Bellefair, fortune ornaments, falcon logo — not unstyled HTML | | |
+| 1.4 | Find filters names; member links go to sheets and keep `?campaign=vardmark` on kodranni.com | | |
+| 1.5 | Open Torvald Core. Three-column sheet: exertion rail, identity, echo rail; foundations in Physical/Mental/Social; skill wheel with archetype medallions | | |
+| 1.6 | Echoes · Traits tab: names and weights, not a dump of fields | | |
+| 1.7 | Inventory: armour / food / water plates. Named items show **the name**; the note is behind **i**, not concatenated on the line | | |
+| 1.8 | Roster `/characters/?campaign=vardmark` lists published characters only (no drafts) | | |
+| 1.9 | Discord `/roll` (or any command) while dark: ephemeral “table is not live” plus an archive URL. No host call. | | |
+
+**Feedback (dark archive)**
+
+```
+```
+
+---
+
+## 2. Secrets & emissary (still dark)
 
 ```bash
 npm run kodranni -- campaign sync-defaults --slug vardmark
-cat ~/.kodranni/campaigns/vardmark/campaign.toml
+npm run kodranni -- emissary --slug vardmark
+ls -l ~/.kodranni/secrets
 ```
 
-| ID | Check | Status | Notes |
-|----|--------|--------|-------|
-| A1 | Secrets present under `~/.kodranni/secrets/` (bot, guild, play channel, ST role, tunnel token, hostname, sheet-token) | | |
-| A2 | `sync-defaults` sets `tunnel_mode=named`, hostname, `discord_storyteller_role_id` | | |
-| A3 | Cloudflare **token not** written into `campaign.toml` | | |
-| A4 | Secret files are mode `600` (not world-readable) | | |
+| ID | Try this | Status | Notes |
+|----|----------|--------|-------|
+| 2.1 | Secret files are `600`; directory not world-readable | | |
+| 2.2 | `campaign.toml` has `edge_url` / `edge_control_url`. No Cloudflare API token, no Discord bot token in the file | | |
+| 2.3 | Emissary: store ok, discord guild present. It may say local UI is down — that is correct while dark | | |
+| 2.4 | You did **not** need `discord-botToken` on the laptop for this run | | |
+
+**Feedback (machine)**
+
+```
+```
 
 ---
 
-## B. Session supervisor
+## 3. Start the live table
 
 ```bash
-npm run kodranni -- session end --slug vardmark --no-park   # clean if needed
 npm run kodranni -- session start --slug vardmark --tunnel --bot
 ```
 
-| ID | Check | Status | Notes |
-|----|--------|--------|-------|
-| B1 | Local UI: `http://127.0.0.1:8742/community/` loads (hall tracker) | | |
-| B2 | Startup prints public URL = named hostname | | |
-| B3 | Discord bot comes online in the **same** terminal/process tree | | |
-| B4 | `session status` shows live + tunnel + bot pids **alive** | | |
-| B5 | Local `/community/` and `/characters/` return **200** (not 404) once UI is ready | | |
-| B6 | Public hostname shows **live** UI (not archive face) while session up | | |
-| B7 | Ctrl+C stops children **without** a scary npm lifecycle failure | | |
+Leave this terminal open. Do not Ctrl+C until section 8.
 
-### Detach (optional)
+Watch the log for: local UI ready, public URL, `origin: origin-…kodranni.com (Worker only)`, `bot: HTTP interactions in campaign-ui`. Failures to write down: `snapshot PUT 401`, `tunnel failed`, `bot: HTTP 403`.
 
-```bash
-npm run kodranni -- session start --slug vardmark --tunnel --bot --detach --force
-npm run kodranni -- session status --slug vardmark
+| ID | Try this | Status | Notes |
+|----|----------|--------|-------|
+| 3.1 | Local `http://127.0.0.1:8742/community/` is the **live** hall (source “live store”, not archive) | | |
+| 3.2 | Startup printed a **public** URL (`https://demo.kodranni.com` or your `edge_url`), not `origin-*.kodranni.com` | | |
+| 3.3 | Bot line is HTTP in campaign-ui, **not** a gateway login / “in-process discord.js” | | |
+| 3.4 | Play channel got a session card with the community URL | | |
+| 3.5 | `npm run kodranni -- session status --slug vardmark` (second terminal): live pid alive, tunnel pid alive | | |
+| 3.6 | Hard-refresh `https://kodranni.com/community/?campaign=vardmark` — now **live**, same bookmark as 1.1 | | |
+| 3.7 | Hard-refresh `https://demo.kodranni.com/community/` — live as well | | |
+
+**Feedback (session start)**
+
+```
 ```
 
-| ID | Check | Status | Notes |
-|----|--------|--------|-------|
-| B8 | Supervisor log exists under `runtime/logs/` | | |
-| B9 | After ~5–10s, status probes are healthy (retry if early 404) | | |
+---
+
+## 4. Live hall (public URL)
+
+Stay on the **public** hostname, not only localhost.
+
+| ID | Try this | Status | Notes |
+|----|----------|--------|-------|
+| 4.1 | Hall reads as the plate/hall (fortunes, hierarchy, porch, myths) | | |
+| 4.2 | Find works; inspect drawer / tips work | | |
+| 4.3 | Character medallions / portraits on the hall load (no broken images) | | |
+| 4.4 | Open a sheet from the hall. Core layout holds: rails not overlapping identity; skill seals visible | | |
+| 4.5 | Narrow viewport (~390px): hall and sheet usable, not a spilled grid | | |
+
+**Feedback (live hall)**
+
+```
+```
 
 ---
 
-## C. Discord — identity & ST
+## 5. Operator desk is local only
 
-Use a **player** account and an account with the Storyteller **guild role**.
+| ID | Try this | Status | Notes |
+|----|----------|--------|-------|
+| 5.1 | `http://127.0.0.1:8742/operator` loads (session, snapshot download, ST desk link) | | |
+| 5.2 | `http://127.0.0.1:8742/emissary` is JSON and looks honest (store, device key, discord, session) | | |
+| 5.3 | `http://127.0.0.1:8742/community/setup/` is the ST desk **on localhost** | | |
+| 5.4 | The **public** host 404s (or does not show) `/operator`, `/emissary`, `/community/setup/` | | |
+| 5.5 | Snapshot download from operator is JSON without Discord snowflakes / `initiator` | | |
 
-| ID | Check | Status | Notes |
-|----|--------|--------|-------|
-| C1 | Player `/create` → ephemeral sheet link with edit token | | |
-| C2 | Channel draft / create card appears | | |
-| C3 | Opening edit link unlocks Core spends (plate UI) | | |
-| C4 | ST role can `/review`, `/intent`, `/award-word`, Harm | | |
-| C5 | Non-ST refused on ST-only commands | | |
-| C6 | `/kod-roll` (and other `kod-*`) absent / unknown | | |
-| C7 | Emissary (`kodranni emissary --slug …`) matches what you share mid-session | | |
+**Feedback (operator)**
 
----
-
-## D. Sheet — budgets & spends (creation)
-
-Unlocked draft with edit cookie/token. Expect **plate** chrome after visual merge.
-
-| ID | Check | Status | Notes |
-|----|--------|--------|-------|
-| D1 | Budget dock: Foundations / Skills / Words readable on plate styling | | |
-| D2 | Foundation: left-click raise, right-click refund (min I) | | |
-| D3 | Foundation at ∅: can raise; tip is not “At maximum” | | |
-| D4 | Skill: click works on **Practice rose / seal**, not only the name | | |
-| D5 | Unaffordable vs spendable affordance is clear | | |
-| D6 | Words = 0: muted Words card + “Awaiting Words…” CTA | | |
-| D7 | Draft tab: Name / Concept / Community tie / Who do we see? save all fields | | |
-| D8 | Portrait upload with edit link succeeds (jpg/png/webp) | | |
-| D9 | Portrait upload **without** edit link fails with a clear message | | |
+```
+```
 
 ---
 
-## E. Sheet — Wanting
+## 6. Discord — HTTP table
 
-| ID | Check | Status | Notes |
-|----|--------|--------|-------|
-| E1 | ST `/award-word` → Words update on sheet within ~2s **without** refresh | | |
-| E2 | Words card pulses / highlights when Words increase | | |
-| E3 | Open Wanting → top tracker; normal Found/Skill spends lock | | |
-| E4 | Pay-path dropdown options are readable (dark theme) | | |
-| E5 | Trait fields use placeholders (no sticky “New Trait” value) | | |
-| E6 | Pick Foundation on Core (incl. ∅ → raise); tracker tracks it | | |
-| E7 | Mark/unmark skill ranks on the **seal** (left / right click) | | |
-| E8 | Stage then Confirm Wanting (or Confirm auto-stages open form) | | |
-| E9 | Positive Trait appears under Echoes · Traits after confirm | | |
-| E10 | Close Wanting → spends unlock again | | |
-| E11 | Open Wanting at 0 Words → clear message; menu disabled | | |
+Use the official app in the bound guild. Player account vs ST-role account.
 
----
+Autocomplete is answered by the Worker from the skill catalog (works even if the host hiccups). Commands and buttons go: Discord → Worker (3s ACK) → your campaign-ui → Worker posts/edits the card.
 
-## F. Sheet — Echoes / Inventory (editors)
+| ID | Try this | Status | Notes |
+|----|----------|--------|-------|
+| 6.1 | `/roll` skill autocomplete: names with Foundation, filters as you type | | |
+| 6.2 | `/roll skill:Craft` (or similar) → confirm card (Foundations, Exertion cycle, Echo control, Cast) | | |
+| 6.3 | Cast → public Marks-first result card. “Live sheet” is a **link** (view, not an edit token) for an active PC | | |
+| 6.4 | Untrained skill (rating 0 / not on the sheet) still rolls | | |
+| 6.5 | `/roll` with **no** skill → Archetype picker → skill → same confirm | | |
+| 6.6 | ST `/intent @player skill:…` → only that player can press Roll | | |
+| 6.7 | Result: Why this pool? · Harm (ST) · Exertion reclaim (ST) | | |
+| 6.8 | Non-ST is refused on `/intent`, `/award-word`, `/review`, Harm | | |
+| 6.9 | `/create name:…` → ephemeral sheet link **with edit token**; draft appears | | |
+| 6.10 | No `kod-*` slash commands | | |
+| 6.11 | `/live` points at the **same** public hostname you have bookmarked | | |
 
-| ID | Check | Status | Notes |
-|----|--------|--------|-------|
-| F1 | Add Echo: placeholders only; save persists | | |
-| F2 | Weight raise/lower on Echo (left/right click) | | |
-| F3 | Group Echo (weight 2): can name involved people *(expect gap if not built)* | | |
-| F4 | Add Trait / Inventory item: placeholders; save persists | | |
-| F5 | Food/Water day numbers centered; ± works | | |
-| F6 | Armour panel fills column; cycle None → Light → Heavy | | |
-| F7 | Ink fields match plate aesthetic (not old smoke-box look) | | |
+**Feedback (Discord)**
+
+```
+```
 
 ---
 
-## G. Discord — rolls (retest after fixes)
+## 7. Live sheet (creation / Wanting / editors)
 
-### G1 Free roll
+Open the **edit** link from `/create` (player) or the ST signed link. Public view-only sheet should stay read-only.
 
-| ID | Check | Status | Notes |
-|----|--------|--------|-------|
-| G1.1 | `/roll` skill autocomplete (name · Foundation) | | |
-| G1.2 | Confirm card: all **9** Foundations; changing off guiding is easy | | |
-| G1.3 | Confirm: **Exertion** button cycles 0→1→2 (not only slash typing) | | |
-| G1.4 | Confirm: Echo control present *(today: toggle; desired: named Echoes — note gap)* | | |
-| G1.5 | Cast → Marks-first public card | | |
-| G1.6 | Die language: **Disadvantage / Equal / Advantage** (not Harder/Ordinary/Easier) | | |
-| G1.7 | Result “Live sheet” is a Link button; **view** URL (no edit token) for locked/active PC | | |
-| G1.8 | Confirm “Open sheet” link behaviour acceptable for draft vs locked | | |
-| G1.9 | **Untrained** skill (rating 0 / not on sheet) **rolls successfully** | | |
-| G1.10 | Slash `tier` choices show Disadvantage / Equal / Advantage labels | | |
+| ID | Try this | Status | Notes |
+|----|----------|--------|-------|
+| 7.1 | Edit link unlocks Core spends (budget dock). View URL does not | | |
+| 7.2 | Foundation: left-click raise, right-click refund (not below I except ∅ restore) | | |
+| 7.3 | Skill spend hits the **seal**, not only the name. Unaffordable vs spendable is obvious | | |
+| 7.4 | Portrait upload with edit link works; without it, a clear failure | | |
+| 7.5 | Draft / Who do we see? / concept / community tie save | | |
+| 7.6 | ST `/award-word` → Words on the sheet within ~2s, no full reload required | | |
+| 7.7 | Open Wanting: Found/Skill spends lock; confirm a trait; close Wanting, spends unlock | | |
+| 7.8 | Echoes tab: add/edit/save; weight left/right click | | |
+| 7.9 | Inventory: armour None → Light → Heavy; food/water ±; add a named item (name + note). After save, name is the line; note is **i** | | |
+| 7.10 | Sheet **Confirm** → pending review; ST Approve → locked; creation docks gone | | |
 
-### G2 Intent (equal path)
+**Feedback (sheets)**
 
-| ID | Check | Status | Notes |
-|----|--------|--------|-------|
-| G2.1 | ST `/intent @player skill:…` posts Intent card | | |
-| G2.2 | Only named player can Roll | | |
-| G2.3 | Roll → same confirm stance as free-roll | | |
-| G2.4 | Untrained skill via Intent also works | | |
-
-### G3 Fallback
-
-| ID | Check | Status | Notes |
-|----|--------|--------|-------|
-| G3.1 | `/roll` with no skill → Archetype → Skill → same confirm (no Found/Tier wizard pages) | | |
-
-### G4 Result tools
-
-| ID | Check | Status | Notes |
-|----|--------|--------|-------|
-| G4.1 | Why this pool? | | |
-| G4.2 | Harm (ST) | | |
-| G4.3 | Exertion reclaim (ST) — note if “top up” vs exact amount feels wrong | | |
+```
+```
 
 ---
 
-## H. Confirm → review → lock
+## 8. End session — same URL, archive
 
-| ID | Check | Status | Notes |
-|----|--------|--------|-------|
-| H1 | Sheet Confirm → pending review + channel card (or `/review`) | | |
-| H2 | ST Approve → active/locked; creation docks gone after refresh | | |
-| H3 | No stuck `wanting-lock` / edit chrome on locked sheet | | |
-| H4 | After lock, poll does not leave spend UI half-alive | | |
+In the session terminal:
+
+```text
+Ctrl+C
+```
+
+Expect: `publishing archive to the edge…`, then the process exits **without** `database is not open` / npm lifecycle error.
+
+| ID | Try this | Status | Notes |
+|----|----------|--------|-------|
+| 8.1 | Ctrl+C publishes; no sqlite “not open”; exit 0 | | |
+| 8.2 | Tunnel pid is gone (`session status`) | | |
+| 8.3 | Hard-refresh the **same** public community URL — archive again (1.1 face), not a 1016 / blank / live editor | | |
+| 8.4 | Character you just locked (or Torvald) still styled: rails, skill wheel, inventory names + **i** | | |
+| 8.5 | Drafts from `/create` that were never approved are **absent** from the archive roster | | |
+| 8.6 | Discord command while dark: not-live + archive URL (same as 1.9) | | |
+| 8.7 | `http://127.0.0.1:8742/community/` is down (host process stopped) | | |
+
+**Feedback (session end)**
+
+```
+```
 
 ---
 
-## I. Archive + hostname (interim park vs lock)
+## 9. Optional — start again, force, detach
 
-Locked behaviour: session end publishes `public.json`, tunnel **dies**, same hostname serves archive from the edge. Not implemented yet.
-
-Current code: named `session end` parks a local static `archive/` behind the still-running tunnel.
+Only if 1–8 were clean or you have extra time.
 
 ```bash
-npm run kodranni -- campaign publish --slug vardmark
+npm run kodranni -- session start --slug vardmark --tunnel --bot --force
+# later:
 npm run kodranni -- session end --slug vardmark
-# named default: still parks (interim)
 ```
 
-| ID | Check | Status | Notes |
-|----|--------|--------|-------|
-| I1 | `archive/` has `snapshot.json` (and current static pages) | | |
-| I2 | Drafts are **not** in the snapshot roster | | |
-| I3 | `session end --no-park` tears the tunnel down | | |
-| I4 | `session start --tunnel --bot --force` restores **live** UI on the public host | | |
-| I5 | Park-process archive is **not** the product — note only; see infra-devsecops I5/I10 | | n/a as pass/fail |
+| ID | Try this | Status | Notes |
+|----|----------|--------|-------|
+| 9.1 | `--force` recovers if a dead pid was left in `session.json` | | |
+| 9.2 | Public URL is live again within a minute | | |
+| 9.3 | `--detach` (if you try it): status works; `session end` tears tunnel + publishes | | |
 
----
+**Feedback (restart)**
 
-## J. Reconstruct survival
-
-```bash
-# Destructive — only if you can wipe the demo store
-npm run kodranni -- campaign seed-demo --slug vardmark --force
+```
 ```
 
-| ID | Check | Status | Notes |
-|----|--------|--------|-------|
-| J1 | After `--force`, toml still has named tunnel + ST role from secrets | | |
-| J2 | Demo characters **torvald** / **leifr** present | | |
-| J3 | No hand-edit of toml required for role/hostname | | |
-| J4 | `session start --tunnel --bot` works on fresh seed | | |
+---
+
+## 10. Visual pass (once, after the table works)
+
+| ID | Try this | Status | Notes |
+|----|----------|--------|-------|
+| 10.1 | Live hall and archive hall feel like the **same** room, edit off when dark | | |
+| 10.2 | Live Core vs archive Core: same bones (identity, rails, wheel). Archive has no spend chrome | | |
+| 10.3 | Inventory live (read-only) vs archive: named items look the same | | |
+| 10.4 | Nothing on the public hostname looks like a setup/debug page | | |
+
+**Feedback (look)**
+
+```
+```
 
 ---
 
-## K. Docs / DX
+## Suggested order (~60–90 min)
 
-| ID | Check | Status | Notes |
-|----|--------|--------|-------|
-| K1 | README session recipe matches what you actually run | | |
-| K2 | README secrets table matches your files | | |
-| K3 | Confusing / brittle README sections called out | | |
-| K4 | `kodranni help` lists `sync-defaults`, `publish`, `session … --bot` (park flags are interim) | | |
+1. Section 1 dark archive (10 min) — if this is ugly, stop and write it down; the rest of the night is the live table.
+2. Section 2 then 3 start (10 min).
+3. Sections 4–5 public hall + prove operator is local (10 min).
+4. Sections 6–7 Discord + sheet (30–40 min). This is the actual game.
+5. Section 8 Ctrl+C (10 min). Compare with section 1.
+6. 9–10 only if you still have steam.
 
----
-
-## L. Visual merge smoke (plate / hall)
-
-Quick pass that automation still fits the new Guidebook look.
-
-| ID | Check | Status | Notes |
-|----|--------|--------|-------|
-| L1 | Community tracker reads as hall / plate (not old smoke masks) | | |
-| L2 | Character Core: identity plate + tooled rails coherent | | |
-| L3 | Skill Practice rose/seal looks correct; spend affordance still obvious | | |
-| L4 | Budget / Wanting / Confirm docks match plate language | | |
-| L5 | Mobile / narrow viewport: docks usable enough to not block Core | | |
-
----
-
-## Known open gaps (do not mark pass if unimplemented)
-
-Track as `fail` + **Major/Minor** if you hit them, or `skip` if out of scope this run:
-
-| Gap | Expected eventual behaviour |
-|-----|-----------------------------|
-| Echo on confirm | Named Echoes from the character sheet, not only a boolean toggle |
-| Group Echo people | Stakeholder picker seeded from community hierarchy |
-| Exertion reclaim | Separate ST flow with **exact** reclaim amounts |
-| Archive hosting | One hostname + KV snapshot + product archive app; tunnel down when dark ([`infra-devsecops.md`](./infra-devsecops.md)) |
-| Oppose linking | Full parent-roll oppose chain |
-
----
-
-## Suggested run order (~60–90 min)
-
-1. A secrets → B supervisor → C Discord identity  
-2. D spends + avatar → E Wanting → F editors  
-3. G rolls (especially **G1.9 untrained** + die labels) → H lock  
-4. I archive/hostname (interim park; do not treat as the product) → J only if wiping is OK → K/L as time allows  
+Do **not** seed-demo `--force` unless you can throw the sqlite away.
 
 ---
 
 ## Sign-off
 
-| | |
+| | Your fill |
 |--|--|
-| Overall | `ship` / `fix-then-ship` / `blocked` / `prototype-only` |
+| Overall | `ship` / `fix-then-ship` / `blocked` |
 | Blockers (IDs) | |
 | Majors (IDs) | |
-| Top 3 to fix next | 1. … 2. … 3. … |
-| What improved since last pass | |
+| Top 3 to fix next | 1.  2.  3. |
+| What improved since last time you sat the table | |
 | What still hurts immersion | |
+| Would you start a real session on this tomorrow? | yes / not yet — why: |
+
+**Anything else**
+
+```
+```

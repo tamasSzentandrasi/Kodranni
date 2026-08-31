@@ -19,6 +19,7 @@ import {
   readCampaignConfig,
   readLiveUrl,
   seedDemoCampaign,
+  demoCharactersPresent,
   writeCampaignConfig,
   type CampaignConfig,
 } from '@kodranni/store';
@@ -155,6 +156,15 @@ async function main(): Promise<void> {
     }
     const cfg = await ensureCampaignLayout(slug, name);
     const store = openSqliteStore(cfg.storePath);
+    if (demoCharactersPresent(store)) {
+      store.close();
+      console.log(`Demo already present for ${slug} (torvald, leifr).`);
+      console.log(`  store: ${cfg.storePath}`);
+      console.log(
+        `  Recreate (destroys the campaign directory): npm run kodranni -- campaign seed-demo --slug ${slug} --force`,
+      );
+      return;
+    }
     seedDemoCampaign(store, cfg.slug, cfg.name);
     store.close();
     console.log(`Seeded demo: ${cfg.name} (${cfg.slug})`);

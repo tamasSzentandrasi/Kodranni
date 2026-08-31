@@ -10,6 +10,10 @@ export const DEMO_SEED_ID = 'vardmark-kelarns-bend';
 export const DEMO_SLUG = 'vardmark';
 export const DEMO_NAME = 'The Vardmark at Kelarn’s Bend';
 
+export function demoCharactersPresent(store: CommunityStorePort): boolean {
+  return Boolean(store.getCharacterBySlug('torvald') && store.getCharacterBySlug('leifr'));
+}
+
 /** Torvald Adzeson — carpenter who holds the seized grain store. */
 export function demoTorvald(): CharacterRecord {
   const ch: CharacterRecord = {

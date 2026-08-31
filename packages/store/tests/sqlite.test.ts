@@ -4,7 +4,7 @@ import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
 import { afterEach, describe, expect, it } from 'vitest';
 import { emptyCommunity, openSqliteStore } from '../src/sqlite.js';
-import { seedDemoCampaign } from '../src/seed.js';
+import { demoCharactersPresent, seedDemoCampaign } from '../src/seed.js';
 import { parseCampaignToml, serializeCampaignToml } from '../src/campaign-toml.js';
 import { publicSnapshotViolations } from '../src/redact.js';
 
@@ -229,6 +229,16 @@ describe('campaign.toml', () => {
     expect(cfg.tunnelMode).toBe('named');
     expect(cfg.tunnelHostname).toBe('https://live.example.com');
     expect(cfg.cloudflareTunnelToken).toBe('tok');
+  });
+
+  it('reports when the demo roster is already in the store', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'kodranni-store-'));
+    dirs.push(dir);
+    const store = openSqliteStore(join(dir, 'community.sqlite'));
+    expect(demoCharactersPresent(store)).toBe(false);
+    seedDemoCampaign(store);
+    expect(demoCharactersPresent(store)).toBe(true);
+    store.close();
   });
 
   it('close is idempotent', () => {
