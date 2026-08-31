@@ -4,12 +4,12 @@
 |-------|--------|
 | **Author** | _TBD_ |
 | **Date** | 2026-08-23 |
-| **Status** | **Historical.** Chrome and several product sentences are **superseded** by [`visual-lock.md`](./visual-lock.md) (2026-08-25). Keep this file for jobs, store fields, and the PR history of the 23 Aug programme. Do not implement new chrome from this document. |
+| **Status** | **Historical.** Chrome and several product sentences are **superseded** by [`visual-lock.md`](./visual-lock.md) (2026-08-31). Keep this file for jobs, store fields, and the PR history of the 23 Aug programme. Do not implement new chrome from this document. |
 | **Surfaces** | Landing (`public-root/index.html`), community tracker, character sheets, creation docks |
 | **Source of visual grammar** | **Was** Guidebook iron-silver plates (2026-08-18 / 08-22). **Now** iron structure + glass light + blood identity — see [`visual-lock.md`](./visual-lock.md). |
 | **Related** | [`visual-lock.md`](./visual-lock.md), [`docs/plans/starlight-guidebook.md`](docs/plans/starlight-guidebook.md), [`src/content/docs/automation.md`](src/content/docs/automation.md), [`docs/plans/automation-architecture.md`](docs/plans/automation-architecture.md) |
 
-**Superseded here (do not follow):** no stained-glass chrome; archive as a thinner face; play-time mutation bot-only / no ST web token; inspect drawer; Practice as a casual HUD-or-rose swap; Find as an always-on blood dock or a hidden-until-busy meta row. **Still true:** Fortune purpose; Wanting as a rite; founding as one board of five; Bellefair-only; falcon as the hall/sheet mark; Guidebook is purpose not a wireframe.
+**Superseded here (do not follow):** no stained-glass chrome; archive as a thinner face; play-time mutation bot-only / no ST web token; inspect drawer; Practice as a roundel/rose swap (pie stays); Find as hide/show-only; ST writes on the same player pages (ST desk is a **clone**, last); Discord cards out of scope. **Still true:** Fortune purpose; Wanting as a rite; founding as one board of five; Bellefair-only; falcon as the hall/sheet mark. Guidebook teaching is now in scope — see `visual-lock.md` and `documentation-gaps.md`.
 
 ---
 
@@ -1303,7 +1303,7 @@ Staged depth: landing buttons can ship before the tracker hall; the hall visual 
 
 ## Open Questions
 
-Author lock 2026-08-23, extended the same day. Items 1–2 still stand. Items 3–4 are **superseded** by [`visual-lock.md`](./visual-lock.md) (2026-08-25).
+Author lock 2026-08-23, extended the same day. Items 1–2 still stand. Items 3–4 are **superseded** by [`visual-lock.md`](./visual-lock.md) (2026-08-31). The ST desk is a clone of the remade hall/sheets, last; Fortune correction lives there.
 
 1. **Seal-ring behind the community name — Resolved: NONE.** The falcon is already the mark. Do not add a pewter stamp.
 2. **Budget remaining-points numeral — Resolved: KEEP BLOOD NUMERAL, PEWTER / GLASS BAR.** Blood as identity; fill bar and hover stay iron-silver (glass field allowed).

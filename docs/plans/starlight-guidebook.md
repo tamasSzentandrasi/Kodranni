@@ -1,10 +1,10 @@
 # Plan: Astro + Starlight Guidebook
 
-Living architecture for the Kodranni Guidebook. Rules locks and residual gaps live in [documentation-gaps.md](./documentation-gaps.md).
+Living architecture for the Kodranni Guidebook. Rules locks and residual gaps live in [documentation-gaps.md](./documentation-gaps.md) (rewritten 2026-08-31; do not use the 2026-08-18 checkmarks).
 
 **Status (2026-08-18, evening):** Harden-and-raise packages 0–8 are **shipped**. This file no longer describes upcoming work as if it were unstarted. The book is a coherent grim Guidebook. It is **not** at the pinnacle-peak look or the process standard we set. Verdict is in §Verdict.
 
-Chrome after 2026-08-22 (roses, glass cartouches, Marks roundels) and the 2026-08-25 unification lock live in [`visual-lock.md`](./visual-lock.md).
+Chrome after 2026-08-22 (roses, glass cartouches, Marks roundels) and the living visual + product lock: [`visual-lock.md`](./visual-lock.md) (2026-08-31). Teaching, examples, hierarchy/fortune pictures, and widget interactivity are **in scope**. Oculus / title-in-cast is **not** current work.
 
 ---
 
@@ -86,12 +86,12 @@ Short log. Original scaffold (`7c1882e`, 2026-08-09) assumed placeholder CSS, no
 
 ## Visual language (locked)
 
-Living chrome lock: [`visual-lock.md`](./visual-lock.md) (2026-08-25). This section is the book-facing summary. The 2026-08-18 line “no polychrome stained-glass chrome” is **superseded**: glass is material; chapter roses are pictures (frozen JPEGs) and may throw their own light onto the floor-cast beneath them. Theme colours do not leave.
+Living chrome lock: [`visual-lock.md`](./visual-lock.md) (2026-08-31). This section is the book-facing summary. The 2026-08-18 line “no polychrome stained-glass chrome” is **superseded**: glass is material; chapter roses are pictures (frozen JPEGs). Theme colours do not leave. Do **not** restart oculus / title-in-cast / sidebar roundels (25 Aug revert; rose-cast later lifted).
 
 - **Type:** Bellefair for titles *and* body. No second body face. Mitigate with contrast, shorter measure (~42–44rem), emphasis register, boxes, widgets — not a new family. Bellefair has only weight 400; do not fake-bold (`font-synthesis: none`).
 - **Colour:** iron / silver / blood. Dark only. No theme toggle. Stained glass is how chrome *catches light* (pewter leads, moonlight), not a second rainbow palette.
 - **Interactive chrome:** widgets, prev/next, scrollbar, term tips, step examples, Tide callouts use **iron + glass**. Blood stays on identity surfaces: chapter `hr` runes, example boxes, ST lanes, current-page sidebar, invented-seed category, portal falcon ring. Do not put blood on button hover.
-- **Ornament:** Tooled highlight, lamp-soot, smoke drop. Corners are thin forged L-straps (rivet + inner scroll) — blood on identity plates, pewter on interactive. Chapter title is a rose in an iron oculus (seal-ring as the stone); the rose JPEGs are frozen. Floor-cast keeps the rose’s own colour; the prose column after the Futhark `hr` stays black/silver/blood. No HUD ticks, no red title bar. No new Markdown class. H2 stays a hairline.
+- **Ornament:** Tooled highlight, lamp-soot, smoke drop. Corners are thin forged L-straps (rivet + inner scroll) — blood on identity plates, pewter on interactive. Chapter title roses are frozen JPEGs; product chrome around them is the current Guidebook face, not an oculus work order. No HUD ticks, no red title bar. No new Markdown class. H2 stays a hairline.
 - **ST humour (authorial, keep):** Introduction *“It's Fiiiine”*; Harm *“Don't worry. I'll kill you eventually.”* Do not add more gags by default.
 - **Plates:** `figure.kod-breath` after the first divider. Empty `alt` (decorative). Glossary and Automation have no start plate.
 - **Quotes:**

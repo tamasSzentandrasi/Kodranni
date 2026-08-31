@@ -16,7 +16,7 @@ A Kodranni **hibrid** asztali rendszer: először a történet, alatta a szoftve
 - **Állapot a tett pillanatában** — ki dob, mennyi **Exertion** maradt, **Echoes**, **Myths** — anélkül, hogy a lapokat chatbe gépelnéd.
 - **Online folytonosság** ülések között a közös lapokon és a közösségi lapon.
 
-Ez a lap az asztalnak szóló szerződés. A mérnöki irány a projekt forrásában van, és változik, ahogy a termék UI-ja kialakul.
+Ez a lap az asztalnak szóló szerződés. A mérnöki irány a projekt forrásában van, és változik, ahogy a termék UI-ja kialakul. A mesélő kampányeszközei egy webes pultra költöznek, amely a közös tracker és a lapok klónja; a Discord és a Fluxer marad az asztal beszélgetése és kockája. A **Harm** alkalmazása mindkét helyen létezhet.
 
 ----------
 
