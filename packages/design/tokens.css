@@ -49,6 +49,12 @@
     repeating-linear-gradient(-45deg, transparent 0 0.68rem, #050505 0.68rem 0.78rem),
     linear-gradient(180deg, rgba(198, 193, 184, 0.2), transparent 44%, rgba(0, 0, 0, 0.5));
   --kod-plus-ring: url('./ornament/plus-ring.svg');
+  --kod-plus-night: url('./ornament/plus-night.png');
+  --kod-plus-moon: url('./ornament/plus-moon.png');
+  --kod-find-night: url('./ornament/find-night.png');
+  --kod-find-moon: url('./ornament/find-moon.png');
+  --kod-mark-faction: url('./ornament/mark-faction.png');
+  --kod-mark-tag: url('./ornament/mark-tag.png');
   --kod-fortune-vitality: url('./ornament/fortunes/vitality.png');
   --kod-fortune-cohesion: url('./ornament/fortunes/cohesion.png');
   --kod-fortune-surplus: url('./ornament/fortunes/surplus.png');

@@ -1,5 +1,11 @@
 import type { CharacterRecord, HierarchyPlacement, Label, OutsiderRecord } from '@kodranni/store';
-import { FACTION_GROUP_ID, labelsByIds, migrateCommunityLabels, personLabelIds } from '@kodranni/store';
+import {
+  FACTION_GROUP_ID,
+  TAG_GROUP_ID,
+  labelsByIds,
+  migrateCommunityLabels,
+  personLabelIds,
+} from '@kodranni/store';
 import { esc, escAttr } from './escape.js';
 import {
   FORTUNE_BLURBS,
@@ -29,11 +35,11 @@ export function communityInner(
   const source = live ? 'live' : 'snapshot';
   const founded = live && c.fortunesFoundedAt ? c.fortunesFoundedAt : '';
   return `${findToggle()}${findPanel(c)}
-<div class="hall" data-slug="${escAttr(c.slug)}" data-source="${escAttr(source)}" data-founded="${escAttr(founded)}" data-view-group="${escAttr(FACTION_GROUP_ID)}">
+<div class="hall" data-slug="${escAttr(c.slug)}" data-source="${escAttr(source)}" data-founded="${escAttr(founded)}">
   ${fortunePlates(c.fortunes)}
-  ${aspectsRail(c)}
   ${hierarchy(c, tips, pcSlugs, canEdit, bySlug)}
   <div class="hall__porch">
+    ${porchLegend(c)}
     ${outsiders(c, bySlug)}
   </div>
   ${myths(c.myths ?? [])}
@@ -80,25 +86,16 @@ function labelsForPerson(
   return labelsByIds(c, personLabelIds({ character: ch, outsider, placement }));
 }
 
-function markVars(labels: Label[]): { n: number; style: string; ids: string } {
+function marksHtml(labels: Label[]): string {
   const shown = labels.slice(0, 3);
-  const parts: string[] = [];
-  shown.forEach((l, i) => {
-    if (l.hue != null) parts.push(`--m${i + 1}-h:${l.hue}`);
-    else parts.push(`--m${i + 1}-h:36`);
-  });
-  return {
-    n: shown.length,
-    style: parts.join(';'),
-    ids: labels.map((l) => l.id).join(' '),
-  };
+  if (shown.length === 0) return '';
+  const more =
+    labels.length > 3 ? `<span class="member__more" aria-hidden="true">+${labels.length - 3}</span>` : '';
+  return `<span class="member__marks" aria-hidden="true">${shown.map(markIcon).join('')}${more}</span>`;
 }
 
 function findToggle(): string {
-  return `<button type="button" class="hall-find-toggle" data-find-toggle aria-controls="kod-hall-find" aria-expanded="true">
-  <span class="hall-find-toggle__kicker">Hall</span>
-  <span class="hall-find-toggle__title">Find</span>
-</button>`;
+  return `<button type="button" class="hall-find-toggle" data-find-toggle aria-controls="kod-hall-find" aria-expanded="true" aria-label="Find in the hall"></button>`;
 }
 
 function findPanel(c: HallView['community']): string {
@@ -120,9 +117,7 @@ function findPanel(c: HallView['community']): string {
       const chips = labs
         .map((l) => {
           const hue = l.hue != null ? ` style="--label-h:${l.hue}"` : '';
-          const cls =
-            l.hue != null ? 'hall-search__chip hall-search__chip--hue' : 'hall-search__chip';
-          return `<button type="button" class="${cls}" data-filter="label" data-value="${escAttr(l.id)}" data-group="${escAttr(g.id)}" aria-pressed="false"${hue}>${esc(l.name)}</button>`;
+          return `<button type="button" class="hall-search__chip" data-filter="label" data-value="${escAttr(l.id)}" data-group="${escAttr(g.id)}" aria-pressed="false"${hue}>${markIcon(l)}${esc(l.name)}</button>`;
         })
         .join('');
       return `<div class="hall-search__group" role="group" aria-label="${escAttr(g.name)}" data-label-group="${escAttr(g.id)}">
@@ -134,7 +129,6 @@ function findPanel(c: HallView['community']): string {
   <header class="hall-search__head">
     <p class="hall-search__kicker">Hall</p>
     <h2 class="hall-search__title">Find</h2>
-    <button type="button" class="hall-search__hide" data-find-hide aria-label="Hide Find">Hide</button>
   </header>
   <div class="hall-search__lookup">
     <label class="hall-search__label" for="kod-hall-q">Name or banner</label>
@@ -161,39 +155,43 @@ function findPanel(c: HallView['community']): string {
 </aside>`;
 }
 
-function aspectsRail(c: HallView['community']): string {
-  const groups = (c.labelGroups ?? []).filter((g) => {
-    if (g.id === FACTION_GROUP_ID) return true;
-    return (c.labels ?? []).some((l) => l.groupId === g.id);
-  });
+function markKind(label: Label): 'faction' | 'tag' {
+  return label.groupId === FACTION_GROUP_ID ? 'faction' : 'tag';
+}
+
+function markIcon(label: Label): string {
+  const hue = label.hue != null ? ` style="--label-h:${label.hue}"` : '';
+  return `<i class="mark mark--${markKind(label)}" data-label-id="${escAttr(label.id)}" title="${escAttr(label.name)}"${hue}></i>`;
+}
+
+function porchLegend(c: HallView['community']): string {
+  const groups = (c.labelGroups ?? []).filter(
+    (g) => g.id === FACTION_GROUP_ID || g.id === TAG_GROUP_ID || (c.labels ?? []).some((l) => l.groupId === g.id),
+  );
   if (groups.length === 0) return '';
-  const tabs = groups
-    .map((g, i) => {
-      const selected = g.id === FACTION_GROUP_ID || (i === 0 && !groups.some((x) => x.id === FACTION_GROUP_ID));
-      return `<button type="button" class="hall-aspects__tab" role="tab" id="aspect-tab-${escAttr(g.id)}" data-aspect-group="${escAttr(g.id)}" aria-selected="${selected ? 'true' : 'false'}" aria-controls="aspect-panel-${escAttr(g.id)}">${esc(g.name)}</button>`;
-    })
-    .join('');
-  const panels = groups
+  const blocks = groups
     .map((g) => {
-      const selected = g.id === FACTION_GROUP_ID || groups[0]?.id === g.id;
+      const kind = g.id === FACTION_GROUP_ID ? 'faction' : 'tag';
       const labs = (c.labels ?? []).filter((l) => l.groupId === g.id);
-      const chips =
+      const keys =
         labs.length === 0
-          ? `<p class="hall-aspects__empty">None yet.</p>`
+          ? `<p class="hall-legend__empty">None yet.</p>`
           : labs
               .map((l) => {
                 const hue = l.hue != null ? ` style="--label-h:${l.hue}"` : '';
-                return `<button type="button" class="hall-aspects__label${l.hue != null ? ' hall-aspects__label--hue' : ''}" data-label-id="${escAttr(l.id)}" data-group="${escAttr(g.id)}" aria-pressed="false"${hue}>${esc(l.name)}</button>`;
+                return `<button type="button" class="hall-legend__item" data-label-id="${escAttr(l.id)}" data-group="${escAttr(g.id)}" aria-pressed="false"${hue}>${markIcon(l)}<span class="hall-legend__name">${esc(l.name)}</span></button>`;
               })
               .join('');
-      return `<div class="hall-aspects__panel" role="tabpanel" id="aspect-panel-${escAttr(g.id)}" data-aspect-panel="${escAttr(g.id)}" ${selected && g.id === FACTION_GROUP_ID ? '' : 'hidden'}>${chips}</div>`;
+      return `<div class="hall-legend__group" data-legend-group="${escAttr(g.id)}">
+      <p class="hall-legend__kind"><i class="mark mark--${kind}" aria-hidden="true"></i>${esc(g.name)}</p>
+      ${keys}
+    </div>`;
     })
     .join('');
-  return `<section class="hall-aspects kod-plate" data-hall-aspects aria-label="Hall views">
-    <p class="hall-aspects__kicker">View</p>
-    <div class="hall-aspects__tabs" role="tablist" aria-label="Label groups">${tabs}</div>
-    ${panels}
-  </section>`;
+  return `<aside class="kod-plate hall-legend" data-hall-legend aria-label="Marks">
+    <p class="hall-legend__kicker">Marks</p>
+    ${blocks}
+  </aside>`;
 }
 
 function fortunePlates(values: Record<string, number> | undefined): string {
@@ -226,7 +224,7 @@ function memberName(opts: {
   labels?: Label[];
 }): string {
   const labels = opts.labels ?? [];
-  const marks = markVars(labels);
+  const ids = labels.map((l) => l.id).join(' ');
   const cls = [
     'member',
     opts.pc && 'member--pc',
@@ -235,15 +233,11 @@ function memberName(opts: {
   ]
     .filter(Boolean)
     .join(' ');
-  const extra =
-    labels.length > 3
-      ? `<span class="member__more" aria-hidden="true">+${labels.length - 3}</span>`
-      : '';
+  const marks = marksHtml(labels);
   const pending = opts.pending
-    ? `<span class="member__knot" aria-hidden="true">◆</span>${esc(opts.name)}${extra}<span class="member__pending">pending</span>`
-    : `${esc(opts.name)}${extra}`;
-  const style = marks.n ? ` style="${escAttr(marks.style)}"` : '';
-  const data = `class="${cls}" data-inspect-id="${escAttr(opts.personId)}" data-name="${escAttr(opts.name)}" data-kind="${escAttr(opts.kind ?? 'npc')}"${opts.slug ? ` data-slug="${escAttr(opts.slug)}"` : ''}${opts.tip ? ` data-tip="${escAttr(opts.tip)}"` : ''}${opts.roving ? ' tabindex="-1"' : ''}${marks.ids ? ` data-label-ids="${escAttr(marks.ids)}"` : ''}${marks.n ? ` data-mark-n="${marks.n}"` : ''}${style}`;
+    ? `<span class="member__knot" aria-hidden="true">◆</span>${marks}${esc(opts.name)}<span class="member__pending">pending</span>`
+    : `${marks}${esc(opts.name)}`;
+  const data = `class="${cls}" data-inspect-id="${escAttr(opts.personId)}" data-name="${escAttr(opts.name)}" data-kind="${escAttr(opts.kind ?? 'npc')}"${opts.slug ? ` data-slug="${escAttr(opts.slug)}"` : ''}${opts.tip ? ` data-tip="${escAttr(opts.tip)}"` : ''}${opts.roving ? ' tabindex="-1"' : ''}${ids ? ` data-label-ids="${escAttr(ids)}"` : ''}`;
   if (opts.slug) return `<a ${data} href="/characters/${escAttr(opts.slug)}/">${pending}</a>`;
   return `<span ${data}>${pending}</span>`;
 }
@@ -274,7 +268,7 @@ function hierarchy(
       })
     : `<p class="hier-ruler__note">One seat for the whole community — none claimed.</p>`;
   const add = live
-    ? `<div class="hier-add"><button type="button" class="kod-plus" data-rite-open="figure" aria-label="Add a character"><span class="kod-plus__ring" aria-hidden="true"></span><span class="kod-plus__mark" aria-hidden="true">+</span></button></div>`
+    ? `<div class="hier-add"><button type="button" class="kod-plus" data-rite-open="figure" aria-label="Add a character"></button></div>`
     : '';
   const axes = (c.hierarchyAxes ?? [])
     .map((axis, ai) => {

@@ -329,8 +329,6 @@
     document.documentElement.classList.toggle('find-closed', !open);
     if (searchRoot) searchRoot.hidden = !open;
     if (findToggle) findToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-    const hide = searchRoot && searchRoot.querySelector('[data-find-hide]');
-    if (hide) hide.hidden = !open;
     saveBag();
   }
 
@@ -377,8 +375,6 @@
         applyView();
       });
     });
-    const hideBtn = searchRoot.querySelector('[data-find-hide]');
-    if (hideBtn) hideBtn.addEventListener('click', () => setFindOpen(false));
     if (findToggle) {
       findToggle.addEventListener('click', () => {
         const open = !findIsOpen();
@@ -792,33 +788,32 @@
     if (document.visibilityState === 'visible') startPoll();
   }
 
+  let hoverId = '';
+
   function applyView() {
-    const group = bag.group || 'g-faction';
     const selected = new Set(bag.labels || []);
-    hall.setAttribute('data-view-group', group);
     if (selected.size) hall.setAttribute('data-view-labels', [...selected].join(' '));
     else hall.removeAttribute('data-view-labels');
+    if (hoverId) hall.setAttribute('data-legend-hover', hoverId);
+    else hall.removeAttribute('data-legend-hover');
 
-    document.querySelectorAll('[data-aspect-group]').forEach((tab) => {
-      const on = tab.getAttribute('data-aspect-group') === group;
-      tab.setAttribute('aria-selected', on ? 'true' : 'false');
-    });
-    document.querySelectorAll('[data-aspect-panel]').forEach((panel) => {
-      panel.hidden = panel.getAttribute('data-aspect-panel') !== group;
-    });
-    document.querySelectorAll('[data-label-id]').forEach((btn) => {
+    document.querySelectorAll('.hall-legend__item').forEach((btn) => {
       const id = btn.getAttribute('data-label-id') || '';
       btn.setAttribute('aria-pressed', selected.has(id) ? 'true' : 'false');
     });
 
     document.querySelectorAll('.member[data-inspect-id]').forEach((el) => {
       const ids = labelIdsOf(el);
-      if (!selected.size) {
+      if (selected.size) {
+        el.setAttribute('data-view', ids.some((id) => selected.has(id)) ? 'hit' : 'rest');
+      } else {
         el.removeAttribute('data-view');
-        return;
       }
-      const hit = ids.some((id) => selected.has(id));
-      el.setAttribute('data-view', hit ? 'hit' : 'rest');
+      if (hoverId) {
+        el.setAttribute('data-hover', ids.includes(hoverId) ? 'hit' : 'rest');
+      } else {
+        el.removeAttribute('data-hover');
+      }
     });
 
     const axis = bag.axis || '';
@@ -833,28 +828,37 @@
     });
   }
 
-  function bindAspects() {
-    const root = document.querySelector('[data-hall-aspects]');
-    if (!root) return;
-    root.querySelectorAll('[data-aspect-group]').forEach((tab) => {
-      tab.addEventListener('click', () => {
-        const id = tab.getAttribute('data-aspect-group') || '';
-        if (!id) return;
-        bag.group = id;
-        saveBag();
-        applyView();
+  function setHover(id) {
+    hoverId = id || '';
+    applyView();
+  }
+
+  function bindLegend() {
+    const root = document.querySelector('[data-hall-legend]');
+    if (root) {
+      root.querySelectorAll('[data-label-id]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const id = btn.getAttribute('data-label-id') || '';
+          if (!id) return;
+          toggleIn(bag.labels, id);
+          syncFacetButtons();
+          saveBag();
+          applyView();
+          applySearch();
+        });
+        btn.addEventListener('mouseenter', () => setHover(btn.getAttribute('data-label-id') || ''));
+        btn.addEventListener('mouseleave', () => setHover(''));
+        btn.addEventListener('focus', () => setHover(btn.getAttribute('data-label-id') || ''));
+        btn.addEventListener('blur', () => setHover(''));
       });
+    }
+    document.querySelectorAll('.member .mark[data-label-id]').forEach((mark) => {
+      mark.addEventListener('mouseenter', () => setHover(mark.getAttribute('data-label-id') || ''));
+      mark.addEventListener('mouseleave', () => setHover(''));
     });
-    root.querySelectorAll('[data-label-id]').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const id = btn.getAttribute('data-label-id') || '';
-        if (!id) return;
-        toggleIn(bag.labels, id);
-        syncFacetButtons();
-        saveBag();
-        applyView();
-        applySearch();
-      });
+    document.querySelectorAll('[data-filter="label"]').forEach((btn) => {
+      btn.addEventListener('mouseenter', () => setHover(btn.getAttribute('data-value') || ''));
+      btn.addEventListener('mouseleave', () => setHover(''));
     });
     applyView();
   }
@@ -877,7 +881,7 @@
     bindRungPersist();
     bindSearch();
     bindRites();
-    bindAspects();
+    bindLegend();
     bindAxisFocus();
     applySearch();
     initRoving();

@@ -10,15 +10,11 @@ const { axes, tiers, labels = [], labelGroups = [] } = Astro.props;
 const groups = labelGroups.filter((g) => labels.some((l) => l.groupId === g.id));
 ---
 
-<button type="button" class="hall-find-toggle" data-find-toggle aria-controls="kod-hall-find" aria-expanded="true">
-  <span class="hall-find-toggle__kicker">Hall</span>
-  <span class="hall-find-toggle__title">Find</span>
-</button>
+<button type="button" class="hall-find-toggle" data-find-toggle aria-controls="kod-hall-find" aria-expanded="true" aria-label="Find in the hall"></button>
 <aside class="kod-plate hall-search" id="kod-hall-find" data-hall-search aria-label="Find someone in the hall">
   <header class="hall-search__head">
     <p class="hall-search__kicker">Hall</p>
     <h2 class="hall-search__title">Find</h2>
-    <button type="button" class="hall-search__hide" data-find-hide aria-label="Hide Find">Hide</button>
   </header>
 
   <div class="hall-search__lookup">
@@ -47,13 +43,18 @@ const groups = labelGroups.filter((g) => labels.some((l) => l.groupId === g.id))
             .map((l) => (
               <button
                 type="button"
-                class:list={['hall-search__chip', l.hue != null && 'hall-search__chip--hue']}
+                class="hall-search__chip"
                 data-filter="label"
                 data-value={l.id}
                 data-group={g.id}
                 aria-pressed="false"
                 style={l.hue != null ? `--label-h:${l.hue}` : undefined}
               >
+                <i
+                  class:list={['mark', l.groupId === 'g-faction' ? 'mark--faction' : 'mark--tag']}
+                  data-label-id={l.id}
+                  aria-hidden="true"
+                />
                 {l.name}
               </button>
             ))}
