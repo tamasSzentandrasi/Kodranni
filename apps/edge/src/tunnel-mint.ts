@@ -8,6 +8,8 @@ export interface CampaignMeta {
   tunnelId?: string;
   originHost?: string;
   guildId?: string;
+  createdAt?: string;
+  lastActivity?: string;
 }
 
 export interface MintResult {

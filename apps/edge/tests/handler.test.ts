@@ -2,11 +2,13 @@ import { createHmac } from 'node:crypto';
 import { describe, expect, it } from 'vitest';
 import {
   campaignFromUrl,
+  gcInactiveCampaigns,
   handleEdgeRequest,
   kvKey,
   shouldStampCampaign,
   type KvLike,
 } from '../src/handler.js';
+import { INACTIVE_MS, MAX_CAMPAIGNS_PER_DEVICE } from '../src/limits.js';
 
 class MemoryKv implements KvLike {
   store = new Map<string, string>();
@@ -15,6 +17,9 @@ class MemoryKv implements KvLike {
   }
   async put(key: string, value: string) {
     this.store.set(key, value);
+  }
+  async delete(key: string) {
+    this.store.delete(key);
   }
 }
 
@@ -69,10 +74,8 @@ describe('campaignFromUrl', () => {
     );
   });
 
-  it('treats apex /community and /characters as the default campaign', () => {
-    expect(campaignFromUrl(new URL('https://kodranni.com/community/'), 'vardmark')).toBe(
-      'vardmark',
-    );
+  it('uses the hall cookie on apex hall paths, never invents a campaign', () => {
+    expect(campaignFromUrl(new URL('https://kodranni.com/community/'), 'vardmark')).toBeNull();
     expect(
       campaignFromUrl(
         new URL('https://kodranni.com/characters/torvald/'),
@@ -95,8 +98,13 @@ describe('campaignFromUrl', () => {
     ).toBeNull();
   });
 
-  it('maps a campaign-named subdomain to that slug', () => {
-    expect(campaignFromUrl(new URL('https://ash-hill.kodranni.com/'))).toBe('ash-hill');
+  it('does not give Storytellers public subdomains on kodranni.com', () => {
+    expect(campaignFromUrl(new URL('https://ash-hill.kodranni.com/'))).toBeNull();
+    expect(campaignFromUrl(new URL('https://origin-ash-hill.kodranni.com/'))).toBe('ash-hill');
+  });
+
+  it('does not serve Vardmark for an unknown host', () => {
+    expect(campaignFromUrl(new URL('https://evil.example/community/'), 'vardmark')).toBeNull();
   });
 
   it('falls back to DEFAULT_CAMPAIGN on workers.dev', () => {
@@ -627,6 +635,62 @@ describe('edge handler', () => {
     }
   });
 
+  it('lists Discord guilds for the desk picker without exposing the bot token to the host', async () => {
+    const e = {
+      ...env(),
+      DISCORD_BOT_TOKEN: 'bot-secret',
+      DISCORD_APP_ID: 'app-1',
+    };
+    const campaign = 'vardmark';
+    const deviceKey = 'e'.repeat(32);
+    await handleEdgeRequest(
+      new Request(`https://face.example/control/register?campaign=${campaign}`, {
+        method: 'POST',
+        body: JSON.stringify({ deviceKey }),
+      }),
+      e,
+    );
+    const prev = globalThis.fetch;
+    globalThis.fetch = async (input) => {
+      const u = String(input instanceof Request ? input.url : input);
+      expect(u).toBe('https://discord.com/api/v10/users/@me/guilds');
+      return new Response(JSON.stringify([{ id: '111111111111111111', name: 'Table' }]), {
+        status: 200,
+        headers: { 'content-type': 'application/json' },
+      });
+    };
+    try {
+      const appBody = JSON.stringify({ op: 'app' });
+      const app = await handleEdgeRequest(
+        new Request(`https://face.example/control/discord/rest?campaign=${campaign}`, {
+          method: 'POST',
+          headers: { authorization: `Bearer ${campaign}:${sign(deviceKey, appBody)}` },
+          body: appBody,
+        }),
+        e,
+      );
+      expect(app.status).toBe(200);
+      const appJson = (await app.json()) as { invite: string };
+      expect(appJson.invite).toContain('client_id=app-1');
+
+      const gBody = JSON.stringify({ op: 'guilds' });
+      const res = await handleEdgeRequest(
+        new Request(`https://face.example/control/discord/rest?campaign=${campaign}`, {
+          method: 'POST',
+          headers: { authorization: `Bearer ${campaign}:${sign(deviceKey, gBody)}` },
+          body: gBody,
+        }),
+        e,
+      );
+      expect(res.status).toBe(200);
+      expect(await res.json()).toEqual({
+        guilds: [{ id: '111111111111111111', name: 'Table' }],
+      });
+    } finally {
+      globalThis.fetch = prev;
+    }
+  });
+
   it('rejects unauthorized snapshot PUT', async () => {
     const e = env();
     const campaign = 'z';
@@ -647,5 +711,71 @@ describe('edge handler', () => {
       e,
     );
     expect(put.status).toBe(401);
+  });
+
+  it('rejects snapshots larger than 1 MB', async () => {
+    const e = env();
+    const campaign = 'big';
+    const deviceKey = 'k'.repeat(32);
+    await handleEdgeRequest(
+      new Request(`https://face.example/control/register?campaign=${campaign}`, {
+        method: 'POST',
+        body: JSON.stringify({ deviceKey }),
+      }),
+      e,
+    );
+    const body = JSON.stringify({
+      generatedAt: 't',
+      community: { slug: 'big', name: 'B' },
+      characters: [],
+      pad: 'x'.repeat(1_000_001),
+    });
+    const put = await handleEdgeRequest(
+      new Request(`https://face.example/api/snapshot?campaign=${campaign}`, {
+        method: 'PUT',
+        headers: { authorization: `Bearer ${campaign}:${sign(deviceKey, body)}` },
+        body,
+      }),
+      e,
+    );
+    expect(put.status).toBe(413);
+  });
+
+  it('refuses a fourth campaign on the same device key', async () => {
+    const e = env();
+    const deviceKey = 'm'.repeat(32);
+    for (let i = 0; i < MAX_CAMPAIGNS_PER_DEVICE; i++) {
+      const res = await handleEdgeRequest(
+        new Request(`https://face.example/control/register?campaign=c${i}`, {
+          method: 'POST',
+          body: JSON.stringify({ deviceKey }),
+        }),
+        e,
+      );
+      expect(res.status).toBe(200);
+    }
+    const fourth = await handleEdgeRequest(
+      new Request('https://face.example/control/register?campaign=c3', {
+        method: 'POST',
+        body: JSON.stringify({ deviceKey }),
+      }),
+      e,
+    );
+    expect(fourth.status).toBe(403);
+  });
+
+  it('tombstones campaigns with no activity for 90 days', async () => {
+    const e = env();
+    const campaign = 'old';
+    const deviceKey = 'n'.repeat(32);
+    await handleEdgeRequest(
+      new Request(`https://face.example/control/register?campaign=${campaign}`, {
+        method: 'POST',
+        body: JSON.stringify({ deviceKey }),
+      }),
+      e,
+    );
+    const { tombstoned } = await gcInactiveCampaigns(e, Date.now() + INACTIVE_MS + 1000);
+    expect(tombstoned).toContain(campaign);
   });
 });

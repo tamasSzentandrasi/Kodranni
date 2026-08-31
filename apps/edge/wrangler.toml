@@ -3,6 +3,9 @@ main = "src/index.ts"
 compatibility_date = "2026-01-01"
 workers_dev = true
 
+[triggers]
+crons = ["0 4 * * *"]
+
 [assets]
 directory = "./public"
 binding = "ASSETS"

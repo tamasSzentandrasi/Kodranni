@@ -1,6 +1,18 @@
 import { renderArchivePage } from '@kodranni/hall-render';
 import { livePathAllowed } from './allowlist.js';
 import { handleDiscordInteraction } from './discord.js';
+import {
+  CAMPAIGN_INDEX_KEY,
+  GC_BATCH,
+  INACTIVE_MS,
+  MAX_CAMPAIGNS_PER_DEVICE,
+  MAX_REGISTERS_PER_IP_DAY,
+  MAX_SNAPSHOT_BYTES,
+  deviceCampaignsKey,
+  parseIdList,
+  sha256Hex,
+  utcDayKey,
+} from './limits.js';
 import { mintCampaignTunnel, type CampaignMeta } from './tunnel-mint.js';
 
 /**
@@ -13,6 +25,7 @@ import { mintCampaignTunnel, type CampaignMeta } from './tunnel-mint.js';
 export interface KvLike {
   get(key: string): Promise<string | null>;
   put(key: string, value: string): Promise<void>;
+  delete?(key: string): Promise<void>;
 }
 
 export interface EdgeEnv {
@@ -131,7 +144,7 @@ export function campaignFromUrl(
     if (url.pathname === '/' || url.pathname === '/index.html') return null;
     const fromCookie = aliasCampaign(campaignFromCookie(cookieHeader), fallback);
     if (isCampaignAppPath(url.pathname)) {
-      return fromCookie ?? fallback;
+      return fromCookie;
     }
     // Live CSS/JS/images have no ?campaign= — use the hall cookie so the
     // Worker still proxies them to the tunnel (demo.* always has a campaign).
@@ -141,8 +154,10 @@ export function campaignFromUrl(
   if (host === 'demo.kodranni.com' || host === 'play.kodranni.com') return fallback;
   if (host.endsWith('.workers.dev')) return fallback;
   const sub = /^([a-z0-9-]+)\.kodranni\.com$/.exec(host);
-  if (sub) return aliasCampaign(sub[1], fallback);
-  return fallback;
+  if (sub?.[1]?.startsWith('origin-')) {
+    return aliasCampaign(sub[1].slice('origin-'.length), fallback);
+  }
+  return null;
 }
 
 function isProductPath(url: URL, campaign: string | null): boolean {
@@ -243,7 +258,11 @@ export async function handleEdgeRequest(
     if (snapshotLooksPrivate(body)) {
       return json({ error: 'snapshot not redacted' }, 400);
     }
+    if (new TextEncoder().encode(body).length > MAX_SNAPSHOT_BYTES) {
+      return json({ error: 'snapshot too large' }, 413);
+    }
     await env.CAMPAIGNS.put(kvKey(campaign, 'snapshot'), body);
+    await touchMeta(env, campaign);
     return json({ ok: true });
   }
 
@@ -284,6 +303,8 @@ export async function handleEdgeRequest(
       meta.tunnelId = minted.tunnelId;
       meta.originHost = new URL(minted.origin).hostname;
       if (guildId) meta.guildId = guildId;
+      meta.lastActivity = new Date().toISOString();
+      if (!meta.createdAt) meta.createdAt = meta.lastActivity;
       await env.CAMPAIGNS.put(kvKey(campaign, 'meta'), JSON.stringify(meta));
       await env.CAMPAIGNS.put(kvKey(campaign, 'origin'), minted.origin);
       if (guildId) await env.CAMPAIGNS.put(`guild:${guildId}`, campaign);
@@ -330,6 +351,7 @@ export async function handleEdgeRequest(
       op?: string;
       channelId?: string;
       messageId?: string;
+      guildId?: string;
       payload?: unknown;
     };
     try {
@@ -338,8 +360,19 @@ export async function handleEdgeRequest(
       return json({ error: 'invalid json' }, 400);
     }
     const snowflake = /^\d{17,20}$/;
+    if (parsed.op === 'app') {
+      const appId = env.DISCORD_APP_ID?.trim();
+      if (!appId) return json({ error: 'discord app id unset on worker' }, 503);
+      return json({
+        applicationId: appId,
+        invite: `https://discord.com/oauth2/authorize?client_id=${encodeURIComponent(appId)}&scope=bot%20applications.commands`,
+      });
+    }
+    if (parsed.op === 'guilds' || parsed.op === 'channels' || parsed.op === 'roles') {
+      return discordCatalog(token, parsed.op, parsed.guildId);
+    }
     if (parsed.op !== 'send' && parsed.op !== 'edit') {
-      return json({ error: 'op must be send or edit' }, 400);
+      return json({ error: 'op must be send, edit, app, guilds, channels, or roles' }, 400);
     }
     if (!parsed.channelId || !snowflake.test(parsed.channelId)) {
       return json({ error: 'invalid channelId' }, 400);
@@ -381,7 +414,32 @@ export async function handleEdgeRequest(
     }
     const existing = await env.DEVICE_KEYS.get(campaign);
     if (existing) return json({ error: 'already registered' }, 409);
+    const ip = request.headers.get('cf-connecting-ip')?.trim();
+    if (ip) {
+      const day = utcDayKey();
+      const rateKey = `rate:reg:${ip}:${day}`;
+      const already = Number((await env.CAMPAIGNS.get(rateKey)) ?? '0');
+      if (already >= MAX_REGISTERS_PER_IP_DAY) {
+        return json({ error: 'register rate limit' }, 429);
+      }
+      await env.CAMPAIGNS.put(rateKey, String(already + 1));
+    }
+    const hash = await sha256Hex(parsed.deviceKey);
+    const owned = parseIdList(await env.CAMPAIGNS.get(deviceCampaignsKey(hash)));
+    if (owned.length >= MAX_CAMPAIGNS_PER_DEVICE) {
+      return json({ error: 'device campaign limit' }, 403);
+    }
     await env.DEVICE_KEYS.put(campaign, parsed.deviceKey);
+    owned.push(campaign);
+    await env.CAMPAIGNS.put(deviceCampaignsKey(hash), JSON.stringify(owned));
+    const all = parseIdList(await env.CAMPAIGNS.get(CAMPAIGN_INDEX_KEY));
+    if (!all.includes(campaign)) all.push(campaign);
+    await env.CAMPAIGNS.put(CAMPAIGN_INDEX_KEY, JSON.stringify(all));
+    const now = new Date().toISOString();
+    await env.CAMPAIGNS.put(
+      kvKey(campaign, 'meta'),
+      JSON.stringify({ createdAt: now, lastActivity: now } satisfies CampaignMeta),
+    );
     return json({ ok: true, campaign });
   }
 
@@ -645,8 +703,113 @@ function archiveShell(snapshotJson: string | null): string {
 </html>`;
 }
 
+async function discordCatalog(
+  token: string,
+  op: 'guilds' | 'channels' | 'roles',
+  guildId?: string,
+): Promise<Response> {
+  const snowflake = /^\d{17,20}$/;
+  let path = '/users/@me/guilds';
+  if (op === 'channels' || op === 'roles') {
+    if (!guildId || !snowflake.test(guildId)) return json({ error: 'invalid guildId' }, 400);
+    path = op === 'channels' ? `/guilds/${guildId}/channels` : `/guilds/${guildId}/roles`;
+  }
+  const discord = await fetch(`https://discord.com/api/v10${path}`, {
+    headers: { authorization: `Bot ${token}` },
+    signal: AbortSignal.timeout(10_000),
+  });
+  const raw = await discord.text();
+  if (!discord.ok) {
+    return json({ error: `discord ${discord.status}`, detail: raw.slice(0, 180) }, discord.status);
+  }
+  let data: unknown;
+  try {
+    data = JSON.parse(raw) as unknown;
+  } catch {
+    return json({ error: 'discord invalid json' }, 502);
+  }
+  if (op === 'guilds') {
+    const guilds = (Array.isArray(data) ? data : [])
+      .map((g: { id?: string; name?: string }) => ({
+        id: String(g.id ?? ''),
+        name: String(g.name ?? g.id ?? ''),
+      }))
+      .filter((g) => g.id);
+    return json({ guilds });
+  }
+  if (op === 'channels') {
+    const channels = (Array.isArray(data) ? data : [])
+      .filter((c: { type?: number }) => c.type === 0 || c.type === 5)
+      .map((c: { id?: string; name?: string }) => ({
+        id: String(c.id ?? ''),
+        name: String(c.name ?? c.id ?? ''),
+      }))
+      .filter((c) => c.id);
+    return json({ channels });
+  }
+  const roles = (Array.isArray(data) ? data : [])
+    .filter((r: { id?: string; managed?: boolean }) => !r.managed && r.id !== guildId)
+    .map((r: { id?: string; name?: string }) => ({
+      id: String(r.id ?? ''),
+      name: String(r.name ?? r.id ?? ''),
+    }))
+    .filter((r) => r.id);
+  return json({ roles });
+}
+
+async function touchMeta(env: EdgeEnv, campaign: string): Promise<void> {
+  const raw = await env.CAMPAIGNS.get(kvKey(campaign, 'meta'));
+  let meta: CampaignMeta = {};
+  if (raw) {
+    try {
+      meta = JSON.parse(raw) as CampaignMeta;
+    } catch {
+      meta = {};
+    }
+  }
+  meta.lastActivity = new Date().toISOString();
+  if (!meta.createdAt) meta.createdAt = meta.lastActivity;
+  await env.CAMPAIGNS.put(kvKey(campaign, 'meta'), JSON.stringify(meta));
+}
+
+export async function gcInactiveCampaigns(
+  env: EdgeEnv,
+  now = Date.now(),
+): Promise<{ tombstoned: string[] }> {
+  const all = parseIdList(await env.CAMPAIGNS.get(CAMPAIGN_INDEX_KEY));
+  const tombstoned: string[] = [];
+  for (const id of all) {
+    if (tombstoned.length >= GC_BATCH) break;
+    const raw = await env.CAMPAIGNS.get(kvKey(id, 'meta'));
+    let last = 0;
+    if (raw) {
+      try {
+        const meta = JSON.parse(raw) as CampaignMeta;
+        last = Date.parse(meta.lastActivity ?? meta.createdAt ?? '') || 0;
+      } catch {
+        last = 0;
+      }
+    }
+    if (!last || now - last < INACTIVE_MS) continue;
+    await env.CAMPAIGNS.put(kvKey(id, 'origin'), '');
+    await env.CAMPAIGNS.put(kvKey(id, 'snapshot'), '');
+    await env.CAMPAIGNS.put(kvKey(id, 'meta'), '');
+    await env.DEVICE_KEYS.put(id, '');
+    if (env.CAMPAIGNS.delete) await env.CAMPAIGNS.delete(kvKey(id, 'snapshot'));
+    tombstoned.push(id);
+  }
+  if (tombstoned.length) {
+    const next = all.filter((id) => !tombstoned.includes(id));
+    await env.CAMPAIGNS.put(CAMPAIGN_INDEX_KEY, JSON.stringify(next));
+  }
+  return { tombstoned };
+}
+
 export default {
   fetch(request: Request, env: EdgeEnv, ctx: { waitUntil(p: Promise<unknown>): void }): Promise<Response> {
     return handleEdgeRequest(request, env, ctx);
+  },
+  async scheduled(_event: unknown, env: EdgeEnv): Promise<void> {
+    await gcInactiveCampaigns(env);
   },
 };
