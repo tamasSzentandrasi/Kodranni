@@ -1,4 +1,5 @@
-import type { CharacterRecord, HierarchyPlacement, OutsiderRecord } from '@kodranni/store';
+import type { CharacterRecord, HierarchyPlacement, Label, OutsiderRecord } from '@kodranni/store';
+import { FACTION_GROUP_ID, labelsByIds, migrateCommunityLabels, personLabelIds } from '@kodranni/store';
 import { esc, escAttr } from './escape.js';
 import {
   FORTUNE_BLURBS,
@@ -7,10 +8,7 @@ import {
   TIERS,
   axisDomain,
   axisKey,
-  collectFactions,
   inspectId,
-  resolveFactionHue,
-  type FactionOpt,
   type HallView,
 } from './format.js';
 import { infoBtn, sectionHead } from './layout.js';
@@ -21,22 +19,22 @@ export function communityInner(
 ): string {
   const live = opts?.live === true;
   const canEdit = live && opts?.canEdit === true;
-  const c = view.community;
-  const factions = collectFactions(c.factions, c.outsiders ?? []);
+  const c = migrateCommunityLabels(view.community);
   const tips = whoWeSeeMap(view.characters, c.placements ?? [], c.outsiders ?? []);
   const pcSlugs = new Set(
     view.characters.filter((ch) => (ch.kind ?? 'pc') !== 'npc' && ch.kind !== 'notable').map((ch) => ch.slug),
   );
-  const people = inspectPeopleJson(view, factions);
+  const bySlug = new Map(view.characters.map((ch) => [ch.slug, ch] as const));
+  const people = inspectPeopleJson({ ...view, community: c });
   const source = live ? 'live' : 'snapshot';
   const founded = live && c.fortunesFoundedAt ? c.fortunesFoundedAt : '';
-  return `${findPanel(c.hierarchyAxes ?? [], factions)}
-<div class="hall" data-slug="${escAttr(c.slug)}" data-source="${escAttr(source)}" data-founded="${escAttr(founded)}">
+  return `${findPanel(c.hierarchyAxes ?? [])}
+<div class="hall" data-slug="${escAttr(c.slug)}" data-source="${escAttr(source)}" data-founded="${escAttr(founded)}" data-view-group="${escAttr(FACTION_GROUP_ID)}">
   ${fortunePlates(c.fortunes)}
-  ${hierarchy(c, tips, pcSlugs, canEdit)}
+  ${aspectsRail(c)}
+  ${hierarchy(c, tips, pcSlugs, canEdit, bySlug)}
   <div class="hall__porch">
-    ${outsiders(c.outsiders ?? [], factions)}
-    ${factionList(factions, canEdit)}
+    ${outsiders(c, bySlug)}
   </div>
   ${myths(c.myths ?? [])}
 </div>
@@ -68,7 +66,35 @@ function whoWeSeeMap(
   return m;
 }
 
-function findPanel(axes: string[], factions: FactionOpt[]): string {
+function labelsForPerson(
+  c: HallView['community'],
+  bySlug: Map<string, CharacterRecord>,
+  name: string,
+  slug?: string,
+): Label[] {
+  const ch = slug ? bySlug.get(slug) : undefined;
+  const outsider = (c.outsiders ?? []).find((o) => o.name.toLowerCase() === name.toLowerCase());
+  const placement = (c.placements ?? []).find(
+    (p) => !p.characterSlug && p.name.toLowerCase() === name.toLowerCase(),
+  );
+  return labelsByIds(c, personLabelIds({ character: ch, outsider, placement }));
+}
+
+function markVars(labels: Label[]): { n: number; style: string; ids: string } {
+  const shown = labels.slice(0, 3);
+  const parts: string[] = [];
+  shown.forEach((l, i) => {
+    if (l.hue != null) parts.push(`--m${i + 1}-h:${l.hue}`);
+    else parts.push(`--m${i + 1}-h:36`);
+  });
+  return {
+    n: shown.length,
+    style: parts.join(';'),
+    ids: labels.map((l) => l.id).join(' '),
+  };
+}
+
+function findPanel(axes: string[]): string {
   const axisChips = axes
     .map(
       (axis) =>
@@ -79,15 +105,6 @@ function findPanel(axes: string[], factions: FactionOpt[]): string {
     (tier) =>
       `<button type="button" class="hall-search__chip" data-filter="tier" data-value="${escAttr(tier)}" aria-pressed="false">${esc(tier)}</button>`,
   ).join('');
-  const factionChips =
-    factions.length === 0
-      ? `<p class="hall-search__empty">None listed yet.</p>`
-      : factions
-          .map(
-            (f) =>
-              `<button type="button" class="hall-search__chip hall-search__chip--faction" data-filter="faction" data-value="${escAttr(f.name)}" aria-pressed="false" style="--faction-h: ${f.hue}">${esc(f.name)}</button>`,
-          )
-          .join('');
   return `<aside class="kod-plate hall-search" data-hall-search aria-label="Find someone in the hall">
   <header class="hall-search__head">
     <p class="hall-search__kicker">Hall</p>
@@ -110,12 +127,44 @@ function findPanel(axes: string[], factions: FactionOpt[]): string {
       <button type="button" class="hall-search__chip" data-filter="kind" data-value="pc" aria-pressed="false">Player</button>
       <button type="button" class="hall-search__chip" data-filter="kind" data-value="npc" aria-pressed="false">NPC</button>
     </div>
-    <div class="hall-search__group" role="group" aria-label="Faction">
-      <p class="hall-search__legend">Factions</p>${factionChips}
-    </div>
   </div>
   <ul class="hall-search__hits" data-hall-hits hidden></ul>
 </aside>`;
+}
+
+function aspectsRail(c: HallView['community']): string {
+  const groups = (c.labelGroups ?? []).filter((g) => {
+    if (g.id === FACTION_GROUP_ID) return true;
+    return (c.labels ?? []).some((l) => l.groupId === g.id);
+  });
+  if (groups.length === 0) return '';
+  const tabs = groups
+    .map((g, i) => {
+      const selected = g.id === FACTION_GROUP_ID || (i === 0 && !groups.some((x) => x.id === FACTION_GROUP_ID));
+      return `<button type="button" class="hall-aspects__tab" role="tab" id="aspect-tab-${escAttr(g.id)}" data-aspect-group="${escAttr(g.id)}" aria-selected="${selected ? 'true' : 'false'}" aria-controls="aspect-panel-${escAttr(g.id)}">${esc(g.name)}</button>`;
+    })
+    .join('');
+  const panels = groups
+    .map((g) => {
+      const selected = g.id === FACTION_GROUP_ID || groups[0]?.id === g.id;
+      const labs = (c.labels ?? []).filter((l) => l.groupId === g.id);
+      const chips =
+        labs.length === 0
+          ? `<p class="hall-aspects__empty">None yet.</p>`
+          : labs
+              .map((l) => {
+                const hue = l.hue != null ? ` style="--label-h:${l.hue}"` : '';
+                return `<button type="button" class="hall-aspects__label${l.hue != null ? ' hall-aspects__label--hue' : ''}" data-label-id="${escAttr(l.id)}" data-group="${escAttr(g.id)}" aria-pressed="false"${hue}>${esc(l.name)}</button>`;
+              })
+              .join('');
+      return `<div class="hall-aspects__panel" role="tabpanel" id="aspect-panel-${escAttr(g.id)}" data-aspect-panel="${escAttr(g.id)}" ${selected && g.id === FACTION_GROUP_ID ? '' : 'hidden'}>${chips}</div>`;
+    })
+    .join('');
+  return `<section class="hall-aspects kod-plate" data-hall-aspects aria-label="Hall views">
+    <p class="hall-aspects__kicker">View</p>
+    <div class="hall-aspects__tabs" role="tablist" aria-label="Label groups">${tabs}</div>
+    ${panels}
+  </section>`;
 }
 
 function fortunePlates(values: Record<string, number> | undefined): string {
@@ -145,14 +194,27 @@ function memberName(opts: {
   kind?: string;
   personId: string;
   roving?: boolean;
+  labels?: Label[];
 }): string {
-  const cls = ['member', opts.pc && 'member--pc', opts.pending && 'member--pending']
+  const labels = opts.labels ?? [];
+  const marks = markVars(labels);
+  const cls = [
+    'member',
+    opts.pc && 'member--pc',
+    opts.pending && 'member--pending',
+    opts.kind === 'outsider' && 'member--outsider',
+  ]
     .filter(Boolean)
     .join(' ');
+  const extra =
+    labels.length > 3
+      ? `<span class="member__more" aria-hidden="true">+${labels.length - 3}</span>`
+      : '';
   const pending = opts.pending
-    ? `<span class="member__knot" aria-hidden="true">◆</span>${esc(opts.name)}<span class="member__pending">pending</span>`
-    : esc(opts.name);
-  const data = `class="${cls}" data-inspect-id="${escAttr(opts.personId)}" data-name="${escAttr(opts.name)}" data-kind="${escAttr(opts.kind ?? 'npc')}"${opts.slug ? ` data-slug="${escAttr(opts.slug)}"` : ''}${opts.tip ? ` data-tip="${escAttr(opts.tip)}"` : ''}${opts.roving ? ' tabindex="-1"' : ''}`;
+    ? `<span class="member__knot" aria-hidden="true">◆</span>${esc(opts.name)}${extra}<span class="member__pending">pending</span>`
+    : `${esc(opts.name)}${extra}`;
+  const style = marks.n ? ` style="${escAttr(marks.style)}"` : '';
+  const data = `class="${cls}" data-inspect-id="${escAttr(opts.personId)}" data-name="${escAttr(opts.name)}" data-kind="${escAttr(opts.kind ?? 'npc')}"${opts.slug ? ` data-slug="${escAttr(opts.slug)}"` : ''}${opts.tip ? ` data-tip="${escAttr(opts.tip)}"` : ''}${opts.roving ? ' tabindex="-1"' : ''}${marks.ids ? ` data-label-ids="${escAttr(marks.ids)}"` : ''}${marks.n ? ` data-mark-n="${marks.n}"` : ''}${style}`;
   if (opts.slug) return `<a ${data} href="/characters/${escAttr(opts.slug)}/">${pending}</a>`;
   return `<span ${data}>${pending}</span>`;
 }
@@ -162,6 +224,7 @@ function hierarchy(
   tips: Map<string, string>,
   pcSlugs: Set<string>,
   live: boolean,
+  bySlug: Map<string, CharacterRecord>,
 ): string {
   const isPc = (slug?: string) => Boolean(slug && pcSlugs.has(slug));
   const tipFor = (name: string, slug?: string, note?: string) => {
@@ -169,7 +232,6 @@ function hierarchy(
     if (slug && tips.has(slug)) return tips.get(slug)!;
     return tips.get(name.toLowerCase()) ?? '';
   };
-  const personKey = (name: string, slug?: string) => (slug ?? name).toLowerCase();
   const rulerId = c.ruler ? inspectId(c.ruler, c.rulerCharacterSlug) : '';
   const rulerBlock = c.ruler
     ? memberName({
@@ -179,6 +241,7 @@ function hierarchy(
         tip: tipFor(c.ruler, c.rulerCharacterSlug),
         kind: isPc(c.rulerCharacterSlug) ? 'pc' : 'npc',
         personId: rulerId,
+        labels: labelsForPerson(c, bySlug, c.ruler, c.rulerCharacterSlug),
       })
     : `<p class="hier-ruler__note">One seat for the whole community — none claimed.</p>`;
   const add = live
@@ -205,6 +268,7 @@ function hierarchy(
                   kind: isPc(m.characterSlug) ? 'pc' : 'npc',
                   personId: inspectId(m.name, m.characterSlug),
                   roving: true,
+                  labels: labelsForPerson(c, bySlug, m.name, m.characterSlug),
                 })}</li>`;
               })
               .join('');
@@ -218,11 +282,11 @@ function hierarchy(
         </li>`;
       }).join('');
       return `<div class="kod-plate hier-axis" data-axis="${escAttr(key)}" data-axis-name="${escAttr(axis)}">
-        <div class="hier-axis__head" tabindex="${ai === 0 ? 0 : -1}">
+        <button type="button" class="hier-axis__head" data-axis-focus="${escAttr(key)}" aria-pressed="false" tabindex="${ai === 0 ? 0 : -1}">
           <p class="hier-axis__name">${esc(axis)}</p>
           <p class="hier-axis__domain">${esc(axisDomain(axis))}</p>
           <span class="hier-axis__count">${onAxis.length} placed</span>
-        </div>
+        </button>
         <ol class="hier-rungs">${rungs}</ol>
       </div>`;
     })
@@ -238,43 +302,26 @@ function hierarchy(
   </div>`;
 }
 
-function outsiders(list: OutsiderRecord[], factions: FactionOpt[]): string {
+function outsiders(c: HallView['community'], bySlug: Map<string, CharacterRecord>): string {
+  const list = c.outsiders ?? [];
   const items =
     list.length === 0
       ? `<li class="empty">None tracked.</li>`
       : list
           .map((o) => {
-            const hue = o.faction ? resolveFactionHue(o.faction, factions) : 0;
-            const href = o.characterSlug ? `/characters/${encodeURIComponent(o.characterSlug)}/` : undefined;
-            const style = o.faction ? ` style="--faction-h: ${hue}"` : '';
-            const data = `class="outsider"${style} data-inspect-id="${escAttr(inspectId(o.name, o.characterSlug))}" data-name="${escAttr(o.name)}" data-kind="outsider" data-faction="${escAttr(o.faction ?? '')}" data-tip="${escAttr(o.note ?? '')}"${o.characterSlug ? ` data-slug="${escAttr(o.characterSlug)}"` : ''}`;
-            const inner = `<span class="outsider__name">${esc(o.name)}</span>${o.faction ? `<span class="outsider__faction">${esc(o.faction)}</span>` : ''}`;
-            return `<li>${href ? `<a ${data} href="${escAttr(href)}">${inner}</a>` : `<div ${data}>${inner}</div>`}</li>`;
+            return `<li>${memberName({
+              name: o.name,
+              slug: o.characterSlug,
+              tip: o.note,
+              kind: 'outsider',
+              personId: inspectId(o.name, o.characterSlug),
+              labels: labelsForPerson(c, bySlug, o.name, o.characterSlug),
+            })}</li>`;
           })
           .join('');
   return `<aside class="kod-plate outsiders" aria-labelledby="o-h">
-    <div class="section-head" style="margin:0"><h3 id="o-h">Outsiders</h3>${infoBtn('About Outsiders', 'Named individuals only. Faction is a coloured property. Not on any ladder until inducted. Hover for who they are; click a sheeted name to open it.')}</div>
+    <div class="section-head" style="margin:0"><h3 id="o-h">Outsiders</h3>${infoBtn('About Outsiders', 'Never of this community. Sit apart until inducted (then Outcast on the axes that apply). Same name chip as kin; marks are faction and tag memberships.')}</div>
     <ul class="outsiders__list kod-scroll">${items}</ul>
-  </aside>`;
-}
-
-function factionList(factions: FactionOpt[], live: boolean): string {
-  const items =
-    factions.length === 0
-      ? `<li class="empty">None listed yet.</li>`
-      : factions
-          .map(
-            (f) =>
-              `<li><button type="button" class="faction-row" data-preview-faction="${escAttr(f.name)}" style="--faction-h: ${f.hue}"><span class="faction-row__swatch" aria-hidden="true"></span><span class="faction-row__name">${esc(f.name)}</span></button></li>`,
-          )
-          .join('');
-  const add = live
-    ? `<div class="factions__add"><button type="button" class="kod-plus kod-plus--sm" data-rite-open="faction" aria-label="Add a faction"><span class="kod-plus__ring" aria-hidden="true"></span><span class="kod-plus__mark" aria-hidden="true">+</span></button></div>`
-    : '';
-  return `<aside class="kod-plate factions" aria-labelledby="fac-h">
-    <div class="section-head" style="margin:0"><h3 id="fac-h">Factions</h3>${infoBtn('About Factions', 'Banners outsiders may answer to. Colour is theirs. Find still filters the hall; this list is the record.')}</div>
-    <ul class="factions__list">${items}</ul>
-    ${add}
   </aside>`;
 }
 
@@ -309,7 +356,7 @@ function myths(
   </section>`;
 }
 
-function inspectPeopleJson(view: HallView, _factions: FactionOpt[]): string {
+function inspectPeopleJson(view: HallView): string {
   const map = new Map<
     string,
     {
@@ -320,6 +367,7 @@ function inspectPeopleJson(view: HallView, _factions: FactionOpt[]): string {
       whoWeSee: string;
       pc: boolean;
       placements: { axis: string; tier: string }[];
+      labelIds: string[];
     }
   >();
   const pc = new Set(
@@ -335,6 +383,7 @@ function inspectPeopleJson(view: HallView, _factions: FactionOpt[]): string {
       whoWeSee: ch.whoWeSee ?? '',
       pc: pc.has(ch.slug),
       placements: (ch.hierarchy ?? []).map((h) => ({ axis: h.axis, tier: h.tier })),
+      labelIds: [...(ch.labelIds ?? [])],
     });
   }
   for (const p of view.community.placements ?? []) {
@@ -345,6 +394,11 @@ function inspectPeopleJson(view: HallView, _factions: FactionOpt[]): string {
         cur.placements.push({ axis: p.axis, tier: p.tier });
       }
       if (p.note && !cur.whoWeSee) cur.whoWeSee = p.note;
+      if (!p.characterSlug && p.labelIds?.length) {
+        for (const lid of p.labelIds) {
+          if (!cur.labelIds.includes(lid)) cur.labelIds.push(lid);
+        }
+      }
     } else {
       map.set(id, {
         id,
@@ -354,6 +408,29 @@ function inspectPeopleJson(view: HallView, _factions: FactionOpt[]): string {
         whoWeSee: p.note ?? '',
         pc: Boolean(p.characterSlug && pc.has(p.characterSlug)),
         placements: [{ axis: p.axis, tier: p.tier }],
+        labelIds: [...(p.labelIds ?? [])],
+      });
+    }
+  }
+  for (const o of view.community.outsiders ?? []) {
+    const id = inspectId(o.name, o.characterSlug);
+    const cur = map.get(id);
+    if (cur) {
+      cur.kind = 'outsider';
+      if (o.note && !cur.whoWeSee) cur.whoWeSee = o.note;
+      for (const lid of o.labelIds ?? []) {
+        if (!cur.labelIds.includes(lid)) cur.labelIds.push(lid);
+      }
+    } else {
+      map.set(id, {
+        id,
+        kind: 'outsider',
+        name: o.name,
+        slug: o.characterSlug,
+        whoWeSee: o.note ?? '',
+        pc: false,
+        placements: [],
+        labelIds: [...(o.labelIds ?? [])],
       });
     }
   }

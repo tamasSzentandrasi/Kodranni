@@ -291,15 +291,17 @@ section.kod-plate {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(13rem, 16rem);
   grid-template-areas:
-    "sky    sky"
-    "crown  crown"
-    "nave   porch"
-    "crypt  crypt";
+    "sky      sky"
+    "aspects  aspects"
+    "crown    crown"
+    "nave     porch"
+    "crypt    crypt";
   gap: 1.35rem 1rem;
   align-items: start;
 }
 
 .hall__sky { grid-area: sky; }
+.hall-aspects { grid-area: aspects; }
 .hall__crown { grid-area: crown; }
 .hall__nave { grid-area: nave; min-width: 0; }
 .hall__porch {
@@ -316,6 +318,7 @@ section.kod-plate {
     grid-template-columns: 1fr;
     grid-template-areas:
       "sky"
+      "aspects"
       "crown"
       "nave"
       "porch"
@@ -1045,12 +1048,32 @@ section.kod-plate {
 }
 
 .hier-axis__head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   flex: 0 0 auto;
+  width: 100%;
   min-height: 5.6rem;
+  margin: 0;
   padding: 0.7rem 0.55rem 0.65rem;
+  font: inherit;
+  color: inherit;
   text-align: center;
+  border: none;
   border-bottom: 1px solid color-mix(in srgb, var(--hier-accent) 25%, transparent);
   background: color-mix(in srgb, var(--hier-accent) 12%, transparent);
+  cursor: pointer;
+}
+
+.hier-axis__head:hover,
+.hier-axis__head:focus-visible {
+  outline: none;
+  color: #fff8f0;
+  background: color-mix(in srgb, var(--hier-accent) 18%, transparent);
+}
+
+.hier-axis__head[aria-pressed='true'] {
+  box-shadow: inset 0 -2px 0 color-mix(in srgb, var(--hier-accent, var(--kod-silver)) 75%, transparent);
 }
 
 .hier-axis__name {
@@ -1282,6 +1305,72 @@ a.member--pc:focus-visible {
     inset 2px 0 0 var(--kod-silver);
 }
 
+.member[data-mark-n='1'] {
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--kod-silver) 14%, transparent),
+    inset 3px 0 0 hsl(var(--m1-h, 0) 36% 48%);
+}
+.member[data-mark-n='2'] {
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--kod-silver) 14%, transparent),
+    inset 3px 0 0 hsl(var(--m1-h, 0) 36% 48%),
+    inset 6px 0 0 hsl(var(--m2-h, 0) 36% 48%);
+}
+.member[data-mark-n='3'] {
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--kod-silver) 14%, transparent),
+    inset 3px 0 0 hsl(var(--m1-h, 0) 36% 48%),
+    inset 6px 0 0 hsl(var(--m2-h, 0) 36% 48%),
+    inset 9px 0 0 hsl(var(--m3-h, 0) 36% 48%);
+}
+.member--pc[data-mark-n='1'] {
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--kod-silver) 32%, transparent),
+    inset 2px 0 0 color-mix(in srgb, var(--kod-silver) 52%, transparent),
+    inset 5px 0 0 hsl(var(--m1-h, 0) 36% 48%);
+}
+.member--pc[data-mark-n='2'] {
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--kod-silver) 32%, transparent),
+    inset 2px 0 0 color-mix(in srgb, var(--kod-silver) 52%, transparent),
+    inset 5px 0 0 hsl(var(--m1-h, 0) 36% 48%),
+    inset 8px 0 0 hsl(var(--m2-h, 0) 36% 48%);
+}
+.member--pc[data-mark-n='3'] {
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--kod-silver) 32%, transparent),
+    inset 2px 0 0 color-mix(in srgb, var(--kod-silver) 52%, transparent),
+    inset 5px 0 0 hsl(var(--m1-h, 0) 36% 48%),
+    inset 8px 0 0 hsl(var(--m2-h, 0) 36% 48%),
+    inset 11px 0 0 hsl(var(--m3-h, 0) 36% 48%);
+}
+
+.member__more {
+  margin-left: 0.35rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  color: var(--kod-silver-dim);
+}
+
+.member--outsider {
+  border-left-style: dashed;
+}
+
+.member[data-view='rest'],
+.hier-axis--rest {
+  opacity: 0.4;
+  transition: opacity 0.16s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .member[data-view='rest'],
+  .hier-axis--rest {
+    transition: none;
+  }
+}
+
+
+
 .hier-ruler .member {
   width: auto;
   min-width: 8.5rem;
@@ -1326,8 +1415,95 @@ a.member--pc:focus-visible {
   outline-offset: 1px;
 }
 
-.hall[data-preview-faction] .hier-axes {
-  opacity: 0.55;
+.hall-aspects {
+  --kod-soot-size: 0.8rem;
+  --kod-corner-size: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  padding: 0.75rem 0.85rem 0.8rem;
+}
+
+.hall-aspects__kicker {
+  margin: 0;
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--kod-silver-dim);
+}
+
+.hall-aspects__tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.hall-aspects__tab {
+  font: inherit;
+  font-size: 0.95rem;
+  letter-spacing: 0.06em;
+  color: var(--kod-silver);
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 0.15rem 0.2rem 0.25rem;
+  cursor: pointer;
+}
+
+.hall-aspects__tab:hover,
+.hall-aspects__tab:focus-visible {
+  outline: none;
+  color: var(--kod-silver-bright);
+}
+
+.hall-aspects__tab[aria-selected='true'] {
+  color: var(--kod-silver-bright);
+  border-bottom-color: var(--kod-blood);
+}
+
+.hall-aspects__panel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.hall-aspects__panel[hidden] {
+  display: none !important;
+}
+
+.hall-aspects__label {
+  font: inherit;
+  font-size: 0.82rem;
+  letter-spacing: 0.03em;
+  color: var(--kod-silver);
+  background: #100e0c;
+  border: 1px solid var(--kod-frame);
+  padding: 0.22rem 0.55rem 0.24rem 0.6rem;
+  cursor: pointer;
+}
+
+.hall-aspects__label--hue {
+  box-shadow: inset 3px 0 0 hsl(var(--label-h, 0) 36% 48%);
+  padding-left: 0.7rem;
+}
+
+.hall-aspects__label:hover,
+.hall-aspects__label:focus-visible {
+  outline: none;
+  border-color: var(--kod-frame-tick-hot);
+  color: #fff8f0;
+}
+
+.hall-aspects__label[aria-pressed='true'] {
+  color: #fff8f0;
+  border-color: color-mix(in srgb, var(--kod-silver) 45%, #333);
+  background: #161412;
+}
+
+.hall-aspects__empty {
+  margin: 0;
+  color: var(--kod-silver-dim);
+  font-size: 0.85rem;
 }
 
 /* Outsiders — porch, not a fifth ladder */

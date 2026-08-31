@@ -15,6 +15,7 @@ export type HallRevCharacter = {
   status: CharacterRecord['status'];
   whoWeSee: string;
   hierarchy: CharacterRecord['hierarchy'];
+  labelIds: string[];
 };
 
 export type HallRevPayload = {
@@ -27,6 +28,7 @@ export type HallRevPayload = {
   rulerCharacterSlug?: string;
   placements: CommunityRecord['placements'];
   outsiders: CommunityRecord['outsiders'];
+  labels: NonNullable<CommunityRecord['labels']>;
   pendingMoves: NonNullable<CommunityRecord['pendingMoves']>;
   characters: HallRevCharacter[];
 };
@@ -44,6 +46,7 @@ export function hallRevPayload(
     ruler: community.ruler,
     placements,
     outsiders: community.outsiders ?? [],
+    labels: community.labels ?? [],
     pendingMoves: community.pendingMoves ?? [],
     characters: characters.map((ch) => ({
       slug: ch.slug,
@@ -51,6 +54,7 @@ export function hallRevPayload(
       status: ch.status,
       whoWeSee: ch.whoWeSee ?? '',
       hierarchy: ch.hierarchy ?? [],
+      labelIds: ch.labelIds ?? [],
     })),
   };
   if (community.fortunesFoundedAt) payload.fortunesFoundedAt = community.fortunesFoundedAt;

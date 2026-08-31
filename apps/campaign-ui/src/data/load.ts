@@ -64,6 +64,7 @@ function characterToView(ch: CharacterRecord): FixtureCommunity['characters'][nu
     armour: ch.armour,
     inventory: ch.inventory,
     flags: ch.flags,
+    labelIds: ch.labelIds ?? [],
   };
 }
 
@@ -84,6 +85,8 @@ function fromSnapshot(
     rulerCharacterSlug: raw.community.rulerCharacterSlug,
     placements: raw.community.placements,
     outsiders: raw.community.outsiders ?? [],
+    labelGroups: raw.community.labelGroups ?? [],
+    labels: raw.community.labels ?? [],
     factions: raw.community.factions ?? [],
     fortunesFoundedAt: raw.community.fortunesFoundedAt,
     fortuneMeta: raw.community.fortuneMeta ?? {},

@@ -51,7 +51,12 @@ export async function POST({
         name: String(body.name ?? ''),
         hue: Number(body.hue ?? 0),
       });
-      return json({ ok: true, factions: community.factions });
+      return json({
+        ok: true,
+        factions: community.factions,
+        labels: community.labels,
+        labelGroups: community.labelGroups,
+      });
     }
     const name = String(body.name ?? '');
     if (body.outsider) {

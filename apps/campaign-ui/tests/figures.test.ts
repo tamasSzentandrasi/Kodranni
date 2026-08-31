@@ -108,16 +108,16 @@ describe('POST /api/community/figures', () => {
       faction: 'Reed-marsh folk',
     });
     expect(status).toBe(200);
-    const outsiders = data.outsiders as { name: string; faction?: string }[];
-    expect(outsiders.some((o) => o.name === 'Ash-horn' && o.faction === 'Reed-marsh folk')).toBe(
-      true,
-    );
+    const outsiders = data.outsiders as { name: string; labelIds?: string[] }[];
+    const ash = outsiders.find((o) => o.name === 'Ash-horn');
+    expect(ash?.labelIds?.length).toBeGreaterThan(0);
   });
 
   it('adds a faction with a hue', async () => {
     const path = liveStore();
     const { status, data } = await signedPost(path, { kind: 'faction', name: 'Ash banner', hue: 28 });
     expect(status).toBe(200);
-    expect(data.factions).toEqual([{ name: 'Ash banner', hue: 28 }]);
+    const factions = data.factions as { name: string; hue: number }[];
+    expect(factions.some((f) => f.name === 'Ash banner' && f.hue === 28)).toBe(true);
   });
 });

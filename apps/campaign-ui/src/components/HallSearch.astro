@@ -56,25 +56,6 @@ const { axes, tiers, factions = [] } = Astro.props;
         NPC
       </button>
     </div>
-    <div class="hall-search__group" role="group" aria-label="Faction">
-      <p class="hall-search__legend">Factions</p>
-      {factions.length === 0 ? (
-        <p class="hall-search__empty">None listed yet.</p>
-      ) : (
-        factions.map((f) => (
-          <button
-            type="button"
-            class="hall-search__chip hall-search__chip--faction"
-            data-filter="faction"
-            data-value={f.name}
-            aria-pressed="false"
-            style={`--faction-h: ${f.hue}`}
-          >
-            {f.name}
-          </button>
-        ))
-      )}
-    </div>
   </div>
 
   <ul class="hall-search__hits" data-hall-hits hidden></ul>

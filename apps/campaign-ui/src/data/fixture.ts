@@ -50,6 +50,7 @@ export interface FixtureCharacter {
     items: { name: string; note?: string; tags?: string[] }[];
   };
   flags: { decadence: boolean; overCapacity: boolean };
+  labelIds?: string[];
 }
 
 export interface FixtureMyth {
@@ -80,7 +81,9 @@ export interface FixtureCommunity {
     characterSlug?: string;
     note?: string;
   }[];
-  outsiders: { name: string; faction?: string; note?: string; characterSlug?: string }[];
+  outsiders: { name: string; faction?: string; note?: string; characterSlug?: string; labelIds?: string[] }[];
+  labelGroups?: { id: string; name: string; kind: 'faction' | 'tag' }[];
+  labels?: { id: string; groupId: string; name: string; hue?: number }[];
   factions?: { name: string; hue: number }[];
   /** Live hall only; archive snapshots omit. */
   fortunesFoundedAt?: string;
@@ -130,6 +133,7 @@ function fixtureNpc(opts: {
   whoWeSee: string;
   communityTie?: string;
   hierarchy: { axis: string; tier: string }[];
+  labelIds?: string[];
 }): FixtureCharacter {
   return {
     slug: opts.slug,
@@ -161,6 +165,7 @@ function fixtureNpc(opts: {
     armour: { kind: 'none', donned: false },
     inventory: { foodDays: 0, waterDays: 0, items: [] },
     flags: { decadence: true, overCapacity: false },
+    labelIds: opts.labelIds,
   };
 }
 
@@ -267,30 +272,41 @@ export const fixtureCommunity: FixtureCommunity = {
       note: 'Counts spoils for whoever holds the store tonight.',
     },
   ],
+  labelGroups: [
+    { id: 'g-faction', name: 'Factions', kind: 'faction' },
+    { id: 'g-tag', name: 'Tags', kind: 'tag' },
+  ],
+  labels: [
+    { id: 'fac-reed-marsh-folk', groupId: 'g-faction', name: 'Reed-marsh folk', hue: 142 },
+    { id: 'fac-rival-war-band', groupId: 'g-faction', name: 'Rival war-band', hue: 18 },
+    { id: 'tag-grain-store', groupId: 'g-tag', name: 'Grain store' },
+    { id: 'tag-ford-watch', groupId: 'g-tag', name: 'Ford watch' },
+    { id: 'tag-captives', groupId: 'g-tag', name: 'Captives' },
+  ],
   factions: [
     { name: 'Reed-marsh folk', hue: 142 },
-    { name: 'Rival war-band', hue: 12 },
+    { name: 'Rival war-band', hue: 18 },
   ],
   outsiders: [
     {
       name: 'Mara of the Reeds',
-      faction: 'Reed-marsh folk',
       note: 'Speaks for grain and silence; will not bleed free for foreign occupiers.',
+      labelIds: ['fac-reed-marsh-folk'],
     },
     {
       name: 'Jorun of the Channels',
-      faction: 'Reed-marsh folk',
       note: 'Scout of the channels.',
+      labelIds: ['fac-reed-marsh-folk'],
     },
     {
       name: 'Skard Ketilsson',
-      faction: 'Rival war-band',
       note: 'Means to stake the next ford before the Vardmark hardens theirs.',
+      labelIds: ['fac-rival-war-band', 'tag-ford-watch'],
     },
     {
       name: 'Inga Skardsdottir',
-      faction: 'Rival war-band',
       note: 'Herald and bargainer for the rival band.',
+      labelIds: ['fac-rival-war-band'],
     },
   ],
   characters: [
@@ -386,6 +402,7 @@ export const fixtureCommunity: FixtureCommunity = {
         ],
       },
       flags: { decadence: false, overCapacity: false },
+      labelIds: ['tag-grain-store'],
     },
     {
       slug: 'leifr',
@@ -485,6 +502,7 @@ export const fixtureCommunity: FixtureCommunity = {
         items: [{ name: 'Spear' }, { name: 'Shield' }],
       },
       flags: { decadence: false, overCapacity: false },
+      labelIds: ['tag-ford-watch'],
     },
     fixtureNpc({
       slug: 'halla',
@@ -507,12 +525,14 @@ export const fixtureCommunity: FixtureCommunity = {
       name: 'Sten Vebjornsson',
       whoWeSee: 'Leifr’s ford watch; eager, unpaid enough to leave if the freeze bites hard.',
       hierarchy: [{ axis: 'Arms', tier: 'Trusted' }],
+      labelIds: ['tag-ford-watch'],
     }),
     fixtureNpc({
       slug: 'bera',
       name: 'Bera Unfree',
       whoWeSee: 'Survived the taking; kept as labour on the fields.',
       hierarchy: [{ axis: 'Blood', tier: 'Outcast' }],
+      labelIds: ['tag-captives'],
     }),
     fixtureNpc({
       slug: 'gorm',

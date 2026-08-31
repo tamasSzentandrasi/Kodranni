@@ -10,8 +10,8 @@
   const storageKey = 'kod-hall:' + slug;
   const POLL_MS = 8000;
 
-  /** @type {{ q: string, collapse: Record<string, boolean> }} */
-  let bag = { q: '', collapse: {} };
+  /** @type {{ q: string, collapse: Record<string, boolean>, group: string, labels: string[], axis: string }} */
+  let bag = { q: '', collapse: {}, group: 'g-faction', labels: [], axis: '' };
 
   function loadBag() {
     try {
@@ -21,6 +21,9 @@
       bag.q = typeof parsed.q === 'string' ? parsed.q : '';
       bag.collapse =
         parsed.collapse && typeof parsed.collapse === 'object' ? parsed.collapse : {};
+      bag.group = typeof parsed.group === 'string' && parsed.group ? parsed.group : 'g-faction';
+      bag.labels = Array.isArray(parsed.labels) ? parsed.labels.map(String) : [];
+      bag.axis = typeof parsed.axis === 'string' ? parsed.axis : '';
     } catch {
       /* ignore */
     }
@@ -90,15 +93,11 @@
   const searchRoot = document.querySelector('[data-hall-search]');
   const qInput = document.querySelector('[data-hall-q]');
   const hitsEl = document.querySelector('[data-hall-hits]');
-  const filters = { axis: '', tier: '', kind: '', faction: '' };
+  const filters = { axis: '', tier: '', kind: '' };
 
   function activeFilters() {
     return Boolean(
-      filters.axis ||
-        filters.tier ||
-        filters.kind ||
-        filters.faction ||
-        (qInput && qInput.value.trim()),
+      filters.axis || filters.tier || filters.kind || (qInput && qInput.value.trim()),
     );
   }
 
@@ -113,14 +112,12 @@
     const rung = el.closest('.hier-rung');
     const elAxis = (axisEl && axisEl.getAttribute('data-axis-name')) || '';
     const elTier = (rung && rung.getAttribute('data-tier')) || '';
-    const elFaction = el.getAttribute('data-faction') || '';
     const kind = kindOf(el);
     if (q && !name.includes(q)) return false;
     if (filters.axis && elAxis !== filters.axis) return false;
     if (filters.tier && elTier !== filters.tier) return false;
     if (filters.kind === 'pc' && kind !== 'pc') return false;
     if (filters.kind === 'npc' && kind === 'pc') return false;
-    if (filters.faction && elFaction !== filters.faction) return false;
     return true;
   }
 
@@ -129,7 +126,6 @@
     if (q && !String(p.name || '').toLowerCase().includes(q)) return false;
     if (filters.kind === 'pc' && !p.pc) return false;
     if (filters.kind === 'npc' && p.pc) return false;
-    if (filters.faction && (p.faction || '') !== filters.faction) return false;
     if (filters.axis || filters.tier) {
       const places = Array.isArray(p.placements) ? p.placements : [];
       const hit = places.some(
@@ -144,10 +140,6 @@
 
   function applySearch() {
     const on = activeFilters();
-    if (hall) {
-      if (filters.faction) hall.setAttribute('data-preview-faction', filters.faction);
-      else hall.removeAttribute('data-preview-faction');
-    }
     document.querySelectorAll('.member[data-inspect-id], .outsider[data-inspect-id]').forEach((el) => {
       if (!on) {
         el.removeAttribute('data-search');
@@ -234,7 +226,6 @@
         filters.axis = '';
         filters.tier = '';
         filters.kind = '';
-        filters.faction = '';
         searchRoot.querySelectorAll('[data-filter]').forEach((btn) => {
           btn.setAttribute('aria-pressed', 'false');
         });
@@ -435,30 +426,6 @@
       });
     }
 
-    document.querySelectorAll('[data-preview-faction]').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const value = btn.getAttribute('data-preview-faction') || '';
-        const on = hall && hall.getAttribute('data-preview-faction') === value;
-        const next = on ? '' : value;
-        if (hall) {
-          if (next) hall.setAttribute('data-preview-faction', next);
-          else hall.removeAttribute('data-preview-faction');
-        }
-        document.querySelectorAll('[data-preview-faction]').forEach((b) => {
-          b.setAttribute(
-            'aria-pressed',
-            b.getAttribute('data-preview-faction') === next ? 'true' : 'false',
-          );
-        });
-        document.querySelectorAll('.outsider[data-inspect-id]').forEach((el) => {
-          if (!next) {
-            el.removeAttribute('data-search');
-            return;
-          }
-          el.setAttribute('data-search', el.getAttribute('data-faction') === next ? 'hit' : 'miss');
-        });
-      });
-    });
   }
 
   // —— Roving tabindex ————————————————————————————————————————————————
@@ -656,12 +623,98 @@
     if (document.visibilityState === 'visible') startPoll();
   }
 
+  function labelIdsOf(el) {
+    return (el.getAttribute('data-label-ids') || '').split(/\s+/).filter(Boolean);
+  }
+
+  function applyView() {
+    const group = bag.group || 'g-faction';
+    const selected = new Set(bag.labels || []);
+    hall.setAttribute('data-view-group', group);
+    if (selected.size) hall.setAttribute('data-view-labels', [...selected].join(' '));
+    else hall.removeAttribute('data-view-labels');
+
+    document.querySelectorAll('[data-aspect-group]').forEach((tab) => {
+      const on = tab.getAttribute('data-aspect-group') === group;
+      tab.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+    document.querySelectorAll('[data-aspect-panel]').forEach((panel) => {
+      panel.hidden = panel.getAttribute('data-aspect-panel') !== group;
+    });
+    document.querySelectorAll('[data-label-id]').forEach((btn) => {
+      const id = btn.getAttribute('data-label-id') || '';
+      btn.setAttribute('aria-pressed', selected.has(id) ? 'true' : 'false');
+    });
+
+    document.querySelectorAll('.member[data-inspect-id]').forEach((el) => {
+      const ids = labelIdsOf(el);
+      if (!selected.size) {
+        el.removeAttribute('data-view');
+        return;
+      }
+      const hit = ids.some((id) => selected.has(id));
+      el.setAttribute('data-view', hit ? 'hit' : 'rest');
+    });
+
+    const axis = bag.axis || '';
+    if (axis) hall.setAttribute('data-focus-axis', axis);
+    else hall.removeAttribute('data-focus-axis');
+    document.querySelectorAll('.hier-axis').forEach((col) => {
+      const key = col.getAttribute('data-axis') || '';
+      const on = Boolean(axis) && key === axis;
+      col.classList.toggle('hier-axis--rest', Boolean(axis) && !on);
+      const head = col.querySelector('[data-axis-focus]');
+      if (head) head.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+  }
+
+  function bindAspects() {
+    const root = document.querySelector('[data-hall-aspects]');
+    if (!root) return;
+    root.querySelectorAll('[data-aspect-group]').forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const id = tab.getAttribute('data-aspect-group') || '';
+        if (!id) return;
+        bag.group = id;
+        bag.labels = [];
+        saveBag();
+        applyView();
+      });
+    });
+    root.querySelectorAll('[data-label-id]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-label-id') || '';
+        if (!id) return;
+        const i = bag.labels.indexOf(id);
+        if (i >= 0) bag.labels.splice(i, 1);
+        else bag.labels.push(id);
+        saveBag();
+        applyView();
+      });
+    });
+    applyView();
+  }
+
+  function bindAxisFocus() {
+    document.querySelectorAll('[data-axis-focus]').forEach((head) => {
+      head.addEventListener('click', (e) => {
+        if (e.target.closest('[data-rung-toggle]')) return;
+        const key = head.getAttribute('data-axis-focus') || '';
+        bag.axis = bag.axis === key ? '' : key;
+        saveBag();
+        applyView();
+      });
+    });
+  }
+
   function boot() {
     loadBag();
     restoreCollapse();
     bindRungPersist();
     bindSearch();
     bindRites();
+    bindAspects();
+    bindAxisFocus();
     applySearch();
     initRoving();
     bindPoll();

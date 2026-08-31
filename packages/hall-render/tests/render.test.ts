@@ -111,6 +111,9 @@ describe('renderArchivePage', () => {
     expect(html).not.toContain('No archive yet');
     expect(html).toContain('data-source="snapshot"');
     expect(html).not.toContain('data-rite-open');
+    expect(html).toContain('data-hall-aspects');
+    expect(html).not.toContain('data-preview-faction');
+    expect(html).not.toContain('aria-label="Faction"');
   });
 
   it('renders the roster and a read-only sheet', () => {
@@ -171,7 +174,7 @@ describe('communityInner', () => {
 
     const signed = communityInner(view, { live: true, canEdit: true });
     expect(signed).toContain('data-rite-open="figure"');
-    expect(signed).toContain('data-rite-open="faction"');
+    expect(signed).toContain('data-label-ids="fac-ash-fen"');
 
     const archive = communityInner(view);
     expect(archive).toContain('data-source="snapshot"');

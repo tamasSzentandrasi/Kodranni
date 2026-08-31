@@ -73,7 +73,8 @@ export function resolveFactionHue(name: string, listed?: FactionOpt[]): number {
 
 export function collectFactions(
   listed: FactionOpt[] | undefined,
-  outsiders: { faction?: string }[],
+  outsiders: { faction?: string; labelIds?: string[] }[],
+  labels?: { id: string; groupId: string; name: string; hue?: number }[],
 ): FactionOpt[] {
   const out: FactionOpt[] = [];
   const seen = new Set<string>();
@@ -82,6 +83,13 @@ export function collectFactions(
     if (!n || seen.has(n.toLowerCase())) continue;
     seen.add(n.toLowerCase());
     out.push({ name: n, hue: f.hue });
+  }
+  for (const l of labels ?? []) {
+    if (l.groupId !== 'g-faction') continue;
+    const n = l.name.trim();
+    if (!n || seen.has(n.toLowerCase())) continue;
+    seen.add(n.toLowerCase());
+    out.push({ name: n, hue: l.hue ?? factionHue(n) });
   }
   for (const o of outsiders) {
     const n = (o.faction ?? '').trim();

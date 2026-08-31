@@ -82,6 +82,7 @@ describe('hallRevPayload', () => {
         'fortunes',
         'fortunesFoundedAt',
         'hierarchyAxes',
+        'labels',
         'myths',
         'outsiders',
         'pendingMoves',
@@ -96,6 +97,7 @@ describe('hallRevPayload', () => {
         status: 'active',
         whoWeSee: 'measures twice',
         hierarchy: [{ axis: 'Coin', tier: 'Acknowledged' }],
+        labelIds: [],
       },
     ]);
     const json = JSON.stringify(payload);
