@@ -4,7 +4,7 @@
 |-------|--------|
 | **Author** | _TBD_ |
 | **Date** | 2026-08-23 |
-| **Status** | **Historical.** Do not implement new chrome from this document. Living visual plan: [`visual-lock.md`](./visual-lock.md). Keep this file for 23 Aug PR history only. |
+| **Status** | **Historical.** Chrome and several product sentences are **superseded** by [`visual-lock.md`](./visual-lock.md) (2026-08-31). Keep this file for jobs, store fields, and the PR history of the 23 Aug programme. Do not implement new chrome from this document. |
 | **Surfaces** | Landing (`public-root/index.html`), community tracker, character sheets, creation docks |
 | **Source of visual grammar** | **Was** Guidebook iron-silver plates (2026-08-18 / 08-22). **Now** iron structure + glass light + blood identity — see [`visual-lock.md`](./visual-lock.md). |
 | **Related** | [`visual-lock.md`](./visual-lock.md), [`docs/plans/starlight-guidebook.md`](docs/plans/starlight-guidebook.md), [`src/content/docs/automation.md`](src/content/docs/automation.md), [`docs/plans/automation-architecture.md`](docs/plans/automation-architecture.md) |
