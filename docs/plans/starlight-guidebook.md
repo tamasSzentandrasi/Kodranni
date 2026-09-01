@@ -1,6 +1,6 @@
 # Plan: Astro + Starlight Guidebook
 
-Guidebook architecture (Astro + Starlight). Rules + teaching holes: [documentation-gaps.md](./documentation-gaps.md) (2026-08-31). Product UI: [`visual-lock.md`](./visual-lock.md) (2026-08-31).
+Guidebook architecture (Astro + Starlight). Rules + teaching holes: [documentation-gaps.md](./documentation-gaps.md). Visual UX (jobs, options, remaining work): [`visual-lock.md`](./visual-lock.md).
 
 **Status (2026-08-18, evening):** Harden-and-raise packages 0–8 shipped. Verdict: §Verdict (pinnacle not reached). 2026-08-31: teaching/examples/pictures in scope; oculus/title-in-cast not a work item.
 
@@ -84,7 +84,7 @@ Short log. Original scaffold (`7c1882e`, 2026-08-09) assumed placeholder CSS, no
 
 ## Visual language (locked)
 
-Living chrome lock: [`visual-lock.md`](./visual-lock.md) (2026-08-31). This section is the book-facing summary. The 2026-08-18 line “no polychrome stained-glass chrome” is **superseded**: glass is material; chapter roses are pictures (frozen JPEGs). Theme colours do not leave. Do **not** restart oculus / title-in-cast / sidebar roundels (25 Aug revert; rose-cast later lifted).
+Living visual plan: [`visual-lock.md`](./visual-lock.md). This section is the book-facing summary. Glass is **material** (cartouche/roundel fill). Chapter roses are **pictures** (frontispiece JPEGs). Do **not** restart oculus / title-in-cast / sidebar roundels / pagination-as-glass-tile.
 
 - **Type:** Bellefair for titles *and* body. No second body face. Mitigate with contrast, shorter measure (~42–44rem), emphasis register, boxes, widgets — not a new family. Bellefair has only weight 400; do not fake-bold (`font-synthesis: none`).
 - **Colour:** iron / silver / blood. Dark only. No theme toggle. Stained glass is how chrome *catches light* (pewter leads, moonlight), not a second rainbow palette.
