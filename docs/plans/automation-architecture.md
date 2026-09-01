@@ -6,7 +6,7 @@ Kodranni assumes **automation** so hybrid play stays immersive: one living recor
 
 **Status (2026-08):** **This repository is the product entry** (Guidebook + bot + install/setup). A **campaign** is a *spawned public presentation instance*. **SoT + private data on ST machine.** Live + archive campaign UI = **Astro + Guidebook design system** (Starlight remains Guidebook-only). **Discord and Fluxer both from P0.** Approvals = **buttons**. **Tests first-class.** No throwaway midstep UIs.
 
-Product: [`visual-lock.md`](./visual-lock.md) V11–V24. Archive = read-only twin. ST desk = clone, last, `kod_setup`. Harm apply: result card and desk. Cards/whispers/token eval: V21–V24.
+Archive = read-only twin of the live hall and sheets. Harm apply belongs on the result card.
 
 **Hosting / DevSecOps lock (2026-08-25):** [`infra-devsecops.md`](./infra-devsecops.md). One public hostname; archive = KV `public.json` + product archive app on Cloudflare Pages; no campaign git repo in v1; park-process is not the archive. This document’s L2, L5, L6, O12, D3, D4, campaign-repo wizard, and two-URL split are **superseded** there. Local SQLite as SoT, session-scoped automation, and privacy split are not.
 

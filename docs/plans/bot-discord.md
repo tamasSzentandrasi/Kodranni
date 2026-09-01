@@ -41,7 +41,7 @@ Fluxer files load the same way. The Fluxer adapter is not connected yet — cred
 
 ## Table flow (lightweight)
 
-Product: [`visual-lock.md`](./visual-lock.md) V21–V24. Below is **shipped** `bot-runtime` behaviour.
+Below is **shipped** `bot-runtime` behaviour.
 
 1. **Startup:** bot posts **live sheet URL** card in play channel (if configured).
 2. **Player:** `/create name:…` → draft + personal sheet link (identity for Confirm @mention).  
@@ -59,7 +59,7 @@ Emergency only: `/map`. Prefer create → Confirm → Approve.
 
 Live sheet links use `runtime/live.url` or campaign `live_base_url`.
 
-Not shipped (V21–V24): Archetype `<select>` then skill `<select>` filtered by archetype (`packages/chat-ui`). Ephemeral only for Weighing results, edit URL if V24 keeps it, command-author errors, not-live. Harm button remains on the result card (also on ST desk, Pass 6). `/live`, `?edit=`, `/map`: evaluate vs I1–I10 before removal.
+Not shipped: Archetype then skill filtered by that archetype (`packages/chat-ui`). Harm button remains on the result card. `/live`, `?edit=`, `/map`: evaluate vs I1–I10 before removal.
 
 ## Storyteller recognition
 

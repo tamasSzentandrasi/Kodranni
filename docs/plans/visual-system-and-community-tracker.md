@@ -4,12 +4,12 @@
 |-------|--------|
 | **Author** | _TBD_ |
 | **Date** | 2026-08-23 |
-| **Status** | **Historical.** Chrome and several product sentences are **superseded** by [`visual-lock.md`](./visual-lock.md) (2026-08-31). Keep this file for jobs, store fields, and the PR history of the 23 Aug programme. Do not implement new chrome from this document. |
+| **Status** | **Historical.** 23 Aug programme notes. Do not implement new chrome from this document. |
 | **Surfaces** | Landing (`public-root/index.html`), community tracker, character sheets, creation docks |
-| **Source of visual grammar** | **Was** Guidebook iron-silver plates (2026-08-18 / 08-22). **Now** iron structure + glass light + blood identity — see [`visual-lock.md`](./visual-lock.md). |
-| **Related** | [`visual-lock.md`](./visual-lock.md), [`docs/plans/starlight-guidebook.md`](docs/plans/starlight-guidebook.md), [`src/content/docs/automation.md`](src/content/docs/automation.md), [`docs/plans/automation-architecture.md`](docs/plans/automation-architecture.md) |
+| **Source of visual grammar** | Guidebook iron-silver plates as of 2026-08-18 / 08-22; later hall/sheet work is in the code, not in a lock file. |
+| **Related** | [`starlight-guidebook.md`](./starlight-guidebook.md), [`src/content/docs/automation.md`](../../src/content/docs/automation.md), [`automation-architecture.md`](./automation-architecture.md) |
 
-**Superseded here (do not follow):** no stained-glass chrome; archive as a thinner face; play-time mutation bot-only / no ST web token; inspect drawer; Practice as a roundel/rose swap (pie stays); Find as hide/show-only; ST writes on the same player pages (ST desk is a **clone**, last); Discord cards out of scope. **Still true:** Fortune purpose; Wanting as a rite; founding as one board of five; Bellefair-only; falcon as the hall/sheet mark. Guidebook teaching is now in scope — see `visual-lock.md` and `documentation-gaps.md`.
+This file is PR history. Look at the shipped surfaces, not at a lock table.
 
 ---
 
@@ -1303,18 +1303,16 @@ Staged depth: landing buttons can ship before the tracker hall; the hall visual 
 
 ## Open Questions
 
-Author lock 2026-08-23, extended the same day. Items 1–2 still stand. Items 3–4 are **superseded** by [`visual-lock.md`](./visual-lock.md) (2026-08-31). The ST desk is a clone of the remade hall/sheets, last; Fortune correction lives there.
+Author lock 2026-08-23. Items 1–2 still stand.
 
 1. **Seal-ring behind the community name — Resolved: NONE.** The falcon is already the mark. Do not add a pewter stamp.
 2. **Budget remaining-points numeral — Resolved: KEEP BLOOD NUMERAL, PEWTER / GLASS BAR.** Blood as identity; fill bar and hover stay iron-silver (glass field allowed).
-3. **Archive `fortuneMeta` — Historical: strip weather-log fields from the snapshot.** The archive **face** (Find, hall, sheets) is now a read-only twin of live. See `visual-lock.md`.
-4. **ST Fortune mutation — Historical: 23 Aug said bot-only.** **Now:** founding is still one-shot; later correction may be ST web via `kod_setup` as well as the table bot. See `visual-lock.md`.
 
 ---
 
 ## References
 
-- [`docs/plans/starlight-guidebook.md`](docs/plans/starlight-guidebook.md) — visual lock, portal residual, parked rose
+- [`docs/plans/starlight-guidebook.md`](docs/plans/starlight-guidebook.md) — book architecture, portal residual
 - [`src/content/docs/automation.md`](src/content/docs/automation.md) — tracker contract, ST buttons, live vs archive
 - [`src/content/docs/echoes.md`](src/content/docs/echoes.md) — Fortune purpose (ambient weather, not a sheet), scale, starting impressions, Myth craft ingredients
 - [`src/content/docs/campaign-setup.md`](src/content/docs/campaign-setup.md) — step 9: set starting Fortunes from framed facts; store on create; early play may correct
