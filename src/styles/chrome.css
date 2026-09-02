@@ -11,7 +11,7 @@
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
-  margin: 0.15rem 0 1.15rem;
+  margin: 0.05rem 0 0.55rem;
   padding: 0;
   border-bottom: none;
   background: none;
@@ -22,9 +22,9 @@
 
 .kod-page-title__rose {
   position: relative;
-  width: min(19.5rem, 74vw);
+  width: min(22.5rem, 78vw);
   aspect-ratio: 1;
-  margin: 0 auto 0.05rem;
+  margin: 0 auto;
   isolation: isolate;
   display: grid;
   place-items: center;
@@ -51,12 +51,29 @@
   position: relative;
   z-index: 1;
   display: block;
-  width: 86%;
-  height: 86%;
+  width: 88%;
+  height: 88%;
   object-fit: cover;
   object-position: center;
   border-radius: 50%;
   pointer-events: none;
+}
+
+.kod-page-title__rose::after {
+  content: '';
+  position: absolute;
+  inset: 8%;
+  border-radius: 50%;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(
+    118deg,
+    transparent 36%,
+    rgba(242, 239, 233, 0.16) 49%,
+    transparent 62%
+  );
+  mix-blend-mode: screen;
+  opacity: 0;
 }
 
 .kod-page-title__text {
@@ -79,7 +96,7 @@
   text-transform: uppercase;
   color: var(--kod-silver-dim);
   line-height: 1.25;
-  margin: 0.2rem 0 0.38rem;
+  margin: 0.08rem 0 0.22rem;
   text-decoration: none;
 }
 
@@ -138,16 +155,16 @@ a.kod-page-title__kicker:focus-visible {
 
 @media (min-width: 50rem) {
   .kod-page-title__rose {
-    width: min(22rem, 48vw);
+    width: min(25.5rem, 52vw);
   }
 }
 
 @media (max-width: 40rem) {
   .kod-page-title {
-    margin-bottom: 0.1rem;
+    margin-bottom: 0.05rem;
   }
   .kod-page-title__rose {
-    width: min(15.5rem, 82vw);
+    width: min(17.5rem, 86vw);
   }
   .kod-page-title h1 {
     font-size: 2.45rem;
@@ -172,6 +189,9 @@ a.kod-page-title__kicker:focus-visible {
   }
   .kod-page-title__rose::before {
     animation: kod-rose-breathe 6.4s ease-in-out 0.9s infinite;
+  }
+  .kod-page-title__rose::after {
+    animation: kod-rose-shimmer 11s ease-in-out 1.4s infinite;
   }
   .kod-page-title__text {
     animation: kod-title-in 0.8s ease-out 0.28s both;
@@ -214,6 +234,22 @@ a.kod-page-title__kicker:focus-visible {
   }
 }
 
+@keyframes kod-rose-shimmer {
+  0%,
+  100% {
+    opacity: 0;
+    transform: translateX(-10%) rotate(-6deg);
+  }
+  42% {
+    opacity: 0.42;
+    transform: translateX(0) rotate(0deg);
+  }
+  58% {
+    opacity: 0.18;
+    transform: translateX(6%) rotate(4deg);
+  }
+}
+
 @keyframes kod-epigraph-in {
   from {
     opacity: 0;
@@ -231,7 +267,7 @@ a.kod-page-title__kicker:focus-visible {
 }
 .main-pane .content-panel:has(.kod-page-title) + .content-panel {
   border-top: none;
-  padding-top: 1.15rem;
+  padding-top: 0.7rem;
 }
 
 /* Opening quote is the epigraph of the rose, not a second ornamental plate. */
@@ -244,8 +280,8 @@ a.kod-page-title__kicker:focus-visible {
   box-shadow: none;
   text-align: center;
   max-width: 36rem;
-  margin: 0.55rem auto 2.8rem;
-  padding: 0.15rem 0.8rem 0.2rem;
+  margin: 0.28rem auto 2.15rem;
+  padding: 0.1rem 0.8rem 0.15rem;
   font-size: 1.02em;
   line-height: 1.7;
   color: color-mix(in srgb, var(--kod-silver-dim) 78%, var(--kod-silver));
@@ -269,12 +305,17 @@ a.kod-page-title__kicker:focus-visible {
 @media (prefers-reduced-motion: reduce) {
   .kod-page-title__rose,
   .kod-page-title__rose img,
+  .kod-page-title__rose::before,
+  .kod-page-title__rose::after,
   .kod-page-title__text,
   .sl-markdown-content > blockquote.kod-epigraph {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
     filter: none !important;
+  }
+  .kod-page-title__rose::after {
+    opacity: 0 !important;
   }
 }
 
@@ -303,6 +344,7 @@ a.kod-page-title__kicker:focus-visible {
   background-color: var(--kod-icon-hue, var(--kod-silver));
   -webkit-mask: var(--kod-icon-mask) center / contain no-repeat;
   mask: var(--kod-icon-mask) center / contain no-repeat;
+  filter: contrast(1.18);
 }
 
 .sidebar-content a[href]:has(.kod-sidebar-icon)::before {
