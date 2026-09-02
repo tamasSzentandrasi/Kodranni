@@ -28,63 +28,91 @@ Minden tengely ugyanazt a négy fokot használja, fentről le: **tisztelt**, **m
 
 ### Az ábra alakja
 
-Az ábrát (Diagram) fentről lefelé olvasd: egy korona, aztán párhuzamos létrák. Minden oszlop külön hierarchia. Minden létra **ugyanazt a négy szintet** használja (az oszlop teteje = tisztelt, alja = kitaszított).
+Az ábrát (Diagram) fentről lefelé olvasd: egy korona, aztán párhuzamos létrák. Minden oszlop külön hierarchia. Minden létra **ugyanazt a négy szintet** használja (az oszlop teteje = tisztelt, alja = kitaszított). Az **előkészítés** minden fokot név nélkül hagy. A **játékban** egy kidolgozott Althing-példa: kettős tengely, pártfogás, megbízás és a kívülálló tornác egyszerre látszik.
 
-<div class="kod-hier-diagram not-content" aria-label="Hierarchiaábra">
+<div class="kod-hier not-content" data-widget="hierarchy-board" data-mode="play" aria-label="Hierarchia-foglaltság">
+<div class="kod-hier__modes" role="group" aria-label="Ábra állapota">
+<button type="button" class="kod-widget__btn" data-hier-mode="setup">Előkészítés</button>
+<button type="button" class="kod-widget__btn" data-hier-mode="play" aria-pressed="true">Játékban</button>
+</div>
+<div class="kod-hier__cast" role="list" aria-label="A példa emberei">
+<button type="button" class="kod-chip" data-person="ketill">Ketill</button>
+<button type="button" class="kod-chip" data-person="hakon">Hákon</button>
+<button type="button" class="kod-chip" data-person="ingibjorg">Ingibjörg</button>
+<button type="button" class="kod-chip" data-person="leif">Leif</button>
+<button type="button" class="kod-chip" data-person="sigrid">Sigrid</button>
+</div>
+<div class="kod-hier-diagram">
 <div class="kod-hier-ruler">
 <p class="kod-hier-ruler__title">Uralkodó</p>
-<p class="kod-hier-ruler__note">Egy hely az egész közösségnek — minden tengely fölött, nem a Fegyver, Hit (Faith), Pénz vagy Vér (Blood) teteje.</p>
+<button type="button" class="kod-chip" data-person="ketill" data-play>Ketill</button>
+<p class="kod-hier-ruler__note">Egy hely az egész közösségnek — minden tengely fölött, nem a Fegyver, Hit, Pénz vagy Vér teteje.</p>
 </div>
-<p class="kod-hier-join" aria-hidden="true">↓ · ↓ · ↓ · ↓</p>
+<div class="kod-hier-body">
 <div class="kod-hier-axes">
-<div class="kod-hier-axis kod-hier-axis--arms">
+<div class="kod-hier-axis">
 <div class="kod-hier-axis__head">
 <p class="kod-hier-axis__name">Fegyver</p>
 <p class="kod-hier-axis__domain">Harci erő, védelem, háború, az erőszak joga</p>
 </div>
 <ol class="kod-hier-rungs">
-<li><strong>Tisztelt</strong> Súlyos szó</li>
-<li><strong>Megbízott</strong> Valódi felelősség</li>
-<li><strong>Elismert</strong> Fogódzó</li>
-<li><strong>Kitaszított</strong> Nincs állása</li>
+<li><strong>Tisztelt</strong></li>
+<li><strong>Megbízott</strong> <button type="button" class="kod-chip" data-person="hakon" data-play>Hákon</button></li>
+<li><strong>Elismert</strong> <button type="button" class="kod-chip" data-person="leif" data-play>Leif</button></li>
+<li><strong>Kitaszított</strong></li>
 </ol>
 </div>
-<div class="kod-hier-axis kod-hier-axis--faith">
+<div class="kod-hier-axis">
 <div class="kod-hier-axis__head">
 <p class="kod-hier-axis__name">Hit</p>
 <p class="kod-hier-axis__domain">Szertartás, szent tudás, erkölcsi súly</p>
 </div>
 <ol class="kod-hier-rungs">
-<li><strong>Tisztelt</strong> Súlyos szó</li>
-<li><strong>Megbízott</strong> Valódi felelősség</li>
-<li><strong>Elismert</strong> Fogódzó</li>
-<li><strong>Kitaszított</strong> Nincs állása</li>
+<li><strong>Tisztelt</strong></li>
+<li><strong>Megbízott</strong></li>
+<li><strong>Elismert</strong></li>
+<li><strong>Kitaszított</strong></li>
 </ol>
 </div>
-<div class="kod-hier-axis kod-hier-axis--coin">
+<div class="kod-hier-axis">
 <div class="kod-hier-axis__head">
 <p class="kod-hier-axis__name">Pénz</p>
 <p class="kod-hier-axis__domain">Vagyon, kereskedelem, anyagi többlet, alkuerő</p>
 </div>
 <ol class="kod-hier-rungs">
-<li><strong>Tisztelt</strong> Súlyos szó</li>
-<li><strong>Megbízott</strong> Valódi felelősség</li>
-<li><strong>Elismert</strong> Fogódzó</li>
-<li><strong>Kitaszított</strong> Nincs állása</li>
+<li><strong>Tisztelt</strong> <button type="button" class="kod-chip" data-person="ingibjorg" data-play>Ingibjörg</button></li>
+<li><strong>Megbízott</strong></li>
+<li><strong>Elismert</strong> <button type="button" class="kod-chip" data-person="leif" data-play>Leif</button></li>
+<li><strong>Kitaszított</strong></li>
 </ol>
 </div>
-<div class="kod-hier-axis kod-hier-axis--blood">
+<div class="kod-hier-axis">
 <div class="kod-hier-axis__head">
 <p class="kod-hier-axis__name">Vér</p>
 <p class="kod-hier-axis__domain">Rokonság, föld, származás, házi hatalom</p>
 </div>
 <ol class="kod-hier-rungs">
-<li><strong>Tisztelt</strong> Súlyos szó</li>
-<li><strong>Megbízott</strong> Valódi felelősség</li>
-<li><strong>Elismert</strong> Fogódzó</li>
-<li><strong>Kitaszított</strong> Nincs állása</li>
+<li><strong>Tisztelt</strong> <button type="button" class="kod-chip" data-person="ketill" data-play>Ketill</button></li>
+<li><strong>Megbízott</strong></li>
+<li><strong>Elismert</strong> <button type="button" class="kod-chip" data-person="hakon" data-play>Hákon</button></li>
+<li><strong>Kitaszított</strong></li>
 </ol>
 </div>
+</div>
+<aside class="kod-hier-porch" aria-label="Kívülállók">
+<p class="kod-hier-porch__title">Kívülállók</p>
+<button type="button" class="kod-chip" data-person="sigrid" data-play>Sigrid</button>
+<p class="kod-hier-porch__note">Külön, amíg belépnek. Akkor kitaszított a rájuk illő tengelyeken.</p>
+</aside>
+</div>
+</div>
+<div class="kod-hier__frame" aria-live="polite">
+<p data-person-note="default">Kattints egy névre. Az az ember minden tengelyen kigyullad, ahol ül. A kettős tengely két fok egyszerre, nem ötödik létra. A Hit szándékosan üres — tengely játékban is maradhat névtelen.</p>
+<p data-person-note="ketill" hidden>Ketill az uralkodói helyen ül. A Véren emelkedett, és ott tisztelt maradt. Nem állhat a falon és az Althingon egyszerre, ezért a Fegyvert Hákont bízza. Hírnév: aki nyilvánosan megszégyeníteni próbálja, a saját foka és a minden tengely fölötti hely közti rést kapja.</p>
+<p data-person-note="hakon" hidden>Hákon a Fegyveren megbízott, mert Ketill marsallnak nevezte — ez megbízás, nem második uralkodó. Rokonságként elismert a Véren is. Kettős tengely: mindkét létra kigyullad. Senki sem uralkodik jól, ha nem adja le a munkát.</p>
+<p data-person-note="ingibjorg" hidden>Ingibjörg tisztelt a Pénzen — a malomkönyv. Leif pártfogója. A Fegyveren nem ül. Ha a csarnokban Leif ellen megy, a Pénz kétfoknyi rése a társas vagy szellemi sérülés védelmi aránya. A fikcióbeli befolyás szabad szerepjáték marad.</p>
+<p data-person-note="leif" hidden>Leif (játékos). Elismert a Fegyveren a tavalyi rajtaütésből. A Pénzen kitaszított volt, amíg Ingibjörg malomkönyv-visszhangja jól zárult; most elismert a Pénzen. Az emelkedés tengelyenként megy — a visszhang a Fegyvert nem mozdította. Kettős tengely: mindkét fok kigyullad.</p>
+<p data-person-note="sigrid" hidden>Sigrid kívülálló: a tornácon, egyik létrán sem. Ha belép a közösségbe, kitaszítottként indul a ráillő tengelyeken. A tornác az ábra mellett van, soha nem ötödik oszlop.</p>
 </div>
 <p class="kod-hier-caption">Ugyanaz a négy fok minden tengelyen. Egy karakter állhat magasan az egyiken és alacsonyan a másikon. Az uralkodói hely egyetlen, és minden tengely fölött ül.</p>
 </div>
@@ -122,12 +150,13 @@ A pártfogás a legtisztább út, nem az egyetlen. Nyilvános tettek, erő, egy 
 Ugyanazon a szinten a versengés és az együttműködés szerepjáték marad.
 
 <aside class="kod-example" aria-label="Példa">
-<p class="kod-example__scene">Az Althing előtt a Pénz tisztelt kereskedője — a nő, aki még mindig az egyetlen ép malomkönyvet tartja — félrehív egy játékost az udvaron. A malomkönyvet, ami a malomrészesedés igényét bizonyítja, múlt héten ellopták. Tanúk előtt nevezi meg őket: hozd vissza, mielőtt a gyűlés összeül, és szólni fog értük. Ez a megbízás olyasmi lesz, amit a karakter hordozni választ — visszhang. Ha jól zárul, emelkedést nyithat a Pénzen. A visszhang önmagában nem ad rangot. Később, ha valaki nyilvánosan megszégyeníteni próbálja őket, a ráillő hierarchia relatív állása színezi a társas sérülés védelmét — nem automatikus hatalom magából a szívességből.</p>
+<p class="kod-example__scene">A fenti foglaltság ez a jelenet a lezárás után. Az Althing előtt Ingibjörg — tisztelt a Pénzen, a nő, aki még mindig az egyetlen ép malomkönyvet tartja — félrehívja Leifet az udvaron. A malomkönyvet, ami a malomrészesedés igényét bizonyítja, múlt héten ellopták. Tanúk előtt nevezi meg: hozd vissza, mielőtt a gyűlés összeül, és szólni fog érte. Ez a megbízás visszhang lett. Jól zárult, és megnyitotta a Pénzen az emelkedést (kitaszított → elismert). A visszhang a Fegyvert nem mozdította, és nem tette tiszteltté. Később, ha Ingibjörg a csarnokban megszégyeníteni próbálja, a Pénz kétfoknyi rése a társas sérülés védelmi aránya — nem automatikus hatalom magából a szívességből. Ketill azon a létrán nincs: uralkodik, mert a helyen ül, és mert a Fegyvert már Hákont bízta.</p>
 <ol class="kod-example__steps">
-<li><strong>Horog:</strong> Tisztelt (Pénz) nyilvánosan a malomkönyv visszaszerzését bízza rájuk az Althing előtt.</li>
+<li><strong>Pártfogás / horog:</strong> Ingibjörg (tisztelt, Pénz) nyilvánosan a malomkönyv visszaszerzését bízza Leifre az Althing előtt.</li>
 <li><strong>Visszhang születik:</strong> „Hozd vissza a malomkönyvet az Althing előtt” (súlyt az asztal szabja).</li>
-<li><strong>Ha jól zárul:</strong> a mesélő hierarchiaemelkedést hagyhat jóvá (pl. kitaszított → elismert a Pénzen).</li>
-<li><strong>Hírnév a társas sérüléshez:</strong> a relatív szintrés játékban rögzül, aztán védelmi arányként érvényesül, amikor társas vagy szellemi sérülés jár.</li>
+<li><strong>Emelkedés:</strong> jól zárult; a mesélő a Pénzen kitaszított → elismertet hagyott jóvá. A Fegyver ott maradt, ahová a rajtaütés tette.</li>
+<li><strong>Megbízás:</strong> Ketill (uralkodó, tisztelt Vér) nem ül megbízottként a Fegyveren — Hákon ül, mert az uralkodó marsallnak nevezte.</li>
+<li><strong>Hírnév / társas harc:</strong> Ingibjörg vs Leif a Pénzen két fok. Ez a rés a védelmi arány, amikor társas vagy szellemi sérülés jár. Más mechanika nincs a szinthez kötve.</li>
 </ol>
 </aside>
 

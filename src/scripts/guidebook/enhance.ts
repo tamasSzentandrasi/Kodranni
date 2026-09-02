@@ -747,6 +747,92 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 		});
 	}
 
+	function setupHierarchyBoard() {
+		document.querySelectorAll('[data-widget="hierarchy-board"]').forEach((root) => {
+			if (root.dataset.ready) return;
+			root.dataset.ready = '1';
+			const modeBtns = [...root.querySelectorAll('[data-hier-mode]')];
+			const notes = [...root.querySelectorAll('[data-person-note]')];
+			const diagram = root.querySelector('.kod-hier-diagram');
+			let svg = root.querySelector('.kod-hier-links');
+			if (diagram && !svg) {
+				svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+				svg.setAttribute('class', 'kod-hier-links');
+				svg.setAttribute('aria-hidden', 'true');
+				diagram.insertBefore(svg, diagram.firstChild);
+			}
+
+			function setMode(mode) {
+				root.setAttribute('data-mode', mode);
+				modeBtns.forEach((b) =>
+					b.setAttribute('aria-pressed', b.dataset.hierMode === mode ? 'true' : 'false'),
+				);
+				if (mode === 'setup') setPerson(null);
+				else drawLinks();
+			}
+
+			function setPerson(id) {
+				root.dataset.person = id || '';
+				root.querySelectorAll('.kod-chip[data-person]').forEach((chip) => {
+					const on = Boolean(id) && chip.dataset.person === id;
+					chip.setAttribute('aria-pressed', on ? 'true' : 'false');
+					chip.classList.toggle('is-lit', on);
+				});
+				root.querySelectorAll('.kod-hier-rungs li').forEach((li) => {
+					const hit = Boolean(id) && li.querySelector(`.kod-chip[data-person="${id}"]`);
+					li.classList.toggle('is-lit', Boolean(hit));
+				});
+				notes.forEach((p) => {
+					const key = id || 'default';
+					const show = p.getAttribute('data-person-note') === key;
+					if (show) p.removeAttribute('hidden');
+					else p.setAttribute('hidden', '');
+				});
+				drawLinks();
+			}
+
+			function drawLinks() {
+				if (!svg || !diagram) return;
+				svg.replaceChildren();
+				if (root.getAttribute('data-mode') === 'setup') return;
+				if (prefersReduced) return;
+				const id = root.dataset.person;
+				if (!id) return;
+				const chips = [...root.querySelectorAll(`.kod-chip.is-lit[data-person="${id}"]`)];
+				if (chips.length < 2) return;
+				const box = diagram.getBoundingClientRect();
+				if (box.width < 8 || box.height < 8) return;
+				svg.setAttribute('viewBox', `0 0 ${box.width} ${box.height}`);
+				svg.setAttribute('width', String(box.width));
+				svg.setAttribute('height', String(box.height));
+				const pts = chips.map((c) => {
+					const r = c.getBoundingClientRect();
+					return { x: r.left + r.width / 2 - box.left, y: r.top + r.height / 2 - box.top };
+				});
+				for (let i = 0; i < pts.length - 1; i++) {
+					const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+					line.setAttribute('x1', String(pts[i].x));
+					line.setAttribute('y1', String(pts[i].y));
+					line.setAttribute('x2', String(pts[i + 1].x));
+					line.setAttribute('y2', String(pts[i + 1].y));
+					svg.appendChild(line);
+				}
+			}
+
+			modeBtns.forEach((b) => b.addEventListener('click', () => setMode(b.dataset.hierMode)));
+			root.querySelectorAll('.kod-chip[data-person]').forEach((chip) => {
+				chip.addEventListener('click', () => {
+					if (root.getAttribute('data-mode') === 'setup') return;
+					const id = chip.dataset.person;
+					setPerson(root.dataset.person === id ? null : id);
+				});
+			});
+			window.addEventListener('resize', drawLinks);
+			setMode(root.getAttribute('data-mode') || 'play');
+			setPerson(null);
+		});
+	}
+
 	function enhance() {
 		const steps = [
 			injectSidebarIcons,
@@ -763,6 +849,7 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 			setupTideDemo,
 			setupOmenFaces,
 			setupFortuneBoard,
+			setupHierarchyBoard,
 			setupScrollReveal,
 			setupTableStrip,
 		];

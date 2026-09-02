@@ -28,63 +28,91 @@ Each axis uses the same four rungs, top to bottom: **Honoured**, **Trusted**, **
 
 ### The shape of the Diagram
 
-Read the diagram top-down: one crown, then parallel ladders. Each column is a separate Hierarchy. Each ladder uses the **same four tiers** (top of column = Honoured, bottom = Outcast).
+Read the diagram top-down: one crown, then parallel ladders. Each column is a separate Hierarchy. Each ladder uses the **same four tiers** (top of column = Honoured, bottom = Outcast). **Setup** leaves every rung empty of names. **In play** is a worked occupancy — a small Althing cast — so dual-axis, patronage, delegation, and the outsider porch can be seen at once.
 
-<div class="kod-hier-diagram not-content" aria-label="Hierarchy diagram">
+<div class="kod-hier not-content" data-widget="hierarchy-board" data-mode="play" aria-label="Hierarchy occupancy">
+<div class="kod-hier__modes" role="group" aria-label="Diagram state">
+<button type="button" class="kod-widget__btn" data-hier-mode="setup">Setup</button>
+<button type="button" class="kod-widget__btn" data-hier-mode="play" aria-pressed="true">In play</button>
+</div>
+<div class="kod-hier__cast" role="list" aria-label="People in the example">
+<button type="button" class="kod-chip" data-person="ketill">Ketill</button>
+<button type="button" class="kod-chip" data-person="hakon">Hákon</button>
+<button type="button" class="kod-chip" data-person="ingibjorg">Ingibjörg</button>
+<button type="button" class="kod-chip" data-person="leif">Leif</button>
+<button type="button" class="kod-chip" data-person="sigrid">Sigrid</button>
+</div>
+<div class="kod-hier-diagram">
 <div class="kod-hier-ruler">
 <p class="kod-hier-ruler__title">Ruler</p>
+<button type="button" class="kod-chip" data-person="ketill" data-play>Ketill</button>
 <p class="kod-hier-ruler__note">One seat for the whole community — above every axis, not the top of Arms, Faith, Coin, or Blood.</p>
 </div>
-<p class="kod-hier-join" aria-hidden="true">↓ · ↓ · ↓ · ↓</p>
+<div class="kod-hier-body">
 <div class="kod-hier-axes">
-<div class="kod-hier-axis kod-hier-axis--arms">
+<div class="kod-hier-axis">
 <div class="kod-hier-axis__head">
 <p class="kod-hier-axis__name">Arms</p>
 <p class="kod-hier-axis__domain">Martial strength, protection, war, right to violence</p>
 </div>
 <ol class="kod-hier-rungs">
-<li><strong>Honoured</strong> Significant voice</li>
-<li><strong>Trusted</strong> Real responsibility</li>
-<li><strong>Acknowledged</strong> A foothold</li>
-<li><strong>Outcast</strong> No standing</li>
+<li><strong>Honoured</strong></li>
+<li><strong>Trusted</strong> <button type="button" class="kod-chip" data-person="hakon" data-play>Hákon</button></li>
+<li><strong>Acknowledged</strong> <button type="button" class="kod-chip" data-person="leif" data-play>Leif</button></li>
+<li><strong>Outcast</strong></li>
 </ol>
 </div>
-<div class="kod-hier-axis kod-hier-axis--faith">
+<div class="kod-hier-axis">
 <div class="kod-hier-axis__head">
 <p class="kod-hier-axis__name">Faith</p>
 <p class="kod-hier-axis__domain">Ritual, sacred knowledge, moral weight</p>
 </div>
 <ol class="kod-hier-rungs">
-<li><strong>Honoured</strong> Significant voice</li>
-<li><strong>Trusted</strong> Real responsibility</li>
-<li><strong>Acknowledged</strong> A foothold</li>
-<li><strong>Outcast</strong> No standing</li>
+<li><strong>Honoured</strong></li>
+<li><strong>Trusted</strong></li>
+<li><strong>Acknowledged</strong></li>
+<li><strong>Outcast</strong></li>
 </ol>
 </div>
-<div class="kod-hier-axis kod-hier-axis--coin">
+<div class="kod-hier-axis">
 <div class="kod-hier-axis__head">
 <p class="kod-hier-axis__name">Coin</p>
 <p class="kod-hier-axis__domain">Wealth, trade, material surplus, leverage</p>
 </div>
 <ol class="kod-hier-rungs">
-<li><strong>Honoured</strong> Significant voice</li>
-<li><strong>Trusted</strong> Real responsibility</li>
-<li><strong>Acknowledged</strong> A foothold</li>
-<li><strong>Outcast</strong> No standing</li>
+<li><strong>Honoured</strong> <button type="button" class="kod-chip" data-person="ingibjorg" data-play>Ingibjörg</button></li>
+<li><strong>Trusted</strong></li>
+<li><strong>Acknowledged</strong> <button type="button" class="kod-chip" data-person="leif" data-play>Leif</button></li>
+<li><strong>Outcast</strong></li>
 </ol>
 </div>
-<div class="kod-hier-axis kod-hier-axis--blood">
+<div class="kod-hier-axis">
 <div class="kod-hier-axis__head">
 <p class="kod-hier-axis__name">Blood</p>
 <p class="kod-hier-axis__domain">Kinship, land, lineage, domestic authority</p>
 </div>
 <ol class="kod-hier-rungs">
-<li><strong>Honoured</strong> Significant voice</li>
-<li><strong>Trusted</strong> Real responsibility</li>
-<li><strong>Acknowledged</strong> A foothold</li>
-<li><strong>Outcast</strong> No standing</li>
+<li><strong>Honoured</strong> <button type="button" class="kod-chip" data-person="ketill" data-play>Ketill</button></li>
+<li><strong>Trusted</strong></li>
+<li><strong>Acknowledged</strong> <button type="button" class="kod-chip" data-person="hakon" data-play>Hákon</button></li>
+<li><strong>Outcast</strong></li>
 </ol>
 </div>
+</div>
+<aside class="kod-hier-porch" aria-label="Outsiders">
+<p class="kod-hier-porch__title">Outsiders</p>
+<button type="button" class="kod-chip" data-person="sigrid" data-play>Sigrid</button>
+<p class="kod-hier-porch__note">Apart until they enter. Then Outcast on the axes that apply.</p>
+</aside>
+</div>
+</div>
+<div class="kod-hier__frame" aria-live="polite">
+<p data-person-note="default">Click a name. That person lights on every axis they occupy. Dual-axis is two rungs at once, not a fifth ladder. Faith is empty on purpose — an axis can sit vacant in play.</p>
+<p data-person-note="ketill" hidden>Ketill holds the Ruler seat. He rose through Blood and still sits Honoured there. He cannot stand the wall and the Althing at once, so Arms is delegated to Hákon. Reputation: anyone trying to shame Ketill in public faces the gap from their rung to the seat above every axis.</p>
+<p data-person-note="hakon" hidden>Hákon is Trusted on Arms because Ketill named him marshal — that is delegation, not a second Ruler. He is also Acknowledged on Blood as kin. Dual-axis: both ladders light. No one rules well without handing the work down.</p>
+<p data-person-note="ingibjorg" hidden>Ingibjörg is Honoured on Coin — the mill accounts. She is Leif’s patron. She does not sit Arms. If she and Leif contest in the hall, the Coin gap (Honoured vs Acknowledged) is the protection ratio for social or mental Harm. Influence in fiction is still free roleplay.</p>
+<p data-person-note="leif" hidden>Leif (player). Acknowledged on Arms from last year’s raid. Was Outcast on Coin until Ingibjörg’s mill-ledger Echo resolved well; now Acknowledged on Coin. Climb is per axis — the Echo did not move Arms. Dual-axis: both rungs light.</p>
+<p data-person-note="sigrid" hidden>Sigrid is an Outsider: on the porch, not on any ladder. If she enters the community she begins Outcast on the axes that apply. The porch is beside the diagram, never a fifth column.</p>
 </div>
 <p class="kod-hier-caption">Same four rungs on every axis. A character may stand high on one and low on another. The Ruler seat is singular and sits above the whole set.</p>
 </div>
@@ -122,12 +150,13 @@ Patronage is the clearest path, not the only one. Public deeds, force, death of 
 Competition and cooperation on the same tier are left to roleplay.
 
 <aside class="kod-example">
-<p class="kod-example__scene">Before the Althing, the Honoured merchant on Coin — the woman who still holds the only sound mill accounts — pulls a player aside in the yard. The ledger that proves her claim on the mill shares was stolen last week. She names them before witnesses: bring it back before the assembly sits, and she will speak for them. That charge becomes something the character chooses to carry — an Echo. Completing it well may open a climb on Coin. The Echo alone does not grant rank. Later, if someone tries to shame them in public, relative standing on the relevant Hierarchy colours social Harm protection — not automatic power from the favour itself.</p>
+<p class="kod-example__scene">The occupancy above is this scene after it resolved. Before the Althing, Ingibjörg — Honoured on Coin, the woman who still holds the only sound mill accounts — pulls Leif aside in the yard. The ledger that proves her claim on the mill shares was stolen last week. She names him before witnesses: bring it back before the assembly sits, and she will speak for him. That charge becomes an Echo. Completing it well opened his climb on Coin (Outcast → Acknowledged). The Echo did not move Arms, and it did not make him Honoured. Later, if Ingibjörg tries to shame him in the hall, the two-rung Coin gap is the protection ratio for social Harm — not automatic power from the favour itself. Ketill, meanwhile, is not on that ladder: he rules by sitting the seat and by having already handed Arms to Hákon.</p>
 <ol class="kod-example__steps">
-<li><strong>Hook:</strong> Honoured (Coin) publicly charges recovery of the mill ledger before the Althing.</li>
+<li><strong>Patronage / hook:</strong> Ingibjörg (Honoured, Coin) publicly charges Leif with recovering the mill ledger before the Althing.</li>
 <li><strong>Echo created:</strong> “Return the mill ledger before the Althing” (weight set at the table).</li>
-<li><strong>If it resolves well:</strong> Storyteller may approve a Hierarchy climb (e.g. Outcast → Acknowledged on Coin).</li>
-<li><strong>Reputation for social Harm:</strong> relative tier gap is established in play, then used as the protection ratio when social or mental Harm is applied.</li>
+<li><strong>Advancement:</strong> it resolved well; the Storyteller approved Coin Outcast → Acknowledged. Arms stayed where the raid had already put it.</li>
+<li><strong>Delegation:</strong> Ketill (Ruler, Honoured Blood) does not also sit Trusted Arms — Hákon does, because the Ruler named him marshal.</li>
+<li><strong>Reputation / social combat:</strong> Ingibjörg vs Leif on Coin is a two-rung gap. That gap is the protection ratio when social or mental Harm is applied. Nothing else is mechanically attached to tier.</li>
 </ol>
 </aside>
 

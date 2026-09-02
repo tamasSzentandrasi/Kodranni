@@ -562,182 +562,324 @@
   margin-top: 0 !important;
 }
 
-/* --- Hierarchy diagram: parallel axis ladders + Ruler crown -------------- */
-.kod-hier-diagram {
+/* --- Hierarchy occupancy diagram ------------------------------------------ */
+.kod-hier {
+  --kod-corners: var(--kod-c-tl) 0 0 / var(--kod-corner-size) var(--kod-corner-size) no-repeat,
+    var(--kod-c-tr) 100% 0 / var(--kod-corner-size) var(--kod-corner-size) no-repeat,
+    var(--kod-c-bl) 0 100% / var(--kod-corner-size) var(--kod-corner-size) no-repeat,
+    var(--kod-c-br) 100% 100% / var(--kod-corner-size) var(--kod-corner-size) no-repeat;
+  box-sizing: border-box;
   margin: 1.25rem 0 1.55rem;
-  padding: 0.85rem 0.75rem 1rem;
-  border: 1px solid color-mix(in srgb, var(--kod-blood) 30%, #333);
-  border-radius: 0;
-  background:
-    var(--kod-plate-wash),
-    #0a0808;
+  padding: 0.95rem 0.8rem 1.05rem;
+  border: 1px solid var(--kod-frame);
+  background: var(--kod-plate-wash), #0a0808;
   box-shadow: var(--kod-smoke);
 }
-.kod-hier-ruler {
-  box-sizing: border-box;
-  margin: 0 0 0.85rem !important;
-  padding: 0.7rem 0.9rem;
-  text-align: center;
-  border: 1px solid color-mix(in srgb, var(--kod-blood) 55%, #444);
-  border-radius: 0;
-  background:
-    var(--kod-plate-wash),
-    linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--kod-blood-deep) 65%, #1a0c0c),
-      #100808 80%
-    );
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--kod-blood) 20%, transparent);
+
+.kod-hier__modes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.55rem;
+  margin: 0 0 0.85rem;
 }
+
+.kod-hier__modes .kod-widget__btn {
+  min-width: 9.4rem;
+  height: 2.85rem;
+  min-height: 2.85rem;
+  max-height: 2.85rem;
+  --kod-end-w: 3.2rem;
+  font-size: 0.86rem;
+}
+
+.kod-hier__cast {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem;
+  margin: 0 0 0.9rem;
+}
+
+.kod-chip {
+  --kod-corners: none;
+  appearance: none;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0.2rem 0.55rem;
+  border: 1px solid color-mix(in srgb, var(--kod-silver) 22%, #2a2424);
+  background: #100e0c;
+  color: var(--kod-silver-bright);
+  font-family: var(--kod-font-display);
+  font-size: 0.86rem;
+  letter-spacing: 0.04em;
+  line-height: 1.3;
+  cursor: pointer;
+  border-radius: 0;
+  transition: box-shadow 0.16s ease, border-color 0.16s ease, color 0.16s ease;
+}
+
+.kod-chip:hover,
+.kod-chip:focus-visible {
+  outline: none;
+  border-color: color-mix(in srgb, var(--kod-silver) 48%, #444);
+  color: #fff8f0;
+}
+
+.kod-chip[aria-pressed='true'],
+.kod-chip.is-lit {
+  border-color: color-mix(in srgb, var(--kod-silver) 62%, #555);
+  color: #fff8f0;
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--kod-silver) 35%, transparent),
+    0 0 14px color-mix(in srgb, var(--kod-silver) 22%, transparent);
+}
+
+.kod-hier[data-mode='setup'] .kod-hier__cast,
+.kod-hier[data-mode='setup'] [data-play] {
+  display: none;
+}
+
+.kod-hier-diagram {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  box-shadow: none;
+}
+
+.kod-hier-links {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+  z-index: 2;
+}
+
+.kod-hier-links line {
+  stroke: color-mix(in srgb, var(--kod-silver) 55%, transparent);
+  stroke-width: 1.1;
+  fill: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kod-hier-links {
+    display: none;
+  }
+}
+
+.kod-hier-ruler {
+  --kod-corners: none;
+  box-sizing: border-box;
+  margin: 0 0 0.7rem !important;
+  padding: 0.55rem 0.75rem 0.65rem;
+  text-align: center;
+  border: 1px solid var(--kod-frame);
+  border-bottom-color: color-mix(in srgb, var(--kod-blood) 55%, var(--kod-frame));
+  background: #0c0a0a;
+}
+
 .kod-hier-ruler__title {
   font-family: var(--kod-font-display);
-  font-size: 1.15rem;
-  letter-spacing: 0.12em;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: #f0c0c0;
-  margin: 0 0 0.25rem;
+  color: var(--kod-silver-dim);
+  margin: 0 0 0.3rem;
 }
+
 .kod-hier-ruler__note {
-  margin: 0;
-  font-size: 0.9em;
-  line-height: 1.45;
-  color: #d0b0b0;
+  margin: 0.35rem 0 0;
+  font-size: 0.82em;
+  line-height: 1.4;
+  color: var(--kod-silver-dim);
 }
-.kod-hier-join {
-  display: flex;
-  justify-content: center;
-  gap: 0.35rem;
-  margin: 0 0 0.55rem;
-  color: color-mix(in srgb, var(--kod-blood-bright) 70%, #666);
-  font-size: 0.75rem;
-  letter-spacing: 0.2em;
-  opacity: 0.85;
+
+.kod-hier-ruler .kod-chip {
+  margin-top: 0.15rem;
 }
+
+.kod-hier-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 7.2rem;
+  gap: 0.55rem;
+  align-items: stretch;
+}
+
+@media (max-width: 50rem) {
+  .kod-hier-body {
+    grid-template-columns: 1fr;
+  }
+}
+
 .kod-hier-axes {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 0.5rem;
+  gap: 0.4rem;
   align-items: stretch;
 }
+
 @media (max-width: 50rem) {
   .kod-hier-axes {
     grid-template-columns: 1fr 1fr;
   }
 }
+
 @media (max-width: 28rem) {
   .kod-hier-axes {
     grid-template-columns: 1fr;
   }
 }
+
 .kod-hier-axis {
+  --kod-corners: none;
   box-sizing: border-box;
   margin: 0 !important;
   display: flex;
   flex-direction: column;
   min-height: 100%;
-  border: 1px solid #2a2424;
-  border-top: 3px solid var(--kod-hier-accent, #666);
-  border-radius: 0;
-  background:
-    var(--kod-plate-wash),
-    linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--kod-hier-accent, #444) 14%, #0c0a0a),
-      #0a0808 70%
-    );
-  overflow: hidden;
+  border: 1px solid var(--kod-frame);
+  background: #0c0a0a;
 }
-.kod-hier-axis--arms {
-  --kod-hier-accent: #b85a4a;
-}
-.kod-hier-axis--faith {
-  --kod-hier-accent: #7a8fd4;
-}
-.kod-hier-axis--coin {
-  --kod-hier-accent: #c4a035;
-}
-.kod-hier-axis--blood {
-  --kod-hier-accent: #8a5a9a;
-}
+
 .kod-hier-axis__head {
-  /* Fixed head band so every axis ladder starts on the same baseline */
   box-sizing: border-box;
   flex: 0 0 auto;
-  min-height: 5.35rem;
+  min-height: 4.6rem;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  padding: 0.55rem 0.5rem 0.55rem;
+  padding: 0.5rem 0.4rem 0.5rem;
   text-align: center;
   border-bottom: 1px solid color-mix(in srgb, #f2efe9 8%, #2a2222);
 }
+
 .kod-hier-axis__name {
   font-family: var(--kod-font-display);
-  font-size: 1rem;
+  font-size: 0.95rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: #fff8f0;
-  margin: 0 0 0.35rem;
-  flex: 0 0 auto;
+  margin: 0 0 0.28rem;
 }
+
 .kod-hier-axis__domain {
   margin: 0;
-  font-size: 0.78em;
+  font-size: 0.74em;
   line-height: 1.35;
   color: var(--kod-silver-dim);
-  flex: 1 1 auto;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
 }
+
 .kod-hier-rungs {
   list-style: none;
   margin: 0;
-  padding: 0.35rem 0.4rem 0.5rem;
+  padding: 0.3rem 0.35rem 0.45rem;
   display: flex;
   flex-direction: column;
-  gap: 0.28rem;
+  gap: 0.26rem;
   flex: 1 1 auto;
 }
+
 .kod-hier-rungs li {
   margin: 0 !important;
-  padding: 0.35rem 0.4rem;
+  padding: 0.32rem 0.3rem 0.38rem;
   text-align: center;
-  font-size: 0.82em;
-  letter-spacing: 0.04em;
-  color: var(--kod-silver);
-  border: 1px solid color-mix(in srgb, var(--kod-hier-accent, #666) 25%, #333);
-  border-radius: 2px;
-  background: color-mix(in srgb, #0c0a0a 70%, transparent);
+  font-size: 0.78em;
+  letter-spacing: 0.03em;
+  color: var(--kod-silver-dim);
+  border: 1px solid #2a2424;
+  background: #0a0808;
+  min-height: 3.15rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.2rem;
 }
+
 .kod-hier-rungs li strong {
   display: block;
   background: none !important;
-  color: #fff8f0;
-  font-size: 0.95em;
-  margin-bottom: 0.1rem;
+  color: var(--kod-silver);
+  font-size: 0.92em;
   font-family: var(--kod-font-display);
   letter-spacing: 0.06em;
+  font-weight: 400;
 }
-/* Top of ladder (Honoured) slightly emphasised */
-.kod-hier-rungs li:first-child {
-  border-color: color-mix(in srgb, var(--kod-hier-accent, #666) 55%, #444);
-  background: color-mix(in srgb, var(--kod-hier-accent, #444) 18%, #0c0a0a);
+
+.kod-hier-rungs li.is-lit {
+  border-color: color-mix(in srgb, var(--kod-silver) 42%, #333);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--kod-silver) 18%, transparent);
 }
-/* Bottom (Outcast) quieter */
-.kod-hier-rungs li:last-child {
-  opacity: 0.88;
+
+.kod-hier-rungs .kod-chip {
+  font-size: 0.8rem;
+  padding: 0.12rem 0.4rem;
+}
+
+.kod-hier-porch {
+  --kod-corners: none;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 0.4rem;
+  border: 1px dashed color-mix(in srgb, var(--kod-silver) 28%, #2a2424);
+  background: #0a0808;
+  text-align: center;
+}
+
+.kod-hier-porch__title {
+  margin: 0;
+  font-family: var(--kod-font-display);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
   color: var(--kod-silver-dim);
 }
+
+.kod-hier-porch__note {
+  margin: 0;
+  font-size: 0.72em;
+  line-height: 1.35;
+  color: var(--kod-silver-dim);
+}
+
+.kod-hier__frame {
+  min-height: 3.2rem;
+  margin-top: 0.75rem;
+  padding-top: 0.7rem;
+  border-top: 1px solid color-mix(in srgb, var(--kod-silver) 14%, #2a2424);
+}
+
+.kod-hier__frame p {
+  margin: 0 !important;
+  text-align: center;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: var(--kod-silver);
+}
+
+.kod-hier__frame p[hidden] {
+  display: none;
+}
+
 .kod-hier-caption {
   margin: 0.75rem 0 0 !important;
   text-align: center;
-  font-size: 0.92em;
+  font-size: 0.88em;
   line-height: 1.5;
   color: var(--kod-silver-dim);
 }
+
+.sl-markdown-content .kod-hier > *,
 .sl-markdown-content .kod-hier-diagram > *,
-.sl-markdown-content .kod-hier-axes > * {
+.sl-markdown-content .kod-hier-axes > *,
+.sl-markdown-content .kod-hier-body > * {
   margin-top: 0 !important;
 }
 
