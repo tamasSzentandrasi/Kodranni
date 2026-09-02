@@ -465,6 +465,18 @@ a.kod-page-title__kicker:focus-visible {
   display: block;
   position: relative;
   overflow: visible;
+  background: none;
+}
+
+/* Line on ::before so a center mask cannot also hide the runes. */
+.sl-markdown-content hr::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  transform: translateY(-50%);
   background: linear-gradient(
     to right,
     transparent,
@@ -472,9 +484,24 @@ a.kod-page-title__kicker:focus-visible {
     color-mix(in srgb, var(--kod-blood) 70%, #444) 80%,
     transparent
   );
-  background-size: 100% 1px;
-  background-repeat: no-repeat;
-  background-position: center;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    #000 0,
+    #000 calc(50% - 3.1rem),
+    transparent calc(50% - 2.15rem),
+    transparent calc(50% + 2.15rem),
+    #000 calc(50% + 3.1rem),
+    #000 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    #000 0,
+    #000 calc(50% - 3.1rem),
+    transparent calc(50% - 2.15rem),
+    transparent calc(50% + 2.15rem),
+    #000 calc(50% + 3.1rem),
+    #000 100%
+  );
 }
 
 /* Rune triad set by Head.astro (data-runes). Fallback until JS runs. */
@@ -485,7 +512,7 @@ a.kod-page-title__kicker:focus-visible {
   top: 50%;
   transform: translate(-50%, -50%);
   padding: 0 0.85rem;
-  background: var(--kod-black);
+  background: transparent;
   color: var(--kod-blood-bright);
   font-family: 'Noto Sans Runic', 'Segoe UI Historic', 'Noto Sans', sans-serif;
   font-size: 0.95rem;
