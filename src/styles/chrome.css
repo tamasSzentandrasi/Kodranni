@@ -529,154 +529,103 @@ a.kod-page-title__kicker:focus-visible {
 
 
 /* -------------------------------------------------------------------------- */
-/* Pagination — one spiral roll, rectangular well, silver outline (vector)    */
-/* Text lives on a CSS grid slot that matches the well. Never on the curl.    */
+/* Pagination — half-peeking bookmarks (shape-led, not glass)                  */
 /* -------------------------------------------------------------------------- */
 
 .pagination-links {
   display: flex !important;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: stretch;
-  gap: 0.75rem !important;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1.5rem !important;
   border-top: none !important;
-  padding-top: 0.2rem !important;
-  margin-top: 1.35rem;
+  padding-top: 0 !important;
+  margin-top: 1.15rem;
   position: relative;
-  overflow: visible;
 }
 
-.pagination-links::before,
-.pagination-links::after {
+.pagination-links::before {
   content: none;
+}
+
+.pagination-links::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 6%;
+  right: 6%;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    color-mix(in srgb, var(--kod-silver) 28%, #2a2424) 18%,
+    color-mix(in srgb, var(--kod-silver) 28%, #2a2424) 82%,
+    transparent
+  );
 }
 
 .pagination-links a {
   --kod-corners: none;
-  --kod-ribbon: var(--kod-page-prev);
-  --kod-well-start: 22%;
-  --kod-well-end: 7%;
+  --kod-bookmark: polygon(
+    0 0,
+    100% 0,
+    100% calc(100% - 0.85rem),
+    50% 100%,
+    0 calc(100% - 0.85rem)
+  );
   appearance: none;
   isolation: isolate;
   position: relative;
-  display: grid !important;
-  grid-template-columns: var(--kod-well-start) minmax(0, 1fr) var(--kod-well-end);
-  grid-template-rows: 24% minmax(0, 1fr) 24%;
-  align-items: center;
-  min-width: 0;
-  width: min(24rem, 100%);
-  aspect-ratio: 360 / 96;
-  flex-shrink: 0;
+  display: flex !important;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: min(13.5rem, 46%);
+  min-height: 4.35rem;
   margin-top: 0 !important;
-  padding: 0 !important;
+  padding: 0.7rem 0.85rem 1.15rem !important;
   border: none !important;
   border-radius: 0 !important;
-  background-color: transparent !important;
-  background-image: var(--kod-ribbon);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
+  background:
+    linear-gradient(var(--kod-blood), var(--kod-blood)) 0 0 / 100% 2px no-repeat,
+    #120f0d !important;
   box-shadow: none !important;
+  clip-path: var(--kod-bookmark);
   color: var(--kod-silver-dim) !important;
-  font-size: 0.64rem;
+  font-size: 0.66rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   text-decoration: none !important;
   text-shadow: none;
-  overflow: visible;
-  transition: color 0.14s ease, filter 0.16s ease, transform 0.18s ease;
+  transition: color 0.14s ease, background-color 0.14s ease, transform 0.16s ease;
 }
 
 .pagination-links a[rel='next'] {
-  --kod-ribbon: var(--kod-page-next);
-  --kod-well-start: 7%;
-  --kod-well-end: 22%;
-  --kod-sheen-angle: -105deg;
-  margin-left: 0;
-  align-self: end;
   text-align: right;
-}
-
-.pagination-links a[rel='prev'] {
-  align-self: start;
-}
-
-.pagination-links a > span {
-  grid-row: 2;
-  grid-column: 2;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 0.06rem;
-  min-width: 0;
-  max-width: 100%;
-  overflow: hidden;
-}
-
-.pagination-links a > span > br {
-  display: none;
+  margin-left: auto;
 }
 
 .pagination-links a svg {
   display: none !important;
 }
 
-.pagination-links a::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: linear-gradient(
-    var(--kod-sheen-angle, 105deg),
-    transparent 38%,
-    rgba(242, 239, 233, 0.22) 50%,
-    transparent 62%
-  );
-  background-size: 220% 100%;
-  background-repeat: no-repeat;
-  background-position: 130% 50%;
-  -webkit-mask: var(--kod-ribbon) center / contain no-repeat;
-  mask: var(--kod-ribbon) center / contain no-repeat;
-  animation: kod-ribbon-sheen-prev 7.5s ease-in-out infinite;
-}
-
-.pagination-links a[rel='next']::after {
-  animation-name: kod-ribbon-sheen-next;
-}
-
 .pagination-links a:hover,
 .pagination-links a:focus-visible {
+  outline: none;
   color: var(--kod-silver-bright) !important;
-  filter: brightness(1.14);
-}
-
-.pagination-links a:focus-visible {
-  outline: 1px solid var(--kod-silver);
-  outline-offset: 0.35rem;
-}
-
-.pagination-links a[rel='prev']:hover,
-.pagination-links a[rel='prev']:focus-visible {
-  transform: translateX(-0.22rem);
-}
-
-.pagination-links a[rel='next']:hover,
-.pagination-links a[rel='next']:focus-visible {
-  transform: translateX(0.22rem);
+  background:
+    linear-gradient(var(--kod-blood-bright), var(--kod-blood-bright)) 0 0 / 100% 2px no-repeat,
+    #1a1714 !important;
+  transform: translateY(-1px);
 }
 
 .pagination-links .link-title {
   display: block;
-  margin-top: 0;
+  margin-top: 0.22rem;
   font-family: var(--kod-font-display) !important;
   color: var(--kod-silver-bright) !important;
   letter-spacing: 0.04em;
   text-transform: none;
-  font-size: 1.08rem !important;
-  line-height: 1.15;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  font-size: 1.15rem !important;
+  line-height: 1.2;
 }
 
 .pagination-links a:hover .link-title,
@@ -684,33 +633,7 @@ a.kod-page-title__kicker:focus-visible {
   color: #fff8f0 !important;
 }
 
-@keyframes kod-ribbon-sheen-prev {
-  0%,
-  68% {
-    background-position: 130% 50%;
-  }
-  86%,
-  100% {
-    background-position: -30% 50%;
-  }
-}
-
-@keyframes kod-ribbon-sheen-next {
-  0%,
-  68% {
-    background-position: -30% 50%;
-  }
-  86%,
-  100% {
-    background-position: 130% 50%;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .pagination-links a::after {
-    animation: none;
-    opacity: 0.28;
-  }
   .pagination-links a:hover,
   .pagination-links a:focus-visible {
     transform: none;
