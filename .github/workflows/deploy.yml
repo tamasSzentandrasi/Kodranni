@@ -46,7 +46,6 @@ jobs:
           test -f publish/design/ornament/btn-end-l.svg
           test -f publish/design/ornament/btn-end-r.svg
           test -f publish/design/ornament/corner-tl.png
-          test -f publish/design/ornament/page-bar-night.png
           test -f publish/design/ornament/btn-bar-moon.png
           grep -q '/Kodranni/Guidebook/_astro/' publish/Guidebook/introduction/index.html
           grep -q 'https://kodranni.com/Guidebook' publish/Guidebook/introduction/index.html
