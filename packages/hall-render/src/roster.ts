@@ -1,4 +1,4 @@
-import type { CharacterRecord } from '@kodranni/store';
+import type { CharacterRecord } from '@kodranni/store/types';
 import { esc, escAttr } from './escape.js';
 import {
   avatarUrl,

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import type { PublicSnapshot } from '@kodranni/store';
+import type { PublicSnapshot } from '@kodranni/store/types';
 import { communityInner } from '../src/hall.js';
 import { hallViewFromSnapshot } from '../src/format.js';
 import { archiveRoute, renderArchivePage } from '../src/pages.js';

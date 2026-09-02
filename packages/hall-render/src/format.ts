@@ -1,5 +1,5 @@
 import { HIERARCHY_TIERS } from '@kodranni/domain';
-import type { CharacterRecord, PublicSnapshot } from '@kodranni/store';
+import type { CharacterRecord, PublicSnapshot } from '@kodranni/store/types';
 
 export const TIERS = [...HIERARCHY_TIERS];
 

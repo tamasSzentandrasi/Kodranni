@@ -1,11 +1,11 @@
-import type { CharacterRecord, HierarchyPlacement, Label, OutsiderRecord } from '@kodranni/store';
+import type { CharacterRecord, HierarchyPlacement, Label, OutsiderRecord } from '@kodranni/store/types';
 import {
   FACTION_GROUP_ID,
   TAG_GROUP_ID,
   labelsByIds,
   migrateCommunityLabels,
   personLabelIds,
-} from '@kodranni/store';
+} from '@kodranni/store/labels';
 import { esc, escAttr } from './escape.js';
 import {
   FORTUNE_BLURBS,
