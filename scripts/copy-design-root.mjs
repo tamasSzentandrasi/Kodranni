@@ -30,7 +30,6 @@ const requiredOrnament = [
 	'btn-end-r.png',
 	'btn-bar-night.png',
 	'btn-bar-moon.png',
-	'title-cast.png',
 ];
 
 for (const file of cssFiles) {

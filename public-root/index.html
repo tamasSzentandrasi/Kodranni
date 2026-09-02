@@ -27,7 +27,7 @@
 	<link rel="preload" href="./Guidebook/scenes/falconer.jpg" as="image" fetchpriority="high" />
 	<link rel="preload" href="./Guidebook/falcon-logo.png" as="image" />
 	<link rel="preload" href="./design/ornament/btn-bar-night.png" as="image" />
-	<link rel="prefetch" href="./design/ornament/btn-bar-moon.png" as="image" />
+	<link rel="preload" href="./design/ornament/btn-bar-moon.png" as="image" />
 	<link rel="stylesheet" href="./design/primitives.css" />
 	<script>
 		document.documentElement.classList.add('js');
@@ -272,13 +272,15 @@
 					}));
 				}
 			});
-			var bar = new Image();
-			bar.src = './design/ornament/btn-bar-night.png';
-			if (!bar.complete) {
-				tasks.push(new Promise(function (resolve) {
-					bar.onload = bar.onerror = resolve;
-				}));
-			}
+			['./design/ornament/btn-bar-night.png', './design/ornament/btn-bar-moon.png'].forEach(function (src) {
+				var img = new Image();
+				img.src = src;
+				if (!img.complete) {
+					tasks.push(new Promise(function (resolve) {
+						img.onload = img.onerror = resolve;
+					}));
+				}
+			});
 			Promise.all(tasks).then(settle);
 			setTimeout(settle, 1100);
 		})();
