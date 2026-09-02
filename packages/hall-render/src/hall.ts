@@ -34,17 +34,22 @@ export function communityInner(
   const people = inspectPeopleJson({ ...view, community: c });
   const source = live ? 'live' : 'snapshot';
   const founded = live && c.fortunesFoundedAt ? c.fortunesFoundedAt : '';
-  return `${findToggle()}${findPanel(c)}
-<div class="hall" data-slug="${escAttr(c.slug)}" data-source="${escAttr(source)}" data-founded="${escAttr(founded)}">
+  const labelCatalog = JSON.stringify({
+    groups: c.labelGroups ?? [],
+    labels: c.labels ?? [],
+  });
+  return `${findDrawer(c)}
+<div class="hall" data-slug="${escAttr(c.slug)}" data-source="${escAttr(source)}" data-founded="${escAttr(founded)}" data-view-group="${escAttr((c.labelGroups ?? []).find((g) => g.kind === 'faction')?.id ?? 'g-faction')}">
   ${fortunePlates(c.fortunes)}
   ${hierarchy(c, tips, pcSlugs, canEdit, bySlug)}
   <div class="hall__porch">
-    ${porchLegend(c)}
+    ${viewStave(c)}
     ${outsiders(c, bySlug)}
   </div>
   ${myths(c.myths ?? [])}
 </div>
 <div id="kod-hall-people" hidden>${esc(people)}</div>
+<div id="kod-hall-labels" hidden>${esc(labelCatalog)}</div>
 <script src="/hall-client.js"></script>`;
 }
 
@@ -86,16 +91,13 @@ function labelsForPerson(
   return labelsByIds(c, personLabelIds({ character: ch, outsider, placement }));
 }
 
-function marksHtml(labels: Label[]): string {
-  const shown = labels.slice(0, 3);
-  if (shown.length === 0) return '';
-  const more =
-    labels.length > 3 ? `<span class="member__more" aria-hidden="true">+${labels.length - 3}</span>` : '';
-  return `<span class="member__marks" aria-hidden="true">${shown.map(markIcon).join('')}${more}</span>`;
-}
-
-function findToggle(): string {
-  return `<button type="button" class="hall-find-toggle" data-find-toggle aria-controls="kod-hall-find" aria-expanded="true" aria-label="Find in the hall"></button>`;
+function findDrawer(c: HallView['community']): string {
+  return `<div class="find-drawer" data-find-drawer data-open="false">
+  <button type="button" class="find-handle" data-find-toggle aria-controls="kod-find-ledger" aria-expanded="false" aria-label="Find">
+    <span class="find-handle__mark" aria-hidden="true"></span>
+  </button>
+  ${findPanel(c)}
+</div>`;
 }
 
 function findPanel(c: HallView['community']): string {
@@ -125,9 +127,8 @@ function findPanel(c: HallView['community']): string {
     </div>`;
     })
     .join('');
-  return `<aside class="kod-plate hall-search" id="kod-hall-find" data-hall-search aria-label="Find someone in the hall">
+  return `<aside class="kod-plate hall-search find-ledger" id="kod-find-ledger" data-hall-search aria-label="Find someone">
   <header class="hall-search__head">
-    <p class="hall-search__kicker">Hall</p>
     <h2 class="hall-search__title">Find</h2>
   </header>
   <div class="hall-search__lookup">
@@ -164,33 +165,38 @@ function markIcon(label: Label): string {
   return `<i class="mark mark--${markKind(label)}" data-label-id="${escAttr(label.id)}" title="${escAttr(label.name)}"${hue}></i>`;
 }
 
-function porchLegend(c: HallView['community']): string {
+function viewStave(c: HallView['community']): string {
   const groups = (c.labelGroups ?? []).filter(
-    (g) => g.id === FACTION_GROUP_ID || g.id === TAG_GROUP_ID || (c.labels ?? []).some((l) => l.groupId === g.id),
+    (g) => (c.labels ?? []).some((l) => l.groupId === g.id) || g.id === FACTION_GROUP_ID || g.id === TAG_GROUP_ID,
   );
   if (groups.length === 0) return '';
-  const blocks = groups
+  const active = groups.find((g) => g.kind === 'faction') ?? groups[0];
+  const cats = groups
     .map((g) => {
-      const kind = g.id === FACTION_GROUP_ID ? 'faction' : 'tag';
+      const on = g.id === active.id;
+      return `<button type="button" class="view-stave__cat" data-view-group="${escAttr(g.id)}" aria-pressed="${on ? 'true' : 'false'}">${esc(g.name)}</button>`;
+    })
+    .join('');
+  const keys = groups
+    .map((g) => {
       const labs = (c.labels ?? []).filter((l) => l.groupId === g.id);
-      const keys =
+      const hidden = g.id === active.id ? '' : ' hidden';
+      const items =
         labs.length === 0
           ? `<p class="hall-legend__empty">None yet.</p>`
           : labs
               .map((l) => {
                 const hue = l.hue != null ? ` style="--label-h:${l.hue}"` : '';
-                return `<button type="button" class="hall-legend__item" data-label-id="${escAttr(l.id)}" data-group="${escAttr(g.id)}" aria-pressed="false"${hue}>${markIcon(l)}<span class="hall-legend__name">${esc(l.name)}</span></button>`;
+                return `<button type="button" class="hall-legend__item" data-label-id="${escAttr(l.id)}" data-group="${escAttr(g.id)}" aria-pressed="false"${hue}><span class="view-stave__swatch" aria-hidden="true"></span><span class="hall-legend__name">${esc(l.name)}</span></button>`;
               })
               .join('');
-      return `<div class="hall-legend__group" data-legend-group="${escAttr(g.id)}">
-      <p class="hall-legend__kind"><i class="mark mark--${kind}" aria-hidden="true"></i>${esc(g.name)}</p>
-      ${keys}
-    </div>`;
+      return `<div class="view-stave__key" data-legend-group="${escAttr(g.id)}"${hidden}>${items}</div>`;
     })
     .join('');
-  return `<aside class="kod-plate hall-legend" data-hall-legend aria-label="Marks">
-    <p class="hall-legend__kicker">Marks</p>
-    ${blocks}
+  return `<aside class="kod-plate hall-legend view-stave" data-hall-legend data-view-stave aria-label="View">
+    <p class="hall-legend__kicker">View</p>
+    <div class="view-stave__cats" role="group" aria-label="Category">${cats}</div>
+    ${keys}
   </aside>`;
 }
 
@@ -233,10 +239,9 @@ function memberName(opts: {
   ]
     .filter(Boolean)
     .join(' ');
-  const marks = marksHtml(labels);
   const pending = opts.pending
-    ? `<span class="member__knot" aria-hidden="true">◆</span>${marks}${esc(opts.name)}<span class="member__pending">pending</span>`
-    : `${marks}${esc(opts.name)}`;
+    ? `<span class="member__knot" aria-hidden="true">◆</span>${esc(opts.name)}<span class="member__pending">pending</span>`
+    : `${esc(opts.name)}`;
   const data = `class="${cls}" data-inspect-id="${escAttr(opts.personId)}" data-name="${escAttr(opts.name)}" data-kind="${escAttr(opts.kind ?? 'npc')}"${opts.slug ? ` data-slug="${escAttr(opts.slug)}"` : ''}${opts.tip ? ` data-tip="${escAttr(opts.tip)}"` : ''}${opts.roving ? ' tabindex="-1"' : ''}${ids ? ` data-label-ids="${escAttr(ids)}"` : ''}`;
   if (opts.slug) return `<a ${data} href="/characters/${escAttr(opts.slug)}/">${pending}</a>`;
   return `<span ${data}>${pending}</span>`;

@@ -115,12 +115,14 @@ describe('renderArchivePage', () => {
     expect(html).not.toContain('data-hall-aspects');
     expect(html).not.toContain('data-preview-faction');
     expect(html).toContain('data-find-toggle');
-    expect(html).toContain('aria-label="Find in the hall"');
+    expect(html).toContain('data-find-drawer');
+    expect(html).toContain('aria-label="Find"');
+    expect(html).not.toContain('Find in the hall');
     expect(html).not.toContain('data-find-hide');
     expect(html).toContain('data-filter="label"');
     expect(html).toContain('data-value="fac-ash-fen"');
+    expect(html).toContain('data-view-stave');
     expect(html).toContain('mark--faction');
-    expect(html).toContain('mark--tag');
   });
 
   it('renders the roster and a read-only sheet', () => {

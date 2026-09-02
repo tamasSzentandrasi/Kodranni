@@ -10,11 +10,12 @@
   const storageKey = 'kod-hall:' + slug;
   const POLL_MS = 8000;
 
-  /** @type {{ q: string, collapse: Record<string, boolean>, group: string, labels: string[], axis: string, axes: string[], tiers: string[], kinds: string[], findOpen: boolean | null }} */
+  /** @type {{ q: string, collapse: Record<string, boolean>, group: string, viewGroup: string, labels: string[], axis: string, axes: string[], tiers: string[], kinds: string[], findOpen: boolean | null }} */
   let bag = {
     q: '',
     collapse: {},
     group: 'g-faction',
+    viewGroup: 'g-faction',
     labels: [],
     axis: '',
     axes: [],
@@ -32,6 +33,8 @@
       bag.collapse =
         parsed.collapse && typeof parsed.collapse === 'object' ? parsed.collapse : {};
       bag.group = typeof parsed.group === 'string' && parsed.group ? parsed.group : 'g-faction';
+      bag.viewGroup =
+        typeof parsed.viewGroup === 'string' && parsed.viewGroup ? parsed.viewGroup : bag.group;
       bag.labels = Array.isArray(parsed.labels) ? parsed.labels.map(String) : [];
       bag.axis = typeof parsed.axis === 'string' ? parsed.axis : '';
       bag.axes = Array.isArray(parsed.axes) ? parsed.axes.map(String) : [];
@@ -100,6 +103,23 @@
     }
   } catch {
     /* ignore */
+  }
+
+  /** @type {{ id: string, groupId: string, name: string, hue?: number }[]} */
+  let catalogLabels = [];
+  /** @type {{ id: string, name: string, kind?: string }[]} */
+  let catalogGroups = [];
+  try {
+    const node = document.getElementById('kod-hall-labels');
+    const parsed = node ? JSON.parse(node.textContent || '{}') : {};
+    catalogLabels = Array.isArray(parsed.labels) ? parsed.labels : [];
+    catalogGroups = Array.isArray(parsed.groups) ? parsed.groups : [];
+  } catch {
+    /* ignore */
+  }
+
+  function labelById(id) {
+    return catalogLabels.find((l) => l.id === id);
   }
 
   // —— Search ————————————————————————————————————————————————————————
@@ -320,14 +340,14 @@
 
   function findIsOpen() {
     if (bag.findOpen === true) return true;
-    if (bag.findOpen === false) return false;
-    return window.matchMedia('(min-width: 56.01rem)').matches;
+    return false;
   }
 
   function setFindOpen(open) {
     bag.findOpen = open;
     document.documentElement.classList.toggle('find-closed', !open);
-    if (searchRoot) searchRoot.hidden = !open;
+    const drawer = document.querySelector('[data-find-drawer]');
+    if (drawer) drawer.setAttribute('data-open', open ? 'true' : 'false');
     if (findToggle) findToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
     saveBag();
   }
@@ -792,10 +812,22 @@
 
   function applyView() {
     const selected = new Set(bag.labels || []);
+    const viewGroup = bag.viewGroup || 'g-faction';
+    hall.setAttribute('data-view-group', viewGroup);
     if (selected.size) hall.setAttribute('data-view-labels', [...selected].join(' '));
     else hall.removeAttribute('data-view-labels');
     if (hoverId) hall.setAttribute('data-legend-hover', hoverId);
     else hall.removeAttribute('data-legend-hover');
+
+    document.querySelectorAll('[data-view-group]').forEach((btn) => {
+      if (!btn.classList.contains('view-stave__cat')) return;
+      const id = btn.getAttribute('data-view-group') || '';
+      btn.setAttribute('aria-pressed', id === viewGroup ? 'true' : 'false');
+    });
+    document.querySelectorAll('[data-legend-group]').forEach((el) => {
+      const id = el.getAttribute('data-legend-group') || '';
+      el.hidden = id !== viewGroup;
+    });
 
     document.querySelectorAll('.hall-legend__item').forEach((btn) => {
       const id = btn.getAttribute('data-label-id') || '';
@@ -804,6 +836,14 @@
 
     document.querySelectorAll('.member[data-inspect-id]').forEach((el) => {
       const ids = labelIdsOf(el);
+      const painted = ids.map(labelById).find((l) => l && l.groupId === viewGroup);
+      if (painted && painted.hue != null) {
+        el.style.setProperty('--view-h', String(painted.hue));
+        el.setAttribute('data-view-faction', painted.id);
+      } else {
+        el.style.removeProperty('--view-h');
+        el.removeAttribute('data-view-faction');
+      }
       if (selected.size) {
         el.setAttribute('data-view', ids.some((id) => selected.has(id)) ? 'hit' : 'rest');
       } else {
@@ -836,6 +876,15 @@
   function bindLegend() {
     const root = document.querySelector('[data-hall-legend]');
     if (root) {
+      root.querySelectorAll('.view-stave__cat').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const id = btn.getAttribute('data-view-group') || '';
+          if (!id) return;
+          bag.viewGroup = id;
+          saveBag();
+          applyView();
+        });
+      });
       root.querySelectorAll('[data-label-id]').forEach((btn) => {
         btn.addEventListener('click', () => {
           const id = btn.getAttribute('data-label-id') || '';

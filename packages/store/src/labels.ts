@@ -117,8 +117,14 @@ export function upsertTagLabel(c: CommunityRecord, name: string): Label {
   return label;
 }
 
-function attach(ids: string[] | undefined, id: string): string[] {
-  const out = [...(ids ?? [])];
+function attach(c: CommunityRecord, ids: string[] | undefined, id: string): string[] {
+  const lab = (c.labels ?? []).find((l) => l.id === id);
+  const group = (c.labelGroups ?? []).find((g) => g.id === lab?.groupId);
+  let out = [...(ids ?? [])];
+  if (lab && group?.kind === 'faction') {
+    const same = new Set((c.labels ?? []).filter((l) => l.groupId === lab.groupId).map((l) => l.id));
+    out = out.filter((x) => !same.has(x));
+  }
   if (!out.includes(id)) out.push(id);
   return out;
 }
@@ -147,7 +153,7 @@ export function migrateCommunityLabels(raw: CommunityRecord): CommunityRecord {
     let labelIds = [...(o.labelIds ?? [])];
     if (legacy) {
       const lab = upsertFactionLabel(c, legacy);
-      labelIds = attach(labelIds, lab.id);
+      labelIds = attach(c, labelIds, lab.id);
     }
     const next: OutsiderRecord = { name: o.name, note: o.note, characterSlug: o.characterSlug };
     if (labelIds.length) next.labelIds = labelIds;
