@@ -529,78 +529,67 @@ a.kod-page-title__kicker:focus-visible {
 
 
 /* -------------------------------------------------------------------------- */
-/* Pagination — half-peeking bookmarks (shape-led, not glass)                  */
+/* Pagination — facing scroll-ribbons (shape, not glass, not a flip)           */
 /* -------------------------------------------------------------------------- */
 
 .pagination-links {
   display: flex !important;
   justify-content: space-between;
-  align-items: flex-start;
-  gap: 1.5rem !important;
+  align-items: center;
+  gap: 1.25rem !important;
   border-top: none !important;
-  padding-top: 0 !important;
-  margin-top: 1.15rem;
+  padding-top: 0.35rem !important;
+  margin-top: 1.35rem;
   position: relative;
 }
 
-.pagination-links::before {
-  content: none;
-}
-
+.pagination-links::before,
 .pagination-links::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 6%;
-  right: 6%;
-  height: 1px;
-  background: linear-gradient(
-    to right,
-    transparent,
-    color-mix(in srgb, var(--kod-silver) 28%, #2a2424) 18%,
-    color-mix(in srgb, var(--kod-silver) 28%, #2a2424) 82%,
-    transparent
-  );
+  content: none;
 }
 
 .pagination-links a {
   --kod-corners: none;
-  --kod-bookmark: polygon(
-    0 0,
-    100% 0,
-    100% calc(100% - 0.85rem),
-    50% 100%,
-    0 calc(100% - 0.85rem)
-  );
   appearance: none;
   isolation: isolate;
   position: relative;
   display: flex !important;
   flex-direction: column;
-  justify-content: flex-start;
-  width: min(13.5rem, 46%);
-  min-height: 4.35rem;
+  justify-content: center;
+  width: min(19rem, 48%);
+  aspect-ratio: 720 / 346;
   margin-top: 0 !important;
-  padding: 0.7rem 0.85rem 1.15rem !important;
+  padding: 1.35rem 1.1rem 0.85rem !important;
   border: none !important;
   border-radius: 0 !important;
-  background:
-    linear-gradient(var(--kod-blood), var(--kod-blood)) 0 0 / 100% 2px no-repeat,
-    #120f0d !important;
+  background-color: transparent !important;
+  background-image: var(--kod-page-prev);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
   box-shadow: none !important;
-  clip-path: var(--kod-bookmark);
   color: var(--kod-silver-dim) !important;
   font-size: 0.66rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   text-decoration: none !important;
-  text-shadow: none;
-  transition: color 0.14s ease, background-color 0.14s ease, transform 0.16s ease;
+  text-shadow:
+    0 1px 2px #000,
+    0 0 10px #000;
+  transition: color 0.14s ease, filter 0.16s ease, transform 0.16s ease;
+}
+
+.pagination-links a[rel='prev'] {
+  padding-left: 22% !important;
+  padding-right: 14% !important;
 }
 
 .pagination-links a[rel='next'] {
-  text-align: right;
   margin-left: auto;
+  text-align: right;
+  background-image: var(--kod-page-next);
+  padding-left: 14% !important;
+  padding-right: 22% !important;
 }
 
 .pagination-links a svg {
@@ -611,20 +600,18 @@ a.kod-page-title__kicker:focus-visible {
 .pagination-links a:focus-visible {
   outline: none;
   color: var(--kod-silver-bright) !important;
-  background:
-    linear-gradient(var(--kod-blood-bright), var(--kod-blood-bright)) 0 0 / 100% 2px no-repeat,
-    #1a1714 !important;
+  filter: brightness(1.18);
   transform: translateY(-1px);
 }
 
 .pagination-links .link-title {
   display: block;
-  margin-top: 0.22rem;
+  margin-top: 0.18rem;
   font-family: var(--kod-font-display) !important;
   color: var(--kod-silver-bright) !important;
   letter-spacing: 0.04em;
   text-transform: none;
-  font-size: 1.15rem !important;
+  font-size: 1.12rem !important;
   line-height: 1.2;
 }
 

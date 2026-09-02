@@ -4,6 +4,8 @@ import barNight from '@kodranni/design/ornament/btn-bar-night.png?url';
 import barMoon from '@kodranni/design/ornament/btn-bar-moon.png?url';
 import roundNight from '@kodranni/design/ornament/btn-round.png?url';
 import roundMoon from '@kodranni/design/ornament/btn-round-moon.png?url';
+import pagePrev from '@kodranni/design/ornament/page-prev.png?url';
+import pageNext from '@kodranni/design/ornament/page-next.png?url';
 import { chapterRoses, slugFromEntryId } from '../../lib/chapter-icons';
 
 const base = import.meta.env.BASE_URL.endsWith('/')
@@ -58,6 +60,8 @@ const fontFacesCss = `
 <link rel="preload" href={barMoon} as="image" />
 <link rel="preload" href={roundNight} as="image" />
 <link rel="preload" href={roundMoon} as="image" />
+<link rel="preload" href={pagePrev} as="image" />
+<link rel="preload" href={pageNext} as="image" />
 {roseSrc ? <link rel="preload" href={roseSrc} as="image" fetchpriority="high" /> : null}
 
 <style is:global set:html={fontFacesCss} />
