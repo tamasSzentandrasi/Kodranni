@@ -22,13 +22,18 @@
     inset 0 -14px 22px -16px rgba(0, 0, 0, 0.68);
 }
 
-/* Soot + tool overlay the cells so overflow/thead paint cannot hide them. */
+/* Soot + tool only — tables are a double-frame, not an L-bracket plate. */
+.sl-markdown-content table:not(:where(.not-content *)) {
+  --kod-corners: none;
+  --kod-frame-lines: none;
+}
+
 .sl-markdown-content table:not(:where(.not-content *))::after {
   content: '';
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: var(--kod-plate-wash);
+  background: var(--kod-soot), var(--kod-tool);
   z-index: 1;
 }
 

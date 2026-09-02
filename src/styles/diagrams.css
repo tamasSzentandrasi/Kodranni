@@ -10,7 +10,6 @@
 .kod-domain-lane {
   border-radius: 0;
   padding: 0.75rem 0.9rem 0.9rem;
-  border: 1px solid #2a2424;
   box-sizing: border-box;
 }
 
@@ -23,7 +22,6 @@
       color-mix(in srgb, var(--kod-blood-deep) 22%, #0a0a0a) 55%,
       #0a0a0a
     );
-  border-color: color-mix(in srgb, var(--kod-blood) 40%, #333);
 }
 
 .kod-domain-lane--mental {
@@ -35,7 +33,6 @@
       color-mix(in srgb, #1a1440 35%, #0a0a0a) 55%,
       #0a0a0a
     );
-  border-color: color-mix(in srgb, #5a4ab0 40%, #333);
 }
 
 .kod-domain-lane--social {
@@ -47,7 +44,6 @@
       color-mix(in srgb, #5c4010 30%, #0a0a0a) 55%,
       #0a0a0a
     );
-  border-color: color-mix(in srgb, #c4a035 40%, #333);
 }
 
 .kod-domain-lane__label {
@@ -374,8 +370,7 @@
 .kod-fortune-board {
   box-sizing: border-box;
   margin: 1.35rem 0 1.6rem;
-  padding: 0.95rem 0.85rem 1.05rem;
-  border: 1px solid var(--kod-frame);
+  padding: 1.15rem 1.05rem 1.15rem;
   background: var(--kod-plate-wash), var(--kod-plate);
   box-shadow: var(--kod-smoke);
 }
@@ -564,14 +559,9 @@
 
 /* --- Hierarchy occupancy diagram ------------------------------------------ */
 .kod-hier {
-  --kod-corners: var(--kod-c-tl) 0 0 / var(--kod-corner-size) var(--kod-corner-size) no-repeat,
-    var(--kod-c-tr) 100% 0 / var(--kod-corner-size) var(--kod-corner-size) no-repeat,
-    var(--kod-c-bl) 0 100% / var(--kod-corner-size) var(--kod-corner-size) no-repeat,
-    var(--kod-c-br) 100% 100% / var(--kod-corner-size) var(--kod-corner-size) no-repeat;
   box-sizing: border-box;
   margin: 1.25rem 0 1.55rem;
-  padding: 0.95rem 0.8rem 1.05rem;
-  border: 1px solid var(--kod-frame);
+  padding: 1.15rem 1.05rem 1.15rem;
   background: var(--kod-plate-wash), #0a0808;
   box-shadow: var(--kod-smoke);
 }
@@ -898,23 +888,19 @@
 .kod-harm-col {
   margin: 0 !important;
   padding: 0.65rem 0.75rem;
-  border: 1px solid #2a2424;
   border-radius: 0;
 }
 .kod-harm-col--phys {
-  border-left: 3px solid var(--kod-blood);
   background:
     var(--kod-plate-wash),
     color-mix(in srgb, var(--kod-blood-deep) 40%, #0c0c0c);
 }
 .kod-harm-col--ment {
-  border-left: 3px solid #5a4ab0;
   background:
     var(--kod-plate-wash),
     color-mix(in srgb, #1a1440 40%, #0c0c0c);
 }
 .kod-harm-col--soc {
-  border-left: 3px solid #c4a035;
   background:
     var(--kod-plate-wash),
     color-mix(in srgb, #3a2a10 40%, #0c0c0c);

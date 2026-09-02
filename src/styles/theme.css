@@ -126,15 +126,16 @@ body {
 }
 
 /*
- * Plate wash: gothic L-brackets, lamp-soot, tooled highlight.
+ * Interrupted frame: the L-bracket IS the corner.
+ * Edge hairlines stop short of --kod-gap. Optional left mid-rail
+ * (--kod-rail / --kod-rail-w) never meets the knot.
  *   background: var(--kod-plate-wash), <fill>;
- * Shadow: box-shadow: var(--kod-smoke);
+ * Tables opt out — they keep their own double-frame.
  */
 .kod-example,
 .kod-note,
 .kod-counsel,
 .sl-markdown-content blockquote:not(.kod-epigraph),
-.sl-markdown-content table:not(:where(.not-content *)),
 .kod-widget,
 .kod-tide,
 .kod-seed,
@@ -144,6 +145,10 @@ body {
 .kod-hier,
 .kod-domain-lane,
 .kod-phase {
+  --kod-edge: var(--kod-frame);
+  --kod-rail: var(--kod-edge);
+  --kod-rail-w: 1px;
+  --kod-gap: calc(var(--kod-corner-size) - 0.15rem);
   --kod-soot:
     radial-gradient(var(--kod-soot-size) var(--kod-soot-size) at 0 0, rgba(0, 0, 0, 0.62), transparent 72%),
     radial-gradient(var(--kod-soot-size) var(--kod-soot-size) at 100% 0, rgba(0, 0, 0, 0.62), transparent 72%),
@@ -162,7 +167,96 @@ body {
     var(--kod-c-tr) 100% 0 / var(--kod-corner-size) var(--kod-corner-size) no-repeat,
     var(--kod-c-bl) 0 100% / var(--kod-corner-size) var(--kod-corner-size) no-repeat,
     var(--kod-c-br) 100% 100% / var(--kod-corner-size) var(--kod-corner-size) no-repeat;
-  --kod-plate-wash: var(--kod-corners), var(--kod-soot), var(--kod-tool);
+  --kod-frame-lines:
+    linear-gradient(var(--kod-edge), var(--kod-edge)) 50% 0 / calc(100% - 2 * var(--kod-gap)) 1px no-repeat,
+    linear-gradient(var(--kod-edge), var(--kod-edge)) 50% 100% / calc(100% - 2 * var(--kod-gap)) 1px no-repeat,
+    linear-gradient(var(--kod-edge), var(--kod-edge)) 100% 50% / 1px calc(100% - 2 * var(--kod-gap)) no-repeat,
+    linear-gradient(var(--kod-rail), var(--kod-rail)) 0 50% / var(--kod-rail-w) calc(100% - 2 * var(--kod-gap)) no-repeat;
+  --kod-plate-wash: var(--kod-corners), var(--kod-frame-lines), var(--kod-soot), var(--kod-tool);
+  border-style: none;
+}
+
+.kod-example {
+  --kod-edge: color-mix(in srgb, var(--kod-blood) 62%, #333);
+  --kod-rail: var(--kod-blood);
+  --kod-rail-w: 4px;
+}
+
+.sl-markdown-content blockquote:not(.kod-epigraph) {
+  --kod-edge: color-mix(in srgb, #6a6058 55%, #222);
+  --kod-rail: #8a8078;
+  --kod-rail-w: 4px;
+}
+
+.kod-note {
+  --kod-edge: color-mix(in srgb, #3d6a6a 55%, #333);
+  --kod-rail: #4a9a8a;
+  --kod-rail-w: 4px;
+}
+
+.kod-counsel {
+  --kod-edge: color-mix(in srgb, #4a3a8a 55%, #333);
+  --kod-rail: #6a5ab8;
+  --kod-rail-w: 4px;
+}
+
+.kod-lane--player {
+  --kod-rail: #1f8a4c;
+  --kod-rail-w: 3px;
+}
+
+.kod-lane--st {
+  --kod-rail: var(--kod-blood);
+  --kod-rail-w: 3px;
+}
+
+.kod-harm-col--phys {
+  --kod-rail: var(--kod-blood);
+  --kod-rail-w: 3px;
+}
+
+.kod-harm-col--ment {
+  --kod-rail: #5a4ab0;
+  --kod-rail-w: 3px;
+}
+
+.kod-harm-col--soc {
+  --kod-rail: #c4a035;
+  --kod-rail-w: 3px;
+}
+
+.kod-seed--hist {
+  --kod-rail: #8a8078;
+  --kod-rail-w: 3px;
+}
+
+.kod-seed--semi {
+  --kod-rail: #c4a035;
+  --kod-rail-w: 3px;
+}
+
+.kod-seed--invented,
+.kod-phase {
+  --kod-rail: var(--kod-blood);
+  --kod-rail-w: 3px;
+}
+
+.kod-domain-lane--physical {
+  --kod-edge: color-mix(in srgb, var(--kod-blood) 40%, #333);
+  --kod-rail: var(--kod-blood);
+  --kod-rail-w: 3px;
+}
+
+.kod-domain-lane--mental {
+  --kod-edge: color-mix(in srgb, #5a4ab0 40%, #333);
+  --kod-rail: #5a4ab0;
+  --kod-rail-w: 3px;
+}
+
+.kod-domain-lane--social {
+  --kod-edge: color-mix(in srgb, #c4a035 40%, #333);
+  --kod-rail: #c4a035;
+  --kod-rail-w: 3px;
 }
 
 .kod-die-card,
@@ -176,7 +270,9 @@ body {
 .pagination-links a,
 .kod-hier-axis,
 .kod-hier-ruler,
-.kod-fortune {
+.kod-fortune,
+.sl-markdown-content table:not(:where(.not-content *)) {
   --kod-corners: none;
+  --kod-frame-lines: none;
 }
 
