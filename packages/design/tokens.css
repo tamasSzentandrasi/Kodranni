@@ -36,8 +36,8 @@
   --kod-c-tr: url('./ornament/corner-tr.png');
   --kod-c-bl: url('./ornament/corner-bl.png');
   --kod-c-br: url('./ornament/corner-br.png');
-  --kod-page-prev: url('./ornament/page-prev.png');
-  --kod-page-next: url('./ornament/page-next.png');
+  --kod-page-prev: url('./ornament/page-prev.svg');
+  --kod-page-next: url('./ornament/page-next.svg');
   --kod-btn-end-l: url('./ornament/btn-end-l.png');
   --kod-btn-end-r: url('./ornament/btn-end-r.png');
   --kod-btn-glass: url('./ornament/btn-glass.png');
