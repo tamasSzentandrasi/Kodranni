@@ -529,18 +529,17 @@ a.kod-page-title__kicker:focus-visible {
 
 
 /* -------------------------------------------------------------------------- */
-/* Pagination — catchwords in a hollow cartouche (ends + outline, no glass)    */
-/* Same night/moon endcaps as .kod-btn; the middle is the page, not a pane.    */
+/* Pagination — one outside endcap + Bellefair catchword. No glass, no bar.    */
 /* -------------------------------------------------------------------------- */
 
 .pagination-links {
   display: flex !important;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: stretch;
-  gap: 0.7rem !important;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.25rem !important;
   border-top: none !important;
-  padding-top: 0.35rem !important;
+  padding-top: 0.45rem !important;
   margin-top: 1.25rem;
   position: relative;
   overflow: visible;
@@ -553,32 +552,26 @@ a.kod-page-title__kicker:focus-visible {
 
 .pagination-links a {
   --kod-corners: none;
-  --kod-end-w: 4.45rem;
-  --kod-page-bar: var(--kod-btn-night);
-  --kod-rail: color-mix(in srgb, var(--kod-silver) 42%, transparent);
+  --kod-end-mark: 3.35rem;
+  --kod-end-ink: var(--kod-silver);
   appearance: none;
-  isolation: auto;
   position: relative;
   display: flex !important;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.7rem;
   box-sizing: border-box;
-  width: min(24rem, 100%) !important;
+  width: auto !important;
+  max-width: calc(50% - 0.6rem);
   min-width: 0;
-  height: 3.7rem;
-  min-height: 3.7rem;
-  max-height: 3.7rem;
+  height: auto;
+  min-height: 0;
+  max-height: none;
   margin-top: 0 !important;
-  padding: 0.3rem 0.45rem !important;
-  border-style: solid !important;
-  border-color: transparent !important;
-  border-width: 0 var(--kod-end-w) !important;
+  padding: 0 !important;
+  border: none !important;
   border-radius: 0 !important;
-  border-image: none !important;
-  background:
-    linear-gradient(var(--kod-rail), var(--kod-rail)) 0 22% / 100% 1px no-repeat,
-    linear-gradient(var(--kod-rail), var(--kod-rail)) 0 78% / 100% 1px no-repeat !important;
+  background: none !important;
   background-color: transparent !important;
   box-shadow: none !important;
   clip-path: none;
@@ -590,29 +583,21 @@ a.kod-page-title__kicker:focus-visible {
   text-shadow: none;
   overflow: visible;
   cursor: pointer;
-  transition: color 0.14s ease, filter 0.14s ease, transform 0.16s ease;
-}
-
-.pagination-links a[rel='prev'] {
-  align-self: start;
+  transition: color 0.14s ease, filter 0.16s ease, transform 0.18s ease;
 }
 
 .pagination-links a[rel='next'] {
-  align-self: end;
-  align-items: flex-end;
-  margin-left: 0;
+  margin-left: auto;
+  justify-content: flex-end;
   text-align: right;
 }
 
 .pagination-links a > span {
-  position: relative;
-  z-index: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 0.08rem;
   min-width: 0;
-  max-width: 100%;
   overflow: hidden;
   background: transparent;
   white-space: nowrap;
@@ -626,33 +611,25 @@ a.kod-page-title__kicker:focus-visible {
   display: none !important;
 }
 
-/* Left / right cartouche ends only. Middle is the page. */
 .pagination-links a::before,
 .pagination-links a::after {
+  content: none;
+}
+
+.pagination-links a[rel='prev']::before,
+.pagination-links a[rel='next']::after {
   content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: var(--kod-end-w);
-  z-index: 0;
-  pointer-events: none;
-  background-image: var(--kod-page-bar);
-  background-repeat: no-repeat;
-  background-size: calc(var(--kod-end-w) / 0.185) 100%;
+  flex: 0 0 auto;
+  width: calc(var(--kod-end-mark) * 1.11);
+  height: var(--kod-end-mark);
+  background-color: var(--kod-end-ink);
+  -webkit-mask: var(--kod-page-end) center / contain no-repeat;
+  mask: var(--kod-page-end) center / contain no-repeat;
+  transition: background-color 0.16s ease;
 }
 
-.pagination-links a::before {
-  left: calc(-1 * var(--kod-end-w));
-  background-position: left center;
-  -webkit-mask-image: linear-gradient(to right, #000 0 68%, transparent);
-  mask-image: linear-gradient(to right, #000 0 68%, transparent);
-}
-
-.pagination-links a::after {
-  right: calc(-1 * var(--kod-end-w));
-  background-position: right center;
-  -webkit-mask-image: linear-gradient(to left, #000 0 68%, transparent);
-  mask-image: linear-gradient(to left, #000 0 68%, transparent);
+.pagination-links a[rel='next']::after {
+  transform: scaleX(-1);
 }
 
 .pagination-links a:hover,
@@ -660,11 +637,10 @@ a.kod-page-title__kicker:focus-visible {
 .pagination-links a:active {
   outline: none;
   color: var(--kod-silver-bright) !important;
-  --kod-page-bar: var(--kod-btn-moon);
-  --kod-rail: color-mix(in srgb, var(--kod-silver-bright) 70%, transparent);
+  --kod-end-ink: var(--kod-silver-bright);
   filter:
-    drop-shadow(0 0 8px rgba(242, 239, 233, 0.5))
-    drop-shadow(0 0 16px rgba(242, 239, 233, 0.22));
+    brightness(1.12)
+    drop-shadow(0 0 6px rgba(242, 239, 233, 0.32));
 }
 
 .pagination-links a:focus-visible {
@@ -674,12 +650,12 @@ a.kod-page-title__kicker:focus-visible {
 
 .pagination-links a[rel='prev']:hover,
 .pagination-links a[rel='prev']:focus-visible {
-  transform: translateX(-0.18rem);
+  transform: translateX(-0.22rem);
 }
 
 .pagination-links a[rel='next']:hover,
 .pagination-links a[rel='next']:focus-visible {
-  transform: translateX(0.18rem);
+  transform: translateX(0.22rem);
 }
 
 .pagination-links .link-title {
@@ -700,6 +676,13 @@ a.kod-page-title__kicker:focus-visible {
 .pagination-links a:focus-visible .link-title,
 .pagination-links a:active .link-title {
   color: #fff8f0 !important;
+}
+
+@media (max-width: 40rem) {
+  .pagination-links a {
+    --kod-end-mark: 2.7rem;
+    gap: 0.45rem;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
