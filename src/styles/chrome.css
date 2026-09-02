@@ -546,32 +546,71 @@ a.kod-page-title__kicker:focus-visible {
 }
 
 .pagination-links a {
-  --kod-soot-size: 0.85rem;
-  --kod-corner-size: 1.05rem;
-  border: 1px solid #2e2a28 !important;
+  --kod-corners: none;
+  --kod-end-w: 4.2rem;
+  --kod-btn-bar: var(--kod-page-night);
+  appearance: none;
+  isolation: isolate;
+  display: grid !important;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  column-gap: 0.35rem;
+  border-style: solid !important;
+  border-color: transparent !important;
+  border-width: 0 var(--kod-end-w) !important;
   border-radius: 0 !important;
-  background:
-    var(--kod-plate-wash),
-    #0c0a09 !important;
-  box-shadow: var(--kod-smoke) !important;
-  padding: 0.95rem 0.9rem !important;
+  background: none !important;
+  box-shadow: none !important;
+  padding: 0.35rem 0.35rem !important;
   position: relative;
+  min-height: 3.7rem;
   color: var(--kod-silver-dim) !important;
   font-size: 0.66rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  transition: border-color 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
+  text-decoration: none !important;
+  text-shadow:
+    0 0 3px #000,
+    0 1px 2px #000,
+    0 0 10px #000;
+  transition: color 0.14s ease, filter 0.14s ease;
+}
+
+.pagination-links a[rel='next'] {
+  grid-template-columns: 1fr auto;
+  text-align: right;
+}
+
+.pagination-links a[rel='next'] svg {
+  order: 2;
+}
+
+.pagination-links a::before {
+  content: '';
+  position: absolute;
+  box-sizing: border-box;
+  inset: 0 calc(-1 * var(--kod-end-w));
+  z-index: -1;
+  pointer-events: none;
+  border-style: solid;
+  border-color: transparent;
+  border-width: 0 var(--kod-end-w);
+  border-image-source: var(--kod-btn-bar);
+  border-image-slice: 0 18.5% 0 18.5% fill;
+  border-image-width: 0 var(--kod-end-w);
+  border-image-repeat: stretch;
+  background: transparent;
+  clip-path: var(--kod-cartouche);
 }
 
 .pagination-links a:hover,
 .pagination-links a:focus-visible {
-  --kod-tool: linear-gradient(180deg, rgba(0, 0, 0, 0.12), transparent 42%);
-  border-color: #6a6560 !important;
-  background:
-    var(--kod-plate-wash),
-    #12100e !important;
   outline: none;
-  color: #b8b2aa !important;
+  color: #fff8f0 !important;
+  --kod-btn-bar: var(--kod-page-moon);
+  filter:
+    drop-shadow(0 0 8px rgba(242, 239, 233, 0.5))
+    drop-shadow(0 0 16px rgba(242, 239, 233, 0.22));
 }
 
 .pagination-links a svg {
