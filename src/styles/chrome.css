@@ -529,107 +529,176 @@ a.kod-page-title__kicker:focus-visible {
 
 
 /* -------------------------------------------------------------------------- */
-/* Pagination — half-peeking bookmarks (shape-led, not glass)                  */
+/* Pagination — catchwords in a hollow cartouche (ends + outline, no glass)    */
+/* Same night/moon endcaps as .kod-btn; the middle is the page, not a pane.    */
 /* -------------------------------------------------------------------------- */
 
 .pagination-links {
   display: flex !important;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 1.5rem !important;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  gap: 0.7rem !important;
   border-top: none !important;
-  padding-top: 0 !important;
-  margin-top: 1.15rem;
+  padding-top: 0.35rem !important;
+  margin-top: 1.25rem;
   position: relative;
+  overflow: visible;
 }
 
-.pagination-links::before {
-  content: none;
-}
-
+.pagination-links::before,
 .pagination-links::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 6%;
-  right: 6%;
-  height: 1px;
-  background: linear-gradient(
-    to right,
-    transparent,
-    color-mix(in srgb, var(--kod-silver) 28%, #2a2424) 18%,
-    color-mix(in srgb, var(--kod-silver) 28%, #2a2424) 82%,
-    transparent
-  );
+  content: none;
 }
 
 .pagination-links a {
   --kod-corners: none;
-  --kod-bookmark: polygon(
-    0 0,
-    100% 0,
-    100% calc(100% - 0.85rem),
-    50% 100%,
-    0 calc(100% - 0.85rem)
-  );
+  --kod-end-w: 4.45rem;
+  --kod-page-bar: var(--kod-btn-night);
+  --kod-rail: color-mix(in srgb, var(--kod-silver) 42%, transparent);
   appearance: none;
-  isolation: isolate;
+  isolation: auto;
   position: relative;
   display: flex !important;
   flex-direction: column;
-  justify-content: flex-start;
-  width: min(13.5rem, 46%);
-  min-height: 4.35rem;
+  align-items: flex-start;
+  justify-content: center;
+  box-sizing: border-box;
+  width: min(24rem, 100%) !important;
+  min-width: 0;
+  height: 3.7rem;
+  min-height: 3.7rem;
+  max-height: 3.7rem;
   margin-top: 0 !important;
-  padding: 0.7rem 0.85rem 1.15rem !important;
-  border: none !important;
+  padding: 0.3rem 0.45rem !important;
+  border-style: solid !important;
+  border-color: transparent !important;
+  border-width: 0 var(--kod-end-w) !important;
   border-radius: 0 !important;
+  border-image: none !important;
   background:
-    linear-gradient(var(--kod-blood), var(--kod-blood)) 0 0 / 100% 2px no-repeat,
-    #120f0d !important;
+    linear-gradient(var(--kod-rail), var(--kod-rail)) 0 22% / 100% 1px no-repeat,
+    linear-gradient(var(--kod-rail), var(--kod-rail)) 0 78% / 100% 1px no-repeat !important;
+  background-color: transparent !important;
   box-shadow: none !important;
-  clip-path: var(--kod-bookmark);
+  clip-path: none;
   color: var(--kod-silver-dim) !important;
   font-size: 0.66rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   text-decoration: none !important;
   text-shadow: none;
-  transition: color 0.14s ease, background-color 0.14s ease, transform 0.16s ease;
+  overflow: visible;
+  cursor: pointer;
+  transition: color 0.14s ease, filter 0.14s ease, transform 0.16s ease;
+}
+
+.pagination-links a[rel='prev'] {
+  align-self: start;
 }
 
 .pagination-links a[rel='next'] {
+  align-self: end;
+  align-items: flex-end;
+  margin-left: 0;
   text-align: right;
-  margin-left: auto;
+}
+
+.pagination-links a > span {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.08rem;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  background: transparent;
+  white-space: nowrap;
+}
+
+.pagination-links a > span > br {
+  display: none;
 }
 
 .pagination-links a svg {
   display: none !important;
 }
 
+/* Left / right cartouche ends only. Middle is the page. */
+.pagination-links a::before,
+.pagination-links a::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: var(--kod-end-w);
+  z-index: 0;
+  pointer-events: none;
+  background-image: var(--kod-page-bar);
+  background-repeat: no-repeat;
+  background-size: calc(var(--kod-end-w) / 0.185) 100%;
+}
+
+.pagination-links a::before {
+  left: calc(-1 * var(--kod-end-w));
+  background-position: left center;
+  -webkit-mask-image: linear-gradient(to right, #000 0 68%, transparent);
+  mask-image: linear-gradient(to right, #000 0 68%, transparent);
+}
+
+.pagination-links a::after {
+  right: calc(-1 * var(--kod-end-w));
+  background-position: right center;
+  -webkit-mask-image: linear-gradient(to left, #000 0 68%, transparent);
+  mask-image: linear-gradient(to left, #000 0 68%, transparent);
+}
+
 .pagination-links a:hover,
-.pagination-links a:focus-visible {
+.pagination-links a:focus-visible,
+.pagination-links a:active {
   outline: none;
   color: var(--kod-silver-bright) !important;
-  background:
-    linear-gradient(var(--kod-blood-bright), var(--kod-blood-bright)) 0 0 / 100% 2px no-repeat,
-    #1a1714 !important;
-  transform: translateY(-1px);
+  --kod-page-bar: var(--kod-btn-moon);
+  --kod-rail: color-mix(in srgb, var(--kod-silver-bright) 70%, transparent);
+  filter:
+    drop-shadow(0 0 8px rgba(242, 239, 233, 0.5))
+    drop-shadow(0 0 16px rgba(242, 239, 233, 0.22));
+}
+
+.pagination-links a:focus-visible {
+  outline: 1px solid var(--kod-silver);
+  outline-offset: 0.3rem;
+}
+
+.pagination-links a[rel='prev']:hover,
+.pagination-links a[rel='prev']:focus-visible {
+  transform: translateX(-0.18rem);
+}
+
+.pagination-links a[rel='next']:hover,
+.pagination-links a[rel='next']:focus-visible {
+  transform: translateX(0.18rem);
 }
 
 .pagination-links .link-title {
   display: block;
-  margin-top: 0.22rem;
+  margin-top: 0;
   font-family: var(--kod-font-display) !important;
   color: var(--kod-silver-bright) !important;
   letter-spacing: 0.04em;
   text-transform: none;
   font-size: 1.15rem !important;
-  line-height: 1.2;
+  line-height: 1.15;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .pagination-links a:hover .link-title,
-.pagination-links a:focus-visible .link-title {
+.pagination-links a:focus-visible .link-title,
+.pagination-links a:active .link-title {
   color: #fff8f0 !important;
 }
 
