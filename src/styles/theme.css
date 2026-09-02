@@ -133,26 +133,17 @@ body {
 .kod-example,
 .kod-note,
 .kod-counsel,
-.sl-markdown-content blockquote,
+.sl-markdown-content blockquote:not(.kod-epigraph),
 .sl-markdown-content table:not(:where(.not-content *)),
 .kod-widget,
-.pagination-links a,
-.kod-die-card,
 .kod-tide,
 .kod-seed,
 .kod-lane,
 .kod-harm-col,
-.kod-fortune-pillar,
-.kod-hier-diagram,
-.kod-hier-axis,
-.kod-hier-ruler,
+.kod-fortune-board,
+.kod-hier,
 .kod-domain-lane,
-.kod-phase,
-.kod-menu-item,
-.kod-page-title,
-.kod-page-title__mark,
-.kod-widget__btn,
-.kod-step-flow__nav button {
+.kod-phase {
   --kod-soot:
     radial-gradient(var(--kod-soot-size) var(--kod-soot-size) at 0 0, rgba(0, 0, 0, 0.62), transparent 72%),
     radial-gradient(var(--kod-soot-size) var(--kod-soot-size) at 100% 0, rgba(0, 0, 0, 0.62), transparent 72%),
@@ -172,5 +163,20 @@ body {
     var(--kod-c-bl) 0 100% / var(--kod-corner-size) var(--kod-corner-size) no-repeat,
     var(--kod-c-br) 100% 100% / var(--kod-corner-size) var(--kod-corner-size) no-repeat;
   --kod-plate-wash: var(--kod-corners), var(--kod-soot), var(--kod-tool);
+}
+
+.kod-die-card,
+.kod-widget__btn,
+.kod-btn,
+.kod-chip,
+.kod-page-title,
+.kod-page-title__mark,
+.kod-step-flow__nav button,
+.kod-menu-item,
+.pagination-links a,
+.kod-hier-axis,
+.kod-hier-ruler,
+.kod-fortune {
+  --kod-corners: none;
 }
 

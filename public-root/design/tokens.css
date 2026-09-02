@@ -23,7 +23,7 @@
   --kod-plate: #0b0a0a;
   --kod-inset: rgba(0, 0, 0, 0.28);
   --kod-soot-size: 1.35rem;
-  --kod-corner-size: 1.72rem;
+  --kod-corner-size: 2.35rem;
   --kod-tool: linear-gradient(180deg, rgba(0, 0, 0, 0.22), transparent 42%);
   --kod-smoke:
     inset 0 1px 0 rgba(0, 0, 0, 0.4),
@@ -31,11 +31,11 @@
     0 14px 30px -12px rgba(0, 0, 0, 0.82),
     0 2px 6px rgba(0, 0, 0, 0.48);
 
-  /* Gothic L-bracket (double rail + volute). Pewter on every plate. */
-  --kod-c-tl: url('./ornament/corner-tl.svg');
-  --kod-c-tr: url('./ornament/corner-tr.svg');
-  --kod-c-bl: url('./ornament/corner-bl.svg');
-  --kod-c-br: url('./ornament/corner-br.svg');
+  /* Gothic L-bracket — Imagine pewter, fading arms. Large plates only. */
+  --kod-c-tl: url('./ornament/corner-tl.png');
+  --kod-c-tr: url('./ornament/corner-tr.png');
+  --kod-c-bl: url('./ornament/corner-bl.png');
+  --kod-c-br: url('./ornament/corner-br.png');
   --kod-page-night: url('./ornament/page-bar-night.png');
   --kod-page-moon: url('./ornament/page-bar-moon.png');
   --kod-btn-end-l: url('./ornament/btn-end-l.png');
