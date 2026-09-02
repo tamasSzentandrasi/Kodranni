@@ -370,154 +370,195 @@
 }
 
 
-/* --- from custom.css 2118-2486 --- */
-/* --- Fortune hall: five vertical pillars ----------------------------------- */
-.kod-fortune-hall {
+/* --- Fortune impression board ---------------------------------------------- */
+.kod-fortune-board {
+  box-sizing: border-box;
+  margin: 1.35rem 0 1.6rem;
+  padding: 0.95rem 0.85rem 1.05rem;
+  border: 1px solid var(--kod-frame);
+  background: var(--kod-plate-wash), var(--kod-plate);
+  box-shadow: var(--kod-smoke);
+}
+
+.kod-fortune-board__kicker {
+  margin: 0 0 0.75rem !important;
+  text-align: center;
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--kod-silver-dim);
+}
+
+.kod-fortune-board__row {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 0.55rem;
-  margin: 1.35rem 0 1.6rem;
-  align-items: stretch;
+  gap: 0;
 }
-@media (max-width: 60rem) {
-  .kod-fortune-hall {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-@media (max-width: 40rem) {
-  .kod-fortune-hall {
+
+@media (max-width: 52rem) {
+  .kod-fortune-board__row {
     grid-template-columns: 1fr 1fr;
   }
 }
+
 @media (max-width: 28rem) {
-  .kod-fortune-hall {
+  .kod-fortune-board__row {
     grid-template-columns: 1fr;
   }
 }
 
-.kod-fortune-pillar {
+.kod-fortune {
+  --kod-corners: none;
+  appearance: none;
   box-sizing: border-box;
   margin: 0 !important;
+  padding: 0.7rem 0.45rem 0.8rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  min-height: 14.5rem;
-  padding: 1rem 0.65rem 1.05rem;
-  border-radius: 0;
-  border: 1px solid #2a2424;
-  border-top-width: 4px;
-  background:
-    var(--kod-plate-wash),
-    linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--kod-fortune-accent, var(--kod-blood)) 22%, #0c0a0a) 0%,
-      #0a0808 55%,
-      #080606 100%
-    );
-  box-shadow:
-    var(--kod-smoke),
-    inset 0 1px 0 color-mix(in srgb, var(--kod-fortune-accent, #fff) 18%, transparent);
-  transition: box-shadow 0.18s ease, border-color 0.18s ease;
+  gap: 0.28rem;
+  border: none;
+  border-right: 1px solid color-mix(in srgb, var(--kod-silver) 12%, #2a2424);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  min-height: 11.5rem;
+  transition: background 0.16s ease;
 }
 
-.kod-fortune-pillar:hover {
-  box-shadow:
-    var(--kod-smoke),
-    inset 0 1px 0 color-mix(in srgb, var(--kod-fortune-accent, #fff) 28%, transparent),
-    0 0 0 1px color-mix(in srgb, var(--kod-fortune-accent, #666) 35%, transparent);
+.kod-fortune:last-child {
+  border-right: none;
 }
 
-.kod-fortune-pillar__icon {
+@media (max-width: 52rem) {
+  .kod-fortune {
+    border-right: none;
+    border-bottom: 1px solid color-mix(in srgb, var(--kod-silver) 12%, #2a2424);
+    min-height: 9.5rem;
+  }
+}
+
+.kod-fortune:hover,
+.kod-fortune:focus-visible {
+  outline: none;
+  background: color-mix(in srgb, var(--kod-silver) 6%, transparent);
+}
+
+.kod-fortune:focus-visible {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--kod-silver) 40%, transparent);
+}
+
+.kod-fortune__icon {
   display: block;
-  width: 2.85rem;
-  height: 2.85rem;
-  margin: 0.15rem 0 0.85rem;
-  background-color: var(--kod-fortune-accent, var(--kod-blood-bright));
+  width: 2.15rem;
+  height: 2.15rem;
+  margin: 0 0 0.35rem;
+  background-color: var(--kod-silver);
   -webkit-mask: center / contain no-repeat;
   mask: center / contain no-repeat;
-  -webkit-mask-size: contain;
-  mask-size: contain;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-  mask-position: center;
   flex-shrink: 0;
-  filter: drop-shadow(0 0 8px color-mix(in srgb, var(--kod-fortune-accent) 40%, transparent));
 }
 
-.kod-fortune-pillar__name {
-  font-family: var(--kod-font-display);
-  font-size: 1.38rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--kod-silver-bright);
-  margin: 0 0 0.45rem;
-  line-height: 1.15;
-}
-
-.kod-fortune-pillar__blurb {
-  margin: 0;
-  font-size: 0.78rem;
-  line-height: 1.45;
-  color: var(--kod-silver-dim);
-  flex: 1 1 auto;
-  font-weight: 400;
-}
-
-/*
- * Fortune icons (mask fill), as specified:
- * Vitality  — drop of blood
- * Cohesion  — dots in a circle
- * Surplus   — stacked grain / sheaf
- * Standing  — Roman helmet
- * Tradition — Greek column capital (Doric/Ionic head)
- */
-.kod-fortune-pillar--vitality {
-  --kod-fortune-accent: #c45a6a;
-  border-top-color: #c45a6a;
-}
-.kod-fortune-pillar--vitality .kod-fortune-pillar__icon {
+.kod-fortune--vitality .kod-fortune__icon {
   -webkit-mask-image: var(--kod-fortune-vitality);
   mask-image: var(--kod-fortune-vitality);
 }
-
-.kod-fortune-pillar--cohesion {
-  --kod-fortune-accent: #6a9fd4;
-  border-top-color: #6a9fd4;
-}
-.kod-fortune-pillar--cohesion .kod-fortune-pillar__icon {
+.kod-fortune--cohesion .kod-fortune__icon {
   -webkit-mask-image: var(--kod-fortune-cohesion);
   mask-image: var(--kod-fortune-cohesion);
 }
-.kod-fortune-pillar--surplus {
-  --kod-fortune-accent: #c4a035;
-  border-top-color: #c4a035;
-}
-.kod-fortune-pillar--surplus .kod-fortune-pillar__icon {
+.kod-fortune--surplus .kod-fortune__icon {
   -webkit-mask-image: var(--kod-fortune-surplus);
   mask-image: var(--kod-fortune-surplus);
 }
-
-.kod-fortune-pillar--standing {
-  --kod-fortune-accent: #9b8fd4;
-  border-top-color: #9b8fd4;
-}
-.kod-fortune-pillar--standing .kod-fortune-pillar__icon {
+.kod-fortune--standing .kod-fortune__icon {
   -webkit-mask-image: var(--kod-fortune-standing);
   mask-image: var(--kod-fortune-standing);
 }
-
-.kod-fortune-pillar--tradition {
-  --kod-fortune-accent: #6fc4b0;
-  border-top-color: #6fc4b0;
-}
-.kod-fortune-pillar--tradition .kod-fortune-pillar__icon {
+.kod-fortune--tradition .kod-fortune__icon {
   -webkit-mask-image: var(--kod-fortune-tradition);
   mask-image: var(--kod-fortune-tradition);
 }
 
-.sl-markdown-content .kod-fortune-hall > * {
+.kod-fortune__name {
+  font-family: var(--kod-font-display);
+  font-size: 0.92rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--kod-silver);
+  line-height: 1.15;
+}
+
+.kod-fortune__states {
+  display: grid;
+  place-items: center;
+  min-height: 1.7rem;
+  width: 100%;
+}
+
+.kod-fortune__state {
+  grid-area: 1 / 1;
+  font-family: var(--kod-font-display);
+  font-size: 1.28rem;
+  letter-spacing: 0.06em;
+  color: var(--kod-silver-bright);
+  line-height: 1.15;
+  transition: opacity 0.18s ease;
+}
+
+.kod-fortune__state.is-off {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.kod-fortune[data-level='0'] .kod-fortune__state:not(.is-off) {
+  color: var(--kod-blood-bright);
+}
+
+.kod-fortune[data-level='1'] .kod-fortune__state:not(.is-off) {
+  color: var(--kod-silver-dim);
+}
+
+.kod-fortune[data-level='3'] .kod-fortune__state:not(.is-off) {
+  color: #fff8f0;
+}
+
+.kod-fortune__n {
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  color: color-mix(in srgb, var(--kod-silver-dim) 70%, transparent);
+}
+
+.kod-fortune-board__hint {
+  margin: 0.85rem 0 0.55rem !important;
+  text-align: center;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: var(--kod-silver-dim);
+}
+
+.kod-fortune-board__frame {
+  min-height: 3.4rem;
+  padding: 0.7rem 0.85rem;
+  border-top: 1px solid color-mix(in srgb, var(--kod-silver) 14%, #2a2424);
+}
+
+.kod-fortune-board__frame p {
+  margin: 0 !important;
+  text-align: center;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: var(--kod-silver);
+}
+
+.kod-fortune-board__frame p[hidden] {
+  display: none;
+}
+
+.sl-markdown-content .kod-fortune-board > *,
+.sl-markdown-content .kod-fortune-board__row > * {
   margin-top: 0 !important;
 }
 

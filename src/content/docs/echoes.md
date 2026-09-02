@@ -89,38 +89,89 @@ The community is tracked by five soft measures called **Fortunes**. They never p
 
 Fortunes are **not** a second character sheet. They describe the community **as a whole** — how healthy, fed, trusted, feared, and self-sure it is *on average*. That reading colours **every** encounter: player characters and NPCs alike, friend and foe. A village on Surplus 0 is not “the same scene with different dice”; hunger, thin stores, and the smell of want walk into every hall and road. Low Cohesion means suspicion flavours speech even between allies. High Standing means outsiders treat *anyone* of that community with more caution or courtesy. The Storyteller uses Fortunes as ambient pressure and opportunity — scene framing, NPC attitude, what “ordinary life” feels like — not as a stack of modifiers to grind every roll.
 
-<div class="kod-fortune-hall not-content" aria-label="The five Fortunes">
-
-<div class="kod-fortune-pillar kod-fortune-pillar--vitality">
-<span class="kod-fortune-pillar__icon" aria-hidden="true"></span>
-<p class="kod-fortune-pillar__name">Vitality</p>
-<p class="kod-fortune-pillar__blurb">People and health — how many hands remain, how much loss the group can still take before it breaks.</p>
+<div class="kod-fortune-board not-content" data-widget="fortune-board" aria-label="Fortune impression board">
+<p class="kod-fortune-board__kicker">Ordinary weather — an illustration, not a campaign</p>
+<div class="kod-fortune-board__row">
+<button type="button" class="kod-fortune kod-fortune--vitality" data-fortune="vitality" data-level="2">
+<span class="kod-fortune__icon" aria-hidden="true"></span>
+<span class="kod-fortune__name">Vitality</span>
+<span class="kod-fortune__states">
+<span class="kod-fortune__state" data-level="0" hidden>Crisis</span>
+<span class="kod-fortune__state" data-level="1" hidden>Strained</span>
+<span class="kod-fortune__state" data-level="2">Steady</span>
+<span class="kod-fortune__state" data-level="3" hidden>Abundance</span>
+</span>
+<span class="kod-fortune__n" aria-hidden="true">2</span>
+</button>
+<button type="button" class="kod-fortune kod-fortune--cohesion" data-fortune="cohesion" data-level="2">
+<span class="kod-fortune__icon" aria-hidden="true"></span>
+<span class="kod-fortune__name">Cohesion</span>
+<span class="kod-fortune__states">
+<span class="kod-fortune__state" data-level="0" hidden>Crisis</span>
+<span class="kod-fortune__state" data-level="1" hidden>Strained</span>
+<span class="kod-fortune__state" data-level="2">Steady</span>
+<span class="kod-fortune__state" data-level="3" hidden>Abundance</span>
+</span>
+<span class="kod-fortune__n" aria-hidden="true">2</span>
+</button>
+<button type="button" class="kod-fortune kod-fortune--surplus" data-fortune="surplus" data-level="2">
+<span class="kod-fortune__icon" aria-hidden="true"></span>
+<span class="kod-fortune__name">Surplus</span>
+<span class="kod-fortune__states">
+<span class="kod-fortune__state" data-level="0" hidden>Crisis</span>
+<span class="kod-fortune__state" data-level="1" hidden>Strained</span>
+<span class="kod-fortune__state" data-level="2">Steady</span>
+<span class="kod-fortune__state" data-level="3" hidden>Abundance</span>
+</span>
+<span class="kod-fortune__n" aria-hidden="true">2</span>
+</button>
+<button type="button" class="kod-fortune kod-fortune--standing" data-fortune="standing" data-level="2">
+<span class="kod-fortune__icon" aria-hidden="true"></span>
+<span class="kod-fortune__name">Standing</span>
+<span class="kod-fortune__states">
+<span class="kod-fortune__state" data-level="0" hidden>Crisis</span>
+<span class="kod-fortune__state" data-level="1" hidden>Strained</span>
+<span class="kod-fortune__state" data-level="2">Steady</span>
+<span class="kod-fortune__state" data-level="3" hidden>Abundance</span>
+</span>
+<span class="kod-fortune__n" aria-hidden="true">2</span>
+</button>
+<button type="button" class="kod-fortune kod-fortune--tradition" data-fortune="tradition" data-level="2">
+<span class="kod-fortune__icon" aria-hidden="true"></span>
+<span class="kod-fortune__name">Tradition</span>
+<span class="kod-fortune__states">
+<span class="kod-fortune__state" data-level="0" hidden>Crisis</span>
+<span class="kod-fortune__state" data-level="1" hidden>Strained</span>
+<span class="kod-fortune__state" data-level="2">Steady</span>
+<span class="kod-fortune__state" data-level="3" hidden>Abundance</span>
+</span>
+<span class="kod-fortune__n" aria-hidden="true">2</span>
+</button>
 </div>
-
-<div class="kod-fortune-pillar kod-fortune-pillar--cohesion">
-<span class="kod-fortune-pillar__icon" aria-hidden="true"></span>
-<p class="kod-fortune-pillar__name">Cohesion</p>
-<p class="kod-fortune-pillar__blurb">Trust and order within — whether the kinship still acts as one, or frays into private plots.</p>
+<p class="kod-fortune-board__hint">Click a Fortune to cycle Crisis → Strained → Steady → Abundance. The line below is how that state frames a scene — for everyone in that people, not as a modifier on a roll.</p>
+<div class="kod-fortune-board__frame" aria-live="polite">
+<p data-frame="board-steady">All five sit Steady: ordinary life for this people. Neither feast nor free-fall. Click a Fortune to see how one measure colours the room.</p>
+<p data-frame="vitality-0" hidden>Crisis Vitality: half the benches are empty. A fight, a birth, or a fever is a village fact — put a missing hand or a sick relative in the scene.</p>
+<p data-frame="vitality-1" hidden>Strained Vitality: enough people, barely. A raid that costs three lives is a problem the hall will feel next week.</p>
+<p data-frame="vitality-2" hidden>Steady Vitality: hands enough for the work. Sickness is a household matter unless it spreads.</p>
+<p data-frame="vitality-3" hidden>Abundance Vitality: young men on the wall, children in the yard. Loss is still death, but the people can absorb a hard season.</p>
+<p data-frame="cohesion-0" hidden>Crisis Cohesion: private plots are the default. An order from the Ruler is a request; let NPCs hesitate, split, or deal aside.</p>
+<p data-frame="cohesion-1" hidden>Strained Cohesion: people still sit together, but they count who is listening. Shared work happens; shared risk needs a push.</p>
+<p data-frame="cohesion-2" hidden>Steady Cohesion: kin act as kin. Ordinary disputes stay inside the hall.</p>
+<p data-frame="cohesion-3" hidden>Abundance Cohesion: a slight to one is a slight to all. Outsiders feel the closed ranks before anyone speaks.</p>
+<p data-frame="surplus-0" hidden>Crisis Surplus: hunger is in the room. A guest is a mouth; price every extra body and every extra fire.</p>
+<p data-frame="surplus-1" hidden>Strained Surplus: stores last if nothing goes wrong. A feast, a gift, or a wasted sack is a decision.</p>
+<p data-frame="surplus-2" hidden>Steady Surplus: winter is planned for. Nobody is fat; nobody is desperate.</p>
+<p data-frame="surplus-3" hidden>Abundance Surplus: grain to spare and metal to loan. Generosity is possible; so is leverage.</p>
+<p data-frame="standing-0" hidden>Crisis Standing: the name is a joke or a wound. Neighbours raid, envoys skip this hall, traders price in contempt.</p>
+<p data-frame="standing-1" hidden>Strained Standing: known, not feared. Treaties exist on paper; they will be tested.</p>
+<p data-frame="standing-2" hidden>Steady Standing: the name carries. Outsiders are polite until given reason not to be.</p>
+<p data-frame="standing-3" hidden>Abundance Standing: the name arrives before the rider. Caution or courtesy is the default from anyone who has heard of this people.</p>
+<p data-frame="tradition-0" hidden>Crisis Tradition: nobody agrees what we are. Custom is argued in the moment; the young do not know the old stories, or they mock them.</p>
+<p data-frame="tradition-1" hidden>Strained Tradition: the rites still happen, thinner. Elders remember; the hall only half-listens.</p>
+<p data-frame="tradition-2" hidden>Steady Tradition: people know who they are. Law and custom are the same sentence.</p>
+<p data-frame="tradition-3" hidden>Abundance Tradition: the past is a tool. A cited custom can move a crowd; breaking one is a public event.</p>
 </div>
-
-<div class="kod-fortune-pillar kod-fortune-pillar--surplus">
-<span class="kod-fortune-pillar__icon" aria-hidden="true"></span>
-<p class="kod-fortune-pillar__name">Surplus</p>
-<p class="kod-fortune-pillar__blurb">Food, tools, stores — the material cushion between ordinary winter and desperation.</p>
-</div>
-
-<div class="kod-fortune-pillar kod-fortune-pillar--standing">
-<span class="kod-fortune-pillar__icon" aria-hidden="true"></span>
-<p class="kod-fortune-pillar__name">Standing</p>
-<p class="kod-fortune-pillar__blurb">How outsiders see the community — treaties, fear, respect, and the weight of the name.</p>
-</div>
-
-<div class="kod-fortune-pillar kod-fortune-pillar--tradition">
-<span class="kod-fortune-pillar__icon" aria-hidden="true"></span>
-<p class="kod-fortune-pillar__name">Tradition</p>
-<p class="kod-fortune-pillar__blurb">Shared memory and self-belief — lore, custom, and what the people still know themselves to be.</p>
-</div>
-
 </div>
 
 ### Reading the scale

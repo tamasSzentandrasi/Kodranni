@@ -90,38 +90,89 @@ A közösségnek öt lágy mértéke van: a **sorsok** (Fortunes). Soha nem adna
 
 A sorsok **nem** második karakterlap. Öt van: **életerő** (Vitality), **összetartás** (Cohesion), **bőség** (Surplus), **ismertség** (Standing), **hagyomány** (Tradition). A közösséget írják le **egészében** — milyen egészséges, táplált, összetartó, mennyire tartanak tőle, mennyire hisz magában *átlagban*. Ez **minden** találkozást színez: játékoskaraktert és NPC-t, barátot és ellenséget. Egy falu **bőség** 0-n nem „ugyanaz a jelenet más kockával”; az éhség, a vékony készlet és a hiány szaga bejár minden csarnokot és utat. Alacsony összetartás gyanút kever a beszédbe még szövetségesek között is. Magas ismertség azt jelenti, a kívülállók a közösség *bárkivel* óvatosabban vagy udvariasabban bánnak. A mesélő a sorsokat környezeti nyomásként és alkalomként használja — jelenetkeret, NPC viselkedése, milyen a „hétköznapi élet” —, nem módosítók halmazaként, amit minden dobásra rászór.
 
-<div class="kod-fortune-hall not-content" aria-label="Az öt sors">
-
-<div class="kod-fortune-pillar kod-fortune-pillar--vitality">
-<span class="kod-fortune-pillar__icon" aria-hidden="true"></span>
-<p class="kod-fortune-pillar__name">Életerő</p>
-<p class="kod-fortune-pillar__blurb">Nép és egészség — hány kéz maradt, mennyi veszteséget bír még a csoport, mielőtt eltörne.</p>
+<div class="kod-fortune-board not-content" data-widget="fortune-board" aria-label="Sors-benyomástábla">
+<p class="kod-fortune-board__kicker">Hétköznapi időjárás — szemléltetés, nem kampány</p>
+<div class="kod-fortune-board__row">
+<button type="button" class="kod-fortune kod-fortune--vitality" data-fortune="vitality" data-level="2">
+<span class="kod-fortune__icon" aria-hidden="true"></span>
+<span class="kod-fortune__name">Életerő</span>
+<span class="kod-fortune__states">
+<span class="kod-fortune__state" data-level="0" hidden>Válság</span>
+<span class="kod-fortune__state" data-level="1" hidden>Szűkös</span>
+<span class="kod-fortune__state" data-level="2">Tartós</span>
+<span class="kod-fortune__state" data-level="3" hidden>Bőséges</span>
+</span>
+<span class="kod-fortune__n" aria-hidden="true">2</span>
+</button>
+<button type="button" class="kod-fortune kod-fortune--cohesion" data-fortune="cohesion" data-level="2">
+<span class="kod-fortune__icon" aria-hidden="true"></span>
+<span class="kod-fortune__name">Összetartás</span>
+<span class="kod-fortune__states">
+<span class="kod-fortune__state" data-level="0" hidden>Válság</span>
+<span class="kod-fortune__state" data-level="1" hidden>Szűkös</span>
+<span class="kod-fortune__state" data-level="2">Tartós</span>
+<span class="kod-fortune__state" data-level="3" hidden>Bőséges</span>
+</span>
+<span class="kod-fortune__n" aria-hidden="true">2</span>
+</button>
+<button type="button" class="kod-fortune kod-fortune--surplus" data-fortune="surplus" data-level="2">
+<span class="kod-fortune__icon" aria-hidden="true"></span>
+<span class="kod-fortune__name">Bőség</span>
+<span class="kod-fortune__states">
+<span class="kod-fortune__state" data-level="0" hidden>Válság</span>
+<span class="kod-fortune__state" data-level="1" hidden>Szűkös</span>
+<span class="kod-fortune__state" data-level="2">Tartós</span>
+<span class="kod-fortune__state" data-level="3" hidden>Bőséges</span>
+</span>
+<span class="kod-fortune__n" aria-hidden="true">2</span>
+</button>
+<button type="button" class="kod-fortune kod-fortune--standing" data-fortune="standing" data-level="2">
+<span class="kod-fortune__icon" aria-hidden="true"></span>
+<span class="kod-fortune__name">Ismertség</span>
+<span class="kod-fortune__states">
+<span class="kod-fortune__state" data-level="0" hidden>Válság</span>
+<span class="kod-fortune__state" data-level="1" hidden>Szűkös</span>
+<span class="kod-fortune__state" data-level="2">Tartós</span>
+<span class="kod-fortune__state" data-level="3" hidden>Bőséges</span>
+</span>
+<span class="kod-fortune__n" aria-hidden="true">2</span>
+</button>
+<button type="button" class="kod-fortune kod-fortune--tradition" data-fortune="tradition" data-level="2">
+<span class="kod-fortune__icon" aria-hidden="true"></span>
+<span class="kod-fortune__name">Hagyomány</span>
+<span class="kod-fortune__states">
+<span class="kod-fortune__state" data-level="0" hidden>Válság</span>
+<span class="kod-fortune__state" data-level="1" hidden>Szűkös</span>
+<span class="kod-fortune__state" data-level="2">Tartós</span>
+<span class="kod-fortune__state" data-level="3" hidden>Bőséges</span>
+</span>
+<span class="kod-fortune__n" aria-hidden="true">2</span>
+</button>
 </div>
-
-<div class="kod-fortune-pillar kod-fortune-pillar--cohesion">
-<span class="kod-fortune-pillar__icon" aria-hidden="true"></span>
-<p class="kod-fortune-pillar__name">Összetartás</p>
-<p class="kod-fortune-pillar__blurb">Belső bizalom és rend — együtt cselekszik-e még a rokonság, vagy magánintrikákra foszlik.</p>
+<p class="kod-fortune-board__hint">Kattints egy sorsra: Válság → Szűkös → Tartós → Bőséges. A lenti sor az, ahogy az állapot a jelenetet keretezi — a nép minden tagjára, nem dobásmódosítóként.</p>
+<div class="kod-fortune-board__frame" aria-live="polite">
+<p data-frame="board-steady">Mind az öt Tartós: ennél a népnél a hétköznapi élet. Sem lakoma, sem zuhanás. Kattints egy sorsra, hogy lásd, egy mérték hogyan színezi a termet.</p>
+<p data-frame="vitality-0" hidden>Válságos életerő: a padok fele üres. Harc, szülés vagy láz falutény — tegyél hiányzó kezet vagy beteg rokont a jelenetbe.</p>
+<p data-frame="vitality-1" hidden>Szűkös életerő: van nép, alig. Egy rajtaütés három halottal jövő héten a csarnokban érződik.</p>
+<p data-frame="vitality-2" hidden>Tartós életerő: elég kéz a munkához. A betegség háztartásügy, hacsak nem terjed.</p>
+<p data-frame="vitality-3" hidden>Bőséges életerő: ifjak a falon, gyerekek az udvaron. A veszteség még halál, de a nép kibír egy kemény szezont.</p>
+<p data-frame="cohesion-0" hidden>Válságos összetartás: a magánintrika a rendes. Az uralkodó szava kérés; az NPC habozzon, szakadjon, vagy félrehúzódva alkudjon.</p>
+<p data-frame="cohesion-1" hidden>Szűkös összetartás: még együtt ülnek, de számolják, ki hallgat. A közös munka megy; a közös kockázat lökést kíván.</p>
+<p data-frame="cohesion-2" hidden>Tartós összetartás: a rokonság rokonságként viselkedik. A hétköznapi vita a csarnokban marad.</p>
+<p data-frame="cohesion-3" hidden>Bőséges összetartás: egynek a sérelme mindnek sérelme. A kívülálló a zárt sort a szó előtt érzi.</p>
+<p data-frame="surplus-0" hidden>Válságos bőség: éhség van a teremben. A vendég száj; árazd a plusz testet és a plusz tüzet.</p>
+<p data-frame="surplus-1" hidden>Szűkös bőség: a készlet kitart, ha semmi nem romlik el. Lakoma, ajándék vagy elpazarolt zsák döntés.</p>
+<p data-frame="surplus-2" hidden>Tartós bőség: a tél meg van tervezve. Senki sem kövér; senki sem kétségbeesett.</p>
+<p data-frame="surplus-3" hidden>Bőséges bőség: van gabona kölcsönbe és fém is. A nagylelkűség lehetséges; az alkuerő is.</p>
+<p data-frame="standing-0" hidden>Válságos ismertség: a név vicc vagy seb. A szomszéd dúl, a követ kihagyja ezt a csarnokot, a kereskedő megvetést áraz.</p>
+<p data-frame="standing-1" hidden>Szűkös ismertség: ismertek, nem félnek tőlük. A szerződés papíron van; próbára teszik.</p>
+<p data-frame="standing-2" hidden>Tartós ismertség: a név visz. A kívülálló udvarias, amíg okot nem kap, hogy ne legyen.</p>
+<p data-frame="standing-3" hidden>Bőséges ismertség: a név a lovas előtt jár. Óvatosság vagy udvariasság a rendes bárkitől, aki hallott erről a népről.</p>
+<p data-frame="tradition-0" hidden>Válságos hagyomány: senki nem egyezik meg, mik vagyunk. A szokást a pillanatban vitatják; a fiatal nem tudja a régi történetet, vagy kigúnyolja.</p>
+<p data-frame="tradition-1" hidden>Szűkös hagyomány: a rítus még megvan, vékonyabban. Az öregek emlékeznek; a csarnok csak félig hallgat.</p>
+<p data-frame="tradition-2" hidden>Tartós hagyomány: a nép tudja, ki ő. Törvény és szokás ugyanaz a mondat.</p>
+<p data-frame="tradition-3" hidden>Bőséges hagyomány: a múlt szerszám. Idézett szokás tömeget mozdít; a megszegése nyilvános esemény.</p>
 </div>
-
-<div class="kod-fortune-pillar kod-fortune-pillar--surplus">
-<span class="kod-fortune-pillar__icon" aria-hidden="true"></span>
-<p class="kod-fortune-pillar__name">Bőség</p>
-<p class="kod-fortune-pillar__blurb">Étel, szerszám, készlet — az anyagi párna a hétköznapi tél és a kétségbeesés között.</p>
-</div>
-
-<div class="kod-fortune-pillar kod-fortune-pillar--standing">
-<span class="kod-fortune-pillar__icon" aria-hidden="true"></span>
-<p class="kod-fortune-pillar__name">Ismertség</p>
-<p class="kod-fortune-pillar__blurb">Hogyan látják a közösséget kívülről — szerződések, félelem, tisztelet, és a név súlya.</p>
-</div>
-
-<div class="kod-fortune-pillar kod-fortune-pillar--tradition">
-<span class="kod-fortune-pillar__icon" aria-hidden="true"></span>
-<p class="kod-fortune-pillar__name">Hagyomány</p>
-<p class="kod-fortune-pillar__blurb">Közös emlékezet és önhit — tudás, szokás, és amit a nép még magáról tud.</p>
-</div>
-
 </div>
 
 ### A skála olvasása

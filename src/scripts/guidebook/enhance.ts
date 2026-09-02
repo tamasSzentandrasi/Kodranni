@@ -699,6 +699,54 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 		});
 	}
 
+	function setupFortuneBoard() {
+		document.querySelectorAll('[data-widget="fortune-board"]').forEach((root) => {
+			if (root.dataset.ready) return;
+			root.dataset.ready = '1';
+			const cols = [...root.querySelectorAll('.kod-fortune[data-fortune]')];
+			const frames = [...root.querySelectorAll('[data-frame]')];
+
+			function paint() {
+				cols.forEach((col) => {
+					const level = Number(col.getAttribute('data-level') || '2');
+					col.querySelectorAll('.kod-fortune__state').forEach((el) => {
+						const on = Number(el.getAttribute('data-level')) === level;
+						el.removeAttribute('hidden');
+						el.classList.toggle('is-off', !on);
+					});
+					const n = col.querySelector('.kod-fortune__n');
+					if (n) n.textContent = String(level);
+				});
+			}
+
+			function showFrame(id) {
+				let shown = false;
+				frames.forEach((p) => {
+					const show = p.getAttribute('data-frame') === id;
+					if (show) {
+						p.removeAttribute('hidden');
+						shown = true;
+					} else p.setAttribute('hidden', '');
+				});
+				if (!shown) {
+					const fallback = frames.find((p) => p.getAttribute('data-frame') === 'board-steady');
+					if (fallback) fallback.removeAttribute('hidden');
+				}
+			}
+
+			cols.forEach((col) => {
+				col.addEventListener('click', () => {
+					const next = (Number(col.getAttribute('data-level') || '2') + 1) % 4;
+					col.setAttribute('data-level', String(next));
+					paint();
+					showFrame(`${col.dataset.fortune}-${next}`);
+				});
+			});
+			paint();
+			showFrame('board-steady');
+		});
+	}
+
 	function enhance() {
 		const steps = [
 			injectSidebarIcons,
@@ -714,6 +762,7 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 			setupStepFlows,
 			setupTideDemo,
 			setupOmenFaces,
+			setupFortuneBoard,
 			setupScrollReveal,
 			setupTableStrip,
 		];
