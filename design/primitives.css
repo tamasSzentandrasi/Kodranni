@@ -1,0 +1,298 @@
+/* Shared chrome primitives — plates, cartouche, focus ring.
+ * Tokens only: landing already loads Bellefair. */
+@import './tokens.css';
+
+/* Identity ring once. Cartouche opt-out: pewter brightening is the focus. */
+:focus-visible {
+  outline: 1px solid var(--kod-blood-bright);
+  outline-offset: 2px;
+}
+
+/* Soot + tool live on --kod-plate-wash. Cartouche corners are .kod-cn / .kod-headpiece. */
+.kod-plate {
+  box-sizing: border-box;
+  position: relative;
+  border: 1px solid var(--kod-frame);
+  background: var(--kod-plate-wash), var(--kod-plate);
+  box-shadow: var(--kod-smoke);
+}
+
+/* Corner atom — TL as drawn; TR scaleX(-1); BL scaleY(-1). Tip hangs outside the fill. */
+.kod-cn,
+.kod-headpiece::before,
+.kod-headpiece::after,
+.kod-widget::before,
+.kod-widget::after,
+.kod-fortune-board::before,
+.kod-fortune-board::after,
+.kod-hier-ruler::before,
+.kod-hier-ruler::after {
+  position: absolute;
+  box-sizing: border-box;
+  width: var(--kod-cartouche-corner);
+  height: var(--kod-cartouche-corner);
+  pointer-events: none;
+  background-color: color-mix(in srgb, var(--kod-silver) 86%, transparent);
+  -webkit-mask: var(--kod-panel-corner) center / contain no-repeat;
+  mask: var(--kod-panel-corner) center / contain no-repeat;
+  z-index: 2;
+}
+
+.kod-cn--tl,
+.kod-headpiece::before,
+.kod-widget::before,
+.kod-fortune-board::before,
+.kod-hier-ruler::before {
+  top: calc(-1 * var(--kod-chamfer));
+  left: calc(-1 * var(--kod-chamfer));
+}
+
+.kod-cn--tr,
+.kod-headpiece::after,
+.kod-widget::after,
+.kod-fortune-board::after,
+.kod-hier-ruler::after {
+  top: calc(-1 * var(--kod-chamfer));
+  right: calc(-1 * var(--kod-chamfer));
+  transform: scaleX(-1);
+}
+
+.kod-cn--bl {
+  bottom: calc(-1 * var(--kod-chamfer));
+  left: calc(-1 * var(--kod-chamfer));
+  transform: scaleY(-1);
+}
+
+.kod-cn--br {
+  bottom: calc(-1 * var(--kod-chamfer));
+  right: calc(-1 * var(--kod-chamfer));
+  transform: scale(-1, -1);
+}
+
+.kod-headpiece,
+.kod-widget,
+.kod-fortune-board,
+.kod-hier-ruler {
+  position: relative;
+  overflow: visible;
+  --kod-corners: none;
+  --kod-frame-lines: none;
+}
+
+.kod-headpiece::before,
+.kod-headpiece::after,
+.kod-widget::before,
+.kod-widget::after,
+.kod-fortune-board::before,
+.kod-fortune-board::after,
+.kod-hier-ruler::before,
+.kod-hier-ruler::after {
+  content: '';
+}
+
+@media (max-width: 40rem) {
+  :root {
+    --kod-cartouche-corner: 2.7rem;
+    --kod-chamfer: 0.1rem;
+  }
+}
+
+.kod-btn {
+  --kod-soot-size: 0.55rem;
+  --kod-corners: none;
+  --kod-end-w: 3.75rem;
+  --kod-btn-bar: var(--kod-btn-night);
+  appearance: none;
+  -webkit-appearance: none;
+  box-sizing: border-box;
+  position: relative;
+  isolation: isolate;
+  flex: 0 0 auto;
+  width: auto;
+  height: 3.1rem;
+  min-width: 11.2rem;
+  min-height: 3.1rem;
+  max-width: none;
+  max-height: 3.1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-style: solid;
+  border-color: transparent;
+  border-width: 0 var(--kod-end-w);
+  /* Chrome lives on ::before so filter: drop-shadow can follow the cartouche alpha. */
+  border-image: none;
+  background: none;
+  background-color: transparent;
+  color: #f4f0e8;
+  font-family: var(--kod-font-body);
+  font-size: 0.88rem;
+  line-height: 1;
+  margin: 0;
+  padding: 0 0.4rem;
+  border-radius: 0;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  vertical-align: middle;
+  text-decoration: none;
+  text-shadow:
+    0 0 3px #000,
+    0 1px 2px #000,
+    0 0 10px #000,
+    0 0 18px rgba(0, 0, 0, 0.9);
+  clip-path: none;
+  overflow: visible;
+  transition: color 0.14s ease, filter 0.14s ease;
+}
+
+.kod-btn:visited {
+  color: var(--kod-silver-bright);
+  text-decoration: none;
+}
+
+.kod-btn::after {
+  content: none;
+}
+
+.kod-btn::before {
+  content: '';
+  position: absolute;
+  box-sizing: border-box;
+  inset: 0 calc(-1 * var(--kod-end-w));
+  z-index: -1;
+  pointer-events: none;
+  border-style: solid;
+  border-color: transparent;
+  border-width: 0 var(--kod-end-w);
+  border-image-source: var(--kod-btn-bar);
+  border-image-slice: 0 18.5% 0 18.5% fill;
+  border-image-width: 0 var(--kod-end-w);
+  border-image-repeat: stretch;
+  background: transparent;
+  clip-path: var(--kod-cartouche);
+}
+
+.kod-btn > * {
+  position: relative;
+  z-index: 2;
+}
+
+.kod-btn:hover,
+.kod-btn:focus-visible {
+  outline: none;
+  color: #fff8f0;
+  text-decoration: none;
+  --kod-btn-bar: var(--kod-btn-moon);
+  filter:
+    drop-shadow(0 0 8px rgba(242, 239, 233, 0.5))
+    drop-shadow(0 0 16px rgba(242, 239, 233, 0.22));
+}
+
+.kod-btn[aria-pressed='true'],
+.kod-btn:active {
+  color: #fff8f0;
+  text-decoration: none;
+  --kod-btn-bar: var(--kod-btn-moon);
+  filter:
+    drop-shadow(0 0 8px rgba(242, 239, 233, 0.62))
+    drop-shadow(0 0 18px rgba(242, 239, 233, 0.3));
+  box-shadow: none;
+}
+
+.kod-btn:disabled,
+.kod-btn[aria-disabled='true'] {
+  opacity: 0.4;
+  cursor: not-allowed;
+  filter: none;
+  box-shadow: none;
+}
+
+/* Wide cartouche — 9-slice ends scale with height. */
+.kod-btn--folio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-width: 0;
+  height: 3.7rem;
+  min-height: 3.7rem;
+  max-height: 3.7rem;
+  max-width: none;
+  --kod-end-w: 4.45rem;
+  padding: 0.3rem 0.45rem;
+  white-space: normal;
+  text-decoration: none;
+  text-align: center;
+}
+
+.kod-btn__kicker {
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: inherit;
+}
+
+.kod-btn__title {
+  margin-top: 0.22rem;
+  font-size: 1.38rem;
+  letter-spacing: 0.05em;
+  color: var(--kod-silver-bright);
+}
+
+.kod-btn--folio:hover,
+.kod-btn--folio:focus-visible {
+  outline: none;
+  color: #fff8f0;
+}
+
+.kod-btn--folio:active {
+  color: #fff8f0;
+}
+
+.kod-btn:hover .kod-btn__title,
+.kod-btn:focus-visible .kod-btn__title,
+.kod-btn:active .kod-btn__title,
+.kod-btn[aria-pressed='true'] .kod-btn__title {
+  color: #fff8f0;
+}
+
+.kod-btn--blood,
+.kod-btn--folio.kod-btn--blood {
+  color: #fff8f0;
+  background-color: color-mix(in srgb, var(--kod-blood-deep) 48%, #0a0c10);
+  background-clip: padding-box;
+}
+
+.kod-btn--blood .kod-btn__title,
+.kod-btn--folio.kod-btn--blood .kod-btn__title {
+  color: #fff8f0;
+}
+
+.kod-btn--blood:hover,
+.kod-btn--blood:focus-visible,
+.kod-btn--folio.kod-btn--blood:hover,
+.kod-btn--folio.kod-btn--blood:focus-visible {
+  color: #fff8f0;
+  --kod-btn-bar: var(--kod-btn-moon);
+  filter:
+    drop-shadow(0 0 8px rgba(242, 239, 233, 0.5))
+    drop-shadow(0 0 16px rgba(242, 239, 233, 0.22));
+}
+
+.kod-btn--blood:hover .kod-btn__title,
+.kod-btn--blood:focus-visible .kod-btn__title,
+.kod-btn--folio.kod-btn--blood:hover .kod-btn__title,
+.kod-btn--folio.kod-btn--blood:focus-visible .kod-btn__title {
+  color: #fff8f0;
+}
+
+.kod-btn--blood:active,
+.kod-btn--blood[aria-pressed='true'],
+.kod-btn--folio.kod-btn--blood:active,
+.kod-btn--folio.kod-btn--blood[aria-pressed='true'] {
+  color: #fff8f0;
+  --kod-btn-bar: var(--kod-btn-moon);
+  filter: drop-shadow(0 0 8px rgba(242, 239, 233, 0.62)) drop-shadow(0 0 18px rgba(242, 239, 233, 0.3));
+}

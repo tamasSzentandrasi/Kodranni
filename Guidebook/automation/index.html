@@ -1,0 +1,302 @@
+<!DOCTYPE html><html lang="en" dir="ltr" data-theme="dark" data-has-toc data-has-sidebar class="astro-vdxcvpsm"><head><link rel="preload" href="/Kodranni/Guidebook/fonts/bellefair/bellefair-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/Kodranni/Guidebook/_astro/btn-bar-night.C73Isu81.png" as="image"><link rel="preload" href="/Kodranni/Guidebook/_astro/btn-bar-moon.DOlrByq4.png" as="image"><link rel="preload" href="/Kodranni/Guidebook/_astro/btn-round.CqI1rpIR.png" as="image"><link rel="preload" href="/Kodranni/Guidebook/_astro/btn-round-moon.ho9lw4ic.png" as="image"><link rel="preload" href="/Kodranni/Guidebook/_astro/page-end.DS1qfsPm.png" as="image"><link rel="preload" href="/Kodranni/Guidebook/_astro/automation.Cwyj04WN.jpg" as="image" fetchpriority="high"><style>
+@font-face {
+  font-family: 'Bellefair';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/Kodranni/Guidebook/fonts/bellefair/bellefair-latin-ext-400-normal.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308,
+    U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113,
+    U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Bellefair';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/Kodranni/Guidebook/fonts/bellefair/bellefair-latin-400-normal.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304,
+    U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Noto Sans Runic';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/Kodranni/Guidebook/fonts/noto-sans-runic/noto-sans-runic-400-normal.woff2') format('woff2');
+}
+</style><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>Automation | Kodranni</title><link rel="canonical" href="https://kodranni.com/Guidebook/automation/"/><link rel="alternate" hreflang="en" href="https://kodranni.com/Guidebook/automation/"/><link rel="alternate" hreflang="hu" href="https://kodranni.com/Guidebook/hu/automation/"/><link rel="alternate" hreflang="x-default" href="https://kodranni.com/Guidebook/automation/"/><link rel="sitemap" href="/Kodranni/Guidebook/sitemap-index.xml"/><link rel="shortcut icon" href="/Kodranni/Guidebook/favicon.ico" type="image/x-icon"/><meta name="generator" content="Astro v7.2.0"/><meta name="generator" content="Starlight v0.41.7"/><meta property="og:title" content="Automation"/><meta property="og:type" content="article"/><meta property="og:url" content="https://kodranni.com/Guidebook/automation/"/><meta property="og:locale" content="en"/><meta property="og:description" content="Why Kodranni is a hybrid TTRPG, shared sheets, and the Fluxer/Discord automation contract."/><meta property="og:site_name" content="Kodranni"/><meta name="twitter:card" content="summary_large_image"/><meta name="description" content="Why Kodranni is a hybrid TTRPG, shared sheets, and the Fluxer/Discord automation contract."/><link rel="icon" href="/Kodranni/Guidebook/favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="32x32" href="/Kodranni/Guidebook/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/Kodranni/Guidebook/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/Kodranni/Guidebook/apple-touch-icon.png"><meta name="theme-color" content="#8a1515"><meta property="og:image" content="https://kodranni.com/Guidebook/og.jpg"><meta property="og:image:type" content="image/jpeg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="The Kodranni falcon on a blood disc."><meta name="twitter:image" content="https://kodranni.com/Guidebook/og.jpg"><meta name="twitter:image:alt" content="The Kodranni falcon on a blood disc."><script type="module" src="/Kodranni/Guidebook/_astro/Head.astro_astro_type_script_index_0_lang.BhC9w3kA.js"></script><script>
+	window.StarlightThemeProvider = (() => {
+		document.documentElement.dataset.theme = 'dark';
+		try {
+			localStorage.setItem('starlight-theme', 'dark');
+		} catch {
+			/* private mode */
+		}
+		return {
+			updatePickers() {
+				/* no-op: theme is fixed */
+			},
+		};
+	})();
+</script><link rel="stylesheet" href="/Kodranni/Guidebook/_astro/print.ehPL0gv-.css" media="print"><link rel="stylesheet" href="/Kodranni/Guidebook/_astro/common.iC-xJjDE.css"><script type="module" src="/Kodranni/Guidebook/_astro/page.Dwipeu-R.js"></script></head><body class="astro-vdxcvpsm"><a class="sl-skip-link astro-vxeigawq" href="#_top">Skip to content</a><div class="page sl-flex astro-gqpr5s5a"><header class="header astro-gqpr5s5a"><div class="header astro-nczgtkxc"><div class="title-wrapper sl-flex astro-nczgtkxc"><a href="https://kodranni.com/" class="site-title sl-flex astro-ipmp35fu" title="Kodranni home"><img class="astro-ipmp35fu" alt="Kodranni" src="/Kodranni/Guidebook/_astro/falcon-logo.DRBsIRi_.png" width="256" height="256"><span class="astro-ipmp35fu" translate="no">Kodranni</span></a></div><div class="sl-flex print:hidden astro-nczgtkxc"><site-search class="astro-nczgtkxc astro-r5ar4xm7" data-translations="{&quot;placeholder&quot;:&quot;Search&quot;}"><button data-open-modal disabled aria-label="Search" aria-keyshortcuts="Control+K" class="astro-r5ar4xm7"><svg aria-hidden="true" class="astro-r5ar4xm7 astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21.71 20.29 18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a.999.999 0 0 0 1.42 0 1 1 0 0 0 0-1.39ZM11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14Z"/></svg><span class="sl-hidden md:sl-block astro-r5ar4xm7" aria-hidden="true">Search</span><kbd class="sl-hidden md:sl-flex astro-r5ar4xm7" style="display: none;"><kbd class="astro-r5ar4xm7">Ctrl</kbd><kbd class="astro-r5ar4xm7">K</kbd></kbd></button><dialog style="padding:0" aria-label="Search" class="astro-r5ar4xm7"><div class="dialog-frame sl-flex astro-r5ar4xm7"><button data-close-modal class="sl-flex md:sl-hidden astro-r5ar4xm7">Cancel</button><div class="search-container astro-r5ar4xm7"><div id="starlight__search" class="astro-r5ar4xm7"></div></div></div></dialog></site-search><script>
+	(() => {
+		const openBtn = document.querySelector('button[data-open-modal]');
+		const shortcut = openBtn?.querySelector('kbd');
+		if (!openBtn || !(shortcut instanceof HTMLElement)) return;
+		const platformKey = shortcut.querySelector('kbd');
+		if (platformKey && /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform)) {
+			platformKey.textContent = '⌘';
+			openBtn.setAttribute('aria-keyshortcuts', 'Meta+K');
+		}
+		shortcut.style.display = '';
+	})();
+</script><script type="module" src="/Kodranni/Guidebook/_astro/Search.astro_astro_type_script_index_0_lang.e0o9XNLt.js"></script></div><div class="sl-hidden md:sl-flex print:hidden right-group astro-nczgtkxc"><div class="sl-flex social-icons astro-nczgtkxc"></div><nav class="kod-lang" aria-label="Language"><a href="/Kodranni/Guidebook/automation/" class="kod-lang__link is-current" lang="en" hreflang="en" aria-label="English" aria-current="true"><svg class="kod-lang__flag" viewBox="0 0 60 36" aria-hidden="true" focusable="false"><rect width="60" height="36" fill="#012169"></rect><path d="M0 0 L60 36 M60 0 L0 36" stroke="#fff" stroke-width="8"></path><path d="M0 0 L60 36 M60 0 L0 36" stroke="#c8102e" stroke-width="4"></path><path d="M30 0 V36 M0 18 H60" stroke="#fff" stroke-width="12"></path><path d="M30 0 V36 M0 18 H60" stroke="#c8102e" stroke-width="7"></path></svg></a><a href="/Kodranni/Guidebook/hu/automation/" class="kod-lang__link" lang="hu" hreflang="hu" aria-label="Magyar"><svg class="kod-lang__flag" viewBox="0 0 60 36" aria-hidden="true" focusable="false"><rect width="60" height="12" fill="#ce2939"></rect><rect y="12" width="60" height="12" fill="#f2efe9"></rect><rect y="24" width="60" height="12" fill="#477050"></rect></svg></a></nav></div></div></header><nav class="sidebar print:hidden astro-gqpr5s5a" aria-label="Main"><starlight-menu-button class="print:hidden astro-vvx7mffu"><button aria-expanded="false" aria-label="Menu" aria-controls="starlight__sidebar" class="sl-flex md:sl-hidden astro-vvx7mffu"><svg aria-hidden="true" class="open-menu astro-vvx7mffu astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M3 8h18a1 1 0 1 0 0-2H3a1 1 0 0 0 0 2Zm18 8H3a1 1 0 0 0 0 2h18a1 1 0 0 0 0-2Zm0-5H3a1 1 0 0 0 0 2h18a1 1 0 0 0 0-2Z"/></svg><svg aria-hidden="true" class="close-menu astro-vvx7mffu astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="m13.41 12 6.3-6.29a1.004 1.004 0 1 0-1.42-1.42L12 10.59l-6.29-6.3a1.004 1.004 0 0 0-1.42 1.42l6.3 6.29-6.3 6.29a1 1 0 0 0 0 1.42.998.998 0 0 0 1.42 0l6.29-6.3 6.29 6.3a.999.999 0 0 0 1.42 0 1 1 0 0 0 0-1.42L13.41 12Z"/></svg></button></starlight-menu-button><script type="module">var e=class extends HTMLElement{btn=this.querySelector(`button`);constructor(){super(),this.btn.addEventListener(`click`,()=>this.toggleExpanded());let e=this.closest(`nav`);e&&e.addEventListener(`keyup`,e=>this.closeOnEscape(e)),matchMedia(`(min-width: 50em)`).addEventListener(`change`,()=>this.setExpanded(!1))}setExpanded(e){this.setAttribute(`aria-expanded`,String(e)),document.body.toggleAttribute(`data-mobile-menu-expanded`,e),document.querySelectorAll(`.main-frame, .sl-skip-link`).forEach(t=>{t.toggleAttribute(`inert`,e)})}toggleExpanded(){this.setExpanded(this.getAttribute(`aria-expanded`)!==`true`)}closeOnEscape(e){e.code===`Escape`&&(this.setExpanded(!1),this.btn.focus())}};customElements.define(`starlight-menu-button`,e);</script><div id="starlight__sidebar" class="sidebar-pane astro-gqpr5s5a"><div class="sidebar-content sl-flex astro-gqpr5s5a"><sl-sidebar-state-persist data-hash="0ataxmk" class="astro-f5yvicm7"><script aria-hidden="true">
+		(() => {
+			try {
+				if (!matchMedia('(min-width: 50em)').matches) return;
+				/** @type {HTMLElement | null} */
+				const target = document.querySelector('sl-sidebar-state-persist');
+				const state = JSON.parse(sessionStorage.getItem('sl-sidebar-state') || '0');
+				if (!target || !state || target.dataset.hash !== state.hash) return;
+				window._starlightScrollRestore = state.scroll;
+				customElements.define(
+					'sl-sidebar-restore',
+					class SidebarRestore extends HTMLElement {
+						connectedCallback() {
+							try {
+								const idx = parseInt(this.dataset.index || '');
+								const details = this.closest('details');
+								if (details && typeof state.open[idx] === 'boolean') details.open = state.open[idx];
+							} catch {}
+						}
+					}
+				);
+			} catch {}
+		})();
+	</script><ul class="top-level astro-ojxuodky"><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Start here</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="0"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/Kodranni/Guidebook/introduction/" class="astro-ojxuodky"><span class="astro-ojxuodky">Introduction</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Dice Mechanics</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="1"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/Kodranni/Guidebook/dice-mechanics/" class="astro-ojxuodky"><span class="astro-ojxuodky">Overview</span></a></li><li class="astro-ojxuodky"><a href="/Kodranni/Guidebook/marks-and-tiers/" class="astro-ojxuodky"><span class="astro-ojxuodky">Marks &amp; Tiers</span></a></li><li class="astro-ojxuodky"><a href="/Kodranni/Guidebook/omens/" class="astro-ojxuodky"><span class="astro-ojxuodky">Omens &amp; Consequences</span></a></li><li class="astro-ojxuodky"><a href="/Kodranni/Guidebook/tide/" class="astro-ojxuodky"><span class="astro-ojxuodky">Tide</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Human Potential</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="2"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/Kodranni/Guidebook/human-potential/" class="astro-ojxuodky"><span class="astro-ojxuodky">Overview</span></a></li><li class="astro-ojxuodky"><a href="/Kodranni/Guidebook/foundations/" class="astro-ojxuodky"><span class="astro-ojxuodky">Foundations</span></a></li><li class="astro-ojxuodky"><a href="/Kodranni/Guidebook/skills/" class="astro-ojxuodky"><span class="astro-ojxuodky">Skills</span></a></li><li class="astro-ojxuodky"><a href="/Kodranni/Guidebook/traits/" class="astro-ojxuodky"><span class="astro-ojxuodky">Traits</span></a></li><li class="astro-ojxuodky"><a href="/Kodranni/Guidebook/exertion/" class="astro-ojxuodky"><span class="astro-ojxuodky">Exertion</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Resolution &amp; Continuity</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="3"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/Kodranni/Guidebook/echoes/" class="astro-ojxuodky"><span class="astro-ojxuodky">Echoes</span></a></li><li class="astro-ojxuodky"><a href="/Kodranni/Guidebook/harm/" class="astro-ojxuodky"><span class="astro-ojxuodky">Harm</span></a></li><li class="astro-ojxuodky"><a href="/Kodranni/Guidebook/hierarchies/" class="astro-ojxuodky"><span class="astro-ojxuodky">Hierarchies</span></a></li><li class="astro-ojxuodky"><a href="/Kodranni/Guidebook/inventory/" class="astro-ojxuodky"><span class="astro-ojxuodky">Inventory</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Campaign &amp; Character Creation</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="4"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/Kodranni/Guidebook/campaign-setup/" class="astro-ojxuodky"><span class="astro-ojxuodky">Campaign Setup</span></a></li><li class="astro-ojxuodky"><a href="/Kodranni/Guidebook/character-creation/" class="astro-ojxuodky"><span class="astro-ojxuodky">Character Creation</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Automation</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="5"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/Kodranni/Guidebook/automation/" aria-current="page" class="astro-ojxuodky"><span class="astro-ojxuodky">At the Table</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Reference</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="6"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/Kodranni/Guidebook/glossary/" class="astro-ojxuodky"><span class="astro-ojxuodky">Glossary</span></a></li></ul></details></li></ul><script aria-hidden="true">
+		(() => {
+			const scroller = document.getElementById('starlight__sidebar');
+			if (!window._starlightScrollRestore || !scroller) return;
+			scroller.scrollTop = window._starlightScrollRestore;
+			delete window._starlightScrollRestore;
+		})();
+	</script></sl-sidebar-state-persist><div class="md:sl-hidden"><div class="mobile-preferences sl-flex astro-b5gddk54"><div class="social-icons astro-b5gddk54"></div><nav class="kod-lang" aria-label="Language"><a href="/Kodranni/Guidebook/automation/" class="kod-lang__link is-current" lang="en" hreflang="en" aria-label="English" aria-current="true"><svg class="kod-lang__flag" viewBox="0 0 60 36" aria-hidden="true" focusable="false"><rect width="60" height="36" fill="#012169"></rect><path d="M0 0 L60 36 M60 0 L0 36" stroke="#fff" stroke-width="8"></path><path d="M0 0 L60 36 M60 0 L0 36" stroke="#c8102e" stroke-width="4"></path><path d="M30 0 V36 M0 18 H60" stroke="#fff" stroke-width="12"></path><path d="M30 0 V36 M0 18 H60" stroke="#c8102e" stroke-width="7"></path></svg></a><a href="/Kodranni/Guidebook/hu/automation/" class="kod-lang__link" lang="hu" hreflang="hu" aria-label="Magyar"><svg class="kod-lang__flag" viewBox="0 0 60 36" aria-hidden="true" focusable="false"><rect width="60" height="12" fill="#ce2939"></rect><rect y="12" width="60" height="12" fill="#f2efe9"></rect><rect y="24" width="60" height="12" fill="#477050"></rect></svg></a></nav></div></div></div></div></nav><div class="main-frame astro-gqpr5s5a"><script type="module">var e=document.getElementById(`starlight__sidebar`),t=e?.querySelector(`sl-sidebar-state-persist`),n=`sl-sidebar-state`,r=()=>{let r=[],i=t?.dataset.hash||``;try{let e=sessionStorage.getItem(n),t=JSON.parse(e||`{}`);Array.isArray(t.open)&&t.hash===i&&(r=t.open)}catch{}return{hash:i,open:r,scroll:e?.scrollTop||0}},i=e=>{try{sessionStorage.setItem(n,JSON.stringify(e))}catch{}},a=()=>i(r()),o=(e,t)=>{let n=r();n.open[t]=e,i(n)};t?.addEventListener(`click`,e=>{if(!(e.target instanceof Element))return;let t=e.target.closest(`summary`)?.closest(`details`);if(!t)return;let n=t.querySelector(`sl-sidebar-restore`),r=parseInt(n?.dataset.index||``);isNaN(r)||o(!t.open,r)}),addEventListener(`visibilitychange`,()=>{document.visibilityState===`hidden`&&a()});</script><div class="lg:sl-flex astro-abfeecmu"><aside class="right-sidebar-container print:hidden astro-abfeecmu"><div class="right-sidebar astro-abfeecmu"><div class="lg:sl-hidden astro-q5mffni3"><mobile-starlight-toc data-min-h="2" data-max-h="3" class="astro-5ulgm6bh"><nav aria-labelledby="starlight__on-this-page--mobile" class="astro-5ulgm6bh"><details id="starlight__mobile-toc" class="astro-5ulgm6bh"><summary id="starlight__on-this-page--mobile" class="sl-flex astro-5ulgm6bh"><span class="toggle sl-flex astro-5ulgm6bh">On this page<svg aria-hidden="true" class="caret astro-5ulgm6bh astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></span><span class="display-current astro-5ulgm6bh"></span></summary><div class="dropdown astro-5ulgm6bh"><ul class="isMobile astro-cxyftcne" style="--depth: 0;"><li style="--depth: 0;" class="astro-cxyftcne"><a href="#_top" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Overview</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#why-automation-exists" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Why Automation Exists</span></a><ul class="isMobile astro-cxyftcne" style="--depth: 1;"><li style="--depth: 1;" class="astro-cxyftcne"><a href="#what-the-table-gains" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">What the table gains</span></a></li></ul></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#single-source-of-truth" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Single source of truth</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#platforms" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Platforms</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#design-principles" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Design Principles</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#capability-map" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Capability Map</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#table-workflow-player-action" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Table Workflow (Player Action)</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#weighing-automation-depth" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Weighing (automation depth)</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#setup-evolving" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Setup (evolving)</span></a></li></ul></div></details></nav></mobile-starlight-toc><script type="module" src="/Kodranni/Guidebook/_astro/MobileTableOfContents.astro_astro_type_script_index_0_lang.BcSo_yiZ.js"></script></div><div class="right-sidebar-panel sl-hidden lg:sl-block astro-q5mffni3"><div class="sl-container astro-q5mffni3"><starlight-toc data-min-h="2" data-max-h="3"><nav aria-labelledby="starlight__on-this-page"><h2 id="starlight__on-this-page">On this page</h2><ul class="astro-cxyftcne" style="--depth: 0;"><li style="--depth: 0;" class="astro-cxyftcne"><a href="#_top" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Overview</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#why-automation-exists" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Why Automation Exists</span></a><ul class="astro-cxyftcne" style="--depth: 1;"><li style="--depth: 1;" class="astro-cxyftcne"><a href="#what-the-table-gains" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">What the table gains</span></a></li></ul></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#single-source-of-truth" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Single source of truth</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#platforms" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Platforms</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#design-principles" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Design Principles</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#capability-map" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Capability Map</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#table-workflow-player-action" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Table Workflow (Player Action)</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#weighing-automation-depth" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Weighing (automation depth)</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#setup-evolving" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Setup (evolving)</span></a></li></ul></nav></starlight-toc><script type="module" src="/Kodranni/Guidebook/_astro/TableOfContents.astro_astro_type_script_index_0_lang.Csloo1VZ.js"></script></div></div></div></aside><div class="main-pane astro-abfeecmu"><main data-pagefind-body class="astro-vdxcvpsm" lang="en" dir="ltr"><div class="content-panel astro-oil7k7jf"><div class="sl-container astro-oil7k7jf"><header class="kod-page-title" data-slug="automation"><figure class="kod-page-title__rose"><img src="/Kodranni/Guidebook/_astro/automation.Cwyj04WN.jpg" alt="" width="1024" height="1024" fetchpriority="high"></figure><div class="kod-page-title__text"><h1 id="_top">Automation</h1></div></header></div></div><div class="content-panel astro-oil7k7jf"><div class="sl-container astro-oil7k7jf"><div class="sl-markdown-content"><hr>
+<div class="sl-heading-wrapper level-h2"><h2 id="why-automation-exists">Why Automation Exists</h2><a class="sl-anchor-link" href="#why-automation-exists"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Why Automation Exists”</span></a></div>
+<p>Kodranni is a <strong>hybrid</strong> tabletop system: storytelling first, software as ledger and dice engine underneath. Without automation, several procedures in this Guide would drown the table in bookkeeping.</p>
+<div class="sl-heading-wrapper level-h3"><h3 id="what-the-table-gains">What the table gains</h3><a class="sl-anchor-link" href="#what-the-table-gains"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “What the table gains”</span></a></div>
+<ul>
+<li><strong>One living record</strong> per character and community — no divergent notebooks.</li>
+<li><strong>Fast resolution</strong> of pools, Omens, margins, Practice, Exertion, Harm, and Tide — so fiction is not stopped for arithmetic.</li>
+<li><strong>State at the moment of action</strong> — who is rolling, Exertion left, Echoes, Myths — without retyping sheets into chat.</li>
+<li><strong>Online continuity</strong> between sessions on shared sheets and a community tracker.</li>
+</ul>
+<p>This page is the <strong>table-facing</strong> contract. Engineering direction lives with the project source and will change as the product UI is defined. Storyteller record edits move to a web desk (clone of the tracker and sheets). Discord and Fluxer keep rolls. Harm apply exists on the result card and on that desk.</p>
+<hr>
+<div class="sl-heading-wrapper level-h2"><h2 id="single-source-of-truth">Single source of truth</h2><a class="sl-anchor-link" href="#single-source-of-truth"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Single source of truth”</span></a></div>
+<table>
+<thead>
+<tr>
+<th>Surface</th>
+<th>Who uses it</th>
+<th>What it holds</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Guidebook</strong> (this site)</td>
+<td>Everyone</td>
+<td>Rules — one public ruleset</td>
+</tr>
+<tr>
+<td><strong>Character sheet</strong></td>
+<td>Player + Storyteller (shared view)</td>
+<td>One living record per character — Foundations, Skills (<strong>including Practice progress</strong>), Traits, Exertion, Echoes, Harm, Hierarchy positions, Inventory, flags</td>
+</tr>
+<tr>
+<td><strong>Community tracker</strong></td>
+<td>Table (shared view)</td>
+<td>Fortunes, Foundation Myths, Hierarchy Diagram (≤5 axes)</td>
+</tr>
+</tbody>
+</table>
+<p>Sheets and tracker are <strong>per community</strong>. Hosting and sharing are modular: the community’s data is the authority; chat platforms only drive instructions against it.</p>
+<p>There are <strong>not</strong> separate “player sheet” and “ST sheet” for the same character. The <strong>data</strong> does not fork. Practice progress is <strong>visible</strong> on the sheet for anyone who wants to look.</p>
+<p><strong>Not</strong> on the main Community tracker (session tools, not standing community state):</p>
+<ul>
+<li><strong>Tide</strong> — opened when needed; when a Tide ends, what remains is usually an audit/history mark of where it left off, not a permanent tracker field.</li>
+<li><strong>Scene Omen faces</strong> — Storyteller lists, manages, and clears them effectively; they are scene tooling, not community Fortunes.</li>
+</ul>
+<hr>
+<div class="sl-heading-wrapper level-h2"><h2 id="platforms">Platforms</h2><a class="sl-anchor-link" href="#platforms"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Platforms”</span></a></div>
+<p>Automation <strong>supports two platforms</strong> as equal chat surfaces:</p>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Fluxer</strong></td>
+<td>Chat surface with guild/server-style binding, token configuration, account mapping</td>
+</tr>
+<tr>
+<td><strong>Discord</strong></td>
+<td>Same domain behaviour; guild IDs, token configuration, account mapping</td>
+</tr>
+</tbody>
+</table>
+<p>Each deployment binds platform credentials, <strong>guild / server ID</strong> (or Fluxer equivalent), and the <strong>community</strong> record. Bots also map <strong>account IDs and nicknames</strong> to characters so a target instruction always knows <em>which player’s character</em> it addresses.</p>
+<p>Bots are thin clients over the community store. Bare slash-only bots are not enough: player-facing UI must make Foundation, Skill, tier, Exertion, Echo/Myth tags, and approvals <strong>easy to select</strong>, using each platform’s built-in strengths first (menus, buttons for Storyteller <strong>approve/deny</strong>, reply threads) — researched, innovative, high-quality UX, not a wall of flags.</p>
+<p>Between and during sessions, players also use a <strong>pretty shared view</strong> of sheets and the community tracker: a <strong>live</strong> URL while the Storyteller’s session is running, and a <strong>public archive</strong> URL (campaign presentation site) when it is not. Platform account maps and full audit trails stay on the Storyteller’s machine — not on the public site.</p>
+<hr>
+<div class="sl-heading-wrapper level-h2"><h2 id="design-principles">Design Principles</h2><a class="sl-anchor-link" href="#design-principles"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Design Principles”</span></a></div>
+<ol>
+<li><strong>Storyteller authority</strong> — Lasting mutations require Storyteller approval where the rules say so (Hierarchy, inventory, and similar). Approvals use <strong>Storyteller-role buttons</strong> (approve / deny) on the request message.</li>
+<li><strong>Fiction first, then instruction</strong> — In narration the Storyteller names Foundation and Skill (or Foundation alone for Primitive). The <strong>player</strong> initiates the roll instruction with that agreed configuration. Automation already knows the mapped user, their character, Exertion, Echoes (selectable), and community Myths that can be tagged.</li>
+<li><strong>Die tier is declared</strong> — Safe default <strong>d8</strong>; ultimate choice is the Storyteller’s via <a href="/Kodranni/Guidebook/marks-and-tiers/#advantage-and-disadvantage">Advantage and Disadvantage</a>.</li>
+<li><strong>Infer when safe; field when narrative</strong> — States such as Decadence or over-capacity can be inferred during interactions to cut admin overhead. <strong>Armour</strong> and <strong>Reputation</strong> still need explicit fields: their presence is resolved in fiction before any ratio is applied. Hierarchy <strong>tiers</strong> are full ladders, not only Outsider/Ruler; relative tier difference is established narratively, then applied in instructions.</li>
+<li><strong>Reply chains</strong> — An opposed roll is simply a <strong>roll sent in reply</strong> to a prior roll message (any Foundation + Skill pair; player or Storyteller NPC roll). Tide contribution comes from replies to a Tide event or to a roll already tied to that Tide.</li>
+<li><strong>Minimum pool floor</strong> — No pool drops below 1 die.</li>
+<li><strong>Separate recovery</strong> — Exertion reclaim and Harm healing are distinct updates after narrative rest.</li>
+<li><strong>One community store</strong> — Sheets and tracker never diverge across platforms.</li>
+<li><strong>Fulfil, present, track</strong> — Primary duty of automation: execute the instruction, show results, persist changes. <strong>Revert last roll</strong> for accidents.</li>
+</ol>
+<hr>
+<div class="sl-heading-wrapper level-h2"><h2 id="capability-map">Capability Map</h2><a class="sl-anchor-link" href="#capability-map"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Capability Map”</span></a></div>
+<table>
+<thead>
+<tr>
+<th>Capability</th>
+<th>Player</th>
+<th>Storyteller</th>
+<th>Automation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Player roll</strong></td>
+<td>Initiates with agreed config; Exertion / Echo / Myth tags via UI</td>
+<td>Names Foundation + Skill (or Primitive) and tier in fiction</td>
+<td>Maps user → character; fills pool from sheet; rolls + Omen; updates Practice/Exertion</td>
+</tr>
+<tr>
+<td><strong>Storyteller NPC roll</strong></td>
+<td>—</td>
+<td>Uses ST roll flow: specify Foundation, Skill, Exertion, tier, etc. (no PC sheet required)</td>
+<td>Rolls and reports; no PC sheet mutation unless targeted</td>
+</tr>
+<tr>
+<td><strong>Opposed margin</strong></td>
+<td>Reply-roll in fiction</td>
+<td>Interprets margin</td>
+<td>Detects reply link; computes Marks difference</td>
+</tr>
+<tr>
+<td><strong>Omen faces</strong></td>
+<td>—</td>
+<td>List / set / clear scene faces</td>
+<td>On every roll, flags configured + default faces</td>
+</tr>
+<tr>
+<td><strong>Tide</strong></td>
+<td>Acts; reply-rolls may link</td>
+<td>Opens/closes; scale &amp; footing</td>
+<td>Tracks while open; history when closed</td>
+</tr>
+<tr>
+<td><strong>Practice</strong></td>
+<td>Visible on sheet</td>
+<td>Prompt degrade (time leap)</td>
+<td>Accrues; levels; prompted degrade</td>
+</tr>
+<tr>
+<td><strong>Exertion</strong></td>
+<td>Spends on player rolls</td>
+<td>Awards rest/event drains</td>
+<td>Tracks pool; empty penalty; infer flags when safe</td>
+</tr>
+<tr>
+<td><strong>Echoes</strong></td>
+<td>Create / invoke / resolve with ST</td>
+<td>Veto tone; deal resolution rewards</td>
+<td>Weight vs capacity; apply sheet changes ST orders</td>
+</tr>
+<tr>
+<td><strong>Fortunes</strong></td>
+<td>—</td>
+<td>Adjust</td>
+<td>On Community tracker</td>
+</tr>
+<tr>
+<td><strong>Foundation Myths</strong></td>
+<td>Tag on roll when relevant</td>
+<td>Craft toggleable/compound effects (ST-only)</td>
+<td>Apply only when tagged</td>
+</tr>
+<tr>
+<td><strong>Harm / Dying</strong></td>
+<td>—</td>
+<td>Chooses track; applies; heals (separate)</td>
+<td>Tracks; Dying; death flow</td>
+</tr>
+<tr>
+<td><strong>Hierarchy Diagram</strong></td>
+<td>Request move</td>
+<td>Approve (button)</td>
+<td>≤5 axes on tracker</td>
+</tr>
+<tr>
+<td><strong>Inventory</strong></td>
+<td>Request changes; restock food/water</td>
+<td>Approve (button)</td>
+<td>Shared sheet loadout</td>
+</tr>
+<tr>
+<td><strong>Character / Weighing</strong></td>
+<td>Concept onward</td>
+<td>Finalises; Word spent on the <strong>speaker’s</strong> sheet; ST marks the <strong>target</strong></td>
+<td>Budgets; private Omen rolls; sheet updates</td>
+</tr>
+<tr>
+<td><strong>Legacy</strong></td>
+<td>Crafted as an Echo with the ST (not a special bot path)</td>
+<td>Same as other Echo outcomes</td>
+<td>Ordinary Echo / sheet changes</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<div class="sl-heading-wrapper level-h2"><h2 id="table-workflow-player-action">Table Workflow (Player Action)</h2><a class="sl-anchor-link" href="#table-workflow-player-action"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Table Workflow (Player Action)”</span></a></div>
+<div class="expressive-code"><link rel="stylesheet" href="/Kodranni/Guidebook/_astro/ec.w36nc.css"><script type="module" src="/Kodranni/Guidebook/_astro/ec.0vx5m.js"></script><figure class="frame not-content"><figcaption class="header"></figcaption><pre data-language="text"><code><div class="ec-line"><div class="code"><span style="--0:#d6deeb;--1:#403f53">Player describes intent (role-play)</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#d6deeb;--1:#403f53">        </span></span><span style="--0:#d6deeb;--1:#403f53">↓</span></div></div><div class="ec-line"><div class="code"><span style="--0:#d6deeb;--1:#403f53">Storyteller names, in fiction: Foundation + Skill | Primitive,</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#d6deeb;--1:#403f53">  </span></span><span style="--0:#d6deeb;--1:#403f53">and die tier (default d8) — Advantage/Disadvantage as context</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#d6deeb;--1:#403f53">        </span></span><span style="--0:#d6deeb;--1:#403f53">↓</span></div></div><div class="ec-line"><div class="code"><span style="--0:#d6deeb;--1:#403f53">Player starts roll instruction (mapped account → character).</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#d6deeb;--1:#403f53">  </span></span><span style="--0:#d6deeb;--1:#403f53">UI already shows Exertion, selectable Echoes, taggable Myths.</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#d6deeb;--1:#403f53">  </span></span><span style="--0:#d6deeb;--1:#403f53">Player chooses spends/tags; confirms.</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#d6deeb;--1:#403f53">        </span></span><span style="--0:#d6deeb;--1:#403f53">↓</span></div></div><div class="ec-line"><div class="code"><span style="--0:#d6deeb;--1:#403f53">Automation rolls main pool + Omen; presents results;</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#d6deeb;--1:#403f53">  </span></span><span style="--0:#d6deeb;--1:#403f53">tracks sheet changes (Practice, Exertion, flags…)</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#d6deeb;--1:#403f53">        </span></span><span style="--0:#d6deeb;--1:#403f53">↓</span></div></div><div class="ec-line"><div class="code"><span style="--0:#d6deeb;--1:#403f53">Storyteller narrates outcome (+ Consequence if Omen fires)</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#d6deeb;--1:#403f53">        </span></span><span style="--0:#d6deeb;--1:#403f53">↓</span></div></div><div class="ec-line"><div class="code"><span style="--0:#d6deeb;--1:#403f53">If lasting state needs approval (loot, rank…):</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#d6deeb;--1:#403f53">  </span></span><span style="--0:#d6deeb;--1:#403f53">request → Storyteller button approve → shared sheet/tracker</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#d6deeb;--1:#403f53">  </span></span><span style="--0:#d6deeb;--1:#403f53">(live pretty view updates immediately; public archive follows)</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="Player describes intent (role-play)        ↓Storyteller names, in fiction: Foundation + Skill | Primitive,  and die tier (default d8) — Advantage/Disadvantage as context        ↓Player starts roll instruction (mapped account → character).  UI already shows Exertion, selectable Echoes, taggable Myths.  Player chooses spends/tags; confirms.        ↓Automation rolls main pool + Omen; presents results;  tracks sheet changes (Practice, Exertion, flags…)        ↓Storyteller narrates outcome (+ Consequence if Omen fires)        ↓If lasting state needs approval (loot, rank…):  request → Storyteller button approve → shared sheet/tracker  (live pretty view updates immediately; public archive follows)"><div></div></button></div></figure></div>
+<p><strong>Storyteller rolling an NPC:</strong> separate ST roll instruction with explicit numbers (Foundation, Skill, Exertion, tier, Advantage). No player character sheet is required.</p>
+<p><strong>Opposed:</strong> any roll (player or ST) <strong>in reply</strong> to a roll message. Pairs need not match.</p>
+<p><strong>Tide-linked:</strong> reply to the Tide event or to a roll already on that Tide.</p>
+<p><strong>Accident:</strong> revert last roll.</p>
+<hr>
+<div class="sl-heading-wrapper level-h2"><h2 id="weighing-automation-depth">Weighing (automation depth)</h2><a class="sl-anchor-link" href="#weighing-automation-depth"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Weighing (automation depth)”</span></a></div>
+<ul>
+<li>Character record is created at <strong>Character Concept</strong>, with initial Foundation and Skill budgets granted.</li>
+<li><strong>Birth Omen</strong> and <strong>Guiding Hand</strong>: automation rolls; points land on the draft sheet.</li>
+<li><strong>Words / Wanting</strong>: speaker spends a Word on <strong>their own</strong> sheet (menu option). The Storyteller marks the <strong>target</strong> of the accepted claim. Theatre stays human; arithmetic and persistence do not.</li>
+</ul>
+<hr>
+<div class="sl-heading-wrapper level-h2"><h2 id="setup-evolving">Setup (evolving)</h2><a class="sl-anchor-link" href="#setup-evolving"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Setup (evolving)”</span></a></div>
+<p>Install steps, Fluxer vs Discord tokens, account mapping, and UI research belong to the architecture plan and will iterate. Until the product ships, treat this chapter as the <strong>behaviour contract</strong>.</p>
+<p>Command <strong>families</strong> (names follow UX design):</p>
+<ul>
+<li><strong>Player roll</strong> / <strong>Storyteller roll</strong> — Omen always included; not a separate “omen command”</li>
+<li><strong>Reply</strong> = oppose or Tide-link when the parent is a roll or Tide event</li>
+<li>Exertion award · Harm apply/heal (separate) · Tide open/close</li>
+<li>Scene Omen list/set/clear (ST)</li>
+<li>Echo · Myth craft (ST) · Fortune</li>
+<li>Hierarchy request + ST button approve · Diagram on tracker</li>
+<li>Inventory request + approve · restock</li>
+<li>Character sheet · Community tracker · Practice degrade (prompted) · <strong>Revert last roll</strong></li>
+</ul>
+<p>Engineering notes live with the project source, not on this page.</p>
+<p>Related: <a href="/Kodranni/Guidebook/dice-mechanics/">Dice Mechanics</a>, <a href="/Kodranni/Guidebook/character-creation/">Character Creation</a>, <a href="/Kodranni/Guidebook/hierarchies/">Hierarchies</a>.</p>
+<hr>
+</div><footer class="sl-flex astro-xhxjzfa7"><div class="meta sl-flex astro-xhxjzfa7"></div><div class="pagination-links print:hidden astro-jgq3vlii" dir="ltr"><a href="/Kodranni/Guidebook/character-creation/" rel="prev" class="astro-jgq3vlii"><svg aria-hidden="true" class="astro-jgq3vlii astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.5rem;"><path d="M17 11H9.41l3.3-3.29a1.004 1.004 0 1 0-1.42-1.42l-5 5a1 1 0 0 0-.21.33 1 1 0 0 0 0 .76 1 1 0 0 0 .21.33l5 5a1.002 1.002 0 0 0 1.639-.325 1 1 0 0 0-.219-1.095L9.41 13H17a1 1 0 0 0 0-2Z"/></svg><span class="astro-jgq3vlii">Previous<br class="astro-jgq3vlii"><span class="link-title astro-jgq3vlii">Character Creation</span></span></a><a href="/Kodranni/Guidebook/glossary/" rel="next" class="astro-jgq3vlii"><svg aria-hidden="true" class="astro-jgq3vlii astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.5rem;"><path d="M17.92 11.62a1.001 1.001 0 0 0-.21-.33l-5-5a1.003 1.003 0 1 0-1.42 1.42l3.3 3.29H7a1 1 0 0 0 0 2h7.59l-3.3 3.29a1.002 1.002 0 0 0 .325 1.639 1 1 0 0 0 1.095-.219l5-5a1 1 0 0 0 .21-.33 1 1 0 0 0 0-.76Z"/></svg><span class="astro-jgq3vlii">Next<br class="astro-jgq3vlii"><span class="link-title astro-jgq3vlii">Glossary</span></span></a></div></footer></div></div></main></div></div></div></div></body></html>

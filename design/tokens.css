@@ -1,0 +1,98 @@
+/* Kodranni design tokens — Guidebook + campaign-ui + chat palette */
+
+:root {
+  --kod-black: #050505;
+  --kod-silver: #c6c1b8;
+  --kod-silver-dim: #8a8580;
+  --kod-silver-bright: #f2efe9;
+  --kod-blood: #a01818;
+  --kod-blood-bright: #c92222;
+  --kod-blood-deep: #5a1010;
+
+  --kod-font-display: 'Bellefair', 'Times New Roman', Times, serif;
+  --kod-font-body: 'Bellefair', 'Times New Roman', Times, serif;
+  --kod-font-runic: 'Noto Sans Runic', 'Segoe UI Historic', 'Noto Sans', sans-serif;
+
+  /* Chat embed accent (Discord/Fluxer) */
+  --kod-chat-accent: #8a1515;
+
+  /* Plate grammar — tooled iron in soot, not corner brackets */
+  --kod-frame: #3a3330;
+  --kod-frame-tick: #6a6560;
+  --kod-frame-tick-hot: #c4bfb6;
+  --kod-plate: #0b0a0a;
+  --kod-inset: rgba(0, 0, 0, 0.28);
+  --kod-soot-size: 1.35rem;
+  --kod-corner-size: 2.35rem;
+  --kod-tool: linear-gradient(180deg, rgba(0, 0, 0, 0.22), transparent 42%);
+  --kod-smoke:
+    inset 0 1px 0 rgba(0, 0, 0, 0.4),
+    inset 0 -18px 26px -14px rgba(0, 0, 0, 0.72),
+    0 14px 30px -12px rgba(0, 0, 0, 0.82),
+    0 2px 6px rgba(0, 0, 0, 0.48);
+
+  /* Gothic L-bracket — retired. Files remain; do not paint on plates. */
+  --kod-c-tl: url('./ornament/corner-tl.png');
+  --kod-c-tr: url('./ornament/corner-tr.png');
+  --kod-c-bl: url('./ornament/corner-bl.png');
+  --kod-c-br: url('./ornament/corner-br.png');
+  --kod-page-end: url('./ornament/page-end.png');
+  --kod-panel-corner: url('./ornament/panel-corner.png');
+  --kod-well-frame: url('./ornament/well-frame.png');
+  --kod-cartouche-corner: 3.4rem;
+  --kod-chamfer: 0.12rem;
+  --kod-btn-end-l: url('./ornament/btn-end-l.png');
+  --kod-btn-end-r: url('./ornament/btn-end-r.png');
+  --kod-btn-glass: url('./ornament/btn-glass.png');
+  --kod-btn-glass-tile: url('./ornament/btn-glass-mid.png');
+  --kod-btn-night: url('./ornament/btn-bar-night.png');
+  --kod-btn-moon: url('./ornament/btn-bar-moon.png');
+  --kod-btn-round: url('./ornament/btn-round.png');
+  --kod-btn-round-moon: url('./ornament/btn-round-moon.png');
+  --kod-glass-leads:
+    repeating-linear-gradient(45deg, transparent 0 0.68rem, #050505 0.68rem 0.78rem),
+    repeating-linear-gradient(-45deg, transparent 0 0.68rem, #050505 0.68rem 0.78rem),
+    linear-gradient(180deg, rgba(198, 193, 184, 0.2), transparent 44%, rgba(0, 0, 0, 0.5));
+  --kod-plus-ring: url('./ornament/plus-ring.svg');
+  --kod-plus-night: url('./ornament/plus-night.png');
+  --kod-plus-moon: url('./ornament/plus-moon.png');
+  --kod-find-night: url('./ornament/find-night.png');
+  --kod-find-moon: url('./ornament/find-moon.png');
+  --kod-mark-faction: url('./ornament/mark-faction.png');
+  --kod-mark-tag: url('./ornament/mark-tag.png');
+  --kod-fortune-vitality: url('./ornament/fortunes/vitality.png');
+  --kod-fortune-cohesion: url('./ornament/fortunes/cohesion.png');
+  --kod-fortune-surplus: url('./ornament/fortunes/surplus.png');
+  --kod-fortune-standing: url('./ornament/fortunes/standing.png');
+  --kod-fortune-tradition: url('./ornament/fortunes/tradition.png');
+  --kod-tree-0: url('./ornament/fortunes/tree-0.png');
+  --kod-tree-1: url('./ornament/fortunes/tree-1.png');
+  --kod-tree-2: url('./ornament/fortunes/tree-2.png');
+  --kod-tree-3: url('./ornament/fortunes/tree-3.png');
+  --kod-axis-arms: url('./ornament/axes/arms.png');
+  --kod-axis-faith: url('./ornament/axes/faith.png');
+  --kod-axis-coin: url('./ornament/axes/coin.png');
+  --kod-axis-blood: url('./ornament/axes/blood.png');
+  --kod-axis-ruler: url('./ornament/axes/ruler.png');
+  --kod-seal-ring: url('./ornament/seal-ring.svg');
+  --kod-armour-linen: url('./ornament/armour/linen.jpg');
+  --kod-armour-leather: url('./ornament/armour/leather.jpg');
+  --kod-armour-mail: url('./ornament/armour/mail.jpg');
+  --kod-end-ratio: 1 / 1;
+  /* Chamfered bar matching btn-bar-*.png (loose of the opaque silhouette). */
+  --kod-cartouche: polygon(
+    calc(0.2 * var(--kod-end-w, 3.75rem)) 0,
+    calc(100% - 0.2 * var(--kod-end-w, 3.75rem)) 0,
+    100% 26%,
+    100% 74%,
+    calc(100% - 0.2 * var(--kod-end-w, 3.75rem)) 100%,
+    calc(0.2 * var(--kod-end-w, 3.75rem)) 100%,
+    0 74%,
+    0 26%
+  );
+
+  /* Was four radial bites reserved for L-brackets. Plates are rectangles now. */
+  --kod-soot: linear-gradient(transparent, transparent);
+  --kod-corners: none;
+  --kod-plate-wash: var(--kod-tool);
+}
