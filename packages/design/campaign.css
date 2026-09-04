@@ -2301,34 +2301,10 @@ a.member--pc:focus-visible {
   gap: 0.7rem;
 }
 
-/* :root snapshots --kod-soot-size into --kod-soot / --kod-plate-wash; rebind here, not on .sheet-back. */
-.char-card,
-.vtrack,
-.found-group,
-.echo,
-.trait,
-.item,
-.armour,
-.supply {
-  --kod-soot:
-    radial-gradient(var(--kod-soot-size) var(--kod-soot-size) at 0 0, rgba(0, 0, 0, 0.62), transparent 72%),
-    radial-gradient(var(--kod-soot-size) var(--kod-soot-size) at 100% 0, rgba(0, 0, 0, 0.62), transparent 72%),
-    radial-gradient(
-      calc(var(--kod-soot-size) + 0.15rem) calc(var(--kod-soot-size) + 0.1rem) at 0 100%,
-      rgba(0, 0, 0, 0.74),
-      transparent 74%
-    ),
-    radial-gradient(
-      calc(var(--kod-soot-size) + 0.15rem) calc(var(--kod-soot-size) + 0.1rem) at 100% 100%,
-      rgba(0, 0, 0, 0.74),
-      transparent 74%
-    );
-}
-
 .char-card,
 .echo {
   --kod-corners: none;
-  --kod-plate-wash: var(--kod-soot), var(--kod-tool);
+  --kod-plate-wash: var(--kod-tool);
 }
 
 .char-list {
@@ -2575,23 +2551,8 @@ a.member--pc:focus-visible {
 
 .sheet-back {
   --kod-soot-size: 0.7rem;
-  --kod-corner-size: 0.88rem;
-  /* Rebind on this element so size/tool vars are not the :root snapshot. */
-  --kod-soot:
-    radial-gradient(var(--kod-soot-size) var(--kod-soot-size) at 0 0, rgba(0, 0, 0, 0.62), transparent 72%),
-    radial-gradient(var(--kod-soot-size) var(--kod-soot-size) at 100% 0, rgba(0, 0, 0, 0.62), transparent 72%),
-    radial-gradient(
-      calc(var(--kod-soot-size) + 0.15rem) calc(var(--kod-soot-size) + 0.1rem) at 0 100%,
-      rgba(0, 0, 0, 0.74),
-      transparent 74%
-    ),
-    radial-gradient(
-      calc(var(--kod-soot-size) + 0.15rem) calc(var(--kod-soot-size) + 0.1rem) at 100% 100%,
-      rgba(0, 0, 0, 0.74),
-      transparent 74%
-    );
   --kod-corners: none;
-  --kod-plate-wash: var(--kod-soot), var(--kod-tool);
+  --kod-plate-wash: var(--kod-tool);
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
