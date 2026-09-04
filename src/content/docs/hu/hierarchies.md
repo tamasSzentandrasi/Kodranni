@@ -50,7 +50,7 @@ Az ábrát (Diagram) fentről lefelé olvasd: egy korona, aztán párhuzamos lé
 </div>
 <div class="kod-hier-body">
 <div class="kod-hier-axes">
-<div class="kod-hier-axis">
+<div class="kod-hier-axis" data-axis="arms">
 <div class="kod-hier-axis__head">
 <p class="kod-hier-axis__name">Fegyver</p>
 <p class="kod-hier-axis__domain">Harci erő, védelem, háború, az erőszak joga</p>
@@ -62,7 +62,7 @@ Az ábrát (Diagram) fentről lefelé olvasd: egy korona, aztán párhuzamos lé
 <li><strong>Kitaszított</strong></li>
 </ol>
 </div>
-<div class="kod-hier-axis">
+<div class="kod-hier-axis" data-axis="faith">
 <div class="kod-hier-axis__head">
 <p class="kod-hier-axis__name">Hit</p>
 <p class="kod-hier-axis__domain">Szertartás, szent tudás, erkölcsi súly</p>
@@ -74,7 +74,7 @@ Az ábrát (Diagram) fentről lefelé olvasd: egy korona, aztán párhuzamos lé
 <li><strong>Kitaszított</strong></li>
 </ol>
 </div>
-<div class="kod-hier-axis">
+<div class="kod-hier-axis" data-axis="coin">
 <div class="kod-hier-axis__head">
 <p class="kod-hier-axis__name">Pénz</p>
 <p class="kod-hier-axis__domain">Vagyon, kereskedelem, anyagi többlet, alkuerő</p>
@@ -86,7 +86,7 @@ Az ábrát (Diagram) fentről lefelé olvasd: egy korona, aztán párhuzamos lé
 <li><strong>Kitaszított</strong></li>
 </ol>
 </div>
-<div class="kod-hier-axis">
+<div class="kod-hier-axis" data-axis="blood">
 <div class="kod-hier-axis__head">
 <p class="kod-hier-axis__name">Vér</p>
 <p class="kod-hier-axis__domain">Rokonság, föld, származás, házi hatalom</p>

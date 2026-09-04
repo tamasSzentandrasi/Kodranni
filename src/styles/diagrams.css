@@ -371,7 +371,9 @@
   box-sizing: border-box;
   margin: 1.35rem 0 1.6rem;
   padding: 1.15rem 1.05rem 1.15rem;
-  background: var(--kod-plate-wash), var(--kod-plate);
+  background:
+    var(--kod-soot),
+    linear-gradient(180deg, #161412 0%, #100e0c 100%);
   box-shadow: var(--kod-smoke);
 }
 
@@ -454,6 +456,56 @@
   -webkit-mask: center / contain no-repeat;
   mask: center / contain no-repeat;
   flex-shrink: 0;
+  transition: background-color 0.16s ease, opacity 0.16s ease, filter 0.16s ease;
+}
+
+.kod-fortune[data-level='0'] .kod-fortune__icon {
+  background-color: var(--kod-blood);
+  opacity: 0.58;
+}
+
+.kod-fortune[data-level='1'] .kod-fortune__icon {
+  background-color: var(--kod-silver-dim);
+  opacity: 0.78;
+}
+
+.kod-fortune[data-level='3'] .kod-fortune__icon {
+  background-color: var(--kod-silver-bright);
+  filter: drop-shadow(0 0 6px rgba(242, 239, 233, 0.28));
+}
+
+.kod-fortune__tree {
+  display: block;
+  width: 2.65rem;
+  height: 2.95rem;
+  margin: 0.08rem 0 0.2rem;
+  background-color: var(--kod-silver);
+  -webkit-mask: var(--kod-tree-2) center / contain no-repeat;
+  mask: var(--kod-tree-2) center / contain no-repeat;
+}
+
+.kod-fortune[data-level='0'] .kod-fortune__tree {
+  background-color: color-mix(in srgb, var(--kod-blood) 70%, #3a2020);
+  -webkit-mask-image: var(--kod-tree-0);
+  mask-image: var(--kod-tree-0);
+}
+
+.kod-fortune[data-level='1'] .kod-fortune__tree {
+  background-color: var(--kod-silver-dim);
+  -webkit-mask-image: var(--kod-tree-1);
+  mask-image: var(--kod-tree-1);
+}
+
+.kod-fortune[data-level='2'] .kod-fortune__tree {
+  background-color: var(--kod-silver);
+  -webkit-mask-image: var(--kod-tree-2);
+  mask-image: var(--kod-tree-2);
+}
+
+.kod-fortune[data-level='3'] .kod-fortune__tree {
+  background-color: #fff8f0;
+  -webkit-mask-image: var(--kod-tree-3);
+  mask-image: var(--kod-tree-3);
 }
 
 .kod-fortune--vitality .kod-fortune__icon {
@@ -562,7 +614,9 @@
   box-sizing: border-box;
   margin: 1.25rem 0 1.55rem;
   padding: 1.15rem 1.05rem 1.15rem;
-  background: var(--kod-plate-wash), #0a0808;
+  background:
+    radial-gradient(ellipse 90% 80% at 50% 8%, color-mix(in srgb, var(--kod-blood) 18%, transparent), transparent 62%),
+    color-mix(in srgb, var(--kod-blood-deep) 24%, #0a0808);
   box-shadow: var(--kod-smoke);
 }
 
@@ -667,9 +721,8 @@
   margin: 0 0 0.7rem !important;
   padding: 0.55rem 0.75rem 0.65rem;
   text-align: center;
-  border: 1px solid var(--kod-frame);
-  border-bottom-color: color-mix(in srgb, var(--kod-blood) 55%, var(--kod-frame));
-  background: #0c0a0a;
+  border: 1px solid color-mix(in srgb, #5c2d82 45%, var(--kod-frame));
+  background: linear-gradient(180deg, color-mix(in srgb, #5c2d82 38%, #120814), #0c0a0a);
 }
 
 .kod-hier-ruler__title {
@@ -677,8 +730,19 @@
   font-size: 0.72rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--kod-silver-dim);
+  color: #d4b8e8;
   margin: 0 0 0.3rem;
+}
+
+.kod-hier-ruler__title::before {
+  content: '';
+  display: block;
+  width: 1.55rem;
+  height: 1.2rem;
+  margin: 0 auto 0.28rem;
+  background-color: #c4a0e0;
+  -webkit-mask: var(--kod-axis-ruler) center / contain no-repeat;
+  mask: var(--kod-axis-ruler) center / contain no-repeat;
 }
 
 .kod-hier-ruler__note {
@@ -695,7 +759,7 @@
 .kod-hier-body {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 7.2rem;
-  gap: 0.55rem;
+  gap: 1.4rem 2.2rem;
   align-items: stretch;
 }
 
@@ -738,13 +802,57 @@
 .kod-hier-axis__head {
   box-sizing: border-box;
   flex: 0 0 auto;
-  min-height: 4.6rem;
+  min-height: 5.6rem;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   padding: 0.5rem 0.4rem 0.5rem;
   text-align: center;
   border-bottom: 1px solid color-mix(in srgb, #f2efe9 8%, #2a2222);
+}
+
+.kod-hier-axis__head::before {
+  content: '';
+  display: block;
+  width: 1.7rem;
+  height: 1.7rem;
+  margin: 0 auto 0.3rem;
+  background-color: var(--kod-silver);
+  -webkit-mask: center / contain no-repeat;
+  mask: center / contain no-repeat;
+}
+
+.kod-hier-axis[data-axis='arms'] {
+  border-top: 3px solid #3a3632;
+}
+.kod-hier-axis[data-axis='arms'] .kod-hier-axis__head::before {
+  background-color: #c8c2b8;
+  -webkit-mask-image: var(--kod-axis-arms);
+  mask-image: var(--kod-axis-arms);
+}
+.kod-hier-axis[data-axis='faith'] {
+  border-top: 3px solid #f2efe9;
+}
+.kod-hier-axis[data-axis='faith'] .kod-hier-axis__head::before {
+  background-color: #f2efe9;
+  -webkit-mask-image: var(--kod-axis-faith);
+  mask-image: var(--kod-axis-faith);
+}
+.kod-hier-axis[data-axis='coin'] {
+  border-top: 3px solid #d4af37;
+}
+.kod-hier-axis[data-axis='coin'] .kod-hier-axis__head::before {
+  background-color: #e0c56a;
+  -webkit-mask-image: var(--kod-axis-coin);
+  mask-image: var(--kod-axis-coin);
+}
+.kod-hier-axis[data-axis='blood'] {
+  border-top: 3px solid var(--kod-blood);
+}
+.kod-hier-axis[data-axis='blood'] .kod-hier-axis__head::before {
+  background-color: #e8a0a0;
+  -webkit-mask-image: var(--kod-axis-blood);
+  mask-image: var(--kod-axis-blood);
 }
 
 .kod-hier-axis__name {

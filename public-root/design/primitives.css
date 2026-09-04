@@ -8,13 +8,93 @@
   outline-offset: 2px;
 }
 
-/* L-straps + soot + tool live on --kod-plate-wash; smoke is the drop, not a mask. */
+/* Soot + tool live on --kod-plate-wash. Cartouche corners are .kod-cn / .kod-headpiece. */
 .kod-plate {
   box-sizing: border-box;
   position: relative;
   border: 1px solid var(--kod-frame);
   background: var(--kod-plate-wash), var(--kod-plate);
   box-shadow: var(--kod-smoke);
+}
+
+/* Corner atom — TL as drawn; TR scaleX(-1); BL scaleY(-1). Tip hangs outside the fill. */
+.kod-cn,
+.kod-headpiece::before,
+.kod-headpiece::after,
+.kod-widget::before,
+.kod-widget::after,
+.kod-fortune-board::before,
+.kod-fortune-board::after,
+.kod-hier-ruler::before,
+.kod-hier-ruler::after {
+  position: absolute;
+  box-sizing: border-box;
+  width: var(--kod-cartouche-corner);
+  height: var(--kod-cartouche-corner);
+  pointer-events: none;
+  background-color: color-mix(in srgb, var(--kod-silver) 86%, transparent);
+  -webkit-mask: var(--kod-panel-corner) center / contain no-repeat;
+  mask: var(--kod-panel-corner) center / contain no-repeat;
+  z-index: 2;
+}
+
+.kod-cn--tl,
+.kod-headpiece::before,
+.kod-widget::before,
+.kod-fortune-board::before,
+.kod-hier-ruler::before {
+  top: calc(-1 * var(--kod-chamfer));
+  left: calc(-1 * var(--kod-chamfer));
+}
+
+.kod-cn--tr,
+.kod-headpiece::after,
+.kod-widget::after,
+.kod-fortune-board::after,
+.kod-hier-ruler::after {
+  top: calc(-1 * var(--kod-chamfer));
+  right: calc(-1 * var(--kod-chamfer));
+  transform: scaleX(-1);
+}
+
+.kod-cn--bl {
+  bottom: calc(-1 * var(--kod-chamfer));
+  left: calc(-1 * var(--kod-chamfer));
+  transform: scaleY(-1);
+}
+
+.kod-cn--br {
+  bottom: calc(-1 * var(--kod-chamfer));
+  right: calc(-1 * var(--kod-chamfer));
+  transform: scale(-1, -1);
+}
+
+.kod-headpiece,
+.kod-widget,
+.kod-fortune-board,
+.kod-hier-ruler {
+  position: relative;
+  overflow: visible;
+  --kod-corners: none;
+  --kod-frame-lines: none;
+}
+
+.kod-headpiece::before,
+.kod-headpiece::after,
+.kod-widget::before,
+.kod-widget::after,
+.kod-fortune-board::before,
+.kod-fortune-board::after,
+.kod-hier-ruler::before,
+.kod-hier-ruler::after {
+  content: '';
+}
+
+@media (max-width: 40rem) {
+  :root {
+    --kod-cartouche-corner: 2.7rem;
+    --kod-chamfer: 0.1rem;
+  }
 }
 
 .kod-btn {

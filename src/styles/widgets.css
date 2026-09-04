@@ -323,8 +323,8 @@
   padding: 1.15rem 1.15rem 1.2rem;
   border-radius: 0;
   background:
-    var(--kod-plate-wash),
-    var(--kod-plate);
+    var(--kod-soot),
+    linear-gradient(180deg, var(--kod-plate) 0%, #100e0c 100%);
   text-align: center;
   box-shadow: var(--kod-smoke);
 }

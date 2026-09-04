@@ -50,7 +50,7 @@ Read the diagram top-down: one crown, then parallel ladders. Each column is a se
 </div>
 <div class="kod-hier-body">
 <div class="kod-hier-axes">
-<div class="kod-hier-axis">
+<div class="kod-hier-axis" data-axis="arms">
 <div class="kod-hier-axis__head">
 <p class="kod-hier-axis__name">Arms</p>
 <p class="kod-hier-axis__domain">Martial strength, protection, war, right to violence</p>
@@ -62,7 +62,7 @@ Read the diagram top-down: one crown, then parallel ladders. Each column is a se
 <li><strong>Outcast</strong></li>
 </ol>
 </div>
-<div class="kod-hier-axis">
+<div class="kod-hier-axis" data-axis="faith">
 <div class="kod-hier-axis__head">
 <p class="kod-hier-axis__name">Faith</p>
 <p class="kod-hier-axis__domain">Ritual, sacred knowledge, moral weight</p>
@@ -74,7 +74,7 @@ Read the diagram top-down: one crown, then parallel ladders. Each column is a se
 <li><strong>Outcast</strong></li>
 </ol>
 </div>
-<div class="kod-hier-axis">
+<div class="kod-hier-axis" data-axis="coin">
 <div class="kod-hier-axis__head">
 <p class="kod-hier-axis__name">Coin</p>
 <p class="kod-hier-axis__domain">Wealth, trade, material surplus, leverage</p>
@@ -86,7 +86,7 @@ Read the diagram top-down: one crown, then parallel ladders. Each column is a se
 <li><strong>Outcast</strong></li>
 </ol>
 </div>
-<div class="kod-hier-axis">
+<div class="kod-hier-axis" data-axis="blood">
 <div class="kod-hier-axis__head">
 <p class="kod-hier-axis__name">Blood</p>
 <p class="kod-hier-axis__domain">Kinship, land, lineage, domestic authority</p>

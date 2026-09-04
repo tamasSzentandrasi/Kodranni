@@ -70,6 +70,18 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 		});
 	}
 
+	function mountCartouche(el) {
+		if (!el || el.querySelector(':scope > .kod-cn')) return;
+		const tl = document.createElement('span');
+		tl.className = 'kod-cn kod-cn--tl';
+		tl.setAttribute('aria-hidden', 'true');
+		const tr = document.createElement('span');
+		tr.className = 'kod-cn kod-cn--tr';
+		tr.setAttribute('aria-hidden', 'true');
+		el.insertBefore(tl, el.firstChild);
+		el.insertBefore(tr, el.firstChild);
+	}
+
 	/** Ensure asides have accessible names; icons are CSS ::before on the aside */
 	function normalizeBoxes() {
 		const hu = document.documentElement.lang === 'hu';
@@ -79,14 +91,20 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 		document.querySelectorAll('aside.kod-example').forEach((el) => {
 			if (!el.getAttribute('aria-label')) el.setAttribute('aria-label', labels.example);
 			el.querySelectorAll('.kod-example__label').forEach((n) => n.remove());
+			mountCartouche(el);
 		});
 		document.querySelectorAll('aside.kod-note').forEach((el) => {
 			if (!el.getAttribute('aria-label')) el.setAttribute('aria-label', labels.note);
 			el.querySelectorAll('.kod-note__label').forEach((n) => n.remove());
+			mountCartouche(el);
 		});
 		document.querySelectorAll('aside.kod-counsel').forEach((el) => {
 			if (!el.getAttribute('aria-label')) el.setAttribute('aria-label', labels.counsel);
 			el.querySelectorAll('.kod-counsel__label').forEach((n) => n.remove());
+			mountCartouche(el);
+		});
+		document.querySelectorAll('.sl-markdown-content blockquote:not(.kod-epigraph)').forEach((el) => {
+			mountCartouche(el);
 		});
 	}
 
@@ -735,6 +753,14 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 			}
 
 			cols.forEach((col) => {
+				if (!col.querySelector('.kod-fortune__tree')) {
+					const tree = document.createElement('span');
+					tree.className = 'kod-fortune__tree';
+					tree.setAttribute('aria-hidden', 'true');
+					const name = col.querySelector('.kod-fortune__name');
+					if (name && name.nextSibling) col.insertBefore(tree, name.nextSibling);
+					else col.appendChild(tree);
+				}
 				col.addEventListener('click', () => {
 					const next = (Number(col.getAttribute('data-level') || '2') + 1) % 4;
 					col.setAttribute('data-level', String(next));

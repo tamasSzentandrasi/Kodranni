@@ -12,6 +12,9 @@
   border-radius: 0;
   box-sizing: border-box;
   position: relative;
+  overflow: visible;
+  --kod-corners: none;
+  --kod-frame-lines: none;
 }
 
 /* Hide legacy empty labels if any remain */
@@ -39,8 +42,12 @@
 .kod-example {
   --kod-soot-size: 1.1rem;
   background:
-    var(--kod-plate-wash),
-    color-mix(in srgb, var(--kod-blood-deep) 44%, #0c0c0c);
+    var(--kod-soot),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--kod-blood-deep) 44%, #0c0c0c) 0%,
+      color-mix(in srgb, var(--kod-blood-deep) 36%, #0c0c0c) 100%
+    );
   color: var(--kod-silver);
   box-shadow: var(--kod-smoke);
 }
@@ -95,8 +102,8 @@
 /* Quote — literary / epigraph */
 .sl-markdown-content blockquote {
   background:
-    var(--kod-plate-wash),
-    color-mix(in srgb, #1a1816 85%, #000);
+    var(--kod-soot),
+    linear-gradient(180deg, color-mix(in srgb, #1a1816 85%, #000) 0%, #12100e 100%);
   font-style: italic;
   color: #e0dbd2;
   display: flow-root;
@@ -134,8 +141,8 @@
 /* Note — factual (teal) — feather pen */
 .kod-note {
   background:
-    var(--kod-plate-wash),
-    color-mix(in srgb, #0a1414 92%, #1a2e2a);
+    var(--kod-soot),
+    linear-gradient(180deg, color-mix(in srgb, #0a1414 92%, #1a2e2a) 0%, #0c1212 100%);
   color: #cfd8d6;
   box-shadow: var(--kod-smoke);
 }
@@ -163,8 +170,8 @@
 /* Counsel — ST wisdom (violet) — scales of justice */
 .kod-counsel {
   background:
-    var(--kod-plate-wash),
-    color-mix(in srgb, #100e1c 90%, #2a2450);
+    var(--kod-soot),
+    linear-gradient(180deg, color-mix(in srgb, #100e1c 90%, #2a2450) 0%, #100e18 100%);
   color: #d0cce0;
   box-shadow: var(--kod-smoke);
 }

@@ -126,10 +126,8 @@ body {
 }
 
 /*
- * Interrupted frame: the L-bracket IS the corner.
- * Equal 1px iron on all four sides, stopping short of --kod-gap.
- *   background: var(--kod-plate-wash), <fill>;
- * Tables opt out — they keep their own double-frame.
+ * Imagine L is retired. Titled, centre-aligned plates use .kod-headpiece
+ * (cartouche top pair). Nested cells stay unframed. Fill is soot + fade.
  */
 .kod-example,
 .kod-note,
@@ -144,32 +142,9 @@ body {
 .kod-hier,
 .kod-domain-lane,
 .kod-phase {
-  --kod-edge: var(--kod-frame);
-  --kod-gap: calc(var(--kod-corner-size) - 0.15rem);
-  --kod-soot:
-    radial-gradient(var(--kod-soot-size) var(--kod-soot-size) at 0 0, rgba(0, 0, 0, 0.62), transparent 72%),
-    radial-gradient(var(--kod-soot-size) var(--kod-soot-size) at 100% 0, rgba(0, 0, 0, 0.62), transparent 72%),
-    radial-gradient(
-      calc(var(--kod-soot-size) + 0.15rem) calc(var(--kod-soot-size) + 0.1rem) at 0 100%,
-      rgba(0, 0, 0, 0.74),
-      transparent 74%
-    ),
-    radial-gradient(
-      calc(var(--kod-soot-size) + 0.15rem) calc(var(--kod-soot-size) + 0.1rem) at 100% 100%,
-      rgba(0, 0, 0, 0.74),
-      transparent 74%
-    );
-  --kod-corners:
-    var(--kod-c-tl) 0 0 / var(--kod-corner-size) var(--kod-corner-size) no-repeat,
-    var(--kod-c-tr) 100% 0 / var(--kod-corner-size) var(--kod-corner-size) no-repeat,
-    var(--kod-c-bl) 0 100% / var(--kod-corner-size) var(--kod-corner-size) no-repeat,
-    var(--kod-c-br) 100% 100% / var(--kod-corner-size) var(--kod-corner-size) no-repeat;
-  --kod-frame-lines:
-    linear-gradient(var(--kod-edge), var(--kod-edge)) 50% 0 / calc(100% - 2 * var(--kod-gap)) 1px no-repeat,
-    linear-gradient(var(--kod-edge), var(--kod-edge)) 50% 100% / calc(100% - 2 * var(--kod-gap)) 1px no-repeat,
-    linear-gradient(var(--kod-edge), var(--kod-edge)) 100% 50% / 1px calc(100% - 2 * var(--kod-gap)) no-repeat,
-    linear-gradient(var(--kod-edge), var(--kod-edge)) 0 50% / 1px calc(100% - 2 * var(--kod-gap)) no-repeat;
-  --kod-plate-wash: var(--kod-corners), var(--kod-frame-lines), var(--kod-soot), var(--kod-tool);
+  --kod-corners: none;
+  --kod-frame-lines: none;
+  --kod-plate-wash: var(--kod-soot), var(--kod-tool);
   border-style: none;
 }
 

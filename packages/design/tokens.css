@@ -31,12 +31,16 @@
     0 14px 30px -12px rgba(0, 0, 0, 0.82),
     0 2px 6px rgba(0, 0, 0, 0.48);
 
-  /* Gothic L-bracket — Imagine pewter, fading arms. Large plates only. */
+  /* Gothic L-bracket — retired. Files remain; do not paint on plates. */
   --kod-c-tl: url('./ornament/corner-tl.png');
   --kod-c-tr: url('./ornament/corner-tr.png');
   --kod-c-bl: url('./ornament/corner-bl.png');
   --kod-c-br: url('./ornament/corner-br.png');
   --kod-page-end: url('./ornament/page-end.png');
+  --kod-panel-corner: url('./ornament/panel-corner.png');
+  --kod-well-frame: url('./ornament/well-frame.png');
+  --kod-cartouche-corner: 3.4rem;
+  --kod-chamfer: 0.12rem;
   --kod-btn-end-l: url('./ornament/btn-end-l.png');
   --kod-btn-end-r: url('./ornament/btn-end-r.png');
   --kod-btn-glass: url('./ornament/btn-glass.png');
@@ -61,6 +65,15 @@
   --kod-fortune-surplus: url('./ornament/fortunes/surplus.png');
   --kod-fortune-standing: url('./ornament/fortunes/standing.png');
   --kod-fortune-tradition: url('./ornament/fortunes/tradition.png');
+  --kod-tree-0: url('./ornament/fortunes/tree-0.png');
+  --kod-tree-1: url('./ornament/fortunes/tree-1.png');
+  --kod-tree-2: url('./ornament/fortunes/tree-2.png');
+  --kod-tree-3: url('./ornament/fortunes/tree-3.png');
+  --kod-axis-arms: url('./ornament/axes/arms.png');
+  --kod-axis-faith: url('./ornament/axes/faith.png');
+  --kod-axis-coin: url('./ornament/axes/coin.png');
+  --kod-axis-blood: url('./ornament/axes/blood.png');
+  --kod-axis-ruler: url('./ornament/axes/ruler.png');
   --kod-seal-ring: url('./ornament/seal-ring.svg');
   --kod-armour-linen: url('./ornament/armour/linen.jpg');
   --kod-armour-leather: url('./ornament/armour/leather.jpg');
@@ -91,10 +104,6 @@
       rgba(0, 0, 0, 0.74),
       transparent 74%
     );
-  --kod-corners:
-    var(--kod-c-tl) 0 0 / var(--kod-corner-size) var(--kod-corner-size) no-repeat,
-    var(--kod-c-tr) 100% 0 / var(--kod-corner-size) var(--kod-corner-size) no-repeat,
-    var(--kod-c-bl) 0 100% / var(--kod-corner-size) var(--kod-corner-size) no-repeat,
-    var(--kod-c-br) 100% 100% / var(--kod-corner-size) var(--kod-corner-size) no-repeat;
-  --kod-plate-wash: var(--kod-corners), var(--kod-soot), var(--kod-tool);
+  --kod-corners: none;
+  --kod-plate-wash: var(--kod-soot), var(--kod-tool);
 }
