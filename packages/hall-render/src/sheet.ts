@@ -10,7 +10,6 @@ import {
   harmPips,
   monogram,
   roman,
-  segments,
   WEIGHT_BAND,
 } from './format.js';
 import { infoBtn, sectionHead } from './layout.js';
@@ -73,17 +72,20 @@ function vtrack(opts: {
   tip: string;
   about: string;
 }): string {
-  const segs = segments(opts.filled, opts.max)
-    .map(
-      (s) =>
-        `<span class="vtrack__seg${s.on ? ' vtrack__seg--on' : ''}${s.over ? ' vtrack__seg--over' : ''}"></span>`,
-    )
-    .join('');
-  return `<aside class="kod-plate vtrack${opts.echo ? ' vtrack--echo' : ''}" aria-label="${escAttr(`${opts.label} ${opts.filled} of ${opts.max}`)}">
-    <span class="vtrack__label">${esc(opts.label)}</span>
-    <div class="vtrack__segs">${segs}</div>
-    <div class="vtrack__readout">${opts.filled}<span class="vtrack__of">/${opts.max}</span></div>
-    ${infoBtn(opts.about, opts.tip)}
+  const max = Math.max(0, opts.max);
+  const filled = Math.max(0, opts.filled);
+  const p = max <= 0 ? 0 : Math.min(1, filled / max);
+  const over = filled > max && max > 0;
+  return `<aside class="vtrack${opts.echo ? ' vtrack--echo' : ''}${over ? ' vtrack--over' : ''}" style="--well-p:${p}" aria-label="${escAttr(`${opts.label} ${filled} of ${max}`)}">
+    <div class="vtrack__legend">
+      <span class="vtrack__label">${esc(opts.label)}</span>
+      <div class="vtrack__readout">${filled}<span class="vtrack__of">/${max}</span></div>
+      ${infoBtn(opts.about, opts.tip)}
+    </div>
+    <div class="vtrack__vessel" aria-hidden="true">
+      <span class="vtrack__fill"></span>
+      <span class="vtrack__frame"></span>
+    </div>
   </aside>`;
 }
 

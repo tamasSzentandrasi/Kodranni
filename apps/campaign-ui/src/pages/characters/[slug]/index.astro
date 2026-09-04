@@ -10,7 +10,7 @@ import SheetChrome from '../../../components/SheetChrome.astro';
 import SkillSeal from '../../../components/SkillSeal.astro';
 import WantingPanel from '../../../components/WantingPanel.astro';
 import { getCharacter, loadCommunity } from '../../../data/load';
-import { harmPips, segments } from '../../../lib/format';
+import { harmPips } from '../../../lib/format';
 import { editCookieHeader, resolveSheetEdit } from '../../../lib/sheet-auth';
 
 const { slug } = Astro.params;
@@ -21,8 +21,8 @@ if (!ch) {
 }
 
 const skillMap = new Map(ch.skills.map((s) => [s.name, s]));
-const exSegs = segments(ch.exertion.current, ch.exertion.max);
-const echoSegs = segments(ch.echoWeight, ch.echoCapacity);
+const exP = ch.exertion.max <= 0 ? 0 : Math.min(1, ch.exertion.current / ch.exertion.max);
+const echoP = ch.echoCapacity <= 0 ? 0 : Math.min(1, ch.echoWeight / ch.echoCapacity);
 const live = c.source === 'live';
 const unlocked = Boolean(live && ch.creation && !ch.creation.locked);
 const auth = resolveSheetEdit(Astro.request, Astro.url, ch.slug);
@@ -85,34 +85,28 @@ const roman = (n: number) => ['∅', 'I', 'II', 'III', 'IV'][n] ?? String(n);
 
   <div slot="stage" class="core-grid">
     <aside
-      class="kod-plate vtrack"
+      class:list={['vtrack', ch.exertion.current > ch.exertion.max && 'vtrack--over']}
+      style={`--well-p:${exP}`}
       aria-label={`Exertion ${ch.exertion.current} of ${ch.exertion.max}`}
     >
-      <span class="vtrack__label">Exertion</span>
-      <div class="vtrack__segs">
-        {
-          exSegs.map((s) => (
-            <span
-              class:list={[
-                'vtrack__seg',
-                s.on && 'vtrack__seg--on',
-                s.over && 'vtrack__seg--over',
-              ]}
-            />
-          ))
-        }
+      <div class="vtrack__legend">
+        <span class="vtrack__label">Exertion</span>
+        <div class="vtrack__readout">
+          {ch.exertion.current}<span class="vtrack__of">/{ch.exertion.max}</span>
+        </div>
+        <button
+          type="button"
+          class="info"
+          data-tip="Res + Con + Cha. One segment = 1. Empty pool → −2 dice on rolls."
+          aria-label="About Exertion"
+        >
+          i
+        </button>
       </div>
-      <div class="vtrack__readout">
-        {ch.exertion.current}<span class="vtrack__of">/{ch.exertion.max}</span>
+      <div class="vtrack__vessel" aria-hidden="true">
+        <span class="vtrack__fill"></span>
+        <span class="vtrack__frame"></span>
       </div>
-      <button
-        type="button"
-        class="info"
-        data-tip="Res + Con + Cha. One segment = 1. Empty pool → −2 dice on rolls."
-        aria-label="About Exertion"
-      >
-        i
-      </button>
     </aside>
 
     <div class="core-main">
@@ -323,34 +317,28 @@ const roman = (n: number) => ['∅', 'I', 'II', 'III', 'IV'][n] ?? String(n);
     </div>
 
     <aside
-      class="kod-plate vtrack vtrack--echo"
+      class:list={['vtrack', 'vtrack--echo', ch.echoWeight > ch.echoCapacity && 'vtrack--over']}
+      style={`--well-p:${echoP}`}
       aria-label={`Echo load ${ch.echoWeight} of ${ch.echoCapacity}`}
     >
-      <span class="vtrack__label">Echo load</span>
-      <div class="vtrack__segs">
-        {
-          echoSegs.map((s) => (
-            <span
-              class:list={[
-                'vtrack__seg',
-                s.on && 'vtrack__seg--on',
-                s.over && 'vtrack__seg--over',
-              ]}
-            />
-          ))
-        }
+      <div class="vtrack__legend">
+        <span class="vtrack__label">Echo load</span>
+        <div class="vtrack__readout">
+          {ch.echoWeight}<span class="vtrack__of">/{ch.echoCapacity}</span>
+        </div>
+        <button
+          type="button"
+          class="info"
+          data-tip="max(Str, Dex) + Int + Auth. Only unresolved Echoes count. Over capacity → −1 on Echo-involved rolls only."
+          aria-label="About Echo load"
+        >
+          i
+        </button>
       </div>
-      <div class="vtrack__readout">
-        {ch.echoWeight}<span class="vtrack__of">/{ch.echoCapacity}</span>
+      <div class="vtrack__vessel" aria-hidden="true">
+        <span class="vtrack__fill"></span>
+        <span class="vtrack__frame"></span>
       </div>
-      <button
-        type="button"
-        class="info"
-        data-tip="max(Str, Dex) + Int + Auth. Only unresolved Echoes count. Over capacity → −1 on Echo-involved rolls only."
-        aria-label="About Echo load"
-      >
-        i
-      </button>
     </aside>
   </div>
   </SheetChrome>

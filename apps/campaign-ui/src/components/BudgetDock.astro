@@ -45,6 +45,7 @@ const words = creation?.words ?? 0;
 
 {
   unlocked && creation && (
+    <div class="kod-slide kod-slide--left" data-slide data-open="true">
     <aside
       class="kod-plate budget-dock"
       id="budget-dock"
@@ -161,5 +162,12 @@ const words = creation?.words ?? 0;
       </p>
       <p class="budget-dock__msg" data-msg="spend" hidden></p>
     </aside>
+    <button type="button" class="find-tab" data-slide-toggle aria-expanded="true" aria-controls="budget-dock" aria-label="Budgets">
+      <span class="kod-cn kod-cn--tr" aria-hidden="true"></span>
+      <span class="kod-cn kod-cn--br" aria-hidden="true"></span>
+      <span class="find-chevron" aria-hidden="true"></span>
+      <span class="find-tab__word">Budgets</span>
+    </button>
+    </div>
   )
 }

@@ -18,10 +18,16 @@ const foundations = Object.values(FOUNDATION_GROUPS).flat();
   unlocked && (
     <>
     <div class="wanting-scrim" id="wanting-scrim" aria-hidden="true"></div>
+    <div class="kod-slide kod-slide--right" data-slide data-open="false" data-wanting-slide>
+    <button type="button" class="find-tab" data-wanting-tab aria-controls="wanting-panel" aria-expanded="false" aria-label="Wanting">
+      <span class="kod-cn kod-cn--tl" aria-hidden="true"></span>
+      <span class="kod-cn kod-cn--bl" aria-hidden="true"></span>
+      <span class="find-chevron" aria-hidden="true"></span>
+      <span class="find-tab__word">Wanting</span>
+    </button>
     <aside
       class="kod-plate wanting-panel"
       id="wanting-panel"
-      hidden
       role="dialog"
       aria-modal="true"
       aria-labelledby="wanting-panel-title"
@@ -32,9 +38,6 @@ const foundations = Object.values(FOUNDATION_GROUPS).flat();
           <p class="wanting-panel__kicker">The Wanting</p>
           <h2 class="wanting-panel__title" id="wanting-panel-title">Spend Words</h2>
         </div>
-        <button type="button" class="wanting-panel__close" data-wanting-close aria-label="Close">
-          ×
-        </button>
       </header>
 
       <p class="wanting-panel__lead">
@@ -98,6 +101,7 @@ const foundations = Object.values(FOUNDATION_GROUPS).flat();
         </select>
       </template>
     </aside>
+    </div>
     </>
   )
 }

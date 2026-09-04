@@ -376,8 +376,10 @@
   function paintTrack(el, current, max, label) {
     if (!el || typeof max !== 'number' || max < 0) return;
     const cur = Math.max(0, Number(current) || 0);
+    const p = max <= 0 ? 0 : Math.min(1, cur / max);
     el.setAttribute('aria-label', label + ' ' + cur + ' of ' + max);
-    const segs = el.querySelector('.vtrack__segs');
+    el.style.setProperty('--well-p', String(p));
+    el.classList.toggle('vtrack--over', cur > max && max > 0);
     const readout = el.querySelector('.vtrack__readout');
     if (readout) {
       readout.textContent = '';
@@ -386,16 +388,6 @@
       of.className = 'vtrack__of';
       of.textContent = '/' + max;
       readout.appendChild(of);
-    }
-    if (!segs) return;
-    const n = Math.max(max, cur);
-    segs.replaceChildren();
-    for (let i = 0; i < n; i++) {
-      const s = document.createElement('span');
-      s.className = 'vtrack__seg';
-      if (i < Math.min(cur, max)) s.classList.add('vtrack__seg--on');
-      if (i >= max && i < cur) s.classList.add('vtrack__seg--over');
-      segs.appendChild(s);
     }
   }
 
@@ -793,7 +785,8 @@
 
   function openWanting() {
     if (!wanting) return;
-    wanting.hidden = false;
+    const slide = document.querySelector('[data-wanting-slide]');
+    if (slide) slide.setAttribute('data-open', 'true');
     document.body.classList.add('wanting-open', 'wanting-lock');
     document.body.classList.add('creation-edit');
     setConfirmHidden(true);
@@ -823,7 +816,8 @@
   function closeWanting(discard) {
     if (!wanting) return;
     if (discard) staged = [];
-    wanting.hidden = true;
+    const slide = document.querySelector('[data-wanting-slide]');
+    if (slide) slide.setAttribute('data-open', 'false');
     document.body.classList.remove('wanting-open', 'wanting-lock');
     setConfirmHidden(false);
     const form = document.getElementById('wanting-form');
@@ -1296,8 +1290,20 @@
       return;
     }
 
-    if (t.closest('[data-open-wanting]')) {
-      openWanting();
+    if (t.closest('[data-open-wanting]') || t.closest('[data-wanting-tab]')) {
+      if (wantingOpen()) closeWanting(false);
+      else openWanting();
+      return;
+    }
+    if (t.closest('[data-slide-toggle]')) {
+      const slide = t.closest('[data-slide]');
+      if (slide && !slide.hasAttribute('data-wanting-slide')) {
+        const open = slide.getAttribute('data-open') !== 'true';
+        slide.setAttribute('data-open', open ? 'true' : 'false');
+        slide.querySelectorAll('[data-slide-toggle]').forEach((b) => {
+          b.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+      }
       return;
     }
     if (t.closest('[data-wanting-close]') || t.closest('[data-wanting-cancel]')) {
