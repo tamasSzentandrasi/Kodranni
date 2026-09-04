@@ -41,10 +41,15 @@ export function communityInner(
   return `${findDrawer(c)}
 <div class="hall" data-slug="${escAttr(c.slug)}" data-source="${escAttr(source)}" data-founded="${escAttr(founded)}" data-view-group="${escAttr((c.labelGroups ?? []).find((g) => g.kind === 'faction')?.id ?? 'g-faction')}">
   ${fortunePlates(c.fortunes)}
-  ${hierarchy(c, tips, pcSlugs, canEdit, bySlug)}
-  <div class="hall__porch">
-    ${viewStave(c)}
-    ${outsiders(c, bySlug)}
+  <section class="hall__htitle" aria-labelledby="h-h">
+    ${sectionHead('h-h', 'Hierarchy', 'One crown, then parallel ladders. Same four tiers on every axis (Honoured → Outcast). Colour marks the axis; saturation falls toward Outcast. Hover a name for who they are; click to open the sheet.', 'About Hierarchy')}
+  </section>
+  <div class="hall__hier">
+    ${hierarchy(c, tips, pcSlugs, canEdit, bySlug)}
+    <div class="hall__porch">
+      ${viewStave(c)}
+      ${outsiders(c, bySlug)}
+    </div>
   </div>
   ${myths(c.myths ?? [])}
 </div>
@@ -93,8 +98,11 @@ function labelsForPerson(
 
 function findDrawer(c: HallView['community']): string {
   return `<div class="find-drawer" data-find-drawer data-open="false">
-  <button type="button" class="find-handle" data-find-toggle aria-controls="kod-find-ledger" aria-expanded="false" aria-label="Find">
-    <span class="find-handle__mark" aria-hidden="true"></span>
+  <button type="button" class="find-tab" data-find-toggle aria-controls="kod-find-ledger" aria-expanded="false" aria-label="Find">
+    <span class="kod-cn kod-cn--tl" aria-hidden="true"></span>
+    <span class="kod-cn kod-cn--bl" aria-hidden="true"></span>
+    <span class="find-chevron" aria-hidden="true"></span>
+    <span class="find-tab__word">Find</span>
   </button>
   ${findPanel(c)}
 </div>`;
@@ -205,16 +213,16 @@ function fortunePlates(values: Record<string, number> | undefined): string {
   const plates = FORTUNE_ORDER.map((k) => {
     const v = Math.min(3, Math.max(0, fortunes[k] ?? 0));
     const label = FORTUNE_LABELS[v] ?? '';
-    return `<div class="kod-plate fortune" data-key="${k}" data-level="${v}" role="listitem" aria-label="${escAttr(k)}, ${escAttr(label)}">
+    return `<div class="fortune" data-key="${k}" data-level="${v}" role="listitem" aria-label="${escAttr(k)}, ${escAttr(label)}">
       <span class="fortune__icon" aria-hidden="true"></span>
       <span class="fortune__name">${esc(k)}${infoBtn(`About ${k}`, FORTUNE_BLURBS[k] ?? '')}</span>
-      <div class="fortune__stack" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+      <span class="fortune__tree" aria-hidden="true"></span>
       <span class="fortune__state">${esc(label)}</span>
     </div>`;
   }).join('');
   return `<section class="hall__sky" aria-labelledby="f-h">
     ${sectionHead('f-h', 'Fortunes', 'Community-wide pressure — not a second character sheet. Weather, not a ledger.', 'About Fortunes')}
-    <div class="fortune-hall" role="list">${plates}</div>
+    <div class="kod-fortune-board fortune-hall" role="list">${plates}</div>
   </section>`;
 }
 
@@ -319,14 +327,11 @@ function hierarchy(
       </div>`;
     })
     .join('');
-  return `<section class="hall__crown" aria-labelledby="h-h">
-    ${sectionHead('h-h', 'Hierarchy', 'One crown, then parallel ladders. Same four tiers on every axis (Honoured → Outcast). Colour marks the axis; saturation falls toward Outcast. Hover a name for who they are; click to open the sheet.', 'About Hierarchy')}
-    <div class="kod-plate hier-ruler"><p class="hier-ruler__title">Ruler</p>${rulerBlock}</div>
+  return `<div class="hall__diagram">
+    <div class="kod-plate hier-ruler kod-headpiece"><p class="hier-ruler__title">Ruler</p>${rulerBlock}</div>
     ${add}
     <p class="hier-join" aria-hidden="true"></p>
-  </section>
-  <div class="hall__nave" role="region" aria-label="Hierarchy ladders">
-    <div class="hier-axes">${axes}</div>
+    <div class="hier-axes" role="region" aria-label="Hierarchy ladders">${axes}</div>
   </div>`;
 }
 

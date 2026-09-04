@@ -75,6 +75,20 @@ const pcSlugs = c.characters
           data-founded={c.fortunesFoundedAt ?? ''}
         >
           <FortuneHall fortunes={c.fortunes} editable founded={founded} />
+          <section class="hall__htitle" aria-labelledby="h-h">
+            <div class="section-head">
+              <h2 id="h-h">Hierarchy</h2>
+              <button
+                type="button"
+                class="info"
+                data-tip="One crown, then parallel ladders. Same four tiers on every axis (Honoured → Outcast). Colour marks the axis; saturation falls toward Outcast. Hover a name for who they are; click to open the sheet."
+                aria-label="About Hierarchy"
+              >
+                i
+              </button>
+            </div>
+          </section>
+          <div class="hall__hier">
           <HierarchyBoard
             axes={c.hierarchyAxes}
             ruler={c.ruler}
@@ -88,6 +102,7 @@ const pcSlugs = c.characters
           <div class="hall__porch">
             <OutsiderPorch outsiders={c.outsiders ?? []} factions={factions} />
             <FactionList factions={factions} live />
+          </div>
           </div>
           <MythList myths={c.myths} />
         </div>

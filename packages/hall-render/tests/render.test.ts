@@ -117,8 +117,11 @@ describe('renderArchivePage', () => {
     expect(html).toContain('data-find-toggle');
     expect(html).toContain('data-find-drawer');
     expect(html).toContain('aria-label="Find"');
-    expect(html).not.toContain('Find in the hall');
+    expect(html).toContain('find-tab');
+    expect(html).toContain('find-chevron');
     expect(html).not.toContain('data-find-hide');
+    expect(html).not.toContain('Find in the hall');
+    expect(html).not.toContain('find-handle');
     expect(html).toContain('data-filter="label"');
     expect(html).toContain('data-value="fac-ash-fen"');
     expect(html).toContain('data-view-stave');

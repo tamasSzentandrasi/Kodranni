@@ -128,7 +128,7 @@
   const qInput = document.querySelector('[data-hall-q]');
   const hitsEl = document.querySelector('[data-hall-hits]');
   const countEl = document.querySelector('[data-hall-count]');
-  const findToggle = document.querySelector('[data-find-toggle]');
+  const findToggles = document.querySelectorAll('[data-find-toggle]');
 
   const labelNameById = new Map();
   const labelGroupById = new Map();
@@ -348,7 +348,7 @@
     document.documentElement.classList.toggle('find-closed', !open);
     const drawer = document.querySelector('[data-find-drawer]');
     if (drawer) drawer.setAttribute('data-open', open ? 'true' : 'false');
-    if (findToggle) findToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    findToggles.forEach((btn) => btn.setAttribute('aria-expanded', open ? 'true' : 'false'));
     saveBag();
   }
 
@@ -395,13 +395,13 @@
         applyView();
       });
     });
-    if (findToggle) {
-      findToggle.addEventListener('click', () => {
+    findToggles.forEach((btn) => {
+      btn.addEventListener('click', () => {
         const open = !findIsOpen();
         setFindOpen(open);
         if (open && qInput) qInput.focus();
       });
-    }
+    });
     document.addEventListener('keydown', (e) => {
       if (e.defaultPrevented) return;
       const t = e.target;

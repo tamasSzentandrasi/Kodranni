@@ -46,20 +46,9 @@ function personKey(name: string, slug?: string): string {
 const rulerId = ruler ? inspectId(ruler, rulerCharacterSlug) : '';
 ---
 
-<section class="hall__crown" aria-labelledby="h-h">
-  <div class="section-head">
-    <h2 id="h-h">Hierarchy</h2>
-    <button
-      type="button"
-      class="info"
-      data-tip="One crown, then parallel ladders. Same four tiers on every axis (Honoured → Outcast). Colour marks the axis; saturation falls toward Outcast. Hover a name for who they are; click to open the sheet."
-      aria-label="About Hierarchy"
-    >
-      i
-    </button>
-  </div>
+<div class="hall__diagram">
 
-  <div class="kod-plate hier-ruler">
+  <div class="kod-plate hier-ruler kod-headpiece">
     <p class="hier-ruler__title">Ruler</p>
     {
       ruler ? (
@@ -89,10 +78,7 @@ const rulerId = ruler ? inspectId(ruler, rulerCharacterSlug) : '';
     )
   }
   <p class="hier-join" aria-hidden="true" />
-</section>
-
-<div class="hall__nave" role="region" aria-label="Hierarchy ladders">
-  <div class="hier-axes">
+  <div class="hier-axes" role="region" aria-label="Hierarchy ladders">
     {
       axes.map((axis, ai) => {
         const onAxis = placements.filter((p) => p.axis === axis);
