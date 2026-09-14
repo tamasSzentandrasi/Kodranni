@@ -328,7 +328,7 @@ function hierarchy(
     })
     .join('');
   return `<div class="hall__diagram">
-    <div class="kod-plate hier-ruler kod-headpiece"><p class="hier-ruler__title">Ruler</p>${rulerBlock}</div>
+    <div class="kod-plate hier-ruler kod-headpiece"><span class="kod-cn kod-cn--tl" aria-hidden="true"></span><span class="kod-cn kod-cn--tr" aria-hidden="true"></span><p class="hier-ruler__title">Ruler</p>${rulerBlock}</div>
     ${add}
     <p class="hier-join" aria-hidden="true"></p>
     <div class="hier-axes" role="region" aria-label="Hierarchy ladders">${axes}</div>

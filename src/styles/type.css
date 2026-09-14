@@ -45,10 +45,11 @@ site-title,
 
 /* Core terms: bright register — Bellefair has no bold cut */
 .sl-markdown-content strong {
-  color: var(--kod-silver-bright);
+  color: #e0b4a8;
   font-weight: 400;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
   background: none;
+  text-decoration: none;
 }
 
 .sl-markdown-content .kod-term,

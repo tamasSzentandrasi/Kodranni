@@ -41,15 +41,14 @@
 /* Example — eye (worked scene / what was seen) */
 .kod-example {
   --kod-soot-size: 1.1rem;
-  background:
-    var(--kod-soot),
-    linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--kod-blood-deep) 44%, #0c0c0c) 0%,
-      color-mix(in srgb, var(--kod-blood-deep) 36%, #0c0c0c) 100%
-    );
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--kod-blood-deep) 58%, #161210) 0%,
+    color-mix(in srgb, var(--kod-blood-deep) 38%, #120e0e) 100%
+  );
   color: var(--kod-silver);
   box-shadow: var(--kod-smoke);
+  border: 1px solid color-mix(in srgb, var(--kod-blood) 28%, var(--kod-frame));
 }
 
 .kod-example::before {
@@ -101,13 +100,13 @@
 
 /* Quote — literary / epigraph */
 .sl-markdown-content blockquote {
-  background:
-    var(--kod-soot),
-    linear-gradient(180deg, color-mix(in srgb, #1a1816 85%, #000) 0%, #12100e 100%);
+  background: linear-gradient(180deg, #221e1a 0%, #161310 100%);
   font-style: italic;
-  color: #e0dbd2;
+  color: #e8e2d6;
   display: flow-root;
+  text-align: center;
   box-shadow: var(--kod-smoke);
+  border: 1px solid color-mix(in srgb, var(--kod-silver) 22%, var(--kod-frame));
 }
 
 .sl-markdown-content blockquote::before {
@@ -132,19 +131,34 @@
 
 .sl-markdown-content blockquote p {
   margin: 0.35rem 0 0;
+  text-align: center;
 }
 
 .sl-markdown-content blockquote p:first-child {
   margin-top: 0;
 }
 
+.sl-markdown-content blockquote .kod-quote-attr {
+  display: block;
+  margin-top: 0.9rem !important;
+  font-style: normal;
+  font-size: 0.86em;
+  letter-spacing: 0.1em;
+  color: var(--kod-silver-dim);
+  text-align: center;
+}
+
+.sl-markdown-content blockquote.kod-epigraph .kod-quote-attr {
+  margin-top: 0.55rem !important;
+  color: color-mix(in srgb, var(--kod-silver-dim) 88%, var(--kod-silver));
+}
+
 /* Note — factual (teal) — feather pen */
 .kod-note {
-  background:
-    var(--kod-soot),
-    linear-gradient(180deg, color-mix(in srgb, #0a1414 92%, #1a2e2a) 0%, #0c1212 100%);
-  color: #cfd8d6;
+  background: linear-gradient(180deg, #152422 0%, #101816 100%);
+  color: #d4e0dc;
   box-shadow: var(--kod-smoke);
+  border: 1px solid color-mix(in srgb, #6fc4b0 22%, var(--kod-frame));
 }
 
 .kod-note::before {
@@ -169,11 +183,11 @@
 
 /* Counsel — ST wisdom (violet) — scales of justice */
 .kod-counsel {
-  background:
-    var(--kod-soot),
-    linear-gradient(180deg, color-mix(in srgb, #100e1c 90%, #2a2450) 0%, #100e18 100%);
-  color: #d0cce0;
+  background: linear-gradient(180deg, #221a32 0%, #161022 100%);
+  color: #d8d2e8;
   box-shadow: var(--kod-smoke);
+  border: 1px solid color-mix(in srgb, #9b8fd4 28%, var(--kod-frame));
+  text-align: center;
 }
 
 .kod-counsel::before {
@@ -185,6 +199,7 @@
 .kod-counsel p {
   margin: 0.35rem 0 0;
   font-size: 1em;
+  text-align: center;
 }
 
 .kod-counsel p:first-of-type {

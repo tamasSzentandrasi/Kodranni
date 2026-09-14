@@ -106,6 +106,45 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 		document.querySelectorAll('.sl-markdown-content blockquote:not(.kod-epigraph)').forEach((el) => {
 			mountCartouche(el);
 		});
+		document.querySelectorAll('.kod-widget, .kod-fortune-board, .kod-hier-ruler').forEach((el) => {
+			mountCartouche(el);
+		});
+		markQuoteAuthors();
+	}
+
+	function markQuoteAuthors() {
+		const dashStart = /^\s*[—–−‒-]/;
+		document.querySelectorAll('.sl-markdown-content blockquote').forEach((bq) => {
+			const ps = [...bq.querySelectorAll(':scope > p')];
+			const last = ps[ps.length - 1];
+			if (!last || last.classList.contains('kod-quote-attr')) return;
+			const html = last.innerHTML;
+			const parts = html.split(/<br\s*\/?>|\n/i);
+			if (parts.length > 1) {
+				const tailRaw = parts[parts.length - 1];
+				const tailText = tailRaw.replace(/<[^>]+>/g, '').trim();
+				if (dashStart.test(tailText)) {
+					last.innerHTML = parts.slice(0, -1).join('<br>');
+					const attr = document.createElement('p');
+					attr.className = 'kod-quote-attr';
+					attr.innerHTML = tailRaw.trim();
+					last.after(attr);
+					return;
+				}
+			}
+			const t = (last.textContent || '').trim();
+			if (dashStart.test(t)) last.classList.add('kod-quote-attr');
+		});
+	}
+
+	function wrapPanelStage(root) {
+		const panels = [...root.querySelectorAll(':scope > .kod-widget__panel')];
+		if (panels.length < 2) return;
+		if (root.querySelector(':scope > .kod-widget__stage')) return;
+		const stage = document.createElement('div');
+		stage.className = 'kod-widget__stage';
+		panels[0].parentNode.insertBefore(stage, panels[0]);
+		panels.forEach((p) => stage.appendChild(p));
 	}
 
 	/** Exclusive archetype focus: hide siblings, full row, small ← back */
@@ -271,6 +310,7 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 		document.querySelectorAll('[data-widget="marks-ladder"]').forEach((root) => {
 			if (root.dataset.ready) return;
 			root.dataset.ready = '1';
+			wrapPanelStage(root);
 			const buttons = [...root.querySelectorAll('[data-marks]')];
 			const panels = [...root.querySelectorAll('[data-panel-id]')];
 			function set(n) {
@@ -320,6 +360,7 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 		document.querySelectorAll('[data-widget="tier-dial"]').forEach((root) => {
 			if (root.dataset.ready) return;
 			root.dataset.ready = '1';
+			wrapPanelStage(root);
 			const ladder = root.querySelector('.kod-tier-ladder');
 			const buttons = [...root.querySelectorAll('[data-tier]')];
 			const panels = [...root.querySelectorAll('[data-panel-id]')];
@@ -348,6 +389,7 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 		document.querySelectorAll('[data-widget="practice-award"]').forEach((root) => {
 			if (root.dataset.ready) return;
 			root.dataset.ready = '1';
+			wrapPanelStage(root);
 			const kindBtns = [...root.querySelectorAll('[data-practice-kind]')];
 			const resultGroups = [...root.querySelectorAll('[data-practice-results]')];
 			const exertBtns = [...root.querySelectorAll('[data-practice-exert]')];
@@ -420,6 +462,7 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 		document.querySelectorAll('[data-widget="content-tabs"]').forEach((root) => {
 			if (root.dataset.ready) return;
 			root.dataset.ready = '1';
+			wrapPanelStage(root);
 			const buttons = [...root.querySelectorAll('[data-tab]')];
 			const panels = [...root.querySelectorAll('[data-panel-id]')];
 			if (!buttons.length || !panels.length) return;
@@ -450,6 +493,7 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 		document.querySelectorAll('[data-widget="step-flow"]').forEach((root) => {
 			if (root.dataset.ready) return;
 			root.dataset.ready = '1';
+			wrapPanelStage(root);
 			const buttons = [...root.querySelectorAll('[data-tab]')];
 			const panels = [...root.querySelectorAll('[data-panel-id]')];
 			const prev = root.querySelector('[data-step-prev]');
@@ -517,6 +561,7 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 		document.querySelectorAll('[data-widget="tide-demo"]').forEach((root) => {
 			if (root.dataset.ready) return;
 			root.dataset.ready = '1';
+			wrapPanelStage(root);
 			const scale = Number(root.dataset.tideScale || 17);
 			const buttons = [...root.querySelectorAll('[data-tab]')];
 			const panels = [...root.querySelectorAll('[data-panel-id]')];
@@ -691,7 +736,6 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 		equalizeHeights('.kod-lanes', ':scope > .kod-lane');
 		equalizeHeights('.kod-domain-lane__bricks', ':scope > .kod-brick');
 		equalizeHeights('.kod-seed-grid', ':scope > .kod-seed');
-		equalizeHeights('.kod-hier-axes', '.kod-hier-axis__head');
 	}
 
 	function setupOmenFaces() {

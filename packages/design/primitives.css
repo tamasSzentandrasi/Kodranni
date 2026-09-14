@@ -17,41 +17,28 @@
   box-shadow: var(--kod-smoke);
 }
 
-/* Corner atom — TL as drawn; TR scaleX(-1); BL scaleY(-1). Tip hangs outside the fill. */
-.kod-cn,
-.kod-headpiece::before,
-.kod-headpiece::after,
-.kod-widget::before,
-.kod-widget::after,
-.kod-fortune-board::before,
-.kod-fortune-board::after,
-.kod-hier-ruler::before,
-.kod-hier-ruler::after {
+/* Corner atom — only .kod-cn. Never ::after on widgets (button glass owns that). */
+.kod-cn {
   position: absolute;
   box-sizing: border-box;
   width: var(--kod-cartouche-corner);
-  height: var(--kod-cartouche-corner);
+  aspect-ratio: 233 / 225;
+  height: auto;
   pointer-events: none;
-  background-color: color-mix(in srgb, var(--kod-silver) 86%, transparent);
-  -webkit-mask: var(--kod-panel-corner) center / contain no-repeat;
-  mask: var(--kod-panel-corner) center / contain no-repeat;
-  z-index: 2;
+  isolation: isolate;
+  filter: none !important;
+  background-color: color-mix(in srgb, var(--kod-silver) 92%, transparent);
+  -webkit-mask: var(--kod-panel-corner) top left / 100% 100% no-repeat;
+  mask: var(--kod-panel-corner) top left / 100% 100% no-repeat;
+  z-index: 3;
 }
 
-.kod-cn--tl,
-.kod-headpiece::before,
-.kod-widget::before,
-.kod-fortune-board::before,
-.kod-hier-ruler::before {
+.kod-cn--tl {
   top: calc(-1 * var(--kod-chamfer));
   left: calc(-1 * var(--kod-chamfer));
 }
 
-.kod-cn--tr,
-.kod-headpiece::after,
-.kod-widget::after,
-.kod-fortune-board::after,
-.kod-hier-ruler::after {
+.kod-cn--tr {
   top: calc(-1 * var(--kod-chamfer));
   right: calc(-1 * var(--kod-chamfer));
   transform: scaleX(-1);
@@ -79,21 +66,10 @@
   --kod-frame-lines: none;
 }
 
-.kod-headpiece::before,
-.kod-headpiece::after,
-.kod-widget::before,
-.kod-widget::after,
-.kod-fortune-board::before,
-.kod-fortune-board::after,
-.kod-hier-ruler::before,
-.kod-hier-ruler::after {
-  content: '';
-}
-
 @media (max-width: 40rem) {
   :root {
-    --kod-cartouche-corner: 2.7rem;
-    --kod-chamfer: 0.1rem;
+    --kod-cartouche-corner: 1.95rem;
+    --kod-chamfer: 0.22rem;
   }
 }
 

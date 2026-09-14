@@ -371,10 +371,9 @@
   box-sizing: border-box;
   margin: 1.35rem 0 1.6rem;
   padding: 1.15rem 1.05rem 1.15rem;
-  background:
-    var(--kod-soot),
-    linear-gradient(180deg, #161412 0%, #100e0c 100%);
+  background: linear-gradient(180deg, #1e1414 0%, #161010 100%);
   box-shadow: var(--kod-smoke);
+  border: 1px solid color-mix(in srgb, var(--kod-blood) 28%, var(--kod-frame));
 }
 
 .kod-fortune-board__kicker {
@@ -476,36 +475,38 @@
 
 .kod-fortune__tree {
   display: block;
-  width: 2.65rem;
-  height: 2.95rem;
-  margin: 0.08rem 0 0.2rem;
-  background-color: var(--kod-silver);
-  -webkit-mask: var(--kod-tree-2) center / contain no-repeat;
-  mask: var(--kod-tree-2) center / contain no-repeat;
+  width: 3.35rem;
+  height: 3.35rem;
+  margin: 0.15rem 0 0.28rem;
+  border-radius: 50%;
+  background: var(--kod-tree-2) center / contain no-repeat;
+  filter: drop-shadow(0 0 8px rgba(90, 160, 70, 0.35));
+  box-shadow: 0 0 16px 2px rgba(90, 160, 70, 0.22);
+  transition: filter 0.18s ease, box-shadow 0.18s ease, background-image 0.18s ease;
 }
 
 .kod-fortune[data-level='0'] .kod-fortune__tree {
-  background-color: color-mix(in srgb, var(--kod-blood) 70%, #3a2020);
-  -webkit-mask-image: var(--kod-tree-0);
-  mask-image: var(--kod-tree-0);
+  background-image: var(--kod-tree-0);
+  filter: drop-shadow(0 0 8px rgba(198, 193, 184, 0.28));
+  box-shadow: 0 0 14px 2px rgba(198, 193, 184, 0.16);
 }
 
 .kod-fortune[data-level='1'] .kod-fortune__tree {
-  background-color: var(--kod-silver-dim);
-  -webkit-mask-image: var(--kod-tree-1);
-  mask-image: var(--kod-tree-1);
+  background-image: var(--kod-tree-1);
+  filter: drop-shadow(0 0 10px rgba(160, 24, 24, 0.45));
+  box-shadow: 0 0 16px 2px rgba(160, 24, 24, 0.28);
 }
 
 .kod-fortune[data-level='2'] .kod-fortune__tree {
-  background-color: var(--kod-silver);
-  -webkit-mask-image: var(--kod-tree-2);
-  mask-image: var(--kod-tree-2);
+  background-image: var(--kod-tree-2);
+  filter: drop-shadow(0 0 8px rgba(90, 160, 70, 0.4));
+  box-shadow: 0 0 16px 2px rgba(90, 160, 70, 0.24);
 }
 
 .kod-fortune[data-level='3'] .kod-fortune__tree {
-  background-color: #fff8f0;
-  -webkit-mask-image: var(--kod-tree-3);
-  mask-image: var(--kod-tree-3);
+  background-image: var(--kod-tree-3);
+  filter: drop-shadow(0 0 12px rgba(212, 175, 55, 0.5));
+  box-shadow: 0 0 18px 3px rgba(212, 175, 55, 0.32);
 }
 
 .kod-fortune--vitality .kod-fortune__icon {
@@ -587,12 +588,14 @@
 }
 
 .kod-fortune-board__frame {
+  display: grid;
   min-height: 3.4rem;
   padding: 0.7rem 0.85rem;
   border-top: 1px solid color-mix(in srgb, var(--kod-silver) 14%, #2a2424);
 }
 
 .kod-fortune-board__frame p {
+  grid-area: 1 / 1;
   margin: 0 !important;
   text-align: center;
   font-size: 0.95rem;
@@ -601,7 +604,9 @@
 }
 
 .kod-fortune-board__frame p[hidden] {
-  display: none;
+  display: block !important;
+  visibility: hidden;
+  pointer-events: none;
 }
 
 .sl-markdown-content .kod-fortune-board > *,
@@ -615,9 +620,10 @@
   margin: 1.25rem 0 1.55rem;
   padding: 1.15rem 1.05rem 1.15rem;
   background:
-    radial-gradient(ellipse 90% 80% at 50% 8%, color-mix(in srgb, var(--kod-blood) 18%, transparent), transparent 62%),
-    color-mix(in srgb, var(--kod-blood-deep) 24%, #0a0808);
+    radial-gradient(ellipse 90% 80% at 50% 8%, color-mix(in srgb, var(--kod-blood) 22%, transparent), transparent 62%),
+    color-mix(in srgb, var(--kod-blood-deep) 32%, #1a1010);
   box-shadow: var(--kod-smoke);
+  border: 1px solid color-mix(in srgb, var(--kod-blood) 30%, var(--kod-frame));
 }
 
 .kod-hier__modes {
@@ -772,6 +778,7 @@
 .kod-hier-axes {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-rows: auto repeat(4, minmax(3.6rem, auto));
   gap: 0.4rem;
   align-items: stretch;
 }
@@ -779,12 +786,14 @@
 @media (max-width: 50rem) {
   .kod-hier-axes {
     grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto repeat(4, minmax(3.4rem, auto)) auto repeat(4, minmax(3.4rem, auto));
   }
 }
 
 @media (max-width: 28rem) {
   .kod-hier-axes {
     grid-template-columns: 1fr;
+    grid-template-rows: none;
   }
 }
 
@@ -792,11 +801,20 @@
   --kod-corners: none;
   box-sizing: border-box;
   margin: 0 !important;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: subgrid;
+  grid-row: span 5;
   min-height: 100%;
   border: 1px solid var(--kod-frame);
-  background: #0c0a0a;
+  background: #161210;
+}
+
+@media (max-width: 28rem) {
+  .kod-hier-axis {
+    display: flex;
+    flex-direction: column;
+    grid-row: auto;
+  }
 }
 
 .kod-hier-axis__head {
@@ -814,8 +832,8 @@
 .kod-hier-axis__head::before {
   content: '';
   display: block;
-  width: 1.7rem;
-  height: 1.7rem;
+  width: 2.1rem;
+  height: 2.1rem;
   margin: 0 auto 0.3rem;
   background-color: var(--kod-silver);
   -webkit-mask: center / contain no-repeat;
@@ -874,11 +892,17 @@
 .kod-hier-rungs {
   list-style: none;
   margin: 0;
-  padding: 0.3rem 0.35rem 0.45rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.26rem;
-  flex: 1 1 auto;
+  padding: 0;
+  display: contents;
+}
+
+@media (max-width: 28rem) {
+  .kod-hier-rungs {
+    display: flex;
+    flex-direction: column;
+    gap: 0.26rem;
+    padding: 0.3rem 0.35rem 0.45rem;
+  }
 }
 
 .kod-hier-rungs li {
@@ -888,8 +912,8 @@
   font-size: 0.78em;
   letter-spacing: 0.03em;
   color: var(--kod-silver-dim);
-  border: 1px solid #2a2424;
-  background: #0a0808;
+  border: 1px solid #3a3330;
+  background: #161210;
   min-height: 3.15rem;
   display: flex;
   flex-direction: column;
@@ -911,6 +935,17 @@
 .kod-hier-rungs li.is-lit {
   border-color: color-mix(in srgb, var(--kod-silver) 42%, #333);
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--kod-silver) 18%, transparent);
+  transition: border-color 0.16s ease, box-shadow 0.16s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kod-fortune__tree,
+  .kod-fortune__state,
+  .kod-fortune,
+  .kod-chip,
+  .kod-hier-rungs li.is-lit {
+    transition: none;
+  }
 }
 
 .kod-hier-rungs .kod-chip {
@@ -927,7 +962,7 @@
   gap: 0.4rem;
   padding: 0.55rem 0.4rem;
   border: 1px dashed color-mix(in srgb, var(--kod-silver) 28%, #2a2424);
-  background: #0a0808;
+  background: #161210;
   text-align: center;
 }
 
