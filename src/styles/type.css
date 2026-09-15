@@ -43,19 +43,36 @@ site-title,
   text-wrap: balance;
 }
 
-/* Core terms: bright register — Bellefair has no bold cut */
+/* Bellefair has no 700 and font-synthesis is off. Faux-weight + soot ring + glow. */
 .sl-markdown-content strong {
-  color: #e0b4a8;
+  color: #fff;
   font-weight: 400;
-  letter-spacing: 0.04em;
+  font-size: 1.02em;
+  letter-spacing: 0.03em;
+  -webkit-text-stroke: 0;
   background: none;
+  box-shadow: none;
+  padding: 0;
   text-decoration: none;
+  border-bottom: none;
+  text-shadow:
+    0.35px 0 0 #fff,
+    -0.35px 0 0 #fff,
+    -0.7px -0.7px 0 #090807,
+    0.7px -0.7px 0 #090807,
+    -0.7px 0.7px 0 #090807,
+    0.7px 0.7px 0 #090807,
+    0 0 0.32em rgba(242, 239, 233, 0.38) !important;
 }
 
 .sl-markdown-content .kod-term,
 .sl-markdown-content dfn {
   font-variant: small-caps;
   letter-spacing: 0.06em;
+  -webkit-text-stroke: 0;
+  font-style: normal;
+  text-shadow: none;
+  color: var(--kod-silver-bright);
 }
 
 .sl-markdown-content em,
@@ -67,9 +84,31 @@ site-title,
 .sl-markdown-content a:not(.sl-link-button) {
   color: #ed6a6a;
   text-decoration: none;
+  text-shadow: none;
 }
 
 .sl-markdown-content a:not(.sl-link-button):hover {
+  color: #ff8f8f;
+}
+
+/* Strong links: link ink, not white bold. Kin of the soot-ring, in blood. */
+.sl-markdown-content a:not(.sl-link-button) strong,
+.sl-markdown-content strong a:not(.sl-link-button) {
+  color: #ed6a6a;
+  font-size: 1em;
+  letter-spacing: 0.03em;
+  text-shadow:
+    0.3px 0 0 #ed6a6a,
+    -0.3px 0 0 #ed6a6a,
+    -0.6px -0.6px 0 #1a0707,
+    0.6px -0.6px 0 #1a0707,
+    -0.6px 0.6px 0 #1a0707,
+    0.6px 0.6px 0 #1a0707,
+    0 0 0.28em rgba(237, 106, 106, 0.38) !important;
+}
+
+.sl-markdown-content a:not(.sl-link-button):hover strong,
+.sl-markdown-content strong a:not(.sl-link-button):hover {
   color: #ff8f8f;
 }
 

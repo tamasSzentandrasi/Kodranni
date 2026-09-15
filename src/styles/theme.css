@@ -31,7 +31,6 @@ html {
 }
 
 body,
-.sl-markdown-content,
 .sidebar-content,
 site-title,
 .kod-page-title h1 {
@@ -39,6 +38,12 @@ site-title,
   -webkit-text-stroke: 0;
   -webkit-text-fill-color: currentColor;
   text-shadow: none;
+}
+
+.sl-markdown-content {
+  font-synthesis: none;
+  -webkit-text-stroke: 0;
+  -webkit-text-fill-color: currentColor;
 }
 
 :root,
@@ -158,6 +163,7 @@ body {
 .kod-menu-item,
 .pagination-links a,
 .kod-hier-axis,
+.kod-hier-axis__plate,
 .kod-hier-ruler,
 .kod-fortune,
 .sl-markdown-content table:not(:where(.not-content *)) {

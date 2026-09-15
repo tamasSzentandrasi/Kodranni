@@ -1101,7 +1101,12 @@
 
 .kod-widget__panel strong {
   background: none;
+  box-shadow: none;
+  padding: 0;
   color: #fff8f0;
+  text-shadow: none;
+  -webkit-text-stroke: 0;
+  border-bottom: none;
 }
 
 /* --- Glossary terms -------------------------------------------------------- */
@@ -1323,6 +1328,11 @@
   font-size: 0.88em;
   text-transform: uppercase;
   background: none !important;
+  box-shadow: none;
+  padding: 0;
+  text-shadow: none;
+  -webkit-text-stroke: 0;
+  border-bottom: none;
 }
 .kod-seed__hook {
   margin-top: 0.55rem !important;

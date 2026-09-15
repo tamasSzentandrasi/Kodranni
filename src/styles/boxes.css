@@ -127,6 +127,12 @@
 .sl-markdown-content blockquote i,
 .sl-markdown-content blockquote strong {
   color: #f4efe6;
+  -webkit-text-stroke: 0;
+  background: none;
+  box-shadow: none;
+  padding: 0;
+  text-shadow: none;
+  border-bottom: none;
 }
 
 .sl-markdown-content blockquote p {
