@@ -210,11 +210,13 @@ function viewStave(c: HallView['community']): string {
 
 function fortunePlates(values: Record<string, number> | undefined): string {
   const fortunes = values ?? {};
+  const seals = FORTUNE_ORDER.map(
+    (k) => `<span class="fortune__icon" data-key="${escAttr(k)}" aria-hidden="true"></span>`,
+  ).join('');
   const plates = FORTUNE_ORDER.map((k) => {
     const v = Math.min(3, Math.max(0, fortunes[k] ?? 0));
     const label = FORTUNE_LABELS[v] ?? '';
     return `<div class="fortune" data-key="${k}" data-level="${v}" role="listitem" aria-label="${escAttr(k)}, ${escAttr(label)}">
-      <span class="fortune__icon" aria-hidden="true"></span>
       <span class="fortune__name">${esc(k)}${infoBtn(`About ${k}`, FORTUNE_BLURBS[k] ?? '')}</span>
       <span class="fortune__tree" aria-hidden="true"></span>
       <span class="fortune__state">${esc(label)}</span>
@@ -222,7 +224,7 @@ function fortunePlates(values: Record<string, number> | undefined): string {
   }).join('');
   return `<section class="hall__sky" aria-labelledby="f-h">
     ${sectionHead('f-h', 'Fortunes', 'Community-wide pressure — not a second character sheet. Weather, not a ledger.', 'About Fortunes')}
-    <div class="kod-fortune-board fortune-hall" role="list">${plates}</div>
+    <div class="kod-fortune-board fortune-hall" role="list"><div class="fortune-hall__seals">${seals}</div><div class="fortune-hall__row">${plates}</div></div>
   </section>`;
 }
 
@@ -328,7 +330,7 @@ function hierarchy(
     })
     .join('');
   return `<div class="hall__diagram">
-    <div class="kod-plate hier-ruler kod-headpiece"><span class="kod-cn kod-cn--tl" aria-hidden="true"></span><span class="kod-cn kod-cn--tr" aria-hidden="true"></span><p class="hier-ruler__title">Ruler</p>${rulerBlock}</div>
+    <div class="kod-plate hier-ruler kod-headpiece"><span class="kod-cut kod-cut--tl" aria-hidden="true"></span><span class="kod-cut kod-cut--tr" aria-hidden="true"></span><span class="kod-cn kod-cn--tl" aria-hidden="true"></span><span class="kod-cn kod-cn--tr" aria-hidden="true"></span><p class="hier-ruler__title">Ruler</p>${rulerBlock}</div>
     ${add}
     <p class="hier-join" aria-hidden="true"></p>
     <div class="hier-axes" role="region" aria-label="Hierarchy ladders">${axes}</div>

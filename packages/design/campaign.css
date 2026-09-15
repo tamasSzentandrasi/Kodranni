@@ -330,10 +330,9 @@ section.kod-plate {
 
 /* —— Fortunes —— */
 .fortune-hall {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 0;
-  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
   padding: 1.15rem 0.85rem 1rem;
   background:
     var(--kod-soot),
@@ -342,26 +341,50 @@ section.kod-plate {
   border: none;
 }
 
+.fortune-hall__seals,
+.fortune-hall__row {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0;
+}
+
 @media (max-width: 56rem) {
-  .fortune-hall {
+  .fortune-hall__seals,
+  .fortune-hall__row {
     grid-template-columns: 1fr 1fr;
   }
 }
 
 @media (max-width: 30rem) {
-  .fortune-hall {
+  .fortune-hall__seals,
+  .fortune-hall__row {
     grid-template-columns: 1fr;
   }
 }
 
+.fortune-hall__seals .fortune__icon {
+  display: block;
+  width: 1.35rem;
+  height: 1.35rem;
+  margin: 0 auto;
+  background-color: var(--kod-silver);
+  -webkit-mask: center / contain no-repeat;
+  mask: center / contain no-repeat;
+}
+
 .fortune {
   --kod-fortune-accent: var(--kod-blood);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  --kod-leaf-glow: rgba(90, 160, 70, 0.28);
+  display: grid;
+  justify-items: center;
+  grid-template-areas:
+    'name'
+    'mark'
+    'state';
   text-align: center;
-  padding: 0.85rem 0.45rem 0.75rem;
-  min-height: 11.5rem;
+  padding: 0.35rem 0.4rem 0.75rem;
+  min-height: 0;
+  gap: 0.2rem;
   border: none;
   border-right: 1px solid color-mix(in srgb, var(--kod-silver) 12%, #2a2424);
   background: transparent;
@@ -396,106 +419,79 @@ section.kod-plate {
 }
 
 .fortune__icon {
+  display: none;
+}
+
+.fortune-hall__seals .fortune__icon[data-key='vitality'] {
   display: block;
-  width: 2.35rem;
-  height: 2.35rem;
-  margin: 0.05rem 0 0.4rem;
-  flex-shrink: 0;
-  background-color: var(--kod-silver);
-  -webkit-mask: center / contain no-repeat;
-  mask: center / contain no-repeat;
-  -webkit-mask-size: contain;
-  mask-size: contain;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-  mask-position: center;
-  transition: background-color 0.16s ease, opacity 0.16s ease, filter 0.16s ease;
-}
-
-.fortune[data-level='0'] .fortune__icon {
-  background-color: var(--kod-blood);
-  opacity: 0.58;
-}
-
-.fortune[data-level='1'] .fortune__icon {
-  background-color: var(--kod-silver-dim);
-  opacity: 0.78;
-}
-
-.fortune[data-level='3'] .fortune__icon {
-  background-color: var(--kod-silver-bright);
-  filter: drop-shadow(0 0 6px rgba(242, 239, 233, 0.28));
-}
-
-.fortune[data-key='vitality'] .fortune__icon {
   -webkit-mask-image: var(--kod-fortune-vitality);
   mask-image: var(--kod-fortune-vitality);
 }
-.fortune[data-key='cohesion'] .fortune__icon {
+.fortune-hall__seals .fortune__icon[data-key='cohesion'] {
+  display: block;
   -webkit-mask-image: var(--kod-fortune-cohesion);
   mask-image: var(--kod-fortune-cohesion);
 }
-.fortune[data-key='surplus'] .fortune__icon {
+.fortune-hall__seals .fortune__icon[data-key='surplus'] {
+  display: block;
   -webkit-mask-image: var(--kod-fortune-surplus);
   mask-image: var(--kod-fortune-surplus);
 }
-.fortune[data-key='standing'] .fortune__icon {
+.fortune-hall__seals .fortune__icon[data-key='standing'] {
+  display: block;
   -webkit-mask-image: var(--kod-fortune-standing);
   mask-image: var(--kod-fortune-standing);
 }
-.fortune[data-key='tradition'] .fortune__icon {
+.fortune-hall__seals .fortune__icon[data-key='tradition'] {
+  display: block;
   -webkit-mask-image: var(--kod-fortune-tradition);
   mask-image: var(--kod-fortune-tradition);
 }
 
 .fortune__name {
+  grid-area: name;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.3rem;
-  font-size: 1.12rem;
-  letter-spacing: 0.1em;
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #fff8f0;
-  margin: 0 0 0.5rem;
+  color: var(--kod-silver-dim);
+  margin: 0;
   line-height: 1.15;
 }
 
 .fortune__tree {
+  grid-area: mark;
   display: block;
-  width: 3.5rem;
-  height: 3.5rem;
-  margin: 0.12rem 0 0.35rem;
+  width: 5.1rem;
+  height: 5.1rem;
+  margin: 0;
   border-radius: 50%;
   background: var(--kod-tree-2) center / contain no-repeat;
-  filter: drop-shadow(0 0 8px rgba(90, 160, 70, 0.35));
-  box-shadow: 0 0 16px 2px rgba(90, 160, 70, 0.22);
-  transition: filter 0.18s ease, box-shadow 0.18s ease, background-image 0.18s ease;
+  box-shadow: 0 0 18px 3px var(--kod-leaf-glow);
+  transition: box-shadow 0.18s ease, background-image 0.18s ease;
 }
 
 .fortune[data-level='0'] .fortune__tree {
+  --kod-leaf-glow: rgba(198, 193, 184, 0.18);
   background-image: var(--kod-tree-0);
-  filter: drop-shadow(0 0 8px rgba(198, 193, 184, 0.28));
-  box-shadow: 0 0 14px 2px rgba(198, 193, 184, 0.16);
 }
 
 .fortune[data-level='1'] .fortune__tree {
+  --kod-leaf-glow: rgba(160, 24, 24, 0.32);
   background-image: var(--kod-tree-1);
-  filter: drop-shadow(0 0 10px rgba(160, 24, 24, 0.45));
-  box-shadow: 0 0 16px 2px rgba(160, 24, 24, 0.28);
 }
 
 .fortune[data-level='2'] .fortune__tree {
+  --kod-leaf-glow: rgba(90, 160, 70, 0.28);
   background-image: var(--kod-tree-2);
-  filter: drop-shadow(0 0 8px rgba(90, 160, 70, 0.4));
-  box-shadow: 0 0 16px 2px rgba(90, 160, 70, 0.24);
 }
 
 .fortune[data-level='3'] .fortune__tree {
+  --kod-leaf-glow: rgba(212, 175, 55, 0.34);
   background-image: var(--kod-tree-3);
-  filter: drop-shadow(0 0 12px rgba(212, 175, 55, 0.5));
-  box-shadow: 0 0 18px 3px rgba(212, 175, 55, 0.32);
 }
 
 .fortune__purpose {
@@ -510,7 +506,8 @@ section.kod-plate {
 
 /* Weather word is the reading — not a tank, not a 0–3 ledger. */
 .fortune__state {
-  font-size: 0.78rem;
+  grid-area: state;
+  font-size: 0.92rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--kod-silver);
@@ -518,16 +515,19 @@ section.kod-plate {
 }
 
 .fortune[data-level='0'] .fortune__state {
-  color: var(--kod-blood-bright);
-  text-shadow: 0 0 1px #8a8580;
-}
-
-.fortune[data-level='1'] .fortune__state {
   color: var(--kod-silver);
 }
 
+.fortune[data-level='1'] .fortune__state {
+  color: var(--kod-blood-bright);
+}
+
+.fortune[data-level='2'] .fortune__state {
+  color: #8fbf6a;
+}
+
 .fortune[data-level='3'] .fortune__state {
-  color: #c4d4b4;
+  color: #e0c56a;
 }
 
 .fortune__blurb {
@@ -648,9 +648,9 @@ section.kod-plate {
 .hier-ruler .hier-ruler__title::before {
   content: '';
   display: block;
-  width: 1.7rem;
-  height: 1.35rem;
-  margin: 0 auto 0.35rem;
+  width: 4.2rem;
+  height: 2.4rem;
+  margin: 0 auto 0.4rem;
   background-color: #c4a0e0;
   -webkit-mask: var(--kod-axis-ruler) center / contain no-repeat;
   mask: var(--kod-axis-ruler) center / contain no-repeat;
@@ -1001,23 +1001,23 @@ section.kod-plate {
     var(--kod-plate-wash),
     linear-gradient(
       180deg,
-      color-mix(in srgb, var(--hier-accent) 28%, #0c0a0a) 0%,
-      color-mix(in srgb, var(--hier-accent) 10%, #0a0808) 38%,
-      #080606 100%
+      color-mix(in srgb, var(--hier-accent) 42%, #141210) 0%,
+      color-mix(in srgb, var(--hier-accent) 16%, #100e0c) 42%,
+      #0a0808 100%
     );
   overflow: hidden;
 }
 
 .hier-axis[data-axis='arms'] {
-  --hier-accent: #3a3632;
+  --hier-accent: #4a4540;
   --hier-ink: #c8c2b8;
 }
 .hier-axis[data-axis='faith'] {
-  --hier-accent: #f2efe9;
+  --hier-accent: #c4bfb6;
   --hier-ink: #f2efe9;
 }
 .hier-axis[data-axis='coin'] {
-  --hier-accent: #d4af37;
+  --hier-accent: #c4a035;
   --hier-ink: #e0c56a;
 }
 .hier-axis[data-axis='blood'] {
@@ -1046,15 +1046,19 @@ section.kod-plate {
   }
 }
 
+.hier-axis__domain {
+  display: none;
+}
+
 .hier-axis__head {
   display: flex;
   flex-direction: column;
   align-items: center;
   flex: 0 0 auto;
   width: 100%;
-  min-height: 6.4rem;
+  min-height: 0;
   margin: 0;
-  padding: 0.7rem 0.55rem 0.65rem;
+  padding: 0.7rem 0.4rem 0.65rem;
   font: inherit;
   color: inherit;
   text-align: center;
@@ -1067,30 +1071,36 @@ section.kod-plate {
 .hier-axis__head::before {
   content: '';
   display: block;
-  width: 2.15rem;
-  height: 2.15rem;
-  margin: 0 auto 0.35rem;
+  margin: 0 auto 0.4rem;
   background-color: var(--hier-ink, var(--hier-accent));
   -webkit-mask: center / contain no-repeat;
   mask: center / contain no-repeat;
 }
 
 .hier-axis[data-axis='arms'] .hier-axis__head::before {
+  width: 2.8rem;
+  height: 3.4rem;
   -webkit-mask-image: var(--kod-axis-arms);
   mask-image: var(--kod-axis-arms);
 }
 
 .hier-axis[data-axis='faith'] .hier-axis__head::before {
+  width: 2.9rem;
+  height: 2.9rem;
   -webkit-mask-image: var(--kod-axis-faith);
   mask-image: var(--kod-axis-faith);
 }
 
 .hier-axis[data-axis='coin'] .hier-axis__head::before {
+  width: 3.15rem;
+  height: 3.15rem;
   -webkit-mask-image: var(--kod-axis-coin);
   mask-image: var(--kod-axis-coin);
 }
 
 .hier-axis[data-axis='blood'] .hier-axis__head::before {
+  width: 2.35rem;
+  height: 3.55rem;
   -webkit-mask-image: var(--kod-axis-blood);
   mask-image: var(--kod-axis-blood);
 }
