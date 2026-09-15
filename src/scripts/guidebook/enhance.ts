@@ -72,14 +72,30 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 
 	function mountCartouche(el) {
 		if (!el || el.querySelector(':scope > .kod-cn')) return;
+		const skin = document.createElement('span');
+		skin.className = 'kod-skin';
+		skin.setAttribute('aria-hidden', 'true');
+		const cs = getComputedStyle(el);
+		skin.style.background = cs.background;
+		skin.style.border = cs.border;
+		skin.style.boxShadow = cs.boxShadow;
+		el.style.background = 'none';
+		el.style.borderColor = 'transparent';
+		el.style.boxShadow = 'none';
+		const cutTl = document.createElement('span');
+		cutTl.className = 'kod-cut kod-cut--tl';
+		const cutTr = document.createElement('span');
+		cutTr.className = 'kod-cut kod-cut--tr';
+		skin.append(cutTl, cutTr);
 		const tl = document.createElement('span');
 		tl.className = 'kod-cn kod-cn--tl';
 		tl.setAttribute('aria-hidden', 'true');
 		const tr = document.createElement('span');
 		tr.className = 'kod-cn kod-cn--tr';
 		tr.setAttribute('aria-hidden', 'true');
-		el.insertBefore(tl, el.firstChild);
 		el.insertBefore(tr, el.firstChild);
+		el.insertBefore(tl, el.firstChild);
+		el.insertBefore(skin, el.firstChild);
 	}
 
 	/** Ensure asides have accessible names; icons are CSS ::before on the aside */
@@ -110,6 +126,20 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 			mountCartouche(el);
 		});
 		markQuoteAuthors();
+		markDefinedTerms();
+	}
+
+	function markDefinedTerms() {
+		const terms =
+			/^(Echoes?|Foundations?|Skills?|Traits?|Exertion|Harm|Tide|Omens?|Marks?|Hierarch(?:y|ies)|Fortunes?|Practice|Advantage|Disadvantage|Ruler|Decadence|Words?)$/i;
+		document.querySelectorAll('.sl-markdown-content strong').forEach((el) => {
+			if (el.closest('blockquote, a, table, .kod-seed, .kod-widget, .kod-hier-legend')) return;
+			const t = (el.textContent || '').trim();
+			if (!terms.test(t)) return;
+			const dfn = document.createElement('dfn');
+			dfn.textContent = t;
+			el.replaceWith(dfn);
+		});
 	}
 
 	function markQuoteAuthors() {
@@ -796,7 +826,12 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 				}
 			}
 
+			const kicker = root.querySelector('.kod-fortune-board__kicker');
+			const hint = root.querySelector('.kod-fortune-board__hint');
+			if (kicker && hint && kicker.nextElementSibling !== hint) kicker.after(hint);
+			root.querySelector('.kod-fortune-board__seals')?.remove();
 			cols.forEach((col) => {
+				col.querySelector('.kod-fortune__n')?.setAttribute('hidden', '');
 				if (!col.querySelector('.kod-fortune__tree')) {
 					const tree = document.createElement('span');
 					tree.className = 'kod-fortune__tree';
@@ -824,6 +859,56 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 			const modeBtns = [...root.querySelectorAll('[data-hier-mode]')];
 			const notes = [...root.querySelectorAll('[data-person-note]')];
 			const diagram = root.querySelector('.kod-hier-diagram');
+			root.querySelector('.kod-hier-legend')?.remove();
+			root.querySelector('.kod-hier-tiers')?.remove();
+			const frame = root.querySelector('.kod-hier__frame');
+			if (frame && diagram && frame.nextElementSibling !== diagram) diagram.before(frame);
+			const axes = root.querySelector('.kod-hier-axes');
+			root.querySelector('.kod-hier-row-rail')?.remove();
+			axes?.querySelectorAll(':scope > .kod-hier-row-mark').forEach((m) => m.remove());
+			root.querySelectorAll('.kod-hier-axis').forEach((ax) => {
+				const domain = ax.querySelector('.kod-hier-axis__domain');
+				ax.querySelectorAll('.kod-hier-rungs li > strong').forEach((st) => {
+					st.classList.add('kod-hier-rung-label');
+				});
+				if (!ax.querySelector('.kod-hier-axis__plate')) {
+					const plate = document.createElement('div');
+					plate.className = 'kod-hier-axis__plate';
+					const head = ax.querySelector('.kod-hier-axis__head');
+					const rungs = ax.querySelector('.kod-hier-rungs');
+					if (head) plate.appendChild(head);
+					if (rungs) plate.appendChild(rungs);
+					ax.appendChild(plate);
+				}
+				if (domain) {
+					domain.removeAttribute('hidden');
+					const plate = ax.querySelector('.kod-hier-axis__plate');
+					ax.insertBefore(domain, plate || ax.firstChild);
+				}
+			});
+			const porch = root.querySelector('.kod-hier-porch');
+			if (porch) {
+				let main = porch.querySelector('.kod-hier-porch__main');
+				if (!main) {
+					main = document.createElement('div');
+					main.className = 'kod-hier-porch__main';
+					porch.appendChild(main);
+				}
+				let head = main.querySelector('.kod-hier-porch__head');
+				if (!head) {
+					head = document.createElement('div');
+					head.className = 'kod-hier-porch__head';
+					main.insertBefore(head, main.firstChild);
+				}
+				const title = porch.querySelector('.kod-hier-porch__title');
+				const note = porch.querySelector('.kod-hier-porch__note');
+				if (title && title.parentElement !== head) head.appendChild(title);
+				if (note && note.parentElement !== head) head.appendChild(note);
+				[...porch.children].forEach((ch) => {
+					if (ch !== main) main.appendChild(ch);
+				});
+			}
+			root.querySelector('.kod-hier-ruler__note')?.removeAttribute('hidden');
 			let svg = root.querySelector('.kod-hier-links');
 			if (diagram && !svg) {
 				svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');

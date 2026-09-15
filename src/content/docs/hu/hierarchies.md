@@ -42,6 +42,14 @@ Az ábrát (Diagram) fentről lefelé olvasd: egy korona, aztán párhuzamos lé
 <button type="button" class="kod-chip" data-person="leif">Leif</button>
 <button type="button" class="kod-chip" data-person="sigrid">Sigrid</button>
 </div>
+<div class="kod-hier__frame" aria-live="polite">
+<p data-person-note="default">Kattints egy névre. Az az ember minden tengelyen kigyullad, ahol ül. A kettős tengely két fok egyszerre, nem ötödik létra. A Hit szándékosan üres — tengely játékban is maradhat névtelen.</p>
+<p data-person-note="ketill" hidden>Ketill az uralkodói helyen ül. A Véren emelkedett, és ott tisztelt maradt. Nem állhat a falon és az Althingon egyszerre, ezért a Fegyvert Hákont bízza. Hírnév: aki nyilvánosan megszégyeníteni próbálja, a saját foka és a minden tengely fölötti hely közti rést kapja.</p>
+<p data-person-note="hakon" hidden>Hákon a Fegyveren megbízott, mert Ketill marsallnak nevezte — ez megbízás, nem második uralkodó. Rokonságként elismert a Véren is. Kettős tengely: mindkét létra kigyullad. Senki sem uralkodik jól, ha nem adja le a munkát.</p>
+<p data-person-note="ingibjorg" hidden>Ingibjörg tisztelt a Pénzen — a malomkönyv. Leif pártfogója. A Fegyveren nem ül. Ha a csarnokban Leif ellen megy, a Pénz kétfoknyi rése a társas vagy szellemi sérülés védelmi aránya. A fikcióbeli befolyás szabad szerepjáték marad.</p>
+<p data-person-note="leif" hidden>Leif (játékos). Elismert a Fegyveren a tavalyi rajtaütésből. A Pénzen kitaszított volt, amíg Ingibjörg malomkönyv-visszhangja jól zárult; most elismert a Pénzen. Az emelkedés tengelyenként megy — a visszhang a Fegyvert nem mozdította. Kettős tengely: mindkét fok kigyullad.</p>
+<p data-person-note="sigrid" hidden>Sigrid kívülálló: a tornácon, egyik létrán sem. Ha belép a közösségbe, kitaszítottként indul a ráillő tengelyeken. A tornác az ábra mellett van, soha nem ötödik oszlop.</p>
+</div>
 <div class="kod-hier-diagram">
 <div class="kod-hier-ruler">
 <p class="kod-hier-ruler__title">Uralkodó</p>
@@ -51,9 +59,9 @@ Az ábrát (Diagram) fentről lefelé olvasd: egy korona, aztán párhuzamos lé
 <div class="kod-hier-body">
 <div class="kod-hier-axes">
 <div class="kod-hier-axis" data-axis="arms">
+<p class="kod-hier-axis__domain">Harci erő, védelem, háború, az erőszak joga</p>
 <div class="kod-hier-axis__head">
 <p class="kod-hier-axis__name">Fegyver</p>
-<p class="kod-hier-axis__domain">Harci erő, védelem, háború, az erőszak joga</p>
 </div>
 <ol class="kod-hier-rungs">
 <li><strong>Tisztelt</strong></li>
@@ -63,9 +71,9 @@ Az ábrát (Diagram) fentről lefelé olvasd: egy korona, aztán párhuzamos lé
 </ol>
 </div>
 <div class="kod-hier-axis" data-axis="faith">
+<p class="kod-hier-axis__domain">Szertartás, szent tudás, erkölcsi súly</p>
 <div class="kod-hier-axis__head">
 <p class="kod-hier-axis__name">Hit</p>
-<p class="kod-hier-axis__domain">Szertartás, szent tudás, erkölcsi súly</p>
 </div>
 <ol class="kod-hier-rungs">
 <li><strong>Tisztelt</strong></li>
@@ -75,9 +83,9 @@ Az ábrát (Diagram) fentről lefelé olvasd: egy korona, aztán párhuzamos lé
 </ol>
 </div>
 <div class="kod-hier-axis" data-axis="coin">
+<p class="kod-hier-axis__domain">Vagyon, kereskedelem, anyagi többlet, alkuerő</p>
 <div class="kod-hier-axis__head">
 <p class="kod-hier-axis__name">Pénz</p>
-<p class="kod-hier-axis__domain">Vagyon, kereskedelem, anyagi többlet, alkuerő</p>
 </div>
 <ol class="kod-hier-rungs">
 <li><strong>Tisztelt</strong> <button type="button" class="kod-chip" data-person="ingibjorg" data-play>Ingibjörg</button></li>
@@ -87,9 +95,9 @@ Az ábrát (Diagram) fentről lefelé olvasd: egy korona, aztán párhuzamos lé
 </ol>
 </div>
 <div class="kod-hier-axis" data-axis="blood">
+<p class="kod-hier-axis__domain">Rokonság, föld, származás, házi hatalom</p>
 <div class="kod-hier-axis__head">
 <p class="kod-hier-axis__name">Vér</p>
-<p class="kod-hier-axis__domain">Rokonság, föld, származás, házi hatalom</p>
 </div>
 <ol class="kod-hier-rungs">
 <li><strong>Tisztelt</strong> <button type="button" class="kod-chip" data-person="ketill" data-play>Ketill</button></li>
@@ -105,14 +113,6 @@ Az ábrát (Diagram) fentről lefelé olvasd: egy korona, aztán párhuzamos lé
 <p class="kod-hier-porch__note">Külön, amíg belépnek. Akkor kitaszított a rájuk illő tengelyeken.</p>
 </aside>
 </div>
-</div>
-<div class="kod-hier__frame" aria-live="polite">
-<p data-person-note="default">Kattints egy névre. Az az ember minden tengelyen kigyullad, ahol ül. A kettős tengely két fok egyszerre, nem ötödik létra. A Hit szándékosan üres — tengely játékban is maradhat névtelen.</p>
-<p data-person-note="ketill" hidden>Ketill az uralkodói helyen ül. A Véren emelkedett, és ott tisztelt maradt. Nem állhat a falon és az Althingon egyszerre, ezért a Fegyvert Hákont bízza. Hírnév: aki nyilvánosan megszégyeníteni próbálja, a saját foka és a minden tengely fölötti hely közti rést kapja.</p>
-<p data-person-note="hakon" hidden>Hákon a Fegyveren megbízott, mert Ketill marsallnak nevezte — ez megbízás, nem második uralkodó. Rokonságként elismert a Véren is. Kettős tengely: mindkét létra kigyullad. Senki sem uralkodik jól, ha nem adja le a munkát.</p>
-<p data-person-note="ingibjorg" hidden>Ingibjörg tisztelt a Pénzen — a malomkönyv. Leif pártfogója. A Fegyveren nem ül. Ha a csarnokban Leif ellen megy, a Pénz kétfoknyi rése a társas vagy szellemi sérülés védelmi aránya. A fikcióbeli befolyás szabad szerepjáték marad.</p>
-<p data-person-note="leif" hidden>Leif (játékos). Elismert a Fegyveren a tavalyi rajtaütésből. A Pénzen kitaszított volt, amíg Ingibjörg malomkönyv-visszhangja jól zárult; most elismert a Pénzen. Az emelkedés tengelyenként megy — a visszhang a Fegyvert nem mozdította. Kettős tengely: mindkét fok kigyullad.</p>
-<p data-person-note="sigrid" hidden>Sigrid kívülálló: a tornácon, egyik létrán sem. Ha belép a közösségbe, kitaszítottként indul a ráillő tengelyeken. A tornác az ábra mellett van, soha nem ötödik oszlop.</p>
 </div>
 <p class="kod-hier-caption">Ugyanaz a négy fok minden tengelyen. Egy karakter állhat magasan az egyiken és alacsonyan a másikon. Az uralkodói hely egyetlen, és minden tengely fölött ül.</p>
 </div>

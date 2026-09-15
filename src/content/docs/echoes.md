@@ -90,7 +90,7 @@ The community is tracked by five soft measures called **Fortunes**. They never p
 Fortunes are **not** a second character sheet. They describe the community **as a whole** — how healthy, fed, trusted, feared, and self-sure it is *on average*. That reading colours **every** encounter: player characters and NPCs alike, friend and foe. A village on Surplus 0 is not “the same scene with different dice”; hunger, thin stores, and the smell of want walk into every hall and road. Low Cohesion means suspicion flavours speech even between allies. High Standing means outsiders treat *anyone* of that community with more caution or courtesy. The Storyteller uses Fortunes as ambient pressure and opportunity — scene framing, NPC attitude, what “ordinary life” feels like — not as a stack of modifiers to grind every roll.
 
 <div class="kod-fortune-board not-content" data-widget="fortune-board" aria-label="Fortune impression board">
-<p class="kod-fortune-board__kicker">Ordinary weather — an illustration, not a campaign</p>
+<p class="kod-fortune-board__kicker">The Fortunes — Illustration</p>
 <div class="kod-fortune-board__row">
 <button type="button" class="kod-fortune kod-fortune--vitality" data-fortune="vitality" data-level="2">
 <span class="kod-fortune__icon" aria-hidden="true"></span>

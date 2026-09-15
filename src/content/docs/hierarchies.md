@@ -42,6 +42,14 @@ Read the diagram top-down: one crown, then parallel ladders. Each column is a se
 <button type="button" class="kod-chip" data-person="leif">Leif</button>
 <button type="button" class="kod-chip" data-person="sigrid">Sigrid</button>
 </div>
+<div class="kod-hier__frame" aria-live="polite">
+<p data-person-note="default">Click a name. That person lights on every axis they occupy. Dual-axis is two rungs at once, not a fifth ladder. Faith is empty on purpose — an axis can sit vacant in play.</p>
+<p data-person-note="ketill" hidden>Ketill holds the Ruler seat. He rose through Blood and still sits Honoured there. He cannot stand the wall and the Althing at once, so Arms is delegated to Hákon. Reputation: anyone trying to shame Ketill in public faces the gap from their rung to the seat above every axis.</p>
+<p data-person-note="hakon" hidden>Hákon is Trusted on Arms because Ketill named him marshal — that is delegation, not a second Ruler. He is also Acknowledged on Blood as kin. Dual-axis: both ladders light. No one rules well without handing the work down.</p>
+<p data-person-note="ingibjorg" hidden>Ingibjörg is Honoured on Coin — the mill accounts. She is Leif’s patron. She does not sit Arms. If she and Leif contest in the hall, the Coin gap (Honoured vs Acknowledged) is the protection ratio for social or mental Harm. Influence in fiction is still free roleplay.</p>
+<p data-person-note="leif" hidden>Leif (player). Acknowledged on Arms from last year’s raid. Was Outcast on Coin until Ingibjörg’s mill-ledger Echo resolved well; now Acknowledged on Coin. Climb is per axis — the Echo did not move Arms. Dual-axis: both rungs light.</p>
+<p data-person-note="sigrid" hidden>Sigrid is an Outsider: on the porch, not on any ladder. If she enters the community she begins Outcast on the axes that apply. The porch is beside the diagram, never a fifth column.</p>
+</div>
 <div class="kod-hier-diagram">
 <div class="kod-hier-ruler">
 <p class="kod-hier-ruler__title">Ruler</p>
@@ -51,9 +59,9 @@ Read the diagram top-down: one crown, then parallel ladders. Each column is a se
 <div class="kod-hier-body">
 <div class="kod-hier-axes">
 <div class="kod-hier-axis" data-axis="arms">
+<p class="kod-hier-axis__domain">Martial strength, protection, war, right to violence</p>
 <div class="kod-hier-axis__head">
 <p class="kod-hier-axis__name">Arms</p>
-<p class="kod-hier-axis__domain">Martial strength, protection, war, right to violence</p>
 </div>
 <ol class="kod-hier-rungs">
 <li><strong>Honoured</strong></li>
@@ -63,9 +71,9 @@ Read the diagram top-down: one crown, then parallel ladders. Each column is a se
 </ol>
 </div>
 <div class="kod-hier-axis" data-axis="faith">
+<p class="kod-hier-axis__domain">Ritual, sacred knowledge, moral weight</p>
 <div class="kod-hier-axis__head">
 <p class="kod-hier-axis__name">Faith</p>
-<p class="kod-hier-axis__domain">Ritual, sacred knowledge, moral weight</p>
 </div>
 <ol class="kod-hier-rungs">
 <li><strong>Honoured</strong></li>
@@ -75,9 +83,9 @@ Read the diagram top-down: one crown, then parallel ladders. Each column is a se
 </ol>
 </div>
 <div class="kod-hier-axis" data-axis="coin">
+<p class="kod-hier-axis__domain">Wealth, trade, material surplus, leverage</p>
 <div class="kod-hier-axis__head">
 <p class="kod-hier-axis__name">Coin</p>
-<p class="kod-hier-axis__domain">Wealth, trade, material surplus, leverage</p>
 </div>
 <ol class="kod-hier-rungs">
 <li><strong>Honoured</strong> <button type="button" class="kod-chip" data-person="ingibjorg" data-play>Ingibjörg</button></li>
@@ -87,9 +95,9 @@ Read the diagram top-down: one crown, then parallel ladders. Each column is a se
 </ol>
 </div>
 <div class="kod-hier-axis" data-axis="blood">
+<p class="kod-hier-axis__domain">Kinship, land, lineage, domestic authority</p>
 <div class="kod-hier-axis__head">
 <p class="kod-hier-axis__name">Blood</p>
-<p class="kod-hier-axis__domain">Kinship, land, lineage, domestic authority</p>
 </div>
 <ol class="kod-hier-rungs">
 <li><strong>Honoured</strong> <button type="button" class="kod-chip" data-person="ketill" data-play>Ketill</button></li>
@@ -105,14 +113,6 @@ Read the diagram top-down: one crown, then parallel ladders. Each column is a se
 <p class="kod-hier-porch__note">Apart until they enter. Then Outcast on the axes that apply.</p>
 </aside>
 </div>
-</div>
-<div class="kod-hier__frame" aria-live="polite">
-<p data-person-note="default">Click a name. That person lights on every axis they occupy. Dual-axis is two rungs at once, not a fifth ladder. Faith is empty on purpose — an axis can sit vacant in play.</p>
-<p data-person-note="ketill" hidden>Ketill holds the Ruler seat. He rose through Blood and still sits Honoured there. He cannot stand the wall and the Althing at once, so Arms is delegated to Hákon. Reputation: anyone trying to shame Ketill in public faces the gap from their rung to the seat above every axis.</p>
-<p data-person-note="hakon" hidden>Hákon is Trusted on Arms because Ketill named him marshal — that is delegation, not a second Ruler. He is also Acknowledged on Blood as kin. Dual-axis: both ladders light. No one rules well without handing the work down.</p>
-<p data-person-note="ingibjorg" hidden>Ingibjörg is Honoured on Coin — the mill accounts. She is Leif’s patron. She does not sit Arms. If she and Leif contest in the hall, the Coin gap (Honoured vs Acknowledged) is the protection ratio for social or mental Harm. Influence in fiction is still free roleplay.</p>
-<p data-person-note="leif" hidden>Leif (player). Acknowledged on Arms from last year’s raid. Was Outcast on Coin until Ingibjörg’s mill-ledger Echo resolved well; now Acknowledged on Coin. Climb is per axis — the Echo did not move Arms. Dual-axis: both rungs light.</p>
-<p data-person-note="sigrid" hidden>Sigrid is an Outsider: on the porch, not on any ladder. If she enters the community she begins Outcast on the axes that apply. The porch is beside the diagram, never a fifth column.</p>
 </div>
 <p class="kod-hier-caption">Same four rungs on every axis. A character may stand high on one and low on another. The Ruler seat is singular and sits above the whole set.</p>
 </div>

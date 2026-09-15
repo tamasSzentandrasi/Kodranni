@@ -91,7 +91,7 @@ A közösségnek öt lágy mértéke van: a **sorsok** (Fortunes). Soha nem adna
 A sorsok **nem** második karakterlap. Öt van: **életerő** (Vitality), **összetartás** (Cohesion), **bőség** (Surplus), **ismertség** (Standing), **hagyomány** (Tradition). A közösséget írják le **egészében** — milyen egészséges, táplált, összetartó, mennyire tartanak tőle, mennyire hisz magában *átlagban*. Ez **minden** találkozást színez: játékoskaraktert és NPC-t, barátot és ellenséget. Egy falu **bőség** 0-n nem „ugyanaz a jelenet más kockával”; az éhség, a vékony készlet és a hiány szaga bejár minden csarnokot és utat. Alacsony összetartás gyanút kever a beszédbe még szövetségesek között is. Magas ismertség azt jelenti, a kívülállók a közösség *bárkivel* óvatosabban vagy udvariasabban bánnak. A mesélő a sorsokat környezeti nyomásként és alkalomként használja — jelenetkeret, NPC viselkedése, milyen a „hétköznapi élet” —, nem módosítók halmazaként, amit minden dobásra rászór.
 
 <div class="kod-fortune-board not-content" data-widget="fortune-board" aria-label="Sors-benyomástábla">
-<p class="kod-fortune-board__kicker">Hétköznapi időjárás — szemléltetés, nem kampány</p>
+<p class="kod-fortune-board__kicker">A Sorsok — Szemléltetés</p>
 <div class="kod-fortune-board__row">
 <button type="button" class="kod-fortune kod-fortune--vitality" data-fortune="vitality" data-level="2">
 <span class="kod-fortune__icon" aria-hidden="true"></span>
