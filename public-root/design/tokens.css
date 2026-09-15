@@ -38,9 +38,12 @@
   --kod-c-br: url('./ornament/corner-br.png');
   --kod-page-end: url('./ornament/page-end.png');
   --kod-panel-corner: url('./ornament/panel-corner.png');
+  --kod-panel-cut: url('./ornament/panel-corner-cut.png');
+  --kod-panel-well: url('./ornament/panel-corner-well.png');
+  --kod-panel-well-tr: url('./ornament/panel-corner-well-tr.png');
   --kod-well-frame: url('./ornament/well-frame.png');
-  --kod-cartouche-corner: 2.35rem;
-  --kod-chamfer: 0.28rem;
+  --kod-cartouche-corner: 3.4rem;
+  --kod-chamfer: 0px;
   --kod-btn-end-l: url('./ornament/btn-end-l.png');
   --kod-btn-end-r: url('./ornament/btn-end-r.png');
   --kod-btn-glass: url('./ornament/btn-glass.png');
