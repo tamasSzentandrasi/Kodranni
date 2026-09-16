@@ -568,19 +568,21 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 			if (ladder && ladder.nextSibling) open.insertBefore(picks, ladder.nextSibling);
 			else open.insertBefore(picks, open.querySelector('.kod-folio') || open.firstChild);
 
-			const turn = document.createElement('div');
-			turn.className = 'kod-chronicle-turn pagination-links';
-			turn.hidden = true;
+			const stage = document.createElement('div');
+			stage.className = 'kod-chronicle-stage';
+			const bookSlot = document.createElement('div');
+			bookSlot.className = 'kod-chronicle-stage__book';
+			books.forEach((b) => bookSlot.appendChild(b));
 			const prevBtn = document.createElement('button');
 			prevBtn.type = 'button';
 			prevBtn.setAttribute('rel', 'prev');
-			prevBtn.innerHTML = '<span><span class="link-title"></span></span>';
+			prevBtn.setAttribute('aria-label', 'Previous page');
 			const nextBtn = document.createElement('button');
 			nextBtn.type = 'button';
 			nextBtn.setAttribute('rel', 'next');
-			nextBtn.innerHTML = '<span><span class="link-title"></span></span>';
-			turn.append(prevBtn, nextBtn);
-			open.appendChild(turn);
+			nextBtn.setAttribute('aria-label', 'Next page');
+			stage.append(prevBtn, bookSlot, nextBtn);
+			open.appendChild(stage);
 
 			const states = new Map();
 
@@ -721,16 +723,8 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 			function renderTurn(book) {
 				const st = states.get(book);
 				const n = st?.spreadStarts?.length || 1;
-				if (!st || isNarrow() || n <= 1) {
-					turn.hidden = true;
-					return;
-				}
-				turn.hidden = false;
-				prevBtn.disabled = st.spreadIndex <= 0;
-				nextBtn.disabled = st.spreadIndex >= n - 1;
-				const title = seedTitle(st.seeds[st.seedIndex]);
-				prevBtn.querySelector('.link-title').textContent = st.spreadIndex > 0 ? title : '';
-				nextBtn.querySelector('.link-title').textContent = st.spreadIndex < n - 1 ? title : '';
+				prevBtn.disabled = !st || st.spreadIndex <= 0;
+				nextBtn.disabled = !st || st.spreadIndex >= n - 1;
 			}
 
 			function relayout(book) {
@@ -767,7 +761,6 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 				});
 				if (ladder) ladder.classList.remove('is-in');
 				picks.hidden = true;
-				turn.hidden = true;
 			}
 
 			function openBook(id) {
