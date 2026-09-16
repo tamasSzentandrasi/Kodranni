@@ -91,7 +91,7 @@ async function loadConfig(slug: string): Promise<CampaignConfig> {
 
 function publicTableUrl(slug: string): string {
   const host = productPublicEdgeUrl(slug).replace(/\/$/, '');
-  if (slug === 'vardmark' || slug === 'demo' || slug === 'play') return `${host}/community/`;
+  if (slug === 'aspalath' || slug === 'demo' || slug === 'play') return `${host}/community/`;
   return `${host}/community/?campaign=${encodeURIComponent(slug)}`;
 }
 
@@ -241,7 +241,7 @@ async function main(): Promise<void> {
     const store = openSqliteStore(cfg.storePath);
     if (demoCharactersPresent(store)) {
       store.close();
-      console.log(`Demo already present for ${slug} (torvald, leifr).`);
+      console.log(`Demo already present for ${slug} (nerio, stana).`);
       console.log(`  store: ${cfg.storePath}`);
       console.log(
         `  Recreate (destroys the campaign directory): kodranni campaign seed-demo --slug ${slug} --force`,
@@ -252,7 +252,7 @@ async function main(): Promise<void> {
     store.close();
     console.log(`Seeded demo: ${cfg.name} (${cfg.slug})`);
     console.log(`  store: ${cfg.storePath}`);
-    console.log(`  characters: torvald, leifr`);
+    console.log(`  characters: nerio, stana`);
     console.log(
       `  tunnel: ${cfg.tunnelMode ?? 'quick'}` +
         (cfg.tunnelHostname ? ` · ${cfg.tunnelHostname}` : '') +

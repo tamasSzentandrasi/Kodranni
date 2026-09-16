@@ -146,8 +146,8 @@ describe('applyMachineDefaults', () => {
   });
 
   it('fills product edge URLs when toml/env omit them', () => {
-    const cfg = applyMachineDefaults({ ...base, slug: 'vardmark' }, {});
-    expect(cfg.edgeUrl).toBe(productPublicEdgeUrl('vardmark'));
+    const cfg = applyMachineDefaults({ ...base, slug: 'aspalath' }, {});
+    expect(cfg.edgeUrl).toBe(productPublicEdgeUrl('aspalath'));
     expect(cfg.edgeControlUrl).toBe(PRODUCT_EDGE_CONTROL_URL);
     expect(cfg.edgeUrl).toBe('https://demo.kodranni.com');
   });

@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { demoLeifr, demoTorvald } from '../src/seed.js';
+import { demoNerio, demoStana } from '../src/seed.js';
 import { refreshCharacterDerived } from '../src/derived.js';
 
 describe('refreshCharacterDerived', () => {
   it('Guidebook capacity profile: max(2,1)+2+2 = 6; Exertion 2+2+1 = 5', () => {
-    const ch = demoLeifr();
+    const ch = demoStana();
     expect(ch.echoCapacity).toBe(6);
     expect(ch.exertion.max).toBe(5);
     expect(ch.echoWeight).toBe(6);
@@ -13,7 +13,7 @@ describe('refreshCharacterDerived', () => {
   });
 
   it('Decadence when no active Echoes', () => {
-    const ch = demoTorvald();
+    const ch = demoNerio();
     ch.echoes = [];
     refreshCharacterDerived(ch);
     expect(ch.flags.decadence).toBe(true);
@@ -21,14 +21,14 @@ describe('refreshCharacterDerived', () => {
   });
 
   it('resolved Echoes do not count toward weight', () => {
-    const ch = demoTorvald();
-    // Torvald has one active weight-2 and one resolved weight-1
+    const ch = demoNerio();
+    // Nerio has one active weight-2 and one resolved weight-1
     expect(ch.echoes.some((e) => e.resolved)).toBe(true);
     expect(ch.echoWeight).toBe(2);
   });
 
   it('flags overCapacity when weight exceeds capacity', () => {
-    const ch = demoTorvald();
+    const ch = demoNerio();
     ch.echoes = [
       { title: 'a', weight: 3, invokeWhen: 'x' },
       { title: 'b', weight: 3, invokeWhen: 'y' },

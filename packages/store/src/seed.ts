@@ -6,31 +6,31 @@ import { refreshCharacterDerived } from './derived.js';
 import { makeEcho } from './echo-effects.js';
 import { upsertFactionLabel, upsertTagLabel } from './labels.js';
 
-/** Demo identity: Guidebook seed “The Vardmark at Kelarn’s Bend”. */
-export const DEMO_SEED_ID = 'vardmark-kelarns-bend';
-export const DEMO_SLUG = 'vardmark';
-export const DEMO_NAME = 'The Vardmark at Kelarn’s Bend';
+/** Demo identity: Guidebook seed “Aspalath, after the count was stabbed”. */
+export const DEMO_SEED_ID = 'aspalath-after-the-count';
+export const DEMO_SLUG = 'aspalath';
+export const DEMO_NAME = 'Aspalath';
 
 export function demoCharactersPresent(store: CommunityStorePort): boolean {
-  return Boolean(store.getCharacterBySlug('torvald') && store.getCharacterBySlug('leifr'));
+  return Boolean(store.getCharacterBySlug('nerio') && store.getCharacterBySlug('stana'));
 }
 
-/** Torvald Adzeson — carpenter who holds the seized grain store. */
-export function demoTorvald(): CharacterRecord {
+/** Nerio Calva — mason, Velatri client; cisterns and the commune’s loading crane. */
+export function demoNerio(): CharacterRecord {
   const ch: CharacterRecord = {
     id: randomUUID(),
-    slug: 'torvald',
-    name: 'Torvald Adzeson',
+    slug: 'nerio',
+    name: 'Nerio Calva',
     kind: 'pc',
     status: 'active',
     communityTie:
-      'Vardmark of Kelarn’s Bend — took the ground in the fall of Kelarn; holds the shared grain store the warband still uses as spoils and ration.',
+      'Client of House Velatri. Keeps the cisterns and the loading crane in repair.',
     whoWeSee:
-      'A quiet man who measures twice — timber, grain, and what is still owed after a taking.',
+      'Mason. Lime on his sleeves. Eats at Velatri tables when they remember him. People come to him when the cisterns crack or the crane sticks.',
     player: {
       platform: 'local',
-      displayName: 'Torvald',
-      accountId: 'local-torvald',
+      displayName: 'Nerio',
+      accountId: 'local-nerio',
     },
     foundations: {
       Strength: 2,
@@ -118,27 +118,27 @@ export function demoTorvald(): CharacterRecord {
     exertion: { current: 4, max: 0 },
     echoes: [
       makeEcho({
-        title: 'Keep the seized grain store standing through the first winter',
+        title: 'Keep the cisterns and the loading crane sound until the count is elected',
         weight: 2,
         invokeWhen:
-          'When the roll is about defending, repairing, rationing, or proving the warband still holds the grain store at Kelarn’s Bend.',
-        note: 'Patched after the taking — still the proof the Bend is theirs to keep or lose.',
-        groupLabel: 'Store-wardens',
+          'When the roll is about defending, repairing, or proving Aspalath still holds water and the loading crane.',
+        note: 'Patched after last winter’s crack. The Council drinks from these cisterns. House Moro unloads without the crane.',
+        groupLabel: 'Cistern-wardens',
         group: [
-          { name: 'Torvald Adzeson', characterSlug: 'torvald' },
-          { name: 'Halla Ketilsdottir', note: 'Keeps the mill ledger; counts what leaves the store.' },
-          { name: 'Gorm Audunsson', note: 'Spoils-counter; loyalty follows the key.' },
+          { name: 'Nerio Calva', characterSlug: 'nerio' },
+          { name: 'Agnese Orsani', note: 'Keeps the account of what the commune owes the last galley’s widows.' },
+          { name: 'Piero Moro', note: 'Salt and warehouse; unloads without the commune’s crane.' },
         ],
       }),
       makeEcho({
-        title: 'Raise a sound roof over the hall before the freeze locks the ford',
+        title: 'Finish the crane seam before the oil is pressed',
         weight: 1,
         invokeWhen:
-          'When the work is carpentry, timber, or finishing the hall roof against weather — and the table agrees winter is the pressure.',
-        note: 'Personal craft pride; the hall still leaks on the river side.',
+          'When the work is masonry, timber, or finishing a seam against weather — and the table agrees the election is the pressure.',
+        note: 'The harbour-side seam still weeps.',
         resolved: {
           narrative:
-            'The river-side seam held through the first hard frost. The hall no longer drips on the high bench — Torvald’s name is spoken when the roof is praised.',
+            'The harbour-side seam held through the first hard rain. The crane no longer drips on the weights. People say Nerio’s name when they talk about the crane.',
           at: '2025-11-02',
         },
       }),
@@ -166,9 +166,9 @@ export function demoTorvald(): CharacterRecord {
       foodDays: 2,
       waterDays: 3,
       items: [
-        { name: 'Adze', note: 'Taken timber work; edge needs re-peening after the store roof.' },
+        { name: 'Adze', note: 'Stone and timber work; edge needs re-peening after the cistern lip.' },
         { name: 'Wool cloak', note: 'Dry; no spare for a second person.' },
-        { name: 'Pitch pot', note: 'Half-full; enough for one more seam on the seized store.' },
+        { name: 'Pitch pot', note: 'Half-full; enough for one more seam on the crane.' },
       ],
     },
     flags: { decadence: false, overCapacity: false },
@@ -176,22 +176,22 @@ export function demoTorvald(): CharacterRecord {
   return refreshCharacterDerived(ch);
 }
 
-/** Leifr Ketilsson — Guidebook capacity profile at the ford. */
-export function demoLeifr(): CharacterRecord {
+/** Stana Krstova — boat family; night watch on the harbour chain. */
+export function demoStana(): CharacterRecord {
   const ch: CharacterRecord = {
     id: randomUUID(),
-    slug: 'leifr',
-    name: 'Leifr Ketilsson',
+    slug: 'stana',
+    name: 'Stana Krstova',
     kind: 'pc',
     status: 'active',
     communityTie:
-      'Took part in the burning and the taking of Kelarn’s Bend; claims the upper fields still black from last year’s fire.',
+      'Boat family of Aspalath. Holds the night watch on the harbour chain. Her sister’s children eat from her catch.',
     whoWeSee:
-      'A hard bargainer who still answers when the ford is threatened — conqueror’s claim, not a neighbour’s.',
+      'Commands the night watch on the harbour chain. Her sister’s children eat from her catch. She will not send rowers to Vessara.',
     player: {
       platform: 'discord',
-      displayName: 'Leifr',
-      accountId: 'demo-discord-leifr',
+      displayName: 'Stana',
+      accountId: 'demo-discord-stana',
     },
     foundations: {
       Strength: 2,
@@ -263,7 +263,7 @@ export function demoLeifr(): CharacterRecord {
         threshold: 24,
         foundation: 'Dexterity',
       },
-      // Wayfarer edge for ford work
+      // Wayfarer edge for harbour work
       {
         name: 'Scouting',
         rating: 1,
@@ -287,35 +287,35 @@ export function demoLeifr(): CharacterRecord {
         foundation: 'Intellect',
       },
     ],
-    traits: [{ name: 'Scarred knuckles', note: 'From the taking of the shore — not from sport.' }],
+    traits: [{ name: 'Scarred knuckles', note: 'From the last galley, not from sport.' }],
     exertion: { current: 5, max: 0 },
     echoes: [
       makeEcho({
-        title: 'Hold Kelarn’s Bend ford until the hostages return',
+        title: 'Hold the harbour chain until the Council names a count',
         weight: 3,
         invokeWhen:
-          'When the roll is about holding, contesting, or barging the ford at Kelarn’s Bend — defence, crossing, hostages, or rivals who mean to take it.',
-        note: 'The ford is the claim; lose it and the Bend is only ash and talk.',
+          'When the roll is about holding, contesting, or opening the harbour chain at Aspalath — defence, rowers, Vessara, or Ravna taking the cargo.',
+        note: 'Lose the chain and ships land where they please.',
       }),
       makeEcho({
-        title: 'Keep the ford watch paid and fed through the freeze',
+        title: 'Keep the harbour watch paid and fed through vintage',
         weight: 2,
         invokeWhen:
-          'When the roll is about the ford watch’s loyalty, pay, food, desertion, or keeping Sten’s line from walking off in the cold.',
-        groupLabel: 'Ford watch',
+          'When the roll is about the harbour watch’s loyalty, pay, food, desertion, or keeping Vuk’s line from walking back to Osoje.',
+        groupLabel: 'Harbour watch',
         group: [
-          { name: 'Leifr Ketilsson', characterSlug: 'leifr' },
-          { name: 'Sten Vebjornsson', note: 'Eager; unpaid enough to leave if the freeze bites hard.' },
-          { name: 'Ase River-step', note: 'Young spear on the night shift; fears the marsh channels.' },
-          { name: 'Bjorn One-ear', note: 'Veteran of the taking; drinks the pay first.' },
+          { name: 'Stana Krstova', characterSlug: 'stana' },
+          { name: 'Vuk Osojanin', note: 'Kin from Osoje; unpaid enough to take his flocks elsewhere.' },
+          { name: 'Jakov', note: 'Young spear on the night shift; watches for Vessaran hulls.' },
+          { name: 'Brane', note: 'Last-galley veteran; drinks the pay first.' },
         ],
       }),
       makeEcho({
-        title: 'Bring his sister’s children through the first winter on seized ground',
+        title: 'Feed her sister’s children through the thin olive year',
         weight: 1,
         invokeWhen:
-          'When the roll is about shelter, food, or safety for his sister’s children on occupied ground — not abstract “winter survival” for the warband alone.',
-        note: 'Personal stake: the occupation must feed more than pride.',
+          'When the roll is about shelter, food, or safety for her sister’s children in the harbour lanes — not abstract survival for the Council alone.',
+        note: 'The catch has to feed more than a closed Council.',
       }),
     ],
     echoCapacity: 0,
@@ -413,15 +413,19 @@ function demoHallNpc(opts: {
   return refreshCharacterDerived(ch);
 }
 
-/** @deprecated use demoTorvald */
-export const demoTomas = demoTorvald;
-/** @deprecated use demoLeifr */
-export const demoEira = demoTorvald;
-/** @deprecated use demoLeifr */
-export const demoLeif = demoLeifr;
-export const demoCapacityProfile = (name = 'Leifr Ketilsson') => {
-  const ch = demoLeifr();
-  if (name !== 'Leifr Ketilsson' && name !== 'Leif') {
+/** @deprecated use demoNerio */
+export const demoTorvald = demoNerio;
+/** @deprecated use demoStana */
+export const demoLeifr = demoStana;
+/** @deprecated use demoNerio */
+export const demoTomas = demoNerio;
+/** @deprecated use demoNerio */
+export const demoEira = demoNerio;
+/** @deprecated use demoStana */
+export const demoLeif = demoStana;
+export const demoCapacityProfile = (name = 'Stana Krstova') => {
+  const ch = demoStana();
+  if (name !== 'Stana Krstova' && name !== 'Leva of the Chain' && name !== 'Leifr Ketilsson' && name !== 'Leif') {
     ch.name = name;
     ch.slug = name.toLowerCase().replace(/\s+/g, '-');
   }
@@ -436,99 +440,104 @@ export function seedDemoCampaign(
   const community = emptyCommunity(slug, name);
   community.fortunes = {
     vitality: 1,
-    cohesion: 2,
-    surplus: 1,
-    standing: 1,
+    cohesion: 1,
+    surplus: 2,
+    standing: 2,
     tradition: 2,
   };
   community.fortunesFoundedAt = '2026-08-01T12:00:00.000Z';
   community.myths = [
     {
-      title: 'Kelarn’s Fall',
+      title: 'The Count on the Steps',
       summary:
-        'The Vardmark helped pull down the river empire — burning and taking — and hold Kelarn’s Bend as conquerors, not as invited guests.',
+        'Rade Velatri was stabbed on the cathedral steps at vintage. The election is this moon. The stone still holds the blood.',
       effects: [
         {
           kind: 'advantage',
-          label: 'Advantage when enforcing claim on the burned fields',
-          detail: 'When Myth is tagged and the scene is about holding what was taken.',
+          label: 'Advantage when proving who may name a count',
+          detail: 'When Myth is tagged and the scene is about the election, the letter, or the steps.',
         },
         {
           kind: 'tide_mod',
-          label: 'Tide start +1 defending the Bend ford',
-          detail: 'When a Tide is opened to hold the ford at Kelarn’s Bend against rivals or survivors.',
+          label: 'Tide start +1 holding the marketplace during the naming',
+          detail: 'When a Tide is opened to hold the marketplace, the Council, or the cathedral steps.',
         },
       ],
     },
     {
-      title: 'Reed-Marsh Compact',
+      title: 'Moro’s Warehouse',
       summary:
-        'Grain and silence bought from the marsh folk under the shadow of the warband — trade that can turn to blood.',
+        'The commune’s loading crane is how the Council takes its due on cargo. House Moro unloads from its own warehouse without it. Both feed Aspalath. Albaran and Vessara have a hand in both.',
       effects: [
         {
           kind: 'disadvantage',
-          label: 'Disadvantage if the Compact is broken in the scene',
-          detail: 'When Myth is tagged and the table rules the Compact is at stake.',
+          label: 'Disadvantage if the crane is forced in the scene',
+          detail: 'When Myth is tagged and the table rules the crane or Moro’s warehouse is at stake.',
         },
         {
           kind: 'omen_faces',
-          label: 'Omen 4 = marsh messenger',
+          label: 'Omen 4 = Vessaran hulls',
           faces: [4],
         },
       ],
     },
   ];
-  const torvald = demoTorvald();
-  const leifr = demoLeifr();
-  const halla = demoHallNpc({
-    slug: 'halla',
-    name: 'Halla Ketilsdottir',
-    whoWeSee: 'Keeps the mill ledger after the taking; quiet power over grain counts.',
-    communityTie: 'Widow of a Bend man — still claims kin-right in the hall.',
+  const nerio = demoNerio();
+  const stana = demoStana();
+  const agnese = demoHallNpc({
+    slug: 'agnese',
+    name: 'Agnese Orsani',
+    whoWeSee:
+      'Orsani widow. Keeps the account of what the commune still owes the widows of the last galley.',
+    communityTie: 'House Orsani by marriage. The widows come to her before they come to the count.',
     hierarchy: [
       { axis: 'Coin', tier: 'Trusted' },
       { axis: 'Blood', tier: 'Acknowledged' },
     ],
   });
-  const rurik = demoHallNpc({
-    slug: 'rurik',
-    name: 'Rurik Hrafnsson',
-    whoWeSee: 'Speaks for the dead of the Bend and the living oaths of the Vardmark.',
+  const lovro = demoHallNpc({
+    slug: 'lovro',
+    name: 'Canon Lovro',
+    whoWeSee:
+      'Serves in the cathedral, in Latin. Boat families bury in their own tongue. He will refuse a burial if the chapter is crossed.',
     hierarchy: [{ axis: 'Faith', tier: 'Honoured' }],
   });
-  const sten = demoHallNpc({
-    slug: 'sten',
-    name: 'Sten Vebjornsson',
-    whoWeSee: 'Leifr’s ford watch; eager, unpaid enough to leave if the freeze bites hard.',
+  const vuk = demoHallNpc({
+    slug: 'vuk',
+    name: 'Vuk Osojanin',
+    whoWeSee:
+      'Shepherd from Osoje above the town. Brings cheese. Not a burgher. Kin to Stana. Will take his flocks elsewhere if the Velatri elect the boy and forget the hills.',
     hierarchy: [{ axis: 'Arms', tier: 'Trusted' }],
   });
-  const bera = demoHallNpc({
-    slug: 'bera',
-    name: 'Bera Unfree',
-    whoWeSee: 'Survived the taking; kept as labour on the fields. Watches the river more than the hall.',
-    hierarchy: [{ axis: 'Blood', tier: 'Outcast' }],
+  const orsa = demoHallNpc({
+    slug: 'orsa',
+    name: 'Orsa Velatri',
+    whoWeSee:
+      'Sister of the dead count. She wants the Council to elect his son, who is twelve, so the house keeps the countship.',
+    hierarchy: [{ axis: 'Blood', tier: 'Trusted' }],
   });
-  const gorm = demoHallNpc({
-    slug: 'gorm',
-    name: 'Gorm Audunsson',
-    whoWeSee: 'Counts spoils for whoever holds the store tonight; loyalty follows the key.',
-    hierarchy: [{ axis: 'Coin', tier: 'Outcast' }],
+  const piero = demoHallNpc({
+    slug: 'piero',
+    name: 'Piero Moro',
+    whoWeSee:
+      'Holds the salt pans and a warehouse that unloads without the commune’s crane. Will put men in the marketplace if the Council will not let his house vote.',
+    hierarchy: [{ axis: 'Coin', tier: 'Acknowledged' }],
   });
-  const npcs = [halla, rurik, sten, bera, gorm];
+  const npcs = [agnese, lovro, vuk, orsa, piero];
   community.placements = [
     {
-      name: torvald.name,
+      name: nerio.name,
       axis: 'Coin',
       tier: 'Acknowledged',
-      characterSlug: torvald.slug,
-      note: torvald.whoWeSee,
+      characterSlug: nerio.slug,
+      note: nerio.whoWeSee,
     },
     {
-      name: leifr.name,
+      name: stana.name,
       axis: 'Arms',
       tier: 'Acknowledged',
-      characterSlug: leifr.slug,
-      note: leifr.whoWeSee,
+      characterSlug: stana.slug,
+      note: stana.whoWeSee,
     },
     ...npcs.flatMap((ch) =>
       ch.hierarchy.map((h) => ({
@@ -540,46 +549,48 @@ export function seedDemoCampaign(
       })),
     ),
   ];
-  const reed = upsertFactionLabel(community, 'Reed-marsh folk', 142);
-  const rival = upsertFactionLabel(community, 'Rival war-band', 18);
-  const grain = upsertTagLabel(community, 'Grain store');
-  const ford = upsertTagLabel(community, 'Ford watch');
-  const captives = upsertTagLabel(community, 'Captives');
+  const velatri = upsertFactionLabel(community, 'House Velatri', 38);
+  const moro = upsertFactionLabel(community, 'House Moro', 48);
+  const osoje = upsertFactionLabel(community, 'Osoje', 142);
+  const crane = upsertTagLabel(community, 'Loading crane');
+  const chain = upsertTagLabel(community, 'Harbour chain');
+  const letter = upsertTagLabel(community, 'Albaran letter');
   community.outsiders = [
     {
-      name: 'Mara of the Reeds',
-      note: 'Speaks for grain and silence; will not bleed free for foreign occupiers at the Bend.',
-      labelIds: [reed.id],
+      name: 'Matteo Rinaldi',
+      note: 'From Albaran. Carries the seal and the letter. The inland crown wants a say in who is count.',
+      labelIds: [velatri.id, letter.id],
     },
     {
-      name: 'Jorun of the Channels',
-      note: 'Scout of the channels; knows every path that can starve or feed the ford.',
-      labelIds: [reed.id],
+      name: 'Luca Bandi',
+      note: 'Consul for Vessara. Rents a house. Coin for rowers. Ships a night’s sail off.',
+      labelIds: [moro.id, chain.id],
     },
     {
-      name: 'Skard Ketilsson',
-      note: 'Same campaign of conquest; means to stake the next ford before the Vardmark hardens theirs.',
-      labelIds: [rival.id, ford.id],
+      name: 'Anselm',
+      note: 'Legate of Loryn. Older privilege to name the bishop.',
+      labelIds: [velatri.id],
     },
     {
-      name: 'Inga Skardsdottir',
-      note: 'Herald and bargainer for the rival band — offers terms that never quite favour the Vardmark.',
-      labelIds: [rival.id],
+      name: 'Duje Ravnjanin',
+      note: 'Buys oil after dark for Ravna, the harbour across the bay.',
+      labelIds: [moro.id],
     },
   ];
-  torvald.labelIds = [grain.id];
-  leifr.labelIds = [ford.id];
-  sten.labelIds = [ford.id];
-  bera.labelIds = [captives.id];
+  nerio.labelIds = [crane.id, velatri.id];
+  stana.labelIds = [chain.id];
+  vuk.labelIds = [chain.id, osoje.id];
+  orsa.labelIds = [velatri.id];
+  piero.labelIds = [moro.id];
   community.ruler = null;
 
   store.putCommunity(community);
-  store.putCharacter(torvald);
-  store.putCharacter(leifr);
+  store.putCharacter(nerio);
+  store.putCharacter(stana);
   for (const npc of npcs) store.putCharacter(npc);
   store.appendEvent({
     type: 'CampaignSeeded',
     payload: { slug, seed: DEMO_SEED_ID },
   });
-  return { community, character: torvald };
+  return { community, character: nerio };
 }

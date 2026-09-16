@@ -71,7 +71,7 @@ Private window:
 | ID | Try this | Status | Notes |
 |----|----------|--------|-------|
 | 1.1 | `https://demo.kodranni.com/community/` is an **archive** hall (plate, Find, Fortunes) |  | |
-| 1.2 | `https://kodranni.com/community/?campaign=vardmark` archive as well |  | |
+| 1.2 | `https://kodranni.com/community/?campaign=aspalath` archive as well |  | |
 | 1.3 | Discord `/roll` while dark: ephemeral “table is not live” + archive URL. No host call. |  | |
 
 **Feedback (dark)**
@@ -95,7 +95,7 @@ Opens `http://127.0.0.1:8742/operator`. Ctrl+C later — do not `start` yet.
 |----|----------|--------|-------|
 | 2.1 | Command has **no** `npm run`, **no** `--tunnel --bot` |  | |
 | 2.2 | Desk loads. It says **Campaign** (name + slug), not “community name” |  | |
-| 2.3 | Public URL is `https://kodranni.com/community/?campaign=<slug>` (Vardmark demo stays `demo.kodranni.com`) |  | |
+| 2.3 | Public URL is `https://kodranni.com/community/?campaign=<slug>` (Aspalath demo stays `demo.kodranni.com`) |  | |
 | 2.4 | Restore path (if you used `--from` or the Restore form): hall/sheets match the snapshot, no Discord snowflakes in the JSON |  | |
 | 2.5 | Emissary (`/emissary` or `kodranni emissary`) does **not** tell you to write `discord-botToken` |  | |
 

@@ -32,7 +32,7 @@ kodranni start
 kodranni stop
 ```
 
-Players open `https://kodranni.com/community/?campaign=<id>` (Vardmark showcase is `https://demo.kodranni.com/community/`). On the operator desk: invite the official Discord app, then pick guild, play channel, and Storyteller role. The bot token stays on the Worker.
+Players open `https://kodranni.com/community/?campaign=<id>` (Aspalath showcase is `https://demo.kodranni.com/community/`). On the operator desk: invite the official Discord app, then pick guild, play channel, and Storyteller role. The bot token stays on the Worker.
 
 Own domain means **own hosting** (deploy `apps/edge` on your Cloudflare). See `docs/plans/storyteller-host.md`.
 
@@ -44,7 +44,7 @@ npm run kodranni -- --name "Your campaign"
 npm run kodranni -- start
 ```
 
-Vardmark demo (author machine): `npm run kodranni -- campaign seed-demo` then `kodranni start --slug vardmark`.
+Aspalath demo (author machine): `npm run kodranni -- campaign seed-demo` then `kodranni start --slug aspalath`.
 
 ---
 

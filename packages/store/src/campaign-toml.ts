@@ -73,7 +73,7 @@ export const PRODUCT_EDGE_CONTROL_URL = 'https://kodranni-edge.kodranni.workers.
 
 /** Player-facing hostname on our zone. Showcase slug uses demo.; tables use apex + ?campaign=. */
 export function productPublicEdgeUrl(slug: string): string {
-  if (slug === 'vardmark' || slug === 'demo' || slug === 'play') {
+  if (slug === 'aspalath' || slug === 'demo' || slug === 'play') {
     return 'https://demo.kodranni.com';
   }
   return 'https://kodranni.com';

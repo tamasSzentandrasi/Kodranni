@@ -9,7 +9,7 @@ const snap: PublicSnapshot = {
   schemaVersion: 2,
   community: {
     slug: 'vardmark',
-    name: 'The Vardmark at Kelarn’s Bend',
+    name: 'Aspalath',
     fortunes: { vitality: 1, cohesion: 2, surplus: 1, standing: 1, tradition: 2 },
     myths: [
       {
@@ -22,7 +22,7 @@ const snap: PublicSnapshot = {
     ruler: 'Halla the Red',
     rulerCharacterSlug: 'halla',
     placements: [
-      { name: 'Torvald Adzeson', axis: 'Coin', tier: 'Trusted', characterSlug: 'torvald' },
+      { name: 'Nerio Calva', axis: 'Coin', tier: 'Trusted', characterSlug: 'nerio' },
     ],
     outsiders: [{ name: 'Ash-fen envoy', faction: 'Ash-fen', note: 'Watches the ford.' }],
     factions: [{ name: 'Ash-fen', hue: 140 }],
@@ -31,7 +31,7 @@ const snap: PublicSnapshot = {
     {
       id: '1',
       slug: 'torvald',
-      name: 'Torvald Adzeson',
+      name: 'Nerio Calva',
       kind: 'pc',
       status: 'active',
       communityTie: 'Holds the grain store.',
@@ -101,8 +101,8 @@ describe('renderArchivePage', () => {
     expect(html).toContain('Fortunes');
     expect(html).toContain('data-hall-search');
     expect(html).toContain('Find');
-    expect(html).toContain('The Vardmark at Kelarn’s Bend');
-    expect(html).toContain('Torvald Adzeson');
+    expect(html).toContain('Aspalath');
+    expect(html).toContain('Nerio Calva');
     expect(html).toContain('Hierarchy');
     expect(html).toContain('Arms');
     expect(html).toContain('class="src">archive');
@@ -130,7 +130,7 @@ describe('renderArchivePage', () => {
 
   it('renders the roster and a read-only sheet', () => {
     const roster = renderArchivePage(JSON.stringify(snap), '/characters/', new URLSearchParams());
-    expect(roster?.html).toContain('Torvald Adzeson');
+    expect(roster?.html).toContain('Nerio Calva');
     const sheet = renderArchivePage(
       JSON.stringify(snap),
       '/characters/torvald/',

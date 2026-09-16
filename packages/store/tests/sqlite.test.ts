@@ -28,7 +28,7 @@ describe('sqlite store', () => {
     const path = join(dir, 'community.sqlite');
     const store = openSqliteStore(path);
     seedDemoCampaign(store);
-    const torvaldRec = store.getCharacterBySlug('torvald')!;
+    const torvaldRec = store.getCharacterBySlug('nerio')!;
     store.putCharacter({
       ...torvaldRec,
       player: {
@@ -50,25 +50,25 @@ describe('sqlite store', () => {
     });
 
     const snap = store.toPublicSnapshot();
-    expect(snap.community.slug).toBe('vardmark');
+    expect(snap.community.slug).toBe('aspalath');
     expect('pendingMoves' in snap.community).toBe(false);
     expect('fortuneMeta' in snap.community).toBe(false);
     expect('fortunesFoundedAt' in snap.community).toBe(false);
     expect(snap.characters.length).toBeGreaterThanOrEqual(1);
-    const torvald = snap.characters.find((c) => c.slug === 'torvald')!;
-    expect(torvald.name).toBe('Torvald Adzeson');
+    const torvald = snap.characters.find((c) => c.slug === 'nerio')!;
+    expect(torvald.name).toBe('Nerio Calva');
     // max(Str2,Dex2)+Int2+Auth1 = 5; Exertion max Res2+Con2+Cha2 = 6
     expect(torvald.echoCapacity).toBe(5);
     expect(torvald.exertion.max).toBe(6);
     expect(torvald.echoCapacity).not.toBe(torvald.exertion.max);
-    const leifr = snap.characters.find((c) => c.slug === 'leifr')!;
+    const leifr = snap.characters.find((c) => c.slug === 'stana')!;
     // Guidebook capacity profile: max(2,1)+2+2 = 6; Exertion max 2+2+1 = 5
     expect(leifr.echoCapacity).toBe(6);
     expect(leifr.exertion.max).toBe(5);
     expect(leifr.echoWeight).toBe(6);
     const json = JSON.stringify(snap);
     expect(json).not.toContain('123456789012345678');
-    expect(json).not.toContain('demo-discord-leifr');
+    expect(json).not.toContain('demo-discord-stana');
     expect(snap.characters.every((c) => !c.initiator && !c.player?.accountId)).toBe(true);
     expect(store.listMembers()).toHaveLength(1);
     expect(publicSnapshotViolations(snap)).toEqual([]);
@@ -88,7 +88,7 @@ describe('sqlite store', () => {
 
     store.close();
     const again = openSqliteStore(path);
-    expect(again.getCharacterBySlug('torvald')?.exertion.current).toBe(4);
+    expect(again.getCharacterBySlug('nerio')?.exertion.current).toBe(4);
     again.close();
   });
 
@@ -97,7 +97,7 @@ describe('sqlite store', () => {
     dirs.push(dir);
     const store = openSqliteStore(join(dir, 'community.sqlite'));
     seedDemoCampaign(store);
-    const torvald = store.getCharacterBySlug('torvald')!;
+    const torvald = store.getCharacterBySlug('nerio')!;
     store.putCharacter({
       ...torvald,
       id: 'draft-1',
@@ -207,7 +207,7 @@ describe('sqlite store', () => {
     const c = dest.getCommunity();
     expect(c.slug).toBe('ash-hill');
     expect(c.name).toBe('The Vardmark');
-    expect(dest.getCharacterBySlug('torvald')?.name).toMatch(/Torvald/i);
+    expect(dest.getCharacterBySlug('nerio')?.name).toMatch(/Nerio/i);
     expect(dest.listCharacters().some((ch) => ch.status === 'draft')).toBe(false);
     dest.close();
   });

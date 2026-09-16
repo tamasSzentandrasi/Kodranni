@@ -148,7 +148,7 @@ export async function runLiveKernel(opts: {
   console.log(`  store: ${cfg.storePath}`);
   console.log(`  local: ${localUrl}/operator`);
   const tableUrl = `${publicEdge.replace(/\/$/, '')}/community/?campaign=${encodeURIComponent(slug)}`;
-  if (slug !== 'vardmark' && slug !== 'demo' && slug !== 'play') {
+  if (slug !== 'aspalath' && slug !== 'demo' && slug !== 'play') {
     console.log(`  public: ${tableUrl}`);
   } else {
     console.log(`  public: ${publicEdge.replace(/\/$/, '')}/community/`);

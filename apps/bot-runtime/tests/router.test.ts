@@ -56,13 +56,13 @@ describe('bot router', () => {
     mapMember(store, {
       platform: 'discord',
       accountId: 'user-1',
-      characterSlug: 'leifr',
+      characterSlug: 'stana',
       role: 'player',
     });
     mapMember(store, {
       platform: 'discord',
       accountId: 'st-1',
-      characterSlug: 'torvald',
+      characterSlug: 'nerio',
       role: 'storyteller',
     });
 
@@ -104,7 +104,7 @@ describe('bot router', () => {
       customId: castId!,
     });
     expect(port.cards.length).toBe(1);
-    expect(port.cards[0]!.title).toBe('Leifr Ketilsson');
+    expect(port.cards[0]!.title).toBe('Stana Krstova');
     expect(port.cards[0]!.fields?.[0]?.name).toBe('Marks');
     expect(port.ephemerals.some((e) => e.includes('Marks'))).toBe(true);
     store.close();
@@ -118,7 +118,7 @@ describe('bot router', () => {
     mapMember(store, {
       platform: 'discord',
       accountId: 'user-1',
-      characterSlug: 'leifr',
+      characterSlug: 'stana',
       role: 'player',
     });
     const port = mockPort();
@@ -218,7 +218,7 @@ describe('bot router', () => {
     mapMember(store, {
       platform: 'discord',
       accountId: 'st-1',
-      characterSlug: 'torvald',
+      characterSlug: 'nerio',
       role: 'storyteller',
     });
     const prev = process.env.KODRANNI_SHEET_TOKEN_SECRET;
@@ -256,7 +256,7 @@ describe('bot router', () => {
     mapMember(store, {
       platform: 'discord',
       accountId: 'user-1',
-      characterSlug: 'leifr',
+      characterSlug: 'stana',
       role: 'player',
     });
     const port = mockPort();
@@ -289,7 +289,7 @@ describe('bot router', () => {
     mapMember(store, {
       platform: 'discord',
       accountId: 'user-1',
-      characterSlug: 'leifr',
+      characterSlug: 'stana',
       role: 'player',
     });
     const prev = process.env.DISCORD_PLAY_CHANNEL_ID;
@@ -342,7 +342,7 @@ describe('bot router', () => {
     mapMember(store, {
       platform: 'discord',
       accountId: 'st-1',
-      characterSlug: 'torvald',
+      characterSlug: 'nerio',
       role: 'storyteller',
     });
     const port = mockPort();
@@ -360,7 +360,7 @@ describe('bot router', () => {
       user: { platform: 'discord', accountId: 'st-1', displayName: 'ST' },
       channelId: 'ch',
       name: 'reclaim',
-      options: { character: 'leifr', points: 1 },
+      options: { character: 'stana', points: 1 },
     });
     expect(port.cards[0]?.title).toMatch(/Exertion restored/);
     expect(port.ephemerals.some((e) => e.includes('Posted to the table'))).toBe(true);

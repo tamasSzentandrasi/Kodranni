@@ -67,7 +67,7 @@ describe('hallRevPayload', () => {
   const chars = [
     character({
       slug: 'torvald',
-      name: 'Torvald Adzeson',
+      name: 'Nerio Calva',
       whoWeSee: 'measures twice',
       hierarchy: [{ axis: 'Coin', tier: 'Acknowledged' }],
     }),
@@ -93,7 +93,7 @@ describe('hallRevPayload', () => {
     expect(payload.characters).toEqual([
       {
         slug: 'torvald',
-        name: 'Torvald Adzeson',
+        name: 'Nerio Calva',
         status: 'active',
         whoWeSee: 'measures twice',
         hierarchy: [{ axis: 'Coin', tier: 'Acknowledged' }],
@@ -122,7 +122,7 @@ describe('hallRevPayload', () => {
 });
 
 describe('communityRevHash', () => {
-  const chars = [character({ slug: 'torvald', name: 'Torvald Adzeson' })];
+  const chars = [character({ slug: 'torvald', name: 'Nerio Calva' })];
 
   it('returns 64-char lowercase hex', () => {
     const rev = communityRevHash(community(), chars);
@@ -156,8 +156,8 @@ describe('communityRevHash', () => {
         pendingMoves: [
           {
             id: 'm1',
-            name: 'Torvald Adzeson',
-            characterSlug: 'torvald',
+            name: 'Nerio Calva',
+            characterSlug: 'nerio',
             axis: 'Coin',
             fromTier: 'Acknowledged',
             toTier: 'Trusted',
@@ -167,7 +167,7 @@ describe('communityRevHash', () => {
       chars,
     );
     const who = communityRevHash(community(), [
-      character({ slug: 'torvald', name: 'Torvald Adzeson', whoWeSee: 'other' }),
+      character({ slug: 'torvald', name: 'Nerio Calva', whoWeSee: 'other' }),
     ]);
     expect(fortunes).not.toBe(base);
     expect(pending).not.toBe(base);

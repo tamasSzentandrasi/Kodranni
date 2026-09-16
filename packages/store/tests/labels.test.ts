@@ -42,23 +42,23 @@ describe('migrateCommunityLabels', () => {
 });
 
 describe('demo seed labels', () => {
-  it('puts factions on outsiders and tags on kin; Skard has both groups', () => {
+  it('puts factions on outsiders and tags on kin; consul has both groups', () => {
     const dir = mkdtempSync(join(tmpdir(), 'kod-lab-'));
     dirs.push(dir);
     const store = openSqliteStore(join(dir, 'c.sqlite'));
     seedDemoCampaign(store);
     const c = store.getCommunity();
-    const reed = c.labels?.find((l) => l.name === 'Reed-marsh folk');
-    const rival = c.labels?.find((l) => l.name === 'Rival war-band');
-    const ford = c.labels?.find((l) => l.name === 'Ford watch');
-    expect(reed && rival && ford).toBeTruthy();
-    const mara = c.outsiders.find((o) => o.name === 'Mara of the Reeds');
-    expect(mara?.labelIds).toEqual([reed!.id]);
-    const skard = c.outsiders.find((o) => o.name === 'Skard Ketilsson');
-    expect(skard?.labelIds).toEqual([rival!.id, ford!.id]);
-    const torvald = store.getCharacterBySlug('torvald');
-    const grain = c.labels?.find((l) => l.name === 'Grain store');
-    expect(torvald?.labelIds).toEqual([grain!.id]);
+    const velatri = c.labels?.find((l) => l.name === 'House Velatri');
+    const moro = c.labels?.find((l) => l.name === 'House Moro');
+    const chain = c.labels?.find((l) => l.name === 'Harbour chain');
+    expect(velatri && moro && chain).toBeTruthy();
+    const envoy = c.outsiders.find((o) => o.name === 'Matteo Rinaldi');
+    expect(envoy?.labelIds).toEqual([velatri!.id, c.labels?.find((l) => l.name === 'Albaran letter')!.id]);
+    const consul = c.outsiders.find((o) => o.name === 'Luca Bandi');
+    expect(consul?.labelIds).toEqual([moro!.id, chain!.id]);
+    const nerio = store.getCharacterBySlug('nerio');
+    const crane = c.labels?.find((l) => l.name === 'Loading crane');
+    expect(nerio?.labelIds).toEqual([crane!.id, velatri!.id]);
     store.close();
   });
 });
