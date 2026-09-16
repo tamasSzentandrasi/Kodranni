@@ -594,7 +594,25 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 				return (seed.querySelector('.kod-seed__title')?.textContent || '').trim();
 			}
 
-			function mountPage(page, seed, withTitle) {
+			function parseFacts(seed) {
+				return [...seed.querySelectorAll('.kod-seed__facts > li')].map((li) => {
+					const strong = li.querySelector('strong');
+					const label = strong ? strong.textContent.trim() : '';
+					let body = '';
+					let take = !strong;
+					li.childNodes.forEach((n) => {
+						if (n === strong) {
+							take = true;
+							return;
+						}
+						if (take) body += n.textContent || '';
+					});
+					body = body.replace(/^\s*[—–-]\s*/, '').trim();
+					return { label, words: body.split(/\s+/).filter(Boolean) };
+				});
+			}
+
+			function mountColumn(page, seed, withTitle) {
 				const wrap = document.createElement('div');
 				wrap.className = seed.className;
 				const title = seed.querySelector('.kod-seed__title');
@@ -603,11 +621,86 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 				ul.className = 'kod-seed__facts';
 				wrap.appendChild(ul);
 				page.replaceChildren(wrap);
-				return ul;
+				return { page, ul };
 			}
 
-			function overflows(el) {
-				return el.scrollHeight > el.clientHeight + 2;
+			function columnOverflow(page) {
+				return page.scrollHeight > page.clientHeight + 1;
+			}
+
+			function flowInto(columns, facts, start) {
+				let col = 0;
+				let fact = start.fact;
+				let word = start.word;
+				let li = null;
+				let textNode = null;
+				let acc = [];
+
+				function nextColumn() {
+					col += 1;
+					li = null;
+					textNode = null;
+					acc = [];
+					return col < columns.length;
+				}
+
+				function startLine(continuing) {
+					const item = facts[fact];
+					li = document.createElement('li');
+					if (continuing) li.classList.add('kod-seed__cont');
+					if (item.label && !continuing) {
+						const st = document.createElement('strong');
+						st.textContent = item.label;
+						li.append(st, document.createTextNode(' — '));
+					}
+					textNode = document.createTextNode('');
+					li.appendChild(textNode);
+					acc = [];
+					columns[col].ul.appendChild(li);
+				}
+
+				while (fact < facts.length && col < columns.length) {
+					const item = facts[fact];
+					const continuing = word > 0;
+					if (!li) {
+						startLine(continuing);
+						if (columnOverflow(columns[col].page)) {
+							columns[col].ul.removeChild(li);
+							li = null;
+							if (!nextColumn()) break;
+							continue;
+						}
+					}
+					if (word >= item.words.length) {
+						fact += 1;
+						word = 0;
+						li = null;
+						continue;
+					}
+					const prev = textNode.textContent;
+					textNode.textContent = acc.length
+						? `${acc.join(' ')} ${item.words[word]}`
+						: item.words[word];
+					if (columnOverflow(columns[col].page)) {
+						textNode.textContent = prev;
+						const stuck = !prev;
+						if (stuck) {
+							textNode.textContent = item.words[word];
+							acc.push(item.words[word]);
+							word += 1;
+							li = null;
+							if (!nextColumn()) break;
+							continue;
+						}
+						li = null;
+						if (!nextColumn()) break;
+						continue;
+					}
+					acc.push(item.words[word]);
+					word += 1;
+				}
+
+				return { next: { fact, word }, more: fact < facts.length };
 			}
 
 			function paintSpread(book) {
@@ -616,76 +709,59 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 				const seed = st.seeds[st.seedIndex];
 				if (!seed) return;
 				const [verso, recto] = st.pages;
-				const facts = [...seed.querySelectorAll('.kod-seed__facts > li')];
+				const facts = parseFacts(seed);
 
-				if (isNarrow() || verso.clientHeight < 48) {
-					const ul = mountPage(verso, seed, true);
-					facts.forEach((li) => ul.appendChild(li.cloneNode(true)));
-					if (isNarrow()) recto.replaceChildren();
-					else {
-						const mid = Math.ceil(facts.length / 2);
-						ul.replaceChildren();
-						const ulR = mountPage(recto, seed, false);
-						facts.slice(0, mid).forEach((li) => ul.appendChild(li.cloneNode(true)));
-						facts.slice(mid).forEach((li) => ulR.appendChild(li.cloneNode(true)));
-					}
-					st.spreadStarts = [0];
+				if (isNarrow()) {
+					const col = mountColumn(verso, seed, true);
+					facts.forEach((item) => {
+						const li = document.createElement('li');
+						if (item.label) {
+							const stEl = document.createElement('strong');
+							stEl.textContent = item.label;
+							li.append(stEl, document.createTextNode(` — ${item.words.join(' ')}`));
+						} else {
+							li.textContent = item.words.join(' ');
+						}
+						col.ul.appendChild(li);
+					});
+					recto.replaceChildren();
+					st.spreadStarts = [{ fact: 0, word: 0 }];
 					st.spreadIndex = 0;
 					return;
 				}
 
-				const starts = [0];
-				let cursor = 0;
-				while (cursor < facts.length) {
-					const ulL = mountPage(verso, seed, true);
-					const ulR = mountPage(recto, seed, false);
-					let i = cursor;
-					let placed = 0;
-					for (; i < facts.length; i++) {
-						const node = facts[i].cloneNode(true);
-						ulL.appendChild(node);
-						if (overflows(verso)) {
-							ulL.removeChild(node);
-							break;
+				const starts = [{ fact: 0, word: 0 }];
+				let cursor = { fact: 0, word: 0 };
+				for (let n = 0; n < 8; n++) {
+					const cols = [
+						mountColumn(verso, seed, cursor.fact === 0 && cursor.word === 0),
+						mountColumn(recto, seed, false),
+					];
+					const { next, more } = flowInto(cols, facts, cursor);
+					if (!more) break;
+					if (next.fact === cursor.fact && next.word === cursor.word) {
+						next.word += 1;
+						if (next.word >= (facts[next.fact]?.words.length || 0)) {
+							next.fact += 1;
+							next.word = 0;
 						}
-						placed++;
 					}
-					for (; i < facts.length; i++) {
-						const node = facts[i].cloneNode(true);
-						ulR.appendChild(node);
-						if (overflows(recto)) {
-							ulR.removeChild(node);
-							break;
-						}
-						placed++;
-					}
-					if (placed === 0) {
-						ulL.appendChild(facts[cursor].cloneNode(true));
-						i = cursor + 1;
-					}
-					cursor = i;
-					if (cursor < facts.length) starts.push(cursor);
-					else break;
-					if (starts.length > 8) break;
+					starts.push({ fact: next.fact, word: next.word });
+					cursor = next;
+					if (cursor.fact >= facts.length) break;
 				}
 				st.spreadStarts = starts;
 				if (st.spreadIndex >= starts.length) st.spreadIndex = Math.max(0, starts.length - 1);
 
-				const from = starts[st.spreadIndex] || 0;
-				const until = starts[st.spreadIndex + 1] ?? facts.length;
-				const ulL = mountPage(verso, seed, true);
-				const ulR = mountPage(recto, seed, false);
-				let i = from;
-				for (; i < until; i++) {
-					const node = facts[i].cloneNode(true);
-					ulL.appendChild(node);
-					if (overflows(verso)) {
-						ulL.removeChild(node);
-						break;
-					}
-				}
-				for (; i < until; i++) ulR.appendChild(facts[i].cloneNode(true));
-				if (!ulR.childElementCount) ulR.remove();
+				const at = starts[st.spreadIndex] || { fact: 0, word: 0 };
+				flowInto(
+					[
+						mountColumn(verso, seed, at.fact === 0 && at.word === 0),
+						mountColumn(recto, seed, false),
+					],
+					facts,
+					at,
+				);
 			}
 
 			function renderPicks(book) {

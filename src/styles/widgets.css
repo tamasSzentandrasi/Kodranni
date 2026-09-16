@@ -1981,6 +1981,8 @@
   background: none;
   color: #080706;
   hyphens: none;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 }
 
 .kod-folio__page:first-child {
@@ -2095,6 +2097,11 @@
   line-height: 1.4;
   margin: 0 0 0.38rem !important;
   text-shadow: none;
+  overflow-wrap: break-word;
+}
+
+.kod-folio .kod-seed__facts li.kod-seed__cont {
+  margin-top: 0 !important;
 }
 
 .sl-markdown-content .kod-folio .kod-seed__facts strong {
