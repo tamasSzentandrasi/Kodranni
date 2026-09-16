@@ -560,6 +560,204 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 			const ladder = root.querySelector('.kod-chronicle-ladder');
 			if (!open || !spines.length || !books.length) return;
 
+			const picks = document.createElement('div');
+			picks.className = 'kod-chronicle-picks';
+			picks.hidden = true;
+			picks.setAttribute('role', 'tablist');
+			picks.setAttribute('aria-label', 'Examples');
+			if (ladder && ladder.nextSibling) open.insertBefore(picks, ladder.nextSibling);
+			else open.insertBefore(picks, open.querySelector('.kod-folio') || open.firstChild);
+
+			const turn = document.createElement('div');
+			turn.className = 'kod-chronicle-turn pagination-links';
+			turn.hidden = true;
+			const prevBtn = document.createElement('button');
+			prevBtn.type = 'button';
+			prevBtn.setAttribute('rel', 'prev');
+			prevBtn.innerHTML = '<span><span class="link-title"></span></span>';
+			const nextBtn = document.createElement('button');
+			nextBtn.type = 'button';
+			nextBtn.setAttribute('rel', 'next');
+			nextBtn.innerHTML = '<span><span class="link-title"></span></span>';
+			turn.append(prevBtn, nextBtn);
+			open.appendChild(turn);
+
+			const states = new Map();
+
+			function isNarrow() {
+				return window.matchMedia('(max-width: 50rem)').matches;
+			}
+
+			function seedTitle(seed) {
+				return (seed.querySelector('.kod-seed__title')?.textContent || '').trim();
+			}
+
+			function mountPage(page, seed, withTitle) {
+				const wrap = document.createElement('div');
+				wrap.className = seed.className;
+				const title = seed.querySelector('.kod-seed__title');
+				if (withTitle && title) wrap.appendChild(title.cloneNode(true));
+				const ul = document.createElement('ul');
+				ul.className = 'kod-seed__facts';
+				wrap.appendChild(ul);
+				page.replaceChildren(wrap);
+				return ul;
+			}
+
+			function overflows(el) {
+				return el.scrollHeight > el.clientHeight + 2;
+			}
+
+			function paintSpread(book) {
+				const st = states.get(book);
+				if (!st) return;
+				const seed = st.seeds[st.seedIndex];
+				if (!seed) return;
+				const [verso, recto] = st.pages;
+				const facts = [...seed.querySelectorAll('.kod-seed__facts > li')];
+
+				if (isNarrow() || verso.clientHeight < 48) {
+					const ul = mountPage(verso, seed, true);
+					facts.forEach((li) => ul.appendChild(li.cloneNode(true)));
+					if (isNarrow()) recto.replaceChildren();
+					else {
+						const mid = Math.ceil(facts.length / 2);
+						ul.replaceChildren();
+						const ulR = mountPage(recto, seed, false);
+						facts.slice(0, mid).forEach((li) => ul.appendChild(li.cloneNode(true)));
+						facts.slice(mid).forEach((li) => ulR.appendChild(li.cloneNode(true)));
+					}
+					st.spreadStarts = [0];
+					st.spreadIndex = 0;
+					return;
+				}
+
+				const starts = [0];
+				let cursor = 0;
+				while (cursor < facts.length) {
+					const ulL = mountPage(verso, seed, true);
+					const ulR = mountPage(recto, seed, false);
+					let i = cursor;
+					let placed = 0;
+					for (; i < facts.length; i++) {
+						const node = facts[i].cloneNode(true);
+						ulL.appendChild(node);
+						if (overflows(verso)) {
+							ulL.removeChild(node);
+							break;
+						}
+						placed++;
+					}
+					for (; i < facts.length; i++) {
+						const node = facts[i].cloneNode(true);
+						ulR.appendChild(node);
+						if (overflows(recto)) {
+							ulR.removeChild(node);
+							break;
+						}
+						placed++;
+					}
+					if (placed === 0) {
+						ulL.appendChild(facts[cursor].cloneNode(true));
+						i = cursor + 1;
+					}
+					cursor = i;
+					if (cursor < facts.length) starts.push(cursor);
+					else break;
+					if (starts.length > 8) break;
+				}
+				st.spreadStarts = starts;
+				if (st.spreadIndex >= starts.length) st.spreadIndex = Math.max(0, starts.length - 1);
+
+				const from = starts[st.spreadIndex] || 0;
+				const until = starts[st.spreadIndex + 1] ?? facts.length;
+				const ulL = mountPage(verso, seed, true);
+				const ulR = mountPage(recto, seed, false);
+				let i = from;
+				for (; i < until; i++) {
+					const node = facts[i].cloneNode(true);
+					ulL.appendChild(node);
+					if (overflows(verso)) {
+						ulL.removeChild(node);
+						break;
+					}
+				}
+				for (; i < until; i++) ulR.appendChild(facts[i].cloneNode(true));
+				if (!ulR.childElementCount) ulR.remove();
+			}
+
+			function renderPicks(book) {
+				const st = states.get(book);
+				picks.replaceChildren();
+				if (!st) {
+					picks.hidden = true;
+					return;
+				}
+				st.seeds.forEach((seed, i) => {
+					const b = document.createElement('button');
+					b.type = 'button';
+					b.className = 'kod-chronicle-pick';
+					b.setAttribute('role', 'tab');
+					b.setAttribute('aria-label', seedTitle(seed));
+					b.setAttribute('aria-pressed', i === st.seedIndex ? 'true' : 'false');
+					b.dataset.seed = String(i);
+					const mark = document.createElement('span');
+					mark.textContent = String(i + 1);
+					b.appendChild(mark);
+					b.addEventListener('click', () => {
+						if (st.seedIndex === i) return;
+						st.seedIndex = i;
+						st.spreadIndex = 0;
+						paintSpread(book);
+						renderPicks(book);
+						renderTurn(book);
+						fadeIn(book, 0);
+					});
+					picks.appendChild(b);
+				});
+				picks.hidden = false;
+			}
+
+			function renderTurn(book) {
+				const st = states.get(book);
+				const n = st?.spreadStarts?.length || 1;
+				if (!st || isNarrow() || n <= 1) {
+					turn.hidden = true;
+					return;
+				}
+				turn.hidden = false;
+				prevBtn.disabled = st.spreadIndex <= 0;
+				nextBtn.disabled = st.spreadIndex >= n - 1;
+				const title = seedTitle(st.seeds[st.seedIndex]);
+				prevBtn.querySelector('.link-title').textContent = st.spreadIndex > 0 ? title : '';
+				nextBtn.querySelector('.link-title').textContent = st.spreadIndex < n - 1 ? title : '';
+			}
+
+			function relayout(book) {
+				if (!book || book.hasAttribute('hidden')) return;
+				paintSpread(book);
+				renderPicks(book);
+				renderTurn(book);
+			}
+
+			books.forEach((book) => {
+				const pages = [...book.querySelectorAll(':scope > .kod-folio__board > .kod-folio__page')];
+				const seeds = [...book.querySelectorAll('.kod-seed')];
+				if (pages.length < 2 || !seeds.length) return;
+				const source = document.createElement('div');
+				source.className = 'kod-folio__source';
+				source.hidden = true;
+				seeds.forEach((s) => source.appendChild(s));
+				book.appendChild(source);
+				states.set(book, {
+					seeds,
+					pages,
+					seedIndex: 0,
+					spreadIndex: 0,
+					spreadStarts: [0],
+				});
+			});
+
 			function showShelf() {
 				root.removeAttribute('data-open');
 				spines.forEach((s) => s.setAttribute('aria-pressed', 'false'));
@@ -568,6 +766,8 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 					b.classList.remove('is-in');
 				});
 				if (ladder) ladder.classList.remove('is-in');
+				picks.hidden = true;
+				turn.hidden = true;
 			}
 
 			function openBook(id) {
@@ -580,16 +780,47 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 				spines.forEach((s) =>
 					s.setAttribute('aria-pressed', s.dataset.chronicle === id ? 'true' : 'false'),
 				);
+				let shown = null;
 				books.forEach((b) => {
 					if (b.getAttribute('data-chronicle-book') === id) {
 						b.removeAttribute('hidden');
+						shown = b;
 						fadeIn(b, fromShelf ? 180 : 0);
 					} else {
 						b.setAttribute('hidden', '');
 						b.classList.remove('is-in');
 					}
 				});
+				const go = () => {
+					if (!shown) return;
+					relayout(shown);
+				};
+				requestAnimationFrame(() => {
+					requestAnimationFrame(go);
+				});
+				if (document.fonts && document.fonts.ready) document.fonts.ready.then(go);
 			}
+
+			prevBtn.addEventListener('click', () => {
+				const id = root.getAttribute('data-open');
+				const book = books.find((b) => b.getAttribute('data-chronicle-book') === id);
+				const st = book && states.get(book);
+				if (!st || st.spreadIndex <= 0) return;
+				st.spreadIndex -= 1;
+				paintSpread(book);
+				renderTurn(book);
+				fadeIn(book, 0);
+			});
+			nextBtn.addEventListener('click', () => {
+				const id = root.getAttribute('data-open');
+				const book = books.find((b) => b.getAttribute('data-chronicle-book') === id);
+				const st = book && states.get(book);
+				if (!st || st.spreadIndex >= st.spreadStarts.length - 1) return;
+				st.spreadIndex += 1;
+				paintSpread(book);
+				renderTurn(book);
+				fadeIn(book, 0);
+			});
 
 			spines.forEach((s) =>
 				s.addEventListener('click', () => {
@@ -598,6 +829,12 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 					else openBook(id);
 				}),
 			);
+			window.addEventListener('resize', () => {
+				const id = root.getAttribute('data-open');
+				if (!id) return;
+				const book = books.find((b) => b.getAttribute('data-chronicle-book') === id);
+				if (book) relayout(book);
+			});
 			showShelf();
 		});
 	}
