@@ -231,6 +231,18 @@ site-title {
   }
 }
 
+/* Copy swap on interactables — rise + fade; replayed by toggling .is-in */
+@keyframes kod-copy-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.55rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .sl-markdown-content blockquote.kod-reveal,
   .sl-markdown-content .kod-reveal-item,

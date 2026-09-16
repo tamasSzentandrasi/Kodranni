@@ -35,84 +35,92 @@ A good seed uses a **real or invented place name** (not a vague label like “ri
 
 ### Campaign seeds
 
-<div class="kod-widget not-content" data-widget="content-tabs">
+<div class="kod-widget not-content" data-widget="chronicle">
 <p class="kod-widget__title">Browse by setting type</p>
 <p class="kod-widget__intro">Historical: locked place and year. Semi-historical: one clear break from a real situation. Invented: same weight as history, without dressing up misery for effect.</p>
-<div class="kod-widget__controls" role="group" aria-label="Seed type">
-<button type="button" class="kod-widget__btn" data-tab="hist" aria-pressed="true">Tightly historical</button>
-<button type="button" class="kod-widget__btn" data-tab="semi">Semi-historical</button>
-<button type="button" class="kod-widget__btn" data-tab="inv">Fully invented</button>
+<div class="kod-chronicle-shelf" role="list">
+<button type="button" class="kod-spine kod-spine--hist" data-chronicle="hist"><span class="kod-spine__title">I</span></button>
+<button type="button" class="kod-spine kod-spine--semi" data-chronicle="semi"><span class="kod-spine__title">II</span></button>
+<button type="button" class="kod-spine kod-spine--inv" data-chronicle="inv"><span class="kod-spine__title">III</span></button>
 </div>
-
-<div class="kod-widget__panel" data-panel-id="hist">
-<div class="kod-seed-grid">
+<div class="kod-chronicle-open">
+<div class="kod-chronicle-ladder" data-active="hist" aria-hidden="true">
+<span data-ladder="hist">Historical</span>
+<span class="kod-chronicle-ladder__rule">—</span>
+<span data-ladder="semi">Semi-historical</span>
+<span class="kod-chronicle-ladder__rule">—</span>
+<span data-ladder="inv">Invented</span>
+</div>
+<div class="kod-folio" data-chronicle-book="hist">
+<div class="kod-folio__board">
+<div class="kod-folio__page">
 <div class="kod-seed kod-seed--hist">
 <p class="kod-seed__title">The Debatable Land, 1320s</p>
 <ul class="kod-seed__facts">
-<li><strong>Who</strong> — Related Border households on ground claimed by both English and Scottish lords.</li>
-<li><strong>Pressure</strong> — Both sides demand service and payment. The old middle-ground bargains are dead. Harvest was thin; winter is close.</li>
-<li><strong>Choose</strong> — Whom to serve, or refuse, and still be a people in spring.</li>
+<li><strong>Who</strong> — Border houses claimed by English and Scottish lords.</li>
+<li><strong>Pressure</strong> — Both crowns demand service. Thin harvest; winter close.</li>
+<li><strong>Choose</strong> — Serve, refuse, or remain a people.</li>
 </ul>
 </div>
+</div>
+<div class="kod-folio__page">
 <div class="kod-seed kod-seed--hist">
-<p class="kod-seed__title">Iceland, late Commonwealth — after the burnings</p>
+<p class="kod-seed__title">Iceland, after the burnings</p>
 <ul class="kod-seed__facts">
-<li><strong>Who</strong> — Two neighbouring chieftains’ followings sharing a valley of hay and driftwood rights.</li>
-<li><strong>Pressure</strong> — Last winter halls burned and men died. Killers still in the district; blood-price unpaid. Althing in weeks. Hay must come in first.</li>
-<li><strong>Choose</strong> — Hold the hay, settle the dead without finishing the kinship, or lose the following to stronger goðar before court.</li>
+<li><strong>Who</strong> — Two chieftains’ followings sharing hay and driftwood.</li>
+<li><strong>Pressure</strong> — Halls burned last winter. Blood-price unpaid. Althing in weeks.</li>
+<li><strong>Choose</strong> — Hold the hay, settle the dead, or lose the following.</li>
 </ul>
 </div>
 </div>
 </div>
-
-<div class="kod-widget__panel" data-panel-id="semi" hidden>
-<div class="kod-seed-grid">
+</div>
+<div class="kod-folio" data-chronicle-book="semi" hidden>
+<div class="kod-folio__board">
+<div class="kod-folio__page">
 <div class="kod-seed kod-seed--semi">
-<p class="kod-seed__title">The Karadağ villages, after Manzikert (c. 1080s→)</p>
+<p class="kod-seed__title">Karadağ, after Manzikert</p>
 <ul class="kod-seed__facts">
-<li><strong>Basis</strong> — Byzantine collapse in central Anatolia after Manzikert.</li>
-<li><strong>Break</strong> — Free villages on the Karadağ road never absorbed into a stable beylik or restored theme.</li>
-<li><strong>Pressure</strong> — A Turkic lord means permanent garrisons. A coastal Byzantine agent offers arms for a rising and a “relief” that may never come. Grain short; young men leaving as hirelings.</li>
-<li><strong>Choose</strong> — Take the garrison, rise for relief that may not arrive, or empty the hills and lose the name on the road to the coast.</li>
+<li><strong>Break</strong> — Free villages on the Karadağ road, never absorbed.</li>
+<li><strong>Pressure</strong> — A Turkic garrison, or Byzantine arms that may never come.</li>
+<li><strong>Choose</strong> — Garrison, rise, or empty the hills.</li>
 </ul>
 </div>
+</div>
+<div class="kod-folio__page">
 <div class="kod-seed kod-seed--semi">
-<p class="kod-seed__title">Straumfjǫrðr held (c. 1020→)</p>
+<p class="kod-seed__title">Straumfjǫrðr held, c. 1020</p>
 <ul class="kod-seed__facts">
-<li><strong>Basis</strong> — Norse landings in Vinland (saga place-name).</li>
-<li><strong>Break</strong> — The settlement at Straumfjǫrðr did not fail; three generations of thin coastal freeholders remain.</li>
-<li><strong>Pressure</strong> — Iron scarce; Greenland rare; hard winters; uneasy neighbours after raids both ways. A Christian magnate’s longship arrives to claim the fort as a mission and reorganise freeholding under their law.</li>
-<li><strong>Choose</strong> — Resist without iron, accept and lose free status, or settle with the forest peoples and become strangers to Greenland.</li>
+<li><strong>Break</strong> — The Vinland landing held; three generations remain.</li>
+<li><strong>Pressure</strong> — Iron scarce. A Christian longship claims the fort as a mission.</li>
+<li><strong>Choose</strong> — Resist without iron, accept, or settle with the forest.</li>
 </ul>
 </div>
 </div>
 </div>
-
-<div class="kod-widget__panel" data-panel-id="inv" hidden>
-<div class="kod-seed-grid">
+</div>
+<div class="kod-folio" data-chronicle-book="inv" hidden>
+<div class="kod-folio__board">
+<div class="kod-folio__page">
 <div class="kod-seed kod-seed--invented">
 <p class="kod-seed__title">Harrowden Vale, after the levy</p>
 <ul class="kod-seed__facts">
-<li><strong>Who</strong> — Freeholders of Harrowden Vale who fought for the losing side.</li>
-<li><strong>Pressure</strong> — Victors hold Longford and Millspan. Arms to be surrendered, grain levy due before seed-in, hostages from leading houses. Winter stores spent in the campaign.</li>
-<li><strong>Choose</strong> — Disarm under the levy, keep arms and face the next column, or buy months with hostages and live with the cost inside your own halls.</li>
+<li><strong>Who</strong> — Freeholders who fought for the losing side.</li>
+<li><strong>Pressure</strong> — Arms due in. Grain levy before seed. Hostages named.</li>
+<li><strong>Choose</strong> — Disarm, keep arms, or buy months.</li>
 </ul>
 </div>
-<div class="kod-seed kod-seed--invented">
-<p class="kod-seed__title">Ordmouth under siege, fifth month</p>
-<ul class="kod-seed__facts">
-<li><strong>Who</strong> — Citizen houses of Ordmouth on the Greywater; players tied to a few of them.</li>
-<li><strong>Pressure</strong> — Siege since harvest. Foreign unpaid garrison. Granaries still in citizen hands. Peace terms: open a gate, new garrison, named leaders for trial. Disease in the poorer quarters. Houses do not agree.</li>
-<li><strong>Choose</strong> — Open the gate, hold for the thaw, or force a third bargain before hunger and sickness decide.</li>
-</ul>
 </div>
+<div class="kod-folio__page">
 <div class="kod-seed kod-seed--invented">
 <p class="kod-seed__title">The Vardmark at Kelarn’s Bend</p>
 <ul class="kod-seed__facts">
-<li><strong>Who</strong> — The Vardmark: a war-following from inhospitable steppe and high country. Conquerors, not farmers.</li>
-<li><strong>Pressure</strong> — They helped sack Kelarn and hold the ford with spears. Looted grain and cattle will not last the year. Survivors in marshes and half-empty towns. Rival war-bands on the next bend. Winter coming for people who know the raid better than the plough.</li>
-<li><strong>Choose</strong> — Rule the conquered as masters, live only by the raid until someone stronger takes the Bend, or break trying to become what you destroyed.</li>
+<li><strong>Who</strong> — A war-following from steppe and high country. Conquerors, not farmers.</li>
+<li><strong>Pressure</strong> — They hold the ford. Looted grain will not last the winter.</li>
+<li><strong>Choose</strong> — Rule, raid, or become what you destroyed.</li>
 </ul>
+</div>
+</div>
 </div>
 </div>
 </div>

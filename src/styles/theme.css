@@ -166,6 +166,8 @@ body {
 .kod-hier-axis__plate,
 .kod-hier-ruler,
 .kod-fortune,
+.kod-folio,
+.kod-spine,
 .sl-markdown-content table:not(:where(.not-content *)) {
   --kod-corners: none;
   --kod-frame-lines: none;

@@ -35,84 +35,92 @@ Egy jó **eredet** **valódi vagy kitalált helynevet** használ (nem homályos 
 
 ### Kampányeredetek
 
-<div class="kod-widget not-content" data-widget="content-tabs">
+<div class="kod-widget not-content" data-widget="chronicle">
 <p class="kod-widget__title">Nézd közeg szerint</p>
 <p class="kod-widget__intro">Történelmi: zárt hely és év. Félig történelmi: egy tiszta törés egy valós helyzettől. Kitalált: ugyanaz a súly, mint a történelemé — a nyomort nem látványosságnak öltöztetve.</p>
-<div class="kod-widget__controls" role="group" aria-label="Eredet típusa">
-<button type="button" class="kod-widget__btn" data-tab="hist" aria-pressed="true">Szorosan történelmi</button>
-<button type="button" class="kod-widget__btn" data-tab="semi">Félig történelmi</button>
-<button type="button" class="kod-widget__btn" data-tab="inv">Teljesen kitalált</button>
+<div class="kod-chronicle-shelf" role="list">
+<button type="button" class="kod-spine kod-spine--hist" data-chronicle="hist"><span class="kod-spine__title">I</span></button>
+<button type="button" class="kod-spine kod-spine--semi" data-chronicle="semi"><span class="kod-spine__title">II</span></button>
+<button type="button" class="kod-spine kod-spine--inv" data-chronicle="inv"><span class="kod-spine__title">III</span></button>
 </div>
-
-<div class="kod-widget__panel" data-panel-id="hist">
-<div class="kod-seed-grid">
+<div class="kod-chronicle-open">
+<div class="kod-chronicle-ladder" data-active="hist" aria-hidden="true">
+<span data-ladder="hist">Történelmi</span>
+<span class="kod-chronicle-ladder__rule">—</span>
+<span data-ladder="semi">Félig történelmi</span>
+<span class="kod-chronicle-ladder__rule">—</span>
+<span data-ladder="inv">Kitalált</span>
+</div>
+<div class="kod-folio" data-chronicle-book="hist">
+<div class="kod-folio__board">
+<div class="kod-folio__page">
 <div class="kod-seed kod-seed--hist">
 <p class="kod-seed__title">The Debatable Land, 1320s</p>
 <ul class="kod-seed__facts">
-<li><strong>Ki</strong> — Rokon határvidéki háztartások földön, amelyre angol és skót urak is igényt tartanak.</li>
-<li><strong>Nyomás</strong> — Mindkét oldal szolgálatot és fizetséget követel. A régi köztes alkuk halottak. A termés gyér volt; a tél közel.</li>
-<li><strong>Választás</strong> — Kit szolgáljatok, vagy kit utasítsatok el — és tavaszra mégis nép maradjatok.</li>
+<li><strong>Ki</strong> — Határházak angol és skót urak földjén.</li>
+<li><strong>Nyomás</strong> — Mindkét korona szolgálatot követel. Gyér termés; tél közel.</li>
+<li><strong>Választás</strong> — Szolgáljatok, utasítsatok el, vagy nép maradjatok.</li>
 </ul>
 </div>
+</div>
+<div class="kod-folio__page">
 <div class="kod-seed kod-seed--hist">
-<p class="kod-seed__title">Iceland, a Szabadállam vége — az égetések után</p>
+<p class="kod-seed__title">Iceland, az égetések után</p>
 <ul class="kod-seed__facts">
-<li><strong>Ki</strong> — Két szomszédos törzsfő kísérete, egy völgyön osztozva, széna- és usadékfa-jogokkal.</li>
-<li><strong>Nyomás</strong> — Tavaly télen csarnokok égtek, emberek haltak. A gyilkosok még a kerületben; a vérdíj nincs kifizetve. Althing heteken belül. Előbb a szénát kell behordani.</li>
-<li><strong>Választás</strong> — Tartsátok a szénát, rendezzétek a halottakat anélkül, hogy a rokonságot kiirtanátok, vagy a kíséret erősebb goðarokhoz vész a törvényszék előtt.</li>
+<li><strong>Ki</strong> — Két törzsfő kísérete: széna és usadékfa.</li>
+<li><strong>Nyomás</strong> — Csarnokok égtek. Vérdíj nincs fizetve. Althing közel.</li>
+<li><strong>Választás</strong> — Tartsátok a szénát, rendezzétek a halottakat, vagy a kíséret elvész.</li>
 </ul>
 </div>
 </div>
 </div>
-
-<div class="kod-widget__panel" data-panel-id="semi" hidden>
-<div class="kod-seed-grid">
+</div>
+<div class="kod-folio" data-chronicle-book="semi" hidden>
+<div class="kod-folio__board">
+<div class="kod-folio__page">
 <div class="kod-seed kod-seed--semi">
-<p class="kod-seed__title">A Karadağ falvai, Manzikert után (kb. 1080-as évek→)</p>
+<p class="kod-seed__title">Karadağ, Manzikert után</p>
 <ul class="kod-seed__facts">
-<li><strong>Alap</strong> — Bizánci összeomlás Közép-Anatóliában Manzikert után.</li>
-<li><strong>Törés</strong> — Szabad falvak a Karadağ-úton, soha nem olvadtak be stabil bejlikbe vagy helyreállított thémába.</li>
-<li><strong>Nyomás</strong> — Török úr állandó helyőrséget jelent. Tengerparti bizánci ügynök fegyvert kínál felkelésre és „felmentésre”, ami soha el nem jöhet. A gabona szűkös; a fiatalok zsoldosnak mennek.</li>
-<li><strong>Választás</strong> — Fogadjátok a helyőrséget, keljetek fel egy felmentésért, ami el se érkezhet, vagy ürítsétek a hegyeket, és a név elvész a tengerparti úton.</li>
+<li><strong>Törés</strong> — Szabad falvak a Karadağ-úton, soha be nem olvadva.</li>
+<li><strong>Nyomás</strong> — Török helyőrség, vagy bizánci fegyver, ami el se jöhet.</li>
+<li><strong>Választás</strong> — Fogadjátok a helyőrséget, keljetek fel, vagy ürítsétek a hegyeket.</li>
 </ul>
 </div>
+</div>
+<div class="kod-folio__page">
 <div class="kod-seed kod-seed--semi">
-<p class="kod-seed__title">Straumfjǫrðr megtartva (kb. 1020→)</p>
+<p class="kod-seed__title">Straumfjǫrðr megtartva, kb. 1020</p>
 <ul class="kod-seed__facts">
-<li><strong>Alap</strong> — Északi partraszállások Vinlandban (saganév).</li>
-<li><strong>Törés</strong> — A település Straumfjǫrðrnál nem bukott el; három nemzedéknyi vékony parti szabadbirtokos maradt.</li>
-<li><strong>Nyomás</strong> — A vas szűkös; Greenland ritka; kemény telek; nyugtalan szomszédok, miután mindkét oldalról voltak rajtaütések. Egy keresztény előkelő hosszúhajója megérkezik, hogy az erődöt misszióként követelje, és a szabadbirtokot a saját törvényük alá rendezze.</li>
-<li><strong>Választás</strong> — Szegüljetek ellen vas nélkül, fogadjátok el és veszítsétek el a szabad státuszt, vagy telepedjetek le az erdei népekkel, és váljatok idegenné Greenlandnek.</li>
+<li><strong>Törés</strong> — A vinlandi partraszállás megállt; három nemzedék maradt.</li>
+<li><strong>Nyomás</strong> — A vas szűkös. Keresztény hosszúhajó követeli az erődöt.</li>
+<li><strong>Választás</strong> — Szegüljetek ellen vas nélkül, fogadjátok el, vagy az erdőbe.</li>
 </ul>
 </div>
 </div>
 </div>
-
-<div class="kod-widget__panel" data-panel-id="inv" hidden>
-<div class="kod-seed-grid">
+</div>
+<div class="kod-folio" data-chronicle-book="inv" hidden>
+<div class="kod-folio__board">
+<div class="kod-folio__page">
 <div class="kod-seed kod-seed--invented">
 <p class="kod-seed__title">Harrowden Vale, a sarc után</p>
 <ul class="kod-seed__facts">
-<li><strong>Ki</strong> — Harrowden Vale szabadbirtokosai, akik a vesztes oldalon harcoltak.</li>
-<li><strong>Nyomás</strong> — A győztesek tartják Longfordot és Millspant. A fegyvert le kell adni, gabonaadó a vetés előtt esedékes, túszok a vezető házakból. A téli tartalék a hadjáraton fogyott el.</li>
-<li><strong>Választás</strong> — Szereljetek le a sarc alatt, tartsátok a fegyvert és nézzetek szembe a következő oszloppal, vagy vásároljatok hónapokat túszokkal, és viseljétek a költséget a saját csarnokaitokban.</li>
+<li><strong>Ki</strong> — Szabadbirtokosok a vesztes oldalon.</li>
+<li><strong>Nyomás</strong> — Fegyvert leadni. Gabonaadó vetés előtt. Túszok megnevezve.</li>
+<li><strong>Választás</strong> — Szereljetek le, tartsátok, vagy túszok.</li>
 </ul>
 </div>
-<div class="kod-seed kod-seed--invented">
-<p class="kod-seed__title">Ordmouth ostrom alatt, ötödik hónap</p>
-<ul class="kod-seed__facts">
-<li><strong>Ki</strong> — Ordmouth polgárházai a Greywateren; a játékosok néhányukhoz kötöttek.</li>
-<li><strong>Nyomás</strong> — Ostrom az aratás óta. Idegen, fizetetlen helyőrség. A magtárak még polgári kézen. Béke feltételei: nyissanak kaput, új helyőrség, megnevezett vezetők perre. Betegség a szegényebb negyedekben. A házak nem értenek egyet.</li>
-<li><strong>Választás</strong> — Nyissátok a kaput, tartsatok ki az olvadásig, vagy kényszerítsetek ki egy harmadik alkut, mielőtt az éhség és a betegség dönt.</li>
-</ul>
 </div>
+<div class="kod-folio__page">
 <div class="kod-seed kod-seed--invented">
 <p class="kod-seed__title">A Vardmark Kelarn’s Bendnél</p>
 <ul class="kod-seed__facts">
-<li><strong>Ki</strong> — A Vardmark: hadikíséret zord sztyeppről és magasvidékről. Hódítók, nem földművesek.</li>
-<li><strong>Nyomás</strong> — Segítettek Kelarn kifosztásában, és lándzsával tartják a gázlót. A zsákmányolt gabona és marha nem tart ki az évig. Túlélők a mocsarakban és félig üres városokban. Vetélytárs hadicsapatok a következő kanyarban. Tél jön olyan népnek, aki a rajtaütést jobban ismeri, mint az ekét.</li>
-<li><strong>Választás</strong> — Uralkodjatok a meghódítottakon mint urak, éljetek csak a rajtaütésből, amíg valaki erősebb el nem veszi Kelarn’s Bendet, vagy törjetek bele, hogy azzá váljatok, amit elpusztítottatok.</li>
+<li><strong>Ki</strong> — Hadikíséret sztyeppről. Hódítók, nem földművesek.</li>
+<li><strong>Nyomás</strong> — Tartják a gázlót. A zsákmányolt gabona nem tart ki a télnek.</li>
+<li><strong>Választás</strong> — Uralkodjatok, éljetek a rajtaütésből, vagy törjetek bele.</li>
 </ul>
+</div>
+</div>
 </div>
 </div>
 </div>

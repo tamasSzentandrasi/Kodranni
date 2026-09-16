@@ -593,7 +593,7 @@
   letter-spacing: 0.04em;
   color: var(--kod-silver-bright);
   line-height: 1.15;
-  transition: opacity 0.18s ease;
+  transition: opacity 0.32s ease;
 }
 
 .kod-fortune__state.is-off {
@@ -644,12 +644,23 @@
   font-size: 0.95rem;
   line-height: 1.55;
   color: var(--kod-silver);
+  opacity: 0;
+  transform: translateY(0.45rem);
+}
+
+.kod-fortune-board__frame p.is-in {
+  opacity: 1;
+  transform: none;
+  animation: kod-copy-in 0.46s ease both;
 }
 
 .kod-fortune-board__frame p[hidden] {
   display: block !important;
-  visibility: hidden;
+  visibility: visible;
+  opacity: 0;
+  transform: translateY(0.45rem);
   pointer-events: none;
+  animation: none;
 }
 
 .sl-markdown-content .kod-fortune-board > *,
@@ -1227,8 +1238,16 @@
   .kod-fortune__state,
   .kod-fortune,
   .kod-chip,
-  .kod-hier-rungs li.is-lit {
+  .kod-hier-rungs li.is-lit,
+  .kod-fortune-board__frame p,
+  .kod-hier__frame p {
     transition: none;
+    animation: none !important;
+    transform: none !important;
+  }
+  .kod-fortune-board__frame p,
+  .kod-hier__frame p {
+    opacity: 1;
   }
 }
 
@@ -1330,7 +1349,8 @@
 }
 
 .kod-hier__frame {
-  min-height: 2.6rem;
+  display: grid;
+  min-height: 0;
   margin: 0 0 0.85rem;
   padding: 0 0.2rem 0.75rem;
   border: none;
@@ -1338,15 +1358,29 @@
 }
 
 .kod-hier__frame p {
+  grid-area: 1 / 1;
   margin: 0 !important;
   text-align: center;
   font-size: 0.92rem;
   line-height: 1.55;
   color: var(--kod-silver);
+  opacity: 0;
+  transform: translateY(0.45rem);
+}
+
+.kod-hier__frame p.is-in {
+  opacity: 1;
+  transform: none;
+  animation: kod-copy-in 0.46s ease both;
 }
 
 .kod-hier__frame p[hidden] {
-  display: none;
+  display: block !important;
+  visibility: visible;
+  opacity: 0;
+  transform: translateY(0.45rem);
+  pointer-events: none;
+  animation: none;
 }
 
 .kod-hier-caption {

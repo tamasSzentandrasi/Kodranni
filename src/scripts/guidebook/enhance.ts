@@ -9,6 +9,22 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 		window.matchMedia &&
 		window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+	function fadeIn(el, delayMs) {
+		if (!el) return;
+		el.classList.remove('is-in');
+		if (prefersReduced) {
+			el.classList.add('is-in');
+			return;
+		}
+		const kick = () => {
+			requestAnimationFrame(() => {
+				requestAnimationFrame(() => el.classList.add('is-in'));
+			});
+		};
+		if (delayMs) window.setTimeout(kick, delayMs);
+		else kick();
+	}
+
 	function segmentFromHref(href) {
 		try {
 			const path = new URL(href, window.location.origin).pathname.replace(/\/+$/, '');
@@ -350,8 +366,13 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 				);
 				panels.forEach((p) => {
 					const show = p.getAttribute('data-panel-id') === id;
-					if (show) p.removeAttribute('hidden');
-					else p.setAttribute('hidden', '');
+					if (show) {
+						p.removeAttribute('hidden');
+						fadeIn(p);
+					} else {
+						p.setAttribute('hidden', '');
+						p.classList.remove('is-in');
+					}
 				});
 			}
 			buttons.forEach((b) => b.addEventListener('click', () => set(b.dataset.marks)));
@@ -402,8 +423,13 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 				if (ladder) ladder.setAttribute('data-active', tier);
 				panels.forEach((p) => {
 					const show = p.getAttribute('data-panel-id') === tier;
-					if (show) p.removeAttribute('hidden');
-					else p.setAttribute('hidden', '');
+					if (show) {
+						p.removeAttribute('hidden');
+						fadeIn(p);
+					} else {
+						p.setAttribute('hidden', '');
+						p.classList.remove('is-in');
+					}
 				});
 				fillDieHosts(root);
 			}
@@ -458,8 +484,13 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 				const id = kind + '-' + result[kind] + '-' + exert;
 				panels.forEach((p) => {
 					const show = p.getAttribute('data-panel-id') === id;
-					if (show) p.removeAttribute('hidden');
-					else p.setAttribute('hidden', '');
+					if (show) {
+						p.removeAttribute('hidden');
+						fadeIn(p);
+					} else {
+						p.setAttribute('hidden', '');
+						p.classList.remove('is-in');
+					}
 				});
 			}
 
@@ -502,8 +533,13 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 				);
 				panels.forEach((p) => {
 					const show = p.getAttribute('data-panel-id') === id;
-					if (show) p.removeAttribute('hidden');
-					else p.setAttribute('hidden', '');
+					if (show) {
+						p.removeAttribute('hidden');
+						fadeIn(p);
+					} else {
+						p.setAttribute('hidden', '');
+						p.classList.remove('is-in');
+					}
 				});
 			}
 			buttons.forEach((b) => b.addEventListener('click', () => set(b.dataset.tab)));
@@ -511,6 +547,58 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 				buttons.find((b) => b.getAttribute('aria-pressed') === 'true')?.dataset.tab ||
 				buttons[0].dataset.tab;
 			set(initial);
+		});
+	}
+
+	function setupChronicle() {
+		document.querySelectorAll('[data-widget="chronicle"]').forEach((root) => {
+			if (root.dataset.ready) return;
+			root.dataset.ready = '1';
+			const open = root.querySelector('.kod-chronicle-open');
+			const spines = [...root.querySelectorAll('[data-chronicle]')];
+			const books = [...root.querySelectorAll('[data-chronicle-book]')];
+			const ladder = root.querySelector('.kod-chronicle-ladder');
+			if (!open || !spines.length || !books.length) return;
+
+			function showShelf() {
+				root.removeAttribute('data-open');
+				spines.forEach((s) => s.setAttribute('aria-pressed', 'false'));
+				books.forEach((b) => {
+					b.setAttribute('hidden', '');
+					b.classList.remove('is-in');
+				});
+				if (ladder) ladder.classList.remove('is-in');
+			}
+
+			function openBook(id) {
+				const fromShelf = !root.hasAttribute('data-open');
+				root.setAttribute('data-open', id);
+				if (ladder) {
+					ladder.setAttribute('data-active', id);
+					if (fromShelf) fadeIn(ladder, 80);
+				}
+				spines.forEach((s) =>
+					s.setAttribute('aria-pressed', s.dataset.chronicle === id ? 'true' : 'false'),
+				);
+				books.forEach((b) => {
+					if (b.getAttribute('data-chronicle-book') === id) {
+						b.removeAttribute('hidden');
+						fadeIn(b, fromShelf ? 180 : 0);
+					} else {
+						b.setAttribute('hidden', '');
+						b.classList.remove('is-in');
+					}
+				});
+			}
+
+			spines.forEach((s) =>
+				s.addEventListener('click', () => {
+					const id = s.dataset.chronicle;
+					if (root.getAttribute('data-open') === id) showShelf();
+					else openBook(id);
+				}),
+			);
+			showShelf();
 		});
 	}
 
@@ -523,7 +611,6 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 		document.querySelectorAll('[data-widget="step-flow"]').forEach((root) => {
 			if (root.dataset.ready) return;
 			root.dataset.ready = '1';
-			wrapPanelStage(root);
 			const buttons = [...root.querySelectorAll('[data-tab]')];
 			const panels = [...root.querySelectorAll('[data-panel-id]')];
 			const prev = root.querySelector('[data-step-prev]');
@@ -548,8 +635,13 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 				});
 				panels.forEach((p) => {
 					const show = p.getAttribute('data-panel-id') === id;
-					if (show) p.removeAttribute('hidden');
-					else p.setAttribute('hidden', '');
+					if (show) {
+						p.removeAttribute('hidden');
+						fadeIn(p);
+					} else {
+						p.setAttribute('hidden', '');
+						p.classList.remove('is-in');
+					}
 				});
 				if (labelEl) {
 					const title =
@@ -559,6 +651,7 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 					labelEl.textContent = title
 						? `${index + 1} / ${ids.length} — ${title}`
 						: `${index + 1} / ${ids.length}`;
+					fadeIn(labelEl);
 				}
 				if (prev) prev.disabled = index === 0;
 				if (next) next.disabled = index === ids.length - 1;
@@ -641,8 +734,12 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 					const show = panel.getAttribute('data-panel-id') === id;
 					if (show) {
 						panel.removeAttribute('hidden');
+						fadeIn(panel);
 						active = panel;
-					} else panel.setAttribute('hidden', '');
+					} else {
+						panel.setAttribute('hidden', '');
+						panel.classList.remove('is-in');
+					}
 				});
 				const pos = active?.getAttribute('data-tide-pos') ?? '6';
 				const note = active?.getAttribute('data-tide-note') || '';
@@ -652,6 +749,7 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 					labelEl.textContent = title
 						? `${index + 1} / ${ids.length} — ${title}`
 						: `${index + 1} / ${ids.length}`;
+					fadeIn(labelEl);
 				}
 				if (prev) prev.disabled = index === 0;
 				if (next) next.disabled = index === ids.length - 1;
@@ -817,12 +915,19 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 					const show = p.getAttribute('data-frame') === id;
 					if (show) {
 						p.removeAttribute('hidden');
+						fadeIn(p);
 						shown = true;
-					} else p.setAttribute('hidden', '');
+					} else {
+						p.setAttribute('hidden', '');
+						p.classList.remove('is-in');
+					}
 				});
 				if (!shown) {
 					const fallback = frames.find((p) => p.getAttribute('data-frame') === 'board-steady');
-					if (fallback) fallback.removeAttribute('hidden');
+					if (fallback) {
+						fallback.removeAttribute('hidden');
+						fadeIn(fallback);
+					}
 				}
 			}
 
@@ -940,8 +1045,13 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 				notes.forEach((p) => {
 					const key = id || 'default';
 					const show = p.getAttribute('data-person-note') === key;
-					if (show) p.removeAttribute('hidden');
-					else p.setAttribute('hidden', '');
+					if (show) {
+						p.removeAttribute('hidden');
+						fadeIn(p);
+					} else {
+						p.setAttribute('hidden', '');
+						p.classList.remove('is-in');
+					}
 				});
 				drawLinks();
 			}
@@ -1000,6 +1110,7 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 			setupTierDial,
 			setupPracticeAward,
 			setupContentTabs,
+			setupChronicle,
 			setupStepFlows,
 			setupTideDemo,
 			setupOmenFaces,
