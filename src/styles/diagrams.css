@@ -1159,6 +1159,9 @@
   .kod-hier-axis {
     grid-template-columns: minmax(0, 1fr);
   }
+  .kod-hier-axis__plate {
+    grid-column: 1 / -1;
+  }
 }
 
 .kod-hier-legend {
@@ -1433,8 +1436,9 @@
   margin-top: 0 !important;
 }
 
-/* After every base hier rule so these win source order when the board is narrow. */
-@container kod-hier (max-width: 36rem) {
+/* After every base hier rule so these win source order when the board is narrow.
+   Four ladders need ~12rem each; below that, two-by-two so the plates stay wide. */
+@container kod-hier (max-width: 46rem) {
   .kod-hier-diagram {
     display: flex;
     flex-direction: column;

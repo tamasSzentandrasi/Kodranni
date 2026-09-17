@@ -268,7 +268,7 @@ site-title {
 }
 
 .sl-markdown-content {
-  max-width: 43rem;
+  max-width: none;
 }
 
 /* Quotes & tables: keep the established card styles above (do not override).

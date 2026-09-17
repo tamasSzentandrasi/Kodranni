@@ -18,9 +18,9 @@
   --sl-text-h2: 1.85rem;
   --sl-text-h3: 1.4rem;
 
-  /* Article measure. 45rem is Starlight’s default; 48rem is still a book line
-     and gives the five Fortune pillars / four Hierarchy axes a real column. */
-  --sl-content-width: 48rem;
+  /* Article measure. 45rem is Starlight’s default; 52rem is the column after
+     capping the on-page TOC. Prose and diagrams share it. */
+  --sl-content-width: 52rem;
   /* On-page TOC only. Do not reuse --sl-sidebar-width (that is the chapter nav). */
   --kod-toc-width: 14.5rem;
 }

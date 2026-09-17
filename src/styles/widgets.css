@@ -1889,8 +1889,9 @@
   grid-template-columns: 2.7rem minmax(0, 1fr) 2.7rem;
   align-items: center;
   column-gap: 0.1rem;
-  width: calc(100% + 5.2rem);
-  margin-inline: -2.6rem;
+  width: 100%;
+  max-width: 100%;
+  margin-inline: 0;
 }
 
 .kod-chronicle-stage__book {
