@@ -772,6 +772,30 @@ site-title img,
   color: var(--kod-silver-bright);
 }
 
+/* Cap the on-page TOC. Starlight sizes it with --sl-sidebar-width and then
+   pours leftover viewport into that column — unused space next to short headings.
+   Keep the leftover in the article. Header --__toc-width tracks the same cap. */
+@media (min-width: 72rem) {
+  html[data-has-toc] {
+    --__toc-width: var(--kod-toc-width);
+  }
+
+  .right-sidebar-container {
+    width: var(--kod-toc-width);
+    flex: 0 0 var(--kod-toc-width);
+  }
+
+  [data-has-sidebar][data-has-toc] .main-pane {
+    width: calc(100% - var(--kod-toc-width));
+    --sl-content-margin-inline: auto;
+  }
+
+  .right-sidebar-panel .sl-container {
+    width: auto;
+    max-width: 100%;
+  }
+}
+
 /* Header bar */
 header.header {
   border-bottom: 1px solid color-mix(in srgb, var(--kod-blood) 35%, #1a1414);
