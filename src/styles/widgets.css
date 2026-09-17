@@ -1075,13 +1075,11 @@
 .kod-widget__stage > .kod-widget__panel {
   grid-area: 1 / 1;
   opacity: 0;
-  transform: translateY(0.55rem);
   z-index: 1;
 }
 
 .kod-widget__stage > .kod-widget__panel.is-in {
   opacity: 1;
-  transform: none;
   animation: kod-copy-in 0.46s ease both;
 }
 
@@ -1089,7 +1087,6 @@
   display: block !important;
   visibility: visible;
   opacity: 0;
-  transform: translateY(0.55rem);
   pointer-events: none;
   z-index: 0;
   animation: none;
@@ -1492,21 +1489,17 @@
   color: var(--kod-silver-bright);
   margin: 0 0 0.75rem;
   opacity: 0;
-  transform: translateY(0.4rem);
 }
 .kod-step-flow__label.is-in {
   opacity: 1;
-  transform: none;
   animation: kod-copy-in 0.4s ease both;
 }
 .kod-widget[data-widget='step-flow'] .kod-widget__panel {
   min-height: 0;
   opacity: 0;
-  transform: translateY(0.55rem);
 }
 .kod-widget[data-widget='step-flow'] .kod-widget__panel.is-in {
   opacity: 1;
-  transform: none;
   animation: kod-copy-in 0.46s ease both;
 }
 .kod-widget[data-widget='step-flow'] .kod-widget__panel[hidden] {
@@ -1822,9 +1815,7 @@
   opacity: 0;
   overflow: hidden;
   pointer-events: none;
-  transform: translateY(0.45rem) scale(0.985);
-  transform-origin: 50% 0;
-  transition: opacity 0.4s ease, transform 0.4s ease, max-height 0.45s ease;
+  transition: opacity 0.4s ease, max-height 0.45s ease;
 }
 
 .kod-widget[data-widget='chronicle'][data-open] .kod-chronicle-open {
@@ -1850,12 +1841,10 @@
   pointer-events: none;
   user-select: none;
   opacity: 0;
-  transform: translateY(0.4rem);
 }
 
 .kod-chronicle-ladder.is-in {
   opacity: 1;
-  transform: none;
   animation: kod-copy-in 0.4s ease both;
 }
 
@@ -2064,18 +2053,15 @@
 .kod-folio .kod-seed__title,
 .kod-folio .kod-seed__facts {
   opacity: 0;
-  transform: translateY(0.45rem);
 }
 
 .kod-folio.is-in .kod-seed__title {
   opacity: 1;
-  transform: none;
   animation: kod-copy-in 0.46s ease both;
 }
 
 .kod-folio.is-in .kod-seed__facts {
   opacity: 1;
-  transform: none;
   animation: kod-copy-in 0.5s ease 0.08s both;
 }
 

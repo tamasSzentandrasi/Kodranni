@@ -205,14 +205,12 @@ site-title {
 .sl-markdown-content blockquote.kod-reveal,
 .sl-markdown-content .kod-reveal-item {
   opacity: 0;
-  transform: translateY(0.45rem);
-  transition: opacity 0.55s ease, transform 0.55s ease;
+  transition: opacity 0.55s ease;
 }
 
 .sl-markdown-content blockquote.kod-reveal.is-in,
 .sl-markdown-content .kod-reveal-item.is-in {
   opacity: 1;
-  transform: none;
 }
 
 .sl-markdown-content blockquote.kod-type.is-in {
@@ -231,15 +229,13 @@ site-title {
   }
 }
 
-/* Copy swap on interactables — rise + fade; replayed by toggling .is-in */
+/* Copy swap on interactables — fade; replayed by toggling .is-in */
 @keyframes kod-copy-in {
   from {
     opacity: 0;
-    transform: translateY(0.55rem);
   }
   to {
     opacity: 1;
-    transform: none;
   }
 }
 
