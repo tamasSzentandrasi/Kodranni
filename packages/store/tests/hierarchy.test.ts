@@ -3,7 +3,7 @@ import {
   completeMemberPlacements,
   inductOutsiderIntoCommunity,
 } from '../src/hierarchy.js';
-import { demoNerio, demoStana } from '../src/seed.js';
+import { demoJakov, demoTomaso } from '../src/seed.js';
 import { emptyCommunity } from '../src/sqlite.js';
 
 describe('completeMemberPlacements', () => {
@@ -12,14 +12,14 @@ describe('completeMemberPlacements', () => {
     community.hierarchyAxes = ['Arms', 'Faith', 'Coin', 'Blood'];
     community.placements = [
       {
-        name: 'Nerio Calva',
+        name: 'Tomaso Fero',
         axis: 'Coin',
         tier: 'Acknowledged',
-        characterSlug: 'nerio',
+        characterSlug: 'tomaso',
       },
     ];
     community.outsiders = [{ name: 'Mara of the Reeds', faction: 'Reed-marsh folk' }];
-    const chars = [demoNerio(), demoStana()];
+    const chars = [demoTomaso(), demoJakov()];
     const placements = completeMemberPlacements(community, chars);
     for (const ch of chars) {
       for (const axis of community.hierarchyAxes) {
@@ -29,9 +29,9 @@ describe('completeMemberPlacements', () => {
         expect(row, `${ch.name} on ${axis}`).toBeTruthy();
       }
     }
-    const coin = placements.find((p) => p.characterSlug === 'nerio' && p.axis === 'Coin');
+    const coin = placements.find((p) => p.characterSlug === 'tomaso' && p.axis === 'Coin');
     expect(coin?.tier).toBe('Acknowledged');
-    const arms = placements.find((p) => p.characterSlug === 'nerio' && p.axis === 'Arms');
+    const arms = placements.find((p) => p.characterSlug === 'tomaso' && p.axis === 'Arms');
     expect(arms?.tier).toBe('Outcast');
   });
 });

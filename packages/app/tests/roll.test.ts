@@ -22,9 +22,9 @@ function demoStore() {
 describe('executePlayerRoll', () => {
   it('rolls Torvald Strength+Carpentry & Masonry and spends Exertion', () => {
     const store = demoStore();
-    const before = store.getCharacterBySlug('nerio')!.exertion.current;
+    const before = store.getCharacterBySlug('tomaso')!.exertion.current;
     const r = executePlayerRoll(store, {
-      characterSlug: 'nerio',
+      characterSlug: 'tomaso',
       foundation: 'Strength',
       skill: 'Carpentry & Masonry',
       dieTier: 8,
@@ -35,7 +35,7 @@ describe('executePlayerRoll', () => {
     expect(r.poolSize).toBeGreaterThanOrEqual(1);
     expect(r.faces).toHaveLength(r.poolSize);
     expect(r.omen).toBeTypeOf('number');
-    const after = store.getCharacterBySlug('nerio')!;
+    const after = store.getCharacterBySlug('tomaso')!;
     expect(after.exertion.current).toBe(before - 1);
     expect(store.getRoll(r.rollId)).toBeTruthy();
     store.close();
@@ -45,7 +45,7 @@ describe('executePlayerRoll', () => {
     const store = demoStore();
     expect(() =>
       executePlayerRoll(store, {
-        characterSlug: 'nerio',
+        characterSlug: 'tomaso',
         foundation: 'Strength',
         skill: 'Carpentry & Masonry',
         exertionDice: 2,
@@ -71,7 +71,7 @@ describe('executePlayerRoll', () => {
   it('allows untrained (rating 0) named skills', () => {
     const store = demoStore();
     const r = executePlayerRoll(store, {
-      characterSlug: 'nerio',
+      characterSlug: 'tomaso',
       foundation: 'Charisma',
       skill: 'Debate & Rhetoric',
       dieTier: 8,

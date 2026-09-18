@@ -42,23 +42,29 @@ describe('migrateCommunityLabels', () => {
 });
 
 describe('demo seed labels', () => {
-  it('puts factions on outsiders and tags on kin; consul has both groups', () => {
+  it('puts factions on outsiders and precise tags on people; consul has both groups', () => {
     const dir = mkdtempSync(join(tmpdir(), 'kod-lab-'));
     dirs.push(dir);
     const store = openSqliteStore(join(dir, 'c.sqlite'));
     seedDemoCampaign(store);
     const c = store.getCommunity();
-    const velatri = c.labels?.find((l) => l.name === 'House Velatri');
-    const moro = c.labels?.find((l) => l.name === 'House Moro');
-    const chain = c.labels?.find((l) => l.name === 'Harbour chain');
-    expect(velatri && moro && chain).toBeTruthy();
+    const orvanti = c.labels?.find((l) => l.name === 'House Orvanti');
+    const company = c.labels?.find((l) => l.name === 'Free Company');
+    const pelesa = c.labels?.find((l) => l.name === 'Pelesa');
+    const calvaro = c.labels?.find((l) => l.name === 'Calvaro');
+    expect(orvanti && company && pelesa && calvaro).toBeTruthy();
+    expect(c.labels?.some((l) => l.name === 'Loading crane')).toBe(false);
+    expect(c.labels?.some((l) => l.name === 'Harbour chain')).toBe(false);
     const envoy = c.outsiders.find((o) => o.name === 'Matteo Rinaldi');
-    expect(envoy?.labelIds).toEqual([velatri!.id, c.labels?.find((l) => l.name === 'Albaran letter')!.id]);
+    expect(envoy?.labelIds).toContain(calvaro!.id);
     const consul = c.outsiders.find((o) => o.name === 'Luca Bandi');
-    expect(consul?.labelIds).toEqual([moro!.id, chain!.id]);
-    const nerio = store.getCharacterBySlug('nerio');
-    const crane = c.labels?.find((l) => l.name === 'Loading crane');
-    expect(nerio?.labelIds).toEqual([crane!.id, velatri!.id]);
+    expect(consul?.labelIds).toContain(pelesa!.id);
+    const tomaso = store.getCharacterBySlug('tomaso');
+    expect(tomaso?.labelIds?.some((id) => c.labels?.find((l) => l.id === id)?.name.includes('mill'))).toBe(
+      true,
+    );
+    const jakov = store.getCharacterBySlug('jakov');
+    expect(jakov?.labelIds).toContain(company!.id);
     store.close();
   });
 });

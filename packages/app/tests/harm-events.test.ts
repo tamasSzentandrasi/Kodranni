@@ -27,7 +27,7 @@ function demoStore() {
 describe('harm', () => {
   it('previews physical points from unopposed with armour ratio', () => {
     const store = demoStore();
-    const leifr = store.getCharacterBySlug('stana')!;
+    const leifr = store.getCharacterBySlug('jakov')!;
     // light donned → ratio 2; failures 5 marks 1 → floor((5-1)/2)=2
     const prev = previewHarm({
       kind: 'unopposed',
@@ -45,7 +45,7 @@ describe('harm', () => {
   it('applyHarm allocates within family and audits', () => {
     const store = demoStore();
     const r = applyHarm(store, {
-      characterSlug: 'stana',
+      characterSlug: 'jakov',
       family: 'physical',
       availablePoints: 2,
       allocations: [
@@ -55,8 +55,8 @@ describe('harm', () => {
       actor: 'st',
     });
     expect(r.applied).toHaveLength(2);
-    const ch = store.getCharacterBySlug('stana')!;
-    expect(ch.harm.Bleeding).toBe(2); // seed already had 1
+    const ch = store.getCharacterBySlug('jakov')!;
+    expect(ch.harm.Bleeding).toBe(1);
     expect(ch.harm.Crushed).toBe(1);
     store.close();
   });
@@ -65,7 +65,7 @@ describe('harm', () => {
     const store = demoStore();
     expect(() =>
       applyHarm(store, {
-        characterSlug: 'stana',
+        characterSlug: 'jakov',
         family: 'physical',
         availablePoints: 1,
         allocations: [{ track: 'Disgrace', points: 1 }],
@@ -78,10 +78,10 @@ describe('harm', () => {
 describe('ST resource events', () => {
   it('reclaims exertion toward max', () => {
     const store = demoStore();
-    const before = store.getCharacterBySlug('stana')!.exertion.current;
-    const ch = reclaimExertion(store, { characterSlug: 'stana', points: 0 });
+    const before = store.getCharacterBySlug('jakov')!.exertion.current;
+    const ch = reclaimExertion(store, { characterSlug: 'jakov', points: 0 });
     // points 0 means add 0 when explicit; use fill
-    const filled = reclaimExertion(store, { characterSlug: 'nerio' });
+    const filled = reclaimExertion(store, { characterSlug: 'tomaso' });
     expect(filled.exertion.current).toBe(filled.exertion.max);
     expect(before).toBeLessThanOrEqual(ch.exertion.max);
     store.close();
@@ -99,7 +99,7 @@ describe('ST resource events', () => {
   it('sets supplies', () => {
     const store = demoStore();
     const ch = setSupplies(store, {
-      characterSlug: 'nerio',
+      characterSlug: 'tomaso',
       foodDays: 5,
       waterDays: 4,
     });

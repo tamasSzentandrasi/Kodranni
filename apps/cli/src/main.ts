@@ -241,7 +241,7 @@ async function main(): Promise<void> {
     const store = openSqliteStore(cfg.storePath);
     if (demoCharactersPresent(store)) {
       store.close();
-      console.log(`Demo already present for ${slug} (nerio, stana).`);
+      console.log(`Demo already present for ${slug} (tomaso, jakov, caterina, niccolo).`);
       console.log(`  store: ${cfg.storePath}`);
       console.log(
         `  Recreate (destroys the campaign directory): kodranni campaign seed-demo --slug ${slug} --force`,
@@ -252,7 +252,7 @@ async function main(): Promise<void> {
     store.close();
     console.log(`Seeded demo: ${cfg.name} (${cfg.slug})`);
     console.log(`  store: ${cfg.storePath}`);
-    console.log(`  characters: nerio, stana`);
+    console.log(`  characters: tomaso, jakov, caterina, niccolo`);
     console.log(
       `  tunnel: ${cfg.tunnelMode ?? 'quick'}` +
         (cfg.tunnelHostname ? ` · ${cfg.tunnelHostname}` : '') +

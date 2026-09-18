@@ -462,7 +462,7 @@ describe('lock / unlock / multi focus', () => {
 describe('legacy seed sheets', () => {
   it('treats active seed characters as locked without creation block', () => {
     const store = emptyStore();
-    const torvald = store.getCharacterBySlug('nerio')!;
+    const torvald = store.getCharacterBySlug('tomaso')!;
     expect(isCreationLocked(torvald)).toBe(true);
     store.close();
   });
