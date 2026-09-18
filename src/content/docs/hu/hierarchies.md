@@ -28,7 +28,7 @@ Minden tengely ugyanazt a négy fokot használja, fentről le: **tisztelt**, **m
 
 ### Az ábra alakja
 
-Az ábrát (Diagram) fentről lefelé olvasd: egy korona, aztán párhuzamos létrák. Minden oszlop külön hierarchia. Minden létra **ugyanazt a négy szintet** használja (az oszlop teteje = tisztelt, alja = kitaszított). Az **előkészítés** minden fokot név nélkül hagy. A **játékban** egy kidolgozott Althing-példa: kettős tengely, pártfogás, megbízás és a kívülálló tornác egyszerre látszik.
+Az ábrát (Diagram) fentről lefelé olvasd: egy korona, aztán párhuzamos létrák. Minden oszlop külön hierarchia. Minden létra **ugyanazt a négy szintet** használja (az oszlop teteje = tisztelt, alja = kitaszított). Az **előkészítés** minden fokot név nélkül hagy. A **játékban** egy kidolgozott foglaltság — Aspalath, miután a kés célt tévesztett —: kettős tengely, pártfogás, megbízás, vitatott Fegyver és a kívülálló tornác egyszerre látszik.
 
 <div class="kod-hier not-content" data-widget="hierarchy-board" data-mode="play" aria-label="Hierarchia-foglaltság">
 <div class="kod-hier__modes" role="group" aria-label="Ábra állapota">
@@ -36,25 +36,31 @@ Az ábrát (Diagram) fentről lefelé olvasd: egy korona, aztán párhuzamos lé
 <button type="button" class="kod-widget__btn" data-hier-mode="play" aria-pressed="true">Játékban</button>
 </div>
 <div class="kod-hier__cast" role="list" aria-label="A példa emberei">
-<button type="button" class="kod-chip" data-person="ketill">Ketill</button>
-<button type="button" class="kod-chip" data-person="hakon">Hákon</button>
-<button type="button" class="kod-chip" data-person="ingibjorg">Ingibjörg</button>
-<button type="button" class="kod-chip" data-person="leif">Leif</button>
-<button type="button" class="kod-chip" data-person="sigrid">Sigrid</button>
+<button type="button" class="kod-chip" data-person="marino">Marino</button>
+<button type="button" class="kod-chip" data-person="vito">Vito</button>
+<button type="button" class="kod-chip" data-person="jakov">Jakov</button>
+<button type="button" class="kod-chip" data-person="orsa">Orsa</button>
+<button type="button" class="kod-chip" data-person="caterina">Caterina</button>
+<button type="button" class="kod-chip" data-person="piero">Piero</button>
+<button type="button" class="kod-chip" data-person="lovro">Lovro</button>
+<button type="button" class="kod-chip" data-person="luca">Luca</button>
 </div>
 <div class="kod-hier__frame" aria-live="polite">
-<p data-person-note="default">Kattints egy névre. Az az ember minden tengelyen kigyullad, ahol ül. A kettős tengely két fok egyszerre, nem ötödik létra. A Hit szándékosan üres — tengely játékban is maradhat névtelen.</p>
-<p data-person-note="ketill" hidden>Ketill az uralkodói helyen ül. A Véren emelkedett, és ott tisztelt maradt. Nem állhat a falon és az Althingon egyszerre, ezért a Fegyvert Hákont bízza. Hírnév: aki nyilvánosan megszégyeníteni próbálja, a saját foka és a minden tengely fölötti hely közti rést kapja.</p>
-<p data-person-note="hakon" hidden>Hákon a Fegyveren megbízott, mert Ketill marsallnak nevezte — ez megbízás, nem második uralkodó. Rokonságként elismert a Véren is. Kettős tengely: mindkét létra kigyullad. Senki sem uralkodik jól, ha nem adja le a munkát.</p>
-<p data-person-note="ingibjorg" hidden>Ingibjörg tisztelt a Pénzen — a malomkönyv. Leif pártfogója. A Fegyveren nem ül. Ha a csarnokban Leif ellen megy, a Pénz kétfoknyi rése a társas vagy szellemi sérülés védelmi aránya. A fikcióbeli befolyás szabad szerepjáték marad.</p>
-<p data-person-note="leif" hidden>Leif (játékos). Elismert a Fegyveren a tavalyi rajtaütésből. A Pénzen kitaszított volt, amíg Ingibjörg malomkönyv-visszhangja jól zárult; most elismert a Pénzen. Az emelkedés tengelyenként megy — a visszhang a Fegyvert nem mozdította. Kettős tengely: mindkét fok kigyullad.</p>
-<p data-person-note="sigrid" hidden>Sigrid kívülálló: a tornácon, egyik létrán sem. Ha belép a közösségbe, kitaszítottként indul a ráillő tengelyeken. A tornác az ábra mellett van, soha nem ötödik oszlop.</p>
+<p data-person-note="default">Kattints egy névre. Az az ember minden tengelyen kigyullad, ahol ül. A kettős tengely két fok egyszerre, nem ötödik létra. A Fegyveren két ember ül, akik nem ugyanannak a háznak szolgálnak. Tengely üresen maradhat; a Pénz megbízott foka itt üres.</p>
+<p data-person-note="marino" hidden>Marino Orvanti herceg az uralkodói helyen ül. Nem tud lovagolni. Nem tisztelt a Véren — Orsa az, mint élő Solari. Uralkodik, mert még ül, és mert Vito az ő kezében vesz neveket. Hírnév: aki nyilvánosan megszégyeníteni próbálja, a saját foka és a minden tengely fölötti hely közti rést kapja.</p>
+<p data-person-note="vito" hidden>Vito kapitány megbízott a Fegyveren, mert Marino a háztartást rá bízta — ez megbízás, nem második herceg. Elismert a Véren Orvanti szolgálatként. Kettős tengely: mindkét létra kigyullad. Senki sem uralkodik jól, ha nem adja le a munkát.</p>
+<p data-person-note="jakov" hidden>Jakov Bracco elismert a Fegyveren, mert Lazzaro Oklevele a Szabad Társaságot a régi Orsani-raktárba tette, nem mert Marino nevezte. A Véren nem ül. Két ember ülhet a Fegyveren és más háznak tartozhat. Az Oklevél mítosz; ez a foglaltság annak élő ára.</p>
+<p data-person-note="orsa" hidden>Orsa Solari tisztelt a Véren — Isotta nővére, az élő Solari hang. Caterina pártfogója. A Fegyveren nem ül. Ha a csarnokban Caterina ellen megy, a Vér kétfoknyi rése (tisztelt vs elismert) a társas vagy szellemi sérülés védelmi aránya. A fikcióbeli befolyás szabad szerepjáték marad.</p>
+<p data-person-note="caterina" hidden>Caterina Vela (játékos). Elismert a Hiten tizenkét év székesegyházi órából Isotta háztartásában. Kitaszított volt a Véren (szolga), amíg Orsa megbízása lezárult; most elismert a Véren. Az emelkedés tengelyenként megy — a visszhang a Hitet és a Fegyvert nem mozdította. Kettős tengely: mindkét fok kigyullad.</p>
+<p data-person-note="piero" hidden>Piero Calvo tisztelt a Pénzen — a raktárak, amelyek etetik az alsóvárost. A Fegyveren nem ül. Niccolo a fivére fia; az a mászás ezen a táblán még nincs.</p>
+<p data-person-note="lovro" hidden>Lovro atya tisztelt a Hiten. Isotta testét és a székesegyház ajtaját tartja. Nem temet, amíg Orsa és a háztartás meg nem egyezik, mi a halál. A Véren és a Fegyveren nem ül.</p>
+<p data-person-note="luca" hidden>Luca Bandi kívülálló: a tornácon, egyik létrán sem. Pelesa konzula, bérelt házban. Ha belép a közösségbe, kitaszítottként indul a ráillő tengelyeken. A tornác az ábra mellett van, soha nem ötödik oszlop. Matteo Rinaldi (Osvaldo Calvaro embere) ugyanígy ülne itt — második idegen erszény, ellentétes akarat.</p>
 </div>
 <div class="kod-hier-diagram">
 <div class="kod-hier-ruler">
 <p class="kod-hier-ruler__title">Uralkodó</p>
-<button type="button" class="kod-chip" data-person="ketill" data-play>Ketill</button>
-<p class="kod-hier-ruler__note">Egy hely az egész közösségnek — minden tengely fölött, nem a Fegyver, Hit, Pénz vagy Vér teteje.</p>
+<button type="button" class="kod-chip" data-person="marino" data-play>Marino</button>
+<p class="kod-hier-ruler__note">Egy hely az egész közösségnek — minden tengely fölött, nem a Fegyver, Hit, Pénz vagy Vér teteje. Marino sebesülten ül. Orsa a Véren fölötte áll.</p>
 </div>
 <div class="kod-hier-body">
 <div class="kod-hier-axes">
@@ -65,8 +71,8 @@ Az ábrát (Diagram) fentről lefelé olvasd: egy korona, aztán párhuzamos lé
 </div>
 <ol class="kod-hier-rungs">
 <li><strong>Tisztelt</strong></li>
-<li><strong>Megbízott</strong> <button type="button" class="kod-chip" data-person="hakon" data-play>Hákon</button></li>
-<li><strong>Elismert</strong> <button type="button" class="kod-chip" data-person="leif" data-play>Leif</button></li>
+<li><strong>Megbízott</strong> <button type="button" class="kod-chip" data-person="vito" data-play>Vito</button></li>
+<li><strong>Elismert</strong> <button type="button" class="kod-chip" data-person="jakov" data-play>Jakov</button></li>
 <li><strong>Kitaszított</strong></li>
 </ol>
 </div>
@@ -76,9 +82,9 @@ Az ábrát (Diagram) fentről lefelé olvasd: egy korona, aztán párhuzamos lé
 <p class="kod-hier-axis__name">Hit</p>
 </div>
 <ol class="kod-hier-rungs">
-<li><strong>Tisztelt</strong></li>
+<li><strong>Tisztelt</strong> <button type="button" class="kod-chip" data-person="lovro" data-play>Lovro</button></li>
 <li><strong>Megbízott</strong></li>
-<li><strong>Elismert</strong></li>
+<li><strong>Elismert</strong> <button type="button" class="kod-chip" data-person="caterina" data-play>Caterina</button></li>
 <li><strong>Kitaszított</strong></li>
 </ol>
 </div>
@@ -88,9 +94,9 @@ Az ábrát (Diagram) fentről lefelé olvasd: egy korona, aztán párhuzamos lé
 <p class="kod-hier-axis__name">Pénz</p>
 </div>
 <ol class="kod-hier-rungs">
-<li><strong>Tisztelt</strong> <button type="button" class="kod-chip" data-person="ingibjorg" data-play>Ingibjörg</button></li>
+<li><strong>Tisztelt</strong> <button type="button" class="kod-chip" data-person="piero" data-play>Piero</button></li>
 <li><strong>Megbízott</strong></li>
-<li><strong>Elismert</strong> <button type="button" class="kod-chip" data-person="leif" data-play>Leif</button></li>
+<li><strong>Elismert</strong></li>
 <li><strong>Kitaszított</strong></li>
 </ol>
 </div>
@@ -100,17 +106,17 @@ Az ábrát (Diagram) fentről lefelé olvasd: egy korona, aztán párhuzamos lé
 <p class="kod-hier-axis__name">Vér</p>
 </div>
 <ol class="kod-hier-rungs">
-<li><strong>Tisztelt</strong> <button type="button" class="kod-chip" data-person="ketill" data-play>Ketill</button></li>
+<li><strong>Tisztelt</strong> <button type="button" class="kod-chip" data-person="orsa" data-play>Orsa</button></li>
 <li><strong>Megbízott</strong></li>
-<li><strong>Elismert</strong> <button type="button" class="kod-chip" data-person="hakon" data-play>Hákon</button></li>
+<li><strong>Elismert</strong> <button type="button" class="kod-chip" data-person="vito" data-play>Vito</button> <button type="button" class="kod-chip" data-person="caterina" data-play>Caterina</button></li>
 <li><strong>Kitaszított</strong></li>
 </ol>
 </div>
 </div>
 <aside class="kod-hier-porch" aria-label="Kívülállók">
 <p class="kod-hier-porch__title">Kívülállók</p>
-<button type="button" class="kod-chip" data-person="sigrid" data-play>Sigrid</button>
-<p class="kod-hier-porch__note">Külön, amíg belépnek. Akkor kitaszított a rájuk illő tengelyeken.</p>
+<button type="button" class="kod-chip" data-person="luca" data-play>Luca</button>
+<p class="kod-hier-porch__note">Külön, amíg belépnek. Akkor kitaszított a rájuk illő tengelyeken. Második idegen erszény (Matteo, Calvaróért) ugyanígy ülne itt.</p>
 </aside>
 </div>
 </div>
@@ -150,13 +156,13 @@ A pártfogás a legtisztább út, nem az egyetlen. Nyilvános tettek, erő, egy 
 Ugyanazon a szinten a versengés és az együttműködés szerepjáték marad.
 
 <aside class="kod-example" aria-label="Példa">
-<p class="kod-example__scene">A fenti foglaltság ez a jelenet a lezárás után. Az Althing előtt Ingibjörg — tisztelt a Pénzen, a nő, aki még mindig az egyetlen ép malomkönyvet tartja — félrehívja Leifet az udvaron. A malomkönyvet, ami a malomrészesedés igényét bizonyítja, múlt héten ellopták. Tanúk előtt nevezi meg: hozd vissza, mielőtt a gyűlés összeül, és szólni fog érte. Ez a megbízás visszhang lett. Jól zárult, és megnyitotta a Pénzen az emelkedést (kitaszított → elismert). A visszhang a Fegyvert nem mozdította, és nem tette tiszteltté. Később, ha Ingibjörg a csarnokban megszégyeníteni próbálja, a Pénz kétfoknyi rése a társas sérülés védelmi aránya — nem automatikus hatalom magából a szívességből. Ketill azon a létrán nincs: uralkodik, mert a helyen ül, és mert a Fegyvert már Hákont bízta.</p>
+<p class="kod-example__scene">A fenti foglaltság ez a jelenet a lezárás után. Orsa Solari — tisztelt a Véren, Isotta nővére — Caterina Velát nevezte a székesegyházi káptalan előtt. Caterina tizenkét évig öltöztette Isottát; a gyerekei olyan utcán laknak, amely már Vito éjszakai lajstromán van. Orsa megbízása: hozd el a neveket mindenkitől, akinek kulcsa volt a belső lépcsőhöz az éjszakán, amikor Isotta meghalt, és Orsa kiáll Vitóval szemben, amikor azt az utcát olvassák. Ez a nyilvános kötés visszhang lett. Caterina három nevet hozott. Orsa kiállt. A mesélő a Véren kitaszított → elismertet hagyott jóvá. A Hit ott maradt, ahová a székesegyházi órák tették. A Fegyver nem mozdult. Később, ha Orsa a csarnokban megszégyeníteni próbálja Caterinát, a Vér rése (tisztelt vs elismert) a társas sérülés védelmi aránya — nem automatikus hatalom magából a szívességből. Marino azon a létrán nincs: uralkodik, mert még ül, és mert Vito az ő kezében vesz neveket. Jakov a Fegyveren az Oklevél miatt ül, nem mert Marino nevezte.</p>
 <ol class="kod-example__steps">
-<li><strong>Pártfogás / horog:</strong> Ingibjörg (tisztelt, Pénz) nyilvánosan a malomkönyv visszaszerzését bízza Leifre az Althing előtt.</li>
-<li><strong>Visszhang születik:</strong> „Hozd vissza a malomkönyvet az Althing előtt” (súlyt az asztal szabja).</li>
-<li><strong>Emelkedés:</strong> jól zárult; a mesélő a Pénzen kitaszított → elismertet hagyott jóvá. A Fegyver ott maradt, ahová a rajtaütés tette.</li>
-<li><strong>Megbízás:</strong> Ketill (uralkodó, tisztelt Vér) nem ül megbízottként a Fegyveren — Hákon ül, mert az uralkodó marsallnak nevezte.</li>
-<li><strong>Hírnév / társas harc:</strong> Ingibjörg vs Leif a Pénzen két fok. Ez a rés a védelmi arány, amikor társas vagy szellemi sérülés jár. Más mechanika nincs a szinthez kötve.</li>
+<li><strong>Pártfogás / horog:</strong> Orsa (tisztelt, Vér) nyilvánosan köti Caterinát: nevek a belső lépcsőről, cserébe kiállásért, amikor az éjszakai lajstrom Mara Vela utcáját olvassa.</li>
+<li><strong>Visszhang születik:</strong> „Hozd el Orsának a neveket a belső lépcsőről” (súlyt az asztal szabja).</li>
+<li><strong>Emelkedés:</strong> Caterina három nevet hozott; Orsa kiállt. A mesélő a Véren kitaszított → elismertet hagyott jóvá. Hit és Fegyver ott maradt, ahol volt.</li>
+<li><strong>Megbízás:</strong> Marino (uralkodó) nem ül megbízottként a Fegyveren — Vito ül, mert az uralkodó nem tud lovagolni. Jakov elismert a Fegyveren az Oklevélből, nem abból a megbízásból.</li>
+<li><strong>Hírnév / társas harc:</strong> Orsa vs Caterina a Véren két fok. Ez a rés a védelmi arány, amikor társas vagy szellemi sérülés jár. Más mechanika nincs a szinthez kötve.</li>
 </ol>
 </aside>
 
