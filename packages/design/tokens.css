@@ -79,6 +79,16 @@
   --kod-axis-ruler: url('./ornament/axes/ruler.png');
   --kod-chronicle-open: url('./ornament/chronicle-open.jpg');
   --kod-chronicle-spine: url('./ornament/chronicle-spine.jpg');
+  --kod-nameplate: url('./ornament/nameplate.png');
+  --kod-nameplate-glass: url('./ornament/nameplate-glass.png');
+  --kod-nameplate-ratio: 2376 / 421;
+  --kod-nameplate-l: url('./ornament/nameplate-end-l.png');
+  --kod-nameplate-r: url('./ornament/nameplate-end-r.png');
+  --kod-slide-tab: url('./ornament/slide-tab.png');
+  --kod-slide-tab-top: url('./ornament/slide-tab-top.png');
+  --kod-slide-tab-mid: url('./ornament/slide-tab-mid.png');
+  --kod-slide-tab-bot: url('./ornament/slide-tab-bot.png');
+  --kod-slide-tab-chev: url('./ornament/slide-tab-chev.png');
   --kod-seal-ring: url('./ornament/seal-ring.svg');
   --kod-armour-linen: url('./ornament/armour/linen.jpg');
   --kod-armour-leather: url('./ornament/armour/leather.jpg');
