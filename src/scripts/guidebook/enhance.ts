@@ -9,16 +9,18 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 		window.matchMedia &&
 		window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+	let motionLive = false;
+
 	function fadeIn(el, delayMs) {
 		if (!el) return;
-		el.classList.remove('is-in');
-		if (prefersReduced) {
+		el.classList.remove('is-in', 'kod-copy-play');
+		if (!motionLive || prefersReduced) {
 			el.classList.add('is-in');
 			return;
 		}
 		const kick = () => {
 			requestAnimationFrame(() => {
-				requestAnimationFrame(() => el.classList.add('is-in'));
+				requestAnimationFrame(() => el.classList.add('is-in', 'kod-copy-play'));
 			});
 		};
 		if (delayMs) window.setTimeout(kick, delayMs);
@@ -94,7 +96,6 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 		const cs = getComputedStyle(el);
 		skin.style.background = cs.background;
 		skin.style.border = cs.border;
-		skin.style.boxShadow = cs.boxShadow;
 		el.style.background = 'none';
 		el.style.borderColor = 'transparent';
 		el.style.boxShadow = 'none';
@@ -1432,6 +1433,7 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 				console.error('[kodranni] enhance step failed:', step.name, err);
 			}
 		}
+		motionLive = true;
 		// after layout + fonts
 		requestAnimationFrame(() => {
 			layoutEqualizers();
