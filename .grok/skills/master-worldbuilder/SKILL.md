@@ -105,7 +105,7 @@ Output: pass / reject · S1 breakdown · one-sentence reason · optional teachin
 
 ### Walk
 
-Walk **one existing seed** through one step or all nine. Allowed seeds: Mangerton, Kabar/Aranyos, Kaisereia, Straumfjǫrðr, Aspalath, Lychnis.
+Walk **one existing seed** through one step or all nine. Allowed seeds: Mangerton, Kabar/Aranyos, Kaisereia, Straumfjord (Vinland), Aspalath, Lychnis.
 
 Aspalath on the page is the ducal harbour-city after the night the knife missed (Orvanti / Solari / Calvo / Company / Pelesa / Osvaldo Calvaro). Do not walk the retired elected-count commune.
 
