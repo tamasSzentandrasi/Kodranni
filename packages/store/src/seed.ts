@@ -121,11 +121,11 @@ export function demoTomaso(): CharacterRecord {
     slug: 'tomaso',
     name: 'Tomaso Fero',
     kind: 'pc',
-    communityTie: 'Lazzaro Orvanti took me off a galley and set me to the mill behind the hill gate.',
+    communityTie: 'Lazzaro took me off a galley and put me in the mill.',
     concept:
-      'I keep the mill Lazzaro gave me. The engine in it is unfinished. Household men have stacked boards at the door. I still sleep there. I owe Orsa Solari for my mother’s burial.',
+      'I want the mill finished before they shut it. I owe Orsa for my mother’s burial. I am afraid Vito’s men will take me at night like the others.',
     whoWeSee:
-      'A millwright. Lime in the seams of his hands. He still works the mill behind the hill gate, even with boards stacked at the door.',
+      'I’m Tomaso. I keep the mill Lazzaro put me in after he took me off a galley. He’s dead. They want the mill shut. I still sleep there.',
     player: { platform: 'local', displayName: 'Tomaso', accountId: 'local-tomaso' },
     foundations: foundations({
       Strength: 2,
@@ -155,8 +155,8 @@ export function demoTomaso(): CharacterRecord {
       sk('Insight', 1, 'Perception', 6),
     ],
     traits: [
-      { name: 'Galley scar', note: 'Ankle. Walks stiff on that side.' },
-      { name: 'Reads a plan', note: 'Can follow a drawn machine. Speaks enough Latin for a workshop.' },
+      { name: 'Galley-stiff ankle', note: 'Cannot run far.' },
+      { name: 'Reads a plan', note: 'Can follow a drawn machine.' },
     ],
     echoes: [
       makeEcho({
@@ -189,9 +189,8 @@ export function demoTomaso(): CharacterRecord {
       foodDays: 2,
       waterDays: 3,
       items: [
-        { name: 'Adze', note: 'Edge dull from the mill-lip.' },
-        { name: 'Wool cloak', note: 'One. Dry.' },
-        { name: 'Screw-jack', note: 'For the unfinished lift.' },
+        { name: 'Adze', note: 'Edge dull.' },
+        { name: 'Screw-jack', note: 'For the mill lift.' },
       ],
     },
   });
@@ -203,11 +202,11 @@ export function demoJakov(): CharacterRecord {
     slug: 'jakov',
     name: 'Jakov Bracco',
     kind: 'pc',
-    communityTie: 'My daughter Mira sleeps in the Charter house. Lazzaro stood her godfather.',
+    communityTie: 'My daughter sleeps in the company’s house. Lazzaro stood her godfather.',
     concept:
-      'I came with the Company the year we held the hill gate. We are a season behind in pay. Mira is seven and knows this warehouse as home. My brother was on the hill gate the night of the knife and has not come back. I have not taken Luca’s coin or Matteo’s.',
+      'We have not been paid. Some captains will sell to Pelesa or Calvaro. My brother was on the gate the night of the knife and has not come back. I have not sold.',
     whoWeSee:
-      'A Company man, unpaid. A girl of seven in the warehouse doorway behind him. He will not take a foreign purse for that roof.',
+      'I’m Jakov. I sleep in the company’s house with my daughter. Lazzaro stood her godfather. We have not been paid. Some of us will sell. I have not.',
     player: { platform: 'discord', displayName: 'Jakov', accountId: 'demo-discord-jakov' },
     foundations: foundations({
       Strength: 3,
@@ -239,12 +238,11 @@ export function demoJakov(): CharacterRecord {
       sk('Sailing & Navigation', 1, 'Perception', 2),
     ],
     traits: [
-      { name: 'Godfather’s ring', note: 'Lazzaro’s. Too big. Mira knows it.' },
-      { name: 'Hill-gate watch', note: 'Slept that gate twelve years.' },
+      { name: 'Godfather’s ring', note: 'Lazzaro’s. Mira knows it.' },
     ],
     echoes: [
       makeEcho({
-        title: 'Keep Mira in the warehouse',
+        title: 'Keep Mira housed',
         weight: 2,
         invokeWhen: 'When the roll is the Charter house, Mira, or Company pay.',
         groupLabel: 'Charter house',
@@ -272,8 +270,7 @@ export function demoJakov(): CharacterRecord {
       waterDays: 2,
       items: [
         { name: 'Sword', note: 'Company issue. Edge notched.' },
-        { name: 'Shield', note: 'Rim split on one quarter.' },
-        { name: 'Child’s cloak', note: 'Cut down. Mira’s.' },
+        { name: 'Shield', note: 'Rim split.' },
       ],
     },
   });
@@ -285,11 +282,11 @@ export function demoCaterina(): CharacterRecord {
     slug: 'caterina',
     name: 'Caterina Vela',
     kind: 'pc',
-    communityTie: 'I dressed Duchess Isotta for twelve years. My children live on Mara Vela’s street.',
+    communityTie: 'I dressed Duchess Isotta for twelve years. My children sleep at my aunt’s.',
     concept:
-      'I still walk the palace as a servant. Niko is nine and Lea is four; they sleep at my aunt Mara’s. That street is on the night roll. Orsa asked me for the names from the inner stair; I gave her three. I have not said what else I heard.',
+      'Vito’s men have our street on a list. I gave Orsa three names from the inner stair. I have heard more than I have said. I am afraid they will take my children next.',
     whoWeSee:
-      'A palace servant, lower-town dust on the hem. People still ask her to open a door.',
+      'I’m Caterina. I dressed the duchess for twelve years. My children sleep at my aunt’s. Vito’s men have that street on a list. I still walk the palace.',
     player: { platform: 'local', displayName: 'Caterina', accountId: 'local-caterina' },
     foundations: foundations({
       Strength: 1,
@@ -328,7 +325,7 @@ export function demoCaterina(): CharacterRecord {
       makeEcho({
         title: 'Keep Niko and Lea safe',
         weight: 2,
-        invokeWhen: 'When the roll is Mara Vela’s street, the night roll, or the children.',
+        invokeWhen: 'When the roll is Mara’s street, the night list, or the children.',
         groupLabel: 'Mara Vela’s street',
         group: [
           { name: 'Caterina Vela', characterSlug: 'caterina' },
@@ -345,7 +342,7 @@ export function demoCaterina(): CharacterRecord {
         },
       }),
       makeEcho({
-        title: 'What I have not said',
+        title: 'What I have not told',
         weight: 1,
         invokeWhen: 'When the roll is a confidence I have not spent.',
       }),
@@ -359,9 +356,8 @@ export function demoCaterina(): CharacterRecord {
       foodDays: 2,
       waterDays: 2,
       items: [
-        { name: 'Keys', note: 'Inner stair. Worn.' },
-        { name: 'Sleeve-knife', note: 'Small. Hidden.' },
-        { name: 'Ribbon', note: 'Solari blue. Lea’s.' },
+        { name: 'Inner-stair keys', note: 'Isotta’s set.' },
+        { name: 'Sleeve-knife', note: 'Hidden.' },
       ],
     },
   });
@@ -373,11 +369,11 @@ export function demoNiccolo(): CharacterRecord {
     slug: 'niccolo',
     name: 'Niccolo Calvo',
     kind: 'pc',
-    communityTie: 'House Calvo. I keep the warehouses the lower town buys from.',
+    communityTie: 'House Calvo. The poor streets buy from my warehouses.',
     concept:
-      'I stood in the cathedral yard when Isotta burned the Pelesan register; my name was in it. Uncle Piero wants to sell a cargo to Pelesa and has listened to Calvaro’s man. I have not signed. I have coin for a landing and have not spent it.',
+      'My uncle wants to sell to Pelesa and has sat with Calvaro’s man. I have not signed. I am afraid if the household seizes the warehouses the streets starve, and if I sell we belong to Pelesa.',
     whoWeSee:
-      'Calvo cloth, chalk on the cuffs. The lower town still buys from his warehouses.',
+      'I’m Niccolo Calvo. The poor streets buy from my warehouses. My uncle wants to sell to Pelesa. I have not signed.',
     player: { platform: 'local', displayName: 'Niccolo', accountId: 'local-niccolo' },
     foundations: foundations({
       Strength: 1,
@@ -407,7 +403,6 @@ export function demoNiccolo(): CharacterRecord {
       sk('Etiquette', 1, 'Resolve', 4),
     ],
     traits: [
-      { name: 'Name in the ash', note: 'Listed in Isotta’s Book. Stood in the yard.' },
       { name: 'Warehouse keys', note: 'Three of four. Piero has the last.' },
     ],
     echoes: [
@@ -422,7 +417,7 @@ export function demoNiccolo(): CharacterRecord {
         ],
       }),
       makeEcho({
-        title: 'My name was in the Book',
+        title: 'Do not sell the warehouses',
         weight: 1,
         invokeWhen: 'When the roll is a list, a foreign claim on a Calvo name, or a sale to Pelesa.',
       }),
@@ -437,8 +432,7 @@ export function demoNiccolo(): CharacterRecord {
       waterDays: 4,
       items: [
         { name: 'Warehouse keys', note: 'Three of four.' },
-        { name: 'Coin', note: 'Enough for a hull. Unspent.' },
-        { name: 'Name-list', note: 'Copied from memory after the burning.' },
+        { name: 'Coin', note: 'Unspent.' },
       ],
     },
   });
@@ -449,11 +443,11 @@ export function demoMarino(): CharacterRecord {
     slug: 'marino',
     name: 'Marino Orvanti',
     kind: 'npc',
-    communityTie: 'Duke of Aspalath. Husband of Isotta Solari. Brother of Lazzaro.',
+    communityTie: 'I am duke. Isotta was my wife. Lazzaro was my brother.',
     concept:
-      'The knife was meant for me. It killed my wife and my brother. I live. I cannot ride. Vito speaks in my name. I have not named who held the knife, and I have not named a successor.',
+      'The knife was meant for me. I cannot ride. Vito speaks in my name. I have not named who paid, and I have not named a successor. I am afraid the company will sell the city.',
     whoWeSee:
-      'A duke who sits. The wound in his side is dressed twice a day. People who used to wait on his word now wait on Vito’s.',
+      'I’m Marino. A knife meant for me killed my wife and my brother. I live. I cannot ride. Vito speaks in my name now.',
     foundations: foundations({
       Strength: 2,
       Dexterity: 1,
@@ -475,7 +469,7 @@ export function demoMarino(): CharacterRecord {
       sk('Negotiation', 1, 'Authority', 9),
       sk('Intimidate', 1, 'Authority', 7),
     ],
-    traits: [{ name: 'Opened side', note: 'Cannot ride. Dressed twice a day.' }],
+    traits: [{ name: 'Cannot ride', note: 'Wound in the side. Dressed twice a day.' }],
     echoes: [
       makeEcho({
         title: 'Keep the seat',
@@ -507,11 +501,11 @@ export function demoOrsa(): CharacterRecord {
     slug: 'orsa',
     name: 'Orsa Solari',
     kind: 'npc',
-    communityTie: 'Isotta Solari’s sister.',
+    communityTie: 'Isotta was my sister.',
     concept:
-      'My sister married Marino and died on a night the knife was not meant for her. I will not let the cathedral bury her as an Orvanti accident. I want a Solari funeral, and I want to know if the household let the knife through.',
+      'I will not let them bury her as an accident. I want the death named as murder. I want the night-takings stopped. I want the names of who paid.',
     whoWeSee:
-      'Solari black. She sleeps in the cathedral square with her men. People who want Isotta buried come to her, not to the duke.',
+      'I’m Orsa. Isotta was my sister. I will not let them bury her as an accident. My men sleep in the square until the death is named as murder.',
     foundations: foundations({
       Strength: 1,
       Dexterity: 1,
@@ -559,11 +553,11 @@ export function demoLovro(): CharacterRecord {
     slug: 'lovro',
     name: 'Father Lovro',
     kind: 'npc',
-    communityTie: 'Priest of Our Lady of the Harbour. Holds the cathedral door.',
+    communityTie: 'I hold the cathedral door.',
     concept:
-      'I serve in Latin. I will not bury Isotta until Orsa and the household agree what the death is. Until then the body stays behind the rood screen.',
+      'I will not bury Isotta until Orsa and the household agree the death is murder. Until then the body stays. I am afraid the square will become a fight.',
     whoWeSee:
-      'Cathedral cloth. People who want a burial come to him. So do people who want the square cleared.',
+      'I’m Lovro. I hold the cathedral door. I will not bury the duchess until they agree the death is murder.',
     foundations: foundations({
       Strength: 1,
       Dexterity: 1,
@@ -611,11 +605,11 @@ export function demoPiero(): CharacterRecord {
     slug: 'piero',
     name: 'Piero Calvo',
     kind: 'npc',
-    communityTie: 'House Calvo. Niccolo’s uncle.',
+    communityTie: 'House Calvo. Niccolo is my brother’s son.',
     concept:
-      'I wanted Isotta’s Book kept. I have a Pelesan buyer for a cargo still in Niccolo’s warehouse. I have sat with Calvaro’s man. I have not forced the sale.',
+      'I have sat with Pelesa and with Calvaro. I will force a sale if Niccolo will not. I am afraid the household will seize the warehouses first.',
     whoWeSee:
-      'Warehouse chalk. A Pelesan ring he has not taken off. The quarter still buys from his stores.',
+      'I’m Piero Calvo. The streets buy from our warehouses. I have sat with both foreigners. I have not signed yet.',
     foundations: foundations({
       Strength: 1,
       Dexterity: 1,
@@ -663,11 +657,11 @@ export function demoMara(): CharacterRecord {
     slug: 'mara',
     name: 'Mara Vela',
     kind: 'npc',
-    communityTie: 'Lower town. Caterina’s aunt. The children sleep in my house.',
+    communityTie: 'Caterina’s aunt. The children sleep in my house.',
     concept:
-      'Niko and Lea sleep here. Our street is on the night roll. Three neighbours on that list have not been seen at the pans. I will hide a child. I will not hide a man Vito has already named.',
+      'Vito’s men have our street. Three neighbours have not come back. I will hide a child. I will not hide a man they have already named.',
     whoWeSee:
-      'Press-oil on her sleeves. Two children in the doorway who are not hers.',
+      'I’m Mara. Caterina’s children sleep in my house. Vito’s men have our street. Three neighbours have not come back.',
     foundations: foundations({
       Strength: 2,
       Dexterity: 1,
@@ -694,7 +688,7 @@ export function demoMara(): CharacterRecord {
       makeEcho({
         title: 'Keep the street’s children',
         weight: 2,
-        invokeWhen: 'When the roll is this street, the night roll, or the children.',
+        invokeWhen: 'When the roll is this street, the night list, or the children.',
       }),
     ],
     hierarchy: [{ axis: 'Blood', tier: 'Acknowledged' }],
@@ -715,11 +709,11 @@ export function demoVito(): CharacterRecord {
     slug: 'vito',
     name: 'Vito Cresti',
     kind: 'npc',
-    communityTie: 'Captain of the duke’s household arms. Paolo copies the night roll for me.',
+    communityTie: 'I command the duke’s household arms. Paolo copies names for me.',
     concept:
-      'Marino cannot ride, so I speak in his name. I take names at night. I have asked Jakov who held the knife. I have boards at Tomaso’s mill. I think the knife came from the Company or from Solari.',
+      'Marino cannot ride, so I speak in his name. I take people at night until someone names who paid for the knife. I think it was the company or Solari.',
     whoWeSee:
-      'Household coat, a roll-case at the belt. People step aside in the lanes after dark.',
+      'I’m Vito. The duke cannot ride, so I speak in his name. I take people at night. Some come back. Some do not.',
     foundations: foundations({
       Strength: 2,
       Dexterity: 2,
@@ -741,10 +735,10 @@ export function demoVito(): CharacterRecord {
       sk('Combat Awareness', 1, 'Perception', 9),
       sk('Insight', 1, 'Perception', 6),
     ],
-    traits: [{ name: 'Night-roll case', note: 'Streets. He names; Paolo copies.' }],
+    traits: [{ name: 'Night list', note: 'He names. Paolo copies.' }],
     echoes: [
       makeEcho({
-        title: 'The night roll',
+        title: 'Get a confession',
         weight: 2,
         invokeWhen: 'When the roll is the night list, a named street, or speaking in Marino’s name.',
       }),
@@ -759,7 +753,7 @@ export function demoVito(): CharacterRecord {
       foodDays: 4,
       waterDays: 4,
       items: [
-        { name: 'Night-roll case', note: 'Mara Vela’s street is in it.' },
+        { name: 'Name-list', note: 'Mara’s street is on it.' },
         { name: 'Household sword', note: 'Duke’s arms.' },
       ],
     },
@@ -771,11 +765,11 @@ export function demoPaolo(): CharacterRecord {
     slug: 'paolo',
     name: 'Paolo Cresti',
     kind: 'npc',
-    communityTie: 'Vito’s brother. I copy the night roll.',
+    communityTie: 'Vito is my brother. I copy the names he takes.',
     concept:
-      'I copy streets Vito names. Mara Vela’s street is already on it. I know three names that have not been seen at the pans. I have not told the house.',
+      'I know three names that have not come back. I have not told their houses. I am afraid of what I write next.',
     whoWeSee:
-      'Ink on the first two fingers. A copy-case.',
+      'I’m Paolo. I copy the names Vito takes at night. I know three who have not come back.',
     foundations: foundations({
       Strength: 1,
       Dexterity: 2,
@@ -800,7 +794,7 @@ export function demoPaolo(): CharacterRecord {
     traits: [{ name: 'Copy-hand', note: 'Clear letters. Fast.' }],
     echoes: [
       makeEcho({
-        title: 'Copy the next street',
+        title: 'Copy the next name',
         weight: 2,
         invokeWhen: 'When the roll is the night-roll copy or a named street.',
       }),
@@ -811,8 +805,8 @@ export function demoPaolo(): CharacterRecord {
       foodDays: 4,
       waterDays: 4,
       items: [
-        { name: 'Night-roll copy', note: 'Mara Vela’s street. Three names marked gone.' },
-        { name: 'Ink horn', note: 'Full.' },
+        { name: 'Name-list copy', note: 'Three names marked gone.' },
+        { name: 'Ink', note: 'For the list.' },
       ],
     },
   });
@@ -823,11 +817,11 @@ export function demoAgnese(): CharacterRecord {
     slug: 'agnese',
     name: 'Agnese Orsani',
     kind: 'npc',
-    communityTie: 'House Orsani. I keep the burgher list from when this city named a count.',
+    communityTie: 'House Orsani. I write the names of who was taken and who might have paid.',
     concept:
-      'I stood in the yard when Isotta burned the Pelesan register. I still have the list of families that once named a count. I will read it in the square if the household keeps writing streets instead of finding who held the knife.',
+      'I have the names of the taken and of the likely payers: a Solari cousin who fled, a Company man missing from the gate, Luca’s unopened book, Matteo’s purse. I will post the list if another person disappears.',
     whoWeSee:
-      'An old-house dress and a roll under her arm that is not Vito’s.',
+      'I’m Agnese Orsani. I keep the names of who Vito has taken and who might have paid for the knife. I will post them if another person disappears.',
     foundations: foundations({
       Strength: 1,
       Dexterity: 1,
@@ -849,12 +843,12 @@ export function demoAgnese(): CharacterRecord {
       sk('Ritual', 1, 'Authority', 6),
       sk('Etiquette', 1, 'Resolve', 7),
     ],
-    traits: [{ name: 'Burgher list', note: 'Families that once named a count.' }],
+    traits: [{ name: 'Keeps the names', note: 'Who was taken. Who might have paid.' }],
     echoes: [
       makeEcho({
-        title: 'Read the burgher list',
+        title: 'Post the names',
         weight: 2,
-        invokeWhen: 'When the roll is the old naming of a count or a public reading.',
+        invokeWhen: 'When the roll is posting the names of the taken or the suspects.',
       }),
     ],
     hierarchy: [
@@ -866,8 +860,7 @@ export function demoAgnese(): CharacterRecord {
       foodDays: 3,
       waterDays: 3,
       items: [
-        { name: 'Burgher list', note: 'The old families.' },
-        { name: 'Warehouse deed', note: 'Older copy. Voided by the Charter.' },
+        { name: 'Name-list', note: 'Taken. Suspects.' },
       ],
     },
   });
@@ -878,11 +871,11 @@ export function demoLuca(): CharacterRecord {
     slug: 'luca',
     name: 'Luca Bandi',
     kind: 'npc',
-    communityTie: 'Consul for Pelesa. I rent a house inside the walls.',
+    communityTie: 'I am Pelesa’s consul. I rent a house here.',
     concept:
-      'I am here to buy the Company’s winter so this harbour stays open to us. I have a landing-book I have not opened in front of anyone. Calvaro’s man wants the opposite.',
+      'I can pay the company, land men, or find a friend on the seat. I want this harbour open to Pelesa. Calvaro wants it shut.',
     whoWeSee:
-      'Pelesan cloth in a rented house. Coin enough for a Company’s winter.',
+      'I’m Luca Bandi. I speak for Pelesa. I can pay the company, land men, or find a friend on the seat. I want this harbour open to us.',
     foundations: foundations({
       Strength: 1,
       Dexterity: 1,
@@ -907,7 +900,7 @@ export function demoLuca(): CharacterRecord {
     traits: [{ name: 'Landing-book', note: 'Unopened here.' }],
     echoes: [
       makeEcho({
-        title: 'Buy the Company’s winter',
+        title: 'Open this harbour to Pelesa',
         weight: 2,
         invokeWhen: 'When the roll is Company pay, the harbour, or the landing-book.',
       }),
@@ -930,11 +923,11 @@ export function demoMatteo(): CharacterRecord {
     slug: 'matteo',
     name: 'Matteo Rinaldi',
     kind: 'npc',
-    communityTie: 'Osvaldo Calvaro’s man. I rent a house.',
+    communityTie: 'I speak for Osvaldo Calvaro. I rent a house here.',
     concept:
-      'My king wants this harbour as a client, to shut Pelesa out. I have a charter drafted in his name. I have sat with Piero Calvo. I will pay the Company to hold the hill gate. I do not need Marino dead. I need him signed.',
+      'I can make the duke sign, buy the company, or take the harbour through it. I want Pelesa shut out. I do not need Marino dead. I need him ours.',
     whoWeSee:
-      'Hinterland cloth, Calvaro seal-wax. He does not hurry.',
+      'I’m Matteo Rinaldi. I speak for Osvaldo Calvaro. I can make the duke sign, buy the company, or take the city through it.',
     foundations: foundations({
       Strength: 1,
       Dexterity: 1,
@@ -959,7 +952,7 @@ export function demoMatteo(): CharacterRecord {
     traits: [{ name: 'Drafted charter', note: 'Osvaldo Calvaro’s name. Unsigned.' }],
     echoes: [
       makeEcho({
-        title: 'Get the charter signed',
+        title: 'Make this harbour Calvaro’s',
         weight: 2,
         invokeWhen: 'When the roll is the charter, Piero, or Company pay for the hill gate.',
       }),
@@ -982,11 +975,11 @@ export function demoDuje(): CharacterRecord {
     slug: 'duje',
     name: 'Duje',
     kind: 'npc',
-    communityTie: 'I run a boat after dark. I am not on the burgher list.',
+    communityTie: 'I run a boat after dark.',
     concept:
-      'I move oil at night to the harbour across the bay. I owe Matteo my brother’s life, taken off a galley. I will not move children. I have not told Vito.',
+      'I move people and oil at night. I owe Matteo my brother’s life. I will not move children. I have not told Vito.',
     whoWeSee:
-      'Boat-tar, no house-mark. People who need a hull after dark know which stair he uses.',
+      'I’m Duje. I run a boat after dark. People who need to leave without Vito knowing come to me.',
     foundations: foundations({
       Strength: 2,
       Dexterity: 2,
@@ -1134,31 +1127,31 @@ export function buildDemoHall(): { community: CommunityRecord; characters: Chara
   const cathedral = upsertFactionLabel(community, 'Cathedral', 50, ESTATE);
   const burghers = upsertFactionLabel(community, 'Burghers', 142, ESTATE);
 
-  const tagNightRoll = upsertTagLabel(community, 'Night roll');
+  const tagNight = upsertTagLabel(community, 'Night list');
   const tagMill = upsertTagLabel(community, 'Mill boarded');
   const tagUnpaid = upsertTagLabel(community, 'Unpaid');
-  const tagCharterHouse = upsertTagLabel(community, 'Charter house');
-  const tagInnerStair = upsertTagLabel(community, 'Inner-stair keys');
-  const tagBook = upsertTagLabel(community, 'Isotta’s Book');
+  const tagHouse = upsertTagLabel(community, 'Company house');
+  const tagKeys = upsertTagLabel(community, 'Inner-stair keys');
   const tagUnburied = upsertTagLabel(community, 'Unburied');
-  const tagBurgherList = upsertTagLabel(community, 'Burgher list');
+  const tagTaken = upsertTagLabel(community, 'Taken at night');
+  const tagNames = upsertTagLabel(community, 'Keeps the names');
   const tagLanding = upsertTagLabel(community, 'Landing-book');
   const tagCharter = upsertTagLabel(community, 'Calvaro charter');
   const tagMissing = upsertTagLabel(community, 'Missing brother');
   const tagDebt = upsertTagLabel(community, 'Brother’s life');
 
   tomaso.labelIds = [tagMill.id];
-  jakov.labelIds = [company.id, tagCharterHouse.id, tagUnpaid.id, tagMissing.id];
-  caterina.labelIds = [solari.id, tagNightRoll.id, tagInnerStair.id];
-  niccolo.labelIds = [calvo.id, tagBook.id];
+  jakov.labelIds = [company.id, tagHouse.id, tagUnpaid.id, tagMissing.id];
+  caterina.labelIds = [solari.id, tagNight.id, tagKeys.id];
+  niccolo.labelIds = [calvo.id];
   marino.labelIds = [orvanti.id, household.id];
   orsa.labelIds = [solari.id, tagUnburied.id];
   lovro.labelIds = [cathedral.id, tagUnburied.id];
   piero.labelIds = [calvo.id, tagCharter.id];
-  mara.labelIds = [burghers.id, tagNightRoll.id];
-  vito.labelIds = [orvanti.id, household.id, tagNightRoll.id];
-  paolo.labelIds = [household.id, tagNightRoll.id];
-  agnese.labelIds = [burghers.id, tagBurgherList.id, tagBook.id];
+  mara.labelIds = [burghers.id, tagNight.id, tagTaken.id];
+  vito.labelIds = [orvanti.id, household.id, tagNight.id];
+  paolo.labelIds = [household.id, tagNight.id];
+  agnese.labelIds = [burghers.id, tagNames.id];
   luca.labelIds = [pelesa.id, tagLanding.id];
   matteo.labelIds = [calvaro.id, tagCharter.id];
   duje.labelIds = [tagDebt.id];
