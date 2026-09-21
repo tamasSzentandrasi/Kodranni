@@ -165,7 +165,7 @@ function findPanel(c: HallView['community']): string {
 }
 
 function markKind(label: Label): 'faction' | 'tag' {
-  return label.groupId === FACTION_GROUP_ID ? 'faction' : 'tag';
+  return label.groupId === TAG_GROUP_ID || label.hue == null ? 'tag' : 'faction';
 }
 
 function markIcon(label: Label): string {

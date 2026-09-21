@@ -85,7 +85,7 @@ export function collectFactions(
     out.push({ name: n, hue: f.hue });
   }
   for (const l of labels ?? []) {
-    if (l.groupId !== 'g-faction') continue;
+    if (l.groupId === 'g-tag') continue;
     const n = l.name.trim();
     if (!n || seen.has(n.toLowerCase())) continue;
     seen.add(n.toLowerCase());

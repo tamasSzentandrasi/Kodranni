@@ -63,7 +63,13 @@ export function labelsInGroup(c: CommunityRecord, groupId: string): Label[] {
 }
 
 export function factionLabels(c: CommunityRecord): Label[] {
-  return labelsInGroup(c, FACTION_GROUP_ID);
+  const groups = new Set(
+    (c.labelGroups ?? [])
+      .filter((g) => g.kind === 'faction')
+      .map((g) => g.id),
+  );
+  if (groups.size === 0) groups.add(FACTION_GROUP_ID);
+  return (c.labels ?? []).filter((l) => groups.has(l.groupId));
 }
 
 /** Compat: { name, hue }[] for HallRites / older callers. */
@@ -83,24 +89,42 @@ export function findLabel(
   return (c.labels ?? []).find((l) => l.groupId === groupId && labelKey(l.name) === k);
 }
 
+export function upsertLabelGroup(
+  c: CommunityRecord,
+  group: LabelGroup,
+): LabelGroup {
+  c.labelGroups = ensureLabelGroups(c.labelGroups);
+  const existing = c.labelGroups.find((g) => g.id === group.id);
+  if (existing) {
+    existing.name = group.name;
+    existing.kind = group.kind;
+    return existing;
+  }
+  c.labelGroups.push({ ...group });
+  return group;
+}
+
 export function upsertFactionLabel(
   c: CommunityRecord,
   name: string,
   hue?: number,
+  groupId = FACTION_GROUP_ID,
 ): Label {
   c.labelGroups = ensureLabelGroups(c.labelGroups);
   c.labels = [...(c.labels ?? [])];
-  const existing = findLabel(c, name, FACTION_GROUP_ID);
+  const gid = groupId || FACTION_GROUP_ID;
+  const existing = findLabel(c, name, gid) ?? findLabel(c, name, FACTION_GROUP_ID);
   if (existing) {
     if (hue != null && Number.isFinite(hue)) {
       existing.hue = ((hue % 360) + 360) % 360;
     }
+    existing.groupId = gid;
     return existing;
   }
   const taken = new Set(c.labels.map((l) => l.id));
   const id = uniqueId(taken, labelId('faction', name));
   const h = hue != null && Number.isFinite(hue) ? ((hue % 360) + 360) % 360 : factionHueFromName(name);
-  const label: Label = { id, groupId: FACTION_GROUP_ID, name: name.trim(), hue: h };
+  const label: Label = { id, groupId: gid, name: name.trim(), hue: h };
   c.labels.push(label);
   return label;
 }

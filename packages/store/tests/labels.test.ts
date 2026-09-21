@@ -60,9 +60,12 @@ describe('demo seed labels', () => {
     const consul = c.outsiders.find((o) => o.name === 'Luca Bandi');
     expect(consul?.labelIds).toContain(pelesa!.id);
     const tomaso = store.getCharacterBySlug('tomaso');
-    expect(tomaso?.labelIds?.some((id) => c.labels?.find((l) => l.id === id)?.name.includes('mill'))).toBe(
+    expect(tomaso?.labelIds?.some((id) => c.labels?.find((l) => l.id === id)?.name.includes('Mill'))).toBe(
       true,
     );
+    expect(c.labelGroups?.some((g) => g.name === 'Noble Houses of Aspalath')).toBe(true);
+    expect(c.labelGroups?.some((g) => g.name === 'Foreign Influence')).toBe(true);
+    expect(c.labelGroups?.some((g) => g.name === 'Estate loyalty')).toBe(true);
     const jakov = store.getCharacterBySlug('jakov');
     expect(jakov?.labelIds).toContain(company!.id);
     store.close();
