@@ -1,6 +1,5 @@
 import type { CharacterRecord, HierarchyPlacement, Label, OutsiderRecord } from '@kodranni/store/types';
 import {
-  FACTION_GROUP_ID,
   TAG_GROUP_ID,
   labelsByIds,
   migrateCommunityLabels,
@@ -39,7 +38,7 @@ export function communityInner(
     labels: c.labels ?? [],
   });
   return `${findDrawer(c)}
-<div class="hall" data-slug="${escAttr(c.slug)}" data-source="${escAttr(source)}" data-founded="${escAttr(founded)}" data-view-group="${escAttr((c.labelGroups ?? []).find((g) => g.kind === 'faction')?.id ?? 'g-faction')}">
+<div class="hall" data-slug="${escAttr(c.slug)}" data-source="${escAttr(source)}" data-founded="${escAttr(founded)}" data-view-group="${escAttr((c.labelGroups ?? []).find((g) => g.kind === 'faction' && (c.labels ?? []).some((l) => l.groupId === g.id))?.id ?? (c.labelGroups ?? []).find((g) => g.kind === 'faction')?.id ?? 'g-faction')}">
   ${fortunePlates(c.fortunes)}
   <section class="hall__htitle" aria-labelledby="h-h">
     ${sectionHead('h-h', 'Hierarchy', 'One crown, then parallel ladders. Same four tiers on every axis (Honoured → Outcast). Colour marks the axis; saturation falls toward Outcast. Hover a name for who they are; click to open the sheet.', 'About Hierarchy')}
@@ -174,11 +173,12 @@ function markIcon(label: Label): string {
 }
 
 function viewStave(c: HallView['community']): string {
-  const groups = (c.labelGroups ?? []).filter(
-    (g) => (c.labels ?? []).some((l) => l.groupId === g.id) || g.id === FACTION_GROUP_ID || g.id === TAG_GROUP_ID,
+  const groups = (c.labelGroups ?? []).filter((g) =>
+    (c.labels ?? []).some((l) => l.groupId === g.id),
   );
   if (groups.length === 0) return '';
-  const active = groups.find((g) => g.kind === 'faction') ?? groups[0];
+  const active =
+    groups.find((g) => g.kind === 'faction') ?? groups.find((g) => g.id === TAG_GROUP_ID) ?? groups[0];
   const cats = groups
     .map((g) => {
       const on = g.id === active.id;

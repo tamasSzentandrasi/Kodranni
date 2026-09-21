@@ -122,6 +122,11 @@
     return catalogLabels.find((l) => l.id === id);
   }
 
+  function groupKind(id) {
+    const g = catalogGroups.find((x) => x.id === id);
+    return g && g.kind ? g.kind : '';
+  }
+
   // —— Search ————————————————————————————————————————————————————————
 
   const searchRoot = document.querySelector('[data-hall-search]');
@@ -837,7 +842,8 @@
     document.querySelectorAll('.member[data-inspect-id]').forEach((el) => {
       const ids = labelIdsOf(el);
       const painted = ids.map(labelById).find((l) => l && l.groupId === viewGroup);
-      if (painted && painted.hue != null) {
+      const kind = groupKind(viewGroup);
+      if (kind === 'faction' && painted && painted.hue != null) {
         el.style.setProperty('--view-h', String(painted.hue));
         el.setAttribute('data-view-faction', painted.id);
       } else {
@@ -846,6 +852,8 @@
       }
       if (selected.size) {
         el.setAttribute('data-view', ids.some((id) => selected.has(id)) ? 'hit' : 'rest');
+      } else if (kind === 'faction') {
+        el.setAttribute('data-view', painted ? 'hit' : 'rest');
       } else {
         el.removeAttribute('data-view');
       }
@@ -926,6 +934,12 @@
 
   function boot() {
     loadBag();
+    if (!catalogLabels.some((l) => l.groupId === bag.viewGroup)) {
+      bag.viewGroup =
+        hall.getAttribute('data-view-group') ||
+        (catalogGroups.find((g) => g.kind === 'faction') || {}).id ||
+        bag.viewGroup;
+    }
     restoreCollapse();
     bindRungPersist();
     bindSearch();

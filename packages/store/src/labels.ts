@@ -89,6 +89,16 @@ export function findLabel(
   return (c.labels ?? []).find((l) => l.groupId === groupId && labelKey(l.name) === k);
 }
 
+/** A faction label by name in any faction group — not tags. */
+export function findFactionByName(c: CommunityRecord, name: string): Label | undefined {
+  const k = labelKey(name);
+  const factionIds = new Set(
+    (c.labelGroups ?? []).filter((g) => g.kind === 'faction').map((g) => g.id),
+  );
+  if (factionIds.size === 0) factionIds.add(FACTION_GROUP_ID);
+  return (c.labels ?? []).find((l) => factionIds.has(l.groupId) && labelKey(l.name) === k);
+}
+
 export function upsertLabelGroup(
   c: CommunityRecord,
   group: LabelGroup,
@@ -113,12 +123,11 @@ export function upsertFactionLabel(
   c.labelGroups = ensureLabelGroups(c.labelGroups);
   c.labels = [...(c.labels ?? [])];
   const gid = groupId || FACTION_GROUP_ID;
-  const existing = findLabel(c, name, gid) ?? findLabel(c, name, FACTION_GROUP_ID);
+  const existing = findLabel(c, name, gid) ?? findFactionByName(c, name);
   if (existing) {
     if (hue != null && Number.isFinite(hue)) {
       existing.hue = ((hue % 360) + 360) % 360;
     }
-    existing.groupId = gid;
     return existing;
   }
   const taken = new Set(c.labels.map((l) => l.id));
@@ -169,6 +178,7 @@ export function migrateCommunityLabels(raw: CommunityRecord): CommunityRecord {
   for (const f of raw.factions ?? []) {
     const name = String(f.name ?? '').trim();
     if (!name) continue;
+    if (findFactionByName(c, name)) continue;
     upsertFactionLabel(c, name, f.hue);
   }
 

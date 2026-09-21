@@ -1109,12 +1109,12 @@ export function buildDemoHall(): { community: CommunityRecord; characters: Chara
   const matteo = demoMatteo();
   const duje = demoDuje();
 
-  const HOUSES = 'g-faction';
+  const HOUSES = 'g-houses';
   const FOREIGN = 'g-foreign';
   const ESTATE = 'g-estate';
   upsertLabelGroup(community, { id: HOUSES, name: 'Noble Houses of Aspalath', kind: 'faction' });
   upsertLabelGroup(community, { id: FOREIGN, name: 'Foreign Influence', kind: 'faction' });
-  upsertLabelGroup(community, { id: ESTATE, name: 'Estate loyalty', kind: 'faction' });
+  upsertLabelGroup(community, { id: ESTATE, name: 'Estate Loyalty', kind: 'faction' });
   upsertLabelGroup(community, { id: TAG_GROUP_ID, name: 'Tags', kind: 'tag' });
 
   const orvanti = upsertFactionLabel(community, 'House Orvanti', 38, HOUSES);
@@ -1128,33 +1128,26 @@ export function buildDemoHall(): { community: CommunityRecord; characters: Chara
   const burghers = upsertFactionLabel(community, 'Burghers', 142, ESTATE);
 
   const tagNight = upsertTagLabel(community, 'Night list');
-  const tagMill = upsertTagLabel(community, 'Mill boarded');
-  const tagUnpaid = upsertTagLabel(community, 'Unpaid');
-  const tagHouse = upsertTagLabel(community, 'Company house');
   const tagKeys = upsertTagLabel(community, 'Inner-stair keys');
   const tagUnburied = upsertTagLabel(community, 'Unburied');
-  const tagTaken = upsertTagLabel(community, 'Taken at night');
-  const tagNames = upsertTagLabel(community, 'Keeps the names');
-  const tagLanding = upsertTagLabel(community, 'Landing-book');
   const tagCharter = upsertTagLabel(community, 'Calvaro charter');
   const tagMissing = upsertTagLabel(community, 'Missing brother');
-  const tagDebt = upsertTagLabel(community, 'Brother’s life');
 
-  tomaso.labelIds = [tagMill.id];
-  jakov.labelIds = [company.id, tagHouse.id, tagUnpaid.id, tagMissing.id];
+  tomaso.labelIds = [];
+  jakov.labelIds = [company.id, tagMissing.id];
   caterina.labelIds = [solari.id, tagNight.id, tagKeys.id];
   niccolo.labelIds = [calvo.id];
   marino.labelIds = [orvanti.id, household.id];
   orsa.labelIds = [solari.id, tagUnburied.id];
   lovro.labelIds = [cathedral.id, tagUnburied.id];
   piero.labelIds = [calvo.id, tagCharter.id];
-  mara.labelIds = [burghers.id, tagNight.id, tagTaken.id];
+  mara.labelIds = [burghers.id, tagNight.id];
   vito.labelIds = [orvanti.id, household.id, tagNight.id];
   paolo.labelIds = [household.id, tagNight.id];
-  agnese.labelIds = [burghers.id, tagNames.id];
-  luca.labelIds = [pelesa.id, tagLanding.id];
+  agnese.labelIds = [burghers.id];
+  luca.labelIds = [pelesa.id];
   matteo.labelIds = [calvaro.id, tagCharter.id];
-  duje.labelIds = [tagDebt.id];
+  duje.labelIds = [];
 
   const onLadders = [
     tomaso,

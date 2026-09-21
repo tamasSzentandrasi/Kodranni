@@ -5,6 +5,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { emptyCommunity, openSqliteStore } from '../src/sqlite.js';
 import { seedDemoCampaign } from '../src/seed.js';
 import {
+  DEFAULT_LABEL_GROUPS,
   FACTION_GROUP_ID,
   TAG_GROUP_ID,
   labelId,
@@ -39,6 +40,18 @@ describe('migrateCommunityLabels', () => {
     expect(again.labels).toHaveLength(2);
     expect(again.outsiders[0]?.labelIds).toEqual([reed!.id]);
   });
+
+  it('does not move a faction already filed in another category into g-faction', () => {
+    const raw = emptyCommunity('t', 'T');
+    raw.labelGroups = [
+      ...DEFAULT_LABEL_GROUPS,
+      { id: 'g-foreign', name: 'Foreign Influence', kind: 'faction' },
+    ];
+    raw.labels = [{ id: 'fac-pelesa', groupId: 'g-foreign', name: 'Pelesa', hue: 220 }];
+    raw.factions = [{ name: 'Pelesa', hue: 220 }];
+    const c = migrateCommunityLabels(raw);
+    expect(c.labels?.find((l) => l.name === 'Pelesa')?.groupId).toBe('g-foreign');
+  });
 });
 
 describe('demo seed labels', () => {
@@ -59,15 +72,22 @@ describe('demo seed labels', () => {
     expect(envoy?.labelIds).toContain(calvaro!.id);
     const consul = c.outsiders.find((o) => o.name === 'Luca Bandi');
     expect(consul?.labelIds).toContain(pelesa!.id);
-    const tomaso = store.getCharacterBySlug('tomaso');
-    expect(tomaso?.labelIds?.some((id) => c.labels?.find((l) => l.id === id)?.name.includes('Mill'))).toBe(
-      true,
-    );
+    expect(orvanti?.groupId).toBe('g-houses');
+    expect(pelesa?.groupId).toBe('g-foreign');
+    expect(company?.groupId).toBe('g-estate');
+    expect(
+      (c.labels ?? [])
+        .filter((l) => l.groupId === 'g-houses')
+        .map((l) => l.name)
+        .sort(),
+    ).toEqual(['House Calvo', 'House Orvanti', 'House Solari']);
     expect(c.labelGroups?.some((g) => g.name === 'Noble Houses of Aspalath')).toBe(true);
     expect(c.labelGroups?.some((g) => g.name === 'Foreign Influence')).toBe(true);
-    expect(c.labelGroups?.some((g) => g.name === 'Estate loyalty')).toBe(true);
+    expect(c.labelGroups?.some((g) => g.name === 'Estate Loyalty')).toBe(true);
     const jakov = store.getCharacterBySlug('jakov');
     expect(jakov?.labelIds).toContain(company!.id);
+    const again = store.getCommunity();
+    expect(again.labels?.find((l) => l.name === 'Pelesa')?.groupId).toBe('g-foreign');
     store.close();
   });
 });
