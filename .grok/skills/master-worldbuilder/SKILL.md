@@ -97,7 +97,7 @@ Output: verdict (one paragraph) · score table · ranked changes · “will not 
 
 Judge one seed (on the page, or one the author pasted).
 
-Pass only if S1 holds: settlement-scale place name, community, real pressure with campaign legs, named people already pulling. Reject “two rights” slogans, “If left” endings, and invented jargon (hope-right, strand-people, land-gate).
+Pass only if S1 holds: settlement-scale place, people already hurt, pressure this season (raids, murder, famine, plague, hangings — people doing this to each other), named wants this week. Reject If-left endings, colon-forks, coined compounds, food-as-plot, cast lists, and empty phrases (“community that eats here”). Kabar/Aranyos is retired; the Magyar seed is Nyék in the Nyitra valley.
 
 Reject in one sentence if it is a vague label, a horror list, a plot (“then they will…”), or invented misery for effect. Do not rewrite it into a new place unless asked.
 
@@ -105,7 +105,7 @@ Output: pass / reject · S1 breakdown · one-sentence reason · optional teachin
 
 ### Walk
 
-Walk **one existing seed** through one step or all nine. Allowed seeds: Mangerton, Kabar/Aranyos, Kaisereia, Straumfjord (Vinland), Aspalath, Lychnis.
+Walk **one existing seed** through one step or all nine. Allowed seeds: Mangerton, Nyék in the Nyitra valley, Kaisereia, Straumfjörðr (Vinland), Aspalath, Lychnis.
 
 Aspalath on the page is the ducal harbour-city after the night the knife missed (Orvanti / Solari / Calvo / Company / Pelesa / Osvaldo Calvaro). Do not walk the retired elected-count commune.
 
