@@ -1117,15 +1117,15 @@ export function buildDemoHall(): { community: CommunityRecord; characters: Chara
   upsertLabelGroup(community, { id: ESTATE, name: 'Estate Loyalty', kind: 'faction' });
   upsertLabelGroup(community, { id: TAG_GROUP_ID, name: 'Tags', kind: 'tag' });
 
-  const orvanti = upsertFactionLabel(community, 'House Orvanti', 38, HOUSES);
-  const solari = upsertFactionLabel(community, 'House Solari', 12, HOUSES);
-  const calvo = upsertFactionLabel(community, 'House Calvo', 48, HOUSES);
-  const pelesa = upsertFactionLabel(community, 'Pelesa', 220, FOREIGN);
+  const orvanti = upsertFactionLabel(community, 'House Orvanti', 42, HOUSES);
+  const solari = upsertFactionLabel(community, 'House Solari', 210, HOUSES);
+  const calvo = upsertFactionLabel(community, 'House Calvo', 0, HOUSES);
+  const pelesa = upsertFactionLabel(community, 'Pelesa', 265, FOREIGN);
   const calvaro = upsertFactionLabel(community, 'Calvaro', 28, FOREIGN);
-  const household = upsertFactionLabel(community, 'Ducal household', 0, ESTATE);
-  const company = upsertFactionLabel(community, 'Free Company', 200, ESTATE);
-  const cathedral = upsertFactionLabel(community, 'Cathedral', 50, ESTATE);
-  const burghers = upsertFactionLabel(community, 'Burghers', 142, ESTATE);
+  const household = upsertFactionLabel(community, 'Ducal household', 320, ESTATE);
+  const company = upsertFactionLabel(community, 'Free Company', 175, ESTATE);
+  const cathedral = upsertFactionLabel(community, 'Cathedral', 55, ESTATE);
+  const burghers = upsertFactionLabel(community, 'Burghers', 250, ESTATE);
 
   const tagNight = upsertTagLabel(community, 'Night list');
   const tagKeys = upsertTagLabel(community, 'Inner-stair keys');
