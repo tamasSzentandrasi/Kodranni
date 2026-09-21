@@ -1,0 +1,885 @@
+/* Shared Fortune + Hierarchy boards — Guidebook and hall. */
+@import './tokens.css';
+
+.kod-fortune-board {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  margin: 1.35rem 0 1.6rem;
+  padding: 1.05rem 0.7rem 1.05rem;
+  background: linear-gradient(180deg, #1a1814 0%, #12100e 100%);
+  box-shadow: var(--kod-smoke);
+  border: 1px solid var(--kod-frame);
+  overflow-x: clip;
+  container-type: inline-size;
+  container-name: kod-fortune;
+}
+
+.kod-fortune-board__kicker {
+  margin: 0 0 0.35rem !important;
+  text-align: center;
+  font-size: 1.05rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--kod-silver-bright);
+}
+
+.kod-fortune-board__row {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.4rem;
+}
+
+@media (max-width: 52rem) {
+  .kod-fortune-board__row {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 28rem) {
+  .kod-fortune-board__row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Board measure, not viewport — desktop + TOC can be as narrow as a tablet. */
+@container kod-fortune (max-width: 34rem) {
+  .kod-fortune-board__row {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@container kod-fortune (max-width: 22rem) {
+  .kod-fortune-board__row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.kod-fortune-board__seals {
+  display: none;
+}
+
+.kod-fortune {
+  --kod-corners: none;
+  --kod-leaf-glow: rgba(90, 160, 70, 0.28);
+  --kod-pillar: #3a3330;
+  appearance: none;
+  box-sizing: border-box;
+  margin: 0 !important;
+  padding: 1.15rem 0.45rem 1.45rem;
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  grid-template-areas:
+    'crest'
+    'mark'
+    'state';
+  grid-template-rows: minmax(5.2rem, 8.2rem) minmax(3.4rem, 5.5rem) 1.85rem;
+  text-align: center;
+  gap: 0.4rem;
+  border: none;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--kod-pillar) 54%, #161210) 0%,
+    color-mix(in srgb, var(--kod-pillar) 16%, #0c0a09) 48%,
+    #060504 100%
+  );
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  min-height: 0;
+  min-width: 0;
+  overflow: visible;
+  container-type: inline-size;
+  transition: background 0.16s ease, box-shadow 0.16s ease;
+}
+
+.kod-fortune:last-child {
+  border-right: none;
+}
+
+@media (max-width: 52rem) {
+  .kod-fortune {
+    border-right: none;
+    border-bottom: none;
+  }
+}
+
+.kod-fortune:hover,
+.kod-fortune:focus-visible,
+.kod-fortune:active {
+  outline: none;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--kod-pillar) 88%, #1c1814) 0%,
+    color-mix(in srgb, var(--kod-pillar) 22%, #0c0a09) 50%,
+    #060504 100%
+  );
+  box-shadow:
+    inset 0 1.4rem 1.6rem -0.7rem color-mix(in srgb, var(--kod-pillar) 42%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--kod-pillar) 70%, transparent);
+}
+
+.kod-fortune:focus-visible {
+  box-shadow:
+    inset 0 1.4rem 1.6rem -0.7rem color-mix(in srgb, var(--kod-pillar) 42%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--kod-pillar) 80%, transparent);
+}
+
+.kod-fortune--vitality {
+  --kod-pillar: var(--kod-blood);
+}
+.kod-fortune--cohesion {
+  --kod-pillar: #6a8aa0;
+}
+.kod-fortune--surplus {
+  --kod-pillar: #c4a035;
+}
+.kod-fortune--standing {
+  --kod-pillar: #6a5a82;
+}
+.kod-fortune--tradition {
+  --kod-pillar: #4a6a48;
+}
+
+.kod-fortune__icon {
+  grid-area: crest;
+  display: block;
+  width: min(8.4rem, 100cqw);
+  height: min(8.4rem, 100cqw);
+  margin: 0;
+  align-self: center;
+  justify-self: center;
+  opacity: 0.4;
+  background-color: color-mix(in srgb, var(--kod-pillar) 70%, var(--kod-silver));
+  -webkit-mask: center / contain no-repeat;
+  mask: center / contain no-repeat;
+}
+
+.kod-fortune--vitality .kod-fortune__icon {
+  -webkit-mask-image: var(--kod-fortune-vitality);
+  mask-image: var(--kod-fortune-vitality);
+}
+.kod-fortune--cohesion .kod-fortune__icon {
+  -webkit-mask-image: var(--kod-fortune-cohesion);
+  mask-image: var(--kod-fortune-cohesion);
+}
+.kod-fortune--surplus .kod-fortune__icon {
+  -webkit-mask-image: var(--kod-fortune-surplus);
+  mask-image: var(--kod-fortune-surplus);
+}
+.kod-fortune--standing .kod-fortune__icon {
+  -webkit-mask-image: var(--kod-fortune-standing);
+  mask-image: var(--kod-fortune-standing);
+}
+.kod-fortune--tradition .kod-fortune__icon {
+  -webkit-mask-image: var(--kod-fortune-tradition);
+  mask-image: var(--kod-fortune-tradition);
+}
+
+.kod-fortune__tree {
+  grid-area: mark;
+  display: block;
+  width: min(4.7rem, 88%);
+  aspect-ratio: 1;
+  height: auto;
+  max-height: 4.7rem;
+  margin: 0.2rem 0 0.05rem;
+  border-radius: 50%;
+  background: var(--kod-tree-2) center / contain no-repeat;
+  box-shadow: 0 0 16px 3px var(--kod-leaf-glow);
+  transition: box-shadow 0.18s ease, background-image 0.18s ease;
+}
+
+.kod-fortune[data-level='0'] .kod-fortune__tree {
+  --kod-leaf-glow: rgba(198, 193, 184, 0.18);
+  background-image: var(--kod-tree-0);
+}
+
+.kod-fortune[data-level='1'] .kod-fortune__tree {
+  --kod-leaf-glow: rgba(160, 24, 24, 0.32);
+  background-image: var(--kod-tree-1);
+}
+
+.kod-fortune[data-level='2'] .kod-fortune__tree {
+  --kod-leaf-glow: rgba(90, 160, 70, 0.28);
+  background-image: var(--kod-tree-2);
+}
+
+.kod-fortune[data-level='3'] .kod-fortune__tree {
+  --kod-leaf-glow: rgba(212, 175, 55, 0.34);
+  background-image: var(--kod-tree-3);
+}
+
+.kod-fortune__name {
+  grid-area: crest;
+  z-index: 1;
+  align-self: center;
+  justify-self: center;
+  font-family: var(--kod-font-display);
+  font-size: 0.84rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--kod-silver-bright);
+  line-height: 1.15;
+  margin: 0;
+  text-shadow:
+    0 1px 10px #000,
+    0 0 6px #000;
+}
+
+.kod-fortune__states {
+  grid-area: state;
+  display: grid;
+  place-items: center;
+  min-height: 1.55rem;
+  width: 100%;
+}
+
+.kod-fortune__state {
+  grid-area: 1 / 1;
+  font-family: var(--kod-font-display);
+  font-size: 1.08rem;
+  letter-spacing: 0.04em;
+  color: var(--kod-silver-bright);
+  line-height: 1.15;
+  transition: opacity 0.32s ease;
+}
+
+.kod-fortune__state.is-off {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.kod-fortune[data-level='0'] .kod-fortune__state:not(.is-off) {
+  color: var(--kod-silver);
+}
+
+.kod-fortune[data-level='1'] .kod-fortune__state:not(.is-off) {
+  color: var(--kod-blood-bright);
+}
+
+.kod-fortune[data-level='2'] .kod-fortune__state:not(.is-off) {
+  color: #8fbf6a;
+}
+
+.kod-fortune[data-level='3'] .kod-fortune__state:not(.is-off) {
+  color: #e0c56a;
+}
+
+.kod-fortune__n {
+  display: none;
+}
+
+.kod-hier-diagram {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto auto repeat(4, minmax(4rem, auto)) auto;
+  column-gap: 0;
+  row-gap: 0.7rem;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  box-shadow: none;
+  align-items: stretch;
+}
+
+.kod-hier-links {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+  z-index: 2;
+}
+
+.kod-hier-links line {
+  stroke: color-mix(in srgb, var(--kod-silver) 55%, transparent);
+  stroke-width: 1.1;
+  fill: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kod-hier-links {
+    display: none;
+  }
+}
+
+.kod-hier-ruler {
+  --kod-corners: none;
+  grid-column: 1 / -1;
+  grid-row: 1;
+  box-sizing: border-box;
+  margin: 0 !important;
+  padding: 0.55rem 0.75rem 0.75rem;
+  text-align: center;
+  border: 1px solid var(--kod-frame);
+  background: linear-gradient(180deg, #1c1816 0%, #120f0e 100%);
+}
+
+.kod-hier-ruler__title {
+  font-family: var(--kod-font-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #d4b8e8;
+  margin: 0 0 0.3rem;
+}
+
+.kod-hier-ruler__title::before {
+  content: '';
+  display: block;
+  width: 4.2rem;
+  height: 2.4rem;
+  margin: 0 auto 0.4rem;
+  background-color: #c4a0e0;
+  -webkit-mask: var(--kod-axis-ruler) center / contain no-repeat;
+  mask: var(--kod-axis-ruler) center / contain no-repeat;
+}
+
+.kod-hier-ruler__note {
+  display: block;
+  margin: 0.45rem auto 0;
+  max-width: 36rem;
+  font-size: 0.82em;
+  line-height: 1.4;
+  color: var(--kod-silver-dim);
+}
+
+.kod-hier-ruler .kod-chip {
+  margin-top: 0.15rem;
+}
+
+.kod-hier-body {
+  display: contents;
+}
+
+.kod-hier-row-rail {
+  display: none;
+}
+
+.kod-hier-axes {
+  position: relative;
+  isolation: isolate;
+  grid-column: 1;
+  grid-row: 2 / span 5;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-rows: subgrid;
+  gap: 0.55rem 0.7rem;
+  align-items: stretch;
+  min-width: 0;
+  overflow: visible;
+}
+
+.kod-hier-axis[data-axis='arms'] {
+  grid-column: 1;
+}
+.kod-hier-axis[data-axis='faith'] {
+  grid-column: 2;
+}
+.kod-hier-axis[data-axis='coin'] {
+  grid-column: 3;
+}
+.kod-hier-axis[data-axis='blood'] {
+  grid-column: 4;
+}
+
+@media (max-width: 50rem) {
+  .kod-hier-diagram {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+  .kod-hier-ruler,
+  .kod-hier-axes,
+  .kod-hier-porch {
+    width: 100%;
+    max-width: none;
+  }
+  .kod-hier-axes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto repeat(4, minmax(3.4rem, auto)) auto repeat(4, minmax(3.4rem, auto));
+  }
+  .kod-hier-axis[data-axis='arms'],
+  .kod-hier-axis[data-axis='faith'],
+  .kod-hier-axis[data-axis='coin'],
+  .kod-hier-axis[data-axis='blood'] {
+    grid-column: auto;
+  }
+  .kod-hier-axis {
+    grid-template-columns: minmax(0, 1fr);
+    grid-row: span 5;
+  }
+  .kod-hier-axis__domain {
+    display: none;
+  }
+  .kod-hier-axis__plate {
+    grid-column: 1;
+  }
+}
+
+@media (max-width: 28rem) {
+  .kod-hier-axes {
+    grid-template-columns: 1fr;
+    grid-template-rows: none;
+  }
+}
+
+.kod-hier-tiers {
+  display: none;
+}
+
+.kod-hier-axis {
+  --kod-corners: none;
+  --hier-ink: #3a3330;
+  box-sizing: border-box;
+  margin: 0 !important;
+  display: grid;
+  grid-template-columns: 1.05rem minmax(0, 1fr);
+  column-gap: 0.32rem;
+  grid-template-rows: subgrid;
+  grid-row: 1 / span 5;
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+  min-height: 100%;
+  border: none;
+  background: none;
+  box-shadow: none;
+  overflow: visible;
+}
+
+.kod-hier-axis__plate {
+  --kod-corners: none;
+  grid-column: 2;
+  grid-row: 1 / -1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: subgrid;
+  min-width: 0;
+  border: 1px solid color-mix(in srgb, var(--hier-ink) 45%, var(--kod-frame));
+  background: #100e0c;
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--hier-ink) 22%, transparent),
+    0 8px 18px -12px #000;
+}
+
+@media (max-width: 28rem) {
+  .kod-hier-axis {
+    display: flex;
+    flex-direction: column;
+    grid-row: auto;
+  }
+  .kod-hier-axis__plate {
+    display: flex;
+    flex-direction: column;
+    grid-column: auto;
+    grid-row: auto;
+  }
+}
+
+.kod-hier-axis__head {
+  grid-column: 1;
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  min-height: 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0.55rem 0.3rem 0.45rem;
+  text-align: center;
+  border-bottom: 1px solid color-mix(in srgb, var(--hier-ink) 28%, transparent);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--hier-ink) 38%, #141210),
+    transparent 100%
+  );
+}
+
+.kod-hier-axis__head::before {
+  content: '';
+  display: block;
+  margin: 0 auto 0.4rem;
+  background-color: var(--kod-silver);
+  -webkit-mask: center / contain no-repeat;
+  mask: center / contain no-repeat;
+  flex-shrink: 0;
+}
+
+.kod-hier-axis[data-axis='arms'] {
+  --hier-ink: #000;
+}
+.kod-hier-axis[data-axis='arms'] .kod-hier-axis__plate {
+  background: #000;
+  border-color: #2a2a2a;
+}
+.kod-hier-axis[data-axis='arms'] .kod-hier-axis__head {
+  background: #000;
+  border-bottom-color: #2a2a2a;
+}
+.kod-hier-axis[data-axis='arms'] .kod-hier-axis__head::before {
+  width: 2.8rem;
+  height: 3.4rem;
+  background-color: #f2efe9;
+  -webkit-mask-image: var(--kod-axis-arms);
+  mask-image: var(--kod-axis-arms);
+}
+.kod-hier-axis[data-axis='arms'] .kod-hier-rungs li {
+  background: #000;
+  border-color: #2a2a2a;
+  color: #e8e4dc;
+}
+.sl-markdown-content .kod-hier-axis[data-axis='arms'] .kod-hier-rung-label {
+  color: #e8e4dc !important;
+}
+.kod-hier-axis[data-axis='faith'] {
+  --hier-ink: #f2efe9;
+  --hier-type: #14110e;
+}
+.kod-hier-axis[data-axis='faith'] .kod-hier-axis__plate {
+  background: linear-gradient(180deg, #f4f0e8 0%, #d8d2c8 100%);
+  border-color: #c4bfb6;
+}
+.kod-hier-axis[data-axis='faith'] .kod-hier-axis__head {
+  background: #f2efe9;
+  border-bottom-color: #c4bfb6;
+}
+.kod-hier-axis[data-axis='faith'] .kod-hier-axis__name,
+.kod-hier-axis[data-axis='faith'] .kod-hier-rungs li,
+.sl-markdown-content .kod-hier-axis[data-axis='faith'] .kod-hier-rung-label {
+  color: #14110e !important;
+  text-shadow:
+    0.35px 0 0 #14110e,
+    -0.35px 0 0 #14110e !important;
+}
+.kod-hier-axis[data-axis='faith'] .kod-hier-axis__head::before {
+  width: 2.9rem;
+  height: 2.9rem;
+  background-color: #14110e;
+  -webkit-mask-image: var(--kod-axis-faith);
+  mask-image: var(--kod-axis-faith);
+}
+.kod-hier-axis[data-axis='faith'] .kod-hier-rungs li {
+  background: color-mix(in srgb, #f2efe9 82%, #c4bfb6);
+  border-color: #b0aaa2;
+}
+.kod-hier-axis[data-axis='faith'] .kod-hier-rungs li:nth-child(1) {
+  background: #f7f4ee;
+}
+.kod-hier-axis[data-axis='faith'] .kod-hier-rungs li:nth-child(2) {
+  background: #ece7de;
+}
+.kod-hier-axis[data-axis='faith'] .kod-hier-rungs li:nth-child(3) {
+  background: #ddd6cc;
+}
+.kod-hier-axis[data-axis='faith'] .kod-hier-rungs li:nth-child(4) {
+  background: #cfc8be;
+}
+.kod-hier-axis[data-axis='faith'] .kod-chip {
+  background: #f7f4ee;
+  color: #14110e;
+  border-color: #3a3530;
+}
+.kod-hier-axis[data-axis='coin'] {
+  --hier-ink: #c4a035;
+}
+.kod-hier-axis[data-axis='coin'] .kod-hier-axis__head::before {
+  width: 3.15rem;
+  height: 3.15rem;
+  background-color: #e0c56a;
+  -webkit-mask-image: var(--kod-axis-coin);
+  mask-image: var(--kod-axis-coin);
+}
+.kod-hier-axis[data-axis='blood'] {
+  --hier-ink: var(--kod-blood);
+}
+.kod-hier-axis[data-axis='blood'] .kod-hier-axis__head::before {
+  width: 2.35rem;
+  height: 3.55rem;
+  background-color: var(--kod-blood-bright);
+  -webkit-mask-image: var(--kod-axis-blood);
+  mask-image: var(--kod-axis-blood);
+}
+
+.kod-hier-axis__name {
+  font-family: var(--kod-font-display);
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #fff8f0;
+  margin: 0 0 0.28rem;
+}
+
+.kod-hier-axis__head {
+  grid-column: 1 / -1;
+}
+
+.kod-hier-axis__domain {
+  grid-column: 1;
+  grid-row: 2 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0.2rem 0;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-variant: small-caps;
+  text-transform: lowercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.07em;
+  line-height: 1.2;
+  color: var(--kod-silver-bright);
+}
+.kod-hier-axis[data-axis='coin'] .kod-hier-axis__domain {
+  color: color-mix(in srgb, var(--hier-ink) 55%, var(--kod-silver-bright));
+}
+.kod-hier-axis[data-axis='blood'] .kod-hier-axis__domain {
+  color: color-mix(in srgb, var(--kod-blood-bright) 45%, var(--kod-silver-bright));
+}
+
+@media (max-width: 50rem) {
+  .kod-hier-axis__domain {
+    display: none;
+  }
+}
+
+@container kod-hier (max-width: 42rem) {
+  .kod-hier-axis__domain {
+    display: none;
+  }
+  .kod-hier-axis {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .kod-hier-axis__plate {
+    grid-column: 1 / -1;
+  }
+}
+
+.kod-hier-legend {
+  display: none;
+}
+
+.kod-hier-legend p {
+  margin: 0.28rem 0 0 !important;
+  font-size: 0.88em;
+  line-height: 1.45;
+  color: var(--kod-silver-dim);
+}
+
+.kod-hier-legend p:first-child {
+  margin-top: 0 !important;
+}
+
+.kod-hier-legend strong {
+  background: none !important;
+  box-shadow: none;
+  padding: 0;
+  color: var(--kod-silver-bright);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 400;
+  font-size: 0.92em;
+  -webkit-text-stroke: 0;
+}
+
+.kod-hier-legend__ruler {
+  margin-top: 0.55rem !important;
+  font-style: italic;
+}
+
+.kod-hier-rungs {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: contents;
+}
+
+@media (max-width: 28rem) {
+  .kod-hier-rungs {
+    display: flex;
+    flex-direction: column;
+    gap: 0.26rem;
+    padding: 0.3rem 0.35rem 0.45rem;
+  }
+}
+
+.kod-hier-rungs li {
+  grid-column: 1;
+  margin: 0 !important;
+  padding: 0.32rem 0.28rem 0.38rem;
+  text-align: center;
+  font-size: 0.78em;
+  letter-spacing: 0.03em;
+  color: var(--kod-silver-dim);
+  border: 1px solid color-mix(in srgb, var(--hier-ink) 28%, #2a2424);
+  min-height: 3.15rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+}
+
+.kod-hier-rungs li:nth-child(1) {
+  background: color-mix(in srgb, var(--hier-ink) 32%, #161210);
+}
+.kod-hier-rungs li:nth-child(2) {
+  background: color-mix(in srgb, var(--hier-ink) 22%, #12100e);
+}
+.kod-hier-rungs li:nth-child(3) {
+  background: color-mix(in srgb, var(--hier-ink) 12%, #100e0c);
+}
+.kod-hier-rungs li:nth-child(4) {
+  background: color-mix(in srgb, var(--hier-ink) 6%, #0c0a0a);
+}
+
+.sl-markdown-content .kod-hier-rung-label,
+.kod-hier-rung-label {
+  display: block;
+  width: 100%;
+  font-size: 0.55rem;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  color: inherit !important;
+  text-shadow: none !important;
+  border-bottom: none;
+}
+
+.kod-hier-rungs li.is-lit {
+  border-color: color-mix(in srgb, var(--kod-silver) 42%, #333);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--kod-silver) 18%, transparent);
+  transition: border-color 0.16s ease, box-shadow 0.16s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kod-fortune__tree,
+  .kod-fortune__state,
+  .kod-fortune,
+  .kod-chip,
+  .kod-hier-rungs li.is-lit,
+  .kod-fortune-board__frame p,
+  .kod-hier__frame p {
+    transition: none;
+    animation: none !important;
+    transform: none !important;
+  }
+  .kod-fortune-board__frame p,
+  .kod-hier__frame p {
+    opacity: 1;
+  }
+}
+
+.kod-hier-rungs .kod-chip,
+.kod-hier-ruler .kod-chip,
+.kod-hier-porch .kod-chip {
+  max-width: 100%;
+  font-size: 0.8rem;
+  padding: 0.12rem 0.4rem;
+  white-space: normal;
+}
+
+.kod-hier-porch {
+  --kod-corners: none;
+  grid-column: 1;
+  grid-row: 7;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+  overflow: visible;
+  padding: 0.65rem 0.9rem 0.75rem;
+  border: 1px solid #d8e4ee;
+  background: #141210;
+  text-align: center;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, #d8e4ee 12%, transparent);
+}
+
+.kod-hier-porch__main {
+  min-width: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5rem;
+  padding: 0;
+  border: none;
+  background: none;
+  box-shadow: none;
+}
+
+.kod-hier-porch__head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: baseline;
+  gap: 0.15rem 0.35rem;
+  margin: 0;
+  max-width: 38rem;
+  text-align: center;
+}
+
+.kod-hier-porch__title {
+  margin: 0;
+  font-family: var(--kod-font-display);
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #d8e4ee;
+}
+
+.kod-hier-porch__title::after {
+  content: ' — ';
+  letter-spacing: 0.04em;
+  text-transform: none;
+}
+
+.kod-hier-porch .kod-chip {
+  grid-column: auto;
+}
+
+.kod-hier-porch__note {
+  margin: 0;
+  padding: 0;
+  writing-mode: horizontal-tb;
+  transform: none;
+  font-variant: small-caps;
+  text-transform: lowercase;
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  line-height: 1.35;
+  color: color-mix(in srgb, #d8e4ee 78%, var(--kod-silver-dim));
+  display: inline;
+}
+
+@media (max-width: 50rem) {
+  .kod-hier-porch {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .kod-hier-porch__main {
+    grid-column: 1;
+  }
+  .kod-hier-porch__note {
+    grid-column: auto;
+    grid-row: auto;
+    writing-mode: horizontal-tb;
+    transform: none;
+    text-align: center;
+    padding: 0.3rem 0.4rem 0;
+  }
+}

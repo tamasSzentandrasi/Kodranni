@@ -7,6 +7,7 @@
     "./tokens.css": "./tokens.css",
     "./fonts.css": "./fonts.css",
     "./primitives.css": "./primitives.css",
+    "./boards.css": "./boards.css",
     "./campaign.css": "./campaign.css",
     "./ornament/*": "./ornament/*"
   },
