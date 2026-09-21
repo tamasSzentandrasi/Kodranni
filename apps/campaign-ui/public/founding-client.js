@@ -7,7 +7,7 @@
   if (!sky) return;
 
   const LABELS = ['Crisis', 'Strained', 'Steady', 'Abundance'];
-  const pillars = Array.from(sky.querySelectorAll('.fortune[data-key]'));
+  const pillars = Array.from(sky.querySelectorAll('.kod-fortune[data-fortune], .fortune[data-key]'));
   const storeBtn = sky.querySelector('[data-founding-store]');
   const msgEl = sky.querySelector('[data-founding-msg]');
   if (!(storeBtn instanceof HTMLButtonElement) || !pillars.length) return;
@@ -33,13 +33,14 @@
 
   function setLevel(pillar, level) {
     level = clamp(level);
-    const key = pillar.getAttribute('data-key') || '';
+    const key = pillar.getAttribute('data-fortune') || pillar.getAttribute('data-key') || '';
+    const title = key ? key.charAt(0).toUpperCase() + key.slice(1) : '';
     const label = LABELS[level] || '';
     pillar.setAttribute('data-level', String(level));
     pillar.setAttribute('aria-valuenow', String(level));
     pillar.setAttribute('aria-valuetext', label);
-    pillar.setAttribute('aria-label', key + ', ' + label);
-    const state = pillar.querySelector('.fortune__state');
+    pillar.setAttribute('aria-label', title + ', ' + label);
+    const state = pillar.querySelector('.kod-fortune__state, .fortune__state');
     if (state) state.textContent = label;
   }
 
@@ -52,7 +53,7 @@
     /** @type {Record<string, number>} */
     const fortunes = {};
     for (const p of pillars) {
-      const key = p.getAttribute('data-key');
+      const key = p.getAttribute('data-fortune') || p.getAttribute('data-key');
       if (key) fortunes[key] = clamp(Number(p.getAttribute('data-level')));
     }
     return fortunes;

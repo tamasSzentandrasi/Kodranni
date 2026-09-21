@@ -7,7 +7,6 @@ import {
 } from '@kodranni/store/labels';
 import { esc, escAttr } from './escape.js';
 import {
-  FORTUNE_BLURBS,
   FORTUNE_LABELS,
   FORTUNE_ORDER,
   TIERS,
@@ -37,18 +36,22 @@ export function communityInner(
     groups: c.labelGroups ?? [],
     labels: c.labels ?? [],
   });
-  return `${findDrawer(c)}
-<div class="hall" data-slug="${escAttr(c.slug)}" data-source="${escAttr(source)}" data-founded="${escAttr(founded)}" data-view-group="${escAttr((c.labelGroups ?? []).find((g) => g.kind === 'faction' && (c.labels ?? []).some((l) => l.groupId === g.id))?.id ?? (c.labelGroups ?? []).find((g) => g.kind === 'faction')?.id ?? 'g-faction')}">
+  return `${slideRails(c)}
+<div class="hall" data-slug="${escAttr(c.slug)}" data-source="${escAttr(source)}" data-founded="${escAttr(founded)}">
   ${fortunePlates(c.fortunes)}
   <section class="hall__htitle" aria-labelledby="h-h">
     ${sectionHead('h-h', 'Hierarchy', 'One crown, then parallel ladders. Same four tiers on every axis (Honoured → Outcast). Colour marks the axis; saturation falls toward Outcast. Hover a name for who they are; click to open the sheet.', 'About Hierarchy')}
+    <div class="hall-catchword" data-catchword data-empty="true">
+      <p class="hall-catchword__line">
+        <span class="end-mark end-mark--left" aria-hidden="true"></span>
+        <span class="hall-catchword__text" data-catchword-text></span>
+        <span class="end-mark end-mark--right" aria-hidden="true"></span>
+      </p>
+      <button type="button" class="hall-catchword__clear" data-catchword-clear>Clear</button>
+    </div>
   </section>
   <div class="hall__hier">
     ${hierarchy(c, tips, pcSlugs, canEdit, bySlug)}
-    <div class="hall__porch">
-      ${viewStave(c)}
-      ${outsiders(c, bySlug)}
-    </div>
   </div>
   ${myths(c.myths ?? [])}
 </div>
@@ -95,136 +98,106 @@ function labelsForPerson(
   return labelsByIds(c, personLabelIds({ character: ch, outsider, placement }));
 }
 
-function findDrawer(c: HallView['community']): string {
-  return `<div class="find-drawer" data-find-drawer data-open="false">
-  <button type="button" class="find-tab" data-find-toggle aria-controls="kod-find-ledger" aria-expanded="false" aria-label="Find">
-    <span class="kod-cn kod-cn--tl" aria-hidden="true"></span>
-    <span class="kod-cn kod-cn--bl" aria-hidden="true"></span>
-    <span class="find-chevron" aria-hidden="true"></span>
-    <span class="find-tab__word">Find</span>
-  </button>
-  ${findPanel(c)}
+function slideTab(id: string, word: string): string {
+  return `<button type="button" class="kod-slide__tab" data-slide-toggle="${escAttr(id)}" aria-controls="kod-slide-${escAttr(id)}" aria-expanded="false" aria-label="${escAttr(word)}">
+    <span class="kod-slide__skin" aria-hidden="true">
+      <span class="kod-slide__cap kod-slide__cap--top"></span>
+      <span class="kod-slide__mid"></span>
+      <span class="kod-slide__cap kod-slide__cap--bot"></span>
+      <span class="kod-slide__chev"></span>
+    </span>
+    <span class="kod-slide__word">${esc(word)}</span>
+  </button>`;
+}
+
+function slideRails(c: HallView['community']): string {
+  return `<div class="kod-rail kod-rail--left">
+  ${slideShell('factions', 'Factions', factionsPanel(c))}
+  ${slideShell('tags', 'Tags', tagsPanel(c))}
+</div>
+<div class="kod-rail kod-rail--right">
+  ${slideShell('find', 'Find', findPanel(c))}
 </div>`;
 }
 
-function findPanel(c: HallView['community']): string {
-  const axes = c.hierarchyAxes ?? [];
-  const axisChips = axes
-    .map(
-      (axis) =>
-        `<button type="button" class="hall-search__chip" data-filter="axis" data-value="${escAttr(axis)}" aria-pressed="false">${esc(axis)}</button>`,
-    )
-    .join('');
-  const tierChips = TIERS.map(
-    (tier) =>
-      `<button type="button" class="hall-search__chip" data-filter="tier" data-value="${escAttr(tier)}" aria-pressed="false">${esc(tier)}</button>`,
-  ).join('');
-  const groups = (c.labelGroups ?? []).filter((g) => (c.labels ?? []).some((l) => l.groupId === g.id));
-  const labelBlocks = groups
-    .map((g) => {
-      const labs = (c.labels ?? []).filter((l) => l.groupId === g.id);
-      const chips = labs
-        .map((l) => {
-          const hue = l.hue != null ? ` style="--label-h:${l.hue}"` : '';
-          return `<button type="button" class="hall-search__chip" data-filter="label" data-value="${escAttr(l.id)}" data-group="${escAttr(g.id)}" aria-pressed="false"${hue}>${markIcon(l)}${esc(l.name)}</button>`;
-        })
-        .join('');
-      return `<div class="hall-search__group" role="group" aria-label="${escAttr(g.name)}" data-label-group="${escAttr(g.id)}">
-      <p class="hall-search__legend">${esc(g.name)}</p>${chips}
-    </div>`;
-    })
-    .join('');
-  return `<aside class="kod-plate hall-search find-ledger" id="kod-find-ledger" data-hall-search aria-label="Find someone">
-  <header class="hall-search__head">
-    <h2 class="hall-search__title">Find</h2>
-  </header>
-  <div class="hall-search__lookup">
-    <label class="hall-search__label" for="kod-hall-q">Name or banner</label>
-    <input id="kod-hall-q" class="hall-search__q" type="search" name="hall-q" autocomplete="off" placeholder="Name or banner…" data-hall-q/>
-    <button type="button" class="hall-search__clear" data-hall-clear aria-label="Clear Find">Clear</button>
-  </div>
-  <div class="hall-search__filters" data-hall-filters>
-    ${labelBlocks}
-    <div class="hall-search__group" role="group" aria-label="Axis">
-      <p class="hall-search__legend">Axis</p>${axisChips}
-    </div>
-    <div class="hall-search__group" role="group" aria-label="Standing">
-      <p class="hall-search__legend">Standing</p>${tierChips}
-    </div>
-    <div class="hall-search__group" role="group" aria-label="Kind">
-      <p class="hall-search__legend">Kind</p>
-      <button type="button" class="hall-search__chip" data-filter="kind" data-value="pc" aria-pressed="false">Player</button>
-      <button type="button" class="hall-search__chip" data-filter="kind" data-value="outsider" aria-pressed="false">Outsider</button>
-      <button type="button" class="hall-search__chip" data-filter="kind" data-value="npc" aria-pressed="false">NPC</button>
-    </div>
-  </div>
-  <p class="hall-search__count" data-hall-count hidden></p>
-  <ul class="hall-search__hits" data-hall-hits hidden></ul>
-</aside>`;
+function slideShell(id: string, word: string, inner: string): string {
+  return `<div class="kod-slide" data-slide="${escAttr(id)}" data-open="false">
+  ${slideTab(id, word)}
+  <div class="kod-slide__panel kod-plate" id="kod-slide-${escAttr(id)}">${inner}</div>
+</div>`;
 }
 
-function markKind(label: Label): 'faction' | 'tag' {
-  return label.groupId === TAG_GROUP_ID || label.hue == null ? 'tag' : 'faction';
+function factionNameplate(l: Label): string {
+  const stain =
+    l.hue != null ? ` data-stain style="--stain: hsl(${l.hue} 55% 48%)"` : '';
+  return `<button type="button" class="member member--drawer" data-faction-id="${escAttr(l.id)}" data-group="${escAttr(l.groupId)}" aria-pressed="false"${stain}><span class="member__stain" aria-hidden="true"></span><span class="member__glow" aria-hidden="true"></span><span class="member__name">${esc(l.name)}</span></button>`;
 }
 
-function markIcon(label: Label): string {
-  const hue = label.hue != null ? ` style="--label-h:${label.hue}"` : '';
-  return `<i class="mark mark--${markKind(label)}" data-label-id="${escAttr(label.id)}" title="${escAttr(label.name)}"${hue}></i>`;
-}
-
-function viewStave(c: HallView['community']): string {
-  const groups = (c.labelGroups ?? []).filter((g) =>
-    (c.labels ?? []).some((l) => l.groupId === g.id),
+function allegiancePicker(c: HallView['community'], forFind = false): string {
+  const groups = (c.labelGroups ?? []).filter(
+    (g) => g.kind === 'faction' && (c.labels ?? []).some((l) => l.groupId === g.id),
   );
-  if (groups.length === 0) return '';
-  const active =
-    groups.find((g) => g.kind === 'faction') ?? groups.find((g) => g.id === TAG_GROUP_ID) ?? groups[0];
   const cats = groups
     .map((g) => {
-      const on = g.id === active.id;
-      return `<button type="button" class="view-stave__cat" data-view-group="${escAttr(g.id)}" aria-pressed="${on ? 'true' : 'false'}">${esc(g.name)}</button>`;
-    })
-    .join('');
-  const keys = groups
-    .map((g) => {
       const labs = (c.labels ?? []).filter((l) => l.groupId === g.id);
-      const hidden = g.id === active.id ? '' : ' hidden';
-      const items =
-        labs.length === 0
-          ? `<p class="hall-legend__empty">None yet.</p>`
-          : labs
-              .map((l) => {
-                const hue = l.hue != null ? ` style="--label-h:${l.hue}"` : '';
-                return `<button type="button" class="hall-legend__item" data-label-id="${escAttr(l.id)}" data-group="${escAttr(g.id)}" aria-pressed="false"${hue}><span class="view-stave__swatch" aria-hidden="true"></span><span class="hall-legend__name">${esc(l.name)}</span></button>`;
-              })
-              .join('');
-      return `<div class="view-stave__key" data-legend-group="${escAttr(g.id)}"${hidden}>${items}</div>`;
+      const plates = labs.map((l) => factionNameplate(l)).join('');
+      return `<div class="allegiance__cat" data-faction-cat="${escAttr(g.id)}">
+        <button type="button" class="kod-btn kod-btn--folio allegiance__pick" data-view-group="${escAttr(g.id)}" aria-pressed="false">
+          <span class="kod-btn__title">${esc(g.name)}</span>
+        </button>
+        <div class="allegiance__list" data-faction-list hidden>${plates}</div>
+      </div>`;
     })
     .join('');
-  return `<aside class="kod-plate hall-legend view-stave" data-hall-legend data-view-stave aria-label="View">
-    <p class="hall-legend__kicker">View</p>
-    <div class="view-stave__cats" role="group" aria-label="Category">${cats}</div>
-    ${keys}
-  </aside>`;
+  const extra = forFind ? ' data-find-tree' : ' data-hall-legend data-view-stave';
+  return `<div class="allegiance"${extra}>${cats}</div>`;
+}
+
+function findPanel(c: HallView['community']): string {
+  return `<div class="hall-search" data-hall-search>
+  <label class="hall-search__label" for="kod-hall-q">Name</label>
+  <input id="kod-hall-q" class="hall-search__q" type="search" name="hall-q" autocomplete="off" placeholder="Name…" data-hall-q/>
+  <p class="hall-search__kicker">Filter by Allegiance</p>
+  ${allegiancePicker(c, true)}
+</div>`;
+}
+
+function factionsPanel(c: HallView['community']): string {
+  return allegiancePicker(c, false);
+}
+
+function tagsPanel(c: HallView['community']): string {
+  const tags = (c.labels ?? []).filter((l) => l.groupId === TAG_GROUP_ID);
+  if (!tags.length) return `<p class="empty">No tags yet.</p>`;
+  const rows = tags
+    .map(
+      (t) =>
+        `<button type="button" class="kod-btn tag-row" data-tag-id="${escAttr(t.id)}" aria-pressed="false"><span>${esc(t.name)}</span></button>`,
+    )
+    .join('');
+  return `<div class="tag-list" data-tag-list>${rows}</div>`;
+}
+
+function fortuneTitle(k: string): string {
+  return k.charAt(0).toUpperCase() + k.slice(1);
 }
 
 function fortunePlates(values: Record<string, number> | undefined): string {
   const fortunes = values ?? {};
-  const seals = FORTUNE_ORDER.map(
-    (k) => `<span class="fortune__icon" data-key="${escAttr(k)}" aria-hidden="true"></span>`,
-  ).join('');
   const plates = FORTUNE_ORDER.map((k) => {
     const v = Math.min(3, Math.max(0, fortunes[k] ?? 0));
     const label = FORTUNE_LABELS[v] ?? '';
-    return `<div class="fortune" data-key="${k}" data-level="${v}" role="listitem" aria-label="${escAttr(k)}, ${escAttr(label)}">
-      <span class="fortune__name">${esc(k)}${infoBtn(`About ${k}`, FORTUNE_BLURBS[k] ?? '')}</span>
-      <span class="fortune__tree" aria-hidden="true"></span>
-      <span class="fortune__state">${esc(label)}</span>
+    const title = fortuneTitle(k);
+    return `<div class="kod-fortune kod-fortune--${escAttr(k)}" data-fortune="${escAttr(k)}" data-level="${v}" role="listitem" aria-label="${escAttr(title)}, ${escAttr(label)}">
+      <span class="kod-fortune__icon" aria-hidden="true"></span>
+      <span class="kod-fortune__name">${esc(title)}</span>
+      <span class="kod-fortune__tree" aria-hidden="true"></span>
+      <span class="kod-fortune__states"><span class="kod-fortune__state">${esc(label)}</span></span>
     </div>`;
   }).join('');
   return `<section class="hall__sky" aria-labelledby="f-h">
     ${sectionHead('f-h', 'Fortunes', 'Community-wide pressure — not a second character sheet. Weather, not a ledger.', 'About Fortunes')}
-    <div class="kod-fortune-board fortune-hall" role="list"><div class="fortune-hall__seals">${seals}</div><div class="fortune-hall__row">${plates}</div></div>
+    <div class="kod-fortune-row" role="list">${plates}</div>
   </section>`;
 }
 
@@ -250,11 +223,12 @@ function memberName(opts: {
     .filter(Boolean)
     .join(' ');
   const pending = opts.pending
-    ? `<span class="member__knot" aria-hidden="true">◆</span>${esc(opts.name)}<span class="member__pending">pending</span>`
-    : `${esc(opts.name)}`;
+    ? `<span class="member__knot" aria-hidden="true">◆</span><span class="member__name">${esc(opts.name)}</span><span class="member__pending">pending</span>`
+    : `<span class="member__name">${esc(opts.name)}</span>`;
+  const inner = `<span class="member__stain" aria-hidden="true"></span><span class="member__glow" aria-hidden="true"></span>${pending}`;
   const data = `class="${cls}" data-inspect-id="${escAttr(opts.personId)}" data-name="${escAttr(opts.name)}" data-kind="${escAttr(opts.kind ?? 'npc')}"${opts.slug ? ` data-slug="${escAttr(opts.slug)}"` : ''}${opts.tip ? ` data-tip="${escAttr(opts.tip)}"` : ''}${opts.roving ? ' tabindex="-1"' : ''}${ids ? ` data-label-ids="${escAttr(ids)}"` : ''}`;
-  if (opts.slug) return `<a ${data} href="/characters/${escAttr(opts.slug)}/">${pending}</a>`;
-  return `<span ${data}>${pending}</span>`;
+  if (opts.slug) return `<a ${data} href="/characters/${escAttr(opts.slug)}/">${inner}</a>`;
+  return `<span ${data}>${inner}</span>`;
 }
 
 function hierarchy(
@@ -291,49 +265,40 @@ function hierarchy(
       const key = axisKey(axis, ai);
       const rungs = TIERS.map((tier) => {
         const members = onAxis.filter((p) => p.tier === tier);
-        const empty = members.length === 0;
-        const collapsed = empty || (tier === 'Outcast' && members.length > 5);
-        const lis = empty
-          ? `<li class="empty">—</li>`
-          : members
-              .map((m) => {
-                const tip = tipFor(m.name, m.characterSlug, m.note);
-                return `<li>${memberName({
-                  name: m.name,
-                  slug: m.characterSlug,
-                  pc: isPc(m.characterSlug),
-                  tip,
-                  kind: isPc(m.characterSlug) ? 'pc' : 'npc',
-                  personId: inspectId(m.name, m.characterSlug),
-                  roving: true,
-                  labels: labelsForPerson(c, bySlug, m.name, m.characterSlug),
-                })}</li>`;
-              })
-              .join('');
-        return `<li class="hier-rung" data-tier="${escAttr(tier)}" data-collapsed="${collapsed ? 'true' : 'false'}">
-          <button type="button" class="hier-rung__head" data-rung-toggle tabindex="-1" aria-expanded="${collapsed ? 'false' : 'true'}">
-            <span class="hier-rung__tier">${esc(tier)}</span>
-            <span class="hier-rung__n">${members.length}</span>
-            <span class="hier-rung__chev" aria-hidden="true"></span>
-          </button>
-          <ul class="hier-rung__members kod-scroll">${lis}</ul>
-        </li>`;
+        const people = members
+          .map((m) => {
+            const tip = tipFor(m.name, m.characterSlug, m.note);
+            return memberName({
+              name: m.name,
+              slug: m.characterSlug,
+              pc: isPc(m.characterSlug),
+              tip,
+              kind: isPc(m.characterSlug) ? 'pc' : 'npc',
+              personId: inspectId(m.name, m.characterSlug),
+              roving: true,
+              labels: labelsForPerson(c, bySlug, m.name, m.characterSlug),
+            });
+          })
+          .join('');
+        return `<li data-tier="${escAttr(tier)}"><strong class="kod-hier-rung-label">${esc(tier)}</strong><div class="kod-hier-rung__people">${people}</div></li>`;
       }).join('');
-      return `<div class="kod-plate hier-axis" data-axis="${escAttr(key)}" data-axis-name="${escAttr(axis)}">
-        <button type="button" class="hier-axis__head" data-axis-focus="${escAttr(key)}" aria-pressed="false" tabindex="${ai === 0 ? 0 : -1}">
-          <p class="hier-axis__name">${esc(axis)}</p>
-          <p class="hier-axis__domain">${esc(axisDomain(axis))}</p>
-          <span class="hier-axis__count">${onAxis.length} placed</span>
-        </button>
-        <ol class="hier-rungs">${rungs}</ol>
+      return `<div class="kod-hier-axis" data-axis="${escAttr(key)}" data-axis-name="${escAttr(axis)}">
+        <p class="kod-hier-axis__domain">${esc(axisDomain(axis))}</p>
+        <div class="kod-hier-axis__plate">
+          <div class="kod-hier-axis__head" data-axis-focus="${escAttr(key)}" tabindex="${ai === 0 ? 0 : -1}">
+            <p class="kod-hier-axis__name">${esc(axis)}</p>
+          </div>
+          <ol class="kod-hier-rungs">${rungs}</ol>
+        </div>
       </div>`;
     })
     .join('');
-  return `<div class="hall__diagram">
-    <div class="kod-plate hier-ruler kod-headpiece"><span class="kod-cut kod-cut--tl" aria-hidden="true"></span><span class="kod-cut kod-cut--tr" aria-hidden="true"></span><span class="kod-cn kod-cn--tl" aria-hidden="true"></span><span class="kod-cn kod-cn--tr" aria-hidden="true"></span><p class="hier-ruler__title">Ruler</p>${rulerBlock}</div>
-    ${add}
-    <p class="hier-join" aria-hidden="true"></p>
-    <div class="hier-axes" role="region" aria-label="Hierarchy ladders">${axes}</div>
+  return `<div class="kod-hier-diagram hall__diagram">
+    <div class="kod-hier-ruler"><p class="kod-hier-ruler__title">Ruler</p>${rulerBlock}${add}</div>
+    <div class="kod-hier-body">
+    <div class="kod-hier-axes" role="region" aria-label="Hierarchy ladders">${axes}</div>
+    ${outsiders(c, bySlug)}
+    </div>
   </div>`;
 }
 
@@ -341,22 +306,22 @@ function outsiders(c: HallView['community'], bySlug: Map<string, CharacterRecord
   const list = c.outsiders ?? [];
   const items =
     list.length === 0
-      ? `<li class="empty">None tracked.</li>`
+      ? `<p class="empty">None tracked.</p>`
       : list
-          .map((o) => {
-            return `<li>${memberName({
+          .map((o) =>
+            memberName({
               name: o.name,
               slug: o.characterSlug,
               tip: o.note,
               kind: 'outsider',
               personId: inspectId(o.name, o.characterSlug),
               labels: labelsForPerson(c, bySlug, o.name, o.characterSlug),
-            })}</li>`;
-          })
+            }),
+          )
           .join('');
-  return `<aside class="kod-plate outsiders" aria-labelledby="o-h">
-    <div class="section-head" style="margin:0"><h3 id="o-h">Outsiders</h3>${infoBtn('About Outsiders', 'Never of this community. Sit apart until inducted (then Outcast on the axes that apply). Same name chip as kin; marks are faction and tag memberships.')}</div>
-    <ul class="outsiders__list kod-scroll">${items}</ul>
+  return `<aside class="kod-hier-porch" aria-labelledby="o-h">
+    <div class="kod-hier-porch__head"><p class="kod-hier-porch__title" id="o-h">Outsiders</p>${infoBtn('About Outsiders', 'Never of this community. Sit apart until inducted (then Outcast on the axes that apply).')}</div>
+    <div class="kod-hier-porch__people">${items}</div>
   </aside>`;
 }
 
