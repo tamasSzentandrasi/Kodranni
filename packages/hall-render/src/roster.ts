@@ -5,6 +5,7 @@ import {
   collectFactions,
   monogram,
   resolveFactionHue,
+  roman,
   rosterCaption,
   type HallView,
 } from './format.js';
@@ -104,7 +105,7 @@ export function rosterInner(view: HallView, opts?: { page?: number; selected?: s
           .map((n) => {
             const href = n === 1 ? '/characters/' : `/characters/?p=${n}`;
             const cur = n === page ? ' aria-current="page"' : '';
-            return `<a href="${href}"${cur}>${n}</a>`;
+            return `<a href="${href}"${cur}>${roman(n)}</a>`;
           })
           .join('')}</nav>`
       : '';

@@ -429,14 +429,6 @@
   function fitSlides() {
     const factions = document.querySelector('.kod-rail [data-slide="factions"]');
     const tags = document.querySelector('.kod-rail [data-slide="tags"]');
-    document.querySelectorAll('.kod-rail .kod-slide').forEach((slide) => {
-      const panel = slide.querySelector('.kod-slide__panel');
-      if (!panel) return;
-      slide.style.removeProperty('--slide-h');
-      const minPx = parseFloat(getComputedStyle(panel).minHeight) || 0;
-      const h = Math.max(panel.scrollHeight, minPx);
-      slide.style.setProperty('--slide-h', h + 'px');
-    });
     if (factions && tags) {
       const gap = 10;
       tags.style.top = Math.round(factions.getBoundingClientRect().bottom + gap) + 'px';

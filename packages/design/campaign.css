@@ -77,6 +77,11 @@ a:hover {
   padding: 0.85rem 1.1rem 2.75rem;
 }
 
+.app:has(.sheet-stage--core) {
+  padding-left: 5.5rem;
+  padding-right: 5.5rem;
+}
+
 .app__brand {
   display: flex;
   align-items: center;
@@ -1274,67 +1279,6 @@ section.kod-plate {
   min-width: 0;
 }
 
-.member {
-  --plate-h: 2.35rem;
-  position: relative;
-  isolation: isolate;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.25rem;
-  box-sizing: border-box;
-  width: min(100%, calc(var(--plate-h) * 2376 / 421));
-  height: auto;
-  aspect-ratio: var(--kod-nameplate-ratio);
-  padding: 0.2rem 0.85rem;
-  font: inherit;
-  font-size: 0.88rem;
-  letter-spacing: 0.03em;
-  line-height: 1.15;
-  text-align: center;
-  text-decoration: none;
-  color: #14110e;
-  border: none;
-  background: var(--kod-nameplate) center / 100% 100% no-repeat;
-  cursor: pointer;
-  margin-inline: auto;
-  filter: none;
-}
-.member__stain,
-.member__glow {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  -webkit-mask: var(--kod-nameplate-glass) center / 100% 100% no-repeat;
-  mask: var(--kod-nameplate-glass) center / 100% 100% no-repeat;
-}
-.member__stain {
-  background: linear-gradient(90deg, var(--stain, transparent));
-  mix-blend-mode: multiply;
-  opacity: 0;
-}
-.member[data-stain] .member__stain {
-  opacity: 1;
-}
-.member__glow {
-  display: none;
-}
-.member[data-lit] {
-  filter:
-    drop-shadow(0 0 3px hsl(var(--lit-h, 40) var(--lit-s, 80%) 58% / 0.7))
-    drop-shadow(0 0 9px hsl(var(--lit-h, 40) var(--lit-s, 70%) 50% / 0.45));
-}
-.member__name {
-  position: relative;
-  z-index: 3;
-  color: #14110e;
-  mix-blend-mode: normal;
-  text-shadow:
-    0 0 0.18rem #f7f1e6,
-    0 0 0.4rem #f7f1e6;
-}
-
 a.member:hover,
 a.member:focus-visible {
   outline: none;
@@ -1804,8 +1748,9 @@ a.member--pc:visited {
 }
 
 .kod-rail .kod-slide {
-  --slide-tab: 4.15rem;
+  --slide-tab: 3.18rem;
   --slide-body: 3.18rem;
+  --slide-chev: 0.97rem;
   --slide-cap: 3.1rem;
   --slide-min: 17.5rem;
   --slide-h: var(--slide-min);
@@ -1816,10 +1761,11 @@ a.member--pc:visited {
   display: grid;
   grid-template-areas: 'tab panel';
   grid-template-columns: var(--slide-tab) var(--slide-panel);
-  grid-template-rows: var(--slide-h);
+  grid-template-rows: minmax(var(--slide-min), max-content);
   align-items: stretch;
-  height: var(--slide-h);
+  height: auto;
   width: calc(var(--slide-tab) + var(--slide-panel));
+  overflow: visible;
   pointer-events: none;
   transition: transform 0.32s ease;
 }
@@ -1859,6 +1805,7 @@ a.member--pc:visited {
   cursor: pointer;
   color: var(--kod-silver-bright);
   position: relative;
+  overflow: visible;
   background: none;
 }
 .kod-slide__skin {
@@ -1866,12 +1813,12 @@ a.member--pc:visited {
   inset: 0;
   display: flex;
   flex-direction: column;
-  width: var(--slide-body);
+  width: 100%;
   pointer-events: none;
   transform: rotate(180deg);
 }
 .kod-slide[data-slide='find'] .kod-slide__skin {
-  left: auto;
+  left: 0;
   right: 0;
   transform: rotate(180deg) scaleX(-1);
 }
@@ -1899,24 +1846,70 @@ a.member--pc:visited {
   position: absolute;
   top: 50%;
   left: 100%;
-  width: calc(var(--slide-tab) - var(--slide-body));
+  width: var(--slide-chev);
   height: 4.2rem;
   transform: translateY(-50%);
   background: var(--kod-slide-tab-chev) center / contain no-repeat;
 }
 .kod-slide__panel {
   grid-area: panel;
+  position: relative;
   width: var(--slide-panel);
   box-sizing: border-box;
   min-height: var(--slide-min);
-  height: 100%;
-  padding: 1.15rem 2.6rem 1.2rem;
+  height: auto;
+  padding: 1.15rem 0.9rem 1.2rem;
   overflow: visible;
   border: none;
   box-shadow: none;
   background:
     var(--kod-soot),
     linear-gradient(180deg, #1a1814 0%, #12100e 50%, #1a1814 100%);
+}
+.kod-slide[data-slide='factions'] .kod-slide__panel,
+.kod-slide[data-slide='tags'] .kod-slide__panel {
+  margin-right: -1px;
+}
+.kod-slide[data-slide='find'] .kod-slide__panel {
+  margin-left: -1px;
+}
+.kod-slide__rail {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 0.55rem;
+  pointer-events: none;
+  opacity: 0.7;
+  -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 12%, transparent 58%);
+  mask-image: linear-gradient(90deg, #000 0%, #000 12%, transparent 58%);
+  background-repeat: no-repeat;
+  background-size: auto 100%;
+}
+.kod-slide__rail--top {
+  top: 0;
+  height: var(--slide-cap);
+  background-image: var(--kod-slide-tab-rail-top);
+  background-repeat: repeat-x;
+  background-size: auto var(--slide-cap);
+  background-position: left top;
+}
+.kod-slide__rail--bot {
+  bottom: 0;
+  height: var(--slide-cap);
+  background-image: var(--kod-slide-tab-rail-bot);
+  background-repeat: repeat-x;
+  background-size: auto var(--slide-cap);
+  background-position: left bottom;
+}
+.kod-slide[data-slide='find'] .kod-slide__rail {
+  -webkit-mask-image: linear-gradient(270deg, #000 0%, #000 12%, transparent 58%);
+  mask-image: linear-gradient(270deg, #000 0%, #000 12%, transparent 58%);
+}
+.kod-slide[data-slide='find'] .kod-slide__rail--top {
+  background-position: right top;
+}
+.kod-slide[data-slide='find'] .kod-slide__rail--bot {
+  background-position: right bottom;
 }
 .kod-slide__word {
   position: absolute;
@@ -2526,37 +2519,46 @@ a.member--pc:visited {
 .char-pager {
   display: flex;
   justify-content: center;
-  gap: 0.45rem;
+  flex-wrap: wrap;
+  gap: 0.55rem;
   margin: 1.1rem 0 0.4rem;
 }
 
 .char-pager a {
-  display: grid;
-  place-items: center;
-  min-width: 1.85rem;
-  height: 1.85rem;
-  padding: 0 0.4rem;
+  --kod-round: var(--kod-btn-round);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.4rem;
+  min-width: 3.4rem;
+  height: 3.4rem;
+  padding: 0.1em 0 0;
   text-decoration: none;
-  color: var(--kod-silver);
-  border: 1px solid var(--kod-frame);
-  clip-path: polygon(
-    0.28rem 0,
-    calc(100% - 0.28rem) 0,
-    100% 0.28rem,
-    100% calc(100% - 0.28rem),
-    calc(100% - 0.28rem) 100%,
-    0.28rem 100%,
-    0 calc(100% - 0.28rem),
-    0 0.28rem
-  );
+  color: #d8d4cc;
+  font-family: var(--kod-font-display);
+  font-size: 1.15rem;
+  letter-spacing: 0.04em;
+  background: var(--kod-round) center / contain no-repeat;
+  border: none;
+  box-shadow: none;
 }
 
 .char-pager a:hover,
-.char-pager a:focus-visible,
+.char-pager a:focus-visible {
+  outline: none;
+  --kod-round: var(--kod-btn-round-moon);
+  color: #fff;
+  filter:
+    drop-shadow(0 0 6px rgba(242, 239, 233, 0.45))
+    drop-shadow(0 0 12px rgba(242, 239, 233, 0.2));
+}
+
 .char-pager a[aria-current='page'] {
-  color: var(--kod-silver-bright);
-  border-color: var(--kod-silver);
-  background: color-mix(in srgb, var(--kod-silver) 10%, transparent);
+  --kod-round: var(--kod-btn-round-moon);
+  color: #fff;
+  filter:
+    drop-shadow(0 0 8px rgba(242, 239, 233, 0.55))
+    drop-shadow(0 0 14px rgba(242, 239, 233, 0.24));
 }
 
 .char-card {
@@ -2884,14 +2886,14 @@ a.member--pc:visited {
 /* Rails sit in the outer columns of the stage; identity keeps the middle. */
 .sheet-stage--core {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr);
   grid-template-areas:
-    'ex id echo'
-    'ex main echo';
-  column-gap: 2rem;
+    'id'
+    'core';
   row-gap: 1rem;
   align-items: start;
-  padding-inline: 0.35rem;
+  padding-inline: 0;
+  overflow: visible;
 }
 
 .sheet-stage--core .sheet-identity {
@@ -2902,44 +2904,71 @@ a.member--pc:visited {
 }
 
 .sheet-stage--core .core-grid {
-  display: contents;
-}
-
-.sheet-stage--core .vtrack:not(.vtrack--echo) {
-  grid-area: ex;
-  align-self: start;
-  justify-self: center;
-  margin-top: 0.15rem;
-}
-
-.sheet-stage--core .vtrack--echo {
-  grid-area: echo;
-  align-self: start;
-  justify-self: center;
-  margin-top: 0.15rem;
-}
-
-.sheet-stage--core .core-main {
-  grid-area: main;
+  grid-area: core;
+  display: block;
+  position: relative;
+  width: 100%;
   min-width: 0;
 }
 
-@media (max-width: 48rem) {
-  .sheet-stage--core {
+.sheet-stage--core .vtrack:not(.vtrack--echo) {
+  position: absolute;
+  top: 0.15rem;
+  right: 100%;
+  margin-right: 0.75rem;
+}
+
+.sheet-stage--core .vtrack--echo {
+  position: absolute;
+  top: 0.15rem;
+  left: 100%;
+  margin-left: 0.75rem;
+}
+
+.sheet-stage--core .core-main {
+  min-width: 0;
+  width: 100%;
+}
+
+@media (max-width: 56rem) {
+  .app:has(.sheet-stage--core) {
+    padding-left: 1.1rem;
+    padding-right: 1.1rem;
+  }
+
+  .sheet-stage--core .core-grid {
+    display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-areas:
-      'id id'
       'ex echo'
       'main main';
+    column-gap: 1rem;
+  }
+
+  .sheet-stage--core .vtrack:not(.vtrack--echo) {
+    position: static;
+    grid-area: ex;
+    margin: 0;
+    justify-self: center;
+  }
+
+  .sheet-stage--core .vtrack--echo {
+    position: static;
+    grid-area: echo;
+    margin: 0;
+    justify-self: center;
+  }
+
+  .sheet-stage--core .core-main {
+    grid-area: main;
   }
 
   /* Budget occupies the dock track in-flow. Wanting/Confirm stay overlays. */
   .sheet-stage--core:has(.budget-dock) {
     grid-template-areas:
-      'id id'
-      'dock dock'
-      'ex echo'
-      'main main';
+      'id'
+      'dock'
+      'core';
   }
 
   .sheet-stage--core .budget-dock {
@@ -3046,7 +3075,7 @@ a.member--pc:visited {
 }
 
 .vtrack--echo .vtrack__fill::before {
-  background: linear-gradient(180deg, #f4efe3, var(--kod-silver));
+  background: linear-gradient(180deg, #fff8f0, #c6c1b8);
 }
 
 .vtrack--over .vtrack__fill::before,
@@ -3281,7 +3310,7 @@ a.member--pc:visited {
 .skill-wheel {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.65rem;
+  gap: 0.85rem;
 }
 
 @media (max-width: 56rem) {
@@ -3303,7 +3332,7 @@ a.member--pc:visited {
   --arch-track: #1a1414;
   position: relative;
   overflow: visible;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 1 / 1.12;
   min-width: 0;
   min-height: 0;
   background: linear-gradient(
@@ -3395,12 +3424,12 @@ a.member--pc:visited {
 .arch__body {
   position: relative;
   z-index: 1;
-  padding: 0.5rem 0.5rem 0.55rem;
+  padding: 0.55rem 0.55rem 0.65rem;
   display: flex;
   flex-direction: column;
   height: 100%;
   box-sizing: border-box;
-  gap: 0.25rem;
+  gap: 0.55rem;
 }
 
 .arch__head {
@@ -3432,10 +3461,10 @@ a.member--pc:visited {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   grid-template-rows: repeat(3, minmax(0, 1fr));
-  gap: 0.35rem 0.3rem;
+  gap: 0.7rem 0.5rem;
   list-style: none;
   margin: 0;
-  padding: 0;
+  padding: 0.15rem 0.2rem 0.25rem;
   flex: 1 1 auto;
   align-content: stretch;
   min-height: 0;
@@ -3477,14 +3506,13 @@ a.member--pc:visited {
   background: conic-gradient(
     from -90deg,
     var(--arch-accent-bright) calc(var(--p) * 1turn),
-    color-mix(in srgb, var(--arch-accent) 32%, #3a3330) 0
+    #141210 0
   );
   display: grid;
   place-items: center;
   box-shadow:
-    inset 0 0 0 2px #0a0a0a,
-    0 0 0 1px color-mix(in srgb, var(--arch-accent-bright) 55%, transparent),
-    0 0 12px color-mix(in srgb, var(--arch-accent) 28%, transparent);
+    inset 0 0 0 2px #050505,
+    0 0 0 1px color-mix(in srgb, var(--arch-accent-bright) 70%, transparent);
 }
 
 .skill[data-rated='true'] .skill__ring {
@@ -3519,11 +3547,43 @@ a.member--pc:visited {
 .skill[data-rating='0'] .skill__inner {
   color: #8a8580;
   border: none;
+  box-shadow: none;
+}
+
+.skill[data-rating='1'] .skill__inner {
+  box-shadow: 0 0 6px color-mix(in srgb, var(--arch-accent-bright) 35%, transparent);
+}
+
+.skill[data-rating='1'] .skill__ring {
+  box-shadow:
+    inset 0 0 0 2px #050505,
+    0 0 0 1px color-mix(in srgb, var(--arch-accent-bright) 55%, transparent),
+    0 0 8px color-mix(in srgb, var(--arch-accent) 22%, transparent);
+}
+
+.skill[data-rating='2'] .skill__inner {
+  box-shadow: 0 0 9px color-mix(in srgb, var(--arch-accent-bright) 52%, transparent);
+}
+
+.skill[data-rating='2'] .skill__ring {
+  box-shadow:
+    inset 0 0 0 2px #050505,
+    0 0 0 1px color-mix(in srgb, var(--arch-accent-bright) 70%, transparent),
+    0 0 14px color-mix(in srgb, var(--arch-accent) 38%, transparent);
 }
 
 .skill[data-rating='3'] .skill__inner {
   color: var(--arch-accent-bright);
-  box-shadow: inset 0 0 8px color-mix(in srgb, var(--arch-accent) 35%, transparent);
+  box-shadow:
+    inset 0 0 8px color-mix(in srgb, var(--arch-accent) 35%, transparent),
+    0 0 12px color-mix(in srgb, var(--arch-accent-bright) 70%, transparent);
+}
+
+.skill[data-rating='3'] .skill__ring {
+  box-shadow:
+    inset 0 0 0 2px #050505,
+    0 0 0 1px color-mix(in srgb, var(--arch-accent-bright) 85%, transparent),
+    0 0 18px color-mix(in srgb, var(--arch-accent-bright) 48%, transparent);
 }
 
 /* Hit target is the whole .skill — children must not steal / block clicks */
@@ -3539,24 +3599,48 @@ a.member--pc:visited {
 }
 
 .skill__name {
-  display: block;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
   width: 100%;
   box-sizing: border-box;
-  padding: 0.05rem 0.1rem 0;
-  font-size: 0.88rem;
-  line-height: 1.18;
+  min-height: 2.4em;
+  padding: 0.08rem 0.12rem 0;
+  font-size: 0.9rem;
+  line-height: 1.2;
   font-weight: 400;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.02em;
   color: #f2efe9;
   background: transparent;
   border: none;
-  /* Soft legibility over stained glass — not a chip */
   text-shadow:
     0 0 0.35rem rgba(5, 5, 5, 0.95),
     0 1px 2px rgba(5, 5, 5, 0.9);
-  word-break: normal;
-  overflow-wrap: anywhere;
-  hyphens: auto;
+  word-break: keep-all;
+  overflow-wrap: normal;
+  hyphens: none;
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+.skill[data-rating='0'] .skill__name {
+  color: color-mix(in srgb, #f2efe9 68%, transparent);
+}
+
+.skill:hover .skill__name,
+.skill:focus-within .skill__name {
+  color: #fff8f0;
+  text-shadow:
+    0 0 0.35rem rgba(5, 5, 5, 0.95),
+    0 0 0.55rem color-mix(in srgb, var(--arch-accent-bright) 45%, transparent);
+}
+
+.skill:hover .skill__ring,
+.skill:focus-within .skill__ring {
+  box-shadow:
+    inset 0 0 0 2px #050505,
+    0 0 0 1px color-mix(in srgb, var(--arch-accent-bright) 80%, transparent),
+    0 0 12px color-mix(in srgb, var(--arch-accent-bright) 32%, transparent);
 }
 
 .skill[data-rated='true'] .skill__name {
@@ -4215,6 +4299,39 @@ select.kod-ink option[value=''],
 .trait,
 .item {
   padding: 0.5rem 0.65rem;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.item__icon {
+  flex: 0 0 2.25rem;
+  width: 2.25rem;
+  height: 2.25rem;
+  object-fit: cover;
+  background: #100e0c;
+  border: 1px solid var(--kod-frame);
+}
+
+.item__icon--empty {
+  display: block;
+}
+
+.item__edit {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.item__icon-upload {
+  display: inline-block;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  color: var(--kod-silver-dim);
+  cursor: pointer;
+  border-bottom: 1px solid var(--kod-frame);
 }
 
 .trait__name,
@@ -5169,15 +5286,47 @@ body.wanting-pay .skill__more {
 }
 
 @keyframes kod-copy-in {
-  from { opacity: 0; transform: translateY(0.45rem); }
-  to { opacity: 1; transform: none; }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 .kod-slide[data-open='true'] .kod-slide__panel {
   animation: kod-copy-in 0.36s ease both;
 }
+
+.sheet-identity,
+.found-group,
+.arch,
+.vtrack,
+.echo,
+.item,
+.trait,
+.char-list > li,
+.kod-fortune,
+.kod-hier-diagram,
+.hall-catchword {
+  animation: kod-copy-in 0.46s ease both;
+}
+
+.arch:nth-child(2) { animation-delay: 0.05s; }
+.arch:nth-child(3) { animation-delay: 0.1s; }
+.arch:nth-child(4) { animation-delay: 0.12s; }
+.arch:nth-child(5) { animation-delay: 0.16s; }
+.arch:nth-child(6) { animation-delay: 0.2s; }
+
 @media (prefers-reduced-motion: reduce) {
   .kod-slide,
-  .kod-slide[data-open='true'] .kod-slide__panel {
+  .kod-slide[data-open='true'] .kod-slide__panel,
+  .sheet-identity,
+  .found-group,
+  .arch,
+  .vtrack,
+  .echo,
+  .item,
+  .trait,
+  .char-list > li,
+  .kod-fortune,
+  .kod-hier-diagram,
+  .hall-catchword {
     transition: none;
     animation: none;
   }
@@ -5278,7 +5427,7 @@ body.wanting-pay .skill__more {
 }
 
 .member--drawer {
-  --plate-h: 2.2rem;
+  --plate-h: 2.05rem;
 }
 
 .end-mark {
@@ -5362,7 +5511,7 @@ body.wanting-pay .skill__more {
 }
 
 .kod-slide__panel .kod-btn--folio {
-  --kod-end-w: 2.8rem;
+  --kod-end-w: 2.35rem;
   height: auto;
   min-height: 3.1rem;
   max-height: none;

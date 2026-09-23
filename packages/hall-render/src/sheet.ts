@@ -234,6 +234,21 @@ export function sheetEchoesInner(ch: CharacterRecord): string {
       <div class="echo__body">
         <h3 class="echo__title">${esc(e.title)}</h3>
         <div class="echo__invoke"><span class="echo__invoke-lab">Invoke when</span> ${esc(e.invokeWhen)}</div>
+        ${
+          w === 2
+            ? `<div class="echo__circle"><p class="echo__circle-lab">${esc(e.groupLabel || 'Who shares this')}</p>${
+                (e.group ?? []).length
+                  ? `<ul class="echo__people">${(e.group ?? [])
+                      .map((g) => {
+                        const label = esc(g.name);
+                        return `<li>${g.characterSlug ? `<a href="/characters/${escAttr(g.characterSlug)}/">${label}</a>` : label}</li>`;
+                      })
+                      .join('')}</ul>`
+                  : '<p class="empty">None named yet.</p>'
+              }</div>`
+            : ''
+        }
+        ${w === 3 ? '<p class="echo__circle-all">The whole community.</p>' : ''}
       </div>
     </article>`;
   };
@@ -277,7 +292,16 @@ export function sheetInventoryInner(ch: CharacterRecord): string {
           const note = i.note
             ? `<button type="button" class="info" data-tip="${escAttr(i.note)}" aria-label="${escAttr(`${i.name} note`)}">i</button>`
             : '';
-          return `<li class="kod-plate item"><span class="item__name">${esc(i.name)}${note}</span></li>`;
+          const iconSrc =
+            i.icon && (i.icon.startsWith('/') || i.icon.startsWith('http'))
+              ? i.icon
+              : i.icon
+                ? `/api/character/${ch.slug}/item-icon?file=${i.icon}`
+                : '';
+          const icon = iconSrc
+            ? `<img class="item__icon" src="${escAttr(iconSrc)}" alt="" width="36" height="36"/>`
+            : `<span class="item__icon item__icon--empty" aria-hidden="true"></span>`;
+          return `<li class="kod-plate item">${icon}<span class="item__name">${esc(i.name)}${note}</span></li>`;
         })
         .join('')
     : '<li class="empty">None declared.</li>';

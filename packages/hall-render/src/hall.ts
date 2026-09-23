@@ -123,7 +123,7 @@ function slideRails(c: HallView['community']): string {
 function slideShell(id: string, word: string, inner: string): string {
   return `<div class="kod-slide" data-slide="${escAttr(id)}" data-open="false">
   ${slideTab(id, word)}
-  <div class="kod-slide__panel kod-plate" id="kod-slide-${escAttr(id)}">${inner}</div>
+  <div class="kod-slide__panel kod-plate" id="kod-slide-${escAttr(id)}"><span class="kod-slide__rail kod-slide__rail--top" aria-hidden="true"></span><span class="kod-slide__rail kod-slide__rail--bot" aria-hidden="true"></span>${inner}</div>
 </div>`;
 }
 
