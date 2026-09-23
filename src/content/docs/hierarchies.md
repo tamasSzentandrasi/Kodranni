@@ -36,31 +36,31 @@ Read the diagram top-down: one crown, then parallel ladders. Each column is a se
 <button type="button" class="kod-widget__btn" data-hier-mode="play" aria-pressed="true">In play</button>
 </div>
 <div class="kod-hier__cast" role="list" aria-label="People in the example">
-<button type="button" class="kod-chip" data-person="marino">Marino</button>
-<button type="button" class="kod-chip" data-person="vito">Vito</button>
-<button type="button" class="kod-chip" data-person="jakov">Jakov</button>
-<button type="button" class="kod-chip" data-person="orsa">Orsa</button>
-<button type="button" class="kod-chip" data-person="caterina">Caterina</button>
-<button type="button" class="kod-chip" data-person="piero">Piero</button>
-<button type="button" class="kod-chip" data-person="lovro">Lovro</button>
-<button type="button" class="kod-chip" data-person="luca">Luca</button>
+<button type="button" class="kod-hier__pick" data-person="marino">Marino</button>
+<button type="button" class="kod-hier__pick" data-person="vito">Vito</button>
+<button type="button" class="kod-hier__pick" data-person="jakov">Jakov</button>
+<button type="button" class="kod-hier__pick" data-person="orsa">Orsa</button>
+<button type="button" class="kod-hier__pick" data-person="caterina">Caterina</button>
+<button type="button" class="kod-hier__pick" data-person="piero">Piero</button>
+<button type="button" class="kod-hier__pick" data-person="lovro">Lovro</button>
+<button type="button" class="kod-hier__pick" data-person="luca">Luca</button>
 </div>
 <div class="kod-hier__frame" aria-live="polite">
-<p data-person-note="default">Click a name. That person lights on every axis they occupy. Dual-axis is two rungs at once, not a fifth ladder. Arms has two occupants who do not serve the same house. An axis can sit vacant; Coin’s Trusted rung is empty here.</p>
-<p data-person-note="marino" hidden>Duke Marino Orvanti holds the Ruler seat. He cannot ride. He is not Honoured on Blood — Orsa is, as the living Solari. He rules because he still sits, and because Vito takes names in his hand. Reputation: anyone trying to shame Marino in public faces the gap from their rung to the seat above every axis.</p>
-<p data-person-note="vito" hidden>Captain Vito is Trusted on Arms because Marino named the household to him — that is delegation, not a second duke. He is Acknowledged on Blood as Orvanti service. Dual-axis: both ladders light. No one rules well without handing the work down.</p>
-<p data-person-note="jakov" hidden>Jakov Bracco is Acknowledged on Arms because Lazzaro’s Charter put the Free Company in the old Orsani warehouse, not because Marino named him. He does not sit Blood. Two people can occupy Arms and owe different houses. The Charter is a Myth; this occupancy is the living cost of it.</p>
-<p data-person-note="orsa" hidden>Orsa Solari is Honoured on Blood — Isotta’s sister, the living Solari voice. She is Caterina’s patron. She does not sit Arms. If she and Caterina contest in the hall, the Blood gap (Honoured vs Acknowledged) is the protection ratio for social or mental Harm. Influence in fiction is still free roleplay.</p>
-<p data-person-note="caterina" hidden>Caterina Vela (player). Acknowledged on Faith from twelve years of cathedral hours in Isotta’s household. Was Outcast on Blood (a servant) until Orsa’s charge resolved; now Acknowledged on Blood. Climb is per axis — the Echo did not move Faith or Arms. Dual-axis: both rungs light.</p>
-<p data-person-note="piero" hidden>Piero Calvo is Honoured on Coin — the stores that feed the lower town. He does not sit Arms. Niccolo is his brother’s son; that climb is not on this board yet.</p>
-<p data-person-note="lovro" hidden>Father Lovro is Honoured on Faith. He holds Isotta’s body and the cathedral door. He will not bury until Orsa and the household agree what the death is. He does not sit Blood or Arms.</p>
-<p data-person-note="luca" hidden>Luca Bandi is an Outsider: on the porch, not on any ladder. Consul for Pelesa, in a rented house. If he enters the community he begins Outcast on the axes that apply. The porch is beside the diagram, never a fifth column. Matteo Rinaldi (Osvaldo Calvaro’s man) would sit here the same way — a second foreign purse, opposite want.</p>
+<p data-person-note="default">Click a name. They light on every axis they occupy. Coin’s Trusted rung is empty here.</p>
+<p data-person-note="marino" hidden>Ruler. Cannot ride. Vito holds the household in his name.</p>
+<p data-person-note="vito" hidden>Trusted, Arms — the household. Acknowledged, Blood.</p>
+<p data-person-note="jakov" hidden>Acknowledged, Arms. Free Company.</p>
+<p data-person-note="orsa" hidden>Honoured, Blood. Caterina is under her charge.</p>
+<p data-person-note="caterina" hidden>Acknowledged, Faith. Acknowledged, Blood.</p>
+<p data-person-note="piero" hidden>Honoured, Coin. Stores that feed the lower town.</p>
+<p data-person-note="lovro" hidden>Honoured, Faith. Cathedral door. Holds the body.</p>
+<p data-person-note="luca" hidden>Outsider. On the porch. Enters as Outcast on the axes that apply.</p>
 </div>
 <div class="kod-hier-diagram">
 <div class="kod-hier-ruler">
 <p class="kod-hier-ruler__title">Ruler</p>
-<button type="button" class="kod-chip" data-person="marino" data-play>Marino</button>
-<p class="kod-hier-ruler__note">One seat for the whole community — above every axis, not the top of Arms, Faith, Coin, or Blood. Marino sits it wounded. Orsa outranks him on Blood.</p>
+<button type="button" class="member" data-person="marino" data-play><span class="member__stain" aria-hidden="true"></span><span class="member__glow" aria-hidden="true"></span><span class="member__name">Marino</span></button>
+<p class="kod-hier-ruler__note">One seat above every axis. Marino holds it.</p>
 </div>
 <div class="kod-hier-body">
 <div class="kod-hier-axes">
@@ -71,8 +71,8 @@ Read the diagram top-down: one crown, then parallel ladders. Each column is a se
 </div>
 <ol class="kod-hier-rungs">
 <li><strong>Honoured</strong></li>
-<li><strong>Trusted</strong> <button type="button" class="kod-chip" data-person="vito" data-play>Vito</button></li>
-<li><strong>Acknowledged</strong> <button type="button" class="kod-chip" data-person="jakov" data-play>Jakov</button></li>
+<li><strong>Trusted</strong> <button type="button" class="member" data-person="vito" data-play><span class="member__stain" aria-hidden="true"></span><span class="member__glow" aria-hidden="true"></span><span class="member__name">Vito</span></button></li>
+<li><strong>Acknowledged</strong> <button type="button" class="member" data-person="jakov" data-play><span class="member__stain" aria-hidden="true"></span><span class="member__glow" aria-hidden="true"></span><span class="member__name">Jakov</span></button></li>
 <li><strong>Outcast</strong></li>
 </ol>
 </div>
@@ -82,9 +82,9 @@ Read the diagram top-down: one crown, then parallel ladders. Each column is a se
 <p class="kod-hier-axis__name">Faith</p>
 </div>
 <ol class="kod-hier-rungs">
-<li><strong>Honoured</strong> <button type="button" class="kod-chip" data-person="lovro" data-play>Lovro</button></li>
+<li><strong>Honoured</strong> <button type="button" class="member" data-person="lovro" data-play><span class="member__stain" aria-hidden="true"></span><span class="member__glow" aria-hidden="true"></span><span class="member__name">Lovro</span></button></li>
 <li><strong>Trusted</strong></li>
-<li><strong>Acknowledged</strong> <button type="button" class="kod-chip" data-person="caterina" data-play>Caterina</button></li>
+<li><strong>Acknowledged</strong> <button type="button" class="member" data-person="caterina" data-play><span class="member__stain" aria-hidden="true"></span><span class="member__glow" aria-hidden="true"></span><span class="member__name">Caterina</span></button></li>
 <li><strong>Outcast</strong></li>
 </ol>
 </div>
@@ -94,7 +94,7 @@ Read the diagram top-down: one crown, then parallel ladders. Each column is a se
 <p class="kod-hier-axis__name">Coin</p>
 </div>
 <ol class="kod-hier-rungs">
-<li><strong>Honoured</strong> <button type="button" class="kod-chip" data-person="piero" data-play>Piero</button></li>
+<li><strong>Honoured</strong> <button type="button" class="member" data-person="piero" data-play><span class="member__stain" aria-hidden="true"></span><span class="member__glow" aria-hidden="true"></span><span class="member__name">Piero</span></button></li>
 <li><strong>Trusted</strong></li>
 <li><strong>Acknowledged</strong></li>
 <li><strong>Outcast</strong></li>
@@ -106,17 +106,17 @@ Read the diagram top-down: one crown, then parallel ladders. Each column is a se
 <p class="kod-hier-axis__name">Blood</p>
 </div>
 <ol class="kod-hier-rungs">
-<li><strong>Honoured</strong> <button type="button" class="kod-chip" data-person="orsa" data-play>Orsa</button></li>
+<li><strong>Honoured</strong> <button type="button" class="member" data-person="orsa" data-play><span class="member__stain" aria-hidden="true"></span><span class="member__glow" aria-hidden="true"></span><span class="member__name">Orsa</span></button></li>
 <li><strong>Trusted</strong></li>
-<li><strong>Acknowledged</strong> <button type="button" class="kod-chip" data-person="vito" data-play>Vito</button> <button type="button" class="kod-chip" data-person="caterina" data-play>Caterina</button></li>
+<li><strong>Acknowledged</strong> <button type="button" class="member" data-person="vito" data-play><span class="member__stain" aria-hidden="true"></span><span class="member__glow" aria-hidden="true"></span><span class="member__name">Vito</span></button> <button type="button" class="member" data-person="caterina" data-play><span class="member__stain" aria-hidden="true"></span><span class="member__glow" aria-hidden="true"></span><span class="member__name">Caterina</span></button></li>
 <li><strong>Outcast</strong></li>
 </ol>
 </div>
 </div>
 <aside class="kod-hier-porch" aria-label="Outsiders">
 <p class="kod-hier-porch__title">Outsiders</p>
-<button type="button" class="kod-chip" data-person="luca" data-play>Luca</button>
-<p class="kod-hier-porch__note">Apart until they enter. Then Outcast on the axes that apply. A second foreign purse (Matteo, for Calvaro) would sit here the same way.</p>
+<button type="button" class="member" data-person="luca" data-play><span class="member__stain" aria-hidden="true"></span><span class="member__glow" aria-hidden="true"></span><span class="member__name">Luca</span></button>
+<p class="kod-hier-porch__note">Apart until they enter. Then Outcast on the axes that apply.</p>
 </aside>
 </div>
 </div>

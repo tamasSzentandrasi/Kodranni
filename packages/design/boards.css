@@ -288,25 +288,7 @@
 }
 
 .kod-hier-links {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  overflow: visible;
-  z-index: 2;
-}
-
-.kod-hier-links line {
-  stroke: color-mix(in srgb, var(--kod-silver) 55%, transparent);
-  stroke-width: 1.1;
-  fill: none;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .kod-hier-links {
-    display: none;
-  }
+  display: none;
 }
 
 .kod-hier-ruler {
@@ -882,4 +864,91 @@
     text-align: center;
     padding: 0.3rem 0.4rem 0;
   }
+}
+
+/* Stained-glass nameplates — hall and Guidebook Hierarchy */
+.member {
+  --plate-h: 2.35rem;
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  box-sizing: border-box;
+  width: min(100%, calc(var(--plate-h) * 2376 / 421));
+  height: auto;
+  aspect-ratio: var(--kod-nameplate-ratio);
+  padding: 0.2rem 0.85rem;
+  font: inherit;
+  font-size: 0.88rem;
+  letter-spacing: 0.03em;
+  line-height: 1.15;
+  text-align: center;
+  text-decoration: none;
+  color: #14110e;
+  border: none;
+  background: var(--kod-nameplate) center / 100% 100% no-repeat;
+  cursor: pointer;
+  margin-inline: auto;
+  filter: none;
+}
+.member__stain,
+.member__glow {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  -webkit-mask: var(--kod-nameplate-glass) center / 100% 100% no-repeat;
+  mask: var(--kod-nameplate-glass) center / 100% 100% no-repeat;
+}
+.member__stain {
+  background: linear-gradient(90deg, var(--stain, transparent));
+  mix-blend-mode: multiply;
+  opacity: 0;
+}
+.member[data-stain] .member__stain {
+  opacity: 1;
+}
+.member__glow {
+  display: none;
+}
+.member[data-lit],
+.member.is-lit {
+  filter:
+    drop-shadow(0 0 3px hsl(var(--lit-h, 40) var(--lit-s, 80%) 58% / 0.7))
+    drop-shadow(0 0 9px hsl(var(--lit-h, 40) var(--lit-s, 70%) 50% / 0.45));
+}
+.member__name {
+  position: relative;
+  z-index: 3;
+  color: #14110e;
+  mix-blend-mode: normal;
+  text-shadow:
+    0 0 0.18rem #f7f1e6,
+    0 0 0.4rem #f7f1e6;
+}
+
+.kod-hier-rung__people {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(7.6rem, 1fr));
+  gap: 0.32rem;
+  width: 100%;
+  justify-items: center;
+  align-self: stretch;
+}
+
+.kod-hier-rung__people:empty {
+  display: none;
+}
+
+.kod-hier-ruler .member {
+  --plate-h: 2.55rem;
+  width: min(16.5rem, calc(var(--plate-h) * 2376 / 421));
+  margin: 0.45rem auto 0.15rem;
+}
+
+.kod-hier-porch .member,
+.kod-hier-porch__people .member {
+  --plate-h: 2.35rem;
 }
