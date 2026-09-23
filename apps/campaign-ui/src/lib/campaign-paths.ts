@@ -1,6 +1,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 import {
   campaignAvatarsDir,
+  campaignItemsDir,
   defaultCampaignTomlPath,
   parseCampaignToml,
 } from '@kodranni/store';
@@ -34,4 +35,10 @@ export function resolveAvatarsDir(): string | null {
   const slug = resolveCampaignSlug();
   if (!slug) return null;
   return campaignAvatarsDir(slug);
+}
+
+export function resolveItemsDir(): string | null {
+  const slug = resolveCampaignSlug();
+  if (!slug) return null;
+  return campaignItemsDir(slug);
 }

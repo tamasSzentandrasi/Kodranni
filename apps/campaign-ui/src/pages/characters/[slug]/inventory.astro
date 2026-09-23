@@ -132,7 +132,24 @@ const armourLabel =
               <li class="empty">None declared.</li>
             ) : (
               ch.inventory.items.map((it, idx) => (
-                <li class="kod-plate item" data-item-idx={String(idx)}>
+                <li class="kod-plate item" data-item-idx={String(idx)} data-item-icon={it.icon}>
+                  {
+                    it.icon ? (
+                      <img
+                        class="item__icon"
+                        src={
+                          it.icon.startsWith('/') || it.icon.startsWith('http')
+                            ? it.icon
+                            : `/api/character/${ch.slug}/item-icon?file=${it.icon}`
+                        }
+                        alt=""
+                        width="36"
+                        height="36"
+                      />
+                    ) : (
+                      <span class="item__icon item__icon--empty" aria-hidden="true"></span>
+                    )
+                  }
                   {
                     canEdit ? (
                       <div class="item__edit">
@@ -143,6 +160,10 @@ const armourLabel =
                           value={it.note ?? ''}
                           placeholder="Short description (optional)"
                         />
+                        <label class="item__icon-upload">
+                          Icon
+                          <input type="file" data-item-icon-file accept="image/jpeg,image/png,image/webp" hidden />
+                        </label>
                         <button type="button" data-item-remove>
                           Remove
                         </button>

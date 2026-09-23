@@ -78,6 +78,10 @@ export function campaignAvatarsDir(slug: string, env?: NodeJS.ProcessEnv): strin
   return join(campaignMediaDir(slug, env), 'avatars');
 }
 
+export function campaignItemsDir(slug: string, env?: NodeJS.ProcessEnv): string {
+  return join(campaignMediaDir(slug, env), 'items');
+}
+
 /** Session runtime: pids, live URL, logs (not public snapshot). */
 export function campaignRuntimeDir(slug: string, env?: NodeJS.ProcessEnv): string {
   return join(kodranniStateHome(env), 'campaigns', slug, 'runtime');

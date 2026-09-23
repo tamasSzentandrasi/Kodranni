@@ -60,7 +60,8 @@
         const name = li.querySelector('[data-item-name]')?.value?.trim();
         if (!name) return null;
         const note = li.querySelector('[data-item-note]')?.value?.trim();
-        return { name, note: note || undefined };
+        const icon = li.getAttribute('data-item-icon') || undefined;
+        return { name, note: note || undefined, icon };
       })
       .filter(Boolean);
     return {
@@ -121,12 +122,14 @@
     list.querySelector('.empty')?.remove();
     const idx = list.querySelectorAll('[data-item-idx]').length;
     const li = document.createElement('li');
-    li.className = 'item';
+    li.className = 'kod-plate item';
     li.setAttribute('data-item-idx', String(idx));
     li.innerHTML =
+      '<span class="item__icon item__icon--empty" aria-hidden="true"></span>' +
       '<div class="item__edit">' +
       '<input class="kod-ink" data-item-name placeholder="Item name…" value="" />' +
       '<input class="kod-ink" data-item-note placeholder="Short description (optional)" value="" />' +
+      '<label class="item__icon-upload">Icon<input type="file" data-item-icon-file accept="image/jpeg,image/png,image/webp" hidden /></label>' +
       '<button type="button" data-item-remove>Remove</button></div>';
     list.appendChild(li);
   });
@@ -144,5 +147,61 @@
     const t = ev.target;
     if (!(t instanceof HTMLElement)) return;
     if (t.closest('[data-item-name], [data-item-note]')) saveSoon();
+  });
+
+  panel.addEventListener('change', async (ev) => {
+    const t = ev.target;
+    if (!(t instanceof HTMLInputElement) || t.getAttribute('data-item-icon-file') == null) return;
+    const li = t.closest('[data-item-idx]');
+    const file = t.files && t.files[0];
+    if (!li || !file) return;
+    if (file.size > 256 * 1024) {
+      const msg = panel.querySelector('[data-inv-msg]');
+      if (msg) {
+        msg.hidden = false;
+        msg.textContent = 'Max 256KB';
+        msg.className = 'draft-msg draft-msg--err';
+      }
+      t.value = '';
+      return;
+    }
+    const idx = Number(li.getAttribute('data-item-idx'));
+    await saveNow();
+    const fd = new FormData();
+    fd.append('file', file, file.name);
+    fd.append('index', String(idx));
+    const headers = {};
+    const m = document.cookie.match(/(?:^|;\s*)kod_edit=([^;]+)/);
+    if (m) headers.Authorization = 'Bearer ' + decodeURIComponent(m[1]);
+    const res = await fetch('/api/character/' + encodeURIComponent(slug) + '/item-icon', {
+      method: 'POST',
+      headers,
+      credentials: 'same-origin',
+      body: fd,
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      const msg = panel.querySelector('[data-inv-msg]');
+      if (msg) {
+        msg.hidden = false;
+        msg.textContent = data.error || 'Icon failed';
+        msg.className = 'draft-msg draft-msg--err';
+      }
+      return;
+    }
+    if (data.icon) {
+      li.setAttribute('data-item-icon', data.icon);
+      let img = li.querySelector('img.item__icon');
+      if (!img) {
+        li.querySelector('.item__icon--empty')?.remove();
+        img = document.createElement('img');
+        img.className = 'item__icon';
+        img.width = 36;
+        img.height = 36;
+        img.alt = '';
+        li.insertBefore(img, li.firstChild);
+      }
+      img.src = data.url;
+    }
   });
 })();
