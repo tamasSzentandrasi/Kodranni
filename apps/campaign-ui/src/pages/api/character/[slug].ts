@@ -47,7 +47,7 @@ type ActionBody =
         whoWeSee?: string;
         traits?: { name: string; note?: string }[];
         echoes?: unknown[];
-        inventoryItems?: { name: string; note?: string; tags?: string[] }[];
+        inventoryItems?: { name: string; note?: string; tags?: string[]; icon?: string }[];
         foodDays?: number;
         waterDays?: number;
         armour?: { kind: 'none' | 'light' | 'heavy'; donned: boolean };

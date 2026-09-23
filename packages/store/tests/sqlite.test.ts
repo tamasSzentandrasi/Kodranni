@@ -258,6 +258,27 @@ describe('campaign.toml', () => {
     expect(cfg.cloudflareTunnelToken).toBe('tok');
   });
 
+  it('fills demo item icons on stores seeded before wells had pictures', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'kodranni-store-'));
+    dirs.push(dir);
+    const store = openSqliteStore(join(dir, 'community.sqlite'));
+    seedDemoCampaign(store);
+    const tomaso = store.getCharacterBySlug('tomaso')!;
+    store.putCharacter({
+      ...tomaso,
+      inventory: {
+        ...tomaso.inventory,
+        items: tomaso.inventory.items.map(({ name, note }) => ({ name, note })),
+      },
+    });
+    const loaded = store.getCharacterBySlug('tomaso')!;
+    expect(loaded.inventory.items.map((i) => i.icon)).toEqual([
+      '/demo-items/adze.png',
+      '/demo-items/screw-jack.png',
+    ]);
+    store.close();
+  });
+
   it('reports when the demo roster is already in the store', () => {
     const dir = mkdtempSync(join(tmpdir(), 'kodranni-store-'));
     dirs.push(dir);

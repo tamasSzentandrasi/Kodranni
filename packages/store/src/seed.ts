@@ -39,6 +39,54 @@ function it(name: string, note: string, icon: string): { name: string; note: str
   return { name, note, icon: `/demo-items/${icon}.png` };
 }
 
+let demoItemIcons: Map<string, Map<string, string>> | undefined;
+
+function demoItemIconIndex(): Map<string, Map<string, string>> {
+  if (!demoItemIcons) {
+    demoItemIcons = new Map();
+    for (const ch of [
+      demoTomaso(),
+      demoJakov(),
+      demoCaterina(),
+      demoNiccolo(),
+      demoMarino(),
+      demoOrsa(),
+      demoLovro(),
+      demoPiero(),
+      demoMara(),
+      demoVito(),
+      demoPaolo(),
+      demoAgnese(),
+      demoLuca(),
+      demoMatteo(),
+      demoDuje(),
+    ]) {
+      const byName = new Map<string, string>();
+      for (const item of ch.inventory.items ?? []) {
+        if (item.icon) byName.set(item.name, item.icon);
+      }
+      demoItemIcons.set(ch.slug, byName);
+    }
+  }
+  return demoItemIcons;
+}
+
+/** Older live demo stores were seeded before wells had icons. Fill from the current seed. */
+export function fillDemoItemIcons(ch: CharacterRecord): CharacterRecord {
+  const byName = demoItemIconIndex().get(ch.slug);
+  if (!byName) return ch;
+  let changed = false;
+  const items = (ch.inventory.items ?? []).map((item) => {
+    if (item.icon) return item;
+    const icon = byName.get(item.name);
+    if (!icon) return item;
+    changed = true;
+    return { ...item, icon };
+  });
+  if (!changed) return ch;
+  return { ...ch, inventory: { ...ch.inventory, items } };
+}
+
 function sk(name: string, rating: number, foundation: string, practice = 8): SkillProgress {
   return {
     name,

@@ -49,7 +49,7 @@ export interface FixtureCharacter {
   inventory: {
     foodDays: number;
     waterDays: number;
-    items: { name: string; note?: string; tags?: string[] }[];
+    items: { name: string; note?: string; tags?: string[]; icon?: string }[];
   };
   flags: { decadence: boolean; overCapacity: boolean };
   labelIds?: string[];

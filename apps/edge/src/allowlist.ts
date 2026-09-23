@@ -28,7 +28,12 @@ export function livePathAllowed(method: string, pathname: string): boolean {
   if (p.startsWith('/design/') || p.startsWith('/brand/') || p.startsWith('/_astro/')) {
     return m === 'GET' || m === 'HEAD';
   }
-  if (p.startsWith('/archetypes/') || p.startsWith('/icons/') || p.startsWith('/fonts/')) {
+  if (
+    p.startsWith('/archetypes/') ||
+    p.startsWith('/icons/') ||
+    p.startsWith('/fonts/') ||
+    p.startsWith('/demo-items/')
+  ) {
     return m === 'GET' || m === 'HEAD';
   }
   if ((m === 'GET' || m === 'HEAD') && STATIC_FILE.test(p)) return true;
