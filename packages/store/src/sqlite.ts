@@ -17,7 +17,7 @@ import { normalizeEcho } from './echo-effects.js';
 import type { CommunityStorePort } from './port.js';
 import { redactCharacterForPublic } from './redact.js';
 import { DEFAULT_LABEL_GROUPS, migrateCommunityLabels } from './labels.js';
-import { fillDemoItemIcons } from './seed.js';
+import { fillDemoItemIcons, fillDemoTraits } from './seed.js';
 
 /** @deprecated Prefer CommunityStorePort — SQLite is one adapter. */
 export type SqliteCommunityStore = CommunityStorePort;
@@ -64,7 +64,7 @@ function normalizeCharacter(raw: CharacterRecord): CharacterRecord {
     echoWeight: raw.echoWeight ?? 0,
     labelIds: raw.labelIds ?? [],
   };
-  return fillDemoItemIcons(refreshCharacterDerived(ch));
+  return fillDemoTraits(fillDemoItemIcons(refreshCharacterDerived(ch)));
 }
 
 export function openSqliteStore(path: string): CommunityStorePort {

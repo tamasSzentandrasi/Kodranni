@@ -258,6 +258,21 @@ describe('campaign.toml', () => {
     expect(cfg.cloudflareTunnelToken).toBe('tok');
   });
 
+  it('replaces invalid demo Traits with the current seed list', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'kodranni-store-'));
+    dirs.push(dir);
+    const store = openSqliteStore(join(dir, 'community.sqlite'));
+    seedDemoCampaign(store);
+    const orsa = store.getCharacterBySlug('orsa')!;
+    store.putCharacter({
+      ...orsa,
+      traits: [{ name: 'Sister’s ring', note: 'Isotta’s marriage-band.' }],
+    });
+    const loaded = store.getCharacterBySlug('orsa')!;
+    expect(loaded.traits.map((t) => t.name)).toEqual(['Literate']);
+    store.close();
+  });
+
   it('fills demo item icons on stores seeded before wells had pictures', () => {
     const dir = mkdtempSync(join(tmpdir(), 'kodranni-store-'));
     dirs.push(dir);

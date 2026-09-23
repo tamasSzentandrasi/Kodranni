@@ -39,11 +39,11 @@ function it(name: string, note: string, icon: string): { name: string; note: str
   return { name, note, icon: `/demo-items/${icon}.png` };
 }
 
-let demoItemIcons: Map<string, Map<string, string>> | undefined;
+let demoSeedBySlug: Map<string, CharacterRecord> | undefined;
 
-function demoItemIconIndex(): Map<string, Map<string, string>> {
-  if (!demoItemIcons) {
-    demoItemIcons = new Map();
+function demoSeedCharacters(): Map<string, CharacterRecord> {
+  if (!demoSeedBySlug) {
+    demoSeedBySlug = new Map();
     for (const ch of [
       demoTomaso(),
       demoJakov(),
@@ -61,14 +61,22 @@ function demoItemIconIndex(): Map<string, Map<string, string>> {
       demoMatteo(),
       demoDuje(),
     ]) {
-      const byName = new Map<string, string>();
-      for (const item of ch.inventory.items ?? []) {
-        if (item.icon) byName.set(item.name, item.icon);
-      }
-      demoItemIcons.set(ch.slug, byName);
+      demoSeedBySlug.set(ch.slug, ch);
     }
   }
-  return demoItemIcons;
+  return demoSeedBySlug;
+}
+
+function demoItemIconIndex(): Map<string, Map<string, string>> {
+  const out = new Map<string, Map<string, string>>();
+  for (const ch of demoSeedCharacters().values()) {
+    const byName = new Map<string, string>();
+    for (const item of ch.inventory.items ?? []) {
+      if (item.icon) byName.set(item.name, item.icon);
+    }
+    out.set(ch.slug, byName);
+  }
+  return out;
 }
 
 /** Older live demo stores were seeded before wells had icons. Fill from the current seed. */
@@ -85,6 +93,21 @@ export function fillDemoItemIcons(ch: CharacterRecord): CharacterRecord {
   });
   if (!changed) return ch;
   return { ...ch, inventory: { ...ch.inventory, items } };
+}
+
+/** Older live demo stores kept objects and tags in the Trait list. Use the current seed. */
+export function fillDemoTraits(ch: CharacterRecord): CharacterRecord {
+  const seeded = demoSeedCharacters().get(ch.slug);
+  if (!seeded) return ch;
+  const want = seeded.traits ?? [];
+  const have = ch.traits ?? [];
+  if (
+    have.length === want.length &&
+    have.every((t, i) => t.name === want[i]?.name && t.note === want[i]?.note)
+  ) {
+    return ch;
+  }
+  return { ...ch, traits: want.map((t) => ({ name: t.name, note: t.note })) };
 }
 
 function sk(name: string, rating: number, foundation: string, practice = 8): SkillProgress {
@@ -206,10 +229,7 @@ export function demoTomaso(): CharacterRecord {
       sk('Sailing & Navigation', 1, 'Perception', 3),
       sk('Insight', 1, 'Perception', 6),
     ],
-    traits: [
-      { name: 'Galley-stiff ankle', note: 'Cannot run far.' },
-      { name: 'Reads a plan', note: 'Can follow a drawn machine.' },
-    ],
+    traits: [{ name: 'Millwright' }, { name: 'Limp' }],
     echoes: [
       makeEcho({
         title: 'Finish the mill',
@@ -289,9 +309,7 @@ export function demoJakov(): CharacterRecord {
       sk('Tradecraft', 1, 'Charisma', 3),
       sk('Sailing & Navigation', 1, 'Perception', 2),
     ],
-    traits: [
-      { name: 'Godfather’s ring', note: 'Lazzaro’s. Mira knows it.' },
-    ],
+    traits: [{ name: 'Soldier' }],
     echoes: [
       makeEcho({
         title: 'Keep Mira housed',
@@ -374,10 +392,7 @@ export function demoCaterina(): CharacterRecord {
       sk('Ritual', 1, 'Authority', 3),
       sk('Off-hand & Improvised Combat', 1, 'Dexterity', 2),
     ],
-    traits: [
-      { name: 'Inner-stair keys', note: 'Isotta’s set. Vito does not have a copy.' },
-      { name: 'Two children', note: 'Niko nine, Lea four.' },
-    ],
+    traits: [{ name: 'Seamstress' }],
     echoes: [
       makeEcho({
         title: 'Keep Niko and Lea safe',
@@ -459,9 +474,7 @@ export function demoNiccolo(): CharacterRecord {
       sk('Streetwise', 1, 'Guile', 7),
       sk('Etiquette', 1, 'Resolve', 4),
     ],
-    traits: [
-      { name: 'Warehouse keys', note: 'Three of four. Piero has the last.' },
-    ],
+    traits: [{ name: 'Merchant' }],
     echoes: [
       makeEcho({
         title: 'Hold the warehouses',
@@ -526,7 +539,7 @@ export function demoMarino(): CharacterRecord {
       sk('Negotiation', 1, 'Authority', 9),
       sk('Intimidate', 1, 'Authority', 7),
     ],
-    traits: [{ name: 'Cannot ride', note: 'Wound in the side. Dressed twice a day.' }],
+    traits: [{ name: 'Literate' }],
     echoes: [
       makeEcho({
         title: 'Keep the seat',
@@ -595,7 +608,7 @@ export function demoOrsa(): CharacterRecord {
       sk('Command', 1, 'Authority', 7),
       sk('Ritual', 1, 'Authority', 9),
     ],
-    traits: [{ name: 'Sister’s ring', note: 'Isotta’s marriage-band.' }],
+    traits: [{ name: 'Literate' }],
     echoes: [
       makeEcho({
         title: 'Bury Isotta as Solari',
@@ -663,7 +676,7 @@ export function demoLovro(): CharacterRecord {
       sk('Debate & Rhetoric', 1, 'Charisma', 7),
       sk('Herbalism', 1, 'Intellect', 4),
     ],
-    traits: [{ name: 'Latin', note: 'Reads and serves in it.' }],
+    traits: [{ name: 'Priest' }, { name: 'Can read Latin' }],
     echoes: [
       makeEcho({
         title: 'Hold the body',
@@ -720,7 +733,7 @@ export function demoPiero(): CharacterRecord {
       sk('Influence', 1, 'Authority', 9),
       sk('Deception', 1, 'Guile', 11),
     ],
-    traits: [{ name: 'Pelesan ring', note: 'Convoy-protection. Still worn.' }],
+    traits: [{ name: 'Merchant' }],
     echoes: [
       makeEcho({
         title: 'Sell the cargo',
@@ -777,7 +790,7 @@ export function demoMara(): CharacterRecord {
       sk('Influence', 1, 'Authority', 4),
       sk('Healing', 1, 'Resolve', 6),
     ],
-    traits: [{ name: 'Open door', note: 'The street eats here.' }],
+    traits: [{ name: 'Cook' }],
     echoes: [
       makeEcho({
         title: 'Keep the street’s children',
@@ -834,7 +847,7 @@ export function demoVito(): CharacterRecord {
       sk('Combat Awareness', 1, 'Perception', 9),
       sk('Insight', 1, 'Perception', 6),
     ],
-    traits: [{ name: 'Night list', note: 'He names. Paolo copies.' }],
+    traits: [{ name: 'Soldier' }],
     echoes: [
       makeEcho({
         title: 'Get a confession',
@@ -906,7 +919,7 @@ export function demoPaolo(): CharacterRecord {
       sk('Sneak', 1, 'Dexterity', 6),
       sk('Forgery', 1, 'Guile', 4),
     ],
-    traits: [{ name: 'Copy-hand', note: 'Clear letters. Fast.' }],
+    traits: [{ name: 'Scribe' }],
     echoes: [
       makeEcho({
         title: 'Copy the next name',
@@ -963,7 +976,7 @@ export function demoAgnese(): CharacterRecord {
       sk('Ritual', 1, 'Authority', 6),
       sk('Etiquette', 1, 'Resolve', 7),
     ],
-    traits: [{ name: 'Keeps the names', note: 'Who was taken. Who might have paid.' }],
+    traits: [{ name: 'Scribe' }],
     echoes: [
       makeEcho({
         title: 'Post the names',
@@ -1023,7 +1036,7 @@ export function demoLuca(): CharacterRecord {
       sk('Streetwise', 1, 'Guile', 7),
       sk('Debate & Rhetoric', 1, 'Charisma', 6),
     ],
-    traits: [{ name: 'Landing-book', note: 'Unopened here.' }],
+    traits: [{ name: 'Literate' }],
     echoes: [
       makeEcho({
         title: 'Open this harbour to Pelesa',
@@ -1080,7 +1093,7 @@ export function demoMatteo(): CharacterRecord {
       sk('Strategy', 1, 'Intellect', 9),
       sk('Folklore & Heraldry', 1, 'Intellect', 7),
     ],
-    traits: [{ name: 'Drafted charter', note: 'Osvaldo Calvaro’s name. Unsigned.' }],
+    traits: [{ name: 'Can read Latin' }],
     echoes: [
       makeEcho({
         title: 'Make this harbour Calvaro’s',
@@ -1138,7 +1151,7 @@ export function demoDuje(): CharacterRecord {
       sk('Tradecraft', 1, 'Charisma', 4),
       sk('Swimming', 1, 'Constitution', 5),
     ],
-    traits: [{ name: 'Brother’s life', note: 'Owed to Matteo. Not coin.' }],
+    traits: [{ name: 'Sailor' }],
     echoes: [
       makeEcho({
         title: 'Move oil after dark',
