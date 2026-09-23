@@ -1,4 +1,5 @@
 ---
+import { ClientRouter } from 'astro:transitions';
 import Default from '@astrojs/starlight/components/Head.astro';
 import barNight from '@kodranni/design/ornament/btn-bar-night.png?url';
 import barMoon from '@kodranni/design/ornament/btn-bar-moon.png?url';
@@ -23,12 +24,18 @@ const fontBellefairLatin = icon('fonts/bellefair/bellefair-latin-400-normal.woff
 const fontBellefairLatinExt = icon('fonts/bellefair/bellefair-latin-ext-400-normal.woff2');
 const fontRunic = icon('fonts/noto-sans-runic/noto-sans-runic-400-normal.woff2');
 let roseSrc: string | undefined;
+let pageSlug = '';
 try {
 	const entry = Astro.locals.starlightRoute?.entry;
-	if (entry) roseSrc = chapterRoses[slugFromEntryId(entry.id)];
+	if (entry) {
+		pageSlug = slugFromEntryId(entry.id);
+		roseSrc = chapterRoses[pageSlug];
+	}
 } catch {
 	roseSrc = undefined;
 }
+const preloadTrees = pageSlug === 'echoes';
+const preloadNameplates = pageSlug === 'hierarchies';
 const ogImage = Astro.site
 	? new URL(`${base}og.jpg`, Astro.site).href
 	: icon('og.jpg');
@@ -78,16 +85,17 @@ const fontFacesCss = `
 <link rel="preload" href={pageEnd} as="image" crossorigin />
 <link rel="preload" href={panelCorner} as="image" crossorigin />
 <link rel="preload" href={panelCut} as="image" crossorigin />
-<link rel="preload" href={nameplate} as="image" crossorigin />
-<link rel="preload" href={nameplateGlass} as="image" crossorigin />
-<link rel="preload" href={tree0} as="image" crossorigin />
-<link rel="preload" href={tree1} as="image" crossorigin />
-<link rel="preload" href={tree2} as="image" crossorigin />
-<link rel="preload" href={tree3} as="image" crossorigin />
+{preloadNameplates ? <link rel="preload" href={nameplate} as="image" crossorigin /> : null}
+{preloadNameplates ? <link rel="preload" href={nameplateGlass} as="image" crossorigin /> : null}
+{preloadTrees ? <link rel="preload" href={tree0} as="image" crossorigin /> : null}
+{preloadTrees ? <link rel="preload" href={tree1} as="image" crossorigin /> : null}
+{preloadTrees ? <link rel="preload" href={tree2} as="image" crossorigin /> : null}
+{preloadTrees ? <link rel="preload" href={tree3} as="image" crossorigin /> : null}
 {roseSrc ? <link rel="preload" href={roseSrc} as="image" fetchpriority="high" /> : null}
 
 <style is:global set:html={fontFacesCss} />
 
+<ClientRouter />
 <Default><slot /></Default>
 <link rel="icon" href={icon('favicon.ico')} sizes="any" />
 <link rel="icon" type="image/png" sizes="32x32" href={icon('favicon-32x32.png')} />
@@ -103,13 +111,6 @@ const fontFacesCss = `
 <meta name="twitter:image:alt" content="The Kodranni falcon on a blood disc." />
 
 <script>
-	import { chapterIcons, hrefSegmentToSlug } from '../../lib/chapter-icons';
 	import { boot } from '../../scripts/guidebook/enhance';
-
-	const sidebarIconMap: Record<string, string> = {};
-	for (const [seg, slug] of Object.entries(hrefSegmentToSlug)) {
-		const src = chapterIcons[slug];
-		if (src) sidebarIconMap[seg] = src;
-	}
-	boot(sidebarIconMap);
+	boot();
 </script>

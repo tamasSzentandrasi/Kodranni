@@ -1,0 +1,55 @@
+/* Chapter marks on the reserved ::before slot — CSS so they survive navigation. */
+.sidebar-content a[href*='/introduction/'] {
+  --kod-icon-mask: url('../assets/icons/introduction.png');
+}
+.sidebar-content a[href*='/dice-mechanics/'] {
+  --kod-icon-mask: url('../assets/icons/dice-mechanics.png');
+}
+.sidebar-content a[href*='/marks-and-tiers/'] {
+  --kod-icon-mask: url('../assets/icons/marks-and-tiers.png');
+}
+.sidebar-content a[href*='/omens/'] {
+  --kod-icon-mask: url('../assets/icons/omens.png');
+}
+.sidebar-content a[href*='/tide/'] {
+  --kod-icon-mask: url('../assets/icons/tide.png');
+}
+.sidebar-content a[href*='/human-potential/'] {
+  --kod-icon-mask: url('../assets/icons/human-potential.png');
+}
+.sidebar-content a[href*='/foundations/'] {
+  --kod-icon-mask: url('../assets/icons/foundations.png');
+}
+.sidebar-content a[href*='/skills/'] {
+  --kod-icon-mask: url('../assets/icons/skills.png');
+}
+.sidebar-content a[href*='/traits/'] {
+  --kod-icon-mask: url('../assets/icons/traits.png');
+}
+.sidebar-content a[href*='/exertion/'] {
+  --kod-icon-mask: url('../assets/icons/exertion.png');
+}
+.sidebar-content a[href*='/echoes/'] {
+  --kod-icon-mask: url('../assets/icons/echoes.png');
+}
+.sidebar-content a[href*='/harm/'] {
+  --kod-icon-mask: url('../assets/icons/harm.png');
+}
+.sidebar-content a[href*='/hierarchies/'] {
+  --kod-icon-mask: url('../assets/icons/hierarchies.png');
+}
+.sidebar-content a[href*='/inventory/'] {
+  --kod-icon-mask: url('../assets/icons/inventory.png');
+}
+.sidebar-content a[href*='/campaign-setup/'] {
+  --kod-icon-mask: url('../assets/icons/campaign-setup.png');
+}
+.sidebar-content a[href*='/character-creation/'] {
+  --kod-icon-mask: url('../assets/icons/character-creation.png');
+}
+.sidebar-content a[href*='/automation/'] {
+  --kod-icon-mask: url('../assets/icons/automation.png');
+}
+.sidebar-content a[href*='/glossary/'] {
+  --kod-icon-mask: url('../assets/icons/glossary.png');
+}

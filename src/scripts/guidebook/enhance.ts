@@ -3,7 +3,7 @@
 
 export type SidebarIconMap = Record<string, string>;
 
-export function boot(sidebarIconMap: SidebarIconMap): void {
+export function boot(_sidebarIconMap?: SidebarIconMap): void {
 	const prefersReduced =
 		typeof window !== 'undefined' &&
 		window.matchMedia &&
@@ -49,20 +49,18 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 		first.classList.remove('kod-reveal', 'kod-type');
 	}
 
-	function injectSidebarIcons() {
-		const root = document.getElementById('starlight__sidebar');
-		if (!root) return;
-		root.querySelectorAll('a[href]').forEach((a) => {
-			if (a.querySelector('.kod-sidebar-icon')) return;
-			const seg = segmentFromHref(a.getAttribute('href') || '');
-			const src = sidebarIconMap[seg];
-			if (!src) return;
-			a.dataset.slug = seg;
-			const mark = document.createElement('span');
-			mark.className = 'kod-sidebar-icon';
-			mark.setAttribute('aria-hidden', 'true');
-			mark.style.setProperty('--kod-icon-mask', `url("${src}")`);
-			a.insertBefore(mark, a.firstChild);
+	function markCurrentSidebar() {
+		const here = (location.pathname.replace(/\/+$/, '') || '/') + '/';
+		document.querySelectorAll('#starlight__sidebar a[href]').forEach((a) => {
+			try {
+				const path =
+					(new URL(a.getAttribute('href') || '', location.origin).pathname.replace(/\/+$/, '') ||
+						'/') + '/';
+				if (path === here) a.setAttribute('aria-current', 'page');
+				else a.removeAttribute('aria-current');
+			} catch {
+				/* ignore */
+			}
 		});
 	}
 
@@ -1390,37 +1388,6 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 		});
 	}
 
-	function cssTokenUrls() {
-		const cs = getComputedStyle(document.documentElement);
-		const keys = [
-			'--kod-nameplate',
-			'--kod-nameplate-glass',
-			'--kod-panel-corner',
-			'--kod-panel-cut',
-			'--kod-page-end',
-			'--kod-tree-0',
-			'--kod-tree-1',
-			'--kod-tree-2',
-			'--kod-tree-3',
-			'--kod-btn-night',
-			'--kod-btn-moon',
-			'--kod-btn-round',
-			'--kod-btn-round-moon',
-			'--kod-fortune-vitality',
-			'--kod-fortune-cohesion',
-			'--kod-fortune-surplus',
-			'--kod-fortune-standing',
-			'--kod-fortune-tradition',
-		];
-		const out = [];
-		for (const k of keys) {
-			const v = cs.getPropertyValue(k);
-			const m = /url\((['"]?)(.+?)\1\)/.exec(v);
-			if (m && m[2] && m[2] !== 'none') out.push(m[2]);
-		}
-		return out;
-	}
-
 	function waitOrnaments() {
 		const jobs = [];
 		for (const img of document.images) jobs.push(decodeImg(img));
@@ -1429,21 +1396,10 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 			im.src = link.href;
 			jobs.push(decodeImg(im));
 		});
-		for (const src of Object.values(sidebarIconMap)) {
-			if (!src) continue;
-			const im = new Image();
-			im.src = src;
-			jobs.push(decodeImg(im));
-		}
-		for (const src of cssTokenUrls()) {
-			const im = new Image();
-			im.src = src;
-			jobs.push(decodeImg(im));
-		}
 		if (document.fonts && document.fonts.ready) {
 			jobs.push(document.fonts.ready.catch(() => {}));
 		}
-		const cap = new Promise((res) => setTimeout(res, 2800));
+		const cap = new Promise((res) => setTimeout(res, 1800));
 		return Promise.race([Promise.all(jobs), cap]);
 	}
 
@@ -1461,7 +1417,7 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 
 	function enhance() {
 		const steps = [
-			injectSidebarIcons,
+			markCurrentSidebar,
 			markEpigraph,
 			decorateDividers,
 			normalizeBoxes,
@@ -1510,6 +1466,9 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 	} else {
 		enhance();
 	}
+	document.addEventListener('astro:after-swap', () => {
+		document.documentElement.setAttribute('data-ornaments', 'pending');
+	});
 	document.addEventListener('astro:page-load', enhance);
 
 }
