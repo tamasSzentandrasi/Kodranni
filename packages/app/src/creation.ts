@@ -18,6 +18,7 @@ import {
   type SkillProgress,
   type TraitRecord,
 } from '@kodranni/store';
+import { syncMirroredGroupEchoes } from './echo-mirror.js';
 import {
   PREP_FOUNDATION_POINTS,
   PREP_SKILL_POINTS,
@@ -945,6 +946,7 @@ export function stEditCharacter(
   }
   if (p.skills) ch.skills = p.skills.map((s) => ({ ...s }));
   if (p.traits) ch.traits = p.traits.map((t) => ({ ...t }));
+  const prevEchoes = ch.echoes ?? [];
   if (p.echoes) ch.echoes = p.echoes.map((e) => ({ ...e }));
   if (p.harm) {
     for (const [k, v] of Object.entries(p.harm)) {
@@ -962,6 +964,7 @@ export function stEditCharacter(
   if (p.claimable !== undefined) creation.claimable = p.claimable;
   clearPlaceholder(ch);
   store.putCharacter(ch);
+  if (p.echoes) syncMirroredGroupEchoes(store, ch.slug, prevEchoes, ch.echoes ?? []);
   store.appendEvent({
     type: 'CharacterStEdited',
     actor: cmd.actor,

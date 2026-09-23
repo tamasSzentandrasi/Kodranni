@@ -35,6 +35,10 @@ function foundations(p: Partial<Record<string, number>>): Record<string, number>
   };
 }
 
+function it(name: string, note: string, icon: string): { name: string; note: string; icon: string } {
+  return { name, note, icon: `/demo-items/${icon}.png` };
+}
+
 function sk(name: string, rating: number, foundation: string, practice = 8): SkillProgress {
   return {
     name,
@@ -189,8 +193,8 @@ export function demoTomaso(): CharacterRecord {
       foodDays: 2,
       waterDays: 3,
       items: [
-        { name: 'Adze', note: 'Edge dull.' },
-        { name: 'Screw-jack', note: 'For the mill lift.' },
+        it('Adze', 'Edge dull.', 'adze'),
+        it('Screw-jack', 'For the mill lift.', 'screw-jack'),
       ],
     },
   });
@@ -260,6 +264,11 @@ export function demoJakov(): CharacterRecord {
         title: 'Hold the Company unpaid',
         weight: 2,
         invokeWhen: 'When the roll is Company loyalty, Luca’s pay, or Matteo’s pay.',
+        groupLabel: 'Unpaid company',
+        group: [
+          { name: 'Jakov Bracco', characterSlug: 'jakov' },
+          { name: 'Lazzaro', note: 'Godfather. Unpaid captain.' },
+        ],
       }),
     ],
     hierarchy: [{ axis: 'Arms', tier: 'Acknowledged' }],
@@ -269,8 +278,8 @@ export function demoJakov(): CharacterRecord {
       foodDays: 1,
       waterDays: 2,
       items: [
-        { name: 'Sword', note: 'Company issue. Edge notched.' },
-        { name: 'Shield', note: 'Rim split.' },
+        it('Sword', 'Company issue. Edge notched.', 'sword'),
+        it('Shield', 'Rim split.', 'shield'),
       ],
     },
   });
@@ -356,8 +365,8 @@ export function demoCaterina(): CharacterRecord {
       foodDays: 2,
       waterDays: 2,
       items: [
-        { name: 'Inner-stair keys', note: 'Isotta’s set.' },
-        { name: 'Sleeve-knife', note: 'Hidden.' },
+        it('Inner-stair keys', 'Isotta’s set.', 'keys'),
+        it('Sleeve-knife', 'Hidden.', 'knife'),
       ],
     },
   });
@@ -431,8 +440,8 @@ export function demoNiccolo(): CharacterRecord {
       foodDays: 4,
       waterDays: 4,
       items: [
-        { name: 'Warehouse keys', note: 'Three of four.' },
-        { name: 'Coin', note: 'Unspent.' },
+        it('Warehouse keys', 'Three of four.', 'keys'),
+        it('Coin', 'Unspent.', 'coin'),
       ],
     },
   });
@@ -475,11 +484,22 @@ export function demoMarino(): CharacterRecord {
         title: 'Keep the seat',
         weight: 2,
         invokeWhen: 'When the roll is Marino’s word or Vito speaking in his name.',
+        groupLabel: 'The household',
+        group: [
+          { name: 'Marino Orvanti', characterSlug: 'marino' },
+          { name: 'Vito Cresti', characterSlug: 'vito' },
+        ],
       }),
       makeEcho({
         title: 'Who held the knife',
         weight: 2,
         invokeWhen: 'When the roll is the night of the knife or a name for it.',
+        groupLabel: 'The names',
+        group: [
+          { name: 'Marino Orvanti', characterSlug: 'marino' },
+          { name: 'Vito Cresti', characterSlug: 'vito' },
+          { name: 'Agnese Orsani', characterSlug: 'agnese' },
+        ],
       }),
     ],
     hierarchy: [{ axis: 'Blood', tier: 'Acknowledged' }],
@@ -489,8 +509,8 @@ export function demoMarino(): CharacterRecord {
       foodDays: 5,
       waterDays: 5,
       items: [
-        { name: 'Ducal ring', note: 'On the hand that cannot hold a rein.' },
-        { name: 'Brother’s sword', note: 'Unworn.' },
+        it('Ducal ring', 'On the hand that cannot hold a rein.', 'ring'),
+        it('Brother’s sword', 'Unworn.', 'sword'),
       ],
     },
   });
@@ -533,6 +553,22 @@ export function demoOrsa(): CharacterRecord {
         title: 'Bury Isotta as Solari',
         weight: 2,
         invokeWhen: 'When the roll is the burial, the square, or the rite.',
+        groupLabel: 'The burial',
+        group: [
+          { name: 'Orsa Solari', characterSlug: 'orsa' },
+          { name: 'Father Lovro', characterSlug: 'lovro' },
+        ],
+      }),
+      makeEcho({
+        title: 'Finish the mill',
+        weight: 2,
+        invokeWhen: 'When the roll is the mill, the engine, or men boarding that door.',
+        groupLabel: 'The mill',
+        group: [
+          { name: 'Tomaso Fero', characterSlug: 'tomaso' },
+          { name: 'Orsa Solari', characterSlug: 'orsa' },
+          { name: 'Vito Cresti', characterSlug: 'vito' },
+        ],
       }),
     ],
     hierarchy: [{ axis: 'Blood', tier: 'Honoured' }],
@@ -541,8 +577,8 @@ export function demoOrsa(): CharacterRecord {
       foodDays: 3,
       waterDays: 3,
       items: [
-        { name: 'Marriage-band', note: 'Isotta’s.' },
-        { name: 'Purse', note: 'Pays the men in the square.' },
+        it('Marriage-band', 'Isotta’s.', 'ring'),
+        it('Purse', 'Pays the men in the square.', 'purse'),
       ],
     },
   });
@@ -585,6 +621,11 @@ export function demoLovro(): CharacterRecord {
         title: 'Hold the body',
         weight: 2,
         invokeWhen: 'When the roll is the burial or the cathedral door.',
+        groupLabel: 'The burial',
+        group: [
+          { name: 'Orsa Solari', characterSlug: 'orsa' },
+          { name: 'Father Lovro', characterSlug: 'lovro' },
+        ],
       }),
     ],
     hierarchy: [{ axis: 'Faith', tier: 'Honoured' }],
@@ -593,8 +634,8 @@ export function demoLovro(): CharacterRecord {
       foodDays: 3,
       waterDays: 4,
       items: [
-        { name: 'Vestry key', note: 'One.' },
-        { name: 'Book of the dead', note: 'Isotta’s name is not in it yet.' },
+        it('Vestry key', 'One.', 'keys'),
+        it('Book of the dead', 'Isotta’s name is not in it yet.', 'book'),
       ],
     },
   });
@@ -637,6 +678,11 @@ export function demoPiero(): CharacterRecord {
         title: 'Sell the cargo',
         weight: 2,
         invokeWhen: 'When the roll is the Pelesan buyer, the charter, or the warehouse keys.',
+        groupLabel: 'Calvo stores',
+        group: [
+          { name: 'Piero Calvo', characterSlug: 'piero' },
+          { name: 'Niccolo Calvo', characterSlug: 'niccolo' },
+        ],
       }),
     ],
     hierarchy: [{ axis: 'Coin', tier: 'Honoured' }],
@@ -645,8 +691,8 @@ export function demoPiero(): CharacterRecord {
       foodDays: 6,
       waterDays: 6,
       items: [
-        { name: 'Warehouse key', note: 'The fourth. Niccolo has three.' },
-        { name: 'Charter copy', note: 'Unsigned.' },
+        it('Warehouse key', 'The fourth. Niccolo has three.', 'keys'),
+        it('Charter copy', 'Unsigned.', 'charter'),
       ],
     },
   });
@@ -689,6 +735,11 @@ export function demoMara(): CharacterRecord {
         title: 'Keep the street’s children',
         weight: 2,
         invokeWhen: 'When the roll is this street, the night list, or the children.',
+        groupLabel: 'Mara Vela’s street',
+        group: [
+          { name: 'Caterina Vela', characterSlug: 'caterina' },
+          { name: 'Mara Vela', characterSlug: 'mara' },
+        ],
       }),
     ],
     hierarchy: [{ axis: 'Blood', tier: 'Acknowledged' }],
@@ -697,8 +748,8 @@ export function demoMara(): CharacterRecord {
       foodDays: 3,
       waterDays: 3,
       items: [
-        { name: 'Credit-stick', note: 'Calvo. Not called in.' },
-        { name: 'Latch-key', note: 'The house.' },
+        it('Credit-stick', 'Calvo. Not called in.', 'tally'),
+        it('Latch-key', 'The house.', 'keys'),
       ],
     },
   });
@@ -741,6 +792,22 @@ export function demoVito(): CharacterRecord {
         title: 'Get a confession',
         weight: 2,
         invokeWhen: 'When the roll is the night list, a named street, or speaking in Marino’s name.',
+        groupLabel: 'The night list',
+        group: [
+          { name: 'Vito Cresti', characterSlug: 'vito' },
+          { name: 'Paolo Cresti', characterSlug: 'paolo' },
+        ],
+      }),
+      makeEcho({
+        title: 'Finish the mill',
+        weight: 2,
+        invokeWhen: 'When the roll is the mill, the engine, or men boarding that door.',
+        groupLabel: 'The mill',
+        group: [
+          { name: 'Tomaso Fero', characterSlug: 'tomaso' },
+          { name: 'Orsa Solari', characterSlug: 'orsa' },
+          { name: 'Vito Cresti', characterSlug: 'vito' },
+        ],
       }),
     ],
     hierarchy: [
@@ -753,8 +820,8 @@ export function demoVito(): CharacterRecord {
       foodDays: 4,
       waterDays: 4,
       items: [
-        { name: 'Name-list', note: 'Mara’s street is on it.' },
-        { name: 'Household sword', note: 'Duke’s arms.' },
+        it('Name-list', 'Mara’s street is on it.', 'name-list'),
+        it('Household sword', 'Duke’s arms.', 'sword'),
       ],
     },
   });
@@ -797,6 +864,11 @@ export function demoPaolo(): CharacterRecord {
         title: 'Copy the next name',
         weight: 2,
         invokeWhen: 'When the roll is the night-roll copy or a named street.',
+        groupLabel: 'The night list',
+        group: [
+          { name: 'Vito Cresti', characterSlug: 'vito' },
+          { name: 'Paolo Cresti', characterSlug: 'paolo' },
+        ],
       }),
     ],
     hierarchy: [{ axis: 'Arms', tier: 'Acknowledged' }],
@@ -805,8 +877,8 @@ export function demoPaolo(): CharacterRecord {
       foodDays: 4,
       waterDays: 4,
       items: [
-        { name: 'Name-list copy', note: 'Three names marked gone.' },
-        { name: 'Ink', note: 'For the list.' },
+        it('Name-list copy', 'Three names marked gone.', 'name-list'),
+        it('Ink', 'For the list.', 'ink'),
       ],
     },
   });
@@ -849,6 +921,12 @@ export function demoAgnese(): CharacterRecord {
         title: 'Post the names',
         weight: 2,
         invokeWhen: 'When the roll is posting the names of the taken or the suspects.',
+        groupLabel: 'The names',
+        group: [
+          { name: 'Agnese Orsani', characterSlug: 'agnese' },
+          { name: 'Vito Cresti', characterSlug: 'vito' },
+          { name: 'Marino Orvanti', characterSlug: 'marino' },
+        ],
       }),
     ],
     hierarchy: [
@@ -860,7 +938,7 @@ export function demoAgnese(): CharacterRecord {
       foodDays: 3,
       waterDays: 3,
       items: [
-        { name: 'Name-list', note: 'Taken. Suspects.' },
+        it('Name-list', 'Taken. Suspects.', 'name-list'),
       ],
     },
   });
@@ -903,6 +981,11 @@ export function demoLuca(): CharacterRecord {
         title: 'Open this harbour to Pelesa',
         weight: 2,
         invokeWhen: 'When the roll is Company pay, the harbour, or the landing-book.',
+        groupLabel: 'The landing',
+        group: [
+          { name: 'Luca Bandi', characterSlug: 'luca' },
+          { name: 'Jakov Bracco', characterSlug: 'jakov' },
+        ],
       }),
     ],
     hierarchy: [],
@@ -911,8 +994,8 @@ export function demoLuca(): CharacterRecord {
       foodDays: 5,
       waterDays: 5,
       items: [
-        { name: 'Pay-chest', note: 'Company winter. Unopened.' },
-        { name: 'Landing-book', note: 'Unopened.' },
+        it('Pay-chest', 'Company winter. Unopened.', 'chest'),
+        it('Landing-book', 'Unopened.', 'charter'),
       ],
     },
   });
@@ -955,6 +1038,12 @@ export function demoMatteo(): CharacterRecord {
         title: 'Make this harbour Calvaro’s',
         weight: 2,
         invokeWhen: 'When the roll is the charter, Piero, or Company pay for the hill gate.',
+        groupLabel: 'Calvaro’s landing',
+        group: [
+          { name: 'Matteo Rinaldi', characterSlug: 'matteo' },
+          { name: 'Piero Calvo', characterSlug: 'piero' },
+          { name: 'Duje', characterSlug: 'duje' },
+        ],
       }),
     ],
     hierarchy: [],
@@ -963,8 +1052,8 @@ export function demoMatteo(): CharacterRecord {
       foodDays: 5,
       waterDays: 5,
       items: [
-        { name: 'Charter', note: 'Drafted. Unsigned.' },
-        { name: 'Gold', note: 'Company pay for the hill gate.' },
+        it('Charter', 'Drafted. Unsigned.', 'charter'),
+        it('Gold', 'Company pay for the hill gate.', 'coin'),
       ],
     },
   });
@@ -1015,8 +1104,8 @@ export function demoDuje(): CharacterRecord {
       foodDays: 2,
       waterDays: 4,
       items: [
-        { name: 'Boat', note: 'No house-mark.' },
-        { name: 'Oil-jars', note: 'Two.' },
+        it('Boat', 'No house-mark.', 'boat'),
+        it('Oil-jars', 'Two.', 'oil-jars'),
       ],
     },
   });

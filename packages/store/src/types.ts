@@ -139,6 +139,8 @@ export interface InventoryItem {
   /** Short functional / contextual note. */
   note?: string;
   tags?: string[];
+  /** Basename under campaign media/items/. */
+  icon?: string;
 }
 
 export interface TraitRecord {
