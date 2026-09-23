@@ -7,6 +7,8 @@ import roundMoon from '@kodranni/design/ornament/btn-round-moon.png?url';
 import pageEnd from '@kodranni/design/ornament/page-end.png?url';
 import panelCorner from '@kodranni/design/ornament/panel-corner.png?url';
 import panelCut from '@kodranni/design/ornament/panel-corner-cut.png?url';
+import nameplate from '@kodranni/design/ornament/nameplate.png?url';
+import nameplateGlass from '@kodranni/design/ornament/nameplate-glass.png?url';
 import tree0 from '@kodranni/design/ornament/fortunes/tree-0.png?url';
 import tree1 from '@kodranni/design/ornament/fortunes/tree-1.png?url';
 import tree2 from '@kodranni/design/ornament/fortunes/tree-2.png?url';
@@ -60,18 +62,28 @@ const fontFacesCss = `
 `;
 ---
 
+<script is:inline>
+	document.documentElement.setAttribute('data-ornaments', 'pending');
+	setTimeout(function () {
+		if (document.documentElement.getAttribute('data-ornaments') !== 'ready') {
+			document.documentElement.setAttribute('data-ornaments', 'ready');
+		}
+	}, 3200);
+</script>
 <link rel="preload" href={fontBellefairLatin} as="font" type="font/woff2" crossorigin />
-<link rel="preload" href={barNight} as="image" />
-<link rel="preload" href={barMoon} as="image" />
-<link rel="preload" href={roundNight} as="image" />
-<link rel="preload" href={roundMoon} as="image" />
-<link rel="preload" href={pageEnd} as="image" />
-<link rel="preload" href={panelCorner} as="image" />
-<link rel="preload" href={panelCut} as="image" />
-<link rel="preload" href={tree0} as="image" />
-<link rel="preload" href={tree1} as="image" />
-<link rel="preload" href={tree2} as="image" />
-<link rel="preload" href={tree3} as="image" />
+<link rel="preload" href={barNight} as="image" crossorigin />
+<link rel="preload" href={barMoon} as="image" crossorigin />
+<link rel="preload" href={roundNight} as="image" crossorigin />
+<link rel="preload" href={roundMoon} as="image" crossorigin />
+<link rel="preload" href={pageEnd} as="image" crossorigin />
+<link rel="preload" href={panelCorner} as="image" crossorigin />
+<link rel="preload" href={panelCut} as="image" crossorigin />
+<link rel="preload" href={nameplate} as="image" crossorigin />
+<link rel="preload" href={nameplateGlass} as="image" crossorigin />
+<link rel="preload" href={tree0} as="image" crossorigin />
+<link rel="preload" href={tree1} as="image" crossorigin />
+<link rel="preload" href={tree2} as="image" crossorigin />
+<link rel="preload" href={tree3} as="image" crossorigin />
 {roseSrc ? <link rel="preload" href={roseSrc} as="image" fetchpriority="high" /> : null}
 
 <style is:global set:html={fontFacesCss} />

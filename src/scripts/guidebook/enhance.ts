@@ -1380,6 +1380,85 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 		});
 	}
 
+	function decodeImg(img) {
+		if (!img) return Promise.resolve();
+		if (img.complete && img.naturalWidth) return Promise.resolve();
+		if (typeof img.decode === 'function') return img.decode().then(() => {}, () => {});
+		return new Promise((res) => {
+			img.addEventListener('load', res, { once: true });
+			img.addEventListener('error', res, { once: true });
+		});
+	}
+
+	function cssTokenUrls() {
+		const cs = getComputedStyle(document.documentElement);
+		const keys = [
+			'--kod-nameplate',
+			'--kod-nameplate-glass',
+			'--kod-panel-corner',
+			'--kod-panel-cut',
+			'--kod-page-end',
+			'--kod-tree-0',
+			'--kod-tree-1',
+			'--kod-tree-2',
+			'--kod-tree-3',
+			'--kod-btn-night',
+			'--kod-btn-moon',
+			'--kod-btn-round',
+			'--kod-btn-round-moon',
+			'--kod-fortune-vitality',
+			'--kod-fortune-cohesion',
+			'--kod-fortune-surplus',
+			'--kod-fortune-standing',
+			'--kod-fortune-tradition',
+		];
+		const out = [];
+		for (const k of keys) {
+			const v = cs.getPropertyValue(k);
+			const m = /url\((['"]?)(.+?)\1\)/.exec(v);
+			if (m && m[2] && m[2] !== 'none') out.push(m[2]);
+		}
+		return out;
+	}
+
+	function waitOrnaments() {
+		const jobs = [];
+		for (const img of document.images) jobs.push(decodeImg(img));
+		document.querySelectorAll('link[rel="preload"][as="image"]').forEach((link) => {
+			const im = new Image();
+			im.src = link.href;
+			jobs.push(decodeImg(im));
+		});
+		for (const src of Object.values(sidebarIconMap)) {
+			if (!src) continue;
+			const im = new Image();
+			im.src = src;
+			jobs.push(decodeImg(im));
+		}
+		for (const src of cssTokenUrls()) {
+			const im = new Image();
+			im.src = src;
+			jobs.push(decodeImg(im));
+		}
+		if (document.fonts && document.fonts.ready) {
+			jobs.push(document.fonts.ready.catch(() => {}));
+		}
+		const cap = new Promise((res) => setTimeout(res, 2800));
+		return Promise.race([Promise.all(jobs), cap]);
+	}
+
+	function revealOrnaments() {
+		waitOrnaments().then(() => {
+			document.documentElement.setAttribute('data-ornaments', 'ready');
+			try {
+				setupScrollReveal();
+			} catch (err) {
+				console.error('[kodranni] enhance step failed:', 'setupScrollReveal', err);
+			}
+			layoutEqualizers();
+		});
+	}
+
 	function enhance() {
 		const steps = [
 			injectSidebarIcons,
@@ -1398,7 +1477,6 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 			setupOmenFaces,
 			setupFortuneBoard,
 			setupHierarchyBoard,
-			setupScrollReveal,
 			setupTableStrip,
 		];
 		for (const step of steps) {
@@ -1409,7 +1487,7 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 			}
 		}
 		motionLive = true;
-		// after layout + fonts
+		revealOrnaments();
 		requestAnimationFrame(() => {
 			layoutEqualizers();
 			requestAnimationFrame(layoutEqualizers);

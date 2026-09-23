@@ -5323,46 +5323,80 @@ body.wanting-pay .skill__more {
   from { opacity: 0; }
   to { opacity: 1; }
 }
-.kod-slide[data-open='true'] .kod-slide__panel {
+
+html[data-ornaments='pending'] .sheet-identity,
+html[data-ornaments='pending'] .found-group,
+html[data-ornaments='pending'] .arch,
+html[data-ornaments='pending'] .vtrack,
+html[data-ornaments='pending'] .echo,
+html[data-ornaments='pending'] .item,
+html[data-ornaments='pending'] .trait,
+html[data-ornaments='pending'] .char-list > li,
+html[data-ornaments='pending'] .kod-fortune,
+html[data-ornaments='pending'] .kod-hier-diagram,
+html[data-ornaments='pending'] .hall-catchword,
+html[data-ornaments='pending'] .myth-card,
+html[data-ornaments='pending'] .member,
+html[data-ornaments='pending'] .kod-cn,
+html[data-ornaments='pending'] .end-mark,
+html[data-ornaments='pending'] .kod-fortune__icon,
+html[data-ornaments='pending'] .kod-fortune__tree,
+html[data-ornaments='pending'] .kod-slide__skin,
+html[data-ornaments='pending'] .arch__art img {
+  opacity: 0;
+  animation: none;
+}
+
+html[data-ornaments='ready'] .kod-slide[data-open='true'] .kod-slide__panel {
   animation: kod-copy-in 0.36s ease both;
 }
 
-.sheet-identity,
-.found-group,
-.arch,
-.vtrack,
-.echo,
-.item,
-.trait,
-.char-list > li,
-.kod-fortune,
-.kod-hier-diagram,
-.hall-catchword {
+html[data-ornaments='ready'] .sheet-identity,
+html[data-ornaments='ready'] .found-group,
+html[data-ornaments='ready'] .arch,
+html[data-ornaments='ready'] .vtrack,
+html[data-ornaments='ready'] .echo,
+html[data-ornaments='ready'] .item,
+html[data-ornaments='ready'] .trait,
+html[data-ornaments='ready'] .char-list > li,
+html[data-ornaments='ready'] .kod-fortune,
+html[data-ornaments='ready'] .kod-hier-diagram,
+html[data-ornaments='ready'] .hall-catchword,
+html[data-ornaments='ready'] .myth-card {
   animation: kod-copy-in 0.46s ease both;
 }
 
-.arch:nth-child(2) { animation-delay: 0.05s; }
-.arch:nth-child(3) { animation-delay: 0.1s; }
-.arch:nth-child(4) { animation-delay: 0.12s; }
-.arch:nth-child(5) { animation-delay: 0.16s; }
-.arch:nth-child(6) { animation-delay: 0.2s; }
+html[data-ornaments='ready'] .kod-fortune:nth-child(2) { animation-delay: 0.05s; }
+html[data-ornaments='ready'] .kod-fortune:nth-child(3) { animation-delay: 0.1s; }
+html[data-ornaments='ready'] .kod-fortune:nth-child(4) { animation-delay: 0.15s; }
+html[data-ornaments='ready'] .kod-fortune:nth-child(5) { animation-delay: 0.2s; }
+html[data-ornaments='ready'] .myth-list .myth-card:nth-child(2) { animation-delay: 0.08s; }
+html[data-ornaments='ready'] .myth-list .myth-card:nth-child(3) { animation-delay: 0.14s; }
+
+html[data-ornaments='ready'] .arch:nth-child(2) { animation-delay: 0.05s; }
+html[data-ornaments='ready'] .arch:nth-child(3) { animation-delay: 0.1s; }
+html[data-ornaments='ready'] .arch:nth-child(4) { animation-delay: 0.12s; }
+html[data-ornaments='ready'] .arch:nth-child(5) { animation-delay: 0.16s; }
+html[data-ornaments='ready'] .arch:nth-child(6) { animation-delay: 0.2s; }
 
 @media (prefers-reduced-motion: reduce) {
   .kod-slide,
-  .kod-slide[data-open='true'] .kod-slide__panel,
-  .sheet-identity,
-  .found-group,
-  .arch,
-  .vtrack,
-  .echo,
-  .item,
-  .trait,
-  .char-list > li,
-  .kod-fortune,
-  .kod-hier-diagram,
-  .hall-catchword {
+  html[data-ornaments='ready'] .kod-slide[data-open='true'] .kod-slide__panel,
+  html[data-ornaments='ready'] .sheet-identity,
+  html[data-ornaments='ready'] .found-group,
+  html[data-ornaments='ready'] .arch,
+  html[data-ornaments='ready'] .vtrack,
+  html[data-ornaments='ready'] .echo,
+  html[data-ornaments='ready'] .item,
+  html[data-ornaments='ready'] .trait,
+  html[data-ornaments='ready'] .char-list > li,
+  html[data-ornaments='ready'] .kod-fortune,
+  html[data-ornaments='ready'] .kod-hier-diagram,
+  html[data-ornaments='ready'] .hall-catchword,
+  html[data-ornaments='ready'] .myth-card {
     transition: none;
     animation: none;
+    opacity: 1;
   }
 }
 

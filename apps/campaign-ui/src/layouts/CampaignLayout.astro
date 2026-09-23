@@ -1,4 +1,5 @@
 ---
+import { ORNAMENT_PENDING_SCRIPT, ORNAMENT_READY_SCRIPT } from '@kodranni/hall-render';
 import LiveStyles from '../components/LiveStyles.astro';
 
 interface Props {
@@ -30,6 +31,7 @@ const sourceLabel = archive ? 'archive' : source === 'live' ? 'live store' : 'fi
     <link rel="icon" href="/brand/falcon-logo.png" type="image/png" />
     {archive ? <link rel="stylesheet" href="/design/campaign.css" /> : <LiveStyles />}
     <title>{title} · {communityName}</title>
+    <Fragment set:html={ORNAMENT_PENDING_SCRIPT} />
   </head>
   <body>
     <div class="app">
@@ -154,5 +156,6 @@ const sourceLabel = archive ? 'archive' : source === 'live' ? 'live store' : 'fi
         }
       })();
     </script>
+    <Fragment set:html={ORNAMENT_READY_SCRIPT} />
   </body>
 </html>

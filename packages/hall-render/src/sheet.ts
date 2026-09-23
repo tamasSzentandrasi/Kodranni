@@ -132,7 +132,7 @@ function skillWheel(ch: CharacterRecord): string {
       .join('');
     return `<div class="arch arch--${escAttr(arch.id)}">
       <div class="arch__art" aria-hidden="true">
-        <img src="/archetypes/${escAttr(arch.id)}.jpg" alt="" width="400" height="400" loading="lazy" decoding="async"/>
+        <img src="/archetypes/${escAttr(arch.id)}.jpg" alt="" width="400" height="400" decoding="async"/>
       </div>
       <div class="arch__body">
         <div class="arch__head">

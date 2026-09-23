@@ -183,17 +183,35 @@ a.kod-page-title__kicker:focus-visible {
   }
 }
 
+html[data-ornaments='pending'] .kod-page-title__rose,
+html[data-ornaments='pending'] .kod-page-title__rose img,
+html[data-ornaments='pending'] .kod-page-title__rose::before,
+html[data-ornaments='pending'] .kod-page-title__rose::after,
+html[data-ornaments='pending'] .kod-page-title__text,
+html[data-ornaments='pending'] .kod-page-title__mark,
+html[data-ornaments='pending'] .kod-cn,
+html[data-ornaments='pending'] .kod-cut,
+html[data-ornaments='pending'] .kod-sidebar-icon,
+html[data-ornaments='pending'] .end-mark,
+html[data-ornaments='pending'] .kod-fortune__tree,
+html[data-ornaments='pending'] .kod-fortune__icon,
+html[data-ornaments='pending'] .member,
+html[data-ornaments='pending'] .kod-btn__skin {
+  opacity: 0 !important;
+  animation: none !important;
+}
+
 @media (prefers-reduced-motion: no-preference) {
-  .kod-page-title__rose img {
+  html[data-ornaments='ready'] .kod-page-title__rose img {
     animation: kod-rose-in 1.15s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
-  .kod-page-title__rose::before {
+  html[data-ornaments='ready'] .kod-page-title__rose::before {
     animation: kod-rose-breathe 6.4s ease-in-out 0.9s infinite;
   }
-  .kod-page-title__rose::after {
+  html[data-ornaments='ready'] .kod-page-title__rose::after {
     animation: kod-rose-shimmer 11s ease-in-out 1.4s infinite;
   }
-  .kod-page-title__text {
+  html[data-ornaments='ready'] .kod-page-title__text {
     animation: kod-title-in 0.8s ease-out 0.28s both;
   }
 }
@@ -293,18 +311,22 @@ a.kod-page-title__kicker:focus-visible {
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .sl-markdown-content > blockquote.kod-epigraph {
+  html[data-ornaments='ready'] .sl-markdown-content > blockquote.kod-epigraph {
     animation: kod-epigraph-in 0.85s ease-out 0.62s both;
   }
 }
 
+html[data-ornaments='pending'] .sl-markdown-content > blockquote.kod-epigraph {
+  opacity: 0;
+  animation: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .kod-page-title__rose,
-  .kod-page-title__rose img,
-  .kod-page-title__rose::before,
-  .kod-page-title__rose::after,
-  .kod-page-title__text,
-  .sl-markdown-content > blockquote.kod-epigraph {
+  html[data-ornaments='ready'] .kod-page-title__rose,
+  html[data-ornaments='ready'] .kod-page-title__rose img,
+  html[data-ornaments='ready'] .kod-page-title__rose::before,
+  html[data-ornaments='ready'] .kod-page-title__text,
+  html[data-ornaments='ready'] .sl-markdown-content > blockquote.kod-epigraph {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
@@ -312,6 +334,7 @@ a.kod-page-title__kicker:focus-visible {
   }
   .kod-page-title__rose::after {
     opacity: 0 !important;
+    animation: none !important;
   }
 }
 

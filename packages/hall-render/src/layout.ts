@@ -24,6 +24,7 @@ export function layoutDocument(opts: {
   <link rel="stylesheet" href="/design/campaign.css"/>
   ${opts.extraHead ?? ''}
   <title>${esc(opts.title)} · ${esc(opts.communityName)}</title>
+  ${ORNAMENT_PENDING_SCRIPT}
 </head>
 <body>
   <div class="app">
@@ -46,6 +47,7 @@ export function layoutDocument(opts: {
   </div>
   <div id="kod-tip" class="tip" role="tooltip" hidden></div>
   ${LAYOUT_SCRIPT}
+  ${ORNAMENT_READY_SCRIPT}
   ${opts.extraScripts ?? ''}
 </body>
 </html>`;
@@ -60,6 +62,69 @@ function formatAsOf(iso: string): string {
     return iso;
   }
 }
+
+/** Hide ornaments until the ready script below has decoded them. */
+export const ORNAMENT_PENDING_SCRIPT = `<script>
+document.documentElement.setAttribute('data-ornaments','pending');
+setTimeout(function(){
+  if(document.documentElement.getAttribute('data-ornaments')!=='ready'){
+    document.documentElement.setAttribute('data-ornaments','ready');
+  }
+},3200);
+</script>`;
+
+/** Decode fonts, images, and CSS ornament urls, then fade the page in. */
+export const ORNAMENT_READY_SCRIPT = `<script>
+(function(){
+  var root=document.documentElement;
+  function done(){
+    if(root.getAttribute('data-ornaments')==='ready')return;
+    root.setAttribute('data-ornaments','ready');
+  }
+  function decodeOne(img){
+    if(!img)return Promise.resolve();
+    if(img.complete&&img.naturalWidth)return Promise.resolve();
+    if(typeof img.decode==='function')return img.decode().then(function(){},function(){});
+    return new Promise(function(res){
+      img.addEventListener('load',res,{once:true});
+      img.addEventListener('error',res,{once:true});
+    });
+  }
+  function cssUrls(){
+    var cs=getComputedStyle(root);
+    var keys=['--kod-nameplate','--kod-nameplate-glass','--kod-panel-corner','--kod-panel-cut','--kod-page-end','--kod-tree-0','--kod-tree-1','--kod-tree-2','--kod-tree-3','--kod-btn-night','--kod-btn-moon','--kod-btn-round','--kod-btn-round-moon','--kod-slide-tab-top','--kod-slide-tab-mid','--kod-slide-tab-bot','--kod-slide-tab-chev','--kod-fortune-vitality','--kod-fortune-cohesion','--kod-fortune-surplus','--kod-fortune-standing','--kod-fortune-tradition'];
+    var out=[];
+    for(var i=0;i<keys.length;i++){
+      var v=cs.getPropertyValue(keys[i]);
+      var m=/url\\((['"]?)(.+?)\\1\\)/.exec(v);
+      if(m&&m[2]&&m[2]!=='none')out.push(m[2]);
+    }
+    return out;
+  }
+  function run(){
+    var jobs=[];
+    var imgs=document.images;
+    for(var i=0;i<imgs.length;i++)jobs.push(decodeOne(imgs[i]));
+    var links=document.querySelectorAll('link[rel="preload"][as="image"]');
+    for(var j=0;j<links.length;j++){
+      var im=new Image();
+      im.src=links[j].href;
+      jobs.push(decodeOne(im));
+    }
+    var urls=cssUrls();
+    for(var k=0;k<urls.length;k++){
+      var im2=new Image();
+      im2.src=urls[k];
+      jobs.push(decodeOne(im2));
+    }
+    if(document.fonts&&document.fonts.ready)jobs.push(document.fonts.ready.catch(function(){}));
+    var cap=new Promise(function(res){setTimeout(res,2800);});
+    Promise.race([Promise.all(jobs),cap]).then(done,done);
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);
+  else run();
+})();
+</script>`;
 
 /** Rung collapse + hover tips — same behaviour as CampaignLayout. */
 export const LAYOUT_SCRIPT = `<script>
