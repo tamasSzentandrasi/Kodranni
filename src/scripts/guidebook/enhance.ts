@@ -1119,12 +1119,12 @@ export function boot(sidebarIconMap: SidebarIconMap): void {
 		targets.forEach((el) => io.observe(el));
 	}
 
-	function isDicePage() {
-		return /dice-mechanics|marks-and-tiers/i.test(location.pathname);
+	function isMarksPage() {
+		return /marks-and-tiers/i.test(location.pathname);
 	}
 
 	function setupTableStrip() {
-		if (!isDicePage()) return;
+		if (!isMarksPage()) return;
 		if (document.querySelector('.kod-table-strip')) return;
 		const main = document.querySelector('.sl-markdown-content');
 		if (!main) return;
