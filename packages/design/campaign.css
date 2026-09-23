@@ -3487,6 +3487,7 @@ a.member--pc:visited {
   align-items: center;
   justify-content: flex-start;
   gap: 0.2rem;
+  overflow: visible;
 }
 
 @property --p {
@@ -3495,34 +3496,73 @@ a.member--pc:visited {
   initial-value: 0;
 }
 
-/* Practice ring: conic fill toward next rank; inner disc is the rating. */
+/* Practice ring: SVG stroke toward next rank; inner disc is the rating. */
 .skill__ring {
   --p: 0;
+  position: relative;
   width: 2.7rem;
   height: 2.7rem;
   flex: 0 0 auto;
   margin: 0;
   border-radius: 50%;
-  background: conic-gradient(
-    from -90deg,
-    var(--arch-accent-bright) calc(var(--p) * 1turn),
-    #141210 0
-  );
   display: grid;
   place-items: center;
-  box-shadow:
-    inset 0 0 0 2px #050505,
-    0 0 0 1px color-mix(in srgb, var(--arch-accent-bright) 70%, transparent);
+  overflow: visible;
+  background:
+    radial-gradient(circle at 50% 50%, #0a0808 58%, #141210 72%, #050505 100%);
 }
 
-.skill[data-rated='true'] .skill__ring {
-  box-shadow:
-    inset 0 0 0 2px #0a0a0a,
-    0 0 0 1px color-mix(in srgb, var(--arch-accent-bright) 55%, transparent),
-    0 0 12px color-mix(in srgb, var(--arch-accent) 28%, transparent);
+.skill__dial {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  transform: rotate(-90deg);
+  pointer-events: none;
+}
+
+.skill__track,
+.skill__arc,
+.skill__arc-glow {
+  fill: none;
+  stroke-linecap: round;
+  stroke-width: 2.6;
+}
+
+.skill__track {
+  stroke: #1c1816;
+}
+
+.skill__arc,
+.skill__arc-glow {
+  stroke: var(--arch-accent-bright);
+  stroke-dasharray: calc(var(--p) * 100) 100;
+  stroke-opacity: clamp(0, calc(var(--p) * 80), 1);
+}
+
+.skill__arc-glow {
+  stroke-width: 5.4;
+  opacity: 0.22;
+  filter: blur(1.15px);
+}
+
+.skill[data-rating='1'] .skill__arc-glow {
+  opacity: 0.32;
+}
+
+.skill[data-rating='2'] .skill__arc-glow {
+  opacity: 0.48;
+}
+
+.skill[data-rating='3'] .skill__arc-glow {
+  opacity: 0.64;
+  stroke-width: 6.2;
 }
 
 .skill__inner {
+  position: relative;
+  z-index: 1;
   width: 1.88rem;
   height: 1.88rem;
   border-radius: 50%;
@@ -3533,57 +3573,50 @@ a.member--pc:visited {
   );
   display: grid;
   place-items: center;
-  font-size: 1.05rem;
+  font-size: 0.92rem;
+  letter-spacing: 0.02em;
   line-height: 1;
   color: var(--kod-silver-bright);
-  font-variant-numeric: tabular-nums;
+}
+
+.skill__inner::after {
+  content: '';
+  position: absolute;
+  inset: -42%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--arch-accent-bright) 70%, transparent) 0%,
+    transparent 68%
+  );
+  opacity: 0;
+  filter: blur(5px);
+  pointer-events: none;
+  z-index: -1;
 }
 
 .skill[data-rated='true'] .skill__inner {
   color: color-mix(in srgb, #fff8f0 70%, var(--arch-accent-bright));
-  border: 1px solid color-mix(in srgb, var(--arch-accent) 30%, transparent);
 }
 
 .skill[data-rating='0'] .skill__inner {
   color: #8a8580;
-  border: none;
-  box-shadow: none;
 }
 
-.skill[data-rating='1'] .skill__inner {
-  box-shadow: 0 0 6px color-mix(in srgb, var(--arch-accent-bright) 35%, transparent);
+.skill[data-rating='1'] .skill__inner::after {
+  opacity: 0.4;
 }
 
-.skill[data-rating='1'] .skill__ring {
-  box-shadow:
-    inset 0 0 0 2px #050505,
-    0 0 0 1px color-mix(in srgb, var(--arch-accent-bright) 55%, transparent),
-    0 0 8px color-mix(in srgb, var(--arch-accent) 22%, transparent);
-}
-
-.skill[data-rating='2'] .skill__inner {
-  box-shadow: 0 0 9px color-mix(in srgb, var(--arch-accent-bright) 52%, transparent);
-}
-
-.skill[data-rating='2'] .skill__ring {
-  box-shadow:
-    inset 0 0 0 2px #050505,
-    0 0 0 1px color-mix(in srgb, var(--arch-accent-bright) 70%, transparent),
-    0 0 14px color-mix(in srgb, var(--arch-accent) 38%, transparent);
+.skill[data-rating='2'] .skill__inner::after {
+  opacity: 0.62;
 }
 
 .skill[data-rating='3'] .skill__inner {
   color: var(--arch-accent-bright);
-  box-shadow:
-    inset 0 0 8px color-mix(in srgb, var(--arch-accent) 35%, transparent),
-    0 0 12px color-mix(in srgb, var(--arch-accent-bright) 70%, transparent);
 }
 
-.skill[data-rating='3'] .skill__ring {
-  box-shadow:
-    inset 0 0 0 2px #050505,
-    0 0 0 1px color-mix(in srgb, var(--arch-accent-bright) 85%, transparent),
-    0 0 18px color-mix(in srgb, var(--arch-accent-bright) 48%, transparent);
+.skill[data-rating='3'] .skill__inner::after {
+  opacity: 0.88;
 }
 
 /* Hit target is the whole .skill — children must not steal / block clicks */
@@ -3635,12 +3668,14 @@ a.member--pc:visited {
     0 0 0.55rem color-mix(in srgb, var(--arch-accent-bright) 45%, transparent);
 }
 
-.skill:hover .skill__ring,
-.skill:focus-within .skill__ring {
-  box-shadow:
-    inset 0 0 0 2px #050505,
-    0 0 0 1px color-mix(in srgb, var(--arch-accent-bright) 80%, transparent),
-    0 0 12px color-mix(in srgb, var(--arch-accent-bright) 32%, transparent);
+.skill:hover .skill__arc-glow,
+.skill:focus-within .skill__arc-glow {
+  opacity: 0.7;
+}
+
+.skill:hover .skill__inner::after,
+.skill:focus-within .skill__inner::after {
+  opacity: 0.72;
 }
 
 .skill[data-rated='true'] .skill__name {
@@ -3688,10 +3723,12 @@ body.wanting-pay .skill[data-rating='0'] {
 }
 
 .skill--wanting-pay .skill__ring {
-  box-shadow:
-    inset 0 0 0 2px #0a0a0a,
-    0 0 0 2px var(--kod-blood-bright),
-    0 0 16px color-mix(in srgb, var(--kod-blood) 45%, transparent);
+  box-shadow: 0 0 0 1.5px var(--kod-blood-bright);
+}
+
+.skill--wanting-pay .skill__arc,
+.skill--wanting-pay .skill__arc-glow {
+  stroke: var(--kod-blood-bright);
 }
 
 body.wanting-pay .skill--unaffordable {
@@ -3712,12 +3749,9 @@ body.wanting-pay .skill--unaffordable {
   cursor: pointer;
 }
 
-.skill--spendable:hover .skill__ring,
-.skill--spendable:focus-within .skill__ring {
-  box-shadow:
-    inset 0 0 0 2px #0a0a0a,
-    0 0 0 1px var(--kod-silver-bright),
-    0 0 12px color-mix(in srgb, var(--arch-accent) 28%, transparent);
+.skill--spendable:hover .skill__arc-glow,
+.skill--spendable:focus-within .skill__arc-glow {
+  opacity: 0.78;
 }
 
 .skill--unaffordable .skill__ring {

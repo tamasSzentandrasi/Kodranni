@@ -89,6 +89,17 @@ function vtrack(opts: {
   </aside>`;
 }
 
+function skillSeal(rating: number, p: number): string {
+  return `<span class="skill__ring" style="--p: ${p}">
+    <svg class="skill__dial" viewBox="0 0 40 40" aria-hidden="true">
+      <circle class="skill__track" cx="20" cy="20" r="16.5" pathLength="100" />
+      <circle class="skill__arc-glow" cx="20" cy="20" r="16.5" pathLength="100" />
+      <circle class="skill__arc" cx="20" cy="20" r="16.5" pathLength="100" />
+    </svg>
+    <span class="skill__inner">${esc(roman(rating))}</span>
+  </span>`;
+}
+
 function practiceFrac(practice: number, threshold: number, rating: number): number {
   if (rating >= 3) return 1;
   if (rating <= 0 || threshold <= 0) return 0;
@@ -113,7 +124,7 @@ function skillWheel(ch: CharacterRecord): string {
               ? `Rating 3 (max) · ${def.foundation}`
               : `Rating ${rating} · Practice ${practice}/${threshold} (${pct}% to next) · ${def.foundation}`;
         return `<li class="skill" data-rating="${rating}" data-rated="${rating > 0 ? 'true' : 'false'}" style="--p: ${p}" data-tip="${escAttr(tip)}" tabindex="0">
-          <span class="skill__ring" style="--p: ${p}"><span class="skill__inner">${rating}</span></span>
+          ${skillSeal(rating, p)}
           <span class="skill__name">${esc(def.name)}</span>
           <details class="skill__more"><summary>About</summary><p>${esc(tip)}</p></details>
         </li>`;

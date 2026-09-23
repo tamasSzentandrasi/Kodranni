@@ -416,7 +416,7 @@
     skillEl.setAttribute('data-rating', String(rating));
     skillEl.setAttribute('data-rated', rating > 0 ? 'true' : 'false');
     const n = skillEl.querySelector('.skill__inner');
-    if (n) n.textContent = String(rating);
+    if (n) n.textContent = ROMAN[rating] || String(rating);
     const ring = skillEl.querySelector('.skill__ring');
     let p = 0;
     if (rating >= 3) p = 1;
