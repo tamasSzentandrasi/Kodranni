@@ -1,9 +1,9 @@
 ---
 export const prerender = false;
 
-import { overviewInner, type HallView } from '@kodranni/hall-render';
-import CampaignLayout from '../../layouts/CampaignLayout.astro';
-import { loadCommunity } from '../../data/load';
+import { hierarchyInner, type HallView } from '@kodranni/hall-render';
+import CampaignLayout from '../../../layouts/CampaignLayout.astro';
+import { loadCommunity } from '../../../data/load';
 
 const c = loadCommunity();
 const live = c.source === 'live';
@@ -26,14 +26,14 @@ const view: HallView = {
   },
   characters: c.characters,
 };
-const hallHtml = overviewInner(view, { live, canEdit: false });
+const hallHtml = hierarchyInner(view, { live, canEdit: false });
 ---
 
 <CampaignLayout
-  title="Overview"
+  title="Hierarchy"
   communityName={c.name}
   generatedAt={c.generatedAt}
-  primary="overview"
+  primary="hierarchy"
   source={c.source}
 >
   <Fragment set:html={hallHtml} />

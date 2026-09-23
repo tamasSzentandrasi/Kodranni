@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { PublicSnapshot } from '@kodranni/store/types';
-import { communityInner } from '../src/hall.js';
+import { communityInner, hierarchyInner, overviewInner } from '../src/hall.js';
 import { hallViewFromSnapshot } from '../src/format.js';
 import { archiveRoute, renderArchivePage } from '../src/pages.js';
 
@@ -80,7 +80,8 @@ const snap: PublicSnapshot = {
 
 describe('archiveRoute', () => {
   it('maps hall, roster, and sheet paths', () => {
-    expect(archiveRoute('/community/', new URLSearchParams()).kind).toBe('community');
+    expect(archiveRoute('/community/', new URLSearchParams()).kind).toBe('overview');
+    expect(archiveRoute('/community/hierarchy/', new URLSearchParams()).kind).toBe('hierarchy');
     expect(archiveRoute('/characters/', new URLSearchParams()).kind).toBe('roster');
     expect(archiveRoute('/characters/torvald/', new URLSearchParams())).toEqual({
       kind: 'sheet',
@@ -94,21 +95,43 @@ describe('archiveRoute', () => {
 });
 
 describe('renderArchivePage', () => {
-  it('renders the hall from a snapshot with Fortunes, Find, and names', () => {
+  it('renders Overview with Fortunes and Foundation Myths', () => {
     const page = renderArchivePage(JSON.stringify(snap), '/community/', new URLSearchParams());
     expect(page?.status).toBe(200);
     const html = page!.html;
     expect(html).toContain('Fortunes');
-    expect(html).toContain('data-hall-search');
-    expect(html).toContain('Find');
+    expect(html).toContain('Foundation Myths');
+    expect(html).toContain('The Taking of Kelarn');
     expect(html).toContain('Aspalath');
-    expect(html).toContain('Nerio Calva');
-    expect(html).toContain('Hierarchy');
-    expect(html).toContain('Arms');
     expect(html).toContain('class="src">archive');
     expect(html).toContain('/design/campaign.css');
     expect(html).toContain('/hall-client.js');
     expect(html).not.toContain('No archive yet');
+    expect(html).toContain('data-source="snapshot"');
+    expect(html).not.toContain('data-rite-open');
+    expect(html).toContain('kod-fortune-row');
+    expect(html).not.toContain('kod-fortune-board');
+    expect(html).not.toContain('data-hall-search');
+    expect(html).not.toContain('data-slide-toggle="find"');
+    expect(html).not.toContain('kod-hier-diagram');
+    expect(html).toContain('>Overview</a>');
+    expect(html).toContain('href="/community/hierarchy/"');
+  });
+
+  it('renders Hierarchy with Find, Factions, Tags, and names', () => {
+    const page = renderArchivePage(
+      JSON.stringify(snap),
+      '/community/hierarchy/',
+      new URLSearchParams(),
+    );
+    expect(page?.status).toBe(200);
+    const html = page!.html;
+    expect(html).toContain('data-hall-search');
+    expect(html).toContain('Find');
+    expect(html).toContain('Nerio Calva');
+    expect(html).toContain('Hierarchy');
+    expect(html).toContain('Arms');
+    expect(html).toContain('/hall-client.js');
     expect(html).toContain('data-source="snapshot"');
     expect(html).not.toContain('data-rite-open');
     expect(html).toContain('data-hall-legend');
@@ -128,8 +151,7 @@ describe('renderArchivePage', () => {
     expect(html).not.toContain('data-find-drawer');
     expect(html).toContain('data-faction-id="fac-ash-fen"');
     expect(html).toContain('data-view-stave');
-    expect(html).toContain('kod-fortune-row');
-    expect(html).not.toContain('kod-fortune-board');
+    expect(html).not.toContain('kod-fortune-row');
     expect(html).toContain('kod-hier-diagram');
     expect(html).toContain('member__stain');
     expect(html).toContain('allegiance__pick');
@@ -143,6 +165,7 @@ describe('renderArchivePage', () => {
     expect(html).toContain('kod-slide__cap--top');
     expect(html).not.toContain('data-find-roster');
     expect(html).not.toContain('data-hall-clear');
+    expect(html).toContain('>Hierarchy</a>');
   });
 
   it('renders the roster and a read-only sheet', () => {
@@ -191,24 +214,29 @@ describe('renderArchivePage', () => {
   });
 });
 
-describe('communityInner', () => {
-  it('sets live source and founding stamp; plus only when canEdit', () => {
+describe('overviewInner and hierarchyInner', () => {
+  it('sets live source and founding stamp; plus only when canEdit on Hierarchy', () => {
     const view = hallViewFromSnapshot({
       ...snap,
       community: { ...snap.community, fortunesFoundedAt: '2026-08-01T00:00:00.000Z' },
     });
-    const unsigned = communityInner(view, { live: true, canEdit: false });
+    const unsigned = overviewInner(view, { live: true, canEdit: false });
     expect(unsigned).toContain('data-source="live"');
     expect(unsigned).toContain('data-founded="2026-08-01T00:00:00.000Z"');
+    expect(unsigned).toContain('Fortunes');
     expect(unsigned).not.toContain('data-rite-open');
+    expect(unsigned).not.toContain('data-slide-toggle="find"');
 
-    const signed = communityInner(view, { live: true, canEdit: true });
+    const signed = hierarchyInner(view, { live: true, canEdit: true });
     expect(signed).toContain('data-rite-open="figure"');
     expect(signed).toContain('data-label-ids="fac-ash-fen"');
+    expect(signed).toContain('data-slide-toggle="find"');
+    expect(signed).not.toContain('kod-fortune-row');
 
     const archive = communityInner(view);
     expect(archive).toContain('data-source="snapshot"');
     expect(archive).toContain('data-founded=""');
     expect(archive).not.toContain('data-rite-open');
+    expect(archive).toContain('Fortunes');
   });
 });

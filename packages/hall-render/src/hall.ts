@@ -17,7 +17,36 @@ import {
 } from './format.js';
 import { infoBtn, sectionHead } from './layout.js';
 
-export function communityInner(
+function hallShell(
+  c: HallView['community'],
+  live: boolean,
+  extraClass: string,
+): { open: string; close: string } {
+  const source = live ? 'live' : 'snapshot';
+  const founded = live && c.fortunesFoundedAt ? c.fortunesFoundedAt : '';
+  return {
+    open: `<div class="hall ${extraClass}" data-slug="${escAttr(c.slug)}" data-source="${escAttr(source)}" data-founded="${escAttr(founded)}">`,
+    close: `</div>`,
+  };
+}
+
+/** Fortunes and Foundation Myths — campaign Overview tab. */
+export function overviewInner(
+  view: HallView,
+  opts?: { live?: boolean; canEdit?: boolean },
+): string {
+  const live = opts?.live === true;
+  const c = migrateCommunityLabels(view.community);
+  const shell = hallShell(c, live, 'hall--overview');
+  return `${shell.open}
+  ${fortunePlates(c.fortunes)}
+  ${myths(c.myths ?? [])}
+${shell.close}
+<script src="/hall-client.js"></script>`;
+}
+
+/** Hierarchy diagram with Find, Factions, and Tags drawers. */
+export function hierarchyInner(
   view: HallView,
   opts?: { live?: boolean; canEdit?: boolean },
 ): string {
@@ -30,15 +59,13 @@ export function communityInner(
   );
   const bySlug = new Map(view.characters.map((ch) => [ch.slug, ch] as const));
   const people = inspectPeopleJson({ ...view, community: c });
-  const source = live ? 'live' : 'snapshot';
-  const founded = live && c.fortunesFoundedAt ? c.fortunesFoundedAt : '';
   const labelCatalog = JSON.stringify({
     groups: c.labelGroups ?? [],
     labels: c.labels ?? [],
   });
+  const shell = hallShell(c, live, 'hall--hierarchy');
   return `${slideRails(c)}
-<div class="hall" data-slug="${escAttr(c.slug)}" data-source="${escAttr(source)}" data-founded="${escAttr(founded)}">
-  ${fortunePlates(c.fortunes)}
+${shell.open}
   <section class="hall__htitle" aria-labelledby="h-h">
     ${sectionHead('h-h', 'Hierarchy', 'One crown, then parallel ladders. Same four tiers on every axis (Honoured → Outcast). Colour marks the axis; saturation falls toward Outcast. Hover a name for who they are; click to open the sheet.', 'About Hierarchy')}
     <div class="hall-catchword" data-catchword data-empty="true">
@@ -53,11 +80,17 @@ export function communityInner(
   <div class="hall__hier">
     ${hierarchy(c, tips, pcSlugs, canEdit, bySlug)}
   </div>
-  ${myths(c.myths ?? [])}
-</div>
+${shell.close}
 <div id="kod-hall-people" hidden>${esc(people)}</div>
 <div id="kod-hall-labels" hidden>${esc(labelCatalog)}</div>
 <script src="/hall-client.js"></script>`;
+}
+
+export function communityInner(
+  view: HallView,
+  opts?: { live?: boolean; canEdit?: boolean },
+): string {
+  return overviewInner(view, opts);
 }
 
 function whoWeSeeMap(

@@ -5,7 +5,7 @@ interface Props {
   title: string;
   communityName: string;
   generatedAt: string;
-  primary: 'community' | 'characters';
+  primary: 'overview' | 'hierarchy' | 'characters';
   source?: string;
 }
 
@@ -45,8 +45,11 @@ const sourceLabel = archive ? 'archive' : source === 'live' ? 'live store' : 'fi
       </p>
 
       <nav class="tabs" aria-label="Primary">
-        <a href="/community/" aria-current={primary === 'community' ? 'page' : undefined}
-          >Community</a
+        <a href="/community/" aria-current={primary === 'overview' ? 'page' : undefined}
+          >Overview</a
+        >
+        <a href="/community/hierarchy/" aria-current={primary === 'hierarchy' ? 'page' : undefined}
+          >Hierarchy</a
         >
         <a href="/characters/" aria-current={primary === 'characters' ? 'page' : undefined}
           >Characters</a

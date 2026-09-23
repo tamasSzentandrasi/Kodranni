@@ -68,6 +68,7 @@ export async function captureArchiveToEdge(
     paths = [
       '/',
       '/community/',
+      '/community/hierarchy/',
       '/characters/',
       ...snap.characters.flatMap((ch) => [
         `/characters/${ch.slug}/`,

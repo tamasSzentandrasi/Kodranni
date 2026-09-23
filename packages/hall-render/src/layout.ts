@@ -1,6 +1,6 @@
 import { esc, escAttr } from './escape.js';
 
-export type LayoutPrimary = 'community' | 'characters';
+export type LayoutPrimary = 'overview' | 'hierarchy' | 'characters';
 
 export function layoutDocument(opts: {
   title: string;
@@ -38,7 +38,8 @@ export function layoutDocument(opts: {
       As of ${esc(asOf)} · living record · <span class="src">${esc(opts.sourceLabel)}</span>
     </p>
     <nav class="tabs" aria-label="Primary">
-      <a href="/community/"${opts.primary === 'community' ? ' aria-current="page"' : ''}>Community</a>
+      <a href="/community/"${opts.primary === 'overview' ? ' aria-current="page"' : ''}>Overview</a>
+      <a href="/community/hierarchy/"${opts.primary === 'hierarchy' ? ' aria-current="page"' : ''}>Hierarchy</a>
       <a href="/characters/"${opts.primary === 'characters' ? ' aria-current="page"' : ''}>Characters</a>
     </nav>
     ${opts.body}

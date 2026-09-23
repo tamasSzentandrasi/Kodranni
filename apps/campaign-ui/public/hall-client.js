@@ -1,6 +1,6 @@
 /**
  * Hall: Find spotlight, Factions/Tags light, tab-rides-panel drawers, rev poll.
- * Loaded from community/index.astro — not CampaignLayout.
+ * Loaded from Overview and Hierarchy hall pages — not CampaignLayout.
  */
 (function () {
   const hall = document.querySelector('.hall');

@@ -1,18 +1,20 @@
-import { communityInner } from './hall.js';
+import { hierarchyInner, overviewInner } from './hall.js';
 import { hallViewFromSnapshot, parseSnapshot } from './format.js';
 import { layoutDocument } from './layout.js';
 import { findCharacter, rosterInner } from './roster.js';
 import { sheetEchoesInner, sheetInner, sheetInventoryInner } from './sheet.js';
 
 export type ArchiveRoute =
-  | { kind: 'community' }
+  | { kind: 'overview' }
+  | { kind: 'hierarchy' }
   | { kind: 'roster'; page?: number; selected?: string }
   | { kind: 'sheet'; slug: string; tab: 'core' | 'echoes' | 'inventory' }
   | { kind: 'notfound' };
 
 export function archiveRoute(pathname: string, search: URLSearchParams): ArchiveRoute {
   const p = pathname.endsWith('/') && pathname.length > 1 ? pathname.slice(0, -1) : pathname;
-  if (p === '' || p === '/' || p === '/community') return { kind: 'community' };
+  if (p === '/community/hierarchy') return { kind: 'hierarchy' };
+  if (p === '' || p === '/' || p === '/community') return { kind: 'overview' };
   if (p === '/characters') {
     const page = Number(search.get('p') || '1');
     return { kind: 'roster', page, selected: search.get('sel') ?? undefined };
@@ -37,16 +39,29 @@ export function renderArchivePage(
   const route = archiveRoute(pathname, search);
   const name = snap.community.name;
   const generatedAt = snap.generatedAt;
-  if (route.kind === 'community') {
+  if (route.kind === 'overview') {
     return {
       status: 200,
       html: layoutDocument({
-        title: 'Community',
+        title: 'Overview',
         communityName: name,
         generatedAt,
-        primary: 'community',
+        primary: 'overview',
         sourceLabel: 'archive',
-        body: communityInner(view),
+        body: overviewInner(view),
+      }),
+    };
+  }
+  if (route.kind === 'hierarchy') {
+    return {
+      status: 200,
+      html: layoutDocument({
+        title: 'Hierarchy',
+        communityName: name,
+        generatedAt,
+        primary: 'hierarchy',
+        sourceLabel: 'archive',
+        body: hierarchyInner(view),
       }),
     };
   }

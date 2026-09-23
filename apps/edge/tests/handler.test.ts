@@ -38,6 +38,7 @@ function env() {
 describe('shouldStampCampaign', () => {
   it('stamps hall routes and leaves chrome files alone', () => {
     expect(shouldStampCampaign('/community/')).toBe(true);
+    expect(shouldStampCampaign('/community/hierarchy/')).toBe(true);
     expect(shouldStampCampaign('/characters/torvald/')).toBe(true);
     expect(shouldStampCampaign('/design/campaign.css')).toBe(false);
     expect(shouldStampCampaign('/hall-client.js')).toBe(false);
@@ -168,8 +169,17 @@ describe('edge handler', () => {
     expect(html.status).toBe(200);
     const pageHtml = await html.text();
     expect(pageHtml).toContain('The Vardmark');
-    expect(pageHtml).toContain('data-hall-search');
     expect(pageHtml).toContain('Fortunes');
+    expect(pageHtml).not.toContain('data-hall-search');
+
+    const hier = await handleEdgeRequest(
+      new Request(`https://face.example/community/hierarchy/?campaign=${campaign}`),
+      e,
+    );
+    expect(hier.status).toBe(200);
+    const hierHtml = await hier.text();
+    expect(hierHtml).toContain('data-hall-search');
+    expect(hierHtml).toContain('Hierarchy');
   });
 
   it('rejects snapshots that look unredacted', async () => {
@@ -506,8 +516,8 @@ describe('edge handler', () => {
       e,
     );
     const body = await html.text();
-    expect(body).toContain('data-hall-search');
     expect(body).toContain('Fortunes');
+    expect(body).not.toContain('data-hall-search');
     expect(body).toContain('The Vardmark');
     expect(body).not.toContain('No archive yet');
   });
