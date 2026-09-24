@@ -28,7 +28,7 @@ Traits are **not rated**. They either apply or they do not. The Storyteller deci
 </aside>
 
 <figure class="kod-breath not-content">
-<img src="/scenes/manuscript.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+<img src="/Guidebook/scenes/manuscript.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
 </figure>
 
 <aside class="kod-example">

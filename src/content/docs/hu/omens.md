@@ -24,7 +24,7 @@ Többoldalú összecsapásokban az ómenek a **[sodrást](/hu/tide/)** is mozdí
 ----------
 
 <figure class="kod-breath not-content">
-<img src="/scenes/quenching.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+<img src="/Guidebook/scenes/quenching.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
 </figure>
 
 ## Kidolgozott jelenet — a kard

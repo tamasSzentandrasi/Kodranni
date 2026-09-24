@@ -23,7 +23,7 @@ A [Kampányelőkészítésben](/hu/campaign-setup/) a tengelyeket hagyd név né
 Minden tengely ugyanazt a négy fokot használja, fentről le: **tisztelt**, **megbízott** (Trusted), **elismert**, **kitaszított** (Outcast). Az **uralkodó** fölöttük ül, nem rajtuk.
 
 <figure class="kod-breath not-content">
-<img src="/scenes/emissaries.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
+<img src="/Guidebook/scenes/emissaries.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
 </figure>
 
 ### Az ábra alakja
@@ -140,7 +140,7 @@ Más mechanika nincs a szinthez kötve. A fikcióbeli befolyás szabad szerepjá
 ----------
 
 <figure class="kod-breath not-content">
-<img src="/scenes/kingsgambit.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
+<img src="/Guidebook/scenes/kingsgambit.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
 </figure>
 
 ### Emelkedés
@@ -169,7 +169,7 @@ Ugyanazon a szinten a versengés és az együttműködés szerepjáték marad.
 ----------
 
 <figure class="kod-breath not-content">
-<img src="/scenes/eclipse.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+<img src="/Guidebook/scenes/eclipse.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
 </figure>
 
 ### Örökségek

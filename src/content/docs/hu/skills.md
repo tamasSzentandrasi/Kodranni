@@ -9,7 +9,7 @@ description: Jártasságok hat őstípus alá rendezve, gyakorlattal és fejlőd
 ----------
 
 <figure class="kod-breath not-content">
-<img src="/scenes/vineyard.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+<img src="/Guidebook/scenes/vineyard.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
 </figure>
 
 A **jártasságok** (Skills) hat **őstípus** (Archetype) alá vannak rendezve. Az őstípusok nem kasztok. Mindegyik elnevezett, rokon jártasságcsoport; a karakter bármelyikből vehet.
@@ -132,7 +132,7 @@ Ezeket a küszöböket a jártasság irányító **adottsága** módosítja:
 A magas veleszületett adottság gyorsítja a tanulást. Az alacsony lassítja. Az automatizálás kezeli a gyűjtést és a fokemelést. A pontos gyakorlat az **élő lapon** (live character sheet) látszik. A csevegőfelületek nem írják ki a gyakorlat mennyiségét — nézd a lapot.
 
 <figure class="kod-breath not-content">
-<img src="/scenes/practice.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+<img src="/Guidebook/scenes/practice.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
 </figure>
 
 <div class="kod-widget not-content" data-widget="step-flow" id="practice-track">

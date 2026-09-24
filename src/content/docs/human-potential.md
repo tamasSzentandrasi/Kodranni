@@ -23,7 +23,7 @@ Kodranni separates that into four interlocking measures:
 ----------
 
 <figure class="kod-breath not-content">
-<img src="/scenes/reeds.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
+<img src="/Guidebook/scenes/reeds.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
 </figure>
 
 ### How They Meet the Dice
@@ -42,7 +42,7 @@ Primitive animal-tier actions (run, jump, haul, notice, recall, hold composure) 
 ----------
 
 <figure class="kod-breath not-content">
-<img src="/scenes/hermit.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
+<img src="/Guidebook/scenes/hermit.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
 </figure>
 
 ### Reading Order

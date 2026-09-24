@@ -57,7 +57,7 @@ Ez más gondolkodást kíván: kevesebb „sikerült?”, több „**mit mond en
 A játékosok hiányos tudással cselekszenek. A mesélő a jutalmat, az árat és **amit a fikció feltár**, az asztalon lévő jelekhez szabja.
 
 <figure class="kod-breath not-content">
-<img src="/scenes/scout-night.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+<img src="/Guidebook/scenes/scout-night.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
 </figure>
 
 <div class="kod-widget not-content" data-widget="marks-ladder">

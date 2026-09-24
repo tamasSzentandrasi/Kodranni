@@ -44,7 +44,7 @@ Akár félig történelmi a kampány, akár kitalált fantasy, ha ez a három fe
 ----------
 
 <figure class="kod-breath not-content">
-<img src="/scenes/falconer.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
+<img src="/Guidebook/scenes/falconer.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
 </figure>
 
 ## Alapgondolatok
@@ -71,7 +71,7 @@ Akár félig történelmi a kampány, akár kitalált fantasy, ha ez a három fe
 ----------
 
 <figure class="kod-breath not-content">
-<img src="/scenes/magnificent.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
+<img src="/Guidebook/scenes/magnificent.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
 </figure>
 
 ## Hogyan épül fel a Guidebook

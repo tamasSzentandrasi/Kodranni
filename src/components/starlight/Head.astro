@@ -1,13 +1,6 @@
 ---
 import { ClientRouter } from 'astro:transitions';
 import Default from '@astrojs/starlight/components/Head.astro';
-import barNight from '@kodranni/design/ornament/btn-bar-night.png?url';
-import barMoon from '@kodranni/design/ornament/btn-bar-moon.png?url';
-import roundNight from '@kodranni/design/ornament/btn-round.png?url';
-import roundMoon from '@kodranni/design/ornament/btn-round-moon.png?url';
-import pageEnd from '@kodranni/design/ornament/page-end.png?url';
-import panelCorner from '@kodranni/design/ornament/panel-corner.png?url';
-import panelCut from '@kodranni/design/ornament/panel-corner-cut.png?url';
 import nameplate from '@kodranni/design/ornament/nameplate.png?url';
 import nameplateGlass from '@kodranni/design/ornament/nameplate-glass.png?url';
 import tree0 from '@kodranni/design/ornament/fortunes/tree-0.png?url';
@@ -75,16 +68,12 @@ const fontFacesCss = `
 		if (document.documentElement.getAttribute('data-ornaments') !== 'ready') {
 			document.documentElement.setAttribute('data-ornaments', 'ready');
 		}
-	}, 3200);
+	}, 800);
 </script>
 <link rel="preload" href={fontBellefairLatin} as="font" type="font/woff2" crossorigin />
-<link rel="preload" href={barNight} as="image" crossorigin />
-<link rel="preload" href={barMoon} as="image" crossorigin />
-<link rel="preload" href={roundNight} as="image" crossorigin />
-<link rel="preload" href={roundMoon} as="image" crossorigin />
-<link rel="preload" href={pageEnd} as="image" crossorigin />
-<link rel="preload" href={panelCorner} as="image" crossorigin />
-<link rel="preload" href={panelCut} as="image" crossorigin />
+{pageSlug && Astro.locals.starlightRoute?.lang === 'hu' ? (
+	<link rel="preload" href={fontBellefairLatinExt} as="font" type="font/woff2" crossorigin />
+) : null}
 {preloadNameplates ? <link rel="preload" href={nameplate} as="image" crossorigin /> : null}
 {preloadNameplates ? <link rel="preload" href={nameplateGlass} as="image" crossorigin /> : null}
 {preloadTrees ? <link rel="preload" href={tree0} as="image" crossorigin /> : null}

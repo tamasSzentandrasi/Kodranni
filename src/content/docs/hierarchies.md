@@ -23,7 +23,7 @@ During [Campaign Setup](/campaign-setup/), leave axes empty of names; standing i
 Each axis uses the same four rungs, top to bottom: **Honoured**, **Trusted**, **Acknowledged**, **Outcast**. The **Ruler** sits above them, not on them.
 
 <figure class="kod-breath not-content">
-<img src="/scenes/emissaries.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
+<img src="/Guidebook/scenes/emissaries.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
 </figure>
 
 ### The shape of the Diagram
@@ -140,7 +140,7 @@ Nothing else is mechanically attached to tier. Influence in fiction remains free
 ----------
 
 <figure class="kod-breath not-content">
-<img src="/scenes/kingsgambit.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
+<img src="/Guidebook/scenes/kingsgambit.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
 </figure>
 
 ### Advancement
@@ -169,7 +169,7 @@ Competition and cooperation on the same tier are left to roleplay.
 ----------
 
 <figure class="kod-breath not-content">
-<img src="/scenes/eclipse.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+<img src="/Guidebook/scenes/eclipse.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
 </figure>
 
 ### Legacies

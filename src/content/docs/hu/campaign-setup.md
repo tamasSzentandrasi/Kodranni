@@ -141,7 +141,7 @@ A játékosok a kártyát rangsorolják. Nem kapják meg, mit csinálnak a megne
 ----------
 
 <figure class="kod-breath not-content">
-<img src="/scenes/settlers.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+<img src="/Guidebook/scenes/settlers.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
 </figure>
 
 ## Világépítési eljárások

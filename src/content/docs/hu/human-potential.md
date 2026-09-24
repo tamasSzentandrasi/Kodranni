@@ -23,7 +23,7 @@ A Kodranni ezt négy egymásba kapcsolódó mértékre bontja:
 ----------
 
 <figure class="kod-breath not-content">
-<img src="/scenes/reeds.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
+<img src="/Guidebook/scenes/reeds.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
 </figure>
 
 ### Hogyan kerülnek a kockára
@@ -42,7 +42,7 @@ Primitív, állati szintű akciók (futás, ugrás, cipelés, észrevétel, viss
 ----------
 
 <figure class="kod-breath not-content">
-<img src="/scenes/hermit.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
+<img src="/Guidebook/scenes/hermit.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
 </figure>
 
 ### Milyen sorrendben olvasd

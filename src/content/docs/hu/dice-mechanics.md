@@ -33,7 +33,7 @@ Ez a fejezet csak az ajtó. Maga a mechanika a következő háromban van:
 ----------
 
 <figure class="kod-breath not-content">
-<img src="/scenes/gambling.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+<img src="/Guidebook/scenes/gambling.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
 </figure>
 
 ## Mikor dobj

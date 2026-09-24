@@ -30,7 +30,7 @@ The **player** elevates a moment into an Echo. The Storyteller may veto only for
 | **No Echoes at all** (**Decadence**) | **–1** die on **every** roll |
 
 <figure class="kod-breath not-content">
-<img src="/scenes/cominghome.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
+<img src="/Guidebook/scenes/cominghome.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
 </figure>
 
 <aside class="kod-counsel" aria-label="Counsel">
@@ -205,7 +205,7 @@ A Foundation Myth exerts a substantial, **narrow** effect on a defined set of ac
 **Triggering:** like [Echo invocation](#invocation), a roll must **explicitly mark** that a Foundation Myth applies (Storyteller or automation roll flow). Free prose alone does not fire effects.
 
 <figure class="kod-breath not-content">
-<img src="/scenes/price-we-paid.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+<img src="/Guidebook/scenes/price-we-paid.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
 </figure>
 
 ### Worked Myth — The Price We Paid

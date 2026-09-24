@@ -33,7 +33,7 @@ This chapter is the door. The stack itself lives in the three that follow:
 ----------
 
 <figure class="kod-breath not-content">
-<img src="/scenes/gambling.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+<img src="/Guidebook/scenes/gambling.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
 </figure>
 
 ## When to roll

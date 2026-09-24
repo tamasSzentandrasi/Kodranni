@@ -28,7 +28,7 @@ A vonásoknak **nincs foka**. Vagy érvényesek, vagy nem. A mesélő a játéko
 </aside>
 
 <figure class="kod-breath not-content">
-<img src="/scenes/manuscript.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+<img src="/Guidebook/scenes/manuscript.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
 </figure>
 
 <aside class="kod-example">

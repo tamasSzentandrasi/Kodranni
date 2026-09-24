@@ -202,8 +202,6 @@ site-title {
 
 /* --- from custom.css 1867-1908 --- */
 /* --- Scroll reveal / quote ink --------------------------------------------- */
-html[data-ornaments='pending'] .sl-markdown-content > ul > li,
-html[data-ornaments='pending'] .sl-markdown-content > ol > li,
 .sl-markdown-content blockquote.kod-reveal,
 .sl-markdown-content .kod-reveal-item {
   opacity: 0;

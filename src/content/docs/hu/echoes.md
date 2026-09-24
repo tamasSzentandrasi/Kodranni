@@ -30,7 +30,7 @@ A **játékos** tesz visszhanggá egy pillanatot. A mesélő csak hangnem vagy n
 | **Egyáltalán nincs visszhang** (**hanyatlás** (Decadence)) | **−1** kocka **minden** dobáson |
 
 <figure class="kod-breath not-content">
-<img src="/scenes/cominghome.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
+<img src="/Guidebook/scenes/cominghome.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
 </figure>
 
 <aside class="kod-counsel" aria-label="Tanács">
@@ -206,7 +206,7 @@ Az alapítómítosz lényeges, **szűk** hatást gyakorol egy meghatározott tet
 **Kiváltás:** mint a [visszhang felidézése](#felidézés), a dobásnak **kifejezetten jelölnie** kell, hogy egy alapítómítosz érvényes (mesélő vagy automatizálási dobásmenet). A szabad próza önmagában nem indít hatást.
 
 <figure class="kod-breath not-content">
-<img src="/scenes/price-we-paid.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+<img src="/Guidebook/scenes/price-we-paid.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
 </figure>
 
 ### Kidolgozott mítosz — Az ár, amit fizettünk

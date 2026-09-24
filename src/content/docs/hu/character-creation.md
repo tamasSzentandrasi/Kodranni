@@ -73,7 +73,7 @@ Egy jártasság 3-as foka ezért **6**-ba kerül. Lehetséges; drága.
 ----------
 
 <figure class="kod-breath not-content">
-<img src="/scenes/soothsayer.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+<img src="/Guidebook/scenes/soothsayer.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
 </figure>
 
 ## A Megmérettetés

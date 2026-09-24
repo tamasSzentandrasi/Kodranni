@@ -73,7 +73,7 @@ Rank 3 in one Skill therefore costs **6**. Possible; expensive.
 ----------
 
 <figure class="kod-breath not-content">
-<img src="/scenes/soothsayer.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+<img src="/Guidebook/scenes/soothsayer.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
 </figure>
 
 ## The Weighing

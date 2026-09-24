@@ -49,7 +49,7 @@ The Storyteller assigns points according to the fiction. The track name is only 
 ----------
 
 <figure class="kod-breath not-content">
-<img src="/scenes/wound-care.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+<img src="/Guidebook/scenes/wound-care.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
 </figure>
 
 ## Inflicting Harm
@@ -88,7 +88,7 @@ Be frugal. Most successful hits produce **0 or 1** point. Two points is notable.
 ----------
 
 <figure class="kod-breath not-content">
-<img src="/scenes/death.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
+<img src="/Guidebook/scenes/death.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
 </figure>
 
 ## Dying

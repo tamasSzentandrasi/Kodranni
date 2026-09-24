@@ -54,7 +54,7 @@ Values of **0** or **4** are *technically possible* — rarities for extreme cas
 ----------
 
 <figure class="kod-breath not-content">
-<img src="/scenes/peasantkid.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
+<img src="/Guidebook/scenes/peasantkid.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
 </figure>
 
 ### Where Foundations Matter

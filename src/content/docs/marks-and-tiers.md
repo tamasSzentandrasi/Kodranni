@@ -57,7 +57,7 @@ That requires a shift: less “did it work?”, more “**what does this many Ma
 Players act under incomplete knowledge. The Storyteller scales reward, cost, and **what the fiction discloses** to the Marks on the table.
 
 <figure class="kod-breath not-content">
-<img src="/scenes/scout-night.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+<img src="/Guidebook/scenes/scout-night.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
 </figure>
 
 <div class="kod-widget not-content" data-widget="marks-ladder">

@@ -48,7 +48,7 @@ Ha sok akarat szorít egyszerre — zaklatott oszlop, teremnyi vita — az egyé
 ----------
 
 <figure class="kod-breath not-content">
-<img src="/scenes/hattin.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+<img src="/Guidebook/scenes/hattin.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
 </figure>
 
 ## A sodrás
@@ -58,7 +58,7 @@ A sodrás **közös** nyomássáv egy egész oldalnak, ha az összecsapás nagyo
 **Nem** második karakterlap, és **nem** ugyanaz, mint személyes előny egy dobáson. Az egyéni akciók továbbra is magukban oldódnak. Ezek közül némelyik **sodráshoz kötött**: a jelek különbsége (és néha az ómen) egy **egyetlen jelölőt** mozdít egy közös sávon. Ha a jelölő végét éri, az az oldal **közösen** fut. Emberek még állhatnak, menekülhetnek, meghalhatnak, vagy személyes célt teljesíthetnek a futásban.
 
 <figure class="kod-breath not-content">
-<img src="/scenes/siege.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
+<img src="/Guidebook/scenes/siege.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
 </figure>
 
 ### Felállítás

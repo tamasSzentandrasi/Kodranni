@@ -47,7 +47,7 @@ When many wills push at once â€” a column under harassment, a hall-wide debate â
 ----------
 
 <figure class="kod-breath not-content">
-<img src="/scenes/hattin.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+<img src="/Guidebook/scenes/hattin.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
 </figure>
 
 ## The Tide
@@ -57,7 +57,7 @@ The Tide is a **shared** pressure track for a whole side when the contest is lar
 It is **not** a second character sheet and **not** the same as personal Advantage on one roll. Individual actions still resolve on their own. Some of those actions are **Tide-linked**: their Marks margin (and sometimes Omen) nudge a **single marker** on one shared bar. When the marker hits an end, that **collective** side routes. People can still stand, flee, die, or complete a personal objective in the rout.
 
 <figure class="kod-breath not-content">
-<img src="/scenes/siege.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
+<img src="/Guidebook/scenes/siege.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
 </figure>
 
 ### Setup

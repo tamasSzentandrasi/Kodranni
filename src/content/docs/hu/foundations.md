@@ -54,7 +54,7 @@ A **0** vagy **4** *technikailag lehetséges* — ritkaság szélső esetekre (s
 ----------
 
 <figure class="kod-breath not-content">
-<img src="/scenes/peasantkid.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
+<img src="/Guidebook/scenes/peasantkid.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
 </figure>
 
 ### Hol számítanak az adottságok

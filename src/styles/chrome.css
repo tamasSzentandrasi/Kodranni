@@ -186,16 +186,7 @@ a.kod-page-title__kicker:focus-visible {
 html[data-ornaments='pending'] .kod-page-title__rose,
 html[data-ornaments='pending'] .kod-page-title__rose img,
 html[data-ornaments='pending'] .kod-page-title__rose::before,
-html[data-ornaments='pending'] .kod-page-title__rose::after,
-html[data-ornaments='pending'] .kod-page-title__text,
-html[data-ornaments='pending'] .kod-page-title__mark,
-html[data-ornaments='pending'] .kod-cn,
-html[data-ornaments='pending'] .kod-cut,
-html[data-ornaments='pending'] .end-mark,
-html[data-ornaments='pending'] .kod-fortune__tree,
-html[data-ornaments='pending'] .kod-fortune__icon,
-html[data-ornaments='pending'] .member,
-html[data-ornaments='pending'] .kod-btn__skin {
+html[data-ornaments='pending'] .kod-page-title__rose::after {
   opacity: 0 !important;
   animation: none !important;
 }
@@ -315,10 +306,7 @@ html[data-ornaments='pending'] .kod-btn__skin {
   }
 }
 
-html[data-ornaments='pending'] .sl-markdown-content > blockquote.kod-epigraph {
-  opacity: 0;
-  animation: none;
-}
+
 
 @media (prefers-reduced-motion: reduce) {
   html[data-ornaments='ready'] .kod-page-title__rose,

@@ -9,7 +9,7 @@ description: Skills organised under six Archetypes, with Practice and improvemen
 ----------
 
 <figure class="kod-breath not-content">
-<img src="/scenes/vineyard.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+<img src="/Guidebook/scenes/vineyard.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
 </figure>
 
 **Skills** are organised under six **Archetypes**. Archetypes are not classes. Each is a named group of related Skills; a character may take Skills from any of them.
@@ -132,7 +132,7 @@ These thresholds are modified by the Skill’s ruling **Foundation**:
 High inborn potential accelerates learning. Low potential slows it. Automation handles accumulation and level-ups. Exact Practice progress is visible on the **live character sheet**. Chat adapters do not print Practice amounts — look at the sheet.
 
 <figure class="kod-breath not-content">
-<img src="/scenes/practice.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+<img src="/Guidebook/scenes/practice.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
 </figure>
 
 <div class="kod-widget not-content" data-widget="step-flow" id="practice-track">

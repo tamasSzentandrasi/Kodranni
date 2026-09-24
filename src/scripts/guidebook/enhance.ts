@@ -1390,16 +1390,11 @@ export function boot(_sidebarIconMap?: SidebarIconMap): void {
 
 	function waitOrnaments() {
 		const jobs = [];
-		for (const img of document.images) jobs.push(decodeImg(img));
-		document.querySelectorAll('link[rel="preload"][as="image"]').forEach((link) => {
-			const im = new Image();
-			im.src = link.href;
-			jobs.push(decodeImg(im));
-		});
-		if (document.fonts && document.fonts.ready) {
-			jobs.push(document.fonts.ready.catch(() => {}));
-		}
-		const cap = new Promise((res) => setTimeout(res, 1800));
+		document
+			.querySelectorAll('.kod-page-title__rose img, img[fetchpriority="high"]')
+			.forEach((img) => jobs.push(decodeImg(img)));
+		const cap = new Promise((res) => setTimeout(res, 800));
+		if (!jobs.length) return Promise.resolve();
 		return Promise.race([Promise.all(jobs), cap]);
 	}
 

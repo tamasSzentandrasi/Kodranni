@@ -14,7 +14,7 @@ A felszerelés könnyű marad. Csak az létezik, **amit kimondtatok és a lapon 
 A [karakteralkotásnál](/hu/character-creation/#a-megmérettetés-után) csak azok a megnevezett tárgyak kerülnek listára, amelyek a koncepcióhoz már illenek. Nincs ingyen ellátmánycsomag. Minden más játék közben kerül a lapra.
 
 <figure class="kod-breath not-content">
-<img src="/scenes/storeroom.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+<img src="/Guidebook/scenes/storeroom.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
 </figure>
 
 ### Követett elemek

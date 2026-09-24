@@ -49,7 +49,7 @@ A mesélő a fikció szerint oszt pontot. A sáv neve csak a mechanikai címke.
 ----------
 
 <figure class="kod-breath not-content">
-<img src="/scenes/wound-care.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+<img src="/Guidebook/scenes/wound-care.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
 </figure>
 
 ## Sérülés okozása
@@ -88,7 +88,7 @@ Légy szűkmarkú. A legtöbb sikeres találat **0 vagy 1** pontot ad. Két pont
 ----------
 
 <figure class="kod-breath not-content">
-<img src="/scenes/death.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
+<img src="/Guidebook/scenes/death.jpg" alt="" width="1168" height="784" loading="lazy" decoding="async" />
 </figure>
 
 ## Haldoklás

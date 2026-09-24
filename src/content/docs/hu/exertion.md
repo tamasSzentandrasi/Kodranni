@@ -52,7 +52,7 @@ A [felszerelés](/hu/inventory/) étel- és víz-napjai mondják meg, ez a vissz
 ----------
 
 <figure class="kod-breath not-content">
-<img src="/scenes/ford-cart.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+<img src="/Guidebook/scenes/ford-cart.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
 </figure>
 
 ### Kimerülés
