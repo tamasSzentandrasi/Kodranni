@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Kodranni</title>
+	<meta name="description" content="Kodranni — a pre-industrial grim human TTRPG. The community is the protagonist. Death is permanent. Legacy is not." />
+	<link rel="canonical" href="https://kodranni.com/" />
+	<meta property="og:title" content="Kodranni" />
+	<meta property="og:description" content="A pre-industrial grim human TTRPG. The community is the protagonist. Death is permanent. Legacy is not." />
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content="https://kodranni.com/" />
+	<meta property="og:image" content="https://kodranni.com/Guidebook/og.jpg" />
+	<meta property="og:image:type" content="image/jpeg" />
+	<meta property="og:image:width" content="1200" />
+	<meta property="og:image:height" content="630" />
+	<meta property="og:image:alt" content="The Kodranni falcon on a blood disc." />
+	<meta property="og:site_name" content="Kodranni" />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:image" content="https://kodranni.com/Guidebook/og.jpg" />
+	<meta name="twitter:image:alt" content="The Kodranni falcon on a blood disc." />
+	<link rel="icon" href="./Guidebook/favicon.ico" sizes="any" />
+	<link rel="icon" type="image/png" sizes="32x32" href="./Guidebook/favicon-32x32.png" />
+	<link rel="apple-touch-icon" sizes="180x180" href="./Guidebook/apple-touch-icon.png" />
+	<meta name="theme-color" content="#a01818" />
+	<link rel="preload" href="./Guidebook/fonts/bellefair/bellefair-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+	<link rel="preload" href="./Guidebook/scenes/falconer.jpg" as="image" fetchpriority="high" />
+	<link rel="preload" href="./Guidebook/falcon-logo.png" as="image" />
+	<link rel="preload" href="./design/ornament/btn-bar-night.png" as="image" />
+	<link rel="preload" href="./design/ornament/btn-bar-moon.png" as="image" />
+	<link rel="stylesheet" href="./design/primitives.css" />
+	<script>
+		document.documentElement.classList.add('js');
+	</script>
+	<style>
+		@font-face {
+			font-family: "Bellefair";
+			font-style: normal;
+			font-weight: 400;
+			font-display: swap;
+			src: url("./Guidebook/fonts/bellefair/bellefair-latin-400-normal.woff2") format("woff2");
+		}
+		:root { color-scheme: dark; }
+		* { box-sizing: border-box; }
+		html, body { margin: 0; min-height: 100%; }
+		html {
+			font-synthesis: none;
+			-webkit-font-smoothing: antialiased;
+			text-rendering: geometricPrecision;
+			scrollbar-width: thin;
+			scrollbar-color: #5c5550 #080606;
+		}
+		body {
+			min-height: 100vh;
+			color: var(--kod-silver);
+			font-family: "Bellefair", Georgia, serif;
+			font-size: 1.25rem;
+			line-height: 1.7;
+			letter-spacing: 0.02em;
+			background: #050505;
+		}
+		.bg {
+			position: fixed;
+			inset: 0;
+			z-index: 0;
+			pointer-events: none;
+			-webkit-mask-image:
+				radial-gradient(ellipse 92% 88% at 50% 42%, #000 18%, #000 42%, rgba(0,0,0,0.55) 68%, transparent 92%),
+				linear-gradient(to bottom, transparent 0%, #000 8%, #000 88%, transparent 100%),
+				linear-gradient(to right, transparent 0%, #000 6%, #000 94%, transparent 100%);
+			mask-image:
+				radial-gradient(ellipse 92% 88% at 50% 42%, #000 18%, #000 42%, rgba(0,0,0,0.55) 68%, transparent 92%),
+				linear-gradient(to bottom, transparent 0%, #000 8%, #000 88%, transparent 100%),
+				linear-gradient(to right, transparent 0%, #000 6%, #000 94%, transparent 100%);
+			-webkit-mask-composite: source-in, source-in;
+			mask-composite: intersect, intersect;
+		}
+		.bg img {
+			display: block;
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			object-position: 46% 42%;
+			filter: saturate(0.88) contrast(1.08) brightness(0.72);
+		}
+		.bg::after {
+			content: "";
+			position: absolute;
+			inset: 0;
+			background:
+				radial-gradient(ellipse 80% 70% at 50% 40%, transparent 20%, rgba(0,0,0,0.35) 58%, rgba(0,0,0,0.82) 100%),
+				linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.2) 28%, rgba(0,0,0,0.35) 62%, rgba(0,0,0,0.88) 100%);
+		}
+		main {
+			position: relative;
+			z-index: 1;
+			width: min(38rem, calc(100% - 2.4rem));
+			margin: 0 auto;
+			padding: 14vh 0 4rem;
+			text-align: center;
+		}
+		.scrim {
+			padding: 1.35rem 1.15rem 1.6rem;
+			background: linear-gradient(
+				180deg,
+				rgba(5, 5, 5, 0.42) 0%,
+				rgba(5, 5, 5, 0.62) 45%,
+				rgba(5, 5, 5, 0.55) 100%
+			);
+			box-shadow: 0 0 48px 28px rgba(5, 5, 5, 0.45);
+		}
+		.brand {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: 0.5rem;
+		}
+		.brand img.logo {
+			width: 4.6rem;
+			height: 4.6rem;
+			object-fit: contain;
+			border-radius: 50%;
+			box-shadow: 0 0 0 2px color-mix(in srgb, var(--kod-blood) 55%, transparent);
+		}
+		h1 {
+			margin: 0;
+			font-weight: 400;
+			font-size: clamp(2.75rem, 10vw, 4.2rem);
+			color: var(--kod-silver-bright);
+			letter-spacing: 0.04em;
+			text-shadow: 0 2px 18px rgba(0, 0, 0, 0.75);
+		}
+		.tag {
+			margin: 0 0 1rem;
+			color: #b8b3ab;
+			letter-spacing: 0.08em;
+		}
+		.lede {
+			margin: 0 0 1.15rem;
+			color: #e4dfd6;
+			text-shadow: 0 1px 12px rgba(0, 0, 0, 0.7);
+		}
+		.constraints {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: center;
+			gap: 0.45rem 1.1rem;
+			margin: 0 0 1.5rem;
+			padding: 0;
+			list-style: none;
+			color: #b0aaa2;
+			font-size: 0.95rem;
+			letter-spacing: 0.06em;
+			text-transform: uppercase;
+		}
+		.constraints li { margin: 0; }
+		.folios {
+			display: grid;
+			grid-template-columns: 1fr;
+			gap: 1.1rem;
+		}
+		@media (min-width: 36rem) {
+			.folios { grid-template-columns: 1fr 1fr; }
+		}
+
+		.js .bg,
+		.js .brand,
+		.js .lede,
+		.js .constraints,
+		.js .folios .kod-btn {
+			opacity: 0;
+		}
+		.js.is-settled .bg {
+			animation: kod-land-bg 1.45s ease both;
+		}
+		.js.is-settled .bg img {
+			animation: kod-land-bg-img 2.4s ease both;
+		}
+		.js.is-settled .brand {
+			animation: kod-land-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+		}
+		.js.is-settled .lede {
+			animation: kod-land-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.12s both;
+		}
+		.js.is-settled .constraints {
+			animation: kod-land-rise 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.22s both;
+		}
+		.js.is-settled .folios .kod-btn:nth-child(1) {
+			animation: kod-land-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.34s both;
+		}
+		.js.is-settled .folios .kod-btn:nth-child(2) {
+			animation: kod-land-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.44s both;
+		}
+
+		@keyframes kod-land-bg {
+			from { opacity: 0; }
+			to { opacity: 1; }
+		}
+		@keyframes kod-land-bg-img {
+			from { transform: scale(1.045); }
+			to { transform: none; }
+		}
+		@keyframes kod-land-rise {
+			from {
+				opacity: 0;
+				transform: translateY(0.65rem);
+			}
+			to {
+				opacity: 1;
+				transform: none;
+			}
+		}
+		@media (prefers-reduced-motion: reduce) {
+			.js .bg,
+			.js .brand,
+			.js .lede,
+			.js .constraints,
+			.js .folios,
+			.js .folios .kod-btn {
+				opacity: 1 !important;
+				animation: none !important;
+				transform: none !important;
+			}
+		}
+	</style>
+</head>
+<body>
+	<div class="bg" aria-hidden="true">
+		<img src="./Guidebook/scenes/falconer.jpg" width="1168" height="784" alt="" fetchpriority="high" decoding="async" />
+	</div>
+	<main>
+		<div class="scrim">
+			<div class="brand">
+				<img class="logo" src="./Guidebook/falcon-logo.png" width="80" height="80" alt="Kodranni falcon" />
+				<h1>Kodranni</h1>
+				<p class="tag">Pre-industrial. Human. Grim.</p>
+			</div>
+			<p class="lede">A tabletop system for campaigns where ordinary people face unforgiving pre-industrial conditions, the community is the true protagonist, and legacy outlives the individual.</p>
+			<ul class="constraints">
+				<li>No magic</li>
+				<li>Pre-industrial</li>
+				<li>Ordinary humans</li>
+			</ul>
+			<nav class="folios" aria-label="Kodranni">
+				<a class="kod-btn kod-btn--folio" href="./Guidebook/introduction/">
+					<span class="kod-btn__kicker">Start here</span>
+					<span class="kod-btn__title">Guidebook</span>
+				</a>
+				<a class="kod-btn kod-btn--folio" href="https://github.com/tamasszentandrasi/Kodranni">
+					<span class="kod-btn__kicker">The source</span>
+					<span class="kod-btn__title">Repository</span>
+				</a>
+			</nav>
+		</div>
+	</main>
+	<script>
+		(function () {
+			var html = document.documentElement;
+			var done = false;
+			function settle() {
+				if (done) return;
+				done = true;
+				html.classList.add('is-settled');
+			}
+			var tasks = [];
+			if (document.fonts && document.fonts.ready) tasks.push(document.fonts.ready.catch(function () {}));
+			document.querySelectorAll('img').forEach(function (img) {
+				if (!img.complete) {
+					tasks.push(new Promise(function (resolve) {
+						img.addEventListener('load', resolve, { once: true });
+						img.addEventListener('error', resolve, { once: true });
+					}));
+				}
+			});
+			['./design/ornament/btn-bar-night.png', './design/ornament/btn-bar-moon.png'].forEach(function (src) {
+				var img = new Image();
+				img.src = src;
+				if (!img.complete) {
+					tasks.push(new Promise(function (resolve) {
+						img.onload = img.onerror = resolve;
+					}));
+				}
+			});
+			Promise.all(tasks).then(settle);
+			setTimeout(settle, 1100);
+		})();
+	</script>
+</body>
+</html>
