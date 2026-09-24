@@ -1,12 +1,17 @@
 ---
-import { ORNAMENT_PENDING_SCRIPT, ORNAMENT_READY_SCRIPT } from '@kodranni/hall-render';
+import {
+  HIERARCHY_TAB_TIP,
+  infoBtn,
+  ORNAMENT_PENDING_SCRIPT,
+  ORNAMENT_READY_SCRIPT,
+} from '@kodranni/hall-render';
 import LiveStyles from '../components/LiveStyles.astro';
 
 interface Props {
   title: string;
   communityName: string;
   generatedAt: string;
-  primary: 'overview' | 'hierarchy' | 'characters';
+  primary: 'overview' | 'hierarchy' | 'characters' | 'map';
   source?: string;
 }
 
@@ -50,9 +55,12 @@ const sourceLabel = archive ? 'archive' : source === 'live' ? 'live store' : 'fi
         <a href="/community/" aria-current={primary === 'overview' ? 'page' : undefined}
           >Overview</a
         >
-        <a href="/community/hierarchy/" aria-current={primary === 'hierarchy' ? 'page' : undefined}
-          >Hierarchy</a
-        >
+        <span class="tabs__cluster">
+          <a href="/community/hierarchy/" aria-current={primary === 'hierarchy' ? 'page' : undefined}
+            >Hierarchy</a
+          >
+          <Fragment set:html={infoBtn('About Hierarchy', HIERARCHY_TAB_TIP)} />
+        </span>
         <a href="/characters/" aria-current={primary === 'characters' ? 'page' : undefined}
           >Characters</a
         >

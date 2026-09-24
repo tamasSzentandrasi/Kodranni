@@ -16,6 +16,7 @@ import {
   type HallView,
 } from './format.js';
 import { infoBtn, sectionHead } from './layout.js';
+import { mapFolioLink } from './map.js';
 
 function hallShell(
   c: HallView['community'],
@@ -66,8 +67,7 @@ export function hierarchyInner(
   const shell = hallShell(c, live, 'hall--hierarchy');
   return `${slideRails(c)}
 ${shell.open}
-  <section class="hall__htitle" aria-labelledby="h-h">
-    ${sectionHead('h-h', 'Hierarchy', 'One crown, then parallel ladders. Same four tiers on every axis (Honoured → Outcast). Colour marks the axis; saturation falls toward Outcast. Hover a name for who they are; click to open the sheet.', 'About Hierarchy')}
+  <section class="hall__htitle">
     <div class="hall-catchword" data-catchword data-empty="true">
       <p class="hall-catchword__line">
         <span class="end-mark end-mark--left" aria-hidden="true"></span>
@@ -79,6 +79,7 @@ ${shell.open}
   </section>
   <div class="hall__hier">
     ${hierarchy(c, tips, pcSlugs, canEdit, bySlug)}
+    ${mapFolioLink()}
   </div>
 ${shell.close}
 <div id="kod-hall-people" hidden>${esc(people)}</div>

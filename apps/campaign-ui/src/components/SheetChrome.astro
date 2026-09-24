@@ -40,6 +40,9 @@ const statusLabel = status === 'pending_review' ? 'pending review' : status;
 const showPortraitEdit = Boolean(live && canEdit && (tab === 'core' || tab === 'draft'));
 const campaignQ = Astro.url.searchParams.get('campaign');
 const tabQ = campaignQ ? `?campaign=${encodeURIComponent(campaignQ)}` : '';
+const mapHref = campaignQ
+  ? `/character-map/?person=${encodeURIComponent(slug)}&campaign=${encodeURIComponent(campaignQ)}`
+  : `/character-map/?person=${encodeURIComponent(slug)}`;
 ---
 
 <script is:inline>
@@ -128,9 +131,17 @@ const tabQ = campaignQ ? `?campaign=${encodeURIComponent(campaignQ)}` : '';
               <span class="sheet-identity__pen" aria-hidden="true">✎</span>
             </label>
           ) : (
-            name
+            <span>{name}</span>
           )
         }
+        <a
+          class="cmap-mark"
+          href={mapHref}
+          aria-label={`View ${name} on the character map`}
+          data-tip={`View ${name} on the character map`}
+        >
+          <img src="/ornament/cmap-mark.jpg" alt="" width="48" height="48" />
+        </a>
       </h1>
       <p class="sheet-identity__player">
         {

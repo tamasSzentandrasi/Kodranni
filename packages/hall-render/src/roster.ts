@@ -1,5 +1,6 @@
 import type { CharacterRecord } from '@kodranni/store/types';
 import { esc, escAttr } from './escape.js';
+import { mapFolioLink } from './map.js';
 import {
   avatarUrl,
   collectFactions,
@@ -109,7 +110,8 @@ export function rosterInner(view: HallView, opts?: { page?: number; selected?: s
           })
           .join('')}</nav>`
       : '';
-  return `<ul class="char-list">${rows}</ul>${pager}`;
+  return `<ul class="char-list">${rows}</ul>${pager}
+${mapFolioLink()}`;
 }
 
 export function findCharacter(view: HallView, slug: string): CharacterRecord | undefined {

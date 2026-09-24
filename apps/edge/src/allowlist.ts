@@ -24,6 +24,7 @@ export function livePathAllowed(method: string, pathname: string): boolean {
   if (m !== 'GET' && m !== 'HEAD' && m !== 'POST') return false;
 
   if (p === '/community' || p.startsWith('/community/')) return m === 'GET' || m === 'HEAD';
+  if (p === '/character-map' || p.startsWith('/character-map/')) return m === 'GET' || m === 'HEAD';
   if (p === '/characters' || p.startsWith('/characters/')) return m === 'GET' || m === 'HEAD';
   if (p.startsWith('/design/') || p.startsWith('/brand/') || p.startsWith('/_astro/')) {
     return m === 'GET' || m === 'HEAD';

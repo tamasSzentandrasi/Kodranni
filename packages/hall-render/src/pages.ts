@@ -1,4 +1,5 @@
 import { hierarchyInner, overviewInner } from './hall.js';
+import { mapInner } from './map.js';
 import { hallViewFromSnapshot, parseSnapshot } from './format.js';
 import { layoutDocument } from './layout.js';
 import { findCharacter, rosterInner } from './roster.js';
@@ -7,6 +8,7 @@ import { sheetEchoesInner, sheetInner, sheetInventoryInner } from './sheet.js';
 export type ArchiveRoute =
   | { kind: 'overview' }
   | { kind: 'hierarchy' }
+  | { kind: 'map'; person?: string }
   | { kind: 'roster'; page?: number; selected?: string }
   | { kind: 'sheet'; slug: string; tab: 'core' | 'echoes' | 'inventory' }
   | { kind: 'notfound' };
@@ -14,6 +16,7 @@ export type ArchiveRoute =
 export function archiveRoute(pathname: string, search: URLSearchParams): ArchiveRoute {
   const p = pathname.endsWith('/') && pathname.length > 1 ? pathname.slice(0, -1) : pathname;
   if (p === '/community/hierarchy') return { kind: 'hierarchy' };
+  if (p === '/character-map') return { kind: 'map', person: search.get('person') ?? undefined };
   if (p === '' || p === '/' || p === '/community') return { kind: 'overview' };
   if (p === '/characters') {
     const page = Number(search.get('p') || '1');
@@ -62,6 +65,20 @@ export function renderArchivePage(
         primary: 'hierarchy',
         sourceLabel: 'archive',
         body: hierarchyInner(view),
+      }),
+    };
+  }
+  if (route.kind === 'map') {
+    return {
+      status: 200,
+      html: layoutDocument({
+        title: 'Character map',
+        communityName: name,
+        generatedAt,
+        primary: 'map',
+        sourceLabel: 'archive',
+        body: mapInner(snap.relationMap, { person: route.person }),
+        extraScripts: '<script src="/map-bundle.js?v=3d15" defer></script>',
       }),
     };
   }

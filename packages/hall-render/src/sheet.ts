@@ -53,7 +53,12 @@ function identity(ch: CharacterRecord): string {
   return `<div class="kod-plate sheet-identity">
     <div class="sheet-identity__portrait">${portrait}</div>
     <div class="sheet-identity__text">
-      <h1 class="sheet-identity__name">${esc(ch.name)}</h1>
+      <h1 class="sheet-identity__name">
+        <span>${esc(ch.name)}</span>
+        <a class="cmap-mark" href="/character-map/?person=${escAttr(ch.slug)}" aria-label="View ${escAttr(ch.name)} on the character map" data-tip="${escAttr(`View ${ch.name} on the character map`)}">
+          <img src="/ornament/cmap-mark.jpg" alt="" width="48" height="48"/>
+        </a>
+      </h1>
       <p class="sheet-identity__player">${player}</p>
       <p class="sheet-identity__chips">
         <span class="char-card__status" data-status="${escAttr(ch.status)}">${esc(statusLabel)}</span>

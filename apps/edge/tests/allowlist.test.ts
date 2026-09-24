@@ -4,6 +4,7 @@ import { livePathAllowed } from '../src/allowlist.js';
 describe('livePathAllowed', () => {
   it('allows hall, sheets, and player APIs', () => {
     expect(livePathAllowed('GET', '/community/')).toBe(true);
+    expect(livePathAllowed('GET', '/character-map/')).toBe(true);
     expect(livePathAllowed('GET', '/characters/torvald/')).toBe(true);
     expect(livePathAllowed('GET', '/api/snapshot')).toBe(true);
     expect(livePathAllowed('GET', '/api/community/rev')).toBe(true);

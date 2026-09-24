@@ -1,0 +1,34 @@
+---
+export const prerender = false;
+
+import { mapInner } from '@kodranni/hall-render';
+import { fillDemoRelationMap, openSqliteStore } from '@kodranni/store';
+import CampaignLayout from '../../layouts/CampaignLayout.astro';
+import { loadCommunity } from '../../data/load';
+import { resolveStorePath } from '../../lib/campaign-paths';
+
+const c = loadCommunity();
+const person = Astro.url.searchParams.get('person') ?? undefined;
+let map = fillDemoRelationMap(undefined, c.slug);
+const storePath = resolveStorePath();
+if (storePath) {
+  const store = openSqliteStore(storePath);
+  try {
+    map = fillDemoRelationMap(store.getRelationMap(), c.slug);
+  } finally {
+    store.close();
+  }
+}
+const hallHtml = mapInner(map, { person });
+---
+
+<CampaignLayout
+  title="Character map"
+  communityName={c.name}
+  generatedAt={c.generatedAt}
+  primary="map"
+  source={c.source}
+>
+  <Fragment set:html={hallHtml} />
+  <script is:inline src="/map-bundle.js?v=3d15" defer></script>
+</CampaignLayout>

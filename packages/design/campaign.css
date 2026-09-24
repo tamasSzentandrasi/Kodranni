@@ -132,6 +132,7 @@ a:hover {
 .sheet-tabs {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 0;
   margin-bottom: 1rem;
   position: relative;
@@ -183,6 +184,40 @@ a:hover {
   border-bottom-color: var(--kod-frame-tick-hot);
 }
 
+.tabs__cluster {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+  margin-bottom: -1px;
+  border-bottom: 2px solid transparent;
+}
+
+.tabs__cluster a {
+  border-bottom-color: transparent;
+  margin-bottom: 0;
+  padding-right: 0.4rem;
+}
+
+.tabs__cluster .info {
+  margin: 0 0.9rem 0 0;
+}
+
+.tabs__cluster:has(a[aria-current='page']) {
+  border-bottom-color: var(--kod-blood);
+  background: color-mix(in srgb, var(--kod-blood-deep) 22%, transparent);
+}
+
+.tabs__cluster:has(a[aria-current='page']) a[aria-current='page'] {
+  background: transparent;
+  border-bottom-color: transparent;
+}
+
+.tabs__cluster:has(a[aria-current='page']) .info {
+  color: var(--kod-silver-bright);
+  border-color: color-mix(in srgb, var(--kod-silver) 35%, transparent);
+}
+
 /* Wrapper sections only — inner plates stay chrome-only. */
 section.kod-plate {
   margin-bottom: 1.15rem;
@@ -221,7 +256,8 @@ section.kod-plate {
 }
 
 .hall__htitle {
-  margin-top: 2.1rem;
+  margin-top: 0.35rem;
+  padding-top: 0.35rem;
 }
 
 .hall__crypt {
@@ -2722,6 +2758,10 @@ a.member--pc:visited {
 }
 
 .sheet-identity__name {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-wrap: wrap;
   font-size: clamp(1.75rem, 3.5vw, 2.35rem);
   margin: 0 0 0.2rem;
   line-height: 1.15;
@@ -5336,7 +5376,7 @@ html[data-ornaments='pending'] .kod-fortune,
 html[data-ornaments='pending'] .kod-hier-diagram,
 html[data-ornaments='pending'] .hall-catchword,
 html[data-ornaments='pending'] .myth-card,
-html[data-ornaments='pending'] .member,
+html[data-ornaments='pending'] .member:not(.cmap-plate),
 html[data-ornaments='pending'] .kod-cn,
 html[data-ornaments='pending'] .end-mark,
 html[data-ornaments='pending'] .kod-fortune__icon,
@@ -5484,6 +5524,389 @@ html[data-ornaments='ready'] .arch:nth-child(6) { animation-delay: 0.2s; }
   gap: 0.32rem;
   width: 100%;
   margin-top: 0.65rem;
+}
+
+.cmap-entry {
+  display: flex;
+  justify-content: center;
+  margin: 1.35rem 0 0.35rem;
+}
+
+.cmap-mark {
+  display: inline-block;
+  width: 1.85rem;
+  height: 1.85rem;
+  flex: 0 0 auto;
+  line-height: 0;
+  border-radius: 50%;
+}
+
+.cmap-mark--lg {
+  width: 4.6rem;
+  height: 4.6rem;
+}
+
+.cmap-mark img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  border-radius: 50%;
+  transition: filter 0.18s ease;
+}
+
+.cmap-mark:hover img,
+.cmap-mark:focus-visible img {
+  filter:
+    brightness(1.28)
+    saturate(1.2)
+    drop-shadow(0 0 6px rgba(242, 210, 150, 0.55))
+    drop-shadow(0 0 14px rgba(180, 40, 40, 0.35));
+}
+
+.cmap-mark:focus-visible {
+  outline: none;
+}
+
+.kod-cmap {
+  position: relative;
+  min-height: 72vh;
+}
+
+.kod-cmap__frame {
+  position: relative;
+}
+
+.kod-cmap__wait {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  background: rgb(20 18 16 / 0.82);
+  color: var(--kod-silver-bright);
+  letter-spacing: 0.04em;
+  pointer-events: none;
+  font-size: 1.05rem;
+}
+
+.kod-cmap__wait[hidden] {
+  display: none;
+}
+
+.kod-cmap__web {
+  position: relative;
+  height: min(72vh, 52rem);
+  min-height: 28rem;
+  border: 1px solid color-mix(in srgb, var(--kod-frame) 55%, transparent);
+  background: #141210;
+  overflow: hidden;
+}
+
+.kod-cmap__web canvas {
+  display: block;
+}
+
+.kod-cmap__css3d {
+  position: absolute;
+  inset: 0;
+  perspective: 900px;
+  overflow: hidden;
+  touch-action: none;
+  cursor: grab;
+}
+
+.kod-cmap__css3d:active {
+  cursor: grabbing;
+}
+
+.kod-cmap__css3d-world {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform-style: preserve-3d;
+}
+
+.kod-cmap__css3d-world .cmap-plate {
+  position: absolute;
+  left: 0;
+  top: 0;
+  backface-visibility: hidden;
+}
+
+.kod-cmap__css3d-edges {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.kod-cmap__hud {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 3;
+}
+
+.kod-cmap__hud-plates .cmap-plate,
+.kod-cmap__hud-lab {
+  position: absolute;
+  left: 0;
+  top: 0;
+  will-change: transform;
+}
+
+.kod-cmap__hud-plates .cmap-plate,
+.kod-cmap__web .cmap-plate {
+  pointer-events: auto;
+}
+
+.kod-cmap__hud-lab {
+  pointer-events: none;
+  font-family: Bellefair, serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  text-shadow:
+    0 0 0.25rem #141210,
+    0 0 0.55rem #141210;
+}
+
+.kod-cmap__hud-lab.is-dim {
+  opacity: 0.28;
+}
+
+.cmap-plate {
+  --plate-h: 1.95rem;
+  pointer-events: auto;
+  width: 8.6rem;
+  margin: 0;
+}
+
+.cmap-plate.is-dim {
+  opacity: 0.38;
+}
+
+.cmap-plate--bare .member__name {
+  font-style: italic;
+}
+
+.cmap-plate--sheet .member__name::after {
+  content: '';
+  display: inline-block;
+  width: 0.38rem;
+  height: 0.38rem;
+  margin-left: 0.28rem;
+  border-radius: 50%;
+  border: 1px solid #14110e;
+  vertical-align: middle;
+  opacity: 0.7;
+}
+
+.cmap-plate--faction .member__name {
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+}
+
+.kod-cmap__family {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--kod-silver-dim);
+  padding: 0.4rem 0.85rem;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  font: inherit;
+}
+
+.kod-cmap__family:not(:disabled) {
+  color: var(--kod-silver-bright);
+}
+
+.kod-cmap__family:not(:disabled):hover,
+.kod-cmap__family[aria-pressed='true'] {
+  border-bottom-color: var(--kod-blood);
+}
+
+.kod-cmap__family:disabled {
+  cursor: default;
+  opacity: 0.45;
+}
+
+.kod-cmap__bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.85rem 1.2rem;
+  margin-bottom: 0.85rem;
+  position: relative;
+  z-index: 2;
+}
+
+.kod-cmap__modes {
+  display: flex;
+  gap: 0;
+}
+
+.kod-cmap__mode {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--kod-silver-dim);
+  padding: 0.4rem 0.85rem;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  font: inherit;
+}
+
+.kod-cmap__mode[aria-pressed='true'] {
+  color: var(--kod-silver-bright);
+  border-bottom-color: var(--kod-blood);
+}
+
+.kod-cmap__find {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--kod-silver-dim);
+  font-size: 0.9rem;
+}
+
+.kod-cmap__find input {
+  background: #141210;
+  border: 1px solid var(--kod-frame);
+  color: var(--kod-silver-bright);
+  padding: 0.28rem 0.5rem;
+  min-width: 10rem;
+  font: inherit;
+}
+
+.kod-cmap__focus {
+  margin: 0;
+  margin-left: auto;
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  color: var(--kod-silver-bright);
+}
+
+.kod-cmap__sheet {
+  color: var(--kod-silver);
+}
+
+.kod-cmap__empty {
+  color: #6a625c;
+  font-style: italic;
+}
+
+.kod-cmap__stage {
+  position: relative;
+  transform-origin: 0 0;
+  cursor: grab;
+  min-height: 60vh;
+}
+
+.kod-cmap__stage:active {
+  cursor: grabbing;
+}
+
+.kod-cmap__edges {
+  display: block;
+  overflow: visible;
+}
+
+.kod-cmap__elabel {
+  font-family: Bellefair, serif;
+  font-size: 0.72rem;
+  paint-order: stroke fill;
+  stroke: #141210;
+  stroke-width: 4px;
+  stroke-linejoin: round;
+}
+
+.kod-cmap__nodes {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.kod-cmap__nodes .cmap-plate {
+  position: absolute;
+  margin: 0;
+  pointer-events: auto;
+}
+
+.kod-cmap__name {
+  position: absolute;
+  pointer-events: auto;
+  background: none;
+  border: none;
+  padding: 0.15rem 0.35rem;
+  margin: 0;
+  font-family: Bellefair, serif;
+  font-size: 1.15rem;
+  letter-spacing: 0.03em;
+  color: var(--kod-silver-bright);
+  cursor: pointer;
+  white-space: nowrap;
+  text-align: left;
+}
+
+.kod-cmap__name--bare {
+  color: color-mix(in srgb, var(--kod-silver) 82%, transparent);
+  cursor: default;
+  font-style: italic;
+}
+
+.kod-cmap__name--sheet {
+  text-shadow: 0 0 0.45rem rgba(242, 239, 233, 0.25);
+}
+
+.kod-cmap__name--sheet::after {
+  content: '';
+  display: inline-block;
+  width: 0.42rem;
+  height: 0.42rem;
+  margin-left: 0.35rem;
+  border-radius: 50%;
+  border: 1px solid var(--kod-silver);
+  vertical-align: middle;
+  opacity: 0.7;
+}
+
+.kod-cmap__name--faction {
+  color: var(--cmap-c, var(--kod-silver-bright));
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.95rem;
+}
+
+.kod-cmap__name.is-lit {
+  color: #fff;
+  text-shadow:
+    0 0 0.35rem rgba(242, 239, 233, 1),
+    0 0 0.7rem rgba(242, 239, 233, 0.75),
+    0 0 1.35rem rgba(242, 239, 233, 0.4);
+}
+
+.kod-cmap__name.is-dim {
+  opacity: 0.38;
+}
+
+.kod-cmap__name--bare.is-lit {
+  cursor: default;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kod-cmap {
+    animation: none;
+    opacity: 1;
+  }
 }
 
 .kod-hier-porch__people .empty {

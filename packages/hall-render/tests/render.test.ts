@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { PublicSnapshot } from '@kodranni/store/types';
+import { ASPALATH_RELATION_MAP } from '@kodranni/store';
 import { communityInner, hierarchyInner, overviewInner } from '../src/hall.js';
 import { hallViewFromSnapshot } from '../src/format.js';
 import { archiveRoute, renderArchivePage } from '../src/pages.js';
@@ -163,9 +164,33 @@ describe('renderArchivePage', () => {
     expect(html).toContain('Filter by Allegiance');
     expect(html).toContain('aria-label="Factions"');
     expect(html).toContain('kod-slide__cap--top');
+    expect(html).toContain('href="/character-map/"');
+    expect(html).toContain('cmap-mark--lg');
     expect(html).not.toContain('data-find-roster');
     expect(html).not.toContain('data-hall-clear');
     expect(html).toContain('>Hierarchy</a>');
+    expect(html).toContain('tabs__cluster');
+    expect(html).toContain('href="/character-map/"');
+    expect(html).toContain('About Hierarchy');
+    expect(html).not.toContain('id="h-h"');
+  });
+
+  it('renders the character map with a focused name', () => {
+    const page = renderArchivePage(
+      JSON.stringify({ ...snap, relationMap: ASPALATH_RELATION_MAP }),
+      '/character-map/',
+      new URLSearchParams('person=marino'),
+    );
+    expect(page?.status).toBe(200);
+    expect(page!.html).toContain('kod-cmap');
+    expect(page!.html).toContain('Marino Orvanti');
+    expect(page!.html).toContain('data-person="marino"');
+    expect(page!.html).toContain('data-cmap-family');
+    expect(page!.html).toContain('data-cmap-web');
+    expect(page!.html).toContain('handmaiden of');
+    expect(page!.html).toContain('id="kod-map-data"');
+    expect(page!.html).toContain('Drawing the map');
+    expect(page!.html).toContain('data-map=');
   });
 
   it('renders the roster and a read-only sheet', () => {
@@ -185,6 +210,9 @@ describe('renderArchivePage', () => {
     expect(sheet?.html).toContain('vtrack--echo');
     expect(sheet?.html).toContain('found-groups');
     expect(sheet?.html).toContain('sheet-identity__text');
+    expect(sheet?.html).toContain('/character-map/?person=torvald');
+    expect(sheet?.html).toContain('cmap-mark');
+    expect(sheet?.html).toContain('on the character map');
     expect(sheet?.html).not.toContain('data-wanting');
     const inv = renderArchivePage(
       JSON.stringify(snap),

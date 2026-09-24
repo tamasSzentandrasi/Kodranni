@@ -601,6 +601,7 @@ export function shouldStampCampaign(path: string): boolean {
   const bare = p.endsWith('/') && p.length > 1 ? p.slice(0, -1) : p;
   if (bare === '' || bare === '/' || bare === '/index.html') return true;
   if (bare === '/community' || bare.startsWith('/community/')) return true;
+  if (bare === '/character-map' || bare.startsWith('/character-map/')) return true;
   if (bare === '/characters' || bare.startsWith('/characters/')) return true;
   return false;
 }
