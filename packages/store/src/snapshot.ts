@@ -42,6 +42,7 @@ export function applyPublicSnapshot(
   for (const ch of snap.characters) {
     store.putCharacter({ ...ch, status: ch.status === 'draft' ? 'active' : (ch.status ?? 'active') });
   }
+  if (snap.relationMap) store.putRelationMap(snap.relationMap);
 }
 
 /** Campaign title → slug for Found. */

@@ -6,7 +6,8 @@
   "exports": {
     ".": "./src/index.ts",
     "./types": "./src/types.ts",
-    "./labels": "./src/labels.ts"
+    "./labels": "./src/labels.ts",
+    "./relation-map": "./src/relation-map.ts"
   },
   "scripts": {
     "test": "NODE_OPTIONS='--experimental-sqlite' vitest run"

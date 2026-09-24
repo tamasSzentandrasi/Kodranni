@@ -330,9 +330,41 @@ export interface RollRecord {
   data: Record<string, unknown>;
 }
 
+/** JSON Canvas 1.0 text node plus optional Kodranni bindings. */
+export interface RelationMapNode {
+  id: string;
+  type: 'text';
+  text: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  color?: string;
+  /** Public character slug when this name has a sheet. */
+  slug?: string;
+  /** Outside power (Pelesa, Calvaro) — not a person. */
+  faction?: boolean;
+}
+
+export interface RelationMapEdge {
+  id: string;
+  fromNode: string;
+  toNode: string;
+  label?: string;
+  /** Player-chosen colour (hex or css). */
+  color?: string;
+  kind?: 'parent' | 'child' | 'spouse' | 'sibling' | 'kin';
+}
+
+export interface RelationMap {
+  nodes: RelationMapNode[];
+  edges: RelationMapEdge[];
+}
+
 export interface PublicSnapshot {
   generatedAt: string;
   schemaVersion: number;
   community: CommunityRecord;
   characters: CharacterRecord[];
+  relationMap?: RelationMap;
 }

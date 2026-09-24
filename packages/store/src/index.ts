@@ -18,6 +18,7 @@ export * from './runtime.js';
 export * from './secrets.js';
 export * from './redact.js';
 export * from './snapshot.js';
+export * from './relation-map.js';
 
 // --- lightweight memory store (tests / early adapters) ---
 

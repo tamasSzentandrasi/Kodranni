@@ -5,6 +5,7 @@ import { emptyCommunity } from './sqlite.js';
 import { refreshCharacterDerived } from './derived.js';
 import { makeEcho } from './echo-effects.js';
 import { TAG_GROUP_ID, upsertFactionLabel, upsertLabelGroup, upsertTagLabel } from './labels.js';
+import { ASPALATH_RELATION_MAP } from './relation-map.js';
 
 /** Demo identity: Guidebook seed “Aspalath, after the night the knife missed”. */
 export const DEMO_SEED_ID = 'aspalath-after-the-night';
@@ -1348,6 +1349,7 @@ export function seedDemoCampaign(
   community.name = name;
   store.putCommunity(community);
   for (const ch of characters) store.putCharacter(ch);
+  store.putRelationMap(ASPALATH_RELATION_MAP);
   store.appendEvent({
     type: 'CampaignSeeded',
     payload: { slug, seed: DEMO_SEED_ID },

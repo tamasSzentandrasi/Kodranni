@@ -8,6 +8,7 @@ import type {
   CommunityRecord,
   MemberRecord,
   PublicSnapshot,
+  RelationMap,
   RollRecord,
 } from './types.js';
 
@@ -28,4 +29,6 @@ export interface CommunityStorePort {
   insertRoll(roll: RollRecord): void;
   getRoll(id: string): RollRecord | undefined;
   toPublicSnapshot(): PublicSnapshot;
+  getRelationMap(): RelationMap | undefined;
+  putRelationMap(map: RelationMap): void;
 }

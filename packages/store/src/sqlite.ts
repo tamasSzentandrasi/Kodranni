@@ -9,6 +9,7 @@ import type {
   CommunityRecord,
   MemberRecord,
   PublicSnapshot,
+  RelationMap,
   RollRecord,
 } from './types.js';
 import { refreshCharacterDerived } from './derived.js';
@@ -18,6 +19,7 @@ import type { CommunityStorePort } from './port.js';
 import { redactCharacterForPublic } from './redact.js';
 import { DEFAULT_LABEL_GROUPS, migrateCommunityLabels } from './labels.js';
 import { fillDemoItemIcons, fillDemoTraits } from './seed.js';
+import { fillDemoRelationMap, parseRelationMap } from './relation-map.js';
 
 /** @deprecated Prefer CommunityStorePort — SQLite is one adapter. */
 export type SqliteCommunityStore = CommunityStorePort;
@@ -291,14 +293,41 @@ export function openSqliteStore(path: string): CommunityStorePort {
       delete community.pendingMoves;
       delete community.fortuneMeta;
       delete community.fortunesFoundedAt;
+      const relationMap = readRelationMap(db, community.slug);
       return {
         generatedAt: new Date().toISOString(),
         schemaVersion: SCHEMA_VERSION,
         community,
         characters,
+        relationMap,
       };
     },
+    getRelationMap: () => {
+      let slug = 'aspalath';
+      try {
+        slug = JSON.parse(
+          (db.prepare(`SELECT data FROM community WHERE id = 'main'`).get() as { data: string }).data,
+        ).slug;
+      } catch {
+        /* demo fill */
+      }
+      return readRelationMap(db, slug);
+    },
+    putRelationMap: (map: RelationMap) => {
+      db.prepare(
+        `INSERT INTO meta (key, value) VALUES ('relation_map', ?)
+         ON CONFLICT(key) DO UPDATE SET value = excluded.value`,
+      ).run(JSON.stringify(map));
+    },
   };
+}
+
+function readRelationMap(db: DatabaseSync, slug: string): RelationMap | undefined {
+  const row = db.prepare(`SELECT value FROM meta WHERE key = 'relation_map'`).get() as
+    | { value: string }
+    | undefined;
+  const parsed = row ? parseRelationMap(JSON.parse(row.value)) : undefined;
+  return fillDemoRelationMap(parsed ?? undefined, slug);
 }
 
 function migrate(db: DatabaseSync): void {

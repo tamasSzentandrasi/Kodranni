@@ -1,0 +1,42 @@
+{
+  "nodes": [
+    { "id": "marino", "type": "text", "text": "Marino Orvanti", "x": 40, "y": 40, "width": 240, "height": 48, "slug": "marino" },
+    { "id": "isotta", "type": "text", "text": "Isotta Solari", "x": 320, "y": 40, "width": 240, "height": 48 },
+    { "id": "orsa", "type": "text", "text": "Orsa Solari", "x": 600, "y": 40, "width": 240, "height": 48, "slug": "orsa" },
+    { "id": "lovro", "type": "text", "text": "Father Lovro", "x": 320, "y": -140, "width": 240, "height": 48, "slug": "lovro" },
+    { "id": "caterina", "type": "text", "text": "Caterina Vela", "x": 320, "y": 220, "width": 240, "height": 48, "slug": "caterina" },
+    { "id": "mara", "type": "text", "text": "Mara Vela", "x": 600, "y": 220, "width": 240, "height": 48, "slug": "mara" },
+    { "id": "vito", "type": "text", "text": "Vito Cresti", "x": -240, "y": 220, "width": 240, "height": 48, "slug": "vito" },
+    { "id": "paolo", "type": "text", "text": "Paolo Cresti", "x": -240, "y": 400, "width": 240, "height": 48, "slug": "paolo" },
+    { "id": "niccolo", "type": "text", "text": "Niccolo Calvo", "x": 900, "y": 40, "width": 240, "height": 48, "slug": "niccolo" },
+    { "id": "piero", "type": "text", "text": "Piero Calvo", "x": 900, "y": 220, "width": 240, "height": 48, "slug": "piero" },
+    { "id": "tomaso", "type": "text", "text": "Tomaso Fero", "x": 600, "y": 400, "width": 240, "height": 48, "slug": "tomaso" },
+    { "id": "jakov", "type": "text", "text": "Jakov Bracco", "x": 40, "y": 400, "width": 240, "height": 48, "slug": "jakov" },
+    { "id": "lazzaro", "type": "text", "text": "Lazzaro", "x": 320, "y": 400, "width": 240, "height": 48 },
+    { "id": "agnese", "type": "text", "text": "Agnese Orsani", "x": -240, "y": 560, "width": 240, "height": 48, "slug": "agnese" },
+    { "id": "luca", "type": "text", "text": "Luca Bandi", "x": -240, "y": 720, "width": 240, "height": 48, "slug": "luca", "color": "hsl(265 42% 58%)" },
+    { "id": "matteo", "type": "text", "text": "Matteo Rinaldi", "x": 1180, "y": 220, "width": 240, "height": 48, "slug": "matteo", "color": "hsl(28 52% 52%)" },
+    { "id": "duje", "type": "text", "text": "Duje", "x": 1180, "y": 400, "width": 240, "height": 48, "slug": "duje" },
+    { "id": "faction-pelesa", "type": "text", "text": "Pelesa", "x": -520, "y": 720, "width": 240, "height": 48, "faction": true, "color": "hsl(265 42% 58%)" },
+    { "id": "faction-calvaro", "type": "text", "text": "Calvaro", "x": 1460, "y": 220, "width": 240, "height": 48, "faction": true, "color": "hsl(28 52% 52%)" }
+  ],
+  "edges": [
+    { "id": "e-orsa-isotta", "fromNode": "orsa", "toNode": "isotta", "label": "sister", "color": "#c4a35a", "kind": "sibling" },
+    { "id": "e-caterina-mara", "fromNode": "caterina", "toNode": "mara", "label": "sister", "color": "#c4a35a", "kind": "sibling" },
+    { "id": "e-vito-paolo-kin", "fromNode": "vito", "toNode": "paolo", "label": "brother", "color": "#c4a35a", "kind": "sibling" },
+    { "id": "e-niccolo-piero", "fromNode": "niccolo", "toNode": "piero", "label": "uncle", "color": "#c4a35a", "kind": "kin" },
+    { "id": "e-marino-isotta", "fromNode": "marino", "toNode": "isotta", "label": "husband", "color": "#c4a35a", "kind": "spouse" },
+    { "id": "e-marino-vito", "fromNode": "vito", "toNode": "marino", "label": "upholds his rule as regent", "color": "#c9b48a" },
+    { "id": "e-caterina-isotta", "fromNode": "caterina", "toNode": "isotta", "label": "handmaiden of", "color": "#c9b48a" },
+    { "id": "e-luca-jakov", "fromNode": "luca", "toNode": "jakov", "label": "primary employer of the company", "color": "hsl(265 42% 58%)" },
+    { "id": "e-matteo-piero", "fromNode": "matteo", "toNode": "piero", "label": "friend", "color": "#7a9a6a" },
+    { "id": "e-matteo-duje", "fromNode": "matteo", "toNode": "duje", "label": "brother’s life", "color": "#6a5a70" },
+    { "id": "e-vito-paolo-hunt", "fromNode": "vito", "toNode": "paolo", "label": "leads the hunt for conspirators", "color": "#b05050" },
+    { "id": "e-lovro-isotta", "fromNode": "lovro", "toNode": "isotta", "label": "Custodian of her body", "color": "#d4b85a" },
+    { "id": "e-agnese-vito", "fromNode": "agnese", "toNode": "vito", "label": "compiled a list of traitors for", "color": "#b05050" },
+    { "id": "e-tomaso-lazzaro", "fromNode": "lazzaro", "toNode": "tomaso", "label": "liberated him off Pelesa’s galley", "color": "#8a6a4a" },
+    { "id": "e-jakov-lazzaro", "fromNode": "lazzaro", "toNode": "jakov", "label": "godfather", "color": "#c4a35a" },
+    { "id": "e-luca-pelesa", "fromNode": "luca", "toNode": "faction-pelesa", "label": "consul of", "color": "hsl(265 42% 58%)" },
+    { "id": "e-matteo-calvaro", "fromNode": "matteo", "toNode": "faction-calvaro", "label": "envoy of", "color": "hsl(28 52% 52%)" }
+  ]
+}
