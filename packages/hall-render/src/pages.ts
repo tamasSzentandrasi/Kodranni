@@ -1,4 +1,4 @@
-import { hierarchyInner, overviewInner } from './hall.js';
+import { hierarchyInner, mapChrome, overviewInner } from './hall.js';
 import { mapInner } from './map.js';
 import { hallViewFromSnapshot, parseSnapshot } from './format.js';
 import { layoutDocument } from './layout.js';
@@ -77,8 +77,21 @@ export function renderArchivePage(
         generatedAt,
         primary: 'map',
         sourceLabel: 'archive',
-        body: mapInner(snap.relationMap, { person: route.person }),
-        extraScripts: '<script src="/map-bundle.js?v=3d15" defer></script>',
+        body:
+          mapChrome(view.community) +
+          mapInner(snap.relationMap, {
+            person: route.person,
+            meta: {
+              campaign: name,
+              groups: view.community.labelGroups ?? [],
+              labels: view.community.labels ?? [],
+              roster: view.characters.map((ch) => ({
+                slug: ch.slug,
+                labelIds: ch.labelIds ?? [],
+              })),
+            },
+          }),
+        extraScripts: '<script src="/map-client.js" defer></script>',
       }),
     };
   }

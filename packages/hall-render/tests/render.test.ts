@@ -187,6 +187,9 @@ describe('renderArchivePage', () => {
     expect(page!.html).toContain('data-person="marino"');
     expect(page!.html).toContain('data-cmap-family');
     expect(page!.html).toContain('data-cmap-web');
+    expect(page!.html).toContain('data-cmap-back-href');
+    expect(page!.html).toContain('data-slide-toggle="factions"');
+    expect(page!.html).toContain('data-slide-toggle="find"');
     expect(page!.html).toContain('handmaiden of');
     expect(page!.html).toContain('id="kod-map-data"');
     expect(page!.html).toContain('Drawing the map');

@@ -24,10 +24,11 @@ const asOf = new Date(generatedAt).toLocaleString(undefined, {
 
 const archive = source === 'snapshot';
 const sourceLabel = archive ? 'archive' : source === 'live' ? 'live store' : 'fixture';
+const isMap = primary === 'map';
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" class={isMap ? 'is-map' : undefined}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -38,8 +39,8 @@ const sourceLabel = archive ? 'archive' : source === 'live' ? 'live store' : 'fi
     <title>{title} · {communityName}</title>
     <Fragment set:html={ORNAMENT_PENDING_SCRIPT} />
   </head>
-  <body>
-    <div class="app">
+  <body class={isMap ? 'is-map' : undefined}>
+    <div class="app" class:list={{ 'app--map': isMap }}>
       <header class="app__brand">
         <img class="app__logo" src="/brand/falcon-logo.png" width="34" height="34" alt="" />
         <div>
@@ -162,6 +163,19 @@ const sourceLabel = archive ? 'archive' : source === 'live' ? 'live store' : 'fi
             if (e.key === 'Escape') hide();
           });
         }
+        let href = '/community/hierarchy/';
+        try {
+          const r = document.referrer ? new URL(document.referrer) : null;
+          if (r && r.origin === location.origin) {
+            const p = r.pathname;
+            if (/^\/(community|characters)(\/|$)/.test(p) && p.indexOf('character-map') < 0) {
+              href = p + r.search;
+            }
+          }
+        } catch (err) {}
+        document.documentElement.setAttribute('data-cmap-back-href', href);
+        const back = document.querySelector('[data-cmap-back]');
+        if (back) back.setAttribute('href', href);
       })();
     </script>
     <Fragment set:html={ORNAMENT_READY_SCRIPT} />

@@ -144,14 +144,21 @@ function slideTab(id: string, word: string): string {
   </button>`;
 }
 
-function slideRails(c: HallView['community']): string {
+function slideRails(c: HallView['community'], opts?: { tags?: boolean; family?: boolean }): string {
+  const tags = opts?.tags === false ? '' : slideShell('tags', 'Tags', tagsPanel(c));
+  const find = opts?.family ? findPanel(c, true) : findPanel(c);
   return `<div class="kod-rail kod-rail--left">
   ${slideShell('factions', 'Factions', factionsPanel(c))}
-  ${slideShell('tags', 'Tags', tagsPanel(c))}
+  ${tags}
 </div>
 <div class="kod-rail kod-rail--right">
-  ${slideShell('find', 'Find', findPanel(c))}
+  ${slideShell('find', 'Find', find)}
 </div>`;
+}
+
+export function mapChrome(c: HallView['community']): string {
+  const comm = migrateCommunityLabels(c);
+  return `<div class="hall hall--map" data-slug="${escAttr(comm.slug)}" data-source="live" hidden></div>${slideRails(comm, { tags: false, family: true })}`;
 }
 
 function slideShell(id: string, word: string, inner: string): string {
@@ -187,10 +194,14 @@ function allegiancePicker(c: HallView['community'], forFind = false): string {
   return `<div class="allegiance"${extra}>${cats}</div>`;
 }
 
-function findPanel(c: HallView['community']): string {
+function findPanel(c: HallView['community'], family = false): string {
+  const fam = family
+    ? `<button type="button" class="kod-cmap__family" data-cmap-family disabled>Family</button>`
+    : '';
   return `<div class="hall-search" data-hall-search>
   <label class="hall-search__label" for="kod-hall-q">Name</label>
   <input id="kod-hall-q" class="hall-search__q" type="search" name="hall-q" autocomplete="off" placeholder="Name…" data-hall-q/>
+  ${fam}
   <p class="hall-search__kicker">Filter by Allegiance</p>
   ${allegiancePicker(c, true)}
 </div>`;

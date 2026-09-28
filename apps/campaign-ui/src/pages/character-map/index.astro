@@ -1,7 +1,7 @@
 ---
 export const prerender = false;
 
-import { mapInner } from '@kodranni/hall-render';
+import { mapChrome, mapInner } from '@kodranni/hall-render';
 import { fillDemoRelationMap, openSqliteStore } from '@kodranni/store';
 import CampaignLayout from '../../layouts/CampaignLayout.astro';
 import { loadCommunity } from '../../data/load';
@@ -19,7 +19,33 @@ if (storePath) {
     store.close();
   }
 }
-const hallHtml = mapInner(map, { person });
+const hallHtml =
+  mapChrome({
+    slug: c.slug,
+    name: c.name,
+    fortunes: c.fortunes,
+    myths: c.myths,
+    hierarchyAxes: c.hierarchyAxes,
+    ruler: c.ruler,
+    rulerCharacterSlug: c.rulerCharacterSlug,
+    placements: c.placements,
+    outsiders: c.outsiders ?? [],
+    labelGroups: c.labelGroups ?? [],
+    labels: c.labels ?? [],
+    factions: c.factions ?? [],
+  }) +
+  mapInner(map, {
+  person,
+  meta: {
+    campaign: c.name,
+    groups: c.labelGroups ?? [],
+    labels: c.labels ?? [],
+    roster: c.characters.map((ch) => ({
+      slug: ch.slug,
+      labelIds: ch.labelIds ?? [],
+    })),
+  },
+});
 ---
 
 <CampaignLayout
@@ -30,5 +56,8 @@ const hallHtml = mapInner(map, { person });
   source={c.source}
 >
   <Fragment set:html={hallHtml} />
-  <script is:inline src="/map-bundle.js?v=3d15" defer></script>
+  <script>
+    import { bootMap } from '../../lib/character-map';
+    bootMap();
+  </script>
 </CampaignLayout>

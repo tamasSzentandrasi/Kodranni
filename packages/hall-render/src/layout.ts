@@ -16,6 +16,30 @@ export function layoutDocument(opts: {
   extraScripts?: string;
 }): string {
   const asOf = formatAsOf(opts.generatedAt);
+  if (opts.primary === 'map') {
+    return `<!doctype html>
+<html lang="en" class="is-map">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="dark"/>
+  <meta name="robots" content="noindex"/>
+  <link rel="icon" href="/brand/falcon-logo.png" type="image/png"/>
+  <link rel="stylesheet" href="/design/campaign.css"/>
+  ${opts.extraHead ?? ''}
+  <title>${esc(opts.title)} · ${esc(opts.communityName)}</title>
+  ${ORNAMENT_PENDING_SCRIPT}
+</head>
+<body class="is-map">
+  <div class="app app--map">${opts.body}</div>
+  <div id="kod-tip" class="tip" role="tooltip" hidden></div>
+  ${LAYOUT_SCRIPT}
+  ${MAP_BACK_SCRIPT}
+  ${ORNAMENT_READY_SCRIPT}
+  ${opts.extraScripts ?? ''}
+</body>
+</html>`;
+  }
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -126,6 +150,24 @@ export const ORNAMENT_READY_SCRIPT = `<script>
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);
   else run();
+})();
+</script>`;
+
+export const MAP_BACK_SCRIPT = `<script>
+(function(){
+  var href='/community/hierarchy/';
+  try{
+    var r=document.referrer?new URL(document.referrer):null;
+    if(r&&r.origin===location.origin){
+      var p=r.pathname;
+      if(/^\\/(community|characters)(\\/|$)/.test(p)&&p.indexOf('character-map')<0){
+        href=p+r.search;
+      }
+    }
+  }catch(e){}
+  document.documentElement.setAttribute('data-cmap-back-href',href);
+  var a=document.querySelector('[data-cmap-back]');
+  if(a)a.setAttribute('href',href);
 })();
 </script>`;
 

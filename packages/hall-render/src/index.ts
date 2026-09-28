@@ -1,5 +1,5 @@
-export { communityInner, overviewInner, hierarchyInner } from './hall.js';
-export { mapInner, mapFolioLink } from './map.js';
+export { communityInner, overviewInner, hierarchyInner, mapChrome } from './hall.js';
+export { mapInner, mapFolioLink, type MapMeta } from './map.js';
 export { rosterInner, findCharacter } from './roster.js';
 export { sheetInner, sheetEchoesInner, sheetInventoryInner } from './sheet.js';
 export {

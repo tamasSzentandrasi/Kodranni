@@ -3,6 +3,7 @@
  * Loaded from Overview and Hierarchy hall pages — not CampaignLayout.
  */
 (function () {
+  if (document.documentElement.classList.contains('is-map')) return;
   const hall = document.querySelector('.hall');
   if (!hall) return;
 
