@@ -7,7 +7,8 @@
     ".": "./src/index.ts",
     "./types": "./src/types.ts",
     "./labels": "./src/labels.ts",
-    "./relation-map": "./src/relation-map.ts"
+    "./relation-map": "./src/relation-map.ts",
+    "./demo-icons": "./src/demo-icons.ts"
   },
   "scripts": {
     "test": "NODE_OPTIONS='--experimental-sqlite' vitest run"

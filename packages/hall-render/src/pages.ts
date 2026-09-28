@@ -1,3 +1,5 @@
+import { fillDemoItemIcons } from '@kodranni/store/demo-icons';
+import { fillDemoRelationMap } from '@kodranni/store/relation-map';
 import { hierarchyInner, mapChrome, overviewInner } from './hall.js';
 import { mapInner } from './map.js';
 import { hallViewFromSnapshot, parseSnapshot } from './format.js';
@@ -36,8 +38,13 @@ export function renderArchivePage(
   pathname: string,
   search: URLSearchParams,
 ): { status: number; html: string } | null {
-  const snap = parseSnapshot(snapshotJson);
-  if (!snap) return null;
+  const raw = parseSnapshot(snapshotJson);
+  if (!raw) return null;
+  const snap = {
+    ...raw,
+    relationMap: fillDemoRelationMap(raw.relationMap, raw.community.slug),
+    characters: raw.characters.map(fillDemoItemIcons),
+  };
   const view = hallViewFromSnapshot(snap);
   const route = archiveRoute(pathname, search);
   const name = snap.community.name;

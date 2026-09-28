@@ -229,6 +229,34 @@ describe('renderArchivePage', () => {
     expect(inv?.html).not.toContain('Edge needs re-peening.</span>');
   });
 
+  it('fills Aspalath map and item pictures on an old snapshot', () => {
+    const old = {
+      ...snap,
+      community: { ...snap.community, slug: 'aspalath' },
+      characters: [
+        {
+          ...snap.characters[0]!,
+          slug: 'tomaso',
+          name: 'Tomaso',
+          inventory: {
+            foodDays: 1,
+            waterDays: 1,
+            items: [{ name: 'Adze', note: 'Edge dull.' }],
+          },
+        },
+      ],
+    };
+    const map = renderArchivePage(JSON.stringify(old), '/character-map/', new URLSearchParams());
+    expect(map?.html).toContain('Marino Orvanti');
+    expect(map?.html).toContain('handmaiden of');
+    const inv = renderArchivePage(
+      JSON.stringify(old),
+      '/characters/tomaso/inventory/',
+      new URLSearchParams(),
+    );
+    expect(inv?.html).toContain('/demo-items/adze.png');
+  });
+
   it('404s unknown characters', () => {
     const page = renderArchivePage(
       JSON.stringify(snap),

@@ -68,33 +68,7 @@ function demoSeedCharacters(): Map<string, CharacterRecord> {
   return demoSeedBySlug;
 }
 
-function demoItemIconIndex(): Map<string, Map<string, string>> {
-  const out = new Map<string, Map<string, string>>();
-  for (const ch of demoSeedCharacters().values()) {
-    const byName = new Map<string, string>();
-    for (const item of ch.inventory.items ?? []) {
-      if (item.icon) byName.set(item.name, item.icon);
-    }
-    out.set(ch.slug, byName);
-  }
-  return out;
-}
-
-/** Older live demo stores were seeded before wells had icons. Fill from the current seed. */
-export function fillDemoItemIcons(ch: CharacterRecord): CharacterRecord {
-  const byName = demoItemIconIndex().get(ch.slug);
-  if (!byName) return ch;
-  let changed = false;
-  const items = (ch.inventory.items ?? []).map((item) => {
-    if (item.icon) return item;
-    const icon = byName.get(item.name);
-    if (!icon) return item;
-    changed = true;
-    return { ...item, icon };
-  });
-  if (!changed) return ch;
-  return { ...ch, inventory: { ...ch.inventory, items } };
-}
+export { fillDemoItemIcons } from './demo-icons.js';
 
 /** Older live demo stores kept objects and tags in the Trait list. Use the current seed. */
 export function fillDemoTraits(ch: CharacterRecord): CharacterRecord {
