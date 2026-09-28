@@ -444,6 +444,60 @@ describe('edge handler', () => {
     }
   });
 
+  it('serves demo item pictures and the map client when the tunnel 404s them', async () => {
+    const e = {
+      ...env(),
+      ASSETS: {
+        async fetch(request: Request) {
+          const path = new URL(request.url).pathname;
+          if (path === '/demo-items/adze.png') {
+            return new Response('adze', {
+              status: 200,
+              headers: { 'content-type': 'image/png' },
+            });
+          }
+          if (path === '/map-client.js') {
+            return new Response('bootMap()', {
+              status: 200,
+              headers: { 'content-type': 'text/javascript' },
+            });
+          }
+          if (path === '/ornament/cmap-mark.jpg') {
+            return new Response('rose', {
+              status: 200,
+              headers: { 'content-type': 'image/jpeg' },
+            });
+          }
+          return new Response('missing', { status: 404 });
+        },
+      },
+    };
+    await e.CAMPAIGNS.put(kvKey('vardmark', 'origin'), 'https://origin.example');
+    const prev = globalThis.fetch;
+    globalThis.fetch = async () => new Response('nope', { status: 404 });
+    try {
+      const item = await handleEdgeRequest(
+        new Request('https://demo.kodranni.com/demo-items/adze.png'),
+        e,
+      );
+      expect(item.status).toBe(200);
+      expect(await item.text()).toBe('adze');
+      const mapJs = await handleEdgeRequest(
+        new Request('https://demo.kodranni.com/map-client.js'),
+        e,
+      );
+      expect(mapJs.status).toBe(200);
+      expect(await mapJs.text()).toBe('bootMap()');
+      const rose = await handleEdgeRequest(
+        new Request('https://demo.kodranni.com/ornament/cmap-mark.jpg'),
+        e,
+      );
+      expect(rose.status).toBe(200);
+    } finally {
+      globalThis.fetch = prev;
+    }
+  });
+
   it('serves archive CSS and images from ASSETS instead of a 404 page', async () => {
     const e = {
       ...env(),

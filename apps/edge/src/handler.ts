@@ -453,7 +453,12 @@ export async function handleEdgeRequest(
 
   if (campaign) {
     const live = await proxyLive(request, env, url, campaign);
-    if (live) return live;
+    if (live && live.status !== 404) return live;
+    if (live) {
+      const asset = await serveStaticAsset(request, env);
+      if (asset) return asset;
+      return live;
+    }
   }
 
   if (campaign && (request.method === 'GET' || request.method === 'HEAD')) {

@@ -33,12 +33,18 @@ export function livePathAllowed(method: string, pathname: string): boolean {
     p.startsWith('/archetypes/') ||
     p.startsWith('/icons/') ||
     p.startsWith('/fonts/') ||
-    p.startsWith('/demo-items/')
+    p.startsWith('/demo-items/') ||
+    p.startsWith('/ornament/')
   ) {
     return m === 'GET' || m === 'HEAD';
   }
   if ((m === 'GET' || m === 'HEAD') && STATIC_FILE.test(p)) return true;
-  if (p === '/hall-client.js' || p.startsWith('/favicon') || p === '/apple-touch-icon.png') {
+  if (
+    p === '/hall-client.js' ||
+    p === '/map-client.js' ||
+    p.startsWith('/favicon') ||
+    p === '/apple-touch-icon.png'
+  ) {
     return m === 'GET' || m === 'HEAD';
   }
   return false;
