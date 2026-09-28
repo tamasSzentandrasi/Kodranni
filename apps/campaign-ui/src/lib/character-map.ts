@@ -4,44 +4,62 @@ import {
   isKinEdge,
   kinNeighborhood,
 } from '@kodranni/store/relation-map';
-import type { RelationMap, RelationMapEdge, RelationMapNode } from '@kodranni/store/types';
+import type { RelationMap, RelationMapNode } from '@kodranni/store/types';
+import {
+  edgeDraw,
+  ellipsePush,
+  keepOffRose,
+  layoutRose,
+  ROSE_R,
+  type PlateBox,
+} from './map-geometry';
 
-type GraphFactory = {
-  new (el: HTMLElement, cfg?: Record<string, unknown>): GraphApi;
-  (cfg?: Record<string, unknown>): (el: HTMLElement) => GraphApi;
-};
+const PLATE_W = 138;
+const PLATE_H = 32;
+const ZOOM_MIN = 0.48;
+const ZOOM_MAX = 1.65;
+const LAYOUT_MS = 520;
 
-// 3d-force-graph chain; kept loose so CJS/ESM builds both type-check.
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type GraphApi = any;
+type LabMark = { x: number; y: number; text: string; color: string; dim: boolean };
+type ArrowMark = { x: number; y: number; angle: number; dim: boolean };
 
-type GNode = RelationMapNode & { id: string; x?: number; y?: number; z?: number };
-type GLink = RelationMapEdge & {
-  source: string | GNode;
-  target: string | GNode;
-  curvature: number;
-  directed: boolean;
-};
-
-let providedGraph: GraphFactory | null = null;
-let liveGraph: GraphApi | null = null;
-
-/** Archive / live IIFE injects 3d-force-graph so the page does not wait on Vite. */
-export function provideForceGraph3D(mod: unknown): void {
-  const rec = mod as { default?: GraphFactory };
-  providedGraph = rec.default ?? (mod as GraphFactory);
+function easeSmooth(t: number): number {
+  return t * t * (3 - 2 * t);
 }
+
+function backHref(): string {
+  const stored = document.documentElement.getAttribute('data-cmap-back-href');
+  if (stored) return stored;
+  try {
+    const r = document.referrer ? new URL(document.referrer) : null;
+    if (r && r.origin === location.origin) {
+      const p = r.pathname;
+      if (/^\/(community|characters)(\/|$)/.test(p) && p.indexOf('character-map') < 0) {
+        return p + r.search;
+      }
+    }
+  } catch {
+    /* keep default */
+  }
+  return '/community/hierarchy/';
+}
+
+type SimNode = RelationMapNode & {
+  homeX: number;
+  homeY: number;
+  fx?: number;
+  fy?: number;
+};
 
 function firstName(text: string): string {
   return text.trim().split(/\s+/)[0] ?? text;
 }
 
-function plateEl(node: GNode): HTMLElement {
+function plateEl(node: RelationMapNode): HTMLElement {
   const el = document.createElement(node.slug ? 'button' : 'span');
   if (node.slug) (el as HTMLButtonElement).type = 'button';
   el.className = 'member cmap-plate';
-  if (node.slug) el.classList.add('cmap-plate--sheet');
-  else el.classList.add('cmap-plate--bare');
+  if (!node.slug) el.classList.add('cmap-plate--bare');
   if (node.faction) el.classList.add('cmap-plate--faction');
   el.innerHTML = `<span class="member__stain" aria-hidden="true"></span><span class="member__glow" aria-hidden="true"></span><span class="member__name"></span>`;
   el.querySelector('.member__name')!.textContent = node.text;
@@ -54,48 +72,6 @@ function plateEl(node: GNode): HTMLElement {
   return el;
 }
 
-function seedCloud(count: number, i: number): { x: number; y: number; z: number } {
-  if (count <= 1) return { x: 0, y: 0, z: 0 };
-  const y = 1 - (i / (count - 1)) * 2;
-  const r = Math.sqrt(Math.max(0, 1 - y * y));
-  const theta = Math.PI * (3 - Math.sqrt(5)) * i;
-  const s = 78;
-  return { x: r * Math.cos(theta) * s, y: y * s, z: r * Math.sin(theta) * s };
-}
-
-/** Drop JSON Canvas x/y so d3-force-3d places people in space, not on a flat page. */
-function toGraph(map: RelationMap): { nodes: GNode[]; links: GLink[] } {
-  const nodes = map.nodes.map((n, i) => {
-    const seed = seedCloud(map.nodes.length, i);
-    const node: GNode = {
-      id: n.id,
-      type: n.type,
-      text: n.text,
-      width: n.width,
-      height: n.height,
-      color: n.color,
-      slug: n.slug,
-      faction: n.faction,
-      x: n.x * 0.14,
-      y: -n.y * 0.14,
-      z: seed.z * 0.85,
-    };
-    return node;
-  });
-  const links: GLink[] = map.edges.map((e) => ({
-    ...e,
-    source: e.fromNode,
-    target: e.toNode,
-    curvature: edgeCurvature(map.edges, e),
-    directed: isDirectedEdge(e),
-  }));
-  return { nodes, links };
-}
-
-function nodeId(ref: string | GNode): string {
-  return typeof ref === 'object' ? ref.id : String(ref);
-}
-
 function parseMapJson(raw: string | null | undefined): RelationMap | null {
   if (!raw?.trim()) return null;
   try {
@@ -104,6 +80,30 @@ function parseMapJson(raw: string | null | undefined): RelationMap | null {
     return map;
   } catch {
     return null;
+  }
+}
+
+type MapMeta = {
+  campaign: string;
+  groups: { id: string; name: string; kind: string }[];
+  labels: { id: string; groupId: string; name: string; hue?: number }[];
+  roster: { slug: string; labelIds: string[] }[];
+};
+
+function readMeta(): MapMeta {
+  const el = document.getElementById('kod-map-meta');
+  const text =
+    el instanceof HTMLTemplateElement ? el.content.textContent : el?.textContent;
+  try {
+    const m = JSON.parse(text || '{}') as MapMeta;
+    return {
+      campaign: m.campaign ?? '',
+      groups: m.groups ?? [],
+      labels: m.labels ?? [],
+      roster: m.roster ?? [],
+    };
+  } catch {
+    return { campaign: '', groups: [], labels: [], roster: [] };
   }
 }
 
@@ -132,54 +132,72 @@ function showFail(root: HTMLElement, err: unknown) {
   }
 }
 
-async function loadForceGraph(): Promise<GraphFactory | null> {
-  if (providedGraph) return providedGraph;
-  try {
-    const mod = await import('3d-force-graph');
-    const rec = mod as { default?: GraphFactory };
-    return rec.default ?? (mod as GraphFactory);
-  } catch (err) {
-    console.error('[kodranni] 3D map library failed to load', err);
-    return null;
+function boxOf(n: SimNode): PlateBox {
+  return { x: n.x, y: n.y, w: n.width || PLATE_W, h: n.height || PLATE_H };
+}
+
+function clampPlate(n: SimNode) {
+  const k = keepOffRose(n.x, n.y, n.width || PLATE_W, n.height || PLATE_H);
+  n.x = k.x;
+  n.y = k.y;
+}
+
+function settle(nodes: SimNode[], ticks: number) {
+  for (let t = 0; t < ticks; t++) {
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const a = nodes[i]!;
+        const b = nodes[j]!;
+        const p = ellipsePush(
+          a.x,
+          a.y,
+          a.width || PLATE_W,
+          a.height || PLATE_H,
+          b.x,
+          b.y,
+          b.width || PLATE_W,
+          b.height || PLATE_H,
+        );
+        if (!p) continue;
+        if (a.fx == null) {
+          a.x += p.x;
+          a.y += p.y;
+        }
+        if (b.fx == null) {
+          b.x -= p.x;
+          b.y -= p.y;
+        }
+      }
+    }
+    for (const n of nodes) {
+      if (n.fx != null && n.fy != null) {
+        n.x = n.fx;
+        n.y = n.fy;
+        clampPlate(n);
+        n.fx = n.x;
+        n.fy = n.y;
+        continue;
+      }
+      n.x += (n.homeX - n.x) * 0.08;
+      n.y += (n.homeY - n.y) * 0.08;
+      clampPlate(n);
+    }
   }
 }
 
-function waitForSize(el: HTMLElement): Promise<void> {
-  if (el.clientWidth >= 64 && el.clientHeight >= 64) return Promise.resolve();
-  el.style.minHeight = el.style.minHeight || '28rem';
-  return new Promise((resolve) => {
-    const done = () => {
-      ro.disconnect();
-      resolve();
-    };
-    const ro = new ResizeObserver(() => {
-      if (el.clientWidth >= 64 && el.clientHeight >= 64) done();
-    });
-    ro.observe(el);
-    requestAnimationFrame(() => {
-      if (el.clientWidth >= 64 && el.clientHeight >= 64) done();
-    });
-    setTimeout(done, 1500);
-  });
-}
-
-function probeWebGL(mount: HTMLElement): { canvas: HTMLCanvasElement; gl: WebGL2RenderingContext } | null {
-  const canvas = document.createElement('canvas');
-  canvas.style.display = 'block';
-  canvas.style.width = '100%';
-  canvas.style.height = '100%';
-  mount.appendChild(canvas);
-  const gl = canvas.getContext('webgl2');
-  if (gl) return { canvas, gl };
-  canvas.remove();
-  return null;
+function inkOf(color: string): string {
+  const m = /^#?([0-9a-f]{6})$/i.exec(color.trim());
+  if (!m) return '#f3eee4';
+  const n = parseInt(m[1], 16);
+  const r = (n >> 16) & 255;
+  const g = (n >> 8) & 255;
+  const b = n & 255;
+  const mix = (c: number) => Math.round(c * 0.28 + 243 * 0.72);
+  const to = (c: number) => c.toString(16).padStart(2, '0');
+  return `#${to(mix(r))}${to(mix(g))}${to(mix(b))}`;
 }
 
 export function bootMap(): void {
-  void bootMapAsync();
-}
-
-async function bootMapAsync(): Promise<void> {
   const root = document.querySelector('.kod-cmap') as HTMLElement | null;
   const mount = root?.querySelector('[data-cmap-web]') as HTMLElement | null;
   if (!root || !mount) return;
@@ -191,71 +209,19 @@ async function bootMapAsync(): Promise<void> {
     hideWait(root);
     return;
   }
-
-  await waitForSize(mount);
-
-  const fg = await loadForceGraph();
-  const surface = probeWebGL(mount);
-  if (fg && surface) {
-    try {
-      bootMap3d(root, mount, map, fg, surface);
-      return;
-    } catch (err) {
-      console.warn('[kodranni] WebGL map failed, using CSS 3D', err);
-      surface.canvas.remove();
-    }
-  } else {
-    surface?.canvas.remove();
-  }
-
   try {
-    bootMapCss3d(root, mount, map);
+    bootMap2d(root, mount, map);
+    hideWait(root);
   } catch (err) {
     console.error('[kodranni] character map failed', err);
     showFail(root, err);
   }
 }
 
-function makeGraph(
-  mount: HTMLElement,
-  FG: GraphFactory,
-  surface: { canvas: HTMLCanvasElement; gl: WebGL2RenderingContext },
-) {
-  const graph = new FG(mount, {
-    controlType: 'orbit',
-    rendererConfig: {
-      canvas: surface.canvas,
-      context: surface.gl,
-      antialias: false,
-      alpha: true,
-    },
-  });
-  graph.renderer?.()?.setPixelRatio?.(1);
-  liveGraph = graph;
-  window.addEventListener(
-    'pagehide',
-    () => {
-      try {
-        graph._destructor?.();
-      } catch {
-        /* ignore */
-      }
-      if (liveGraph === graph) liveGraph = null;
-    },
-    { once: true },
-  );
-  return graph;
-}
-
-function bootMap3d(
-  root: HTMLElement,
-  mount: HTMLElement,
-  map: RelationMap,
-  fg: GraphFactory,
-  surface: { canvas: HTMLCanvasElement; gl: WebGL2RenderingContext },
-): void {
-  const findInput = root.querySelector('[data-cmap-find]') as HTMLInputElement | null;
-  const familyBtn = root.querySelector('[data-cmap-family]') as HTMLButtonElement | null;
+function bootMap2d(root: HTMLElement, mount: HTMLElement, map: RelationMap): void {
+  const findInput = (document.querySelector('[data-hall-q]') ||
+    root.querySelector('[data-cmap-find]')) as HTMLInputElement | null;
+  const familyBtn = document.querySelector('[data-cmap-family]') as HTMLButtonElement | null;
   const focusBox = root.querySelector('[data-cmap-focus]') as HTMLElement | null;
   const focusName = root.querySelector('[data-cmap-focus-name]') as HTMLElement | null;
   const sheetLink = root.querySelector('[data-cmap-sheet]') as HTMLAnchorElement | null;
@@ -264,162 +230,451 @@ function bootMap3d(
   let selected = root.getAttribute('data-person') || '';
   let family = false;
   let query = '';
-  let painted = false;
+  let panX = 0;
+  let panY = 0;
+  let scale = 1;
+  let draggingField = false;
+  let draggingPlate: SimNode | null = null;
+  let lastX = 0;
+  let lastY = 0;
+  let anim = 0;
+  let labs: LabMark[] = [];
+  let arrows: ArrowMark[] = [];
+  const wellEls = new Map<string, HTMLElement>();
 
-  const Graph = makeGraph(mount, fg, surface) as GraphApi;
+  const meta = readMeta();
+  const campaign = meta.campaign || root.getAttribute('data-campaign') || '';
+  const catBtns = [...document.querySelectorAll('[data-hall-legend] [data-view-group]')] as HTMLButtonElement[];
+  let catId = catBtns[0]?.getAttribute('data-view-group') || '';
+
+  const nodes: SimNode[] = map.nodes
+    .filter((n) => !n.faction)
+    .map((n) => ({
+      ...n,
+      width: PLATE_W,
+      height: PLATE_H,
+      homeX: n.x,
+      homeY: n.y,
+    }));
+  const byId = new Map(nodes.map((n) => [n.id, n]));
+  const slugLabels = new Map(meta.roster.map((r) => [r.slug, r.labelIds]));
+
+  const stage = document.createElement('div');
+  stage.className = 'kod-cmap__stage';
+  const rose = document.createElement('a');
+  rose.className = 'kod-cmap__rose';
+  rose.href = backHref();
+  rose.setAttribute('data-cmap-back', '');
+  rose.setAttribute('aria-label', 'Back to the hall');
+  rose.setAttribute('data-tip', 'Back to the hall');
+  rose.setAttribute('title', 'Back to the hall');
+  const halo = document.createElement('span');
+  halo.className = 'kod-cmap__halo';
+  halo.setAttribute('aria-hidden', 'true');
+  const glass = document.createElement('span');
+  glass.className = 'kod-cmap__glass';
+  const roseImg = document.createElement('img');
+  roseImg.src = '/ornament/cmap-mark.jpg';
+  roseImg.alt = '';
+  const moon = document.createElement('span');
+  moon.className = 'kod-cmap__moon';
+  moon.setAttribute('aria-hidden', 'true');
+  glass.append(roseImg, moon);
+  const title = document.createElement('strong');
+  title.className = 'kod-cmap__title';
+  title.textContent = campaign;
+  rose.append(halo, glass, title);
+  rose.addEventListener('pointerdown', (ev) => ev.stopPropagation());
+  rose.addEventListener('click', (ev) => ev.stopPropagation());
+  const wellLayer = document.createElement('div');
+  wellLayer.className = 'kod-cmap__wells';
+  const hubLayer = document.createElement('div');
+  hubLayer.className = 'kod-cmap__hubs';
+  hubLayer.hidden = true;
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('class', 'kod-cmap__edges');
+  const plateLayer = document.createElement('div');
+  plateLayer.className = 'kod-cmap__nodes';
   const hud = document.createElement('div');
   hud.className = 'kod-cmap__hud';
-  mount.appendChild(hud);
-  const plateLayer = document.createElement('div');
-  plateLayer.className = 'kod-cmap__hud-plates';
-  const labelLayer = document.createElement('div');
-  labelLayer.className = 'kod-cmap__hud-labels';
-  hud.appendChild(labelLayer);
-  hud.appendChild(plateLayer);
+  const arrowHud = document.createElement('div');
+  arrowHud.className = 'kod-cmap__hud-arrows';
+  const labHud = document.createElement('div');
+  labHud.className = 'kod-cmap__hud-labs';
+  hud.append(arrowHud, labHud);
+  const menu = document.createElement('div');
+  menu.className = 'cmap-menu';
+  menu.hidden = true;
+  stage.appendChild(rose);
+  stage.appendChild(wellLayer);
+  stage.appendChild(hubLayer);
+  stage.appendChild(svg);
+  stage.appendChild(plateLayer);
+  mount.replaceChildren(stage, hud);
+  root.appendChild(menu);
+
   const plates = new Map<string, HTMLElement>();
-  const labels = new Map<string, HTMLElement>();
+  nodes.forEach((n) => {
+    const el = plateEl(n);
+    el.addEventListener('pointerdown', (ev) => {
+      if (ev.button !== 0) return;
+      ev.stopPropagation();
+      draggingPlate = n;
+      lastX = ev.clientX;
+      lastY = ev.clientY;
+      (ev.currentTarget as HTMLElement).setPointerCapture(ev.pointerId);
+    });
+    el.addEventListener('click', (ev) => {
+      ev.stopPropagation();
+      select(n.slug || n.id);
+    });
+    el.addEventListener('contextmenu', (ev) => {
+      ev.preventDefault();
+      ev.stopPropagation();
+      select(n.slug || n.id);
+      openMenu(ev.clientX, ev.clientY, n);
+    });
+    plates.set(n.id, el);
+    plateLayer.appendChild(el);
+  });
 
-  Graph.backgroundColor('#141210')
-    .showNavInfo(false)
-    .nodeId('id')
-    .nodeLabel(() => '')
-    .nodeOpacity(0.75)
-    .nodeRelSize(5.5)
-    .nodeColor((n: GNode) => n.color || '#c4bfb6')
-    .linkSource('source')
-    .linkTarget('target')
-    .linkColor((l: GLink) => l.color || '#8a8580')
-    .linkWidth((l: GLink) => (isHotLink(l) ? 1.6 : 0.85))
-    .linkOpacity(0.92)
-    .linkCurvature((l: GLink) => l.curvature || 0)
-    .linkDirectionalArrowLength((l: GLink) => (l.directed ? 3.6 : 0))
-    .linkDirectionalArrowRelPos(0.88)
-    .linkDirectionalArrowColor((l: GLink) => l.color || '#8a8580')
-    .d3VelocityDecay(0.4)
-    .cooldownTicks(reduced ? 0 : 110)
-    .warmupTicks(reduced ? 80 : 20)
-    .enableNodeDrag(true)
-    .numDimensions(3)
-    .onNodeClick((node: GNode) => select(node.slug || node.id));
-
-  const w = mount.clientWidth || 800;
-  const h = mount.clientHeight || 520;
-  Graph.width(w).height(h);
-  const charge = Graph.d3Force('charge') as { strength?: (n: number) => unknown } | undefined;
-  charge?.strength?.(-260);
-  const linkF = Graph.d3Force('link') as { distance?: (n: number) => unknown } | undefined;
-  linkF?.distance?.(90);
-
-  function isHotLink(l: GLink): boolean {
-    if (!selected) return false;
-    const s = nodeId(l.source);
-    const t = nodeId(l.target);
-    const a = map.nodes.find((n) => n.id === s);
-    const b = map.nodes.find((n) => n.id === t);
-    return a?.id === selected || a?.slug === selected || b?.id === selected || b?.slug === selected;
+  function closeMenu() {
+    menu.hidden = true;
   }
 
-  function currentData(): RelationMap {
-    if (!family || !selected) return map;
-    return kinNeighborhood(map, selected);
+  function toggleFamily() {
+    if (!selected) return;
+    family = !family;
+    refreshDock();
+    layout(true);
+    closeMenu();
   }
 
-  function rebuildHud(data: RelationMap) {
-    plateLayer.replaceChildren();
-    labelLayer.replaceChildren();
-    plates.clear();
-    labels.clear();
-    data.nodes.forEach((n) => {
-      const el = plateEl(n);
-      el.addEventListener('click', (ev) => {
-        ev.stopPropagation();
-        select(n.slug || n.id);
-      });
-      plates.set(n.id, el);
-      plateLayer.appendChild(el);
+  function openMenu(x: number, y: number, n: SimNode) {
+    const items: string[] = [`<button type="button" data-act="centre">Centre here</button>`];
+    items.push(
+      `<button type="button" data-act="family">${family ? 'All relations' : 'Show family'}</button>`,
+    );
+    if (n.slug) {
+      items.push(
+        `<a data-act="sheet" href="/characters/${encodeURIComponent(n.slug)}/">Open sheet</a>`,
+      );
+    }
+    menu.innerHTML = items.join('');
+    menu.hidden = false;
+    menu.style.left = `${x + 6}px`;
+    menu.style.top = `${y + 6}px`;
+    menu.querySelector('[data-act="centre"]')?.addEventListener('click', () => {
+      const vw = mount.clientWidth || 800;
+      const vh = mount.clientHeight || 520;
+      panX = vw / 2 - (n.x + PLATE_W / 2) * scale;
+      panY = vh / 2 - (n.y + PLATE_H / 2) * scale;
+      applyStage();
+      closeMenu();
     });
-    data.edges.forEach((e) => {
-      if (!e.label) return;
-      const lab = document.createElement('span');
-      lab.className = 'kod-cmap__hud-lab';
-      lab.textContent = e.label;
-      lab.style.color = e.color || '#c4bfb6';
-      labels.set(e.id, lab);
-      labelLayer.appendChild(lab);
+    menu.querySelector('[data-act="family"]')?.addEventListener('click', () => toggleFamily());
+  }
+  document.addEventListener('pointerdown', (ev) => {
+    if (!menu.contains(ev.target as Node)) closeMenu();
+  });
+  document.addEventListener('keydown', (ev) => {
+    if (ev.key === 'Escape') closeMenu();
+  });
+
+  function kinIds(): Set<string> {
+    if (!selected) return new Set();
+    return new Set(kinNeighborhood(map, selected).nodes.map((n) => n.id));
+  }
+
+  function hubIdsFor(n: SimNode): string[] {
+    const ids = n.slug ? slugLabels.get(n.slug) ?? [] : [];
+    return ids.filter((id) => meta.labels.some((l) => l.id === id && l.groupId === catId));
+  }
+
+  let lastHubs: { id: string; name: string; hue: number; x: number; y: number; r: number }[] = [];
+
+  function applyHomes() {
+    const active = meta.labels.filter((l) => l.groupId === catId && l.hue != null);
+    const people = nodes.map((n) => ({
+      id: n.id,
+      hubIds: hubIdsFor(n),
+      neighborIds: map.edges
+        .filter((e) => e.fromNode === n.id || e.toNode === n.id)
+        .map((e) => (e.fromNode === n.id ? e.toNode : e.fromNode)),
+    }));
+    const posed = layoutRose(
+      0,
+      0,
+      active.map((l) => ({ id: l.id, name: l.name, hue: l.hue ?? 0 })),
+      people,
+      PLATE_W,
+      PLATE_H,
+    );
+    lastHubs = posed.hubs;
+    paintHubs(posed.hubs);
+    const seat = new Map(posed.seats.map((s) => [s.id, s]));
+    const kin = family ? kinIds() : new Set<string>();
+    const focus = nodes.find((n) => n.id === selected || n.slug === selected);
+    nodes.forEach((n) => {
+      if (n.fx != null && n.fy != null) {
+        n.homeX = n.fx;
+        n.homeY = n.fy;
+        return;
+      }
+      const s = seat.get(n.id);
+      let hx = s?.x ?? n.homeX;
+      let hy = s?.y ?? n.homeY;
+      if (family && focus) {
+        const fcx = focus.homeX;
+        const fcy = focus.homeY;
+        if (kin.has(n.id)) {
+          hx = hx + (fcx - hx) * 0.28;
+          hy = hy + (fcy - hy) * 0.28;
+        } else {
+          hx = hx + (hx - fcx) * 0.08;
+          hy = hy + (hy - fcy) * 0.08;
+        }
+      }
+      n.homeX = hx;
+      n.homeY = hy;
     });
+  }
+
+  function paintHubs(hubs: { id: string; name: string; hue: number; x: number; y: number; r: number }[]) {
+    const seen = new Set<string>();
+    hubs.forEach((h) => {
+      seen.add(h.id);
+      let well = wellEls.get(h.id);
+      if (!well) {
+        well = document.createElement('div');
+        well.className = 'kod-cmap__well';
+        well.innerHTML = `<span class="kod-cmap__well-name"></span>`;
+        wellEls.set(h.id, well);
+        wellLayer.appendChild(well);
+      }
+      well.style.setProperty('--well-h', String(h.hue));
+      const name = well.querySelector('.kod-cmap__well-name');
+      if (name) name.textContent = h.name;
+      well.style.left = `${h.x - h.r}px`;
+      well.style.top = `${h.y - h.r}px`;
+      well.style.width = `${h.r * 2}px`;
+      well.style.height = `${h.r * 2}px`;
+      well.classList.add('is-on');
+    });
+    wellEls.forEach((el, id) => {
+      if (seen.has(id)) return;
+      el.classList.remove('is-on');
+      window.setTimeout(() => {
+        if (el.classList.contains('is-on')) return;
+        el.remove();
+        wellEls.delete(id);
+      }, LAYOUT_MS);
+    });
+  }
+
+  function fitView() {
+    const c = cameraForFit();
+    panX = c.panX;
+    panY = c.panY;
+    scale = c.scale;
+  }
+
+  function applyHud() {
+    while (arrowHud.childElementCount > arrows.length) arrowHud.removeChild(arrowHud.lastChild!);
+    arrows.forEach((m, i) => {
+      let el = arrowHud.children[i] as HTMLImageElement | undefined;
+      if (!el) {
+        el = document.createElement('img');
+        el.className = 'kod-cmap__hud-arrow';
+        el.src = '/ornament/cmap-arrow.png';
+        el.alt = '';
+        arrowHud.appendChild(el);
+      }
+      el.classList.toggle('is-dim', m.dim);
+      const sx = panX + m.x * scale;
+      const sy = panY + m.y * scale;
+      const deg = (m.angle * 180) / Math.PI;
+      el.style.transform = `translate(${sx}px, ${sy}px) translate(-50%, -50%) rotate(${deg}deg)`;
+    });
+    while (labHud.childElementCount > labs.length) labHud.removeChild(labHud.lastChild!);
+    const pos = labs.map((m) => ({
+      x: panX + m.x * scale,
+      y: panY + m.y * scale,
+    }));
+    for (let i = 0; i < pos.length; i++) {
+      for (let j = i + 1; j < pos.length; j++) {
+        const a = pos[i]!;
+        const b = pos[j]!;
+        if (Math.abs(a.x - b.x) < 90 && Math.abs(a.y - b.y) < 16) {
+          b.y += 15;
+        }
+      }
+    }
+    labs.forEach((m, i) => {
+      let el = labHud.children[i] as HTMLElement | undefined;
+      if (!el) {
+        el = document.createElement('span');
+        el.className = 'kod-cmap__hud-lab';
+        labHud.appendChild(el);
+      }
+      el.textContent = m.text;
+      el.style.color = m.color;
+      el.classList.toggle('is-dim', m.dim);
+      el.style.transform = `translate(${pos[i]!.x}px, ${pos[i]!.y}px) translate(-50%, -110%)`;
+    });
+  }
+
+  function applyStage() {
+    stage.style.transform = `translate(${panX}px, ${panY}px) scale(${scale})`;
+    const visual = Math.max(0.84, Math.min(1.16, 0.92 + 0.12 * scale));
+    const extra = visual / scale;
+    plates.forEach((el) => {
+      el.style.transform = `scale(${extra})`;
+      el.style.transformOrigin = 'center center';
+    });
+    applyHud();
+  }
+
+  function drawEdges() {
+    const ns = 'http://www.w3.org/2000/svg';
+    svg.replaceChildren();
+    labs = [];
+    arrows = [];
+    let minX = 0;
+    let minY = 0;
+    let maxX = 800;
+    let maxY = 600;
+    nodes.forEach((n) => {
+      minX = Math.min(minX, n.x - 40);
+      minY = Math.min(minY, n.y - 40);
+      maxX = Math.max(maxX, n.x + PLATE_W + 40);
+      maxY = Math.max(maxY, n.y + PLATE_H + 40);
+    });
+    svg.setAttribute('viewBox', `${minX} ${minY} ${maxX - minX} ${maxY - minY}`);
+    svg.style.left = `${minX}px`;
+    svg.style.top = `${minY}px`;
+    svg.style.width = `${maxX - minX}px`;
+    svg.style.height = `${maxY - minY}px`;
+
+    const kin = family ? kinIds() : null;
+    const focus = selected
+      ? nodes.find((n) => n.id === selected || n.slug === selected)
+      : undefined;
+    function boxFor(id: string): PlateBox | undefined {
+      const n = byId.get(id);
+      if (n) return boxOf(n);
+      const raw = map.nodes.find((m) => m.id === id);
+      if (!raw?.faction) return;
+      const hub = lastHubs.find((h) => h.name === raw.text);
+      if (!hub) return;
+      return { x: hub.x - 28, y: hub.y - 28, w: 56, h: 56 };
+    }
+    map.edges.forEach((e) => {
+      const a = boxFor(e.fromNode);
+      const b = boxFor(e.toNode);
+      if (!a || !b) return;
+      const blockers = nodes
+        .filter((n) => n.id !== e.fromNode && n.id !== e.toNode)
+        .map(boxOf);
+      const draw = edgeDraw(
+        a,
+        b,
+        edgeCurvature(map.edges, e),
+        isDirectedEdge(e),
+        8,
+        blockers,
+      );
+      const path = document.createElementNS(ns, 'path');
+      path.setAttribute('d', draw.d);
+      path.setAttribute('fill', 'none');
+      path.setAttribute('stroke', e.color || '#8a8580');
+      path.style.setProperty('--edge', e.color || '#8a8580');
+      path.setAttribute('stroke-linecap', 'round');
+      const onFocus = Boolean(
+        focus && (e.fromNode === focus.id || e.toNode === focus.id),
+      );
+      const dimKin = kin && !(kin.has(e.fromNode) && kin.has(e.toNode) && isKinEdge(e));
+      const dim = Boolean(dimKin) || Boolean(focus && !onFocus);
+      const lit = Boolean(focus && onFocus && !dimKin);
+      path.setAttribute('stroke-width', lit ? '3.15' : '2.1');
+      if (lit) path.classList.add('is-lit');
+      if (dim) path.classList.add('is-dim');
+      svg.appendChild(path);
+      if (draw.arrow) {
+        arrows.push({
+          x: draw.arrow.x,
+          y: draw.arrow.y,
+          angle: draw.arrow.angle,
+          dim,
+        });
+      }
+      if (e.label) {
+        labs.push({
+          x: draw.label.x,
+          y: draw.label.y,
+          text: e.label,
+          color: inkOf(e.color || '#d8d0c4'),
+          dim,
+        });
+      }
+    });
+    applyHud();
   }
 
   function paintPlates() {
     const q = query.trim().toLowerCase();
-    const data = currentData();
+    const kin = family ? kinIds() : null;
     const neighbor = new Set<string>();
     if (selected) {
-      const focus = data.nodes.find((n) => n.id === selected || n.slug === selected);
+      const focus = nodes.find((n) => n.id === selected || n.slug === selected);
       if (focus) {
         neighbor.add(focus.id);
-        data.edges.forEach((e) => {
+        map.edges.forEach((e) => {
           if (e.fromNode === focus.id) neighbor.add(e.toNode);
           if (e.toNode === focus.id) neighbor.add(e.fromNode);
         });
       }
     }
-    plates.forEach((el, id) => {
-      const n = data.nodes.find((x) => x.id === id);
-      const slug = el.dataset.slug;
-      const lit = id === selected || slug === selected;
+    nodes.forEach((n) => {
+      const el = plates.get(n.id);
+      if (!el) return;
+      el.style.left = `${n.x}px`;
+      el.style.top = `${n.y}px`;
+      const visual = Math.max(0.84, Math.min(1.16, 0.92 + 0.12 * scale));
+      el.style.transform = `scale(${visual / scale})`;
+      el.style.transformOrigin = 'center center';
+      const lit = n.id === selected || n.slug === selected;
       el.classList.toggle('is-lit', lit);
       if (lit) el.setAttribute('data-lit', '');
       else el.removeAttribute('data-lit');
       let dim = false;
-      if (q && n && !n.text.toLowerCase().includes(q) && !lit) dim = true;
-      if (selected && !neighbor.has(id) && !lit) dim = true;
+      if (q && !n.text.toLowerCase().includes(q) && !lit) dim = true;
+      if (selected && !family && !neighbor.has(n.id) && !lit) dim = true;
+      if (kin && !kin.has(n.id) && !lit) dim = true;
       el.classList.toggle('is-dim', dim);
     });
-  }
-
-  function syncHud() {
-    const g = Graph.graphData() as { nodes: (GNode & { __threeObj?: { position: { x: number; y: number; z: number } } })[]; links: GLink[] };
-    const cam = Graph.camera?.();
-    g.nodes.forEach((n) => {
-      const el = plates.get(n.id);
-      const p = n.__threeObj?.position;
-      const x = p?.x ?? n.x;
-      const y = p?.y ?? n.y;
-      const z = p?.z ?? n.z;
-      if (!el || x == null || y == null || z == null) return;
-      const c = Graph.graph2ScreenCoords(x, y, z);
-      el.style.transform = `translate(${c.x}px, ${c.y}px) translate(-50%, -50%)`;
-      if (cam?.position) {
-        const dist = Math.hypot(cam.position.x - x, cam.position.y - y, cam.position.z - z);
-        el.style.scale = String(Math.max(0.62, Math.min(1.15, 140 / Math.max(50, dist))));
-      }
-    });
-    g.links.forEach((l) => {
-      const el = labels.get(l.id);
-      if (!el) return;
-      const s = l.source as GNode;
-      const t = l.target as GNode;
-      if (s.x == null || t.x == null) return;
-      const a = Graph.graph2ScreenCoords(s.x, s.y!, s.z!);
-      const b = Graph.graph2ScreenCoords(t.x, t.y!, t.z!);
-      el.style.transform = `translate(${(a.x + b.x) / 2}px, ${(a.y + b.y) / 2}px) translate(-50%, -50%)`;
-      el.classList.toggle('is-dim', selected ? !isHotLink(l) : false);
-    });
+    applyStage();
+    drawEdges();
   }
 
   function refreshDock() {
-    const n = map.nodes.find((x) => x.id === selected || x.slug === selected);
+    const n = nodes.find((x) => x.id === selected || x.slug === selected);
     if (familyBtn) {
       if (n && !n.faction) {
         familyBtn.disabled = false;
         familyBtn.textContent = family ? 'All relations' : `Family of ${firstName(n.text)}`;
+        familyBtn.setAttribute('aria-pressed', family ? 'true' : 'false');
       } else {
         familyBtn.disabled = true;
         familyBtn.textContent = 'Family';
+        familyBtn.setAttribute('aria-pressed', 'false');
         family = false;
       }
     }
-    if (!n || !focusBox || !focusName || !sheetLink) return;
+    if (!n || !focusBox || !focusName || !sheetLink) {
+      if (focusBox) focusBox.hidden = true;
+      return;
+    }
     focusBox.hidden = false;
     focusName.textContent = n.text;
     if (n.slug) {
@@ -431,336 +686,255 @@ function bootMap3d(
     }
   }
 
-  function applyGraph() {
-    const data = currentData();
-    rebuildHud(data);
-    Graph.graphData(toGraph(data));
-    requestAnimationFrame(() => {
-      paintPlates();
-      syncHud();
+  function cameraForFit(): { panX: number; panY: number; scale: number } {
+    let minX = -ROSE_R;
+    let minY = -ROSE_R;
+    let maxX = ROSE_R;
+    let maxY = ROSE_R;
+    lastHubs.forEach((h) => {
+      minX = Math.min(minX, h.x - h.r);
+      minY = Math.min(minY, h.y - h.r);
+      maxX = Math.max(maxX, h.x + h.r);
+      maxY = Math.max(maxY, h.y + h.r);
     });
+    nodes.forEach((n) => {
+      minX = Math.min(minX, n.x);
+      minY = Math.min(minY, n.y);
+      maxX = Math.max(maxX, n.x + PLATE_W);
+      maxY = Math.max(maxY, n.y + PLATE_H);
+    });
+    const bw = maxX - minX || 400;
+    const bh = maxY - minY || 300;
+    const vw = mount.clientWidth || 800;
+    const vh = mount.clientHeight || 520;
+    const pad = 64;
+    const nextScale = Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, Math.min((vw - pad) / bw, (vh - pad) / bh)));
+    return {
+      scale: nextScale,
+      panX: (vw - bw * nextScale) / 2 - minX * nextScale,
+      panY: (vh - bh * nextScale) / 2 - minY * nextScale,
+    };
   }
 
-  function flyTo(id: string) {
-    const nodes = Graph.graphData().nodes as GNode[];
-    const n = nodes.find((x) => x.id === id || x.slug === id);
-    if (!n || n.x == null) return;
-    const dist = 220;
-    const ms = reduced ? 0 : 900;
-    Graph.cameraPosition({ x: n.x + 40, y: n.y! + 36, z: n.z! + dist }, n, ms);
+  function stopAnim() {
+    if (anim) cancelAnimationFrame(anim);
+    anim = 0;
+  }
+
+  function layout(animated: boolean, refit = false) {
+    applyHomes();
+    const from = nodes.map((n) => ({ x: n.x, y: n.y }));
+    const panFrom = { panX, panY, scale };
+    settle(nodes, 48);
+    const to = nodes.map((n) => ({ x: n.x, y: n.y }));
+    const panTo = refit ? cameraForFit() : panFrom;
+    if (!animated || reduced) {
+      nodes.forEach((n, i) => {
+        n.x = to[i]!.x;
+        n.y = to[i]!.y;
+      });
+      if (refit) {
+        panX = panTo.panX;
+        panY = panTo.panY;
+        scale = panTo.scale;
+      }
+      paintPlates();
+      return;
+    }
+    nodes.forEach((n, i) => {
+      n.x = from[i]!.x;
+      n.y = from[i]!.y;
+    });
+    stopAnim();
+    const t0 = performance.now();
+    const tick = (now: number) => {
+      const t = Math.min(1, (now - t0) / LAYOUT_MS);
+      const e = easeSmooth(t);
+      nodes.forEach((n, i) => {
+        n.x = from[i]!.x + (to[i]!.x - from[i]!.x) * e;
+        n.y = from[i]!.y + (to[i]!.y - from[i]!.y) * e;
+      });
+      panX = panFrom.panX + (panTo.panX - panFrom.panX) * e;
+      panY = panFrom.panY + (panTo.panY - panFrom.panY) * e;
+      scale = panFrom.scale + (panTo.scale - panFrom.scale) * e;
+      paintPlates();
+      if (t < 1) anim = requestAnimationFrame(tick);
+      else anim = 0;
+    };
+    anim = requestAnimationFrame(tick);
   }
 
   function select(id: string) {
     selected = id;
     const url = new URL(location.href);
-    const n = map.nodes.find((x) => x.id === id || x.slug === id);
+    const n = nodes.find((x) => x.id === id || x.slug === id);
     if (n?.slug) url.searchParams.set('person', n.slug);
     else url.searchParams.delete('person');
     history.replaceState({}, '', url.pathname + url.search);
     refreshDock();
-    if (family) applyGraph();
+    if (family) layout(true);
     else paintPlates();
-    requestAnimationFrame(() => flyTo(id));
+  }
+
+  function clearFocus() {
+    if (!selected && !family) return;
+    const wasFamily = family;
+    selected = '';
+    family = false;
+    const url = new URL(location.href);
+    url.searchParams.delete('person');
+    history.replaceState({}, '', url.pathname + url.search);
+    refreshDock();
+    if (wasFamily) layout(true);
+    else paintPlates();
+  }
+
+  function zoomBy(factor: number, mx: number, my: number) {
+    const wx = (mx - panX) / scale;
+    const wy = (my - panY) / scale;
+    scale = Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, scale * factor));
+    panX = mx - wx * scale;
+    panY = my - wy * scale;
+    applyStage();
   }
 
   familyBtn?.addEventListener('click', () => {
     if (familyBtn.disabled) return;
-    family = !family;
-    refreshDock();
-    applyGraph();
-    if (selected) requestAnimationFrame(() => flyTo(selected));
+    toggleFamily();
+  });
+
+  function setSlideOpen(id: string, open: boolean) {
+    document.querySelectorAll('.kod-rail [data-slide]').forEach((el) => {
+      const mine = el.getAttribute('data-slide') === id && open;
+      el.setAttribute('data-open', mine ? 'true' : 'false');
+    });
+    document.querySelectorAll('[data-slide-toggle]').forEach((btn) => {
+      const mine = btn.getAttribute('data-slide-toggle') === id && open;
+      btn.setAttribute('aria-expanded', mine ? 'true' : 'false');
+    });
+  }
+
+  document.querySelectorAll('[data-slide-toggle]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const id = btn.getAttribute('data-slide-toggle') || '';
+      const slide = document.querySelector(`.kod-rail [data-slide="${CSS.escape(id)}"]`);
+      const open = !(slide && slide.getAttribute('data-open') === 'true');
+      setSlideOpen(id, open);
+      if (open && id === 'find' && findInput) findInput.focus();
+    });
+  });
+
+  function applyCategory(id: string) {
+    catId = id;
+    document.querySelectorAll('[data-view-group]').forEach((btn) => {
+      const on = Boolean(id) && btn.getAttribute('data-view-group') === id;
+      btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+      const list = btn.parentElement?.querySelector('[data-faction-list]') as HTMLElement | null;
+      if (list) list.hidden = !on;
+    });
+  }
+  applyCategory(catId);
+  document.querySelectorAll('[data-view-group]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const gid = btn.getAttribute('data-view-group') || '';
+      applyCategory(catId === gid ? '' : gid);
+      nodes.forEach((n) => {
+        n.fx = undefined;
+        n.fy = undefined;
+      });
+      layout(true, true);
+    });
   });
   findInput?.addEventListener('input', () => {
     query = findInput.value;
     paintPlates();
   });
-
-  function reveal() {
-    if (painted) return;
-    painted = true;
-    paintPlates();
-    hideWait(root);
-  }
-
-  Graph.onEngineTick(() => {
-    paintPlates();
-    syncHud();
+  findInput?.addEventListener('keydown', (ev) => {
+    if (ev.key !== 'Enter') return;
+    const q = query.trim().toLowerCase();
+    const hit = nodes.find((n) => n.text.toLowerCase().includes(q));
+    if (hit) select(hit.slug || hit.id);
   });
-  Graph.controls()?.addEventListener?.('change', syncHud);
-  (function followCamera() {
-    syncHud();
-    requestAnimationFrame(followCamera);
-  })();
 
-  let fitted = false;
-  function fitView() {
-    if (selected) {
-      flyTo(selected);
+  let fieldMoved = false;
+  mount.addEventListener('pointerdown', (ev) => {
+    if ((ev.target as HTMLElement).closest('.cmap-plate')) return;
+    draggingField = true;
+    fieldMoved = false;
+    lastX = ev.clientX;
+    lastY = ev.clientY;
+    mount.setPointerCapture(ev.pointerId);
+  });
+  mount.addEventListener('pointermove', (ev) => {
+    if (draggingPlate) {
+      const dx = (ev.clientX - lastX) / scale;
+      const dy = (ev.clientY - lastY) / scale;
+      lastX = ev.clientX;
+      lastY = ev.clientY;
+      draggingPlate.x += dx;
+      draggingPlate.y += dy;
+      clampPlate(draggingPlate);
+      draggingPlate.fx = draggingPlate.x;
+      draggingPlate.fy = draggingPlate.y;
+      draggingPlate.homeX = draggingPlate.x;
+      draggingPlate.homeY = draggingPlate.y;
+      paintPlates();
       return;
     }
-    const nodes = Graph.graphData().nodes as GNode[];
-    let cx = 0;
-    let cy = 0;
-    let cz = 0;
-    let maxR = 80;
-    nodes.forEach((n) => {
-      cx += n.x || 0;
-      cy += n.y || 0;
-      cz += n.z || 0;
-    });
-    const n = nodes.length || 1;
-    cx /= n;
-    cy /= n;
-    cz /= n;
-    nodes.forEach((node) => {
-      maxR = Math.max(
-        maxR,
-        Math.hypot((node.x || 0) - cx, (node.y || 0) - cy, (node.z || 0) - cz),
-      );
-    });
-    const dist = maxR * 2.8 + 70;
-    Graph.cameraPosition(
-      { x: cx + dist * 0.85, y: cy + dist * 0.55, z: cz + dist * 0.85 },
-      { x: cx, y: cy, z: cz },
-      reduced ? 0 : 500,
-    );
-    requestAnimationFrame(syncHud);
-  }
-
-  Graph.onEngineStop(() => {
-    paintPlates();
-    if (!fitted) {
-      fitted = true;
-      fitView();
-    }
-    reveal();
-  });
-
-  applyGraph();
-  refreshDock();
-  setTimeout(() => {
-    if (!fitted) {
-      fitted = true;
-      fitView();
-    }
-    reveal();
-  }, reduced ? 200 : 1800);
-
-  const ro = new ResizeObserver(() => {
-    Graph.width(mount.clientWidth || 800).height(mount.clientHeight || 520);
-  });
-  ro.observe(mount);
-}
-
-/** Perspective 3D scene when the browser will not give WebGL2 (Brave Shields, etc.). */
-function bootMapCss3d(root: HTMLElement, mount: HTMLElement, map: RelationMap): void {
-  const findInput = root.querySelector('[data-cmap-find]') as HTMLInputElement | null;
-  const familyBtn = root.querySelector('[data-cmap-family]') as HTMLButtonElement | null;
-  const focusBox = root.querySelector('[data-cmap-focus]') as HTMLElement | null;
-  const focusName = root.querySelector('[data-cmap-focus-name]') as HTMLElement | null;
-  const sheetLink = root.querySelector('[data-cmap-sheet]') as HTMLAnchorElement | null;
-
-  let selected = root.getAttribute('data-person') || '';
-  let family = false;
-  let query = '';
-  let rotY = 0.62;
-  let rotX = 0.38;
-  let scale = 1;
-  let dragging = false;
-  let lastX = 0;
-  let lastY = 0;
-
-  const scene = document.createElement('div');
-  scene.className = 'kod-cmap__css3d';
-  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-  svg.setAttribute('class', 'kod-cmap__css3d-edges');
-  const world = document.createElement('div');
-  world.className = 'kod-cmap__css3d-world';
-  scene.appendChild(svg);
-  scene.appendChild(world);
-  mount.appendChild(scene);
-
-  const plates = new Map<string, HTMLElement>();
-  const pos = new Map<string, { x: number; y: number; z: number }>();
-
-  function currentData(): RelationMap {
-    if (!family || !selected) return map;
-    return kinNeighborhood(map, selected);
-  }
-
-  function refreshDock() {
-    const n = map.nodes.find((x) => x.id === selected || x.slug === selected);
-    if (familyBtn) {
-      if (n && !n.faction) {
-        familyBtn.disabled = false;
-        familyBtn.textContent = family ? 'All relations' : `Family of ${firstName(n.text)}`;
-      } else {
-        familyBtn.disabled = true;
-        familyBtn.textContent = 'Family';
-        family = false;
-      }
-    }
-    if (!n || !focusBox || !focusName || !sheetLink) return;
-    focusBox.hidden = false;
-    focusName.textContent = n.text;
-    if (n.slug) {
-      sheetLink.hidden = false;
-      sheetLink.href = `/characters/${encodeURIComponent(n.slug)}/`;
-    } else {
-      sheetLink.hidden = true;
-      sheetLink.removeAttribute('href');
-    }
-  }
-
-  function select(id: string) {
-    selected = id;
-    const url = new URL(location.href);
-    const n = map.nodes.find((x) => x.id === id || x.slug === id);
-    if (n?.slug) url.searchParams.set('person', n.slug);
-    else url.searchParams.delete('person');
-    history.replaceState({}, '', url.pathname + url.search);
-    refreshDock();
-    if (family) rebuild();
-    else paint();
-  }
-
-  function applyWorld() {
-    world.style.transform = `translate(-50%, -50%) scale(${scale}) rotateX(${rotX}rad) rotateY(${rotY}rad)`;
-  }
-
-  function project(): Map<string, { x: number; y: number }> {
-    const box = scene.getBoundingClientRect();
-    const out = new Map<string, { x: number; y: number }>();
-    plates.forEach((el, id) => {
-      const r = el.getBoundingClientRect();
-      out.set(id, { x: r.left + r.width / 2 - box.left, y: r.top + r.height / 2 - box.top });
-    });
-    return out;
-  }
-
-  function drawEdges() {
-    const data = currentData();
-    const scr = project();
-    const ns = 'http://www.w3.org/2000/svg';
-    svg.setAttribute('viewBox', `0 0 ${scene.clientWidth || 800} ${scene.clientHeight || 520}`);
-    svg.replaceChildren();
-    data.edges.forEach((e) => {
-      const a = scr.get(e.fromNode);
-      const b = scr.get(e.toNode);
-      if (!a || !b) return;
-      const line = document.createElementNS(ns, 'line');
-      line.setAttribute('x1', String(a.x));
-      line.setAttribute('y1', String(a.y));
-      line.setAttribute('x2', String(b.x));
-      line.setAttribute('y2', String(b.y));
-      line.setAttribute('stroke', e.color || '#8a8580');
-      line.setAttribute('stroke-width', '1.2');
-      svg.appendChild(line);
-      if (e.label) {
-        const lab = document.createElementNS(ns, 'text');
-        lab.setAttribute('x', String((a.x + b.x) / 2));
-        lab.setAttribute('y', String((a.y + b.y) / 2 - 6));
-        lab.setAttribute('text-anchor', 'middle');
-        lab.setAttribute('fill', e.color || '#c4bfb6');
-        lab.setAttribute('class', 'kod-cmap__elabel');
-        lab.textContent = e.label;
-        svg.appendChild(lab);
-      }
-    });
-  }
-
-  function paint() {
-    const q = query.trim().toLowerCase();
-    const data = currentData();
-    const neighbor = new Set<string>();
-    if (selected) {
-      const focus = data.nodes.find((n) => n.id === selected || n.slug === selected);
-      if (focus) {
-        neighbor.add(focus.id);
-        data.edges.forEach((e) => {
-          if (e.fromNode === focus.id) neighbor.add(e.toNode);
-          if (e.toNode === focus.id) neighbor.add(e.fromNode);
-        });
-      }
-    }
-    plates.forEach((el, id) => {
-      const n = data.nodes.find((x) => x.id === id);
-      const lit = id === selected || el.dataset.slug === selected;
-      el.classList.toggle('is-lit', lit);
-      if (lit) el.setAttribute('data-lit', '');
-      else el.removeAttribute('data-lit');
-      let dim = false;
-      if (q && n && !n.text.toLowerCase().includes(q) && !lit) dim = true;
-      if (selected && !neighbor.has(id) && !lit) dim = true;
-      el.classList.toggle('is-dim', dim);
-    });
-    applyWorld();
-    requestAnimationFrame(drawEdges);
-  }
-
-  function rebuild() {
-    const data = currentData();
-    const seeded = toGraph(data);
-    world.replaceChildren();
-    plates.clear();
-    pos.clear();
-    seeded.nodes.forEach((n) => {
-      const p = { x: n.x || 0, y: n.y || 0, z: n.z || 0 };
-      pos.set(n.id, p);
-      const el = plateEl(n);
-      el.style.transform = `translate3d(${p.x}px, ${p.y}px, ${p.z}px) translate(-50%, -50%)`;
-      el.addEventListener('click', (ev) => {
-        ev.stopPropagation();
-        select(n.slug || n.id);
-      });
-      plates.set(n.id, el);
-      world.appendChild(el);
-    });
-    paint();
-    refreshDock();
-  }
-
-  scene.addEventListener('pointerdown', (ev) => {
-    if ((ev.target as HTMLElement).closest('.cmap-plate')) return;
-    dragging = true;
+    if (!draggingField) return;
+    const mx = ev.clientX - lastX;
+    const my = ev.clientY - lastY;
+    if (Math.hypot(mx, my) > 6) fieldMoved = true;
+    panX += mx;
+    panY += my;
     lastX = ev.clientX;
     lastY = ev.clientY;
-    scene.setPointerCapture(ev.pointerId);
+    applyStage();
   });
-  scene.addEventListener('pointermove', (ev) => {
-    if (!dragging) return;
-    rotY += (ev.clientX - lastX) * 0.008;
-    rotX += (ev.clientY - lastY) * 0.008;
-    rotX = Math.max(-1.2, Math.min(1.2, rotX));
-    lastX = ev.clientX;
-    lastY = ev.clientY;
-    paint();
+  mount.addEventListener('pointerup', () => {
+    if (draggingPlate) {
+      clampPlate(draggingPlate);
+      draggingPlate.fx = draggingPlate.x;
+      draggingPlate.fy = draggingPlate.y;
+      draggingPlate = null;
+      settle(nodes, 16);
+      paintPlates();
+    } else if (draggingField && !fieldMoved) {
+      clearFocus();
+    }
+    draggingField = false;
   });
-  scene.addEventListener('pointerup', () => {
-    dragging = false;
-  });
-  scene.addEventListener(
+  mount.addEventListener(
     'wheel',
     (ev) => {
       ev.preventDefault();
-      scale = Math.max(0.45, Math.min(2.4, scale * (ev.deltaY > 0 ? 0.92 : 1.08)));
-      paint();
+      const rect = mount.getBoundingClientRect();
+      zoomBy(ev.deltaY > 0 ? 0.92 : 1.08, ev.clientX - rect.left, ev.clientY - rect.top);
     },
     { passive: false },
   );
-
-  familyBtn?.addEventListener('click', () => {
-    if (familyBtn.disabled) return;
-    family = !family;
-    rebuild();
+  document.addEventListener('keydown', (ev) => {
+    const t = ev.target as HTMLElement | null;
+    const typing =
+      t &&
+      (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.tagName === 'SELECT' || t.isContentEditable);
+    if (typing) return;
+    if (ev.key === '+' || ev.key === '=' || ev.key === 'Add') {
+      ev.preventDefault();
+      zoomBy(1.12, (mount.clientWidth || 800) / 2, (mount.clientHeight || 520) / 2);
+    } else if (ev.key === '-' || ev.key === '_' || ev.key === 'Subtract') {
+      ev.preventDefault();
+      zoomBy(0.89, (mount.clientWidth || 800) / 2, (mount.clientHeight || 520) / 2);
+    } else if (ev.key === 'Escape') {
+      clearFocus();
+    }
   });
-  findInput?.addEventListener('input', () => {
-    query = findInput.value;
-    paint();
-  });
 
-  rebuild();
-  hideWait(root);
+  layout(false);
+  fitView();
+  paintPlates();
+  refreshDock();
+  if (selected) select(selected);
 }
 
 export { isKinEdge };
