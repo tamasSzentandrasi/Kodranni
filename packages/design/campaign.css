@@ -5568,9 +5568,101 @@ html[data-ornaments='ready'] .arch:nth-child(6) { animation-delay: 0.2s; }
   outline: none;
 }
 
+html.is-map,
+body.is-map {
+  height: 100%;
+  margin: 0;
+  background: #050403;
+}
+
+body.is-map .app--map {
+  margin: 0;
+  padding: 0;
+  max-width: none;
+}
+
+body.is-map .app__brand,
+body.is-map .app__meta,
+body.is-map .tabs {
+  display: none;
+}
+
+.cmap-back {
+  position: fixed;
+  top: 0.85rem;
+  left: 0.85rem;
+  z-index: 52;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.55rem;
+  height: 2.55rem;
+  margin: 0;
+  padding: 0 0 0.08em;
+  border-radius: 50%;
+  text-decoration: none;
+  color: #d8d4cc;
+  font-family: var(--kod-font-display);
+  font-size: 1.4rem;
+  line-height: 1;
+  background: var(--kod-btn-round) center / contain no-repeat;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.55);
+}
+
+.cmap-back:hover,
+.cmap-back:focus-visible {
+  background-image: var(--kod-btn-round-moon);
+  outline: none;
+  color: #fff;
+  filter: drop-shadow(0 0 8px rgba(242, 210, 150, 0.4));
+}
+
 .kod-cmap {
   position: relative;
   min-height: 72vh;
+}
+
+body.is-map .kod-cmap {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  min-height: 100%;
+}
+
+body.is-map .kod-slide[data-slide='factions'],
+body.is-map .kod-slide[data-slide='find'] {
+  top: 1rem;
+}
+
+body.is-map .kod-cmap__frame,
+body.is-map .kod-cmap__web {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  min-height: 100%;
+  border: none;
+  background:
+    radial-gradient(ellipse at 50% 42%, #1a1410 0%, #0c0a08 42%, #050403 78%);
+}
+
+body.is-map .kod-cmap__web::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 100%, rgba(8, 6, 5, 0.55), transparent 55%);
+  z-index: 4;
+}
+
+body.is-map .kod-cmap__focus {
+  position: fixed;
+  top: 0.95rem;
+  left: calc(50% + 1.8rem);
+  z-index: 52;
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--kod-silver);
+  text-shadow: 0 0 0.4rem #050403;
 }
 
 .kod-cmap__frame {
@@ -5605,7 +5697,52 @@ html[data-ornaments='ready'] .arch:nth-child(6) { animation-delay: 0.2s; }
 }
 
 .kod-cmap__web canvas {
-  display: block;
+  display: none;
+}
+
+.kod-cmap__stage {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform-origin: 0 0;
+  will-change: transform;
+  cursor: grab;
+}
+
+.kod-cmap__stage:active {
+  cursor: grabbing;
+}
+
+.kod-cmap__edges {
+  position: absolute;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.kod-cmap__edges image {
+  mix-blend-mode: normal;
+}
+
+.kod-cmap__edges path.is-lit {
+  stroke-width: 3.15;
+  filter: drop-shadow(0 0 5px color-mix(in srgb, var(--edge, #d8d0c4) 70%, transparent));
+}
+
+.kod-cmap__edges path.is-dim {
+  opacity: 0.15;
+}
+
+.kod-cmap__nodes {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+}
+
+.kod-cmap__nodes .cmap-plate {
+  position: absolute;
+  margin: 0;
+  pointer-events: auto;
 }
 
 .kod-cmap__css3d {
@@ -5668,16 +5805,48 @@ html[data-ornaments='ready'] .arch:nth-child(6) { animation-delay: 0.2s; }
 .kod-cmap__hud-lab {
   pointer-events: none;
   font-family: Bellefair, serif;
-  font-size: 0.72rem;
-  letter-spacing: 0.02em;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
   white-space: nowrap;
+  color: #f6f1e6;
   text-shadow:
-    0 0 0.25rem #141210,
-    0 0 0.55rem #141210;
+    0 0 0.12rem #050403,
+    1px 0 0 #050403,
+    -1px 0 0 #050403,
+    0 1px 0 #050403,
+    0 -1px 0 #050403,
+    1px 1px 0 #050403,
+    -1px 1px 0 #050403,
+    0 0 0.45rem #050403,
+    0 0 0.9rem #050403;
 }
 
 .kod-cmap__hud-lab.is-dim {
   opacity: 0.28;
+}
+
+.kod-cmap__hud-arrows,
+.kod-cmap__hud-labs {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.kod-cmap__hud-arrow {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
+  pointer-events: none;
+  filter:
+    drop-shadow(0 0 3px #050403)
+    drop-shadow(0 0 8px rgba(242, 210, 150, 0.55));
+}
+
+.kod-cmap__hud-arrow.is-dim {
+  opacity: 0.22;
 }
 
 .cmap-plate {
@@ -5695,22 +5864,325 @@ html[data-ornaments='ready'] .arch:nth-child(6) { animation-delay: 0.2s; }
   font-style: italic;
 }
 
-.cmap-plate--sheet .member__name::after {
-  content: '';
-  display: inline-block;
-  width: 0.38rem;
-  height: 0.38rem;
-  margin-left: 0.28rem;
-  border-radius: 50%;
-  border: 1px solid #14110e;
-  vertical-align: middle;
-  opacity: 0.7;
-}
-
 .cmap-plate--faction .member__name {
   letter-spacing: 0.1em;
   text-transform: uppercase;
   font-size: 0.78rem;
+}
+
+.kod-cmap__cats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.85rem;
+}
+
+.kod-cmap__cat {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--kod-silver-dim);
+  padding: 0.35rem 0.15rem;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  font: inherit;
+}
+
+.kod-cmap__cat[aria-pressed='true'] {
+  color: var(--kod-silver-bright);
+  border-bottom-color: var(--kod-blood);
+}
+
+.kod-cmap__rose {
+  position: absolute;
+  left: -160px;
+  top: -160px;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  overflow: visible;
+  pointer-events: auto;
+  z-index: 1;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+}
+
+.kod-cmap__halo {
+  position: absolute;
+  inset: -95%;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  mix-blend-mode: screen;
+  background: radial-gradient(
+    circle,
+    rgba(226, 236, 255, 0.42) 0%,
+    rgba(198, 218, 255, 0.2) 12%,
+    rgba(168, 196, 240, 0.1) 24%,
+    rgba(140, 176, 224, 0.045) 40%,
+    rgba(110, 150, 210, 0.018) 58%,
+    transparent 78%
+  );
+  animation:
+    cmap-halo-in 2.2s ease-out both,
+    cmap-halo-moon 7.2s ease-in-out 2.2s infinite;
+}
+
+.kod-cmap__glass {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+  -webkit-mask-image: radial-gradient(circle, #000 49.4%, transparent 50%);
+  mask-image: radial-gradient(circle, #000 49.4%, transparent 50%);
+}
+
+.kod-cmap__rose:hover,
+.kod-cmap__rose:focus-visible {
+  outline: none;
+}
+
+.kod-cmap__rose:hover .kod-cmap__halo,
+.kod-cmap__rose:focus-visible .kod-cmap__halo {
+  background: radial-gradient(
+    circle,
+    rgba(236, 244, 255, 0.55) 0%,
+    rgba(206, 224, 255, 0.26) 14%,
+    rgba(176, 204, 245, 0.12) 28%,
+    rgba(148, 184, 230, 0.05) 46%,
+    rgba(120, 160, 220, 0.02) 64%,
+    transparent 82%
+  );
+}
+
+.kod-cmap__rose:hover .kod-cmap__glass,
+.kod-cmap__rose:focus-visible .kod-cmap__glass {
+  filter:
+    brightness(1.22)
+    saturate(1.18);
+}
+
+.kod-cmap__rose img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0.98;
+  pointer-events: none;
+}
+
+.kod-cmap__moon {
+  position: absolute;
+  inset: 3%;
+  border-radius: 50%;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 34% 26%, rgba(228, 238, 255, 0.78), transparent 46%),
+    radial-gradient(circle at 62% 58%, rgba(170, 198, 236, 0.28), transparent 52%);
+  mix-blend-mode: screen;
+  animation: cmap-moon 8s ease-in-out infinite;
+}
+
+.kod-cmap__moon::after {
+  content: '';
+  position: absolute;
+  inset: -12%;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 12deg,
+    transparent 0 36%,
+    rgba(220, 232, 255, 0.32) 47%,
+    transparent 58% 100%
+  );
+  mix-blend-mode: screen;
+  animation: cmap-moon-spin 22s linear infinite;
+}
+
+.kod-cmap__title {
+  position: absolute;
+  inset: 22%;
+  z-index: 2;
+  pointer-events: none;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  font-family: Bellefair, serif;
+  font-size: clamp(1.25rem, 2.6vw, 1.8rem);
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  line-height: 1.15;
+  color: #fff8ee;
+  text-shadow:
+    0 0 0.12rem #050403,
+    1px 0 0 #050403,
+    -1px 0 0 #050403,
+    0 1px 0 #050403,
+    0 -1px 0 #050403,
+    0 0 0.45rem #050403,
+    0 0 0.9rem #050403,
+    0 0 1.4rem rgba(196, 216, 245, 0.5);
+}
+
+.kod-cmap__title::before {
+  content: '';
+  position: absolute;
+  width: 78%;
+  height: 48%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(5, 4, 3, 0.78) 0%, rgba(5, 4, 3, 0.35) 55%, transparent 74%);
+  z-index: -1;
+  pointer-events: none;
+}
+
+@keyframes cmap-moon {
+  0%,
+  100% {
+    opacity: 0.38;
+    filter: brightness(0.88);
+  }
+  50% {
+    opacity: 1;
+    filter: brightness(1.38);
+  }
+}
+
+@keyframes cmap-moon-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes cmap-halo-in {
+  from {
+    opacity: 0.15;
+    filter: brightness(0.7);
+  }
+  to {
+    opacity: 0.85;
+    filter: brightness(1);
+  }
+}
+
+@keyframes cmap-halo-moon {
+  0%,
+  100% {
+    opacity: 0.55;
+    filter: brightness(0.9);
+  }
+  50% {
+    opacity: 1;
+    filter: brightness(1.32);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kod-cmap__moon,
+  .kod-cmap__moon::after,
+  .kod-cmap__halo {
+    animation: none;
+  }
+
+  .kod-cmap__well {
+    transition: none;
+  }
+}
+
+.kod-cmap__well {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  background: radial-gradient(
+    circle,
+    hsl(var(--well-h) 40% 40% / 0.34) 0%,
+    hsl(var(--well-h) 34% 26% / 0.16) 38%,
+    hsl(var(--well-h) 30% 18% / 0.06) 62%,
+    transparent 82%
+  );
+  mix-blend-mode: screen;
+  transition:
+    left 0.52s ease,
+    top 0.52s ease,
+    width 0.52s ease,
+    height 0.52s ease,
+    opacity 0.4s ease;
+}
+
+.kod-cmap__well.is-on {
+  opacity: 1;
+}
+
+.kod-cmap__well-name {
+  font-family: Bellefair, serif;
+  font-size: 1.55rem;
+  letter-spacing: 0.16em;
+  color: hsl(var(--well-h) 30% 78% / 0.45);
+  text-shadow: 0 0 1.2rem hsl(var(--well-h) 40% 20% / 0.8);
+  pointer-events: none;
+}
+
+.kod-cmap__hub {
+  position: absolute;
+  width: 5.2rem;
+  text-align: center;
+  pointer-events: none;
+  opacity: 0.38;
+  z-index: 1;
+}
+
+.kod-cmap__hub.is-on {
+  opacity: 1;
+}
+
+.kod-cmap__hub-seal {
+  display: block;
+  width: 1.55rem;
+  height: 1.55rem;
+  margin: 0 auto 0.15rem;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, color-mix(in srgb, var(--stain) 80%, #f2efe9), var(--stain) 55%, #141210);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--stain) 55%, transparent);
+}
+
+.kod-cmap__hub-name {
+  font-family: Bellefair, serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  color: var(--kod-silver);
+}
+
+.cmap-menu {
+  position: fixed;
+  z-index: 54;
+  min-width: 9rem;
+  padding: 0.3rem 0;
+  background: #1c1916;
+  border: 1px solid color-mix(in srgb, var(--kod-frame) 70%, transparent);
+}
+
+.cmap-menu button,
+.cmap-menu a {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  background: none;
+  border: none;
+  color: var(--kod-silver-bright);
+  font: inherit;
+  letter-spacing: 0.03em;
+  text-align: left;
+  text-decoration: none;
+  padding: 0.28rem 0.85rem;
+  cursor: pointer;
+}
+
+.cmap-menu button:hover,
+.cmap-menu a:hover {
+  background: color-mix(in srgb, var(--kod-blood) 22%, transparent);
 }
 
 .kod-cmap__family {
@@ -5804,41 +6276,14 @@ html[data-ornaments='ready'] .arch:nth-child(6) { animation-delay: 0.2s; }
   font-style: italic;
 }
 
-.kod-cmap__stage {
-  position: relative;
-  transform-origin: 0 0;
-  cursor: grab;
-  min-height: 60vh;
-}
-
-.kod-cmap__stage:active {
-  cursor: grabbing;
-}
-
-.kod-cmap__edges {
-  display: block;
-  overflow: visible;
-}
-
 .kod-cmap__elabel {
   font-family: Bellefair, serif;
-  font-size: 0.72rem;
+  font-size: 11px;
+  letter-spacing: 0.02em;
   paint-order: stroke fill;
   stroke: #141210;
   stroke-width: 4px;
   stroke-linejoin: round;
-}
-
-.kod-cmap__nodes {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-.kod-cmap__nodes .cmap-plate {
-  position: absolute;
-  margin: 0;
-  pointer-events: auto;
 }
 
 .kod-cmap__name {
