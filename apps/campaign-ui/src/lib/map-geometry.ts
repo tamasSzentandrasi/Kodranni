@@ -44,6 +44,7 @@ export type EdgeDraw = {
   d: string;
   start: Pt;
   end: Pt;
+  ctrl: Pt;
   label: Pt;
   arrow: { x: number; y: number; angle: number } | null;
 };
@@ -69,7 +70,7 @@ export function edgeDraw(
     const tip = quadPoint(start, ctrl, end, 0.92);
     arrow = { x: tip.x, y: tip.y, angle: Math.atan2(tan.y, tan.x) };
   }
-  return { d, start, end, label, arrow };
+  return { d, start, end, ctrl, label, arrow };
 }
 
 export function pointInEllipse(b: PlateBox, p: Pt): boolean {
@@ -146,9 +147,21 @@ export function detourCtrl(
 
 export type HubSpec = { id: string; name: string; hue: number };
 export type SeatPerson = { id: string; hubIds: string[]; neighborIds?: string[] };
+export type SeatTie = { from: string; to: string; label?: string; directed?: boolean };
 
 export type HubPose = HubSpec & { x: number; y: number; r: number };
 export type SeatPose = { id: string; x: number; y: number };
+
+/** Calibrated for Bellefair nameplates ~138×32 and horizontal edge type. */
+const SIB_AIR = 36;
+const LAYER_AIR = 48;
+const LAYER_PER_GLYPH = 2.8;
+const SECTOR_AIR = 44;
+const LABEL_EM = 7.4;
+const LABEL_H = 16;
+const PUSH_RANGE = 260;
+const PUSH_G = 7200;
+const LABEL_SPAN_MAX = 360;
 
 /** Radial seating: hubs on a ring, people on faction arcs, unaligned on an outer walk. */
 export const ROSE_R = 164;
@@ -156,7 +169,7 @@ export const ROSE_CLEAR = 52;
 
 const WELL_MIN = 280;
 const WELL_SCALE = 2.15;
-const PACK_GAP = 24;
+const PACK_GAP = 32;
 
 /** Circumradius of an axis-aligned plate, plus air — packing quantum. */
 export function plateClear(w: number, h: number, gap = PACK_GAP): number {
@@ -238,6 +251,67 @@ export function separateSeats(
   return out;
 }
 
+/** Local inverse-square push so plates clear, then min chord for each label. */
+export function relaxSeats(
+  seats: SeatPose[],
+  ties: SeatTie[],
+  plateW: number,
+  plateH: number,
+): SeatPose[] {
+  const out = seats.map((s) => ({ ...s }));
+  const byId = new Map(out.map((s) => [s.id, s]));
+  for (let t = 0; t < 22; t++) {
+    for (let i = 0; i < out.length; i++) {
+      for (let j = i + 1; j < out.length; j++) {
+        const a = out[i]!;
+        const b = out[j]!;
+        const acx = a.x + plateW / 2;
+        const acy = a.y + plateH / 2;
+        const bcx = b.x + plateW / 2;
+        const bcy = b.y + plateH / 2;
+        const dx = bcx - acx;
+        const dy = bcy - acy;
+        const dist = Math.hypot(dx, dy) || 1;
+        if (dist > PUSH_RANGE) continue;
+        const f = PUSH_G / (dist * dist + 90);
+        const ux = dx / dist;
+        const uy = dy / dist;
+        a.x -= ux * f;
+        a.y -= uy * f;
+        b.x += ux * f;
+        b.y += uy * f;
+      }
+    }
+    for (const s of out) {
+      const k = keepOffRose(s.x, s.y, plateW, plateH);
+      s.x = k.x;
+      s.y = k.y;
+    }
+  }
+  for (let n = 0; n < 5; n++) {
+    for (const t of ties) {
+      const a = byId.get(t.from);
+      const b = byId.get(t.to);
+      if (!a || !b) continue;
+      const acx = a.x + plateW / 2;
+      const acy = a.y + plateH / 2;
+      const bcx = b.x + plateW / 2;
+      const bcy = b.y + plateH / 2;
+      const dist = Math.hypot(bcx - acx, bcy - acy) || 1;
+      const need = Math.min(LABEL_SPAN_MAX, labelRestLength(t.label ?? '', plateW));
+      if (dist >= need) continue;
+      const push = Math.min(48, (need - dist) / 2);
+      const ux = (bcx - acx) / dist;
+      const uy = (bcy - acy) / dist;
+      a.x -= ux * push;
+      a.y -= uy * push;
+      b.x += ux * push;
+      b.y += uy * push;
+    }
+  }
+  return separateSeats(out, plateW, plateH, 20);
+}
+
 function wellFromSeats(
   seats: SeatPose[],
   fallbackX: number,
@@ -263,275 +337,232 @@ function wellFromSeats(
   return { cx: hx, cy: hy, r: Math.max(WELL_MIN, pack * WELL_SCALE) };
 }
 
-function estimatedWell(count: number, plateW: number, plateH: number): number {
-  const pack = plateClear(plateW, plateH) * Math.sqrt(Math.max(count, 1)) * 1.2 + 36;
-  return Math.max(WELL_MIN, pack * WELL_SCALE);
+function labelWidth(text: string): number {
+  return Math.max(24, (text ?? '').trim().length * LABEL_EM);
 }
 
-function sunflower(
-  hx: number,
-  hy: number,
-  members: SeatPerson[],
-  plateW: number,
-  plateH: number,
-): SeatPose[] {
-  if (members.length === 0) return [];
-  if (members.length === 1) {
-    return [{ id: members[0]!.id, x: hx - plateW / 2, y: hy - plateH / 2 }];
-  }
-  const golden = Math.PI * (3 - Math.sqrt(5));
-  const scale = plateClear(plateW, plateH) * 1.12;
-  return members.map((p, i) => {
-    const r = scale * Math.sqrt(i + 0.55);
-    const a = i * golden;
-    return {
-      id: p.id,
-      x: hx + Math.cos(a) * r - plateW / 2,
-      y: hy + Math.sin(a) * r - plateH / 2,
-    };
-  });
+export function labelRestLength(label: string, plateW: number): number {
+  return Math.max(plateW + SIB_AIR, plateW * 0.45 + labelWidth(label) + 28);
 }
 
-function orderHubs(
-  hubs: HubSpec[],
-  people: SeatPerson[],
-  membersOf: Map<string, SeatPerson[]>,
-): HubSpec[] {
-  if (hubs.length < 2) return hubs.slice();
-  const hubOf = (id: string) => {
-    const p = people.find((x) => x.id === id);
-    return p?.hubIds.find((h) => membersOf.has(h)) ?? '';
+function glyphs(label: string): number {
+  return (label ?? '').trim().length;
+}
+
+type Tidy = {
+  id: string;
+  children: Tidy[];
+  x: number;
+  minX: number;
+  maxX: number;
+  depth: number;
+};
+
+function leftContour(n: Tidy): number[] {
+  const out: number[] = [];
+  const walk = (v: Tidy, d: number) => {
+    out[d] = out[d] == null ? v.x : Math.min(out[d]!, v.x);
+    v.children.forEach((c) => walk(c, d + 1));
   };
-  const ties = (a: string, b: string) => {
-    let n = 0;
-    for (const p of people) {
-      if (hubOf(p.id) !== a) continue;
-      for (const q of p.neighborIds ?? []) {
-        if (hubOf(q) === b) n += 1;
-      }
-    }
-    return n;
-  };
-  const left = hubs.slice();
-  left.sort((a, b) => (membersOf.get(b.id)?.length ?? 0) - (membersOf.get(a.id)?.length ?? 0));
-  const out: HubSpec[] = [left.shift()!];
-  while (left.length) {
-    const last = out[out.length - 1]!;
-    left.sort((a, b) => {
-      const tb = ties(last.id, b.id) + ties(b.id, last.id);
-      const ta = ties(last.id, a.id) + ties(a.id, last.id);
-      return tb - ta || (membersOf.get(b.id)?.length ?? 0) - (membersOf.get(a.id)?.length ?? 0);
-    });
-    out.push(left.shift()!);
-  }
+  walk(n, 0);
   return out;
 }
 
-function angleDelta(from: number, to: number): number {
-  let d = to - from;
-  while (d > Math.PI) d -= 2 * Math.PI;
-  while (d < -Math.PI) d += 2 * Math.PI;
-  return d;
+function rightContour(n: Tidy): number[] {
+  const out: number[] = [];
+  const walk = (v: Tidy, d: number) => {
+    out[d] = out[d] == null ? v.x : Math.max(out[d]!, v.x);
+    v.children.forEach((c) => walk(c, d + 1));
+  };
+  walk(n, 0);
+  return out;
 }
 
-/**
- * Polar force polish: circular order is the starting angle, not the result.
- * Springs along ties, ellipse collide, radial band, weak charge, soft
- * angular memory so houses stay in an arc without equal slots.
- */
-export function polishAnnulus(
-  seats: SeatPose[],
-  people: SeatPerson[],
-  plateW: number,
-  plateH: number,
-  ticks = 110,
-): SeatPose[] {
-  const minR = roseMinR(plateW, plateH);
-  const maxR = minR + 620;
-  const midR = minR + 120;
-  const person = new Map(people.map((p) => [p.id, p]));
-  const hubOf = (id: string) => person.get(id)?.hubIds[0] ?? '';
-  const nodes = seats.map((s) => {
-    const cx = s.x + plateW / 2;
-    const cy = s.y + plateH / 2;
-    const deg = person.get(s.id)?.neighborIds?.length ?? 0;
-    const aligned = Boolean(hubOf(s.id));
-    return {
-      id: s.id,
-      x: cx,
-      y: cy,
-      vx: 0,
-      vy: 0,
-      hub: hubOf(s.id),
-      homeAng: Math.atan2(cy, cx),
-      targetR: Math.max(minR, midR - Math.min(deg, 5) * 18 + (aligned ? 0 : 110)),
-    };
+function shiftTree(n: Tidy, dx: number) {
+  n.x += dx;
+  n.minX += dx;
+  n.maxX += dx;
+  n.children.forEach((c) => shiftTree(c, dx));
+}
+
+/** Walker / Buchheim n-ary tidy: siblings along x, generations along depth. */
+function tidyLayout(root: Tidy, sibGap: number) {
+  const rec = (n: Tidy, depth: number) => {
+    n.depth = depth;
+    n.children.forEach((c) => rec(c, depth + 1));
+    if (!n.children.length) {
+      n.x = 0;
+      n.minX = 0;
+      n.maxX = 0;
+      return;
+    }
+    let packedRight: number[] = [];
+    n.children.forEach((c, i) => {
+      if (i === 0) {
+        packedRight = rightContour(c);
+        return;
+      }
+      const left = leftContour(c);
+      let sep = sibGap;
+      const dmax = Math.min(packedRight.length, left.length);
+      for (let d = 0; d < dmax; d++) {
+        sep = Math.max(sep, packedRight[d]! + sibGap - left[d]!);
+      }
+      shiftTree(c, sep);
+      const right = rightContour(c);
+      for (let d = 0; d < right.length; d++) {
+        packedRight[d] = Math.max(packedRight[d] ?? -Infinity, right[d]!);
+      }
+    });
+    const first = n.children[0]!;
+    const last = n.children[n.children.length - 1]!;
+    n.x = (first.x + last.x) / 2;
+    n.minX = Math.min(first.minX, n.x);
+    n.maxX = Math.max(last.maxX, n.x);
+    n.children.forEach((c) => {
+      n.minX = Math.min(n.minX, c.minX);
+      n.maxX = Math.max(n.maxX, c.maxX);
+    });
+  };
+  rec(root, 0);
+}
+
+function permutations<T>(items: T[]): T[][] {
+  if (items.length <= 1) return [items.slice()];
+  const out: T[][] = [];
+  items.forEach((item, i) => {
+    const rest = items.slice(0, i).concat(items.slice(i + 1));
+    for (const p of permutations(rest)) out.push([item, ...p]);
   });
-  const byId = new Map(nodes.map((n) => [n.id, n]));
-  const pairs: { a: (typeof nodes)[0]; b: (typeof nodes)[0]; rest: number; str: number }[] = [];
-  const seen = new Set<string>();
-  for (const p of people) {
-    for (const q of p.neighborIds ?? []) {
-      const key = p.id < q ? `${p.id}|${q}` : `${q}|${p.id}`;
-      if (seen.has(key)) continue;
-      seen.add(key);
-      const a = byId.get(p.id);
-      const b = byId.get(q);
-      if (!a || !b) continue;
-      const same = Boolean(hubOf(p.id) && hubOf(p.id) === hubOf(q));
-      const rest = same ? 160 : 500;
-      pairs.push({ a, b, rest, str: same ? 0.085 : 0.022 });
-    }
-  }
-
-  let alpha = 1;
-  for (let t = 0; t < ticks; t++) {
-    alpha *= 0.978;
-    for (const n of nodes) {
-      const r = Math.hypot(n.x, n.y) || 1;
-      const ux = n.x / r;
-      const uy = n.y / r;
-      n.vx += ux * (n.targetR - r) * 0.018 * alpha;
-      n.vy += uy * (n.targetR - r) * 0.018 * alpha;
-      const ang = Math.atan2(n.y, n.x);
-      const da = angleDelta(ang, n.homeAng);
-      n.vx += -uy * da * r * 0.022 * alpha;
-      n.vy += ux * da * r * 0.022 * alpha;
-    }
-    const centroids = new Map<string, { x: number; y: number; n: number; well: number }>();
-    for (const n of nodes) {
-      if (!n.hub) continue;
-      const c = centroids.get(n.hub) ?? { x: 0, y: 0, n: 0, well: 0 };
-      c.x += n.x;
-      c.y += n.y;
-      c.n += 1;
-      centroids.set(n.hub, c);
-    }
-    centroids.forEach((c, id) => {
-      c.x /= c.n;
-      c.y /= c.n;
-      c.well = estimatedWell(c.n, plateW, plateH);
-      void id;
-    });
-    for (const n of nodes) {
-      if (!n.hub) continue;
-      const c = centroids.get(n.hub);
-      if (!c) continue;
-      n.vx += (c.x - n.x) * 0.12 * alpha;
-      n.vy += (c.y - n.y) * 0.12 * alpha;
-    }
-    const hubIds = [...centroids.keys()];
-    for (let i = 0; i < hubIds.length; i++) {
-      for (let j = i + 1; j < hubIds.length; j++) {
-        const ca = centroids.get(hubIds[i]!)!;
-        const cb = centroids.get(hubIds[j]!)!;
-        const dx = cb.x - ca.x;
-        const dy = cb.y - ca.y;
-        const dist = Math.hypot(dx, dy) || 1;
-        const min = (ca.well + cb.well) * 0.42;
-        if (dist >= min) continue;
-        const push = ((min - dist) / dist) * 0.08 * alpha;
-        for (const n of nodes) {
-          if (n.hub === hubIds[i]) {
-            n.vx -= dx * push;
-            n.vy -= dy * push;
-          } else if (n.hub === hubIds[j]) {
-            n.vx += dx * push;
-            n.vy += dy * push;
-          }
-        }
-      }
-    }
-    for (const { a, b, rest, str } of pairs) {
-      const dx = b.x - a.x;
-      const dy = b.y - a.y;
-      const dist = Math.hypot(dx, dy) || 1;
-      const f = ((dist - rest) / dist) * str * alpha;
-      a.vx += dx * f;
-      a.vy += dy * f;
-      b.vx -= dx * f;
-      b.vy -= dy * f;
-    }
-    for (let i = 0; i < nodes.length; i++) {
-      for (let j = i + 1; j < nodes.length; j++) {
-        const a = nodes[i]!;
-        const b = nodes[j]!;
-        const dx = b.x - a.x;
-        const dy = b.y - a.y;
-        const dist = Math.hypot(dx, dy) || 1;
-        if (dist < 560) {
-          const rep = (520 / dist) * 0.014 * alpha;
-          a.vx -= (dx / dist) * rep;
-          a.vy -= (dy / dist) * rep;
-          b.vx += (dx / dist) * rep;
-          b.vy += (dy / dist) * rep;
-        }
-      }
-    }
-    for (const n of nodes) {
-      n.vx *= 0.76;
-      n.vy *= 0.76;
-      n.x += n.vx;
-      n.y += n.vy;
-    }
-    for (let k = 0; k < 4; k++) {
-      for (let i = 0; i < nodes.length; i++) {
-        for (let j = i + 1; j < nodes.length; j++) {
-          const a = nodes[i]!;
-          const b = nodes[j]!;
-          const p = ellipsePush(
-            a.x - plateW / 2,
-            a.y - plateH / 2,
-            plateW,
-            plateH,
-            b.x - plateW / 2,
-            b.y - plateH / 2,
-            plateW,
-            plateH,
-          );
-          if (!p) continue;
-          a.x += p.x;
-          a.y += p.y;
-          b.x -= p.x;
-          b.y -= p.y;
-        }
-      }
-    }
-    for (const n of nodes) {
-      const r = Math.hypot(n.x, n.y) || 1;
-      if (r < minR) {
-        n.x *= minR / r;
-        n.y *= minR / r;
-      } else if (r > maxR) {
-        n.x *= maxR / r;
-        n.y *= maxR / r;
-      }
-    }
-  }
-
-  return nodes.map((n) => ({ id: n.id, x: n.x - plateW / 2, y: n.y - plateH / 2 }));
+  return out;
 }
 
-/** Barycentric order inside a group (Sugiyama-style crossing reduction). */
-function barycenterOrder(members: SeatPerson[]): SeatPerson[] {
-  const arr = members.slice();
-  if (arr.length < 3) return arr;
-  const nbr = new Map(arr.map((p) => [p.id, p.neighborIds ?? []]));
-  for (let k = 0; k < 8; k++) {
-    const idx = new Map(arr.map((p, i) => [p.id, i]));
-    arr.sort((a, b) => {
-      const mean = (p: SeatPerson) => {
-        const hits = (nbr.get(p.id) ?? [])
-          .map((id) => idx.get(id))
-          .filter((v): v is number => v != null);
-        if (!hits.length) return idx.get(p.id) ?? 0;
-        return hits.reduce((s, v) => s + v, 0) / hits.length;
-      };
-      const d = mean(a) - mean(b);
-      return d !== 0 ? d : a.id.localeCompare(b.id);
-    });
+function circleCross(order: string[], edges: { a: string; b: string }[]): number {
+  const idx = new Map(order.map((id, i) => [id, i]));
+  const between = (i: number, j: number, k: number) => (i < j ? k > i && k < j : k > i || k < j);
+  let c = 0;
+  for (let i = 0; i < edges.length; i++) {
+    const a = idx.get(edges[i]!.a);
+    const b = idx.get(edges[i]!.b);
+    if (a == null || b == null || a === b) continue;
+    for (let j = i + 1; j < edges.length; j++) {
+      const c0 = idx.get(edges[j]!.a);
+      const d = idx.get(edges[j]!.b);
+      if (c0 == null || d == null || c0 === d) continue;
+      if (a === c0 || a === d || b === c0 || b === d) continue;
+      if (between(a, b, c0) !== between(a, b, d)) c += 1;
+    }
   }
-  return arr;
+  return c;
+}
+
+function spanningChildren(
+  ids: Set<string>,
+  root: string,
+  ties: SeatTie[],
+): Map<string, string[]> {
+  const parent = new Map<string, string>();
+  const kids = new Map<string, string[]>([...ids].map((id) => [id, []]));
+  const seen = new Set<string>([root]);
+  const ranked = ties
+    .filter((t) => ids.has(t.from) && ids.has(t.to) && t.from !== t.to)
+    .slice()
+    .sort((a, b) => glyphs(a.label ?? '') - glyphs(b.label ?? '') || a.from.localeCompare(b.from));
+  let grew = true;
+  while (grew) {
+    grew = false;
+    for (const t of ranked) {
+      const aIn = seen.has(t.from);
+      const bIn = seen.has(t.to);
+      if (aIn === bIn) continue;
+      const p = aIn ? t.from : t.to;
+      const c = aIn ? t.to : t.from;
+      seen.add(c);
+      parent.set(c, p);
+      kids.get(p)!.push(c);
+      grew = true;
+    }
+  }
+  for (const id of ids) {
+    if (id === root || seen.has(id)) continue;
+    seen.add(id);
+    parent.set(id, root);
+    kids.get(root)!.push(id);
+  }
+  kids.forEach((list) => list.sort((a, b) => a.localeCompare(b)));
+  return kids;
+}
+
+type Cluster = {
+  id: string;
+  hub: HubSpec | null;
+  ids: string[];
+  cores: string[];
+  root: string;
+  tidy: Tidy;
+  width: number;
+  maxDepth: number;
+};
+
+function aabbHit(a: PlateBox, b: PlateBox): boolean {
+  return a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
+}
+
+export function placeEdgeLabels(
+  items: {
+    id: string;
+    start: Pt;
+    end: Pt;
+    ctrl: Pt;
+    label: string;
+    directed: boolean;
+  }[],
+  plates: PlateBox[],
+  roseR: number,
+): Map<string, Pt> {
+  const taken: PlateBox[] = [];
+  const out = new Map<string, Pt>();
+  const ranked = items.slice().sort((a, b) => glyphs(b.label) - glyphs(a.label));
+  for (const it of ranked) {
+    const w = labelWidth(it.label);
+    const tanMid = quadTangent(it.start, it.ctrl, it.end, 0.5);
+    const bulge = { x: -tanMid.y, y: tanMid.x };
+    const ctrlSide =
+      (it.ctrl.x - (it.start.x + it.end.x) / 2) * bulge.x +
+        (it.ctrl.y - (it.start.y + it.end.y) / 2) * bulge.y >=
+      0
+        ? 1
+        : -1;
+    const ts = it.directed ? [0.42, 0.5, 0.58, 0.34] : [0.5, 0.4, 0.6, 0.35];
+    const offs = [14, 22, 30];
+    const signs = it.directed ? [ctrlSide, -ctrlSide] : [ctrlSide, -ctrlSide];
+    let best: { x: number; y: number; score: number } | null = null;
+    for (const t of ts) {
+      const mid = quadPoint(it.start, it.ctrl, it.end, t);
+      const tan = quadTangent(it.start, it.ctrl, it.end, t);
+      const nx = -tan.y;
+      const ny = tan.x;
+      const nlen = Math.hypot(nx, ny) || 1;
+      for (const sign of signs) {
+        for (const off of offs) {
+          const x = mid.x + (nx / nlen) * sign * off;
+          const y = mid.y + (ny / nlen) * sign * off;
+          if (Math.hypot(x, y) < roseR + 12) continue;
+          const box: PlateBox = { x: x - w / 2, y: y - LABEL_H / 2, w, h: LABEL_H };
+          if (plates.some((p) => aabbHit(box, p))) continue;
+          if (taken.some((p) => aabbHit(box, p))) continue;
+          let score = off + Math.abs(t - 0.5) * 20;
+          if (it.directed && sign === ctrlSide) score -= 8;
+          if (!best || score < best.score) best = { x, y, score };
+        }
+      }
+    }
+    if (best) {
+      out.set(it.id, { x: best.x, y: best.y });
+      taken.push({ x: best.x - w / 2, y: best.y - LABEL_H / 2, w, h: LABEL_H });
+    }
+  }
+  return out;
 }
 
 function distOriginToSeg(a: Pt, b: Pt): number {
@@ -580,8 +611,8 @@ export function roseSafeCtrl(from: PlateBox, to: PlateBox, ctrl: Pt, roseR = ROS
 }
 
 /**
- * Around the rose: grouped circular order (crossings, houses together),
- * then a polar force polish (tie distance, density, readability).
+ * BFS claim → Buchheim tidy tree → polar wrap → exact cluster order.
+ * Satellites hang outward; wells cover in-lens cores only.
  */
 export function layoutRose(
   cx: number,
@@ -590,81 +621,228 @@ export function layoutRose(
   people: SeatPerson[],
   plateW: number,
   plateH: number,
+  ties: SeatTie[] = [],
 ): { hubs: HubPose[]; seats: SeatPose[] } {
-  const hubIds = new Set(hubs.map((h) => h.id));
-  const membersOf = new Map<string, SeatPerson[]>();
-  const unaligned: SeatPerson[] = [];
-  for (const p of people) {
-    const ids = p.hubIds.filter((id) => hubIds.has(id));
-    if (ids.length === 0) {
-      unaligned.push(p);
-      continue;
+  const hubSet = new Set(hubs.map((h) => h.id));
+  const byPerson = new Map(people.map((p) => [p.id, p]));
+  const nbr = (id: string) => {
+    const p = byPerson.get(id);
+    const fromTies = ties
+      .filter((t) => t.from === id || t.to === id)
+      .map((t) => (t.from === id ? t.to : t.from));
+    return [...new Set([...(p?.neighborIds ?? []), ...fromTies])];
+  };
+  const inLens = people.filter((p) => p.hubIds.some((h) => hubSet.has(h)));
+  const claim = new Map<string, string>();
+  const q: string[] = [];
+  for (const p of inLens) {
+    claim.set(p.id, p.id);
+    q.push(p.id);
+  }
+  for (let i = 0; i < q.length; i++) {
+    const id = q[i]!;
+    for (const n of nbr(id)) {
+      if (claim.has(n) || !byPerson.has(n)) continue;
+      claim.set(n, claim.get(id)!);
+      q.push(n);
     }
-    const key = ids[0]!;
-    const g = membersOf.get(key) ?? [];
-    g.push(p);
-    membersOf.set(key, g);
   }
 
-  const ordered = orderHubs(hubs, people, membersOf);
-  const groups = ordered.map((h) => ({
-    hub: h,
-    members: barycenterOrder(membersOf.get(h.id) ?? []),
-  }));
-  const wellRs = groups.map((g) => estimatedWell(g.members.length, plateW, plateH));
-  const maxWell = wellRs.reduce((m, r) => Math.max(m, r), WELL_MIN);
-  const ringR = Math.max(roseMinR(plateW, plateH) + maxWell * 0.48, 380);
-  const weight = wellRs.map((r) => Math.max(r, 1));
-  const sumW = weight.reduce((s, w) => s + w, 0) || 1;
+  const clusterIds = new Map<string, string[]>();
+  const coresOf = new Map<string, string[]>();
+  for (const p of people) {
+    const origin = claim.get(p.id);
+    if (!origin) continue;
+    const originP = byPerson.get(origin)!;
+    const hub = originP.hubIds.find((h) => hubSet.has(h)) ?? origin;
+    const list = clusterIds.get(hub) ?? [];
+    list.push(p.id);
+    clusterIds.set(hub, list);
+    if (origin === p.id) {
+      const cores = coresOf.get(hub) ?? [];
+      cores.push(p.id);
+      coresOf.set(hub, cores);
+    }
+  }
+  const islands: string[][] = [];
+  const seenIsle = new Set<string>();
+  for (const p of people) {
+    if (claim.has(p.id) || seenIsle.has(p.id)) continue;
+    const comp: string[] = [];
+    const stack = [p.id];
+    seenIsle.add(p.id);
+    while (stack.length) {
+      const id = stack.pop()!;
+      comp.push(id);
+      for (const n of nbr(id)) {
+        if (claim.has(n) || seenIsle.has(n) || !byPerson.has(n)) continue;
+        seenIsle.add(n);
+        stack.push(n);
+      }
+    }
+    islands.push(comp);
+  }
+
+  const sibGap = plateW + SIB_AIR;
+  const clusters: Cluster[] = [];
+  const makeCluster = (id: string, hub: HubSpec | null, ids: string[], cores: string[]) => {
+    const idSet = new Set(ids);
+    const deg = new Map(ids.map((i) => [i, 0]));
+    const cross = new Map(ids.map((i) => [i, 0]));
+    for (const t of ties) {
+      const aIn = idSet.has(t.from);
+      const bIn = idSet.has(t.to);
+      if (aIn && bIn) {
+        deg.set(t.from, (deg.get(t.from) ?? 0) + 1);
+        deg.set(t.to, (deg.get(t.to) ?? 0) + 1);
+      } else if (aIn) cross.set(t.from, (cross.get(t.from) ?? 0) + 1);
+      else if (bIn) cross.set(t.to, (cross.get(t.to) ?? 0) + 1);
+    }
+    const pool = cores.length ? cores : ids;
+    const root = pool.slice().sort((a, b) => {
+      const d = (deg.get(b) ?? 0) - (deg.get(a) ?? 0);
+      if (d) return d;
+      const c = (cross.get(b) ?? 0) - (cross.get(a) ?? 0);
+      return c || a.localeCompare(b);
+    })[0]!;
+    const kids = spanningChildren(idSet, root, ties);
+    const nodes = new Map<string, Tidy>();
+    const build = (nid: string): Tidy => {
+      const n: Tidy = {
+        id: nid,
+        children: [],
+        x: 0,
+        minX: 0,
+        maxX: 0,
+        depth: 0,
+      };
+      nodes.set(nid, n);
+      n.children = (kids.get(nid) ?? []).map(build);
+      return n;
+    };
+    const tidy = build(root);
+    tidyLayout(tidy, sibGap);
+    let maxDepth = 0;
+    const walk = (n: Tidy) => {
+      maxDepth = Math.max(maxDepth, n.depth);
+      n.children.forEach(walk);
+    };
+    walk(tidy);
+    clusters.push({
+      id,
+      hub,
+      ids,
+      cores,
+      root,
+      tidy,
+      width: tidy.maxX - tidy.minX,
+      maxDepth,
+    });
+  };
+
+  for (const h of hubs) {
+    const ids = clusterIds.get(h.id);
+    if (!ids?.length) continue;
+    makeCluster(h.id, h, ids, coresOf.get(h.id) ?? []);
+  }
+  islands.forEach((ids, i) => makeCluster(`island-${i}`, null, ids, []));
+
+  const layerGap = (cl: Cluster): number => {
+    let extra = 0;
+    const idSet = new Set(cl.ids);
+    for (const t of ties) {
+      if (!idSet.has(t.from) || !idSet.has(t.to)) continue;
+      extra = Math.max(extra, glyphs(t.label ?? '') * LAYER_PER_GLYPH);
+    }
+    return plateH + LAYER_AIR + extra;
+  };
+
+  const widths = clusters.map((cl) => cl.width + plateW);
+  const pads = clusters.length * SECTOR_AIR;
+  const r0 = Math.max(
+    roseMinR(plateW, plateH) + 12,
+    (widths.reduce((s, w) => s + w, 0) + pads) / (2 * Math.PI),
+  );
+
+  const dual = ties
+    .map((t) => {
+      const ca = clusters.find((c) => c.ids.includes(t.from));
+      const cb = clusters.find((c) => c.ids.includes(t.to));
+      if (!ca || !cb || ca.id === cb.id) return null;
+      return { a: ca.id, b: cb.id };
+    })
+    .filter((x): x is { a: string; b: string } => Boolean(x));
+
+  const ids = clusters.map((c) => c.id);
+  let bestOrder = ids;
+  let bestCross = Infinity;
+  if (ids.length <= 7) {
+    for (const perm of permutations(ids)) {
+      const c = circleCross(perm, dual);
+      if (c < bestCross || (c === bestCross && perm.join() < bestOrder.join())) {
+        bestCross = c;
+        bestOrder = perm;
+      }
+    }
+  }
+  const ordered = bestOrder.map((id) => clusters.find((c) => c.id === id)!);
 
   const seats: SeatPose[] = [];
+  let ang = -Math.PI / 2;
+  ordered.forEach((cl) => {
+    const span = (cl.width + plateW + SECTOR_AIR) / r0;
+    const mid = ang + span / 2;
+    const lg = layerGap(cl);
+    const xMid = (cl.tidy.minX + cl.tidy.maxX) / 2;
+    const walk = (n: Tidy) => {
+      const r = r0 + n.depth * lg;
+      const th = mid + (n.x - xMid) / Math.max(r, 1);
+      seats.push({
+        id: n.id,
+        x: cx + Math.cos(th) * r - plateW / 2,
+        y: cy + Math.sin(th) * r - plateH / 2,
+      });
+      n.children.forEach(walk);
+    };
+    walk(cl.tidy);
+    ang += span;
+  });
+
+  const separated = relaxSeats(seats, ties, plateW, plateH);
   const posed: HubPose[] = [];
-  let a = -Math.PI / 2;
-  groups.forEach((g, i) => {
-    const slice = (weight[i]! / sumW) * 2 * Math.PI;
-    const mid = a + slice / 2;
-    const hx = cx + Math.cos(mid) * ringR;
-    const hy = cy + Math.sin(mid) * ringR;
-    const packed = sunflower(hx, hy, g.members, plateW, plateH);
-    seats.push(...packed);
-    const well = wellFromSeats(packed, hx, hy, plateW, plateH);
-    posed.push({ ...g.hub, x: well.cx, y: well.cy, r: well.r });
-    a += slice;
-  });
-
-  const outer = ringR + maxWell * 0.62 + plateClear(plateW, plateH);
-  const gapMids: number[] = [];
-  if (groups.length === 0) {
-    gapMids.push(-Math.PI / 2);
-  } else {
-    let b = -Math.PI / 2;
-    groups.forEach((_, i) => {
-      const slice = (weight[i]! / sumW) * 2 * Math.PI;
-      gapMids.push(b + slice);
-      b += slice;
-    });
+  const wells: { x: number; y: number; r: number }[] = [];
+  const coreAll = new Set<string>();
+  for (const h of hubs) {
+    const cl = clusters.find((c) => c.hub?.id === h.id);
+    const coreIds = new Set(cl?.cores ?? []);
+    coreIds.forEach((id) => coreAll.add(id));
+    const coreSeats = separated.filter((s) => coreIds.has(s.id));
+    const well = wellFromSeats(coreSeats, 0, 0, plateW, plateH);
+    posed.push({ ...h, x: well.cx, y: well.cy, r: well.r });
+    if (coreSeats.length) wells.push({ x: well.cx, y: well.cy, r: well.r });
   }
-  barycenterOrder(unaligned).forEach((p, i) => {
-    const ang = gapMids[i % gapMids.length]! + (Math.floor(i / gapMids.length) - 0.35) * 0.22;
-    const r = outer + Math.floor(i / Math.max(gapMids.length, 1)) * 2 * plateClear(plateW, plateH);
-    seats.push({
-      id: p.id,
-      x: cx + Math.cos(ang) * r - plateW / 2,
-      y: cy + Math.sin(ang) * r - plateH / 2,
-    });
-  });
-
-  const polished = polishAnnulus(seats, people, plateW, plateH);
-  const separated = separateSeats(polished, plateW, plateH, 24);
-  const byId = new Map(separated.map((s) => [s.id, s]));
-  posed.forEach((h, hi) => {
-    const memberSeats = (groups[hi]?.members ?? [])
-      .map((p) => byId.get(p.id))
-      .filter((s): s is SeatPose => Boolean(s));
-    const well = wellFromSeats(memberSeats, h.x, h.y, plateW, plateH);
-    h.x = well.cx;
-    h.y = well.cy;
-    h.r = well.r;
-  });
+  for (const s of separated) {
+    if (coreAll.has(s.id)) continue;
+    let cxp = s.x + plateW / 2;
+    let cyp = s.y + plateH / 2;
+    for (const w of wells) {
+      const dx = cxp - w.x;
+      const dy = cyp - w.y;
+      const dist = Math.hypot(dx, dy);
+      if (dist >= w.r + 8) continue;
+      if (dist < 1e-6) {
+        cxp = w.x + w.r + 8;
+        cyp = w.y;
+        continue;
+      }
+      cxp = w.x + (dx / dist) * (w.r + 8);
+      cyp = w.y + (dy / dist) * (w.r + 8);
+    }
+    s.x = cxp - plateW / 2;
+    s.y = cyp - plateH / 2;
+    const k = keepOffRose(s.x, s.y, plateW, plateH);
+    s.x = k.x;
+    s.y = k.y;
+  }
   return { hubs: posed, seats: separated };
 }

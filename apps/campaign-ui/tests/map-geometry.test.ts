@@ -5,6 +5,7 @@ import {
   edgeDraw,
   ellipseExit,
   ellipsePush,
+  labelRestLength,
   layoutRose,
   plateCenter,
   pointInEllipse,
@@ -138,7 +139,7 @@ describe('layoutRose', () => {
     const a = seats.find((s) => s.id === 'marino')!;
     const b = seats.find((s) => s.id === 'vito')!;
     const dist = Math.hypot(a.x - b.x, a.y - b.y);
-    expect(dist).toBeGreaterThan(90);
+    expect(dist).toBeGreaterThan(100);
   });
 
   it('gives every person their own slot on the ring', () => {
@@ -155,9 +156,27 @@ describe('layoutRose', () => {
       32,
     );
     expect(seats).toHaveLength(14);
-    const angles = seats.map((s) => Math.atan2(s.y + 16, s.x + 69));
-    const uniq = new Set(angles.map((a) => a.toFixed(3)));
-    expect(uniq.size).toBe(14);
+    const keys = seats.map((s) => `${s.x.toFixed(1)},${s.y.toFixed(1)}`);
+    expect(new Set(keys).size).toBe(14);
+  });
+
+  it('gives a labelled tie enough run for its words', () => {
+    const { seats } = layoutRose(
+      0,
+      0,
+      [{ id: 'orvanti', name: 'House Orvanti', hue: 42 }],
+      [
+        { id: 'a', hubIds: ['orvanti'] },
+        { id: 'b', hubIds: ['orvanti'] },
+      ],
+      138,
+      32,
+      [{ from: 'a', to: 'b', label: 'upholds his rule as regent' }],
+    );
+    const a = seats.find((s) => s.id === 'a')!;
+    const b = seats.find((s) => s.id === 'b')!;
+    const dist = Math.hypot(a.x - b.x, a.y - b.y);
+    expect(dist).toBeGreaterThan(labelRestLength('upholds his rule as regent', 138) * 0.72);
   });
 
   it('pulls tied people closer than strangers', () => {
