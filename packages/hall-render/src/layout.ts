@@ -25,6 +25,7 @@ export function layoutDocument(opts: {
   <meta name="color-scheme" content="dark"/>
   <meta name="robots" content="noindex"/>
   <link rel="icon" href="/brand/falcon-logo.png" type="image/png"/>
+  <link rel="preload" href="/design/fonts/bellefair/bellefair-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin/>
   <link rel="stylesheet" href="/design/campaign.css"/>
   ${opts.extraHead ?? ''}
   <title>${esc(opts.title)} · ${esc(opts.communityName)}</title>
@@ -48,6 +49,7 @@ export function layoutDocument(opts: {
   <meta name="color-scheme" content="dark"/>
   <meta name="robots" content="noindex"/>
   <link rel="icon" href="/brand/falcon-logo.png" type="image/png"/>
+  <link rel="preload" href="/design/fonts/bellefair/bellefair-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin/>
   <link rel="stylesheet" href="/design/campaign.css"/>
   ${opts.extraHead ?? ''}
   <title>${esc(opts.title)} · ${esc(opts.communityName)}</title>

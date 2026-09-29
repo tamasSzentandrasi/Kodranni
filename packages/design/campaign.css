@@ -19,6 +19,7 @@ html {
   -webkit-font-smoothing: antialiased;
   text-rendering: geometricPrecision;
   color-scheme: dark;
+  scrollbar-gutter: stable;
   scrollbar-width: thin;
   scrollbar-color: color-mix(in srgb, var(--kod-silver) 58%, transparent) transparent;
 }
@@ -75,11 +76,6 @@ a:hover {
   max-width: 82rem;
   margin: 0 auto;
   padding: 0.85rem 1.1rem 2.75rem;
-}
-
-.app:has(.sheet-stage--core) {
-  padding-left: 5.5rem;
-  padding-right: 5.5rem;
 }
 
 .app__brand {
@@ -139,6 +135,13 @@ a:hover {
   border-bottom: none;
 }
 
+.sheet-tabs,
+.sheet-stage {
+  margin-inline: 4.4rem;
+  width: auto;
+  max-width: none;
+}
+
 .tabs::after,
 .sheet-tabs::after {
   content: '';
@@ -196,11 +199,12 @@ a:hover {
 .tabs__cluster a {
   border-bottom-color: transparent;
   margin-bottom: 0;
-  padding-right: 0.4rem;
+  padding-right: 0.35rem;
 }
 
 .tabs__cluster .info {
-  margin: 0 0.9rem 0 0;
+  margin: 0 0.95rem 0 0;
+  align-self: center;
 }
 
 .tabs__cluster:has(a[aria-current='page']) {
@@ -216,6 +220,15 @@ a:hover {
 .tabs__cluster:has(a[aria-current='page']) .info {
   color: var(--kod-silver-bright);
   border-color: color-mix(in srgb, var(--kod-silver) 35%, transparent);
+}
+
+.tabs__cluster:hover:not(:has(a[aria-current='page'])) {
+  border-bottom-color: var(--kod-frame-tick-hot);
+}
+
+.tabs__cluster:hover:not(:has(a[aria-current='page'])) a {
+  color: var(--kod-silver-bright);
+  border-bottom-color: transparent;
 }
 
 /* Wrapper sections only — inner plates stay chrome-only. */
@@ -2971,9 +2984,13 @@ a.member--pc:visited {
 }
 
 @media (max-width: 56rem) {
-  .app:has(.sheet-stage--core) {
-    padding-left: 1.1rem;
-    padding-right: 1.1rem;
+  .sheet-tabs,
+  .sheet-stage {
+    margin-inline: 0;
+  }
+
+  .sheet-stage--core {
+    padding-inline: 0;
   }
 
   .sheet-stage--core .core-grid {
