@@ -1,14 +1,13 @@
 export const prerender = false;
 
 import { openSqliteStore } from '@kodranni/store';
-import { isLocalDeskRequest } from '../../lib/loopback';
-import { resolveCampaignSlug, resolveStorePath } from '../../lib/campaign-paths';
+import { resolveCampaignSlug, resolveStorePath } from '../../../lib/campaign-paths';
+import { rejectUnlessDesk } from '../../../lib/loopback';
 
-/** GET /operator/snapshot — redacted public.json, loopback only. */
+/** GET /api/desk/snapshot — redacted public.json. Desk cookie on this machine. */
 export async function GET({ request }: { request: Request }) {
-  if (!isLocalDeskRequest(request)) {
-    return new Response('Not found', { status: 404 });
-  }
+  const denied = rejectUnlessDesk(request);
+  if (denied) return denied;
   const storePath = resolveStorePath();
   if (!storePath) {
     return new Response(JSON.stringify({ error: 'no store' }), {

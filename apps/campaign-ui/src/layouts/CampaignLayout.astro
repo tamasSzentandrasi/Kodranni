@@ -5,6 +5,7 @@ import {
   ORNAMENT_PENDING_SCRIPT,
   ORNAMENT_READY_SCRIPT,
 } from '@kodranni/hall-render';
+import DeskChrome from '../components/DeskChrome.astro';
 import LiveStyles from '../components/LiveStyles.astro';
 
 interface Props {
@@ -58,6 +59,8 @@ const isMap = primary === 'map';
       <p class="app__meta">
         As of {asOf} · living record · <span class="src">{sourceLabel}</span>
       </p>
+
+      <DeskChrome />
 
       <nav class="tabs" aria-label="Primary">
         <a href="/community/" aria-current={primary === 'overview' ? 'page' : undefined}

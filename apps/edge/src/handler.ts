@@ -511,7 +511,7 @@ function withForwarded(request: Request, dest: URL): Headers {
   const kept: string[] = [];
   for (const part of (request.headers.get('cookie') ?? '').split(';')) {
     const name = part.trim().split('=')[0];
-    if (name === 'kod_edit' || name === 'kod_setup' || name === 'kodranni_campaign') {
+    if (name === 'kod_edit' || name === 'kodranni_campaign') {
       kept.push(part.trim());
     }
   }

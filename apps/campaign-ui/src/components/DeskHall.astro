@@ -1,0 +1,270 @@
+---
+import FortuneHall from './FortuneHall.astro';
+import HallRites from './HallRites.astro';
+import type { DeskDiscordBind } from '../lib/desk-status';
+import { collectFactions, type FactionOpt } from '../lib/format';
+
+interface Props {
+  fortunes: Record<string, number>;
+  founded: boolean;
+  factions: FactionOpt[];
+  outsiders: { faction?: string }[];
+  discord: DeskDiscordBind;
+  notice?: string;
+}
+
+const { fortunes, founded, factions: listed, outsiders, discord, notice } = Astro.props;
+const factions = collectFactions(listed, outsiders);
+---
+
+<section class="kod-plate" id="discord-bind" data-bound-guild={discord.guild} data-bound-channel={discord.channel} data-bound-role={discord.role}>
+  <h2>Discord</h2>
+  <p class="app__meta">Invite the official app, then pick guild, play channel, and Storyteller role. The token stays off this machine.</p>
+  <p><a id="discord-invite" href="#" target="_blank" rel="noreferrer">Invite the bot</a></p>
+  <p>
+    <label>
+      Guild
+      <select id="discord-guild"></select>
+    </label>
+  </p>
+  <p>
+    <label>
+      Play channel
+      <select id="discord-channel"></select>
+    </label>
+  </p>
+  <p>
+    <label>
+      Storyteller role
+      <select id="discord-role"></select>
+    </label>
+  </p>
+  <p>
+    <button type="button" class="kod-btn" id="discord-refresh">Refresh lists</button>
+    <button type="button" class="kod-btn" id="discord-save">Save bind</button>
+    <span id="discord-msg" class="app__meta"></span>
+  </p>
+</section>
+
+<section class="kod-plate">
+  <h2>Fluxer</h2>
+  <p class="app__meta">
+    The same three picks — server, play channel, Storyteller role — once the adapter can list them.
+    Until then this plate has nothing to choose.
+  </p>
+</section>
+
+<section class="kod-plate">
+  <h2>Snapshot</h2>
+  {notice && <p class="app__meta">{notice}</p>}
+  <p><a href="/api/desk/snapshot">Download public snapshot</a></p>
+  <form method="post" action="/api/desk/restore" enctype="multipart/form-data">
+    <p class="app__meta">Repopulate this campaign from a public.json. Drafts and Discord ids stay out of that file.</p>
+    <p>
+      <input type="file" name="snapshot" accept="application/json,.json" required />
+      <button type="submit" class="kod-btn">Restore</button>
+    </p>
+  </form>
+</section>
+
+<FortuneHall fortunes={fortunes} editable founded={founded} headingId="desk-fortunes" />
+
+<p>
+  <button type="button" class="kod-btn" data-rite-open="figure">Add a person</button>
+  <button type="button" class="kod-btn" data-rite-open="faction">Add a faction</button>
+</p>
+<HallRites live factions={factions} />
+
+<script is:inline src="/founding-client.js"></script>
+<script is:inline>
+  (function () {
+    const root = document.getElementById('discord-bind');
+    if (!root) return;
+    const invite = document.getElementById('discord-invite');
+    const guildSel = document.getElementById('discord-guild');
+    const channelSel = document.getElementById('discord-channel');
+    const roleSel = document.getElementById('discord-role');
+    const msg = document.getElementById('discord-msg');
+    const boundGuild = root.getAttribute('data-bound-guild') || '';
+    const boundChannel = root.getAttribute('data-bound-channel') || '';
+    const boundRole = root.getAttribute('data-bound-role') || '';
+
+    function hexToHue(hex) {
+      const m = /^#?([0-9a-f]{6})$/i.exec(String(hex || ''));
+      if (!m) return 0;
+      const n = parseInt(m[1], 16);
+      const r = ((n >> 16) & 255) / 255;
+      const g = ((n >> 8) & 255) / 255;
+      const b = (n & 255) / 255;
+      const max = Math.max(r, g, b);
+      const min = Math.min(r, g, b);
+      if (max === min) return 0;
+      const d = max - min;
+      let h = 0;
+      if (max === r) h = ((g - b) / d) % 6;
+      else if (max === g) h = (b - r) / d + 2;
+      else h = (r - g) / d + 4;
+      h = Math.round(h * 60);
+      if (h < 0) h += 360;
+      return h;
+    }
+
+    function fill(sel, items, current) {
+      sel.innerHTML = '<option value="">Choose…</option>';
+      (items || []).forEach(function (it) {
+        const o = document.createElement('option');
+        o.value = it.id;
+        o.textContent = it.name;
+        if (it.id === current) o.selected = true;
+        sel.appendChild(o);
+      });
+    }
+
+    async function api(op, guild) {
+      const u = '/api/desk/discord?op=' + encodeURIComponent(op) + (guild ? '&guild=' + encodeURIComponent(guild) : '');
+      const res = await fetch(u, { credentials: 'same-origin' });
+      return res.json();
+    }
+
+    async function loadApp() {
+      const j = await api('app');
+      if (j.invite && invite) {
+        invite.href = j.invite;
+        invite.textContent = 'Invite the bot';
+      } else if (invite) {
+        invite.textContent = 'Invite unavailable — the edge control is not reachable';
+        invite.removeAttribute('href');
+      }
+    }
+
+    async function loadGuilds() {
+      msg.textContent = 'Loading guilds…';
+      const j = await api('guilds');
+      if (!j.guilds) {
+        msg.textContent = j.error || 'Could not list guilds. Invite the bot, then refresh.';
+        return;
+      }
+      fill(guildSel, j.guilds, boundGuild || guildSel.value);
+      msg.textContent = j.guilds.length ? 'Pick guild, channel, role.' : 'No guilds yet — invite the bot first.';
+      if (guildSel.value) await loadGuildBits();
+    }
+
+    async function loadGuildBits() {
+      const g = guildSel.value;
+      if (!g) return;
+      const ch = await api('channels', g);
+      const rl = await api('roles', g);
+      fill(channelSel, ch.channels, boundChannel || channelSel.value);
+      fill(roleSel, rl.roles, boundRole || roleSel.value);
+    }
+
+    document.getElementById('discord-refresh').addEventListener('click', function () {
+      loadGuilds();
+    });
+    guildSel.addEventListener('change', function () {
+      loadGuildBits();
+    });
+    document.getElementById('discord-save').addEventListener('click', async function () {
+      msg.textContent = 'Saving…';
+      const res = await fetch('/api/desk/discord', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          guildId: guildSel.value,
+          channelId: channelSel.value,
+          roleId: roleSel.value,
+        }),
+      });
+      const j = await res.json().catch(function () { return {}; });
+      msg.textContent = res.ok ? 'Saved.' : (j.error || 'Save failed');
+    });
+
+    function openRite(name) {
+      const rite = document.querySelector('[data-rite="' + name + '"]');
+      if (!rite) return;
+      rite.hidden = false;
+      rite.setAttribute('data-open', 'true');
+    }
+    function closeRite(rite) {
+      rite.setAttribute('data-open', 'false');
+      rite.hidden = true;
+    }
+    document.querySelectorAll('[data-rite-open]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        openRite(btn.getAttribute('data-rite-open') || '');
+      });
+    });
+    document.querySelectorAll('[data-rite]').forEach(function (rite) {
+      rite.querySelectorAll('[data-rite-dismiss]').forEach(function (btn) {
+        btn.addEventListener('click', function () { closeRite(rite); });
+      });
+      const figure = rite.querySelector('[data-add-figure-form]');
+      if (figure) {
+        figure.querySelectorAll('[data-pick-kind]').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            const isOut = btn.getAttribute('data-pick-kind') === 'outsider';
+            const kindStep = figure.querySelector('[data-step="kind"]');
+            const details = figure.querySelector('[data-step="details"]');
+            const factionField = figure.querySelector('[data-add-faction-field]');
+            const outsider = figure.querySelector('[data-add-outsider]');
+            const select = figure.querySelector('[name="faction"]');
+            if (kindStep) kindStep.hidden = true;
+            if (details) details.hidden = false;
+            if (factionField) factionField.hidden = !isOut;
+            if (outsider) outsider.value = isOut ? '1' : '';
+            if (select) select.disabled = !isOut;
+          });
+        });
+        figure.addEventListener('submit', async function (e) {
+          e.preventDefault();
+          const fd = new FormData(figure);
+          const msgEl = figure.querySelector('[data-add-figure-msg]');
+          const res = await fetch('/api/community/figures', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({
+              name: String(fd.get('name') || '').trim(),
+              outsider: String(fd.get('outsider') || '') === '1',
+              faction: String(fd.get('faction') || '').trim(),
+            }),
+          });
+          const j = await res.json().catch(function () { return {}; });
+          if (msgEl) {
+            msgEl.hidden = false;
+            msgEl.textContent = res.ok ? 'Added.' : (j.error || 'Could not add');
+          }
+          if (res.ok) window.location.reload();
+        });
+      }
+      const faction = rite.querySelector('[data-add-faction]');
+      if (faction) {
+        faction.addEventListener('submit', async function (e) {
+          e.preventDefault();
+          const fd = new FormData(faction);
+          const color = String(fd.get('faction-color') || '#a01818');
+          const res = await fetch('/api/community/figures', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({
+              kind: 'faction',
+              name: String(fd.get('faction-name') || '').trim(),
+              hue: hexToHue(color),
+            }),
+          });
+          const j = await res.json().catch(function () { return {}; });
+          const msgEl = faction.querySelector('[data-add-faction-msg]');
+          if (msgEl) {
+            msgEl.hidden = false;
+            msgEl.textContent = res.ok ? 'Added.' : (j.error || 'Could not add');
+          }
+          if (res.ok) window.location.reload();
+        });
+      }
+    });
+
+    loadApp().then(loadGuilds);
+  })();
+</script>

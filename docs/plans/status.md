@@ -3,7 +3,7 @@
 **Date:** 2026-09-29  
 **Decisions:** [overview.md](./overview.md) · [decisions.md](./decisions.md) · [hosting.md](./hosting.md)
 
-This file says what the tree does today. The desk, `/select`, `/npc-roll`, Restore, the scene editor, the Tide card, and `https://<slug>.kodranni.com/` are decisions. They are not this build.
+This file says what the tree does today. The hall desk (loopback cookie, status strip, bind, founding, snapshot) is this build. `/select`, `/npc-roll`, Restore, the scene editor, the Tide card, and `https://<slug>.kodranni.com/` are decisions. They are not this build.
 
 ---
 
@@ -23,7 +23,7 @@ Aspalath’s hall, hierarchy, character map, and sheets are the visual and funct
 
 Creation on an unlocked sheet is still `creation-client.js`, loaded from `DraftPanel.astro` and the character page. It is behind the Guidebook’s creation flow.
 
-`/operator` and `/community/setup/` are still the loopback desk: found, bind Discord, snapshot. The decision replaces them with tools on the hall, the diagram, and the sheet, gated by loopback plus `kod_desk=1`. That gate is not built. `kod_setup` is still the setup cookie.
+The hall on loopback is the Storyteller desk. A Desk control on that machine sets cookie `kod_desk=1` for this browser. With the cookie, every campaign page shows the status strip, and the hall carries Discord bind, a Fluxer plate with nothing to pick until the adapter can list a server, snapshot download and restore, founding, and add-person. `/operator`, `/community/setup/`, `GET /emissary`, and `kod_setup` are gone. The diagram editor, the sheet field editors, and the creation stack are later slices. Players still open `kodranni.com/community/?campaign=<slug>`.
 
 A new community from `emptyCommunity()` stores unfounded Steady (2) on all five Fortunes, axes Arms / Faith / Coin / Blood, and two empty label groups (Factions and Tags). Decisions want many faction categories, a colour and an optional icon, and Guidebook fortune buttons. The store has `hue` on a label and no icon field. Pending hierarchy move requests still exist on the community type; the decision drops that queue.
 
@@ -63,19 +63,19 @@ The Guidebook already states Fluxer’s contract as Discord’s peer. The adapte
 
 ## Host
 
-`kodranni`, `start`, `stop`, `status`, and `emissary` are the verbs. The README runbook matches that code, including the operator picker and `?campaign=`. It is the current runbook, not the desk in [decisions.md](./decisions.md).
+`kodranni`, `start`, `stop`, `status`, and `emissary` are the verbs. The README runbook matches this binary: bind from the hall on loopback, and players still use `?campaign=`. Subdomains stay in [decisions.md](./decisions.md).
 
 The hosting shape in [hosting.md](./hosting.md) (one process, KV snapshot, Worker, device key, bot token off the host) is the lock and is largely what the tree was built toward in late August. Two caveats:
 
-- The host walkthrough that used to sit with the old plan pile was never signed. “Verify-ready” was a label on a blank checklist. The host loop is unsigned. A new script waits until the desk exists.
+- The host walkthrough that used to sit with the old plan pile was never signed. “Verify-ready” was a label on a blank checklist. The host loop is unsigned. The desk shell is on the hall. A signed host script is still later work.
 - Named-tunnel mode is still in the CLI. When `tunnel_mode=named` is missing a token, name, or config, emissary points at [hosting.md](./hosting.md). That mode is interim. The locked product mints the tunnel on the Worker for the session. Park-process is not the archive.
 
-The emissary JSON page is still the readiness document. The decision turns its human face into the desk strip. The CLI check can stay.
+The desk strip on the hall is the readiness face. `kodranni emissary` stays the CLI check. `GET /emissary` is gone.
 
 ---
 
 ## Left in place on purpose
 
-- Product code: campaign UI, bot, store, edge. The Guidebook pass did not change them.
+- Diagram drag, sheet field editors, the creation stack, Restore, Tide, scene faces, command renames, Fluxer listing, and subdomains.
 - [hungarian-lexicon.md](./hungarian-lexicon.md).
 - `apps/campaign-ui/docs/character-map.md`.

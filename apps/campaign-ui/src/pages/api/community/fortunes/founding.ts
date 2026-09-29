@@ -3,8 +3,8 @@ export const prerender = false;
 import { setFortunes, setStartingFortunes, type FortuneKey } from '@kodranni/app';
 import { openSqliteStore } from '@kodranni/store';
 import { resolveStorePath } from '../../../../lib/campaign-paths';
+import { rejectUnlessDesk } from '../../../../lib/loopback';
 import { foundingOriginOk } from '../../../../lib/origin';
-import { resolveSetup } from '../../../../lib/setup-auth';
 
 export { foundingOriginOk };
 
@@ -25,6 +25,8 @@ export async function PUT({
 }) {
   const publicUrl = url ?? new URL(request.url);
   if (!foundingOriginOk(request, publicUrl)) return json({ error: 'Invalid origin' }, 403);
+  const denied = rejectUnlessDesk(request);
+  if (denied) return denied;
 
   const storePath = resolveStorePath();
   if (!storePath) return json({ error: 'No live store configured' }, 503);
@@ -42,13 +44,10 @@ export async function PUT({
   const store = openSqliteStore(storePath);
   try {
     const live = store.getCommunity();
-    const auth = resolveSetup(request, publicUrl, live.slug);
-    if (!auth.canEdit) return json({ error: auth.reason ?? 'Unauthorized' }, 401);
-
     const fortunes = body.fortunes as Record<FortuneKey, 0 | 1 | 2 | 3>;
     const community = live.fortunesFoundedAt
-      ? setFortunes(store, { fortunes, actor: auth.claims?.accountId })
-      : setStartingFortunes(store, { fortunes, actor: auth.claims?.accountId });
+      ? setFortunes(store, { fortunes, actor: 'desk' })
+      : setStartingFortunes(store, { fortunes, actor: 'desk' });
     return json({
       ok: true,
       fortunes: community.fortunes,

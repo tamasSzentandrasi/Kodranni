@@ -1,6 +1,7 @@
 /**
- * Storyteller desk — set or revise Fortunes. Loaded only on /community/setup/.
- * The table hall is read-only weather.
+ * Storyteller desk — set or revise Fortunes.
+ * Loaded with the hall plates when the desk cookie is on.
+ * The public sky has no data-editable, so this script leaves it alone.
  */
 (function () {
   const sky = document.querySelector('.hall__sky[data-editable]');

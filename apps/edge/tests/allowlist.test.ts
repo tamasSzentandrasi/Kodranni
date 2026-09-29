@@ -24,6 +24,9 @@ describe('livePathAllowed', () => {
     expect(livePathAllowed('GET', '/community/setup/')).toBe(false);
     expect(livePathAllowed('GET', '/operator/')).toBe(false);
     expect(livePathAllowed('GET', '/emissary')).toBe(false);
+    expect(livePathAllowed('GET', '/api/desk/snapshot')).toBe(false);
+    expect(livePathAllowed('POST', '/api/desk/session')).toBe(false);
+    expect(livePathAllowed('POST', '/api/desk/restore')).toBe(false);
     expect(livePathAllowed('POST', '/internal/discord')).toBe(false);
     expect(livePathAllowed('POST', '/api/community/fortunes/founding')).toBe(false);
   });

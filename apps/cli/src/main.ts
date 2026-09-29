@@ -259,7 +259,7 @@ async function main(): Promise<void> {
         (process.env.KODRANNI_CF_TUNNEL_TOKEN ? ' · token from secrets/env' : ''),
     );
     console.log(
-      `  ST role: ${cfg.discordStorytellerRoleId ? 'set' : 'unset — pick on the operator desk'}`,
+      `  ST role: ${cfg.discordStorytellerRoleId ? 'set' : 'unset — pick on the hall'}`,
     );
     console.log(`  recreate: kodranni campaign seed-demo --slug ${slug} --force`);
     return;

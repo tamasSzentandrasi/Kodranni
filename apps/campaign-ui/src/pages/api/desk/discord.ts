@@ -6,9 +6,9 @@ import {
   readCampaignConfig,
   writeCampaignConfig,
 } from '@kodranni/store';
-import { isLocalDeskRequest } from '../../lib/loopback';
-import { resolveCampaignSlug } from '../../lib/campaign-paths';
-import { edgeControl } from '../../lib/edge-control';
+import { resolveCampaignSlug } from '../../../lib/campaign-paths';
+import { edgeControl } from '../../../lib/edge-control';
+import { rejectUnlessDesk } from '../../../lib/loopback';
 
 function json(data: unknown, status = 200): Response {
   return new Response(JSON.stringify(data), {
@@ -17,9 +17,10 @@ function json(data: unknown, status = 200): Response {
   });
 }
 
-/** GET /operator/discord?op=app|guilds|channels|roles&guild= */
+/** GET /api/desk/discord?op=app|guilds|channels|roles&guild= */
 export async function GET({ request }: { request: Request }) {
-  if (!isLocalDeskRequest(request)) return new Response('Not found', { status: 404 });
+  const denied = rejectUnlessDesk(request);
+  if (denied) return denied;
   const url = new URL(request.url);
   const op = url.searchParams.get('op') ?? 'app';
   const guildId = url.searchParams.get('guild') ?? undefined;
@@ -30,9 +31,10 @@ export async function GET({ request }: { request: Request }) {
   return json({ error: 'unknown op' }, 400);
 }
 
-/** POST /operator/discord — save guild / play channel / ST role into campaign.toml */
+/** POST /api/desk/discord — save guild / play channel / ST role into campaign.toml */
 export async function POST({ request }: { request: Request }) {
-  if (!isLocalDeskRequest(request)) return new Response('Not found', { status: 404 });
+  const denied = rejectUnlessDesk(request);
+  if (denied) return denied;
   const slug = resolveCampaignSlug();
   if (!slug) return json({ error: 'no campaign' }, 503);
   let body: { guildId?: string; channelId?: string; roleId?: string };

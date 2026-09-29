@@ -116,7 +116,7 @@ export async function runLiveKernel(opts: {
   repoRoot: string;
   tunnel: boolean;
   bot: boolean;
-  /** Desk: operator only, no tunnel, Ctrl+C does not publish. */
+  /** Local table: hall on loopback, no tunnel, Ctrl+C does not publish. */
   desk?: boolean;
 }): Promise<void> {
   const { slug, repoRoot, tunnel, bot, desk = false } = opts;
@@ -146,7 +146,7 @@ export async function runLiveKernel(opts: {
 
   console.log(desk ? `Desk for ${cfg.name} (${cfg.slug})` : `Live table for ${cfg.name} (${cfg.slug})`);
   console.log(`  store: ${cfg.storePath}`);
-  console.log(`  local: ${localUrl}/operator`);
+  console.log(`  local: ${localUrl}/community/`);
   const tableUrl = `${publicEdge.replace(/\/$/, '')}/community/?campaign=${encodeURIComponent(slug)}`;
   if (slug !== 'aspalath' && slug !== 'demo' && slug !== 'play') {
     console.log(`  public: ${tableUrl}`);

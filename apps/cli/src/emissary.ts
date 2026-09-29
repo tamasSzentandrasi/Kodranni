@@ -69,7 +69,7 @@ export async function runEmissary(opts: {
       creds.discord.guild && creds.discord.playChannel,
       creds.discord.guild
         ? `guild${creds.discord.playChannel ? '+play-channel' : ''} bound${creds.discord.token ? ' · token hatch' : ''}`
-        : 'not bound — invite and pick on the operator desk',
+        : 'not bound — invite and pick on the hall',
     ),
   );
   const fluxerPartial = creds.fluxer.token !== creds.fluxer.guild;

@@ -3,8 +3,8 @@ export const prerender = false;
 import { addCommunityFaction, addHallNpc, addHallOutsider } from '@kodranni/app';
 import { openSqliteStore } from '@kodranni/store';
 import { resolveStorePath } from '../../../lib/campaign-paths';
+import { rejectUnlessDesk } from '../../../lib/loopback';
 import { foundingOriginOk } from '../../../lib/origin';
-import { resolveSetup } from '../../../lib/setup-auth';
 
 function json(data: unknown, status = 200) {
   return new Response(JSON.stringify(data), {
@@ -23,6 +23,8 @@ export async function POST({
 }) {
   const publicUrl = url ?? new URL(request.url);
   if (!foundingOriginOk(request, publicUrl)) return json({ error: 'Invalid origin' }, 403);
+  const denied = rejectUnlessDesk(request);
+  if (denied) return denied;
 
   const storePath = resolveStorePath();
   if (!storePath) return json({ error: 'No live store configured' }, 503);
@@ -42,10 +44,6 @@ export async function POST({
 
   const store = openSqliteStore(storePath);
   try {
-    const live = store.getCommunity();
-    const auth = resolveSetup(request, publicUrl, live.slug);
-    if (!auth.canEdit) return json({ error: auth.reason ?? 'Unauthorized' }, 401);
-
     if (body.kind === 'faction') {
       const community = addCommunityFaction(store, {
         name: String(body.name ?? ''),

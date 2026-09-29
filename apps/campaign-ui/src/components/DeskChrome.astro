@@ -1,0 +1,72 @@
+---
+import { deskToolsOn, isLocalDeskRequest } from '../lib/loopback';
+import { readDeskStrip } from '../lib/desk-status';
+
+const local = isLocalDeskRequest(Astro.request);
+const tools = local && deskToolsOn(Astro.request);
+const strip = tools ? await readDeskStrip() : null;
+
+const phaseWord = strip?.phase === 'live' ? 'live' : strip?.phase === 'desk' ? 'desk' : 'down';
+---
+
+{
+  local && !tools && (
+    <form class="desk-toggle" method="post" action="/api/desk/session">
+      <input type="hidden" name="on" value="1" />
+      <button type="submit" class="kod-btn">Desk</button>
+    </form>
+  )
+}
+
+{
+  tools && !strip && (
+    <form method="post" action="/api/desk/session">
+      <input type="hidden" name="on" value="0" />
+      <button type="submit" class="kod-btn">Player face</button>
+    </form>
+  )
+}
+
+{
+  tools && strip && (
+    <section class="kod-plate desk-strip" aria-label="Storyteller desk">
+      <p class="app__meta">Storyteller desk · this browser · the projected window leaves this off</p>
+      <p>
+        <strong>Session</strong> {phaseWord}
+        {strip.publicUrl ? (
+          <>
+            {' '}
+            · <a href={strip.publicUrl}>{strip.publicUrl}</a>
+          </>
+        ) : null}
+      </p>
+      <p>
+        <strong>Discord</strong> {strip.discordBound ? 'bound' : 'not bound'}
+        {' · '}
+        <strong>Fluxer</strong> {strip.fluxerBound ? 'bound' : 'not bound'}
+        {' · '}
+        <strong>Tunnel</strong> {strip.tunnelUp ? 'up' : 'down'}
+      </p>
+      <p>
+        <strong>Snapshot</strong>{' '}
+        {strip.snapshotAt ?? 'none yet'}
+        {' · schema '}
+        {strip.snapshotSchema ?? '—'}
+        {' / product '}
+        {strip.productSchema}
+      </p>
+      <p>
+        <strong>Tide</strong> {strip.tideOpen ? 'open' : 'closed'}
+        {' · '}
+        <strong>Scene</strong> 7 and 13
+        {strip.sceneLines > 0 ? ` · ${strip.sceneLines} more` : ''}
+        {' · '}
+        <strong>Waiting</strong> {strip.submissions}
+      </p>
+      <form method="post" action="/api/desk/session">
+        <input type="hidden" name="on" value="0" />
+        <button type="submit" class="kod-btn">Player face</button>
+      </form>
+    </section>
+  )
+}

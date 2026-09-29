@@ -210,7 +210,7 @@ describe('bot router', () => {
     store.close();
   });
 
-  it('/live includes a signed Storyteller desk URL for the ST', async () => {
+  it('/live points the Storyteller at the hall desk', async () => {
     const dir = mkdtempSync(join(tmpdir(), 'kod-bot-'));
     dirs.push(dir);
     const store = openSqliteStore(join(dir, 'c.sqlite'));
@@ -241,8 +241,10 @@ describe('bot router', () => {
       options: {},
     });
     expect(sheetTokenSecret()).toBeTruthy();
-    expect(port.ephemerals.some((e) => e.includes('/community/setup/'))).toBe(true);
-    expect(port.ephemerals.some((e) => e.includes('edit='))).toBe(true);
+    const text = port.ephemerals.join('\n');
+    expect(text).toContain('choose Desk');
+    expect(text).not.toContain('/community/setup/');
+    expect(text).not.toContain('edit=');
     if (prev === undefined) delete process.env.KODRANNI_SHEET_TOKEN_SECRET;
     else process.env.KODRANNI_SHEET_TOKEN_SECRET = prev;
     store.close();

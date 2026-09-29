@@ -2,8 +2,11 @@
 export const prerender = false;
 
 import { overviewInner, type HallView } from '@kodranni/hall-render';
+import DeskHall from '../../components/DeskHall.astro';
 import CampaignLayout from '../../layouts/CampaignLayout.astro';
 import { loadCommunity } from '../../data/load';
+import { readDeskStrip } from '../../lib/desk-status';
+import { deskToolsOn } from '../../lib/loopback';
 
 const c = loadCommunity();
 const live = c.source === 'live';
@@ -27,6 +30,15 @@ const view: HallView = {
   characters: c.characters,
 };
 const hallHtml = overviewInner(view, { live, canEdit: false });
+const tools = deskToolsOn(Astro.request);
+const strip = tools ? await readDeskStrip() : null;
+const restoreFlag = Astro.url.searchParams.get('restore');
+const notice =
+  restoreFlag === 'ok'
+    ? 'Snapshot restored.'
+    : restoreFlag === 'failed'
+      ? 'That file was not a public snapshot.'
+      : undefined;
 ---
 
 <CampaignLayout
@@ -37,6 +49,19 @@ const hallHtml = overviewInner(view, { live, canEdit: false });
   source={c.source}
 >
   <Fragment set:html={hallHtml} />
+
+  {
+    tools && (
+      <DeskHall
+        fortunes={c.fortunes}
+        founded={Boolean(c.fortunesFoundedAt)}
+        factions={c.factions ?? []}
+        outsiders={c.outsiders ?? []}
+        discord={strip?.discord ?? { guild: '', channel: '', role: '' }}
+        notice={notice}
+      />
+    )
+  }
 
   <button type="button" id="kod-hall-banner" class="hall-banner" hidden>
     Record changed — refresh

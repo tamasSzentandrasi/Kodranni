@@ -32,7 +32,7 @@ kodranni start
 kodranni stop
 ```
 
-Players open `https://kodranni.com/community/?campaign=<id>` (Aspalath showcase is `https://demo.kodranni.com/community/`). On the operator desk: invite the official Discord app, then pick guild, play channel, and Storyteller role. The bot token stays on the Worker.
+Players open `https://kodranni.com/community/?campaign=<id>` (Aspalath showcase is `https://demo.kodranni.com/community/`). On the hall, choose Desk on this machine, invite the official Discord app, then pick guild, play channel, and Storyteller role. The bot token stays on the Worker.
 
 Own domain means **own hosting** (deploy `apps/edge` on your Cloudflare). See `docs/plans/hosting.md`.
 
@@ -92,7 +92,7 @@ Content: `src/content/docs/`. Deploy: GitHub Pages on `main`.
 |------|--------|
 | Guidebook | Living |
 | Live UI + tunnel + emissary | Yes — `kodranni start` / `stop` |
-| Discord (create / roll / intent / Harm / `/reclaim`) | Yes — bind from the operator desk picker |
+| Discord (create / roll / intent / Harm / `/reclaim`) | Yes — bind from the hall on this machine |
 | Reconstructible demo | `campaign seed-demo` (author). Players Found a **campaign name** |
 | Archive / one hostname | KV snapshot + Worker. Dark = no host process |
 | Host loop | Unsigned — [status.md](docs/plans/status.md) |

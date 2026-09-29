@@ -8,21 +8,23 @@ interface Props {
   editable?: boolean;
   /** Live store already has fortunesFoundedAt. */
   founded?: boolean;
+  /** The public hall already uses f-h. The desk plate needs its own id. */
+  headingId?: string;
 }
 
-const { fortunes, editable = false, founded = true } = Astro.props;
+const { fortunes, editable = false, founded = true, headingId = 'f-h' } = Astro.props;
 const fortuneOrder = ['vitality', 'cohesion', 'surplus', 'standing', 'tradition'] as const;
 const allSteady = fortuneOrder.every((k) => Math.min(3, Math.max(0, fortunes[k] ?? 0)) === 2);
 ---
 
 <section
   class="hall__sky"
-  aria-labelledby="f-h"
+  aria-labelledby={headingId}
   data-editable={editable ? 'true' : undefined}
   data-founded={founded ? 'true' : undefined}
 >
   <div class="section-head">
-    <h2 id="f-h">Fortunes</h2>
+    <h2 id={headingId}>Fortunes</h2>
     <button
       type="button"
       class="info"

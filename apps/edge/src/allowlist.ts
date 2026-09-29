@@ -1,4 +1,4 @@
-/** Paths the Worker may reverse-proxy to a live origin. Setup/operator stay loopback. */
+/** Paths the Worker may reverse-proxy to a live origin. Desk writes stay on the machine. */
 
 const STATIC_FILE =
   /\.(css|js|mjs|map|png|jpe?g|gif|webp|svg|ico|woff2?|ttf|otf)$/i;
@@ -8,6 +8,7 @@ export function livePathAllowed(method: string, pathname: string): boolean {
   const p = pathname.endsWith('/') && pathname.length > 1 ? pathname.slice(0, -1) : pathname;
 
   if (p.startsWith('/internal')) return false;
+  if (p === '/api/desk' || p.startsWith('/api/desk/')) return false;
   if (p === '/operator' || p.startsWith('/operator/')) return false;
   if (p === '/emissary' || p.startsWith('/emissary/')) return false;
   if (p === '/community/setup' || p.startsWith('/community/setup/')) return false;

@@ -335,12 +335,16 @@ describe('edge handler', () => {
     try {
       await handleEdgeRequest(
         new Request('https://kodranni.com/characters/torvald/?campaign=y', {
-          headers: { cookie: 'kod_edit=tok; kodranni_campaign=y; other=nope' },
+          headers: {
+            cookie: 'kod_edit=tok; kodranni_campaign=y; kod_desk=1; kod_setup=old; other=nope',
+          },
         }),
         e,
       );
       expect(seenCookie).toContain('kod_edit=tok');
       expect(seenCookie).toContain('kodranni_campaign=y');
+      expect(seenCookie).not.toContain('kod_desk');
+      expect(seenCookie).not.toContain('kod_setup');
       expect(seenCookie).not.toContain('other=nope');
     } finally {
       globalThis.fetch = prev;
@@ -591,7 +595,12 @@ describe('edge handler', () => {
         new Request('https://demo.kodranni.com/community/setup/'),
         e,
       );
+      const desk = await handleEdgeRequest(
+        new Request('https://demo.kodranni.com/api/desk/snapshot'),
+        e,
+      );
       expect(res.status).toBe(404);
+      expect(desk.status).toBe(404);
       expect(hit).toBe(false);
     } finally {
       globalThis.fetch = prev;

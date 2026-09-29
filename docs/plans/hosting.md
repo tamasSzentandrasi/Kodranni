@@ -105,7 +105,7 @@ A Storyteller-owned bot token plus a local gateway remains a later hatch (`KODRA
 
 ### Desk on the public path
 
-Desk tools render only for `isLocalDeskRequest` (loopback, and not tunnelled) together with cookie `kod_desk=1`. Desk POSTs are rejected otherwise. The Function does not forward desk routes. Player routes that already exist (hall, hierarchy, character map, sheets, the player’s own edit token) are what the proxy allowlist carries. `kod_edit` stays the player’s draft token. `kod_setup` goes. CSRF Origin checks on local mutating routes stay.
+Desk tools render only for `isLocalDeskRequest` (loopback, and not tunnelled) together with cookie `kod_desk=1`. Desk POSTs are rejected otherwise. The Function does not forward desk routes. Player routes that already exist (hall, hierarchy, character map, sheets, the player’s own edit token) are what the proxy allowlist carries. `kod_edit` stays the player’s draft token. There is no `kod_setup`. CSRF Origin checks on local mutating routes stay.
 
 ### Linux host
 
@@ -204,17 +204,11 @@ Keeping `cloudflared` up after stop to serve a local static `archive/` is the ol
 
 ## Emissary
 
-Until the desk strip exists, `kodranni emissary` and `GET /emissary` on localhost are the readiness document:
+The desk strip on the loopback hall is the readiness face. `kodranni emissary` prints the CLI list. `GET /emissary` is gone.
 
-- Kernel process, SQLite open
-- Device key present
-- Function reachable
-- KV origin against local session state
-- Discord guild bound or not
-- Tunnel child alive only while the session is live
-- Last snapshot timestamp
+The strip shows session phase (down, desk, or live), the public table URL this binary serves, Discord and Fluxer bound or not, tunnel up or down, the archive snapshot time and schema when `snapshot.json` exists, Tide closed, scene faces 7 and 13, and how many submissions are waiting. Tide and extra scene lines are closed because nothing stores them yet.
 
-The strip in [decisions.md](./decisions.md) is the same list, plus Fluxer, Tide, scene-face count, and the submission stack, drawn on the desk layout.
+`kodranni emissary` still checks the kernel, the store, the device key, Discord, Fluxer credentials, and the tunnel token. An unbound Discord line points at the hall.
 
 ---
 
@@ -239,4 +233,4 @@ These are not current work:
 | `kodranni status` | `down`, `desk`, or `live` plus the URL. |
 | `kodranni emissary` | The readiness list above. |
 
-The README runbook describes this binary, including the operator picker and `?campaign=`. Those two are what the code does. The desk and the subdomain are the lock, and they are not this binary yet. See [status.md](./status.md).
+The README runbook describes this binary: the hall desk on loopback, and players on `?campaign=`. Subdomains are the lock, and they are not this binary yet. See [status.md](./status.md).

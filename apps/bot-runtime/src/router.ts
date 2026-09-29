@@ -21,7 +21,6 @@ import {
   startCreateFromBot,
   stReviewCharacter,
   issueSheetToken,
-  issueCommunityToken,
   sheetTokenSecret,
   withEditToken,
 } from '@kodranni/app';
@@ -305,19 +304,10 @@ async function handleCommand(
       `**Live sheet:** ${live}`,
       arch ? `**Archive:** ${arch}` : '**Archive:** (not configured)',
     ];
-    if (isSt(ctx, user) && sheetTokenSecret()) {
-      try {
-        const token = issueCommunityToken({
-          platform: 'discord',
-          accountId: user.accountId,
-          communitySlug: ctx.store.getCommunity().slug,
-        });
-        lines.push(
-          `**Storyteller desk:** ${withEditToken(`${live.replace(/\/$/, '')}/community/setup/`, token)}`,
-        );
-      } catch {
-        /* leave hall-only */
-      }
+    if (isSt(ctx, user)) {
+      lines.push(
+        '**Storyteller desk:** the desk is the hall on the machine that holds the record. Open that hall and choose Desk.',
+      );
     }
     await ctx.port.replyEphemeral(i, lines.join('\n'));
     return;

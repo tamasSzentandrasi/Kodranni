@@ -2,15 +2,13 @@ import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
-import { issueCommunityToken } from '@kodranni/app';
 import { completeMemberPlacements, openSqliteStore, seedDemoCampaign } from '@kodranni/store';
 import { POST } from '../src/pages/api/community/figures';
 
 const dirs: string[] = [];
 const prevStore = process.env.KODRANNI_STORE_PATH;
 const prevSlug = process.env.KODRANNI_CAMPAIGN_SLUG;
-const prevSecret = process.env.KODRANNI_SHEET_TOKEN_SECRET;
-const SECRET = 'test-sheet-secret-do-not-use-in-prod';
+const DESK = 'kod_desk=1';
 
 afterEach(() => {
   for (const d of dirs.splice(0)) rmSync(d, { recursive: true, force: true });
@@ -18,8 +16,6 @@ afterEach(() => {
   else process.env.KODRANNI_STORE_PATH = prevStore;
   if (prevSlug === undefined) delete process.env.KODRANNI_CAMPAIGN_SLUG;
   else process.env.KODRANNI_CAMPAIGN_SLUG = prevSlug;
-  if (prevSecret === undefined) delete process.env.KODRANNI_SHEET_TOKEN_SECRET;
-  else process.env.KODRANNI_SHEET_TOKEN_SECRET = prevSecret;
 });
 
 function liveStore() {
@@ -30,20 +26,8 @@ function liveStore() {
   seedDemoCampaign(store);
   store.close();
   process.env.KODRANNI_STORE_PATH = path;
-  process.env.KODRANNI_SHEET_TOKEN_SECRET = SECRET;
   delete process.env.KODRANNI_CAMPAIGN_SLUG;
   return path;
-}
-
-function setupCookie(slug: string): string {
-  const token = issueCommunityToken({
-    platform: 'discord',
-    accountId: 'st-1',
-    communitySlug: slug,
-    secret: SECRET,
-    ttlSec: 3600,
-  });
-  return `kod_setup=${encodeURIComponent(token)}`;
 }
 
 const url = new URL('http://localhost:8742/api/community/figures');
@@ -62,11 +46,8 @@ async function post(
   return { status: res.status, data };
 }
 
-function signedPost(path: string, body: unknown) {
-  const store = openSqliteStore(path);
-  const slug = store.getCommunity().slug;
-  store.close();
-  return post(body, 'http://localhost:8742', setupCookie(slug));
+function deskPost(body: unknown) {
+  return post(body, 'http://localhost:8742', DESK);
 }
 
 describe('POST /api/community/figures', () => {
@@ -76,15 +57,35 @@ describe('POST /api/community/figures', () => {
     expect(status).toBe(403);
   });
 
-  it('rejects a missing setup cookie', async () => {
+  it('rejects a missing desk cookie', async () => {
     liveStore();
-    const { status } = await post({ name: 'Hilda Gate' });
+    const { status, data } = await post({ name: 'Hilda Gate' });
     expect(status).toBe(401);
+    expect(String(data.error)).toMatch(/desk/i);
+  });
+
+  it('404s a tunneled request even with the desk cookie', async () => {
+    liveStore();
+    const headers = new Headers({
+      'Content-Type': 'application/json',
+      Origin: 'http://localhost:8742',
+      Cookie: DESK,
+      'X-Forwarded-Host': 'kodranni.com',
+    });
+    const res = await POST({
+      request: new Request(url, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({ name: 'Hilda Gate' }),
+      }),
+      url,
+    });
+    expect(res.status).toBe(404);
   });
 
   it('adds a hall NPC that automation places Outcast', async () => {
     const path = liveStore();
-    const { status, data } = await signedPost(path, { name: 'Hilda Gate' });
+    const { status, data } = await deskPost({ name: 'Hilda Gate' });
     expect(status).toBe(200);
     expect(data.ok).toBe(true);
     expect(data.name).toBe('Hilda Gate');
@@ -101,8 +102,8 @@ describe('POST /api/community/figures', () => {
   });
 
   it('adds an outsider to the porch', async () => {
-    const path = liveStore();
-    const { status, data } = await signedPost(path, {
+    liveStore();
+    const { status, data } = await deskPost({
       name: 'Ash-horn',
       outsider: true,
       faction: 'Reed-marsh folk',
@@ -114,8 +115,8 @@ describe('POST /api/community/figures', () => {
   });
 
   it('adds a faction with a hue', async () => {
-    const path = liveStore();
-    const { status, data } = await signedPost(path, { kind: 'faction', name: 'Ash banner', hue: 28 });
+    liveStore();
+    const { status, data } = await deskPost({ kind: 'faction', name: 'Ash banner', hue: 28 });
     expect(status).toBe(200);
     const factions = data.factions as { name: string; hue: number }[];
     expect(factions.some((f) => f.name === 'Ash banner' && f.hue === 28)).toBe(true);
