@@ -10,6 +10,7 @@ import {
   ellipsePush,
   keepOffRose,
   layoutRose,
+  placeEdgeLabels,
   ROSE_R,
   type PlateBox,
 } from './map-geometry';
@@ -387,8 +388,15 @@ function bootMap2d(root: HTMLElement, mount: HTMLElement, map: RelationMap): voi
   }
 
   function hubIdsFor(n: SimNode): string[] {
-    const ids = n.slug ? slugLabels.get(n.slug) ?? [] : [];
-    return ids.filter((id) => meta.labels.some((l) => l.id === id && l.groupId === catId));
+    const inCat = (id: string) => meta.labels.some((l) => l.id === id && l.groupId === catId);
+    const ids = (n.slug ? slugLabels.get(n.slug) ?? [] : []).filter(inCat);
+    if (ids.length) return ids;
+    const tail = n.text.trim().split(/\s+/).pop()?.toLowerCase() ?? '';
+    if (tail.length < 3) return [];
+    const hit = meta.labels.find(
+      (l) => l.groupId === catId && l.hue != null && l.name.toLowerCase().includes(tail),
+    );
+    return hit ? [hit.id] : [];
   }
 
   let lastHubs: { id: string; name: string; hue: number; x: number; y: number; r: number }[] = [];
@@ -409,6 +417,12 @@ function bootMap2d(root: HTMLElement, mount: HTMLElement, map: RelationMap): voi
       people,
       PLATE_W,
       PLATE_H,
+      map.edges.map((e) => ({
+        from: e.fromNode,
+        to: e.toNode,
+        label: e.label ?? '',
+        directed: isDirectedEdge(e),
+      })),
     );
     lastHubs = posed.hubs;
     paintHubs(posed.hubs);
@@ -569,6 +583,12 @@ function bootMap2d(root: HTMLElement, mount: HTMLElement, map: RelationMap): voi
       if (!hub) return;
       return { x: hub.x - 28, y: hub.y - 28, w: 56, h: 56 };
     }
+    const drawn: {
+      e: (typeof map.edges)[number];
+      draw: ReturnType<typeof edgeDraw>;
+      dim: boolean;
+      lit: boolean;
+    }[] = [];
     map.edges.forEach((e) => {
       const a = boxFor(e.fromNode);
       const b = boxFor(e.toNode);
@@ -584,37 +604,55 @@ function bootMap2d(root: HTMLElement, mount: HTMLElement, map: RelationMap): voi
         8,
         blockers,
       );
-      const path = document.createElementNS(ns, 'path');
-      path.setAttribute('d', draw.d);
-      path.setAttribute('fill', 'none');
-      path.setAttribute('stroke', e.color || '#8a8580');
-      path.style.setProperty('--edge', e.color || '#8a8580');
-      path.setAttribute('stroke-linecap', 'round');
       const onFocus = Boolean(
         focus && (e.fromNode === focus.id || e.toNode === focus.id),
       );
       const dimKin = kin && !(kin.has(e.fromNode) && kin.has(e.toNode) && isKinEdge(e));
       const dim = Boolean(dimKin) || Boolean(focus && !onFocus);
       const lit = Boolean(focus && onFocus && !dimKin);
-      path.setAttribute('stroke-width', lit ? '3.15' : '2.1');
-      if (lit) path.classList.add('is-lit');
-      if (dim) path.classList.add('is-dim');
+      drawn.push({ e, draw, dim, lit });
+    });
+    const slots = placeEdgeLabels(
+      drawn
+        .filter((d) => d.e.label)
+        .map((d) => ({
+          id: d.e.id,
+          start: d.draw.start,
+          end: d.draw.end,
+          ctrl: d.draw.ctrl,
+          label: d.e.label ?? '',
+          directed: isDirectedEdge(d.e),
+        })),
+      nodes.map(boxOf),
+      ROSE_R + 8,
+    );
+    drawn.forEach((d) => {
+      const path = document.createElementNS(ns, 'path');
+      path.setAttribute('d', d.draw.d);
+      path.setAttribute('fill', 'none');
+      path.setAttribute('stroke', d.e.color || '#8a8580');
+      path.style.setProperty('--edge', d.e.color || '#8a8580');
+      path.setAttribute('stroke-linecap', 'round');
+      path.setAttribute('stroke-width', d.lit ? '3.15' : '2.1');
+      if (d.lit) path.classList.add('is-lit');
+      if (d.dim) path.classList.add('is-dim');
       svg.appendChild(path);
-      if (draw.arrow) {
+      if (d.draw.arrow) {
         arrows.push({
-          x: draw.arrow.x,
-          y: draw.arrow.y,
-          angle: draw.arrow.angle,
-          dim,
+          x: d.draw.arrow.x,
+          y: d.draw.arrow.y,
+          angle: d.draw.arrow.angle,
+          dim: d.dim,
         });
       }
-      if (e.label) {
+      if (d.e.label) {
+        const slot = slots.get(d.e.id) ?? d.draw.label;
         labs.push({
-          x: draw.label.x,
-          y: draw.label.y,
-          text: e.label,
-          color: inkOf(e.color || '#d8d0c4'),
-          dim,
+          x: slot.x,
+          y: slot.y,
+          text: d.e.label,
+          color: inkOf(d.e.color || '#d8d0c4'),
+          dim: d.dim,
         });
       }
     });
@@ -692,10 +730,10 @@ function bootMap2d(root: HTMLElement, mount: HTMLElement, map: RelationMap): voi
     let maxX = ROSE_R;
     let maxY = ROSE_R;
     lastHubs.forEach((h) => {
-      minX = Math.min(minX, h.x - h.r);
-      minY = Math.min(minY, h.y - h.r);
-      maxX = Math.max(maxX, h.x + h.r);
-      maxY = Math.max(maxY, h.y + h.r);
+      minX = Math.min(minX, h.x - 48);
+      minY = Math.min(minY, h.y - 48);
+      maxX = Math.max(maxX, h.x + 48);
+      maxY = Math.max(maxY, h.y + 48);
     });
     nodes.forEach((n) => {
       minX = Math.min(minX, n.x);
