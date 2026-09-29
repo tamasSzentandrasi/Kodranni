@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 36" fill="none">
+  <g transform="scale(-1,1) translate(-24,0)">
+    <g fill="#d4cfc6">
+      <path d="M12 6.2 16.6 18 12 29.8 7.4 18z"/>
+      <path fill="#0b0a0a" d="M12 10.4 14.35 18 12 25.6 9.65 18z"/>
+      <path d="M12 4.2 13.7 8.6 12 9.4 10.3 8.6z"/>
+      <path d="M12 31.8 13.7 27.4 12 26.6 10.3 27.4z"/>
+      <path d="M4.6 18 8.4 20.1 9.2 18 8.4 15.9z"/>
+      <path opacity="0.85" d="M16.2 17.2h7.2L24 18l-.6.8H16.2z"/>
+    </g>
+  </g>
+</svg>
