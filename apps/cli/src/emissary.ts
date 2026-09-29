@@ -131,7 +131,7 @@ export async function runEmissary(opts: {
         hasCred && Boolean(tunnelCreds.publicUrl),
         hasCred
           ? `mode=named · public ${tunnelCreds.publicUrl}${tunnelCreds.token ? ' · token set' : ''}${tunnelCreds.tunnelName ? ` · name ${tunnelCreds.tunnelName}` : ''}`
-          : 'tunnel_mode=named but missing token/name/config — see docs/plans/live-tunnel.md',
+          : 'tunnel_mode=named but missing token/name/config — see docs/plans/hosting.md',
       ),
     );
   } else {

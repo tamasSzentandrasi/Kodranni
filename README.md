@@ -34,7 +34,7 @@ kodranni stop
 
 Players open `https://kodranni.com/community/?campaign=<id>` (Aspalath showcase is `https://demo.kodranni.com/community/`). On the operator desk: invite the official Discord app, then pick guild, play channel, and Storyteller role. The bot token stays on the Worker.
 
-Own domain means **own hosting** (deploy `apps/edge` on your Cloudflare). See `docs/plans/storyteller-host.md`.
+Own domain means **own hosting** (deploy `apps/edge` on your Cloudflare). See `docs/plans/hosting.md`.
 
 ### Dev (this repo)
 
@@ -95,10 +95,10 @@ Content: `src/content/docs/`. Deploy: GitHub Pages on `main`.
 | Discord (create / roll / intent / Harm / `/reclaim`) | Yes — bind from the operator desk picker |
 | Reconstructible demo | `campaign seed-demo` (author). Players Found a **campaign name** |
 | Archive / one hostname | KV snapshot + Worker. Dark = no host process |
-| DevSecOps | **Verify-ready** — [manual-test-plan.md](docs/plans/manual-test-plan.md) |
+| Host loop | Unsigned — [status.md](docs/plans/status.md) |
 | Fluxer | Creds load; adapter pending |
 
-Plans: [infra-devsecops.md](docs/plans/infra-devsecops.md) · [automation-status.md](docs/plans/automation-status.md) · [bot-discord.md](docs/plans/bot-discord.md) · [live-tunnel.md](docs/plans/live-tunnel.md) · [automation-architecture.md](docs/plans/automation-architecture.md)
+Plans: [overview.md](docs/plans/overview.md) · [decisions.md](docs/plans/decisions.md) · [status.md](docs/plans/status.md) · [hosting.md](docs/plans/hosting.md). Hungarian word lock: [hungarian-lexicon.md](docs/plans/hungarian-lexicon.md).
 
 ## License
 
