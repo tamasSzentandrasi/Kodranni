@@ -36,7 +36,7 @@ It is **primarily player-controlled**: when to push, when to rest, and where to 
 
 ### Replenishment
 
-Automation tracks the current pool and restores points when the Storyteller instructs it after the fiction is settled. **Exertion reclaim** and **[Harm](/harm/) recovery** are **separate** updates — narrative first, then state.
+The sheet tracks the current pool. After the fiction of a rest is settled, the Storyteller restores Exertion on the desk, separately from [Harm](/harm/) recovery — narrative first, then state. The suggestions below are counsel for the number they type.
 
 Suggested awards:
 

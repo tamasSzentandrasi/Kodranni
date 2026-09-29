@@ -1,6 +1,6 @@
 ---
 title: Automation
-description: Why Kodranni is a hybrid TTRPG, shared sheets, and the Fluxer/Discord automation contract.
+description: One living record, the Storyteller Desk, and the same chat contract on Discord and Fluxer.
 ---
 
 ----------
@@ -14,141 +14,96 @@ Kodranni is a **hybrid** tabletop system: storytelling first, software as ledger
 - **One living record** per character and community — no divergent notebooks.
 - **Fast resolution** of pools, Omens, margins, Practice, Exertion, Harm, and Tide — so fiction is not stopped for arithmetic.
 - **State at the moment of action** — who is rolling, Exertion left, Echoes, Myths — without retyping sheets into chat.
-- **Online continuity** between sessions on shared sheets and a community tracker.
+- **Online continuity** between sessions on the shared hall and sheets.
 
-This page is the **table-facing** contract. Engineering direction lives with the project source and will change as the product UI is defined. Storyteller record edits move to a web desk (clone of the tracker and sheets). Discord and Fluxer keep rolls. Harm apply exists on the result card and on that desk.
+This page is the contract at the table. The hall and the sheets are one record. On the machine that holds that record, the same pages are the **Storyteller Desk**, and the tools for changing the record are there. Discord and Fluxer carry the dice, the Tide, and the words said in chat. Harm from a roll just shown is applied on that result card, and on the desk.
 
 ----------
 
-## Single source of truth
+## One record
 
 | Surface | Who uses it | What it holds |
-|---------|-------------|----------------|
-| **Guidebook** (this site) | Everyone | Rules — one public ruleset |
-| **Character sheet** | Player + Storyteller (shared view) | One living record per character — Foundations, Skills (**including Practice progress**), Traits, Exertion, Echoes, Harm, Hierarchy positions, Inventory, flags |
-| **Community tracker** | Table (shared view) | Fortunes, Foundation Myths, Hierarchy Diagram (≤5 axes) |
+|---------|-------------|---------------|
+| **Guidebook** (this site) | Everyone | The rules |
+| **Hall and sheets** | The table | Fortunes, Foundation Myths, the Hierarchy Diagram, factions, the character map, and one sheet per person — Foundations, Skills (including Practice), Traits, Exertion, Echoes, Harm, inventory |
+| **Storyteller Desk** | Storyteller | Those same pages, on the machine that holds the record, with the tools to change them |
+| **Discord** and **Fluxer** | The table | Rolls, the Tide card, the scene board, Weighing dice, Words |
 
-Sheets and tracker are **per community**. Hosting and sharing are modular: the community’s data is the authority; chat platforms only drive instructions against it.
+One sheet per character. Practice is visible to anyone who looks. Discord and Fluxer both read and write this record.
 
-There are **not** separate “player sheet” and “ST sheet” for the same character. The **data** does not fork. Practice progress is **visible** on the sheet for anyone who wants to look.
+Kept off the standing hall, because they belong to the session:
 
-**Not** on the main Community tracker (session tools, not standing community state):
-
-- **Tide** — opened when needed; when a Tide ends, what remains is usually an audit/history mark of where it left off, not a permanent tracker field.
-- **Scene Omen faces** — Storyteller lists, manages, and clears them effectively; they are scene tooling, not community Fortunes.
-
-----------
-
-## Platforms
-
-Automation **supports two platforms** as equal chat surfaces:
-
-| Platform | Role |
-|----------|------|
-| **Fluxer** | Chat surface with guild/server-style binding, token configuration, account mapping |
-| **Discord** | Same domain behaviour; guild IDs, token configuration, account mapping |
-
-Each deployment binds platform credentials, **guild / server ID** (or Fluxer equivalent), and the **community** record. Bots also map **account IDs and nicknames** to characters so a target instruction always knows *which player’s character* it addresses.
-
-Bots are thin clients over the community store. Bare slash-only bots are not enough: player-facing UI must make Foundation, Skill, tier, Exertion, Echo/Myth tags, and approvals **easy to select**, using each platform’s built-in strengths first (menus, buttons for Storyteller **approve/deny**, reply threads) — researched, innovative, high-quality UX, not a wall of flags.
-
-Between and during sessions, players also use a **pretty shared view** of sheets and the community tracker: a **live** URL while the Storyteller’s session is running, and a **public archive** URL (campaign presentation site) when it is not. Platform account maps and full audit trails stay on the Storyteller’s machine — not on the public site.
+- **Tide** — one open bar. When it closes, the card remains as history. It is not a Fortune.
+- **Scene Omen faces** — written for this scene. Faces **7** and **13** are always in force. Any other face is a line the Storyteller writes on the desk. The channel shows the list and what each face does.
+- **Restore** — after a rest has been played, the Storyteller records food, water, and Exertion on the desk.
 
 ----------
 
-## Design Principles
+## Discord and Fluxer
 
-1. **Storyteller authority** — Lasting mutations require Storyteller approval where the rules say so (Hierarchy, inventory, and similar). Approvals use **Storyteller-role buttons** (approve / deny) on the request message.  
-2. **Fiction first, then instruction** — In narration the Storyteller names Foundation and Skill (or Foundation alone for Primitive). The **player** initiates the roll instruction with that agreed configuration. Automation already knows the mapped user, their character, Exertion, Echoes (selectable), and community Myths that can be tagged.  
-3. **Die tier is declared** — Safe default **d8**; ultimate choice is the Storyteller’s via [Advantage and Disadvantage](/marks-and-tiers/#advantage-and-disadvantage).  
-4. **Infer when safe; field when narrative** — States such as Decadence or over-capacity can be inferred during interactions to cut admin overhead. **Armour** and **Reputation** still need explicit fields: their presence is resolved in fiction before any ratio is applied. Hierarchy **tiers** are full ladders, not only Outsider/Ruler; relative tier difference is established narratively, then applied in instructions.  
-5. **Reply chains** — An opposed roll is simply a **roll sent in reply** to a prior roll message (any Foundation + Skill pair; player or Storyteller NPC roll). Tide contribution comes from replies to a Tide event or to a roll already tied to that Tide.  
-6. **Minimum pool floor** — No pool drops below 1 die.  
-7. **Separate recovery** — Exertion reclaim and Harm healing are distinct updates after narrative rest.  
-8. **One community store** — Sheets and tracker never diverge across platforms.  
-9. **Fulfil, present, track** — Primary duty of automation: execute the instruction, show results, persist changes. **Revert last roll** for accidents.
+Discord and Fluxer are one chat contract. Each binds a server, a play channel, and the Storyteller role, and maps accounts to characters. A command means the same thing on both.
 
-----------
+Players keep one address for the hall. While the session is up, that address is the live table. When the session is down, it shows the last public record. Account maps stay on the Storyteller’s machine.
 
-## Capability Map
+### Commands
 
-| Capability | Player | Storyteller | Automation |
-|------------|--------|-------------|------------|
-| **Player roll** | Initiates with agreed config; Exertion / Echo / Myth tags via UI | Names Foundation + Skill (or Primitive) and tier in fiction | Maps user → character; fills pool from sheet; rolls + Omen; updates Practice/Exertion |
-| **Storyteller NPC roll** | — | Uses ST roll flow: specify Foundation, Skill, Exertion, tier, etc. (no PC sheet required) | Rolls and reports; no PC sheet mutation unless targeted |
-| **Opposed margin** | Reply-roll in fiction | Interprets margin | Detects reply link; computes Marks difference |
-| **Omen faces** | — | List / set / clear scene faces | On every roll, flags configured + default faces |
-| **Tide** | Acts; reply-rolls may link | Opens/closes; scale & footing | Tracks while open; history when closed |
-| **Practice** | Visible on sheet | Prompt degrade (time leap) | Accrues; levels; prompted degrade |
-| **Exertion** | Spends on player rolls | Awards rest/event drains | Tracks pool; empty penalty; infer flags when safe |
-| **Echoes** | Create / invoke / resolve with ST | Veto tone; deal resolution rewards | Weight vs capacity; apply sheet changes ST orders |
-| **Fortunes** | — | Adjust | On Community tracker |
-| **Foundation Myths** | Tag on roll when relevant | Craft toggleable/compound effects (ST-only) | Apply only when tagged |
-| **Harm / Dying** | — | Chooses track; applies; heals (separate) | Tracks; Dying; death flow |
-| **Hierarchy Diagram** | Request move | Approve (button) | ≤5 axes on tracker |
-| **Inventory** | Request changes; restock food/water | Approve (button) | Shared sheet loadout |
-| **Character / Weighing** | Concept onward | Finalises; Word spent on the **speaker’s** sheet; ST marks the **target** | Budgets; private Omen rolls; sheet updates |
-| **Legacy** | Crafted as an Echo with the ST (not a special bot path) | Same as other Echo outcomes | Ordinary Echo / sheet changes |
+| Command | Who | What it does |
+|---------|-----|----------------|
+| `/roll` | The bound player | Rolls that character. Foundation, Skill, die tier, Exertion, and which Echo applies. |
+| `/select` | A player with more than one living character | Chooses which of them `/roll` assumes. With one character, it is unused. |
+| `/roll` and a name | Storyteller | Rolls a sheeted NPC in that person’s name. The sheet supplies the numbers. |
+| `/npc-roll` | Storyteller | Someone with no sheet: a label, foundation dice, skill dice, a tier. Harm has no track to land on. |
+| `/intent` | Storyteller | Posts an agreed pool for a named player. |
+| `/create`, `/claim` | Player | Opens a draft, or claims a person left ready. |
+| `/birth-omen`, `/guiding-hand` | That player and the Storyteller | Private dice. The points land on the draft. |
+| `/award-word` | Storyteller | Banks one Word on the speaker, for their own Wanting. |
+| `/tide` | Storyteller | Opens the Tide card. |
+| `/review` | Storyteller | Repeats the notice that a character is waiting on the desk. |
+
+A reply to a roll is an opposed roll. A reply to the Tide card, or to a roll already tied to it, steps the Tide. The result is a channel message. Pairs of Foundation and Skill need not match.
 
 ----------
 
-## Table Workflow (Player Action)
+## At the table
 
-```text
-Player describes intent (role-play)
-        ↓
-Storyteller names, in fiction: Foundation + Skill | Primitive,
-  and die tier (default d8) — Advantage/Disadvantage as context
-        ↓
-Player starts roll instruction (mapped account → character).
-  UI already shows Exertion, selectable Echoes, taggable Myths.
-  Player chooses spends/tags; confirms.
-        ↓
-Automation rolls main pool + Omen; presents results;
-  tracks sheet changes (Practice, Exertion, flags…)
-        ↓
-Storyteller narrates outcome (+ Consequence if Omen fires)
-        ↓
-If lasting state needs approval (loot, rank…):
-  request → Storyteller button approve → shared sheet/tracker
-  (live pretty view updates immediately; public archive follows)
-```
+1. **Fiction first.** In the scene the Storyteller names Foundation and Skill, or Foundation alone for a [Primitive](/dice-mechanics/) action, and the die tier. The safe default is **d8**. [Advantage and Disadvantage](/marks-and-tiers/#advantage-and-disadvantage) are the Storyteller’s call.
+2. **The player rolls.** `/roll` uses the character bound to that account. The sheet already knows Exertion, Echoes, and Myths. The player confirms the spend and which Echo applies, when the table has agreed the Echo matches.
+3. **The pool has a floor of 1 die.**
+4. **The card is the result.** Marks, the Omen, and why the pool is that size. The Storyteller can undo that roll from the card.
+5. **Derived state stays derived.** Decadence and over-capacity follow from the sheet. Armour and Reputation are written on the sheet once the fiction has settled them.
 
-**Storyteller rolling an NPC:** separate ST roll instruction with explicit numbers (Foundation, Skill, Exertion, tier, Advantage). No player character sheet is required.
+**A sheeted NPC.** The Storyteller uses `/roll` with that person’s name. Effective Foundation, Skill, armour, Exertion, Echoes, and Harm tracks come from the sheet.
 
-**Opposed:** any roll (player or ST) **in reply** to a roll message. Pairs need not match.
+**Someone with no sheet.** `/npc-roll`. A label and the dice. Most people in the world never receive a sheet. A sheet is for player characters and for people who will return.
 
-**Tide-linked:** reply to the Tide event or to a roll already on that Tide.
+**Opposed, and Tide.** Reply, as above.
 
-**Accident:** revert last roll.
+----------
+
+## Where the record changes
+
+**Tide.** `/tide` posts one card. The Storyteller sets the size (small skirmish, skirmish, battle), the footing, the two side names, and a colour for each side. The card shows the bar from the [Tide](/tide/) chapter, and every linked reply updates that picture. The Storyteller closes the Tide from the card. The desk shows whether one is open.
+
+**Scene faces.** The Storyteller adds, edits, and clears them on the desk. Saving rewrites the channel board the table is reading.
+
+**Confirm.** Sending a character in posts a notice in chat and places that version on the desk. The Storyteller opens it, edits it as they would any other person, then approves it into play or sends it back with those edits kept. `/review` only repeats the notice.
+
+**Restore.** On the desk, the Storyteller chooses who rested. For each person: spend a food day or leave it, spend a water day or leave it, and type how many Exertion points return. The suggestions under [Replenishment](/exertion/#replenishment) are counsel for that number. Harm is a separate edit on the person. A player who was included can receive a private notice.
+
+**The hall and the person.** Fortunes are the five buttons, from Crisis through Abundance. A move on the diagram is spoken, then the Storyteller makes it on the desk. Factions live inside their categories. Echoes, inventory, Traits, Practice, and armour are edited on the person. A gift of food or water is an edit on the two sheets. The character map is downloaded, edited outside the hall, and uploaded by the Storyteller. Practice degrade, when a stretch of time demands it, is proposed and confirmed on that person.
+
+**Harm** from the roll just shown is applied on the result card. Stabilising someone at Dying is an edit on that person: Dying clears, the track stays at 3, and the Trait that usually remains is written there.
 
 ----------
 
 ## Weighing (automation depth)
 
-- Character record is created at **Character Concept**, with initial Foundation and Skill budgets granted.  
-- **Birth Omen** and **Guiding Hand**: automation rolls; points land on the draft sheet.  
-- **Words / Wanting**: speaker spends a Word on **their own** sheet (menu option). The Storyteller marks the **target** of the accepted claim. Theatre stays human; arithmetic and persistence do not.
+- The character record opens at **Character Concept**, with Foundation and Skill budgets granted.
+- **Birth Omen** and **Guiding Hand**: the dice are private to that player and the Storyteller. The points land on the draft.
+- **Words / Wanting**: `/award-word` banks one Word on the speaker. They spend it on **their own** sheet, from the menu. The Storyteller marks the **target** of the accepted claim by editing that person. A Wanting result the table rejects is corrected by editing fields. The theatre stays human.
 
 ----------
 
-## Setup (evolving)
-
-Install steps, Fluxer vs Discord tokens, account mapping, and UI research belong to the architecture plan and will iterate. Until the product ships, treat this chapter as the **behaviour contract**.
-
-Command **families** (names follow UX design):
-
-- **Player roll** / **Storyteller roll** — Omen always included; not a separate “omen command”  
-- **Reply** = oppose or Tide-link when the parent is a roll or Tide event  
-- Exertion award · Harm apply/heal (separate) · Tide open/close  
-- Scene Omen list/set/clear (ST)  
-- Echo · Myth craft (ST) · Fortune  
-- Hierarchy request + ST button approve · Diagram on tracker  
-- Inventory request + approve · restock  
-- Character sheet · Community tracker · Practice degrade (prompted) · **Revert last roll**
-
-Engineering notes live with the project source, not on this page.
-
-Related: [Dice Mechanics](/dice-mechanics/), [Character Creation](/character-creation/), [Hierarchies](/hierarchies/).
+Related: [Dice Mechanics](/dice-mechanics/), [Character Creation](/character-creation/), [Hierarchies](/hierarchies/), [Tide](/tide/), [Exertion](/exertion/).
 
 ----------

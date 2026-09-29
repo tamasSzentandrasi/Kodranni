@@ -188,11 +188,7 @@ Character death does not interrupt the session. Play continues. Diagram removal 
 
 The Diagram is a shared record of every known and tracked character in the campaign. Visible to all players and the Storyteller.
 
-Workflow (same pattern as [Inventory](/inventory/#management)):
-
-1. Player requests add / remove / move via automation  
-2. Storyteller approves  
-3. Automation executes  
+A move is spoken at the table. The Storyteller updates the diagram on the desk. See [Automation](/automation/) and [Inventory](/inventory/#management).  
 
 Dead characters are deleted. Their only remaining presence is through Echoes still carried by the living.
 

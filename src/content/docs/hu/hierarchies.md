@@ -188,11 +188,7 @@ A karakterhalál nem szakítja meg az ülést. A játék megy tovább. Az ábrá
 
 Az ábra a kampány minden ismert és követett karakterének közös feljegyzése. Minden játékos és a mesélő látja.
 
-Menet (ugyanaz a minta, mint a [felszerelésnél](/hu/inventory/#kezelés)):
-
-1. A játékos kéri a hozzáadást / elvételt / mozgatást automatizáláson  
-2. A mesélő jóváhagyja  
-3. Az automatizálás végrehajtja  
+A mozgatást az asztal kimondja. A mesélő a mesélői pulton (Storyteller Desk) frissíti az ábrát. Lásd az [automatizálást](/hu/automation/) és a [felszerelést](/hu/inventory/#kezelés).  
 
 A halott karakterek törlődnek. Egyetlen maradék jelenlétük a visszhangokon át van, amelyeket az élők még hordoznak.
 

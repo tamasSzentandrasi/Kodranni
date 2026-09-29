@@ -32,22 +32,15 @@ A hétköznapi, mellékes felszerelés nincs listázva.
 
 ### Kezelés
 
-Minden változás (hozzáadás, elvétel, páncél, étel, víz vagy megnevezett tárgy módosítása) [automatizáláson](/hu/automation/) megy át:
+Minden változás (hozzáadás, elvétel, páncél, étel, víz vagy megnevezett tárgy módosítása) a fikcióban dől el, aztán a lapra kerül. Lásd az [automatizálást](/hu/automation/).
 
-1. A játékos kéri a változást  
-2. A mesélő jóváhagyja  
-3. Az automatizálás végrehajtja  
-
-Ugyanaz a jóváhagyási menet, mint a [hierarchiaábra](/hu/hierarchies/#a-hierarchiaábra) mozgatásainál.
+A mesélő a pulton frissíti a lapot. A [hierarchiaábra](/hu/hierarchies/#a-hierarchiaábra) mozgatását kimondjátok, aztán ugyanígy kerül az ábrára.
 
 ----------
 
 ### Utánpótlás
 
-Külön automatizálási parancs csak erre van:
-
-- Ételnapok  
-- Víznapok  
+Az ételnap és a víz-nap a lap mezője. A [Restore](/hu/automation/#hol-változik-a-feljegyzés) egy napot költ, vagy hagyja.  
 
 Minden más utánpótlás (nyíl, fű, kötszer, anyag stb.) tiszta szerepjáték. A mesélő dönti el, mit enged a helyzet. A kötszer és a fű narratívan számít a [sérülés gyógyulásánál](/hu/harm/#felépülés), még ha nincsenek is sorként a lapon.
 
@@ -70,7 +63,7 @@ Hogy valami észszerűen vihető, húzható vagy tárolható-e, a kontextus és 
 <ol class="kod-example__steps">
 <li><strong>A jelenet indul:</strong> nincs íj a lapon, nincs kimondva → nincs íja.</li>
 <li><strong>Nem</strong> találhatod ki a jelenet közepén.</li>
-<li><strong>Miután játékban megszerezte:</strong> a játékos kéri a megnevezett tárgyat → a mesélő jóváhagyja → a lap frissül.</li>
+<li><strong>Miután játékban megszerezte:</strong> az asztal megegyezik, hogy nála van, és a mesélő a lapra írja.</li>
 </ol>
 </aside>
 

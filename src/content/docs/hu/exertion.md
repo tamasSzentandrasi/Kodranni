@@ -36,7 +36,7 @@ Az **erőfeszítés** (Exertion) a karakter kapacitása, hogy **túlmenjen a hé
 
 ### Visszatöltés
 
-Az automatizálás követi a készletet, és akkor tölt vissza pontokat, ha a mesélő a fikció lezárása után utasítja. Az **erőfeszítés-visszavétel** és a **[sérülés](/hu/harm/) gyógyulása** **külön** frissítés — előbb a narratíva, aztán az állapot.
+A lap követi a készletet. Ha a pihenő fikciója lezárult, a mesélő a pulton tölt vissza erőfeszítést, a [sérülés](/hu/harm/) gyógyulásától külön — előbb a narratíva, aztán az állapot. Az alábbi javaslatok a beírt számhoz adnak támpontot.
 
 Javasolt visszatöltés:
 

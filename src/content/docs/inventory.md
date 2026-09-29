@@ -32,22 +32,15 @@ Ordinary incidental gear is not listed.
 
 ### Management
 
-All changes (add, remove, alter armour, food, water, or named items) go through [automation](/automation/):
+All changes (add, remove, alter armour, food, water, or named items) are agreed in the fiction, then written on the sheet. See [Automation](/automation/).
 
-1. Player requests the change  
-2. Storyteller approves  
-3. Automation executes  
-
-Same approval process as [Hierarchy Diagram](/hierarchies/#the-hierarchy-diagram) moves.
+The Storyteller updates the sheet on the desk. A move on the [Hierarchy Diagram](/hierarchies/#the-hierarchy-diagram) is spoken, then made the same way.
 
 ----------
 
 ### Restock
 
-Dedicated automation commands exist only for:
-
-- Food (days)  
-- Water (days)  
+Food days and water days are fields on the sheet. [Restore](/automation/#where-the-record-changes) spends a day or leaves it.  
 
 All other resupply (arrows, herbs, bandages, materials, etc.) is pure roleplay. The Storyteller decides what the situation allows. Bandages and herbs matter narratively for [Harm recovery](/harm/#recovery) even when not line-items.
 
@@ -70,7 +63,7 @@ Whether something can reasonably be carried, hauled, or stored is decided by con
 <ol class="kod-example__steps">
 <li><strong>Scene starts:</strong> no bow on the sheet, none declared → they do not have a bow.</li>
 <li><strong>Cannot</strong> invent it mid-scene.</li>
-<li><strong>After taking one in play:</strong> player requests the named item → Storyteller approves → sheet updates.</li>
+<li><strong>After taking one in play:</strong> the table agrees they have it, and the Storyteller writes it on the sheet.</li>
 </ol>
 </aside>
 
