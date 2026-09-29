@@ -161,7 +161,11 @@
 		}
 		@media (min-width: 36rem) {
 			.folios { grid-template-columns: 1fr 1fr; }
-			.folios .kod-btn:nth-child(3) { grid-column: 1 / -1; }
+			.folios .kod-btn:nth-child(3) {
+				grid-column: 1 / -1;
+				justify-self: center;
+				width: calc((100% - 1.1rem) / 2);
+			}
 		}
 
 		.js .bg,
