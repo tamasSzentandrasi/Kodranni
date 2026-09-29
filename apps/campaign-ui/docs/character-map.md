@@ -1,7 +1,5 @@
 # How the character map finds its seats
 
-Tamás Szentandrási
-
 The public face of a campaign is a hall of names, not a diagram. The ST still draws ties in Obsidian. This page is how the viewer *sits* those names around the rose so a player can read the room.
 
 A hand-arranged Aspalath pass is the target, not a special case:
@@ -20,7 +18,7 @@ A directed tie is a sentence: agent, then the words, then the arrow, then the pa
 
 Type never rotates. A long clause wants a wide run of empty air, still *local* to those two plates.
 
-## What we chose, and why
+## What I chose, and why
 
 Early passes tried a 3D graph, then a global force soup, then annealing, then long springs that dragged people across the field. Those methods move the wrong object. They mix houses, stretch ink without a sentence, and zoom the camera out to empty wash.
 
@@ -34,7 +32,7 @@ The stack that matches the drawing is small and mostly exact:
 
 4. **Polar wrap.** Tidy *x* becomes arc length on the street. Tidy *depth* becomes radius away from the rose. Core faces the rose. Satellites hang off the far side.
 
-5. **Cluster order.** There are a handful of trees. Unique circular orders are few. We brute-force the order that minimises **cross-cluster** crossings. Adjacent houses that share a tie sit next to each other, so a husband line is a corridor, not a diameter.
+5. **Cluster order.** There are a handful of trees. Unique circular orders are few. The order that minimises **cross-cluster** crossings is brute-forced. Adjacent houses that share a tie sit next to each other, so a husband line is a corridor, not a diameter.
 
 6. **Ring radius.** Solve so the trees’ widths fit around the rose, then take the larger of that and rose clearance. The field stays as tight as the glass allows.
 
@@ -44,7 +42,7 @@ The stack that matches the drawing is small and mostly exact:
 
 9. **Route.** Existing clip: leave plates on an ellipse, bulge around the rose, detour a plate on the chord. Parallel ties get opposite curvature.
 
-10. **Labels.** Longest clause first. Candidate slots along the curve, both normals. Score: miss plates, the rose, and other labels; stay close to the ink; directed text prefers the outer bulge. If a clause still has no seat, those two plates are separated along their current line **once**, then we stop.
+10. **Labels.** Longest clause first. Candidate slots along the curve, both normals. Score: miss plates, the rose, and other labels; stay close to the ink; directed text prefers the outer bulge. If a clause still has no seat, those two plates are separated along their current line **once**, then stop.
 
 ## Weights
 
@@ -63,7 +61,7 @@ Calibrated for Bellefair nameplates about 138×32:
 
 A short kin word (`uncle`, `sister`) fits in the gutter. A long clause (`liberated him off Pelesa’s galley`) gets a longer *local* chord, not a trip across the hall.
 
-## What we left on the floor
+## What I left on the floor
 
 Global force, annealing, stress layout, and “long label ⇒ long spring across the map.” Those were tried. They mix cores, invent diameter ties, and fight the rose.
 
