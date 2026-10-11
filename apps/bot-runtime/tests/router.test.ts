@@ -242,7 +242,7 @@ describe('bot router', () => {
     });
     expect(sheetTokenSecret()).toBeTruthy();
     const text = port.ephemerals.join('\n');
-    expect(text).toContain('choose Desk');
+    expect(text).toContain('localhost');
     expect(text).not.toContain('/community/setup/');
     expect(text).not.toContain('edit=');
     if (prev === undefined) delete process.env.KODRANNI_SHEET_TOKEN_SECRET;

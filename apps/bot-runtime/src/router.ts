@@ -306,7 +306,7 @@ async function handleCommand(
     ];
     if (isSt(ctx, user)) {
       lines.push(
-        '**Storyteller desk:** the desk is the hall on the machine that holds the record. Open that hall and choose Desk.',
+        '**Storyteller desk:** the desk is the hall at localhost on the machine that holds the record. The public address stays the live hall.',
       );
     }
     await ctx.port.replyEphemeral(i, lines.join('\n'));

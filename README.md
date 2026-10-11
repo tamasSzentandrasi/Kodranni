@@ -32,7 +32,7 @@ kodranni start
 kodranni stop
 ```
 
-Players open `https://kodranni.com/community/?campaign=<id>` (Aspalath showcase is `https://demo.kodranni.com/community/`). On the hall, choose Desk on this machine, invite the official Discord app, then pick guild, play channel, and Storyteller role. The bot token stays on the Worker.
+Players open `https://kodranni.com/community/?campaign=<id>` (Aspalath showcase is `https://demo.kodranni.com/community/`). The Storyteller desk is that same hall at `http://127.0.0.1:8742/` on the machine that holds the record. The public address stays the live hall. The bot token stays on the Worker.
 
 Own domain means **own hosting** (deploy `apps/edge` on your Cloudflare). See `docs/plans/hosting.md`.
 

@@ -23,7 +23,7 @@ Aspalath’s hall, hierarchy, character map, and sheets are the visual and funct
 
 Creation on an unlocked sheet is still `creation-client.js`, loaded from `DraftPanel.astro` and the character page. It is behind the Guidebook’s creation flow.
 
-The hall on loopback is the Storyteller desk. A Desk control on that machine sets cookie `kod_desk=1` for this browser. With the cookie, every campaign page shows the status strip, and the hall carries Discord bind, a Fluxer plate with nothing to pick until the adapter can list a server, snapshot download and restore, founding, and add-person. `/operator`, `/community/setup/`, `GET /emissary`, and `kod_setup` are gone. The diagram editor, the sheet field editors, and the creation stack are later slices. Players still open `kodranni.com/community/?campaign=<slug>`.
+The hall on loopback is the Storyteller desk. Opening `127.0.0.1` is the desk; the public address stays the live hall. There is no desk cookie and no Discord/Fluxer strip on the hall. Snapshot download and restore sit on the notebook page. `/operator`, `/community/setup/`, `GET /emissary`, and `kod_setup` are gone. Players still open `kodranni.com/community/?campaign=<slug>`.
 
 A new community from `emptyCommunity()` stores unfounded Steady (2) on all five Fortunes, axes Arms / Faith / Coin / Blood, and two empty label groups (Factions and Tags). Decisions want many faction categories, a colour and an optional icon, and Guidebook fortune buttons. The store has `hue` on a label and no icon field. Pending hierarchy move requests still exist on the community type; the decision drops that queue.
 

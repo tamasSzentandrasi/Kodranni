@@ -34,7 +34,7 @@ An opposed roll is a reply to a channel result. A Tide-linked roll is a reply to
 
 The desk is the campaign UI when the request is local.
 
-**Who sees tools.** `isLocalDeskRequest`: the host is loopback, and the request did not arrive through the tunnel (`cf-ray`, `cf-connecting-ip`, `x-forwarded-host`). A cookie `kod_desk=1`, set only by a control that itself renders on loopback, turns tools on for that browser. The projected window leaves the cookie off and sees the player face. A forged cookie on the public name does nothing, because the tunnel check fails first. The Worker refuses desk writes. There is no `kod_setup` token. Player edit tokens stay what they are, and they freeze while a submission sits on the stack.
+**Who sees tools.** `isLocalDeskRequest`: the host is loopback, and the request did not arrive through the tunnel (`cf-ray`, `cf-connecting-ip`, `x-forwarded-host`). That request is the Storyteller desk. A tunnel, an archive, and the public host stay the live hall. The Worker refuses desk writes. There is no `kod_setup` token. Player edit tokens stay what they are, and they freeze while a submission sits on the stack.
 
 **Writes.** Desk actions POST to the campaign API. The handler rejects the call unless `isLocalDeskRequest`.
 
