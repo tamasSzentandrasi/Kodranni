@@ -293,6 +293,7 @@ export function openSqliteStore(path: string): CommunityStorePort {
       delete community.pendingMoves;
       delete community.fortuneMeta;
       delete community.fortunesFoundedAt;
+      delete community.notebook;
       const relationMap = readRelationMap(db, community.slug);
       return {
         generatedAt: new Date().toISOString(),

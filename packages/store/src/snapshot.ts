@@ -43,6 +43,11 @@ export function applyPublicSnapshot(
     store.putCharacter({ ...ch, status: ch.status === 'draft' ? 'active' : (ch.status ?? 'active') });
   }
   if (snap.relationMap) store.putRelationMap(snap.relationMap);
+  if (typeof snap.notebook === 'string') {
+    const community = store.getCommunity();
+    community.notebook = snap.notebook;
+    store.putCommunity(community);
+  }
 }
 
 /** Campaign title → slug for Found. */

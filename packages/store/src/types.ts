@@ -27,8 +27,19 @@ export interface MythEffect {
   detail?: string;
   /** Omen faces when kind is omen_faces. */
   faces?: number[];
-  /** Numeric delta when relevant (practice, tide, etc.). */
+  /** Numeric delta when relevant (practice, tide start, exertion dice). */
   amount?: number;
+  /** Tide threshold shift. `amount` is the start shift. */
+  threshold?: number;
+  /** Which rolls the row matches. */
+  match?: string;
+  /** Skill name when kind is practice_mod. */
+  skill?: string;
+  /** Practice row: extra gain, reduced gain, or count-as-Foundation. */
+  mode?: 'extra' | 'reduced' | 'foundation';
+  /** Trait name when kind is trait_grant or trait_deny. */
+  traitName?: string;
+  permanence?: 'temporary' | 'permanent';
 }
 
 export interface FoundationMyth {
@@ -47,12 +58,25 @@ export interface LabelGroup {
   kind: LabelKind;
 }
 
+/** A desk dye. `hue` is 0–359. `sat` and `light` are 0–100 and travel together. */
+export interface Dye {
+  hue?: number;
+  sat?: number;
+  light?: number;
+}
+
 export interface Label {
   id: string;
   groupId: string;
   name: string;
-  /** 0–360. Required for faction labels; omitted on tags. */
+  /** 0–360. Required for faction labels; omitted on tags until a colour is chosen. */
   hue?: number;
+  /** 0–100. Stored with `light` when the picker kept saturation and brightness. */
+  sat?: number;
+  /** 0–100. */
+  light?: number;
+  /** Basename under campaign media/items/. */
+  icon?: string;
 }
 
 export interface HierarchyPlacement {
@@ -132,6 +156,14 @@ export interface CommunityRecord {
   fortuneMeta?: Partial<Record<FortuneKey, FortuneMeta>>;
   /** Pending hierarchy move requests; live hall only. */
   pendingMoves?: HierarchyMoveRequest[];
+  /** Desk presentation for the five fortune cards. Public hall may show it. */
+  fortuneLook?: Partial<Record<FortuneKey, Dye & { icon?: string }>>;
+  /** Seal and dye per ladder name. The Guidebook diagrams do not read this. */
+  axisLook?: Record<string, Dye & { icon?: string }>;
+  /** Flavour title, seal, and dye for the ruler seat. */
+  rulerLook?: Dye & { title?: string; icon?: string };
+  /** Desk notebook. Stripped from the public snapshot body; the desk download adds it back. */
+  notebook?: string;
 }
 
 export interface InventoryItem {
@@ -367,4 +399,6 @@ export interface PublicSnapshot {
   community: CommunityRecord;
   characters: CharacterRecord[];
   relationMap?: RelationMap;
+  /** Present on a desk snapshot download. The public archive omits it. */
+  notebook?: string;
 }
