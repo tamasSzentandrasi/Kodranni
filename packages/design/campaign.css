@@ -87,6 +87,11 @@ a:hover {
   border-bottom: 1px solid var(--kod-frame);
 }
 
+.app__logo-link {
+  display: block;
+  line-height: 0;
+}
+
 .app__logo {
   width: 2.2rem;
   height: 2.2rem;
@@ -2483,6 +2488,21 @@ a.member--pc:visited {
 .char-list > li {
   margin: 0;
   padding: 0;
+  position: relative;
+}
+
+.char-row__marks {
+  position: absolute;
+  right: 0.35rem;
+  top: 50%;
+  z-index: 2;
+  display: flex;
+  gap: 0.15rem;
+  transform: translateY(-50%);
+}
+
+.char-list > li:has(.char-row__marks) .char-row {
+  padding-right: 4.4rem;
 }
 
 .char-row {
@@ -3559,6 +3579,7 @@ a.member--pc:visited {
   position: relative;
   width: 2.7rem;
   height: 2.7rem;
+  transition: --p 0.24s ease;
   flex: 0 0 auto;
   margin: 0;
   border-radius: 50%;
@@ -3567,6 +3588,12 @@ a.member--pc:visited {
   overflow: visible;
   background:
     radial-gradient(circle at 50% 50%, #0a0808 58%, #141210 72%, #050505 100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skill__ring {
+    transition: none;
+  }
 }
 
 .skill__dial {
@@ -4414,6 +4441,19 @@ select.kod-ink option[value=''],
 .item__edit {
   flex: 1 1 auto;
   min-width: 0;
+}
+
+.item__icon-hit {
+  flex: 0 0 2.25rem;
+  width: 2.25rem;
+  height: 2.25rem;
+  margin: 0;
+  cursor: pointer;
+}
+
+.item__icon-hit .item__icon {
+  width: 100%;
+  height: 100%;
 }
 
 .item__icon-upload {
@@ -5604,6 +5644,112 @@ body.is-map .tabs {
   display: none;
 }
 
+.map-falcon {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  line-height: 0;
+}
+
+.map-falcon img {
+  width: 34px;
+  height: 34px;
+}
+
+/* Same plate as the side drawers. Tab is the inner edge; the panel hangs off the bottom. */
+.desk-map {
+  --slide-tab: 3.18rem;
+  --slide-body: 3.18rem;
+  --slide-chev: 0.97rem;
+  --slide-cap: 3.1rem;
+  --slide-min: 8.6rem;
+  --slide-panel: min(20.5rem, 88vw);
+  position: fixed;
+  z-index: 60;
+  left: 50%;
+  bottom: 0;
+  display: grid;
+  grid-template-areas: 'tab' 'panel';
+  grid-template-rows: var(--slide-tab) var(--slide-min);
+  grid-template-columns: var(--slide-panel);
+  width: var(--slide-panel);
+  margin: 0;
+  overflow: visible;
+  pointer-events: none;
+  transform: translate(-50%, var(--slide-min));
+  transition: transform 0.32s ease;
+}
+
+.desk-map[data-open='true'] {
+  transform: translate(-50%, 0);
+}
+
+.desk-map .kod-slide__tab {
+  width: 100%;
+  height: var(--slide-tab);
+  min-height: 0;
+}
+
+.desk-map .kod-slide__skin {
+  inset: auto;
+  top: 0;
+  left: 0;
+  width: var(--slide-tab);
+  height: var(--slide-panel);
+  transform-origin: top left;
+  transform: translateX(var(--slide-panel)) rotate(90deg);
+}
+
+.desk-map .kod-slide__word {
+  writing-mode: horizontal-tb;
+  transform: none;
+}
+
+.desk-map .kod-slide__panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  height: var(--slide-min);
+  min-height: 0;
+  padding: 1.85rem 1.15rem;
+  overflow: hidden;
+}
+
+.desk-map .kod-slide__rail--top,
+.desk-map .kod-slide__rail--bot {
+  height: 1.55rem;
+  background-size: auto 1.55rem;
+}
+
+.desk-map__btn {
+  --kod-end-w: 1.55rem;
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  width: min(11rem, 100%);
+  min-width: 0;
+  max-width: 100%;
+  height: 2rem;
+  min-height: 2rem;
+  max-height: 2rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .desk-map {
+    transition: none;
+  }
+}
+
 .cmap-back {
   position: fixed;
   top: 0.85rem;
@@ -5646,9 +5792,12 @@ body.is-map .kod-cmap {
   min-height: 100%;
 }
 
-body.is-map .kod-slide[data-slide='factions'],
 body.is-map .kod-slide[data-slide='find'] {
   top: 1rem;
+}
+
+body.is-map .kod-slide[data-slide='factions'] {
+  top: 4.4rem;
 }
 
 body.is-map .kod-cmap__frame,

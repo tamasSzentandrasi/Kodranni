@@ -178,6 +178,25 @@
   mask-image: var(--kod-fortune-tradition);
 }
 
+.kod-fortune__icon--custom,
+.kod-fortune--vitality .kod-fortune__icon--custom,
+.kod-fortune--cohesion .kod-fortune__icon--custom,
+.kod-fortune--surplus .kod-fortune__icon--custom,
+.kod-fortune--standing .kod-fortune__icon--custom,
+.kod-fortune--tradition .kod-fortune__icon--custom {
+  opacity: 1;
+  background: none;
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+.kod-fortune__icon--custom img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
 .kod-fortune__tree {
   grid-area: mark;
   display: block;
@@ -371,6 +390,17 @@
   grid-column: 4;
 }
 
+/* The hall row follows the frames on the page, including the blank seat. */
+@media (min-width: 50.01rem) {
+  .hall .kod-hier-axes {
+    grid-template-columns: repeat(var(--ladder-cols, 4), minmax(0, 1fr));
+  }
+  .hall .kod-hier-axes > .kod-hier-axis {
+    grid-column: auto;
+    grid-row: 1 / span 5;
+  }
+}
+
 @media (max-width: 50rem) {
   .kod-hier-diagram {
     display: flex;
@@ -489,11 +519,96 @@
 .kod-hier-axis__head::before {
   content: '';
   display: block;
+  width: 2.2rem;
+  height: 2.2rem;
   margin: 0 auto 0.4rem;
   background-color: var(--kod-silver);
   -webkit-mask: center / contain no-repeat;
   mask: center / contain no-repeat;
   flex-shrink: 0;
+}
+
+.kod-hier-axis:not(:has(.kod-hier-axis__domain)) {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.kod-hier-axis:not(:has(.kod-hier-axis__domain)) .kod-hier-axis__plate {
+  grid-column: 1;
+}
+
+.kod-hier-axes:not(:has(.kod-hier-axis__domain)) {
+  gap: 0.35rem 0.28rem;
+}
+
+.kod-hier-axis[data-hue] {
+  --hier-ink: hsl(var(--axis-h) 42% 34%);
+}
+
+.kod-hier-axis[data-hue] .kod-hier-axis__plate {
+  background: hsl(var(--axis-h) 30% 8%);
+  border-color: hsl(var(--axis-h) 28% 24%);
+}
+
+.kod-hier-axis[data-hue] .kod-hier-axis__head {
+  background: linear-gradient(180deg, hsl(var(--axis-h) 32% 16%), transparent);
+}
+
+.kod-hier-axis[data-seal='file'] .kod-hier-axis__head::before {
+  display: none;
+}
+
+.kod-hier-axis[data-axis='other'] .kod-hier-axis__head::before {
+  border-radius: 50%;
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+.kod-hier-seal__img {
+  display: block;
+  width: 2.4rem;
+  height: 2.4rem;
+  margin: 0 auto 0.35rem;
+  object-fit: contain;
+}
+
+.kod-hier-ruler--file .kod-hier-ruler__title::before {
+  display: none;
+}
+
+.kod-hier-ruler[data-hue] {
+  --axis-s: 42%;
+  --axis-l: 34%;
+  position: relative;
+  isolation: isolate;
+  border-color: transparent;
+  background: none;
+  color: #f4efe6;
+  box-shadow: none;
+}
+
+/* Wash is its own layer. A gradient on the ruler keeps the previous --picked until reload. */
+.kod-hier-ruler[data-hue]::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--picked, hsl(var(--axis-h) var(--axis-s) var(--axis-l))) 46%, #1c1816) 0%,
+    color-mix(in srgb, var(--picked, hsl(var(--axis-h) var(--axis-s) var(--axis-l))) 16%, #120f0e) 100%
+  );
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--picked, hsl(var(--axis-h) var(--axis-s) var(--axis-l))) 42%, #120f0e),
+    inset 0 1px 0 color-mix(in srgb, var(--picked, hsl(var(--axis-h) var(--axis-s) var(--axis-l))) 28%, transparent);
+}
+
+.kod-hier-ruler[data-hue] .kod-hier-ruler__title {
+  color: color-mix(in srgb, var(--picked) 32%, #f4efe6);
+}
+
+.kod-hier-ruler[data-hue] .kod-hier-ruler__title::before {
+  background-color: color-mix(in srgb, var(--picked) 62%, #f4efe6);
 }
 
 .kod-hier-axis[data-axis='arms'] {
@@ -589,6 +704,73 @@
   background-color: var(--kod-blood-bright);
   -webkit-mask-image: var(--kod-axis-blood);
   mask-image: var(--kod-axis-blood);
+}
+
+.kod-hier-axis[data-axis][data-hue] {
+  --axis-s: 42%;
+  --axis-l: 34%;
+  --picked: hsl(var(--axis-h) var(--axis-s) var(--axis-l));
+  --hier-ink: var(--picked);
+}
+
+.kod-hier-axis[data-axis][data-hue] .kod-hier-axis__plate {
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--picked) 34%, #1a1614) 0%,
+    color-mix(in srgb, var(--picked) 14%, #100e0c) 58%,
+    #0c0a09 100%
+  );
+  border-color: color-mix(in srgb, var(--picked) 38%, #2a2420);
+  color: #f4efe6;
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--picked) 28%, transparent),
+    0 8px 18px -12px #000;
+}
+
+.kod-hier-axis[data-axis][data-hue] .kod-hier-axis__head {
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--picked) 48%, #141210),
+    transparent 100%
+  );
+  border-bottom-color: color-mix(in srgb, var(--picked) 28%, transparent);
+}
+
+.kod-hier-axis[data-axis][data-hue] .kod-hier-axis__head::before {
+  background-color: color-mix(in srgb, var(--picked) 58%, #f4efe6);
+}
+
+.kod-hier-axis[data-axis][data-hue] .kod-hier-axis__name,
+.sl-markdown-content .kod-hier-axis[data-axis][data-hue] .kod-hier-rung-label {
+  color: #f4efe6 !important;
+  text-shadow: none !important;
+}
+
+.kod-hier-axis[data-axis][data-hue] .kod-hier-rungs li {
+  border-color: color-mix(in srgb, var(--picked) 26%, #2a2420);
+  color: #f4efe6 !important;
+}
+
+.kod-hier-axis[data-axis][data-hue] .kod-hier-rungs li:nth-child(1) {
+  background: color-mix(in srgb, var(--picked) 36%, #161210);
+}
+
+.kod-hier-axis[data-axis][data-hue] .kod-hier-rungs li:nth-child(2) {
+  background: color-mix(in srgb, var(--picked) 24%, #12100e);
+}
+
+.kod-hier-axis[data-axis][data-hue] .kod-hier-rungs li:nth-child(3) {
+  background: color-mix(in srgb, var(--picked) 14%, #100e0c);
+}
+
+.kod-hier-axis[data-axis][data-hue] .kod-hier-rungs li:nth-child(4) {
+  background: color-mix(in srgb, var(--picked) 8%, #0c0a0a);
+}
+
+.kod-hier-axis[data-axis][data-hue] .kod-chip {
+  background: color-mix(in srgb, var(--picked) 22%, #161210);
+  color: #f4efe6;
+  border-color: color-mix(in srgb, var(--picked) 34%, #2a2420);
 }
 
 .kod-hier-axis__name {
