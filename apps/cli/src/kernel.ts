@@ -3,7 +3,7 @@
  * Discord HTTP runs inside campaign-ui (same BotContext as sqlite).
  */
 import { type ChildProcess, spawnSync } from 'node:child_process';
-import { createWriteStream, existsSync } from 'node:fs';
+import { createWriteStream, existsSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { registerEdgeCampaign, startEdgeSession } from '@kodranni/publish';
@@ -81,9 +81,48 @@ export function campaignUiEntry(repoRoot: string): string {
   return join(repoRoot, 'apps/campaign-ui/dist/server/entry.mjs');
 }
 
+const UI_SOURCE_DIRS = [
+  'apps/campaign-ui/src',
+  'apps/campaign-ui/public',
+  'packages/hall-render/src',
+  'packages/design',
+];
+
+function treeNewerThan(path: string, builtMs: number): boolean {
+  let st;
+  try {
+    st = statSync(path);
+  } catch {
+    return false;
+  }
+  if (st.isDirectory()) {
+    for (const name of readdirSync(path)) {
+      if (name === 'node_modules' || name === 'dist') continue;
+      if (treeNewerThan(join(path, name), builtMs)) return true;
+    }
+    return false;
+  }
+  return st.isFile() && st.mtimeMs > builtMs;
+}
+
+/**
+ * A checkout rebuilds when UI sources are newer than dist.
+ * A packaged install has no campaign-ui src and keeps the dist it shipped with.
+ */
+export function campaignUiBuildStale(repoRoot: string): boolean {
+  const entry = campaignUiEntry(repoRoot);
+  const src = join(repoRoot, 'apps/campaign-ui/src');
+  if (!existsSync(src)) return !existsSync(entry);
+  if (!existsSync(entry)) return true;
+  const builtMs = statSync(entry).mtimeMs;
+  if (treeNewerThan(join(repoRoot, 'apps/campaign-ui/package.json'), builtMs)) return true;
+  if (treeNewerThan(join(repoRoot, 'apps/campaign-ui/astro.config.mjs'), builtMs)) return true;
+  return UI_SOURCE_DIRS.some((rel) => treeNewerThan(join(repoRoot, rel), builtMs));
+}
+
 export function ensureCampaignUiBuilt(repoRoot: string): void {
   const entry = campaignUiEntry(repoRoot);
-  if (existsSync(entry)) return;
+  if (existsSync(entry) && !campaignUiBuildStale(repoRoot)) return;
   const npmBin = process.platform === 'win32' ? 'npm.cmd' : 'npm';
   const r = spawnSync(npmBin, ['run', 'build:campaign-ui'], {
     cwd: repoRoot,

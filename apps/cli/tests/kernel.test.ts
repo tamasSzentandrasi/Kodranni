@@ -1,12 +1,44 @@
-import { mkdtempSync, rmSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, rmSync, utimesSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
-import { campaignUiEnv, parseBind } from '../src/kernel.js';
+import { campaignUiBuildStale, campaignUiEnv, parseBind } from '../src/kernel.js';
 
 const dirs: string[] = [];
 afterEach(() => {
   for (const d of dirs.splice(0)) rmSync(d, { recursive: true, force: true });
+});
+
+describe('campaignUiBuildStale', () => {
+  function touch(path: string, ms: number) {
+    const t = new Date(ms);
+    utimesSync(path, t, t);
+  }
+
+  it('rebuilds a checkout whose sources are newer than dist', () => {
+    const root = mkdtempSync(join(tmpdir(), 'kod-ui-stale-'));
+    dirs.push(root);
+    const src = join(root, 'apps/campaign-ui/src');
+    const entry = join(root, 'apps/campaign-ui/dist/server/entry.mjs');
+    mkdirSync(join(root, 'apps/campaign-ui/dist/server'), { recursive: true });
+    mkdirSync(src, { recursive: true });
+    writeFileSync(entry, 'old');
+    writeFileSync(join(src, 'page.astro'), 'new');
+    touch(entry, 1_000);
+    touch(join(src, 'page.astro'), 2_000);
+    expect(campaignUiBuildStale(root)).toBe(true);
+    touch(join(src, 'page.astro'), 500);
+    expect(campaignUiBuildStale(root)).toBe(false);
+  });
+
+  it('keeps a packaged dist that has no campaign-ui sources', () => {
+    const root = mkdtempSync(join(tmpdir(), 'kod-ui-pkg-'));
+    dirs.push(root);
+    const entry = join(root, 'apps/campaign-ui/dist/server/entry.mjs');
+    mkdirSync(join(root, 'apps/campaign-ui/dist/server'), { recursive: true });
+    writeFileSync(entry, 'built');
+    expect(campaignUiBuildStale(root)).toBe(false);
+  });
 });
 
 describe('parseBind', () => {
