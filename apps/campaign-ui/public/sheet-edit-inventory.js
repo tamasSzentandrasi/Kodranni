@@ -55,7 +55,7 @@
     const water = Number(
       panel.querySelector('[data-supply="water"] [data-supply-val]')?.textContent || 0,
     );
-    const inventoryItems = Array.from(panel.querySelectorAll('[data-item-idx]'))
+    const inventoryItems = Array.from(panel.querySelectorAll('[data-item-idx], [data-item-new]'))
       .map((li) => {
         const name = li.querySelector('[data-item-name]')?.value?.trim();
         if (!name) return null;
@@ -77,7 +77,8 @@
     saveTimer = window.setTimeout(saveNow, 500);
   }
 
-  async function saveNow() {
+  async function saveNow(opts) {
+    const reload = !opts || opts.reload !== false;
     const msg = panel.querySelector('[data-inv-msg]');
     const res = await fetch('/api/character/' + encodeURIComponent(slug), {
       method: 'POST',
@@ -93,10 +94,23 @@
         msg.className = 'draft-msg draft-msg--err';
       }
     }
+    const added = Boolean(panel.querySelector('[data-item-new] [data-item-name]')?.value?.trim());
+    if (res.ok && panel.getAttribute('data-desk') === '1' && added && reload) location.reload();
+    return res.ok;
   }
 
   const armourBtn = panel.querySelector('[data-armour-cycle]');
-  armourBtn?.addEventListener('click', () => cycle(1));
+  armourBtn?.addEventListener('click', (ev) => {
+    const t = ev.target;
+    if (t instanceof HTMLElement && t.closest('[data-armour-state]')) {
+      if (kind() === 'none') return;
+      panel.setAttribute('data-armour-donned', donned() ? '0' : '1');
+      paintArmour();
+      saveSoon();
+      return;
+    }
+    cycle(1);
+  });
   armourBtn?.addEventListener('contextmenu', (ev) => {
     ev.preventDefault();
     cycle(-1);
@@ -134,13 +148,44 @@
     list.appendChild(li);
   });
 
+  function clearRemoveAsk() {
+    panel.querySelectorAll('[data-confirm="1"]').forEach((btn) => {
+      btn.removeAttribute('data-confirm');
+      const idle = btn.getAttribute('data-idle');
+      if (idle) btn.textContent = idle;
+    });
+  }
+
+  function armRemove(btn) {
+    clearRemoveAsk();
+    if (!btn.getAttribute('data-idle')) btn.setAttribute('data-idle', (btn.textContent || '').trim());
+    btn.setAttribute('data-confirm', '1');
+    btn.textContent = 'Remove?';
+  }
+
   panel.addEventListener('click', (ev) => {
     const t = ev.target;
     if (!(t instanceof HTMLElement)) return;
-    if (t.closest('[data-item-remove]')) {
-      t.closest('[data-item-idx]')?.remove();
-      saveSoon();
+    const hit = t.closest('.item__icon-hit');
+    const fileInput = hit?.querySelector('input[type="file"]');
+    if (fileInput instanceof HTMLInputElement) fileInput.value = '';
+    const remove = t.closest('[data-item-remove]');
+    if (!remove) {
+      clearRemoveAsk();
+      return;
     }
+    if (remove.getAttribute('data-confirm') !== '1') {
+      armRemove(remove);
+      return;
+    }
+    remove.closest('[data-item-idx]')?.remove();
+    saveSoon();
+  });
+
+  document.addEventListener('click', (ev) => {
+    const t = ev.target;
+    if (t instanceof Element && t.closest('#inventory-panel [data-confirm="1"]')) return;
+    clearRemoveAsk();
   });
 
   panel.addEventListener('input', (ev) => {
@@ -152,7 +197,7 @@
   panel.addEventListener('change', async (ev) => {
     const t = ev.target;
     if (!(t instanceof HTMLInputElement) || t.getAttribute('data-item-icon-file') == null) return;
-    const li = t.closest('[data-item-idx]');
+    const li = t.closest('[data-item-idx], [data-item-new]');
     const file = t.files && t.files[0];
     if (!li || !file) return;
     if (file.size > 256 * 1024) {
@@ -165,8 +210,20 @@
       t.value = '';
       return;
     }
-    const idx = Number(li.getAttribute('data-item-idx'));
-    await saveNow();
+    const fresh = li.hasAttribute('data-item-new');
+    let idx = fresh ? panel.querySelectorAll('[data-item-idx]').length : Number(li.getAttribute('data-item-idx'));
+    if (fresh && !li.querySelector('[data-item-name]')?.value?.trim()) {
+      const msg = panel.querySelector('[data-inv-msg]');
+      if (msg) {
+        msg.hidden = false;
+        msg.textContent = 'Name the item first';
+        msg.className = 'draft-msg draft-msg--err';
+      }
+      t.value = '';
+      return;
+    }
+    const ok = await saveNow({ reload: false });
+    if (!ok) return;
     const fd = new FormData();
     fd.append('file', file, file.name);
     fd.append('index', String(idx));
@@ -191,17 +248,21 @@
     }
     if (data.icon) {
       li.setAttribute('data-item-icon', data.icon);
-      let img = li.querySelector('img.item__icon');
+      const hit = li.querySelector('.item__icon-hit') || li;
+      hit.querySelector('.item__icon--empty')?.remove();
+      let img = hit.querySelector('img.item__icon') || li.querySelector('img.item__icon');
       if (!img) {
-        li.querySelector('.item__icon--empty')?.remove();
         img = document.createElement('img');
         img.className = 'item__icon';
         img.width = 36;
         img.height = 36;
         img.alt = '';
-        li.insertBefore(img, li.firstChild);
       }
+      const input = hit.querySelector('input');
+      if (img.parentElement !== hit) hit.insertBefore(img, input || null);
       img.src = data.url;
     }
+    t.value = '';
+    if (fresh) location.reload();
   });
 })();

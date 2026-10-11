@@ -58,7 +58,7 @@ export function layoutDocument(opts: {
 <body>
   <div class="app">
     <header class="app__brand">
-      <img class="app__logo" src="/brand/falcon-logo.png" width="34" height="34" alt=""/>
+      <a class="app__logo-link" href="https://kodranni.com/" aria-label="Kodranni"><img class="app__logo" src="/brand/falcon-logo.png" width="34" height="34" alt=""/></a>
       <div>
         <span class="app__mark">Kodranni</span>
         <h1 class="app__title">${esc(opts.communityName)}</h1>

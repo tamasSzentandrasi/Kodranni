@@ -6,6 +6,7 @@ import { fillDemoRelationMap, openSqliteStore } from '@kodranni/store';
 import CampaignLayout from '../../layouts/CampaignLayout.astro';
 import { loadCommunity } from '../../data/load';
 import { resolveStorePath } from '../../lib/campaign-paths';
+import { deskToolsOn } from '../../lib/loopback';
 
 const c = loadCommunity();
 const person = Astro.url.searchParams.get('person') ?? undefined;
@@ -55,7 +56,38 @@ const hallHtml =
   primary="map"
   source={c.source}
 >
+  <a class="map-falcon" href="https://kodranni.com/" aria-label="Kodranni">
+    <img src="/brand/falcon-logo.png" width="34" height="34" alt="" />
+  </a>
   <Fragment set:html={hallHtml} />
+  {
+    c.source === 'live' && deskToolsOn(Astro.request) && (
+      <div class="desk-map kod-slide" data-open="false">
+        <button
+          type="button"
+          class="kod-slide__tab"
+          data-desk-map-toggle
+          aria-expanded="false"
+          aria-controls="desk-map-panel"
+        >
+          <span class="kod-slide__skin" aria-hidden="true">
+            <span class="kod-slide__cap kod-slide__cap--top"></span>
+            <span class="kod-slide__mid"></span>
+            <span class="kod-slide__cap kod-slide__cap--bot"></span>
+            <span class="kod-slide__chev"></span>
+          </span>
+          <span class="kod-slide__word">File</span>
+        </button>
+        <div class="kod-slide__panel desk-map__panel" id="desk-map-panel" inert>
+          <span class="kod-slide__rail kod-slide__rail--top" aria-hidden="true"></span>
+          <span class="kod-slide__rail kod-slide__rail--bot" aria-hidden="true"></span>
+          <a class="kod-btn desk-map__btn" href="/api/desk/map">Export</a>
+          <button type="button" class="kod-btn desk-map__btn" data-desk-map-pick>Import</button>
+          <input type="file" data-desk-map-import accept="application/json,.json" hidden />
+        </div>
+      </div>
+    )
+  }
   <script>
     import { bootMap } from '../../lib/character-map';
     bootMap();

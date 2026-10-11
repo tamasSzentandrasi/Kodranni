@@ -16,6 +16,10 @@ interface Props {
   showDraftTab?: boolean;
   /** Show portrait upload control in the identity block. */
   canEdit?: boolean;
+  /** Storyteller desk. Field writes do not spend creation points. */
+  desk?: boolean;
+  concept?: string;
+  communityTie?: string;
   whoWeSee?: string;
 }
 
@@ -33,11 +37,14 @@ const {
   tab,
   showDraftTab = false,
   canEdit = false,
+  desk = false,
+  concept = '',
+  communityTie = '',
   whoWeSee = '',
 } = Astro.props;
 const av = avatarUrl(slug, avatar);
 const statusLabel = status === 'pending_review' ? 'pending review' : status;
-const showPortraitEdit = Boolean(live && canEdit && (tab === 'core' || tab === 'draft'));
+const showPortraitEdit = Boolean(live && (canEdit || desk) && (tab === 'core' || tab === 'draft'));
 const campaignQ = Astro.url.searchParams.get('campaign');
 const tabQ = campaignQ ? `?campaign=${encodeURIComponent(campaignQ)}` : '';
 const mapHref = campaignQ
@@ -83,7 +90,10 @@ const mapHref = campaignQ
   }
 </nav>
 
-<div class:list={['sheet-stage', tab === 'core' && 'sheet-stage--core']}>
+<div
+  class:list={['sheet-stage', tab === 'core' && 'sheet-stage--core']}
+  data-desk-sheet={desk ? slug : undefined}
+>
   <div class="kod-plate sheet-identity">
     <div class="sheet-identity__portrait">
       {
@@ -102,6 +112,7 @@ const mapHref = campaignQ
             method="post"
             enctype="multipart/form-data"
             action={`/api/avatar/${slug}`}
+            data-desk-portrait={desk ? '1' : undefined}
           >
             <label class="avatar-upload__btn">
               Change
@@ -120,7 +131,16 @@ const mapHref = campaignQ
     <div class="sheet-identity__text">
       <h1 class="sheet-identity__name">
         {
-          canEdit ? (
+          desk ? (
+            <label class="sheet-identity__name-edit">
+              <input
+                class="sheet-identity__name-input"
+                data-desk-field="name"
+                value={name}
+                aria-label="Character name"
+              />
+            </label>
+          ) : canEdit ? (
             <label class="sheet-identity__name-edit">
               <input
                 class="sheet-identity__name-input"
@@ -161,6 +181,41 @@ const mapHref = campaignQ
         </span>
         {dying && <span class="flag">Dying</span>}
         {
+          desk && status !== 'dead' && (
+            <button
+              type="button"
+              class="desk-mark"
+              data-desk-dead
+              data-slug={slug}
+              aria-label="Mark dead"
+              data-tip="Mark dead"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.4" />
+                <path d="M8 12h8" stroke="currentColor" stroke-width="1.4" />
+              </svg>
+            </button>
+          )
+        }
+        {
+          desk && (
+            <button
+              type="button"
+              class="desk-mark"
+              data-desk-remove
+              data-slug={slug}
+              data-name={name}
+              aria-label="Remove"
+              data-tip="Remove"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.4" />
+                <path d="M9 9l6 6M15 9l-6 6" stroke="currentColor" stroke-width="1.4" />
+              </svg>
+            </button>
+          )
+        }
+        {
           decadence && (
             <span class="flag" data-tip="No active Echoes — −1 die on every roll">
               Decadence
@@ -177,19 +232,44 @@ const mapHref = campaignQ
       </p>
     </div>
     {
-      (canEdit || whoWeSee) && (
+      (desk || canEdit || whoWeSee || concept || communityTie) && (
         <div class="sheet-identity__who">
-          <p class="sheet-identity__who-lab">Who do we see?</p>
           {
-            canEdit ? (
-              <textarea
-                class="sheet-identity__who-input"
-                data-field="whoWeSee"
-                rows="3"
-                placeholder="The figure the table will recognise…"
-              >{whoWeSee}</textarea>
+            desk ? (
+              <>
+                <label>
+                  Concept
+                  <input class="kod-ink" data-desk-field="concept" value={concept} />
+                </label>
+                <label>
+                  Community tie
+                  <input class="kod-ink" data-desk-field="communityTie" value={communityTie} />
+                </label>
+                <p class="sheet-identity__who-lab">Who do we see?</p>
+                <textarea
+                  class="sheet-identity__who-input"
+                  data-desk-field="whoWeSee"
+                  rows="3"
+                  placeholder="The figure the table will recognise…"
+                >{whoWeSee}</textarea>
+              </>
+            ) : canEdit ? (
+              <>
+                <p class="sheet-identity__who-lab">Who do we see?</p>
+                <textarea
+                  class="sheet-identity__who-input"
+                  data-field="whoWeSee"
+                  rows="3"
+                  placeholder="The figure the table will recognise…"
+                >{whoWeSee}</textarea>
+              </>
             ) : (
-              <p class="sheet-identity__who-text">{whoWeSee}</p>
+              whoWeSee && (
+                <>
+                  <p class="sheet-identity__who-lab">Who do we see?</p>
+                  <p class="sheet-identity__who-text">{whoWeSee}</p>
+                </>
+              )
             )
           }
         </div>
@@ -215,9 +295,10 @@ const mapHref = campaignQ
           const fd = new FormData();
           fd.append('file', input.files[0], input.files[0].name);
           const headers = {};
+          const deskPortrait = form.hasAttribute('data-desk-portrait');
           const m = document.cookie.match(/(?:^|;\s*)kod_edit=([^;]+)/);
           if (m) headers.Authorization = 'Bearer ' + decodeURIComponent(m[1]);
-          else if (!location.search.includes('edit=')) {
+          else if (!deskPortrait && !location.search.includes('edit=')) {
             alert('Edit link required — open the sheet from the table bot (/create or review).');
             return;
           }

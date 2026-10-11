@@ -243,6 +243,7 @@
 
   function syncAllegiance(root, groupId, factionId) {
     if (!root) return;
+    if (root.hasAttribute('data-desk-editor')) return;
     root.querySelectorAll('.allegiance__cat').forEach((cat) => {
       const gid = cat.getAttribute('data-faction-cat') || '';
       const open = Boolean(groupId) && gid === groupId;
@@ -268,6 +269,13 @@
   }
 
   function applyView() {
+    const deskEditor = document.querySelector('[data-hall-legend][data-desk-editor]');
+    if (deskEditor && bag.kind !== 'find') {
+      syncAllegiance(document.querySelector('[data-find-tree]'), '', '');
+      setCatchword('');
+      requestAnimationFrame(fitSlides);
+      return;
+    }
     const kind = bag.kind;
     const id = bag.id;
     const findFaction = bag.findFaction;
@@ -430,10 +438,13 @@
   function fitSlides() {
     const factions = document.querySelector('.kod-rail [data-slide="factions"]');
     const tags = document.querySelector('.kod-rail [data-slide="tags"]');
-    if (factions && tags) {
-      const gap = 10;
-      tags.style.top = Math.round(factions.getBoundingClientRect().bottom + gap) + 'px';
+    if (!factions || !tags) return;
+    if (document.querySelector('[data-desk-editor]')) {
+      tags.style.top = '';
+      return;
     }
+    const gap = 10;
+    tags.style.top = Math.round(factions.getBoundingClientRect().bottom + gap) + 'px';
   }
 
   function bindFactions() {
@@ -515,7 +526,11 @@
       btn.addEventListener('click', () => clearView());
     });
     document.querySelectorAll('.kod-rail .kod-slide__panel').forEach((panel) => {
-      panel.addEventListener('click', () => scrollToDiagram());
+      panel.addEventListener('click', (ev) => {
+        const t = ev.target;
+        if (t instanceof Element && t.closest('[data-desk-editor], [data-desk-label-row]')) return;
+        scrollToDiagram();
+      });
     });
     document.addEventListener('keydown', (e) => {
       if (e.defaultPrevented) return;

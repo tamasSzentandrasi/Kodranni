@@ -4,6 +4,7 @@ export const prerender = false;
 import { rosterInner, type HallView } from '@kodranni/hall-render';
 import CampaignLayout from '../../layouts/CampaignLayout.astro';
 import { loadCommunity } from '../../data/load';
+import { deskToolsOn } from '../../lib/loopback';
 
 const c = loadCommunity();
 const view: HallView = {
@@ -22,9 +23,11 @@ const view: HallView = {
   },
   characters: c.characters,
 };
+const desk = c.source === 'live' && deskToolsOn(Astro.request);
 const rosterHtml = rosterInner(view, {
   page: Number(Astro.url.searchParams.get('p') || '1'),
   selected: Astro.url.searchParams.get('sel') ?? undefined,
+  desk,
 });
 ---
 

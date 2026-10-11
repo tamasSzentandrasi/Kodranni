@@ -4,6 +4,7 @@ export const prerender = false;
 import { hierarchyInner, type HallView } from '@kodranni/hall-render';
 import CampaignLayout from '../../../layouts/CampaignLayout.astro';
 import { loadCommunity } from '../../../data/load';
+import { deskToolsOn } from '../../../lib/loopback';
 
 const c = loadCommunity();
 const live = c.source === 'live';
@@ -22,11 +23,15 @@ const view: HallView = {
     labelGroups: c.labelGroups,
     labels: c.labels,
     factions: c.factions,
+    fortuneLook: c.fortuneLook,
+    axisLook: c.axisLook,
+    rulerLook: c.rulerLook,
     fortunesFoundedAt: live ? c.fortunesFoundedAt : undefined,
   },
   characters: c.characters,
 };
-const hallHtml = hierarchyInner(view, { live, canEdit: false });
+const desk = live && deskToolsOn(Astro.request);
+const hallHtml = hierarchyInner(view, { live, canEdit: false, desk });
 ---
 
 <CampaignLayout

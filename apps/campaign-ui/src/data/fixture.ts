@@ -85,8 +85,11 @@ export interface FixtureCommunity {
   }[];
   outsiders: { name: string; faction?: string; note?: string; characterSlug?: string; labelIds?: string[] }[];
   labelGroups?: { id: string; name: string; kind: 'faction' | 'tag' }[];
-  labels?: { id: string; groupId: string; name: string; hue?: number }[];
+  labels?: { id: string; groupId: string; name: string; hue?: number; sat?: number; light?: number }[];
   factions?: { name: string; hue: number }[];
+  fortuneLook?: Partial<Record<string, { icon?: string; hue?: number; sat?: number; light?: number }>>;
+  axisLook?: Record<string, { icon?: string; hue?: number; sat?: number; light?: number }>;
+  rulerLook?: { title?: string; icon?: string; hue?: number; sat?: number; light?: number };
   /** Live hall only; archive snapshots omit. */
   fortunesFoundedAt?: string;
   fortuneMeta?: Partial<

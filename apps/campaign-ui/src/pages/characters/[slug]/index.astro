@@ -11,6 +11,7 @@ import SkillSeal from '../../../components/SkillSeal.astro';
 import WantingPanel from '../../../components/WantingPanel.astro';
 import { getCharacter, loadCommunity } from '../../../data/load';
 import { harmPips } from '../../../lib/format';
+import { deskToolsOn } from '../../../lib/loopback';
 import { editCookieHeader, resolveSheetEdit } from '../../../lib/sheet-auth';
 
 const { slug } = Astro.params;
@@ -31,6 +32,8 @@ if (auth.canEdit && auth.token) {
 }
 /** Unlocked sheet + valid bot-signed edit token. */
 const canEdit = unlocked && auth.canEdit;
+const desk = live && deskToolsOn(Astro.request);
+const playerEdit = canEdit && !desk;
 const foundationPts = ch.creation?.foundationPoints ?? 0;
 const skillPts = ch.creation?.skillPoints ?? 0;
 
@@ -61,14 +64,17 @@ const roman = (n: number) => ['∅', 'I', 'II', 'III', 'IV'][n] ?? String(n);
     overCapacity={ch.flags.overCapacity}
     live={live}
     tab="core"
-    canEdit={canEdit}
+    canEdit={playerEdit}
+    desk={desk}
+    concept={ch.concept}
+    communityTie={ch.communityTie}
     whoWeSee={ch.whoWeSee}
   >
-  <BudgetDock character={ch} live={live} canEdit={canEdit} />
-  <WantingPanel character={ch} live={live} canEdit={canEdit} />
-  <ConfirmDock character={ch} live={live} canEdit={canEdit} />
+  <BudgetDock character={ch} live={live} canEdit={playerEdit} />
+  <WantingPanel character={ch} live={live} canEdit={playerEdit} />
+  <ConfirmDock character={ch} live={live} canEdit={playerEdit} />
   {
-    canEdit && (
+    playerEdit && (
       <aside class="wanting-tracker" id="wanting-tracker" hidden aria-live="polite">
         <div class="wanting-tracker__head">
           <div>
@@ -81,7 +87,8 @@ const roman = (n: number) => ['∅', 'I', 'II', 'III', 'IV'][n] ?? String(n);
       </aside>
     )
   }
-  {canEdit && <script is:inline src="/creation-client.js"></script>}
+  {playerEdit && <script is:inline src="/creation-client.js"></script>}
+  {desk && <script is:inline src="/desk-sheet.js"></script>}
 
   <div slot="stage" class="core-grid">
     <aside
@@ -97,13 +104,22 @@ const roman = (n: number) => ['∅', 'I', 'II', 'III', 'IV'][n] ?? String(n);
         <button
           type="button"
           class="info"
-          data-tip="Res + Con + Cha. One segment = 1. Empty pool → −2 dice on rolls."
+          data-tip={
+            desk
+              ? 'Click the well. The height sets current exertion, from empty up to Resolve + Constitution + Charisma.'
+              : 'Res + Con + Cha. One segment = 1. Empty pool → −2 dice on rolls.'
+          }
           aria-label="About Exertion"
         >
           i
         </button>
       </div>
-      <div class="vtrack__vessel" aria-hidden="true">
+      <div
+        class="vtrack__vessel"
+        aria-hidden={desk ? undefined : 'true'}
+        data-desk-exertion={desk ? '1' : undefined}
+        data-max={desk ? String(ch.exertion.max) : undefined}
+      >
         <span class="vtrack__fill"></span>
         <span class="vtrack__frame"></span>
       </div>
@@ -111,7 +127,7 @@ const roman = (n: number) => ['∅', 'I', 'II', 'III', 'IV'][n] ?? String(n);
 
     <div class="core-main">
       {
-        unlocked && !canEdit && live && (
+        unlocked && !canEdit && !desk && live && (
           <p class="app__meta" style="margin:0 0 0.75rem">
             Sheet is unlocked but <strong>read-only</strong> here — open the link from the table bot
             (<code>/create</code> or review) to edit.
@@ -126,9 +142,11 @@ const roman = (n: number) => ['∅', 'I', 'II', 'III', 'IV'][n] ?? String(n);
             type="button"
             class="info"
             data-tip={
-              canEdit
-                ? 'Left-click raise · right-click lower (refund). Harm pips stay on the right.'
-                : 'Physical / Mental / Social. Rank as Roman mark; Harm as blood pips on the paired track (max 3).'
+              desk
+                ? 'Left-click the mark raises it. Right-click lowers it. Harm pips work the same way.'
+                : canEdit
+                  ? 'Left-click raise · right-click lower (refund). Harm pips stay on the right.'
+                  : 'Physical / Mental / Social. Rank as Roman mark; Harm as blood pips on the paired track (max 3).'
             }
             aria-label="About Foundations"
           >
@@ -145,39 +163,50 @@ const roman = (n: number) => ['∅', 'I', 'II', 'III', 'IV'][n] ?? String(n);
                   const eff = ch.foundationsEffective[fname] ?? raw;
                   const harmName = FOUNDATION_HARM[fname] ?? '';
                   const harmPts = ch.harm[harmName] ?? 0;
-                  const nextCost = canEdit ? nextFoundationCost(raw) : null;
+                  const nextCost = playerEdit ? nextFoundationCost(raw) : null;
                   const canRaise =
-                    canEdit && nextCost != null && foundationPts >= nextCost;
-                  const canLower = canEdit && raw > 1;
+                    playerEdit && nextCost != null && foundationPts >= nextCost;
+                  const canLower = playerEdit && raw > 1;
                   const tipBase =
                     eff !== raw
                       ? `Effective ${roman(eff)} · raw ${roman(raw)}`
                       : `Rank ${roman(eff)}`;
-                  const tip = canEdit
-                    ? raw === 0
-                      ? canRaise
-                        ? `${tipBase} · left-click restore to I (costs ${nextCost})`
-                        : `${tipBase} · need ${nextCost ?? 1} pts or Wanting +1`
-                      : `${tipBase} · left-click raise · right-click lower`
-                    : tipBase;
+                  const tip = desk
+                    ? `${tipBase} · left-click raises · right-click lowers`
+                    : playerEdit
+                      ? raw === 0
+                        ? canRaise
+                          ? `${tipBase} · left-click restore to I (costs ${nextCost})`
+                          : `${tipBase} · need ${nextCost ?? 1} pts or Wanting +1`
+                        : `${tipBase} · left-click raise · right-click lower`
+                      : tipBase;
                   return (
                     <div class="found-row">
                       <span class="found-row__name">{fname}</span>
                       <span class="found-row__val">
                         {
-                          canEdit ? (
+                          desk ? (
+                            <button
+                              type="button"
+                              class="found-row__spend"
+                              data-desk-foundation={fname}
+                              data-rating={String(raw)}
+                              data-tip={tip}
+                              aria-label={`${fname} ${roman(raw)}`}
+                            >
+                              <span data-roman>{roman(raw)}</span>
+                            </button>
+                          ) : playerEdit ? (
                             <button
                               type="button"
                               class:list={[
                                 'found-row__spend',
-                                canEdit && !canRaise && nextCost != null && 'found-row__spend--blocked',
+                                !canRaise && nextCost != null && 'found-row__spend--blocked',
                               ]}
                               data-spend-foundation={fname}
                               data-rating={String(raw)}
                               disabled={!canRaise && !canLower}
-                              data-unaffordable={
-                                canEdit && !canRaise && nextCost != null ? '1' : undefined
-                              }
+                              data-unaffordable={!canRaise && nextCost != null ? '1' : undefined}
                               data-tip={tip}
                               aria-label={
                                 canRaise
@@ -198,8 +227,9 @@ const roman = (n: number) => ['∅', 'I', 'II', 'III', 'IV'][n] ?? String(n);
                             </span>
                           )
                         }
+                        {desk && eff !== raw ? <span data-effective>effective {roman(eff)}</span> : null}
                       </span>
-                      <span class="found-row__harm">
+                      <span class="found-row__harm" data-desk-harm={desk ? harmName : undefined}>
                         <span class="found-row__harm-name">{harmName}</span>
                         <span class="pips" aria-label={`${harmPts} of 3`}>
                           {harmPips(harmPts).map((on) => (
@@ -214,6 +244,13 @@ const roman = (n: number) => ['∅', 'I', 'II', 'III', 'IV'][n] ?? String(n);
             ))
           }
         </div>
+        {
+          desk && ch.dying && (
+            <button type="button" class="kod-btn" data-desk-stabilise>
+              Stabilise
+            </button>
+          )
+        }
       </section>
 
       <section class="kod-plate" id="section-skills">
@@ -223,9 +260,11 @@ const roman = (n: number) => ['∅', 'I', 'II', 'III', 'IV'][n] ?? String(n);
             type="button"
             class="info"
             data-tip={
-              canEdit
-                ? 'Left-click raise · right-click lower (refund). Centre = rating · ring fills with Practice toward next rank.'
-                : 'Centre = rating. The coloured ring fills with Practice toward the next rank. Hover a skill for Practice and Foundation; open About on touch.'
+              desk
+                ? 'Left-click raises the rating. Right-click lowers it. Hold to add or remove Practice.'
+                : canEdit
+                  ? 'Left-click raise · right-click lower (refund). Centre = rating · ring fills with Practice toward next rank.'
+                  : 'Centre = rating. The coloured ring fills with Practice toward the next rank. Hover a skill for Practice and Foundation; open About on touch.'
             }
             aria-label="About Skills"
           >
@@ -263,29 +302,34 @@ const roman = (n: number) => ['∅', 'I', 'II', 'III', 'IV'][n] ?? String(n);
                             ? 1
                             : 0;
                       const pct = Math.round(p * 100);
-                      const nextCost = canEdit ? nextSkillCost(rating) : null;
+                      const nextCost = playerEdit ? nextSkillCost(rating) : null;
                       const canRaise =
-                        canEdit && nextCost != null && skillPts >= nextCost;
+                        playerEdit && nextCost != null && skillPts >= nextCost;
                       const tipBase =
                         rating <= 0
                           ? `Untrained · ${def.foundation}`
                           : rating >= 3
                             ? `Rating 3 (max) · ${def.foundation}`
                             : `Rating ${rating} · Practice ${practice}/${threshold} (${pct}% to next) · ${def.foundation}`;
-                      const tip = canEdit
-                        ? `${tipBase} · left-click raise · right-click lower`
-                        : tipBase;
+                      const tip = desk
+                        ? `${tipBase} · left-click raises · right-click lowers · hold changes Practice`
+                        : playerEdit
+                          ? `${tipBase} · left-click raise · right-click lower`
+                          : tipBase;
                       return (
                         <li
                           class:list={[
                             'skill',
-                            canEdit && canRaise && 'skill--spendable',
-                            canEdit && nextCost != null && !canRaise && 'skill--unaffordable',
-                            canEdit && nextCost == null && 'skill--unaffordable',
+                            playerEdit && canRaise && 'skill--spendable',
+                            playerEdit && nextCost != null && !canRaise && 'skill--unaffordable',
+                            playerEdit && nextCost == null && 'skill--unaffordable',
                           ]}
                           data-rating={String(rating)}
                           data-rated={rating > 0 ? 'true' : 'false'}
-                          data-spend-skill={canEdit ? def.name : undefined}
+                          data-spend-skill={playerEdit ? def.name : undefined}
+                          data-desk-skill={desk ? def.name : undefined}
+                          data-practice={desk ? String(practice) : undefined}
+                          data-threshold={desk ? String(threshold) : undefined}
                           style={`--p: ${p}`}
                           data-tip={tip}
                           tabindex="0"
@@ -293,7 +337,14 @@ const roman = (n: number) => ['∅', 'I', 'II', 'III', 'IV'][n] ?? String(n);
                           <SkillSeal rating={rating} p={p} />
                           <span class="skill__name">{def.name}</span>
                           {
-                            canEdit && (
+                            desk && (
+                              <span class="skill__practice" hidden={rating <= 0 || rating >= 3}>
+                                {rating > 0 && rating < 3 ? `${practice}/${threshold}` : ''}
+                              </span>
+                            )
+                          }
+                          {
+                            playerEdit && (
                               <span class="skill__cost">
                                 {nextCost != null ? `−${nextCost}` : 'max'}
                               </span>

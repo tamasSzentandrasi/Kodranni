@@ -5,8 +5,8 @@ import {
   ORNAMENT_PENDING_SCRIPT,
   ORNAMENT_READY_SCRIPT,
 } from '@kodranni/hall-render';
-import DeskChrome from '../components/DeskChrome.astro';
 import LiveStyles from '../components/LiveStyles.astro';
+import { deskToolsOn } from '../lib/loopback';
 
 interface Props {
   title: string;
@@ -24,8 +24,9 @@ const asOf = new Date(generatedAt).toLocaleString(undefined, {
 });
 
 const archive = source === 'snapshot';
-const sourceLabel = archive ? 'archive' : source === 'live' ? 'live store' : 'fixture';
 const isMap = primary === 'map';
+const desk = !archive && deskToolsOn(Astro.request);
+const sourceLabel = archive ? 'archive' : desk ? 'Storyteller Desk' : source === 'live' ? 'live store' : 'fixture';
 ---
 
 <!doctype html>
@@ -50,17 +51,30 @@ const isMap = primary === 'map';
   <body class={isMap ? 'is-map' : undefined}>
     <div class="app" class:list={{ 'app--map': isMap }}>
       <header class="app__brand">
-        <img class="app__logo" src="/brand/falcon-logo.png" width="34" height="34" alt="" />
+        <a class="app__logo-link" href="https://kodranni.com/" aria-label="Kodranni">
+          <img class="app__logo" src="/brand/falcon-logo.png" width="34" height="34" alt="" />
+        </a>
         <div>
           <span class="app__mark">Kodranni</span>
-          <h1 class="app__title">{communityName}</h1>
+          <h1 class="app__title">
+            {
+              desk ? (
+                <input
+                  class="kod-ink"
+                  data-desk-rename
+                  value={communityName}
+                  aria-label="Campaign name"
+                />
+              ) : (
+                communityName
+              )
+            }
+          </h1>
         </div>
       </header>
       <p class="app__meta">
         As of {asOf} · living record · <span class="src">{sourceLabel}</span>
       </p>
-
-      <DeskChrome />
 
       <nav class="tabs" aria-label="Primary">
         <a href="/community/" aria-current={primary === 'overview' ? 'page' : undefined}
@@ -72,9 +86,29 @@ const isMap = primary === 'map';
           >
           <Fragment set:html={infoBtn('About Hierarchy', HIERARCHY_TAB_TIP)} />
         </span>
-        <a href="/characters/" aria-current={primary === 'characters' ? 'page' : undefined}
-          >Characters</a
-        >
+        <span class="tabs__cluster">
+          <a href="/characters/" aria-current={primary === 'characters' ? 'page' : undefined}
+            >Characters</a
+          >
+          {
+            desk && (
+              <button
+                type="button"
+                class="tabs__plus"
+                data-desk-add-character
+                aria-label="Add a character"
+                data-tip="Add a character"
+              />
+            )
+          }
+        </span>
+        {
+          desk && (
+            <a href="/notebook/" aria-current={title === 'Notebook' ? 'page' : undefined}>
+              Notebook
+            </a>
+          )
+        }
       </nav>
 
       <slot />
@@ -189,5 +223,6 @@ const isMap = primary === 'map';
       })();
     </script>
     <Fragment set:html={ORNAMENT_READY_SCRIPT} />
+    {desk && <script is:inline src="/desk-gestures.js"></script>}
   </body>
 </html>

@@ -292,6 +292,95 @@ describe('overviewInner and hierarchyInner', () => {
     expect(signed).toContain('data-slide-toggle="find"');
     expect(signed).not.toContain('kod-fortune-row');
 
+    const desk = overviewInner(view, { live: true, desk: true });
+    expect(desk).toContain('data-desk-fortune="vitality"');
+    expect(desk).toContain('role="radiogroup"');
+    expect(desk).toContain('data-desk-myth="0"');
+    expect(desk).toContain('data-desk-myth="2"');
+    expect(desk).toContain('data-desk-effect-add');
+    expect(desk).toContain('data-desk-effect-kind="advantage"');
+    expect(desk).toContain('kod-fortune__tree');
+    expect(desk).not.toContain('data-desk-myth="3"');
+    const dyed = overviewInner(
+      hallViewFromSnapshot({
+        ...snap,
+        community: { ...snap.community, fortuneLook: { vitality: { hue: 200 } } },
+      }),
+      { live: true, desk: true },
+    );
+    expect(dyed).toContain('data-hue="200"');
+    expect(dyed).toContain('--fortune-h:200');
+    expect(dyed).toContain('--fortune-s:42%');
+    expect(dyed).toContain('--fortune-l:34%');
+    expect(dyed).toContain('--kod-pillar:hsl(200 42% 34%)');
+    const bright = overviewInner(
+      hallViewFromSnapshot({
+        ...snap,
+        community: { ...snap.community, fortuneLook: { vitality: { hue: 200, sat: 0, light: 50 } } },
+      }),
+      { live: true, desk: true },
+    );
+    expect(bright).toContain('--kod-pillar:hsl(200 0% 50%)');
+    expect(bright).toContain('value="#808080"');
+    expect(unsigned).not.toContain('data-desk-fortune');
+    expect(unsigned).not.toContain('kod-hier-axis__domain');
+    expect(desk).not.toContain('kod-hier-axis__domain');
+
+    const crested = overviewInner(
+      hallViewFromSnapshot({
+        ...snap,
+        community: { ...snap.community, fortuneLook: { vitality: { icon: 'vitality-trial.png' } } },
+      }),
+      { live: true, desk: true },
+    );
+    expect(crested).toContain('kod-fortune__icon--custom');
+    expect(crested).toContain('/api/fortune-icon?file=vitality-trial.png');
+    expect(crested).toContain('data-desk-icon-reset');
+    expect(crested).toContain('data-kind="fortune"');
+    const publicCrest = overviewInner(
+      hallViewFromSnapshot({
+        ...snap,
+        community: { ...snap.community, fortuneLook: { vitality: { icon: 'vitality-trial.png' } } },
+      }),
+      { live: true, canEdit: false },
+    );
+    expect(publicCrest).toContain('kod-fortune__icon--custom');
+    expect(publicCrest).not.toContain('data-desk-icon-reset');
+
+    const deskHier = hierarchyInner(view, { live: true, desk: true });
+    expect(deskHier).not.toContain('kod-hier-axis__domain');
+    expect(deskHier).toContain('Unassigned');
+    expect(deskHier).toContain('data-desk-drop="porch"');
+    expect(deskHier).toContain('data-desk-npc');
+    expect(deskHier).not.toContain('data-rite-open');
+    expect(deskHier).toContain('data-open="false"');
+    expect(deskHier).toContain('desk-label__who');
+    expect(deskHier).toContain('desk-label__plate');
+    expect(deskHier).toContain('desk-label__line');
+    expect(deskHier).not.toContain('desk-label__tools');
+    expect(deskHier).toContain('style="--ladder-cols:5"');
+    const labelLine = deskHier.slice(deskHier.indexOf('desk-label__line'), deskHier.indexOf('desk-label__who'));
+    expect(labelLine.indexOf('data-desk-label-color')).toBeGreaterThan(-1);
+    expect(labelLine.indexOf('data-desk-label-color')).toBeLessThan(labelLine.indexOf('desk-label__plate'));
+    expect(labelLine.indexOf('desk-label__plate')).toBeLessThan(labelLine.indexOf('data-desk-label-delete'));
+    expect(deskHier).toContain('allegiance__cat-bar');
+    expect(deskHier).toContain('kod-hier-axis--blank');
+    expect(deskHier).not.toContain('data-desk-label-pick');
+    const dyedHier = hierarchyInner(
+      hallViewFromSnapshot({
+        ...snap,
+        community: {
+          ...snap.community,
+          rulerLook: { hue: 258, sat: 80, light: 70, title: 'Crown' },
+          axisLook: { Arms: { hue: 30, sat: 90, light: 40 } },
+        },
+      }),
+      { live: true, desk: true },
+    );
+    expect(dyedHier).toContain('--picked:hsl(258 80% 70%)');
+    expect(dyedHier).toContain('--on-ink:#14110e');
+    expect(dyedHier).toContain('--picked:hsl(30 90% 40%)');
+
     const archive = communityInner(view);
     expect(archive).toContain('data-source="snapshot"');
     expect(archive).toContain('data-founded=""');

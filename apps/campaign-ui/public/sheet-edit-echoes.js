@@ -15,6 +15,21 @@
     roster = [];
   }
 
+  function clearRemoveAsk() {
+    document.querySelectorAll('#echoes-panel [data-confirm="1"], #traits-panel [data-confirm="1"]').forEach((btn) => {
+      btn.removeAttribute('data-confirm');
+      const idle = btn.getAttribute('data-idle');
+      if (idle) btn.textContent = idle;
+    });
+  }
+
+  function armRemove(btn) {
+    clearRemoveAsk();
+    if (!btn.getAttribute('data-idle')) btn.setAttribute('data-idle', (btn.textContent || '').trim());
+    btn.setAttribute('data-confirm', '1');
+    btn.textContent = 'Remove?';
+  }
+
   function tokenHeaders() {
     const headers = { 'Content-Type': 'application/json' };
     const m = document.cookie.match(/(?:^|;\s*)kod_edit=([^;]+)/);
@@ -106,10 +121,23 @@
     list.appendChild(li);
   }
 
+  function storedResolved() {
+    try {
+      const raw = document.getElementById('echo-resolved');
+      const parsed = raw ? JSON.parse(raw.textContent || '[]') : [];
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
+  }
+
   function readEchoes() {
-    return Array.from(panel.querySelectorAll('[data-echo-idx]')).map((art) => {
+    const active = Array.from(panel.querySelectorAll('[data-echo-idx], [data-echo-new]'))
+      .map((art) => {
       const w = Number(art.querySelector('[data-echo-weight]')?.getAttribute('data-weight') || 1);
-      const title = art.querySelector('[data-echo-title]')?.value?.trim() || 'Echo';
+      const titleRaw = art.querySelector('[data-echo-title]')?.value?.trim() || '';
+      if (art.hasAttribute('data-echo-new') && !titleRaw) return null;
+      const title = titleRaw || 'Echo';
       const invokeWhen =
         art.querySelector('[data-echo-invoke]')?.value?.trim() ||
         'When the table agrees the scene matches.';
@@ -128,12 +156,16 @@
         group: w === 2 ? group : [],
         groupLabel: w === 2 ? 'Who shares this' : undefined,
       };
-    });
+    })
+      .filter(Boolean);
+    const titles = new Set(active.map((e) => e.title));
+    const prior = storedResolved().filter((e) => e && e.title && !titles.has(e.title));
+    return active.concat(prior);
   }
 
   function readTraits() {
     if (!traitList) return [];
-    return Array.from(traitList.querySelectorAll('[data-trait-idx]'))
+    const rows = Array.from(traitList.querySelectorAll('[data-trait-idx]'))
       .map((li) => {
         const name = li.querySelector('[data-trait-name]')?.value?.trim();
         if (!name) return null;
@@ -141,6 +173,12 @@
         return { name, note: note || undefined };
       })
       .filter(Boolean);
+    const fresh = traitList.querySelector('[data-trait-new] [data-trait-name]')?.value?.trim();
+    if (fresh) {
+      const note = traitList.querySelector('[data-trait-new] [data-trait-note]')?.value?.trim();
+      rows.push({ name: fresh, note: note || undefined });
+    }
+    return rows;
   }
 
   function addEchoCard(weight, title, invoke) {
@@ -188,9 +226,30 @@
       saveSoon();
       return;
     }
-    if (t.closest('[data-echo-remove]')) {
-      t.closest('[data-echo-idx]')?.remove();
+    const echoRemove = t.closest('[data-echo-remove]');
+    if (echoRemove) {
+      if (echoRemove.getAttribute('data-confirm') !== '1') {
+        armRemove(echoRemove);
+        return;
+      }
+      echoRemove.closest('[data-echo-idx]')?.remove();
       saveSoon();
+      return;
+    }
+    const seg = t.closest('[data-seg]');
+    if (panel.getAttribute('data-desk') === '1' && seg) {
+      const wEl = seg.closest('[data-echo-weight]');
+      if (wEl) paintWeight(wEl, Number(seg.getAttribute('data-seg')));
+      saveSoon();
+      return;
+    }
+    if (t.closest('[data-echo-resolve-go]')) {
+      resolveEcho(t.closest('[data-echo-idx]'));
+      return;
+    }
+    const reopen = t.closest('[data-desk-reopen]');
+    if (reopen) {
+      deskOp({ op: 'reopen', slug, title: reopen.getAttribute('data-title') });
       return;
     }
     if (t.closest('[data-echo-group-remove]')) {
@@ -201,6 +260,7 @@
       return;
     }
     const wEl = t.closest('[data-echo-weight]');
+    if (panel.getAttribute('data-desk') === '1') return;
     if (wEl instanceof HTMLElement && wEl.classList.contains('echo__weight--edit')) {
       const cur = Number(wEl.getAttribute('data-weight') || 1);
       paintWeight(wEl, Math.min(3, cur + 1));
@@ -212,6 +272,10 @@
     const t = ev.target;
     if (!(t instanceof HTMLElement)) return;
     const wEl = t.closest('[data-echo-weight]');
+    if (panel.getAttribute('data-desk') === '1' && wEl) {
+      ev.preventDefault();
+      return;
+    }
     if (wEl instanceof HTMLElement && wEl.classList.contains('echo__weight--edit')) {
       ev.preventDefault();
       const cur = Number(wEl.getAttribute('data-weight') || 1);
@@ -240,10 +304,23 @@
   document.querySelector('#traits-panel')?.addEventListener('click', (ev) => {
     const t = ev.target;
     if (!(t instanceof HTMLElement)) return;
-    if (t.closest('[data-trait-remove]')) {
-      t.closest('[data-trait-idx]')?.remove();
+    const traitRemove = t.closest('[data-trait-remove]');
+    if (traitRemove) {
+      if (traitRemove.getAttribute('data-confirm') !== '1') {
+        armRemove(traitRemove);
+        return;
+      }
+      traitRemove.closest('[data-trait-idx]')?.remove();
       saveSoon();
+      return;
     }
+    clearRemoveAsk();
+  });
+
+  document.addEventListener('click', (ev) => {
+    const t = ev.target;
+    if (t instanceof Element && t.closest('#echoes-panel [data-confirm="1"], #traits-panel [data-confirm="1"]')) return;
+    clearRemoveAsk();
   });
 
   let saveTimer = 0;
@@ -269,6 +346,67 @@
       msg.textContent = data.error || 'Failed';
       msg.className = 'draft-msg draft-msg--err';
     }
+    const added =
+      Boolean(panel.querySelector('[data-echo-new] [data-echo-title]')?.value?.trim()) ||
+      Boolean(document.querySelector('[data-trait-new] [data-trait-name]')?.value?.trim());
+    if (res.ok && panel.getAttribute('data-desk') === '1' && added) location.reload();
+    return res.ok;
+  }
+
+  async function deskOp(body) {
+    const res = await fetch('/api/desk/edit', {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      const msg = document.querySelector('[data-echoes-msg]');
+      if (msg) {
+        msg.hidden = false;
+        msg.textContent = data.error || 'Failed';
+        msg.className = 'draft-msg draft-msg--err';
+      }
+      return;
+    }
+    location.reload();
+  }
+
+  async function resolveEcho(art) {
+    if (!art) return;
+    const narrative = art.querySelector('[data-echo-resolution]')?.value?.trim();
+    if (!narrative) return;
+    const title = art.querySelector('[data-echo-title]')?.value?.trim() || 'Echo';
+    const weight = Number(art.querySelector('[data-echo-weight]')?.getAttribute('data-weight') || 1);
+    const echoes = readEchoes().map((echo) =>
+      echo.title === title
+        ? { ...echo, resolved: { at: new Date().toISOString(), narrative } }
+        : echo,
+    );
+    const body = { action: 'st-edit', patch: { echoes, traits: readTraits() } };
+    if (weight === 3) {
+      const key = art.querySelector('[data-echo-fortune]')?.value || 'vitality';
+      const level = Number(art.querySelector('[data-echo-fortune-level]')?.value || 2);
+      body.pivotalFortune = { key, level };
+    }
+    const res = await fetch('/api/character/' + encodeURIComponent(slug), {
+      method: 'POST',
+      headers: tokenHeaders(),
+      credentials: 'same-origin',
+      body: JSON.stringify(body),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      const msg = document.querySelector('[data-echoes-msg]');
+      if (msg) {
+        msg.hidden = false;
+        msg.textContent = data.error || 'Failed';
+        msg.className = 'draft-msg draft-msg--err';
+      }
+      return;
+    }
+    location.reload();
   }
 
   panel.addEventListener('change', (ev) => {
@@ -299,6 +437,27 @@
   });
 
   panel.querySelectorAll('[data-echo-idx]').forEach((art) => refreshPicks(art));
+
+  document.addEventListener('click', (ev) => {
+    const t = ev.target;
+    if (!(t instanceof HTMLElement)) return;
+    const reopen = t.closest('[data-desk-reopen]');
+    if (!reopen) return;
+    deskOp({ op: 'reopen', slug, title: reopen.getAttribute('data-title') });
+  });
+
+  document.addEventListener('change', (ev) => {
+    const t = ev.target;
+    if (!(t instanceof HTMLSelectElement) || !t.hasAttribute('data-desk-claim')) return;
+    const toSlug = t.value;
+    if (!toSlug) return;
+    deskOp({
+      op: 'claim',
+      fromSlug: slug,
+      title: t.getAttribute('data-title') || '',
+      toSlug,
+    });
+  });
 
   panel.addEventListener('input', saveSoon);
   traitList?.addEventListener('input', saveSoon);

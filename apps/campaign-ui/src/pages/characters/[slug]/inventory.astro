@@ -4,6 +4,7 @@ export const prerender = false;
 import CampaignLayout from '../../../layouts/CampaignLayout.astro';
 import SheetChrome from '../../../components/SheetChrome.astro';
 import { getCharacter, loadCommunity } from '../../../data/load';
+import { deskToolsOn } from '../../../lib/loopback';
 import { editCookieHeader, resolveSheetEdit } from '../../../lib/sheet-auth';
 
 const { slug } = Astro.params;
@@ -20,6 +21,8 @@ if (auth.canEdit && auth.token) {
   Astro.response.headers.append('Set-Cookie', editCookieHeader(auth.token));
 }
 const canEdit = unlocked && auth.canEdit;
+const desk = live && deskToolsOn(Astro.request);
+const sheetEdit = desk || canEdit;
 const armourLabel =
   ch.armour.kind === 'none' ? 'None' : ch.armour.kind === 'light' ? 'Light' : 'Heavy';
 ---
@@ -43,7 +46,10 @@ const armourLabel =
     overCapacity={ch.flags.overCapacity}
     live={live}
     tab="inventory"
-    canEdit={canEdit}
+    canEdit={canEdit && !desk}
+    desk={desk}
+    concept={ch.concept}
+    communityTie={ch.communityTie}
     whoWeSee={ch.whoWeSee}
   >
 
@@ -51,7 +57,8 @@ const armourLabel =
     class="kod-plate"
     id="inventory-panel"
     data-slug={ch.slug}
-    data-can-edit={canEdit ? '1' : '0'}
+    data-can-edit={sheetEdit ? '1' : '0'}
+    data-desk={desk ? '1' : '0'}
     data-armour-kind={ch.armour.kind}
     data-armour-donned={ch.armour.donned ? '1' : '0'}
   >
@@ -74,8 +81,8 @@ const armourLabel =
           class="kod-plate armour"
           data-kind={ch.armour.kind}
           data-donned={String(ch.armour.donned)}
-          data-armour-cycle={canEdit ? '1' : undefined}
-          disabled={!canEdit}
+          data-armour-cycle={sheetEdit ? '1' : undefined}
+          disabled={!sheetEdit}
         >
           <span class="armour__lab">Armour</span>
           <span class="armour__val" data-armour-label>{armourLabel}</span>
@@ -94,13 +101,13 @@ const armourLabel =
           <div class="kod-plate supply" data-supply="food">
             <span class="supply__lab">Food</span>
             {
-              canEdit && (
+              sheetEdit && (
                 <button type="button" class="supply__chev" data-supply-delta="1" aria-label="More food"></button>
               )
             }
             <span class="supply__val" data-supply-val>{ch.inventory.foodDays}</span>
             {
-              canEdit && (
+              sheetEdit && (
                 <button type="button" class="supply__chev supply__chev--down" data-supply-delta="-1" aria-label="Less food"></button>
               )
             }
@@ -109,13 +116,13 @@ const armourLabel =
           <div class="kod-plate supply" data-supply="water">
             <span class="supply__lab">Water</span>
             {
-              canEdit && (
+              sheetEdit && (
                 <button type="button" class="supply__chev" data-supply-delta="1" aria-label="More water"></button>
               )
             }
             <span class="supply__val" data-supply-val>{ch.inventory.waterDays}</span>
             {
-              canEdit && (
+              sheetEdit && (
                 <button type="button" class="supply__chev supply__chev--down" data-supply-delta="-1" aria-label="Less water"></button>
               )
             }
@@ -128,30 +135,43 @@ const armourLabel =
         <h3 style="font-size:1rem;margin:0 0 0.4rem">Named items</h3>
         <ul class="item-list" data-item-list>
           {
-            ch.inventory.items.length === 0 && !canEdit ? (
+            ch.inventory.items.length === 0 && !sheetEdit ? (
               <li class="empty">None declared.</li>
             ) : (
               ch.inventory.items.map((it, idx) => (
                 <li class="kod-plate item" data-item-idx={String(idx)} data-item-icon={it.icon}>
+                  <label class="item__icon-hit">
+                    {
+                      it.icon ? (
+                        <img
+                          class="item__icon"
+                          src={
+                            it.icon.startsWith('/') || it.icon.startsWith('http')
+                              ? it.icon
+                              : `/api/character/${ch.slug}/item-icon?file=${it.icon}`
+                          }
+                          alt=""
+                          width="36"
+                          height="36"
+                        />
+                      ) : (
+                        <span class="item__icon item__icon--empty" aria-hidden="true"></span>
+                      )
+                    }
+                    {
+                      sheetEdit && (
+                        <input
+                          type="file"
+                          data-item-icon-file
+                          accept="image/jpeg,image/png,image/webp"
+                          hidden
+                          aria-label={`Icon for ${it.name}`}
+                        />
+                      )
+                    }
+                  </label>
                   {
-                    it.icon ? (
-                      <img
-                        class="item__icon"
-                        src={
-                          it.icon.startsWith('/') || it.icon.startsWith('http')
-                            ? it.icon
-                            : `/api/character/${ch.slug}/item-icon?file=${it.icon}`
-                        }
-                        alt=""
-                        width="36"
-                        height="36"
-                      />
-                    ) : (
-                      <span class="item__icon item__icon--empty" aria-hidden="true"></span>
-                    )
-                  }
-                  {
-                    canEdit ? (
+                    sheetEdit ? (
                       <div class="item__edit">
                         <input class="kod-ink" data-item-name value={it.name} placeholder="Name" />
                         <input
@@ -160,12 +180,11 @@ const armourLabel =
                           value={it.note ?? ''}
                           placeholder="Short description (optional)"
                         />
-                        <label class="item__icon-upload">
-                          Icon
-                          <input type="file" data-item-icon-file accept="image/jpeg,image/png,image/webp" hidden />
-                        </label>
-                        <button type="button" data-item-remove>
-                          Remove
+                        <button type="button" class="desk-mark" data-item-remove aria-label="Remove" data-tip="Remove">
+                          <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.4" />
+                            <path d="M9 9l6 6M15 9l-6 6" stroke="currentColor" stroke-width="1.4" />
+                          </svg>
                         </button>
                       </div>
                     ) : (
@@ -188,9 +207,29 @@ const armourLabel =
               ))
             )
           }
+          {
+            desk && (
+              <li class="kod-plate item" data-item-new>
+                <label class="item__icon-hit">
+                  <span class="item__icon item__icon--empty" aria-hidden="true"></span>
+                  <input
+                    type="file"
+                    data-item-icon-file
+                    accept="image/jpeg,image/png,image/webp"
+                    hidden
+                    aria-label="Icon for the new item"
+                  />
+                </label>
+                <div class="item__edit">
+                  <input class="kod-ink" data-item-name placeholder="Item name" />
+                  <input class="kod-ink" data-item-note placeholder="Description" />
+                </div>
+              </li>
+            )
+          }
         </ul>
         {
-          canEdit && (
+          sheetEdit && !desk && (
             <button type="button" class="draft-btn" data-item-add style="margin-top:0.55rem">
               + Add item
             </button>
@@ -202,7 +241,7 @@ const armourLabel =
     <p class="draft-msg" data-inv-msg hidden></p>
   </section>
 
-  {canEdit && <script is:inline src="/sheet-edit-inventory.js"></script>}
+  {sheetEdit && <script is:inline src="/sheet-edit-inventory.js"></script>}
   </SheetChrome>
 </CampaignLayout>
 

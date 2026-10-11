@@ -13,7 +13,10 @@ import {
 
 const PAGE = 8;
 
-export function rosterInner(view: HallView, opts?: { page?: number; selected?: string }): string {
+export function rosterInner(
+  view: HallView,
+  opts?: { page?: number; selected?: string; desk?: boolean },
+): string {
   const selected = opts?.selected ?? '';
   const factions = collectFactions(view.community.factions, view.community.outsiders ?? []);
   type Row = {
@@ -66,7 +69,9 @@ export function rosterInner(view: HallView, opts?: { page?: number; selected?: s
     if (rank[a.kind] !== rank[b.kind]) return rank[a.kind] - rank[b.kind];
     return a.name.localeCompare(b.name);
   });
-  if (roster.length === 0) return `<p class="empty">No names on the roster yet.</p>`;
+  if (roster.length === 0) {
+    return `<p class="empty">No names on the roster yet.</p>`;
+  }
   const pages = Math.max(1, Math.ceil(roster.length / PAGE));
   let page = opts?.page ?? 1;
   if (selected) {
@@ -94,10 +99,17 @@ export function rosterInner(view: HallView, opts?: { page?: number; selected?: s
       const inner = `${av}<span class="char-row__body"><span class="char-row__name">${esc(row.name)}</span><span class="char-row__meta${row.placeholder ? ' char-row__meta--placeholder' : ''}">${esc(row.line)}</span></span>${status}`;
       const style = row.factionHue != null ? ` style="--faction-h: ${row.factionHue}"` : '';
       const selectedAttr = ` data-selected="${selected === row.key ? 'true' : 'false'}"`;
+      const dead = row.status === 'dead';
+      const deadMark = `<button type="button" class="desk-mark" data-desk-dead data-slug="${escAttr(row.key)}" aria-label="Mark dead" data-tip="Mark dead"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M8 12h8" stroke="currentColor" stroke-width="1.4"/></svg></button>`;
+      const removeMark = `<button type="button" class="desk-mark" data-desk-remove data-slug="${escAttr(row.key)}" data-name="${escAttr(row.name)}" aria-label="Remove" data-tip="Remove"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M9 9l6 6M15 9l-6 6" stroke="currentColor" stroke-width="1.4"/></svg></button>`;
+      const actions =
+        opts?.desk && row.href
+          ? `<span class="char-row__marks">${dead ? '' : deadMark}${removeMark}</span>`
+          : '';
       if (row.href) {
-        return `<li><a class="${cls}" href="${escAttr(row.href)}"${selectedAttr}${style}>${inner}</a></li>`;
+        return `<li><a class="${cls}" href="${escAttr(row.href)}"${selectedAttr}${style}>${inner}</a>${actions}</li>`;
       }
-      return `<li><div class="${cls}"${selectedAttr}${style}>${inner}</div></li>`;
+      return `<li><div class="${cls}"${selectedAttr}${style}>${inner}</div>${actions}</li>`;
     })
     .join('');
   const pager =
