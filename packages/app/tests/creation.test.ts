@@ -411,6 +411,26 @@ describe('ST edit (claim marks)', () => {
     expect(edited.creation!.skillPoints).toBe(PREP_SKILL_POINTS + 2);
     store.close();
   });
+
+  it('keeps death, dying, and exertion off a sheet token', () => {
+    const store = emptyStore();
+    const { character } = startCreateFromBot(store, {
+      platform: 'discord',
+      accountId: 'target',
+      displayName: 'T',
+      name: 'Mark Target',
+    });
+    const edited = stEditCharacter(store, {
+      characterSlug: character.slug,
+      actor: 'player-1',
+      patch: { status: 'dead', dying: true, exertionCurrent: 9, concept: 'Still at the mill.' },
+    });
+    expect(edited.status).toBe('draft');
+    expect(edited.dying).toBe(false);
+    expect(edited.exertion.current).toBe(0);
+    expect(edited.concept).toBe('Still at the mill.');
+    store.close();
+  });
 });
 
 describe('lock / unlock / multi focus', () => {

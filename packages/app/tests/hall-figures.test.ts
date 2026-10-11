@@ -20,19 +20,19 @@ function demoStore() {
 }
 
 describe('addHallNpc', () => {
-  it('creates a locked active NPC that automation places Outcast on every axis', () => {
+  it('creates a locked active NPC with no ladder placement', () => {
     const store = demoStore();
     const ch = addHallNpc(store, { name: 'Hilda Gate' });
     expect(ch.kind).toBe('npc');
     expect(ch.status).toBe('active');
     expect(ch.creation?.locked).toBe(true);
     expect(ch.creation?.placeholder).toBe(true);
+    expect(ch.hierarchy).toEqual([]);
     const community = store.getCommunity();
     const placed = completeMemberPlacements(community, store.listCharacters()).filter(
       (p) => p.characterSlug === ch.slug,
     );
-    expect(placed).toHaveLength(community.hierarchyAxes.length);
-    expect(placed.every((p) => p.tier === 'Outcast')).toBe(true);
+    expect(placed).toHaveLength(0);
     store.close();
   });
 });

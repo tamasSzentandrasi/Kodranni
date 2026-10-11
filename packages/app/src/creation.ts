@@ -148,7 +148,7 @@ function emptyDraft(partial: {
     echoWeight: 0,
     harm: { ...EMPTY_HARM },
     dying: false,
-    hierarchy: [{ axis: 'Arms', tier: 'Outcast' }],
+    hierarchy: [],
     armour: { kind: 'none', donned: false },
     inventory: { foodDays: 0, waterDays: 0, items: [] },
     flags: { decadence: true, overCapacity: false },
@@ -171,7 +171,7 @@ export interface StartCreateFromBotResult {
   character: CharacterRecord;
 }
 
-/** Named NPC for the hall diagram — active, locked, Outcast until automation moves them. */
+/** Named NPC. Active, locked, and left in Unassigned until the desk files them. */
 export function addHallNpc(
   store: CommunityStorePort,
   cmd: { name: string; actor?: string },
@@ -914,6 +914,9 @@ export interface StEditCharacterPatch {
   foodDays?: number;
   waterDays?: number;
   armour?: { kind: 'none' | 'light' | 'heavy'; donned: boolean };
+  dying?: boolean;
+  exertionCurrent?: number;
+  status?: CharacterRecord['status'];
   foundationPointsDelta?: number;
   skillPointsDelta?: number;
   wordsDelta?: number;
@@ -957,6 +960,14 @@ export function stEditCharacter(
   if (p.foodDays !== undefined) ch.inventory.foodDays = p.foodDays;
   if (p.waterDays !== undefined) ch.inventory.waterDays = p.waterDays;
   if (p.armour) ch.armour = { ...p.armour };
+  // Death, dying, and exertion belong to the desk. A sheet token must not set them.
+  if (cmd.actor === 'desk') {
+    if (p.dying !== undefined) ch.dying = p.dying;
+    if (p.exertionCurrent !== undefined) {
+      ch.exertion.current = Math.max(0, Math.floor(p.exertionCurrent));
+    }
+    if (p.status) ch.status = p.status;
+  }
   const creation = ensureCreation(ch);
   if (p.foundationPointsDelta) creation.foundationPoints += p.foundationPointsDelta;
   if (p.skillPointsDelta) creation.skillPoints += p.skillPointsDelta;
