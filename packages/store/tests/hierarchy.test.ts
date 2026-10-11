@@ -7,7 +7,7 @@ import { demoJakov, demoTomaso } from '../src/seed.js';
 import { emptyCommunity } from '../src/sqlite.js';
 
 describe('completeMemberPlacements', () => {
-  it('places every community character on every axis (default Outcast)', () => {
+  it('keeps explicit placements and leaves everyone else unassigned', () => {
     const community = emptyCommunity('vardmark', 'Test');
     community.hierarchyAxes = ['Arms', 'Faith', 'Coin', 'Blood'];
     community.placements = [
@@ -21,18 +21,20 @@ describe('completeMemberPlacements', () => {
     community.outsiders = [{ name: 'Mara of the Reeds', faction: 'Reed-marsh folk' }];
     const chars = [demoTomaso(), demoJakov()];
     const placements = completeMemberPlacements(community, chars);
-    for (const ch of chars) {
-      for (const axis of community.hierarchyAxes) {
-        const row = placements.find(
-          (p) => p.axis === axis && (p.characterSlug === ch.slug || p.name === ch.name),
-        );
-        expect(row, `${ch.name} on ${axis}`).toBeTruthy();
-      }
-    }
     const coin = placements.find((p) => p.characterSlug === 'tomaso' && p.axis === 'Coin');
     expect(coin?.tier).toBe('Acknowledged');
-    const arms = placements.find((p) => p.characterSlug === 'tomaso' && p.axis === 'Arms');
-    expect(arms?.tier).toBe('Outcast');
+    expect(placements.find((p) => p.characterSlug === 'tomaso' && p.axis === 'Arms')).toBeUndefined();
+    expect(placements.find((p) => p.characterSlug === 'jakov')).toBeUndefined();
+  });
+
+  it('drops a dead character from the diagram', () => {
+    const community = emptyCommunity('vardmark', 'Test');
+    community.placements = [
+      { name: 'Tomaso Fero', axis: 'Coin', tier: 'Acknowledged', characterSlug: 'tomaso' },
+    ];
+    const tomaso = demoTomaso();
+    tomaso.status = 'dead';
+    expect(completeMemberPlacements(community, [tomaso])).toHaveLength(0);
   });
 });
 

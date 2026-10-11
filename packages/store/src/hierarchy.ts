@@ -8,56 +8,24 @@ import type {
 const DEFAULT_TIER = 'Outcast';
 
 /**
- * Every community member (character not listed as outsider) must appear on
- * every hierarchy axis. Missing placements default to Outcast.
- * Explicit placements (higher tiers) are preserved.
+ * Keep the placements the desk wrote. A character with none is Unassigned.
+ * Dead people leave the diagram. Nothing is invented onto a rung.
  */
 export function completeMemberPlacements(
   community: CommunityRecord,
   characters: CharacterRecord[],
 ): HierarchyPlacement[] {
-  const outsiderSlugs = new Set(
-    (community.outsiders ?? [])
-      .map((o) => o.characterSlug)
-      .filter((s): s is string => Boolean(s)),
+  const deadSlugs = new Set(
+    characters.filter((ch) => ch.status === 'dead').map((ch) => ch.slug),
   );
-  const outsiderNames = new Set(
-    (community.outsiders ?? []).map((o) => o.name.toLowerCase()),
+  const deadNames = new Set(
+    characters.filter((ch) => ch.status === 'dead').map((ch) => ch.name.toLowerCase()),
   );
-
-  const members = characters.filter(
-    (ch) =>
-      ch.status !== 'draft' &&
-      !outsiderSlugs.has(ch.slug) &&
-      !outsiderNames.has(ch.name.toLowerCase()),
-  );
-
-  const byKey = new Map<string, HierarchyPlacement>();
-  for (const p of community.placements ?? []) {
-    const key = `${p.axis}::${(p.characterSlug ?? p.name).toLowerCase()}`;
-    byKey.set(key, p);
-  }
-
-  // Named NPCs already on diagram (no character sheet) keep their placements
-  const result: HierarchyPlacement[] = [...(community.placements ?? [])];
-
-  for (const ch of members) {
-    for (const axis of community.hierarchyAxes) {
-      const keySlug = `${axis}::${ch.slug.toLowerCase()}`;
-      const keyName = `${axis}::${ch.name.toLowerCase()}`;
-      if (byKey.has(keySlug) || byKey.has(keyName)) continue;
-      const placement: HierarchyPlacement = {
-        name: ch.name,
-        axis,
-        tier: DEFAULT_TIER,
-        characterSlug: ch.slug,
-      };
-      result.push(placement);
-      byKey.set(keySlug, placement);
-    }
-  }
-
-  return result;
+  return (community.placements ?? []).filter((p) => {
+    if (p.characterSlug && deadSlugs.has(p.characterSlug)) return false;
+    if (deadNames.has(p.name.toLowerCase())) return false;
+    return true;
+  });
 }
 
 /**
