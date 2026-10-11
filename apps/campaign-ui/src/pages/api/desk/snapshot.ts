@@ -18,6 +18,8 @@ export async function GET({ request }: { request: Request }) {
   const store = openSqliteStore(storePath);
   try {
     const snap = store.toPublicSnapshot();
+    const notebook = store.getCommunity().notebook;
+    if (typeof notebook === 'string') snap.notebook = notebook;
     const slug = resolveCampaignSlug() ?? snap.community.slug;
     return new Response(JSON.stringify(snap, null, 2) + '\n', {
       headers: {

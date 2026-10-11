@@ -4,6 +4,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { extname, join } from 'node:path';
 import { openSqliteStore } from '@kodranni/store';
 import { resolveAvatarsDir, resolveStorePath } from '../../../lib/campaign-paths';
+import { deskToolsOn } from '../../../lib/loopback';
 import { resolveSheetEdit } from '../../../lib/sheet-auth';
 
 const ALLOWED = new Set(['.jpg', '.jpeg', '.png', '.webp', '.gif']);
@@ -83,7 +84,7 @@ export async function POST({
   }
 
   const auth = resolveSheetEdit(request, new URL(request.url), slug);
-  if (!auth.canEdit) {
+  if (!deskToolsOn(request) && !auth.canEdit) {
     return new Response(
       JSON.stringify({
         error: auth.reason ?? 'edit token required',

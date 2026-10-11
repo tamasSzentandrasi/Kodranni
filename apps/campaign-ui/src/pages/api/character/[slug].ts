@@ -2,6 +2,7 @@ export const prerender = false;
 
 import {
   confirmReturnToTable,
+  deskEditCharacter,
   refundFoundation,
   refundSkill,
   spendFoundation,
@@ -13,6 +14,7 @@ import {
 } from '@kodranni/app';
 import { openSqliteStore } from '@kodranni/store';
 import { resolveStorePath } from '../../../lib/campaign-paths';
+import { deskToolsOn } from '../../../lib/loopback';
 import { resolveSheetEdit } from '../../../lib/sheet-auth';
 
 type ActionBody =
@@ -55,6 +57,7 @@ type ActionBody =
         skills?: unknown[];
         name?: string;
       };
+      pivotalFortune?: { key: string; level: number };
     };
 
 function json(data: unknown, status = 200) {
@@ -119,7 +122,8 @@ export async function POST({
 
   const url = new URL(request.url);
   const auth = resolveSheetEdit(request, url, slug);
-  if (!auth.canEdit) {
+  const desk = deskToolsOn(request);
+  if (!desk && !auth.canEdit) {
     return json(
       {
         error: auth.reason ?? 'edit token required',
@@ -140,6 +144,7 @@ export async function POST({
   try {
     switch (body.action) {
       case 'update-concept': {
+        if (!auth.canEdit) return json({ error: 'edit token required' }, 401);
         const ch = updateDraftConcept(store, {
           characterSlug: slug,
           name: body.name,
@@ -156,6 +161,7 @@ export async function POST({
         });
       }
       case 'spend-foundation': {
+        if (!auth.canEdit) return json({ error: 'edit token required' }, 401);
         const ch = spendFoundation(store, {
           characterSlug: slug,
           foundation: body.foundation,
@@ -168,6 +174,7 @@ export async function POST({
         });
       }
       case 'spend-skill': {
+        if (!auth.canEdit) return json({ error: 'edit token required' }, 401);
         const ch = spendSkill(store, {
           characterSlug: slug,
           skill: body.skill,
@@ -179,6 +186,7 @@ export async function POST({
         });
       }
       case 'refund-foundation': {
+        if (!auth.canEdit) return json({ error: 'edit token required' }, 401);
         const ch = refundFoundation(store, {
           characterSlug: slug,
           foundation: body.foundation,
@@ -191,6 +199,7 @@ export async function POST({
         });
       }
       case 'refund-skill': {
+        if (!auth.canEdit) return json({ error: 'edit token required' }, 401);
         const ch = refundSkill(store, {
           characterSlug: slug,
           skill: body.skill,
@@ -202,6 +211,7 @@ export async function POST({
         });
       }
       case 'spend-wanting': {
+        if (!auth.canEdit) return json({ error: 'edit token required' }, 401);
         const ch = spendWordWanting(store, {
           characterSlug: slug,
           menu: body.menu,
@@ -223,6 +233,7 @@ export async function POST({
         });
       }
       case 'confirm': {
+        if (!auth.canEdit) return json({ error: 'edit token required' }, 401);
         const r = confirmReturnToTable(store, { characterSlug: slug });
         return json({
           ok: true,
@@ -231,11 +242,21 @@ export async function POST({
         });
       }
       case 'st-edit': {
-        const ch = stEditCharacter(store, {
-          characterSlug: slug,
-          patch: body.patch as Parameters<typeof stEditCharacter>[1]['patch'],
-          actor: auth.claims?.accountId,
-        });
+        const patch = body.patch as Parameters<typeof stEditCharacter>[1]['patch'];
+        const ch = desk
+          ? deskEditCharacter(
+              store,
+              slug,
+              patch,
+              body.pivotalFortune?.key
+                ? { key: body.pivotalFortune.key, level: Number(body.pivotalFortune.level) }
+                : undefined,
+            )
+          : stEditCharacter(store, {
+              characterSlug: slug,
+              patch,
+              actor: auth.claims?.accountId,
+            });
         return json({
           ok: true,
           traits: ch.traits,

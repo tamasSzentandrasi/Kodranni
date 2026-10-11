@@ -38,9 +38,10 @@ export function cookieValue(header: string | null, name: string): string | undef
   return undefined;
 }
 
-/** Loopback, and this browser chose the desk. A projected window leaves the cookie off. */
+/** Localhost is the Storyteller desk. A tunnel and an archive stay the public hall. */
 export function deskToolsOn(request: Request): boolean {
-  return isLocalDeskRequest(request) && cookieValue(request.headers.get('cookie'), DESK_COOKIE) === '1';
+  if (request.headers.get('x-kodranni-archive') === '1') return false;
+  return isLocalDeskRequest(request);
 }
 
 export function deskCookieHeader(on: boolean): string {
@@ -50,13 +51,7 @@ export function deskCookieHeader(on: boolean): string {
 
 /** JSON/HTML refusal for a desk write. Null means the call may proceed. */
 export function rejectUnlessDesk(request: Request): Response | null {
-  if (!isLocalDeskRequest(request)) return new Response('Not found', { status: 404 });
-  if (!deskToolsOn(request)) {
-    return new Response(JSON.stringify({ error: 'Open the desk on this machine' }), {
-      status: 401,
-      headers: { 'content-type': 'application/json', 'cache-control': 'no-store' },
-    });
-  }
+  if (!deskToolsOn(request)) return new Response('Not found', { status: 404 });
   return null;
 }
 

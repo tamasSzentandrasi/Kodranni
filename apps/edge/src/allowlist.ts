@@ -20,6 +20,7 @@ export function livePathAllowed(method: string, pathname: string): boolean {
 
   if (p === '/api/snapshot' || p.startsWith('/api/snapshot/')) return m === 'GET' || m === 'HEAD';
   if (p.startsWith('/api/avatar/')) return m === 'GET' || m === 'HEAD';
+  if (p === '/api/fortune-icon') return m === 'GET' || m === 'HEAD';
   if (p.startsWith('/api/character/')) return m === 'GET' || m === 'HEAD' || m === 'POST';
 
   if (m !== 'GET' && m !== 'HEAD' && m !== 'POST') return false;

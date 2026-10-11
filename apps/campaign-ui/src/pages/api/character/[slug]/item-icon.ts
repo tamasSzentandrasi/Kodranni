@@ -1,9 +1,10 @@
 export const prerender = false;
 
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
-import { extname, join } from 'node:path';
+import { existsSync, mkdirSync, readFileSync, unlinkSync, writeFileSync } from 'node:fs';
+import { basename, extname, join } from 'node:path';
 import { openSqliteStore } from '@kodranni/store';
 import { resolveItemsDir, resolveStorePath } from '../../../../lib/campaign-paths';
+import { deskToolsOn } from '../../../../lib/loopback';
 import { resolveSheetEdit } from '../../../../lib/sheet-auth';
 
 const ALLOWED = new Set(['.jpg', '.jpeg', '.png', '.webp']);
@@ -45,7 +46,7 @@ export async function GET({
     status: 200,
     headers: {
       'Content-Type': contentType(ext),
-      'Cache-Control': 'public, max-age=60',
+      'Cache-Control': 'no-store',
     },
   });
 }
@@ -68,7 +69,7 @@ export async function POST({
   if (!storePath || !itemsDir) return json({ error: 'No live store configured' }, 503);
 
   const auth = resolveSheetEdit(request, new URL(request.url), slug);
-  if (!auth.canEdit) {
+  if (!deskToolsOn(request) && !auth.canEdit) {
     return json({ error: auth.reason ?? 'edit token required' }, 401);
   }
 
@@ -89,8 +90,9 @@ export async function POST({
   if (buf.byteLength > MAX_BYTES) return json({ error: 'Max 256KB' }, 400);
 
   mkdirSync(itemsDir, { recursive: true });
-  const basename = `${slug}-${index}${ext}`;
-  writeFileSync(join(itemsDir, basename), buf);
+  const extNorm = ext === '.jpeg' ? '.jpg' : ext;
+  const fileName = `${slug}-${index}-${Date.now().toString(36)}${Math.floor(Math.random() * 36).toString(36)}${extNorm}`;
+  writeFileSync(join(itemsDir, fileName), buf);
 
   const store = openSqliteStore(storePath);
   try {
@@ -98,16 +100,21 @@ export async function POST({
     if (!ch) return json({ error: 'Character not found' }, 404);
     const items = [...(ch.inventory.items ?? [])];
     if (!items[index]) return json({ error: 'No item at that index' }, 400);
-    items[index] = { ...items[index], icon: basename };
+    const previous = items[index].icon;
+    items[index] = { ...items[index], icon: fileName };
     ch.inventory.items = items;
     store.putCharacter(ch);
+    if (previous && previous !== fileName && previous === basename(previous) && !previous.includes('..')) {
+      const old = join(itemsDir, previous);
+      if (existsSync(old)) unlinkSync(old);
+    }
   } finally {
     store.close();
   }
 
   return json({
     ok: true,
-    icon: basename,
-    url: `/api/character/${encodeURIComponent(slug)}/item-icon?file=${encodeURIComponent(basename)}`,
+    icon: fileName,
+    url: `/api/character/${encodeURIComponent(slug)}/item-icon?file=${encodeURIComponent(fileName)}`,
   });
 }

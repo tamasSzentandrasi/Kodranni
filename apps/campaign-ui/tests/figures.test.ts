@@ -57,11 +57,11 @@ describe('POST /api/community/figures', () => {
     expect(status).toBe(403);
   });
 
-  it('rejects a missing desk cookie', async () => {
+  it('adds from loopback without a cookie', async () => {
     liveStore();
     const { status, data } = await post({ name: 'Hilda Gate' });
-    expect(status).toBe(401);
-    expect(String(data.error)).toMatch(/desk/i);
+    expect(status).toBe(200);
+    expect(data.ok).toBe(true);
   });
 
   it('404s a tunneled request even with the desk cookie', async () => {
@@ -83,7 +83,7 @@ describe('POST /api/community/figures', () => {
     expect(res.status).toBe(404);
   });
 
-  it('adds a hall NPC that automation places Outcast', async () => {
+  it('adds a hall NPC with no ladder placement', async () => {
     const path = liveStore();
     const { status, data } = await deskPost({ name: 'Hilda Gate' });
     expect(status).toBe(200);
@@ -96,8 +96,7 @@ describe('POST /api/community/figures', () => {
     const placed = completeMemberPlacements(community, store.listCharacters()).filter(
       (p) => p.characterSlug === ch?.slug,
     );
-    expect(placed.every((p) => p.tier === 'Outcast')).toBe(true);
-    expect(placed).toHaveLength(community.hierarchyAxes.length);
+    expect(placed).toHaveLength(0);
     store.close();
   });
 

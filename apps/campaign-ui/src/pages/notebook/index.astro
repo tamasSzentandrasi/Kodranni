@@ -1,0 +1,46 @@
+---
+export const prerender = false;
+
+import { openSqliteStore } from '@kodranni/store';
+import CampaignLayout from '../../layouts/CampaignLayout.astro';
+import { loadCommunity } from '../../data/load';
+import { resolveStorePath } from '../../lib/campaign-paths';
+import { deskToolsOn } from '../../lib/loopback';
+
+if (!deskToolsOn(Astro.request)) {
+  return new Response('Not found', { status: 404, statusText: 'Not Found' });
+}
+
+const c = loadCommunity();
+let text = '';
+const storePath = resolveStorePath();
+if (storePath) {
+  const store = openSqliteStore(storePath);
+  try {
+    text = store.getCommunity().notebook ?? '';
+  } finally {
+    store.close();
+  }
+}
+---
+
+<CampaignLayout
+  title="Notebook"
+  communityName={c.name}
+  generatedAt={c.generatedAt}
+  primary="overview"
+  source={c.source}
+>
+  <section class="kod-plate">
+    <h2>Notebook</h2>
+    <p class="app__meta">Private to this desk. A snapshot keeps it. The public hall does not show it.</p>
+    <textarea class="kod-ink" data-desk-notebook rows="16" aria-label="Notebook">{text}</textarea>
+    <p class="desk-snap">
+      <a class="kod-btn" href="/api/desk/snapshot">Download snapshot</a>
+      <button type="button" class="kod-btn" data-desk-restore>Restore</button>
+    </p>
+    <form class="desk-restore" method="post" action="/api/desk/restore" enctype="multipart/form-data">
+      <input type="file" name="snapshot" data-desk-restore-file accept="application/json,.json" hidden />
+    </form>
+  </section>
+</CampaignLayout>

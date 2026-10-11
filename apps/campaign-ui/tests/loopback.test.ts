@@ -30,18 +30,26 @@ describe('local desk', () => {
     expect(isLocalDeskRequest(req)).toBe(false);
   });
 
-  it('turns tools on only for the desk cookie on loopback', () => {
-    const off = new Request('http://127.0.0.1:8742/community/', {
+  it('turns the desk on for every loopback request', () => {
+    const local = new Request('http://127.0.0.1:8742/community/', {
       headers: { host: '127.0.0.1:8742' },
     });
-    expect(deskToolsOn(off)).toBe(false);
-    const on = new Request('http://127.0.0.1:8742/community/', {
+    expect(deskToolsOn(local)).toBe(true);
+    const cookie = new Request('http://127.0.0.1:8742/community/', {
       headers: { host: '127.0.0.1:8742', cookie: 'kod_desk=1' },
     });
-    expect(deskToolsOn(on)).toBe(true);
+    expect(deskToolsOn(cookie)).toBe(true);
     const tunnel = new Request('http://127.0.0.1:8742/community/', {
       headers: { host: '127.0.0.1:8742', cookie: 'kod_desk=1', 'cf-ray': 'abc' },
     });
     expect(deskToolsOn(tunnel)).toBe(false);
+    const archive = new Request('http://127.0.0.1:8742/community/', {
+      headers: { host: '127.0.0.1:8742', 'x-kodranni-archive': '1' },
+    });
+    expect(deskToolsOn(archive)).toBe(false);
+    const live = new Request('https://kodranni.com/community/', {
+      headers: { host: 'kodranni.com' },
+    });
+    expect(deskToolsOn(live)).toBe(false);
   });
 });

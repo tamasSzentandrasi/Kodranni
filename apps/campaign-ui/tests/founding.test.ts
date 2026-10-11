@@ -170,13 +170,13 @@ describe('PUT /api/community/fortunes/founding', () => {
     expect(data.error).toBe('Invalid origin');
   });
 
-  it('401s without the desk cookie', async () => {
+  it('founds from loopback without a cookie', async () => {
     liveStore();
     const { status, data } = await put(
       foundingRequest({ origin: 'http://localhost:8742', desk: false }),
     );
-    expect(status).toBe(401);
-    expect(String(data.error)).toMatch(/desk/i);
+    expect(status).toBe(200);
+    expect(data.ok).toBe(true);
   });
 
   it('404s a tunneled request even when Origin matches and the desk cookie is set', async () => {

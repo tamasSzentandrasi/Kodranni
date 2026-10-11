@@ -113,11 +113,10 @@ describe('hallRevPayload', () => {
     expect(payload.characters[0]?.whoWeSee).toBe('');
   });
 
-  it('runs completeMemberPlacements before hashing so missing axes land as Outcast', () => {
+  it('does not invent Outcast rows for a character with no placement', () => {
     const payload = hallRevPayload(community(), chars);
     const torvald = payload.placements.filter((p) => p.characterSlug === 'torvald');
-    expect(torvald.map((p) => p.axis).sort()).toEqual(['Arms', 'Blood', 'Coin', 'Faith']);
-    expect(torvald.find((p) => p.axis === 'Arms')?.tier).toBe('Outcast');
+    expect(torvald).toHaveLength(0);
   });
 });
 

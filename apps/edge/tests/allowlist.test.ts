@@ -7,6 +7,7 @@ describe('livePathAllowed', () => {
     expect(livePathAllowed('GET', '/character-map/')).toBe(true);
     expect(livePathAllowed('GET', '/characters/torvald/')).toBe(true);
     expect(livePathAllowed('GET', '/api/snapshot')).toBe(true);
+    expect(livePathAllowed('GET', '/api/fortune-icon')).toBe(true);
     expect(livePathAllowed('GET', '/api/community/rev')).toBe(true);
     expect(livePathAllowed('POST', '/api/character/torvald')).toBe(true);
     expect(livePathAllowed('GET', '/hall-client.js')).toBe(true);
@@ -25,6 +26,8 @@ describe('livePathAllowed', () => {
     expect(livePathAllowed('GET', '/operator/')).toBe(false);
     expect(livePathAllowed('GET', '/emissary')).toBe(false);
     expect(livePathAllowed('GET', '/api/desk/snapshot')).toBe(false);
+    expect(livePathAllowed('POST', '/api/fortune-icon')).toBe(false);
+    expect(livePathAllowed('GET', '/notebook/')).toBe(false);
     expect(livePathAllowed('POST', '/api/desk/session')).toBe(false);
     expect(livePathAllowed('POST', '/api/desk/restore')).toBe(false);
     expect(livePathAllowed('POST', '/internal/discord')).toBe(false);
