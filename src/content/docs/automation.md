@@ -35,7 +35,7 @@ Kept off the standing hall, because they belong to the session:
 
 - **Tide** — one open bar. When it closes, the card remains as history. It is not a Fortune.
 - **Scene Omen faces** — written for this scene. Faces **7** and **13** are always in force. Any other face is a line the Storyteller writes on the desk. The channel shows the list and what each face does.
-- **Restore** — after a rest has been played, the Storyteller records food, water, and Exertion on the desk.
+- **Restore** — after a rest has been played, the Storyteller records food, water, and Exertion on the desk. Player characters are listed. A group rests apart. Food days and water days step separately.
 
 ----------
 
@@ -60,7 +60,7 @@ Players keep one address for the hall. While the session is up, that address is 
 | `/tide` | Storyteller | Opens the Tide card. |
 | `/review` | Storyteller | Repeats the notice that a character is waiting on the desk. |
 
-A reply to a roll is an opposed roll. A reply to the Tide card, or to a roll already tied to it, steps the Tide. The result is a channel message. Pairs of Foundation and Skill need not match.
+On Discord, Oppose on the result card opens the Ready card for that roll. On Fluxer, a reply to a roll is an opposed roll. A reply to the Tide card, or to a roll already tied to it, steps the Tide. The result is a channel message. Pairs of Foundation and Skill need not match.
 
 ----------
 
@@ -88,7 +88,7 @@ A reply to a roll is an opposed roll. A reply to the Tide card, or to a roll alr
 
 **Confirm.** Sending a character in posts a notice in chat and places that version on the desk. The Storyteller opens it, edits it as they would any other person, then approves it into play or sends it back with those edits kept. `/review` only repeats the notice.
 
-**Restore.** On the desk, the Storyteller chooses who rested. For each person: spend a food day or leave it, spend a water day or leave it, and type how many Exertion points return. The suggestions under [Replenishment](/exertion/#replenishment) are counsel for that number. Harm is a separate edit on the person. A player who was included can receive a private notice.
+**Restore.** On the desk, player characters are always listed. The Storyteller gathers people into groups when a party rests apart, and may add an NPC to a group. Food days and water days are stepped separately. Short rest and long rest apply the [replenishment](/exertion/#replenishment) counsel: a short rest is +1, a long rest is +2, ample food is +1 more, and a rest with no food or water is −1. Harm is a separate edit on the person. A player who was included can receive a private notice.
 
 **The hall and the person.** Fortunes are the five buttons, from Crisis through Abundance. A move on the diagram is spoken, then the Storyteller makes it on the desk. Factions live inside their categories. Echoes, inventory, Traits, Practice, and armour are edited on the person. A gift of food or water is an edit on the two sheets. The character map is downloaded, edited outside the hall, and uploaded by the Storyteller. Practice degrade, when a stretch of time demands it, is proposed and confirmed on that person.
 

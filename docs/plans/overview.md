@@ -1,7 +1,7 @@
 # Kodranni surfaces
 
 **Date:** 2026-09-29  
-**Status:** Decided. The desk, the new commands, and the new public paths are not the code you run today.  
+**Status:** Decided. The new commands and the public hostnames are not the code you run today. The desk is the hall on loopback, and Session is its night tab.  
 **Detail:** [decisions.md](./decisions.md) · **Built vs decided:** [status.md](./status.md) · **Hosting lock:** [hosting.md](./hosting.md)
 
 The Guidebook is the rules. This file is who touches which surface. The Automation chapter stays as it is until this table is accepted in so many words.
@@ -19,7 +19,7 @@ Hungarian word lock: [hungarian-lexicon.md](./hungarian-lexicon.md). Character-m
 | **Discord** | Hands at the table: dice, Words, the Tide card, the scene board the players read. |
 | **Fluxer** | The same command contract, later. The adapter is unwired. |
 
-One process holds SQLite, the campaign UI, and the Discord handler. The desk is those pages with tools, on loopback. It is not a second app. Emissary’s human face is the desk status strip.
+One process holds SQLite, the campaign UI, and the Discord handler. The desk is those pages with tools, on loopback. It is not a second app. The Session tab is where the Storyteller opens the night and where players read the scene and the Tide.
 
 ---
 
@@ -47,15 +47,15 @@ One process holds SQLite, the campaign UI, and the Discord handler. The desk is 
 | `/npc-roll` for someone with no sheet | Chat. Storyteller. A label, foundation dice, skill dice, a tier. |
 | `/intent` | Chat. Storyteller posts an agreed pool for a named player. Kept. |
 | Opposed roll, Tide-linked roll | A reply to the channel result, or to the Tide card. The result is a channel message. |
-| Open, show, step, and close a Tide | One channel card. Selectors, side dyes, a rendered image of the Guidebook bar, replaced on every linked roll. Close is a Storyteller button on that card. |
-| Scene Omen faces | Edited, added, and removed on the desk. The channel board is rewritten on save. Players read faces and effects there. |
+| Open a Tide | Session tab, and later Discord `/tide`, writing one record. The channel card shows, steps, and closes it. |
+| Scene Omen faces | Edited on the Session tab. Players read the faces there. The channel board is rewritten on save once that card exists. |
 | `/create`, `/claim`, Birth Omen, Guiding Hand, `/award-word` | Chat. Private dice stay ephemeral to that player and the Storyteller. |
 | Mark the person a claim was about | Desk fields on that person. |
 | Prep spends and The Wanting | The player’s sheet, while creation is unlocked. |
-| Confirm | A chat notification, and a row on the desk stack. |
-| Approve or Reject | Desk, after the Storyteller edits the submitted person. |
+| Confirm | A chat notification, and a row on the Session inbox. |
+| Approve or Send back | Session tab, after the Storyteller edits the submitted person. |
 | `/review` | Reposts the notification. |
-| Restore | Desk table. Select people. Each row spends food or not, spends water or not, and restores a typed number of Exertion points or not. Chat only notifies the targeted players, ephemerally, when any were targeted. |
+| Restore | Session tab. Player characters are listed. Groups rest apart, and an NPC can be added to a group. Food days and water days step separately. Short rest and long rest apply the replenishment counsel from the ample food and water marks. |
 | Harm outside a roll, Dying, stabilising, Traits, inventory days moved between people | The person, on the desk. |
 | Harm from a roll just shown | That result card. |
 | Diagram | Desk. Unassigned pool, drag onto ladders, porch, crown, Done. A move is spoken, then made here. |
@@ -63,14 +63,14 @@ One process holds SQLite, the campaign UI, and the Discord handler. The desk is 
 | Factions and tags | Desk. Factions live inside categories, with a colour and an optional icon. |
 | Character map | Download the canvas (public). Edit in Obsidian. Upload only on the desk. |
 | Echoes, Practice, armour | Desk, and the owner’s sheet while creation is unlocked. |
-| Bind Discord and Fluxer | Desk. The book states both. The adapter is built alongside the Discord commands. |
+| Bind Discord and Fluxer | Session tab, inside Table chat. Discord’s guild, play channel, and Storyteller role save there. Bound characters sit on a hover. Fluxer is omitted until the gateway can list a server. |
 | Undo the last roll | One Storyteller control on that result card. |
 
 ---
 
 ## Already built, still behind this table
 
-Aspalath’s hall, hierarchy, character map, and sheets are the visual reference. Creation on the sheet is the older dock. Discord still registers `/focus`, `/st-roll`, `/reclaim`, `/map`, and `/live`. Discord bind is a plate on the hall. The public address is still `kodranni.com/community/?campaign=`. Fluxer throws. The host walkthrough has never been signed.
+Aspalath’s hall, hierarchy, character map, and sheets are the visual reference. Creation on the sheet is the older dock. The source command list uses `/select` and `/npc-roll`; `/focus`, `/st-roll`, `/reclaim`, `/map`, and `/live` are out of that list. The Discord application still has whatever was last registered. Discord bind is on the Session tab. The public address is still `kodranni.com/community/?campaign=`. Fluxer throws. The host walkthrough has never been signed.
 
 The Automation chapter now follows this table, in English and Hungarian. The gap between the table and the code is listed in [status.md](./status.md). The desk shell is the hall on loopback. Later steps stay unbuilt until asked.
 

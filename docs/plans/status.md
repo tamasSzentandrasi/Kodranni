@@ -3,7 +3,7 @@
 **Date:** 2026-09-29  
 **Decisions:** [overview.md](./overview.md) · [decisions.md](./decisions.md) · [hosting.md](./hosting.md)
 
-This file says what the tree does today. The hall desk (loopback cookie, status strip, bind, founding, snapshot) is this build. `/select`, `/npc-roll`, Restore, the scene editor, the Tide card, and `https://<slug>.kodranni.com/` are decisions. They are not this build.
+This file says what the tree does today. The hall on loopback is the Storyteller desk, and the Session tab holds that night’s scene, the Tide reading, the approval inbox, Restore, and Discord bind. The source command list uses `/select` and `/npc-roll`. The channel Tide card and `https://<slug>.kodranni.com/` are not this build. The Discord application still has whatever was last registered.
 
 ---
 
@@ -33,28 +33,16 @@ The public path in the running product is still `kodranni.com/community/?campaig
 
 ## Discord
 
-Registered today (`adapters/discord/src/commands.ts`):
+The source list in `adapters/discord/src/commands.ts` is `/roll`, `/intent`, `/create`, `/claim`, `/select`, `/birth-omen`, `/guiding-hand`, `/award-word`, `/review`, and `/npc-roll`. `/focus`, `/st-roll`, `/reclaim`, `/map`, and `/live` are not in that list. Registering them with Discord is a separate operator step; this tree does not perform it.
 
-| Command | Today | This lock |
-|---------|--------|-----------|
-| `/create`, `/claim` | Present | Stay |
-| `/birth-omen`, `/guiding-hand`, `/award-word` | Present | Stay |
-| `/roll`, `/intent` | Present | Stay. Storyteller `/roll` gains an optional sheeted-NPC slug. |
-| `/focus` | Sets which of a member’s characters `/roll` assumes | Renamed `/select`. Same job. |
-| `/review` | Reposts the pending review | Stays, as a notification only |
-| `/st-roll` | Label plus two integers | Becomes `/npc-roll` |
-| `/reclaim` | Fills Exertion from chat | Goes. Restore is the desk table. |
-| `/map` | Emergency account bind | Goes. Binding is a desk field. |
-| `/live` | Ephemeral live/archive URLs | Goes. One public name. |
+`/roll` still takes the player’s Skill, Foundation, die tier, Exertion, and a named Echo. The Ready card shows the computed pool, the tier word Ordinary, and a select of that sheet’s Echoes. Cast is what posts the result. A Storyteller may pass a sheeted person’s name. `/select` sets the focused character when the account has more than one living character, and says it is unused when there is one. `/npc-roll` is the sheetless roll and names the Omen. `/review` reposts that someone is waiting on the Session inbox, with no sheet link.
 
-Also still true of the bot, and called out because the book or the lock says otherwise:
+Oppose on the result card opens that player’s Ready card already tied to the roll. Undo is a Storyteller button on the same card. Harm is a select of tracks. Restore’s private notice is written for a bound account and stays quiet for everyone else.
 
-- Oppose on a result card is a stub that tells you to reply with `/roll`. The lock is that reply, with the result in channel. The link is not stored as a real oppose yet.
-- Echo on confirm is a boolean (“applies”), not a named Echo from the sheet.
-- Die-tier copy in the bot still says “Equal”. The Guidebook says Ordinary.
-- Harm buttons are on the result card, which the lock keeps. Multi-track harm from one card is still thin.
-- Avatar upload on the edit link was hardened and still wants a retest.
-- There is no Tide command, no scene board, and no rendered tide image.
+Still unbuilt:
+
+- `/tide`, the channel Tide picture, and the scene board.
+- Fluxer listing. The Session tab leaves Fluxer out until a server can be listed.
 - Group Echo stakeholders are not seeded from the hierarchy.
 
 The Guidebook already states Fluxer’s contract as Discord’s peer. The adapter (`adapters/fluxer/src/index.ts`) still throws `Fluxer adapter not connected — session runtime pending`. Credentials can sit in the environment. Making that adapter real — bind plate, command list, server, channel, and role — rides with the Discord command work.
@@ -70,12 +58,12 @@ The hosting shape in [hosting.md](./hosting.md) (one process, KV snapshot, Worke
 - The host walkthrough that used to sit with the old plan pile was never signed. “Verify-ready” was a label on a blank checklist. The host loop is unsigned. The desk shell is on the hall. A signed host script is still later work.
 - Named-tunnel mode is still in the CLI. When `tunnel_mode=named` is missing a token, name, or config, emissary points at [hosting.md](./hosting.md). That mode is interim. The locked product mints the tunnel on the Worker for the session. Park-process is not the archive.
 
-The desk strip on the hall is the readiness face. `kodranni emissary` stays the CLI check. `GET /emissary` is gone.
+The Session tab is where the night is opened and read. `kodranni emissary` stays the CLI check. `GET /emissary` is gone.
 
 ---
 
 ## Left in place on purpose
 
-- Diagram drag, sheet field editors, the creation stack, Restore, Tide, scene faces, command renames, Fluxer listing, and subdomains.
+- Diagram drag, sheet field editors, the creation stack, the channel Tide card, Fluxer listing, and subdomains.
 - [hungarian-lexicon.md](./hungarian-lexicon.md).
 - `apps/campaign-ui/docs/character-map.md`.

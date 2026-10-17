@@ -35,7 +35,7 @@ A csarnok állandó állapotán kívül marad, mert az ülésé:
 
 - **Sodrás** (Tide) — egy nyitott sáv. Ha lezárul, a kártya történetként megmarad. Nem sors.
 - **Jeleneti ómenlapok** (Scene Omen faces) — erre a jelenetre írva. A **7** és a **13** mindig érvényes. Minden más lapot a mesélő a pulton ír be. A csatorna mutatja a listát, és hogy mit tesz az egyes lap.
-- **Restore** — ha a pihenőt eljátszottátok, a mesélő a pulton jegyzi az ételt, a vizet és az erőfeszítést.
+- **Restore** — ha a pihenőt eljátszottátok, a mesélő a pulton jegyzi az ételt, a vizet és az erőfeszítést. A játékosok mindig szerepelnek. Egy csoport külön pihen. Az ételnap és a víznap külön léptethető.
 
 ----------
 
@@ -60,7 +60,7 @@ A játékosok egy címet tartanak a csarnokhoz. Amíg az ülés tart, ez a cím 
 | `/tide` | Mesélő | Megnyitja a sodrás kártyáját. |
 | `/review` | Mesélő | Megismétli a hírt, hogy egy karakter a pulton vár. |
 
-Válasz egy dobásra: ellendobás. Válasz a sodrás kártyájára, vagy egy már ahhoz kötött dobásra: a sodrás lép. Az eredmény csatornaüzenet. Az adottság és a jártasság párjának nem kell egyeznie.
+Discordon az eredménykártya Ellendobás gombja nyitja a kész kártyát arra a dobásra. Fluxeren a dobásra adott válasz az ellendobás. Válasz a sodrás kártyájára, vagy egy már ahhoz kötött dobásra: a sodrás lép. Az eredmény csatornaüzenet. Az adottság és a jártasság párjának nem kell egyeznie.
 
 ----------
 
@@ -88,7 +88,7 @@ Válasz egy dobásra: ellendobás. Válasz a sodrás kártyájára, vagy egy má
 
 **Megerősítés.** Ha egy karaktert beküldesz, a chat hírt kap, és az a változat a pultra kerül. A mesélő megnyitja, úgy szerkeszti, mint bármely más személyt, aztán játékba veszi, vagy a szerkesztéseivel együtt visszaküldi. A `/review` csak a hírt ismétli.
 
-**Restore.** A pulton a mesélő kiválasztja, ki pihent. Személyenként: költ egy ételnapot, vagy hagyja, költ egy víz-napot, vagy hagyja, és beírja, hány erőfeszítéspont tér vissza. Az [Erőfeszítés](/hu/exertion/#visszatöltés) javaslatai ehhez a számhoz adnak támpontot. A sérülés külön szerkesztés az adott személyen. Aki benne volt, kaphat magán hírt.
+**Restore.** A pulton a játékosok mindig szerepelnek. A mesélő csoportba rendezi, aki külön pihen, és NPC-t is tehet egy csoportba. Az ételnap és a víznap külön léptethető. A rövid és a hosszú pihenő az [Erőfeszítés](/hu/exertion/#visszatöltés) javaslatát írja be: rövid pihenő +1, hosszú pihenő +2, bőséges étel még +1, étel vagy víz nélkül −1. A sérülés külön szerkesztés az adott személyen. Aki benne volt, kaphat magán hírt.
 
 **A csarnok és a személy.** A sorsok az öt gomb, Válságtól Bőségesig. Az ábra mozgatását kimondjátok, aztán a mesélő a pulton megteszi. A frakciók a saját kategóriáikban élnek. Visszhang, felszerelés, vonás, gyakorlat és páncél a személyen szerkeszthető. Ajándékba adott étel vagy víz a két lap szerkesztése. A karaktertérképet a mesélő letölti, a csarnokon kívül szerkeszti, és feltölti. Ha egy időugrás a gyakorlat romlását kéri, a pult az adott személyen javaslatot ad, és a mesélő megerősíti.
 
