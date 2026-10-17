@@ -1,7 +1,14 @@
 import { describe, expect, it } from 'vitest';
 import { armourToRatio, harmFromOpposed, harmFromUnopposed } from '../src/harm.js';
 import { degradeCountFromOmen } from '../src/degrade.js';
-import { omenBandForFooting, tideScale, tideStartFromA, tideStepsFromMargin } from '../src/tide.js';
+import {
+  omenBandForFooting,
+  stepTidePosition,
+  tideScale,
+  tideStartFromA,
+  tideStepsFromMargin,
+  weightsForFooting,
+} from '../src/tide.js';
 import { echoCapacity, exertionMax, isDecadent, isOverCapacity } from '../src/echoes.js';
 import { countMarks } from '../src/marks.js';
 
@@ -49,6 +56,42 @@ describe('tide', () => {
       towardA: [1, 1],
       towardB: [18, 20],
     });
+  });
+
+  it('footing weights follow the pressured side', () => {
+    expect(weightsForFooting('equal')).toEqual({ weightA: 8, weightB: 8 });
+    expect(weightsForFooting('severeA')).toEqual({ weightA: 6, weightB: 12 });
+    expect(weightsForFooting('slightB')).toEqual({ weightA: 8, weightB: 6 });
+  });
+
+  it('margin and omen step independently, and an untied roll stays put', () => {
+    expect(
+      stepTidePosition({
+        position: 8,
+        length: 15,
+        marginSteps: 1,
+        winner: 'A',
+        omenStep: 'A',
+      }),
+    ).toBe(10);
+    expect(
+      stepTidePosition({
+        position: 8,
+        length: 15,
+        marginSteps: 4,
+        winner: null,
+        omenStep: null,
+      }),
+    ).toBe(8);
+    expect(
+      stepTidePosition({
+        position: 1,
+        length: 15,
+        marginSteps: 3,
+        winner: 'B',
+        omenStep: null,
+      }),
+    ).toBe(0);
   });
 
   it('small-skirmish floor: imbalance does not shrink below one face', () => {

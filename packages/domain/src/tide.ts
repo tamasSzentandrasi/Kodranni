@@ -13,6 +13,41 @@ export function tideStartFromA(weightA: number): number {
   return weightA;
 }
 
+/**
+ * Book presets. The suffix is the side under pressure: it keeps the wider
+ * bad Omen band and the lower weight. Severe is 6 vs 12; slight is 6 vs 8.
+ */
+export function weightsForFooting(footing: TideFooting): { weightA: number; weightB: number } {
+  switch (footing) {
+    case 'equal':
+      return { weightA: 8, weightB: 8 };
+    case 'slightA':
+      return { weightA: 6, weightB: 8 };
+    case 'slightB':
+      return { weightA: 8, weightB: 6 };
+    case 'severeA':
+      return { weightA: 6, weightB: 12 };
+    case 'severeB':
+      return { weightA: 12, weightB: 6 };
+  }
+}
+
+/** Position 0 is side A's collapse. A step toward A moves away from that end. */
+export function stepTidePosition(input: {
+  position: number;
+  length: number;
+  marginSteps: number;
+  winner: 'A' | 'B' | null;
+  omenStep: 'A' | 'B' | null;
+}): number {
+  let position = input.position;
+  if (input.winner === 'A') position += input.marginSteps;
+  if (input.winner === 'B') position -= input.marginSteps;
+  if (input.omenStep === 'A') position += 1;
+  if (input.omenStep === 'B') position -= 1;
+  return Math.max(0, Math.min(input.length, position));
+}
+
 export type TideSkirmishScale = 'small' | 'skirmish' | 'battle';
 
 export type TideFooting = 'equal' | 'slightA' | 'slightB' | 'severeA' | 'severeB';
