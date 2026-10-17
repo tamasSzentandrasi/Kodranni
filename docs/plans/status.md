@@ -3,7 +3,7 @@
 **Date:** 2026-10-17  
 **Decisions:** [overview.md](./overview.md) · [decisions.md](./decisions.md) · [hosting.md](./hosting.md)
 
-This file says what the tree does today. The hall on loopback is the Storyteller desk, and the Session tab holds that night’s scene, the Tide reading, the approval inbox, Restore, and Discord bind. The source command list uses `/select` and `/npc-roll`. The channel Tide card is in this build. `https://<slug>.kodranni.com/` is not. The edge workflow registers the Discord commands after the Worker deploys. A failed deploy skips that step.
+This file says what the tree does today. The hall on loopback is the Storyteller desk, and the Session tab holds that night’s scene, the Tide reading, the approval inbox, Restore, and Discord bind. The source command list uses `/select` and `/npc-roll`. The channel Tide card is in this build. `https://<slug>.kodranni.com/` is not. The edge workflow uploads the Worker, then registers Discord commands when the Actions token and app id are set. Those secrets are unset, so the step logs a skip and the live list stays the last guild registration.
 
 ---
 

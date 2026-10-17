@@ -97,6 +97,8 @@ The host never calls the Cloudflare API. It calls our Function: register (device
 
 Worker secrets, never on the host and never in campaign SQLite: Cloudflare API token; Discord application public key; Discord bot token for command registration and the REST the Function performs after defer. The bot token does not ship in the tarball.
 
+The Worker script stays on the Workers runtime. Hall render reads the Tide dyes from `@kodranni/store/table`. The store barrel pulls SQLite and `node:fs` into that script, and Cloudflare rejects the upload. `nodejs_compat` stays off.
+
 ### Discord
 
 One application. The Storyteller opens an invite, then picks guild, play channel, and Storyteller role on the desk. The interaction endpoint is the Function. Autocomplete proxies to the host only while origin is set, and aborts at about a second with empty choices. Commands return a deferred response immediately. If origin is null, the player gets an ephemeral “table is not live” and the archive URL.

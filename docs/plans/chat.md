@@ -117,4 +117,4 @@ Threads, forums, and a Discord Activity that iframes the hall are not this contr
 
 ## Still later
 
-The edge workflow registers the slash list after a successful Worker deploy. The gateway stays stopped. A Fluxer webhook username waits on an edge op. The public hostname is still `?campaign=`, not `<slug>.kodranni.com`. Group Echo stakeholders are not seeded from the hierarchy.
+The edge workflow uploads the Worker, then registers the slash list when the Actions token and app id are set. Those secrets are unset, so the step logs a skip and the live list stays the last guild registration. The gateway stays stopped. A Fluxer webhook username waits on an edge op. The public hostname is still `?campaign=`, not `<slug>.kodranni.com`. Group Echo stakeholders are not seeded from the hierarchy.

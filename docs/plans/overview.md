@@ -70,7 +70,7 @@ One process holds SQLite, the campaign UI, and the Discord handler. The desk is 
 
 ## Already built, still behind this table
 
-Aspalath’s hall, hierarchy, character map, and sheets are the visual reference. Creation on the sheet is the older dock. The source command list uses `/select` and `/npc-roll`; `/focus`, `/st-roll`, `/reclaim`, `/map`, and `/live` are out of that list. The Discord application still has whatever was last registered. Discord bind is on the Session tab. The public address is still `kodranni.com/community/?campaign=`. Fluxer throws. The host walkthrough has never been signed.
+Aspalath’s hall, hierarchy, character map, and sheets are the visual reference. Creation on the sheet is the older dock. The source command list uses `/select` and `/npc-roll`; `/focus`, `/st-roll`, `/reclaim`, `/map`, and `/live` are out of that list. The Discord application still has the last guild registration. Actions has no bot token, so the edge step skips. Discord bind is on the Session tab. The public address is still `kodranni.com/community/?campaign=`. Fluxer throws. The host walkthrough has never been signed.
 
 The Automation chapter now follows this table, in English and Hungarian. The gap between the table and the code is listed in [status.md](./status.md). The desk shell is the hall on loopback. Later steps stay unbuilt until asked.
 
