@@ -105,7 +105,7 @@ A Storyteller-owned bot token plus a local gateway remains a later hatch (`KODRA
 
 ### Desk on the public path
 
-Desk tools render for `isLocalDeskRequest` (loopback, and not tunnelled). A tunnel or archive stays the live hall. Desk POSTs are rejected otherwise. The Function does not forward desk routes. Player routes that already exist (hall, hierarchy, character map, sheets, the player’s own edit token) are what the proxy allowlist carries. `kod_edit` stays the player’s draft token. There is no `kod_setup`. CSRF Origin checks on local mutating routes stay.
+Desk tools render for `isLocalDeskRequest` (loopback, and not tunnelled). A tunnel or archive stays the live hall. Desk POSTs are rejected otherwise. The Function does not forward desk routes. Player routes that already exist (hall, hierarchy, character map, sheets, Session, the player’s own edit token) are what the proxy allowlist carries. Session is `GET /session/` and `GET /api/session`. Desk routes stay off the tunnel. `kod_edit` stays the player’s draft token. There is no `kod_setup`. CSRF Origin checks on local mutating routes stay.
 
 ### Linux host
 

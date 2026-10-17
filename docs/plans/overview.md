@@ -2,7 +2,7 @@
 
 **Date:** 2026-09-29  
 **Status:** Decided. The new commands and the public hostnames are not the code you run today. The desk is the hall on loopback, and Session is its night tab.  
-**Detail:** [decisions.md](./decisions.md) · **Built vs decided:** [status.md](./status.md) · **Hosting lock:** [hosting.md](./hosting.md)
+**Detail:** [decisions.md](./decisions.md) · **Chat cards:** [chat.md](./chat.md) · **Built vs decided:** [status.md](./status.md) · **Hosting lock:** [hosting.md](./hosting.md)
 
 The Guidebook is the rules. This file is who touches which surface. The Automation chapter stays as it is until this table is accepted in so many words.
 
@@ -16,8 +16,8 @@ Hungarian word lock: [hungarian-lexicon.md](./hungarian-lexicon.md). Character-m
 |---------|------|
 | **Guidebook** (`kodranni.com`) | Rules. One public book. |
 | **Campaign UI** | The hall, the hierarchy, the character map, and the sheets. Players see this on the campaign hostname. On the machine that holds the store, the same pages are the **Storyteller Desk**. |
-| **Discord** | Hands at the table: dice, Words, the Tide card, the scene board the players read. |
-| **Fluxer** | The same command contract, later. The adapter is unwired. |
+| **Discord** | Hands at the table: dice, Words, the Tide card, the scene board the players read. The roll card is [chat.md](./chat.md). |
+| **Fluxer** | The same card and the same choices. The adapter is unwired. Reactions stand in for buttons until Fluxer ships components. |
 
 One process holds SQLite, the campaign UI, and the Discord handler. The desk is those pages with tools, on loopback. It is not a second app. The Session tab is where the Storyteller opens the night and where players read the scene and the Tide.
 

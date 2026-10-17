@@ -113,7 +113,7 @@ A sheet is for player characters and for NPCs who will return. A guard who appea
 
 **`/intent` stays.** The Storyteller posts an agreed pool for a named player. It was not retired.
 
-There is no Roll button on a sheet. The channel is where the card has to appear.
+There is no Roll button on a sheet. The channel is where the card has to appear. The shared face of that card, the die colours, and the Foundation → Archetype → skill walk are [chat.md](./chat.md).
 
 ---
 
