@@ -1,0 +1,33 @@
+---
+import type { FixtureCharacter } from '../data/fixture';
+import BudgetDock from './BudgetDock.astro';
+import ConfirmDock from './ConfirmDock.astro';
+import WantingPanel from './WantingPanel.astro';
+
+interface Props {
+  character: FixtureCharacter;
+  live: boolean;
+  canEdit?: boolean;
+}
+
+const { character, live, canEdit = false } = Astro.props;
+---
+
+<BudgetDock character={character} live={live} canEdit={canEdit} />
+<WantingPanel character={character} live={live} canEdit={canEdit} />
+<ConfirmDock character={character} live={live} canEdit={canEdit} />
+{
+  canEdit && (
+    <aside class="wanting-tracker" id="wanting-tracker" hidden aria-live="polite">
+      <div class="wanting-tracker__head">
+        <div>
+          <p class="wanting-tracker__kicker">Staged</p>
+          <p class="wanting-tracker__title" data-wanting-tracker-title>Pick a Wanting line</p>
+        </div>
+        <span class="wanting-tracker__status" data-wanting-tracker-status>Waiting for menu</span>
+      </div>
+      <div class="wanting-tracker__rows" data-wanting-tracker-body></div>
+    </aside>
+  )
+}
+{canEdit && <script is:inline src="/creation-client.js?v=20261017e"></script>}

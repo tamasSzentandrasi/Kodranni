@@ -27,10 +27,9 @@ const canConfirm =
       {
         awaitingReview ? (
           <div class="draft-foot__body">
-            <p class="flag flag--ok">Returned to table · awaiting Storyteller review</p>
+            <p class="flag flag--ok">Submitted for approval</p>
             <p class="draft-hint">
-              The table bot posts an Approve / Changes / Deny card (or the ST runs{' '}
-              <code>/review</code>). This sheet stays unlocked until Approve.
+              The Storyteller approves this sheet or sends it back. It stays open until then.
             </p>
           </div>
         ) : canConfirm ? (
@@ -40,8 +39,8 @@ const canConfirm =
               <span class="kod-btn__title">Confirm draft</span>
             </button>
             <p class="draft-hint">
-              Mentions <strong>{ch.initiator?.displayName ?? 'you'}</strong> for Storyteller Approve
-              / Request changes / Deny.
+              Mentions <strong>{ch.initiator?.displayName ?? 'you'}</strong>. The Storyteller
+              Approves or sends it back.
             </p>
             <p class="draft-msg" data-msg="confirm" hidden></p>
           </div>

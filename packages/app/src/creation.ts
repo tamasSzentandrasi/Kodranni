@@ -11,6 +11,8 @@ import {
   type CharacterRecord,
   type CommunityStorePort,
   type CreationState,
+  type SeenClaim,
+  type WantingChoice,
   type EchoRecord,
   type InventoryItem,
   type MemberRecord,
@@ -208,6 +210,7 @@ export function startCreateFromBot(
 ): StartCreateFromBotResult {
   const name = (cmd.name?.trim() || 'Unnamed').slice(0, 80);
   const slug = uniqueSlug(store, slugify(name === 'Unnamed' ? `draft-${cmd.accountId.slice(-6)}` : name));
+  releaseOtherCharacters(store, cmd.platform, cmd.accountId, '');
   const initiator = {
     platform: cmd.platform,
     accountId: cmd.accountId,
@@ -296,6 +299,7 @@ export function startClaimFromBot(
   if (ch.player?.accountId && ch.player.accountId !== cmd.accountId) {
     throw new Error('character already claimed by another player');
   }
+  releaseOtherCharacters(store, cmd.platform, cmd.accountId, ch.slug);
   ch.initiator = {
     platform: cmd.platform,
     accountId: cmd.accountId,
@@ -356,6 +360,7 @@ export function confirmReturnToTable(
     throw new Error('start creation from the table bot first (no platform identity)');
   }
   ch.status = 'pending_review';
+  if (ch.creation) ch.creation.returned = false;
   store.putCharacter(ch);
   store.appendEvent({
     type: 'CharacterReturnedToTable',
@@ -393,10 +398,12 @@ export function stReviewCharacter(
 
   if (cmd.decision === 'approve') {
     if (!init?.accountId) throw new Error('cannot approve without initiator identity');
+    releaseOtherCharacters(store, init.platform, init.accountId, ch.slug);
     ch.status = 'active';
     const creation = ensureCreation(ch);
     creation.locked = true;
     creation.claimable = false;
+    creation.returned = false;
     ch.player = {
       platform: init.platform,
       accountId: init.accountId,
@@ -436,6 +443,9 @@ export function stReviewCharacter(
 
   if (cmd.decision === 'request_changes') {
     ch.status = 'draft';
+    const creation = ensureCreation(ch);
+    creation.locked = false;
+    creation.returned = true;
     store.putCharacter(ch);
     store.appendEvent({
       type: 'CharacterChangesRequested',
@@ -775,38 +785,190 @@ export function grantWord(
   return store.getCharacterBySlug(ch.slug)!;
 }
 
-export type WantingMenuId =
-  | 'plus_one_foundation'
-  | 'plus_two_foundation_split'
-  | 'plus_five_skill'
-  | 'positive_trait';
+export type WantingMenuId = WantingChoice;
 
-/**
- * Wanting menu (1 Word each). Caller supplies named Foundations/Skills/Trait
- * and pay path; ST approval of Negative Trait is external.
- */
-export function spendWordWanting(
+const WANTING_MENUS = new Set<WantingMenuId>([
+  'plus_one_foundation',
+  'plus_two_foundation_split',
+  'plus_five_skill',
+  'positive_trait',
+]);
+
+/** Same sentences as the sheet banner. The select does not spend. */
+export function wantingChoiceLine(menu: string): string {
+  switch (menu) {
+    case 'plus_one_foundation':
+      return '+1 to one named Foundation. The pay is 3 skill points, named on the sheet.';
+    case 'plus_two_foundation_split':
+      return '+2 Foundation points, split across two. The pay is 5 skill points, or one Negative Trait the Storyteller names.';
+    case 'plus_five_skill':
+      return '+5 skill points. The pay is −1 from one named Foundation.';
+    case 'positive_trait':
+      return 'One Positive named Trait. The pay is 3 skill points, named on the sheet.';
+    default:
+      return 'Name the pay on the sheet.';
+  }
+}
+
+function claimsOf(ch: CharacterRecord): SeenClaim[] {
+  return ch.creation?.seenClaims ?? [];
+}
+
+function claimSettled(claim: SeenClaim): boolean {
+  return Boolean(claim.accepted) || Boolean(claim.refusedByStoryteller && claim.refusedByTarget);
+}
+
+/** Spoken claim. Throws when this speaker already has an open or accepted claim on the person. */
+export function offerSeenClaim(
   store: CommunityStorePort,
   cmd: {
-    characterSlug: string;
-    menu: WantingMenuId;
-    /** For +1 Found / −1 Found pay / trait name */
-    foundation?: string;
-    /** Two different Foundations for +2 split */
-    foundations?: [string, string];
-    /** Skill points to remove (named skills, total ranks removed) */
-    removeSkills?: { skill: string; ranks: number }[];
-    /** Skills to raise with +5 package (total rank steps ≤ 5 after cost accounting — simplified: grant 5 skill pts) */
-    addSkillPoints?: number;
-    traitName?: string;
-    traitNote?: string;
-    /** Take Negative Trait instead of removing 5 skill pts (+2 Found path) */
-    negativeTrait?: { name: string; note?: string };
+    targetSlug: string;
+    speakerSlug: string;
+    speakerAccountId: string;
+    speakerName: string;
+    line: string;
     actor?: string;
   },
+): SeenClaim {
+  const target = store.getCharacterBySlug(cmd.targetSlug);
+  const speaker = store.getCharacterBySlug(cmd.speakerSlug);
+  if (!target || !speaker) throw new Error('unknown character');
+  if (target.slug === speaker.slug) throw new Error('a person does not claim themselves');
+  const line = cmd.line.trim().slice(0, 240);
+  if (!line) throw new Error('the claim needs a line');
+  const creation = ensureCreation(target);
+  const prior = claimsOf(target).filter(
+    (claim) => claim.speakerSlug === speaker.slug || claim.speakerAccountId === cmd.speakerAccountId,
+  );
+  if (prior.some((claim) => !claimSettled(claim) || claim.accepted)) {
+    throw new Error('already claimed this person');
+  }
+  const claim: SeenClaim = {
+    id: randomUUID().slice(0, 8),
+    speakerAccountId: cmd.speakerAccountId,
+    speakerSlug: speaker.slug,
+    speakerName: cmd.speakerName.trim().slice(0, 80) || speaker.name,
+    line,
+  };
+  creation.seenClaims = [...claimsOf(target), claim];
+  store.putCharacter(target);
+  store.appendEvent({
+    type: 'SeenClaimOffered',
+    actor: cmd.actor ?? cmd.speakerAccountId,
+    payload: { targetSlug: target.slug, claimId: claim.id, speakerSlug: speaker.slug },
+  });
+  return claim;
+}
+
+function findClaim(store: CommunityStorePort, targetSlug: string, claimId: string): {
+  target: CharacterRecord;
+  claim: SeenClaim;
+} {
+  const target = store.getCharacterBySlug(targetSlug);
+  if (!target) throw new Error('unknown character');
+  const claim = claimsOf(target).find((row) => row.id === claimId);
+  if (!claim) throw new Error('unknown claim');
+  return { target, claim };
+}
+
+/** A second is someone other than the speaker. */
+export function secondSeenClaim(
+  store: CommunityStorePort,
+  cmd: { targetSlug: string; claimId: string; accountId: string; actor?: string },
+): SeenClaim {
+  const { target, claim } = findClaim(store, cmd.targetSlug, cmd.claimId);
+  if (claim.accepted) throw new Error('that claim is already accepted');
+  if (claim.refusedByStoryteller && claim.refusedByTarget) throw new Error('that claim is refused');
+  if (cmd.accountId === claim.speakerAccountId) {
+    throw new Error('the speaker cannot second their own claim');
+  }
+  claim.secondAccountId = cmd.accountId;
+  store.putCharacter(target);
+  return claim;
+}
+
+/**
+ * Accepts a seconded claim and grants one Word on the speaker’s sheet.
+ * Does not choose the mark. Both refusals block it.
+ */
+export function acceptSeenClaim(
+  store: CommunityStorePort,
+  cmd: { targetSlug: string; claimId: string; actor?: string },
+): SeenClaim {
+  const { target, claim } = findClaim(store, cmd.targetSlug, cmd.claimId);
+  if (claim.accepted) throw new Error('that claim is already accepted');
+  if (claim.refusedByStoryteller && claim.refusedByTarget) throw new Error('that claim is refused');
+  if (!claim.secondAccountId) throw new Error('name a second before the claim is accepted');
+  claim.accepted = true;
+  store.putCharacter(target);
+  grantWord(store, {
+    characterSlug: claim.speakerSlug,
+    reason: 'accepted claim',
+    actor: cmd.actor,
+  });
+  return claim;
+}
+
+/** Each side refuses on its own. Both together close the claim. */
+export function refuseSeenClaim(
+  store: CommunityStorePort,
+  cmd: {
+    targetSlug: string;
+    claimId: string;
+    by: 'storyteller' | 'target';
+    actor?: string;
+  },
+): SeenClaim {
+  const { target, claim } = findClaim(store, cmd.targetSlug, cmd.claimId);
+  if (claim.accepted) throw new Error('that claim is already accepted');
+  if (cmd.by === 'storyteller') claim.refusedByStoryteller = true;
+  else claim.refusedByTarget = true;
+  store.putCharacter(target);
+  return claim;
+}
+
+/** Records the purchase. Does not spend the Word or change the sheet’s numbers. */
+export function stageWanting(
+  store: CommunityStorePort,
+  cmd: { characterSlug: string; menu: string; actor?: string },
 ): CharacterRecord {
+  if (!WANTING_MENUS.has(cmd.menu as WantingMenuId)) throw new Error('unknown Wanting');
   const ch = store.getCharacterBySlug(cmd.characterSlug);
   if (!ch) throw new Error(`unknown character: ${cmd.characterSlug}`);
+  if (isCreationLocked(ch)) throw new Error('character is locked; unlock for Wanting');
+  const creation = ensureCreation(ch);
+  if (creation.words < 1) throw new Error('no Words remaining');
+  creation.pendingWanting = cmd.menu as WantingMenuId;
+  store.putCharacter(ch);
+  store.appendEvent({
+    type: 'WantingStaged',
+    actor: cmd.actor,
+    payload: { characterSlug: ch.slug, menu: cmd.menu },
+  });
+  return store.getCharacterBySlug(ch.slug)!;
+}
+
+/** One Word. Pay paths are exclusive: skill ranks or a Negative Trait. */
+export interface WantingSpend {
+  menu: WantingMenuId;
+  /** For +1 Found / −1 Found pay / trait name */
+  foundation?: string;
+  /** Two different Foundations for +2 split */
+  foundations?: [string, string];
+  /** Skill points to remove (named skills, total ranks removed) */
+  removeSkills?: { skill: string; ranks: number }[];
+  /** Skills to raise with +5 package (total rank steps ≤ 5 after cost accounting — simplified: grant 5 skill pts) */
+  addSkillPoints?: number;
+  traitName?: string;
+  traitNote?: string;
+  /** Take Negative Trait instead of removing 5 skill pts (+2 Found path) */
+  negativeTrait?: { name: string; note?: string };
+}
+
+/**
+ * Mutates `ch` only. Foundation caps are checked before any skill or trait change.
+ */
+function applyWanting(ch: CharacterRecord, cmd: WantingSpend): void {
   if (isCreationLocked(ch)) throw new Error('character is locked; unlock for Wanting');
   const creation = ensureCreation(ch);
   if (creation.words < 1) throw new Error('no Words remaining');
@@ -831,33 +993,42 @@ export function spendWordWanting(
     }
   };
 
+  const requireRoom = (name: string) => {
+    const from = ch.foundations[name] ?? 0;
+    if (from >= 3) throw new Error(`${name} already at maximum`);
+    return from;
+  };
+
   switch (cmd.menu) {
     case 'plus_one_foundation': {
       if (!cmd.foundation) throw new Error('foundation required');
+      const from = requireRoom(cmd.foundation);
       removeSkillRanks(3);
-      const from = ch.foundations[cmd.foundation] ?? 0;
-      if (from >= 3) throw new Error(`${cmd.foundation} already at maximum`);
       ch.foundations[cmd.foundation] = from + 1;
       break;
     }
     case 'plus_two_foundation_split': {
       const pair = cmd.foundations;
-      if (!pair || pair[0] === pair[1]) {
+      if (!pair || pair[0] === pair[1] || !pair[0] || !pair[1]) {
         throw new Error('two different foundations required');
       }
-      if (cmd.negativeTrait) {
+      const traitName = cmd.negativeTrait?.name?.trim() ?? '';
+      const skillPay = (cmd.removeSkills ?? []).some((r) => r.ranks > 0);
+      if (traitName && skillPay) {
+        throw new Error('pay with 5 skill ranks or a Negative Trait, not both');
+      }
+      const from0 = requireRoom(pair[0]);
+      const from1 = requireRoom(pair[1]);
+      if (traitName) {
         ch.traits.push({
-          name: cmd.negativeTrait.name,
-          note: cmd.negativeTrait.note,
+          name: traitName,
+          note: cmd.negativeTrait?.note,
         });
       } else {
         removeSkillRanks(5);
       }
-      for (const name of pair) {
-        const from = ch.foundations[name] ?? 0;
-        if (from >= 3) throw new Error(`${name} already at maximum`);
-        ch.foundations[name] = from + 1;
-      }
+      ch.foundations[pair[0]] = from0 + 1;
+      ch.foundations[pair[1]] = from1 + 1;
       break;
     }
     case 'plus_five_skill': {
@@ -879,23 +1050,66 @@ export function spendWordWanting(
   }
 
   creation.words -= 1;
+  creation.pendingWanting = undefined;
   clearPlaceholder(ch);
+}
+
+/**
+ * Applies every staged Word to one copy. A failure leaves the sheet unchanged.
+ */
+export function spendWantingBatch(
+  store: CommunityStorePort,
+  cmd: {
+    characterSlug: string;
+    spends: WantingSpend[];
+    actor?: string;
+  },
+): CharacterRecord {
+  const loaded = store.getCharacterBySlug(cmd.characterSlug);
+  if (!loaded) throw new Error(`unknown character: ${cmd.characterSlug}`);
+  if (!cmd.spends.length) throw new Error('nothing staged');
+  const ch = structuredClone(loaded);
+  const applied: { spend: WantingSpend; words: number }[] = [];
+  for (let i = 0; i < cmd.spends.length; i++) {
+    const spend = cmd.spends[i]!;
+    try {
+      applyWanting(ch, spend);
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      throw new Error(cmd.spends.length > 1 ? `Word ${i + 1}: ${msg}` : msg);
+    }
+    applied.push({ spend, words: ensureCreation(ch).words });
+  }
   store.putCharacter(ch);
-  store.appendEvent({
-    type: 'WantingSpent',
-    actor: cmd.actor,
-    payload: {
-      characterSlug: ch.slug,
-      menu: cmd.menu,
-      words: creation.words,
-      foundation: cmd.foundation,
-      foundations: cmd.foundations,
-      traitName: cmd.traitName,
-      negativeTrait: cmd.negativeTrait?.name,
-      removeSkills: cmd.removeSkills,
-    },
-  });
+  for (const row of applied) {
+    store.appendEvent({
+      type: 'WantingSpent',
+      actor: cmd.actor,
+      payload: {
+        characterSlug: ch.slug,
+        menu: row.spend.menu,
+        words: row.words,
+        foundation: row.spend.foundation,
+        foundations: row.spend.foundations,
+        traitName: row.spend.traitName,
+        negativeTrait: row.spend.negativeTrait?.name,
+        removeSkills: row.spend.removeSkills,
+      },
+    });
+  }
   return store.getCharacterBySlug(ch.slug)!;
+}
+
+/**
+ * Wanting menu (1 Word each). Caller supplies named Foundations/Skills/Trait
+ * and pay path; ST approval of Negative Trait is external.
+ */
+export function spendWordWanting(
+  store: CommunityStorePort,
+  cmd: WantingSpend & { characterSlug: string; actor?: string },
+): CharacterRecord {
+  const { characterSlug, actor, ...spend } = cmd;
+  return spendWantingBatch(store, { characterSlug, spends: [spend], actor });
 }
 
 // --- ST full edit (marks, concept, etc.) ---
@@ -956,7 +1170,14 @@ export function stEditCharacter(
       ch.harm[k] = v;
     }
   }
-  if (p.inventoryItems) ch.inventory.items = p.inventoryItems.map((i) => ({ ...i }));
+  if (p.inventoryItems) {
+    const prev = ch.inventory.items ?? [];
+    ch.inventory.items = p.inventoryItems.map((item, index) => {
+      const same = prev[index];
+      const icon = item.icon || (same && same.name === item.name ? same.icon : undefined);
+      return icon ? { ...item, icon } : { ...item };
+    });
+  }
   if (p.foodDays !== undefined) ch.inventory.foodDays = p.foodDays;
   if (p.waterDays !== undefined) ch.inventory.waterDays = p.waterDays;
   if (p.armour) ch.armour = { ...p.armour };
@@ -985,6 +1206,32 @@ export function stEditCharacter(
 }
 
 // --- Multi-character focus ---
+
+/** One living character per player. Clears the binding; the sheet stays. */
+export function releaseOtherCharacters(
+  store: CommunityStorePort,
+  platform: string,
+  accountId: string,
+  keepSlug: string,
+): void {
+  const others = listCharactersForAccount(store, platform, accountId).filter(
+    (c) => c.slug !== keepSlug,
+  );
+  for (const other of others) {
+    const ch = store.getCharacterBySlug(other.slug);
+    if (!ch) continue;
+    let changed = false;
+    if (ch.player?.platform === platform && ch.player.accountId === accountId) {
+      ch.player = undefined;
+      changed = true;
+    }
+    if (ch.initiator?.platform === platform && ch.initiator.accountId === accountId) {
+      ch.initiator = undefined;
+      changed = true;
+    }
+    if (changed) store.putCharacter(ch);
+  }
+}
 
 export function listCharactersForAccount(
   store: CommunityStorePort,

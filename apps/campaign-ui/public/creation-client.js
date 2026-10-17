@@ -206,6 +206,19 @@
     syncWantingMenuAfford();
   }
 
+  let seenStatus = dock ? dock.getAttribute('data-creation-status') || '' : '';
+
+  function reloadSheet(reason) {
+    const key = 'kod-sheet-reload:' + slug;
+    try {
+      if (sessionStorage.getItem(key) === reason) return;
+      sessionStorage.setItem(key, reason);
+    } catch {
+      /* private mode: one reload still runs */
+    }
+    location.reload();
+  }
+
   async function pollCreation() {
     if (!dock) return;
     try {
@@ -215,13 +228,23 @@
       if (!res.ok) return;
       const data = await res.json();
       if (!data.creation) return;
-      if (data.creation.locked || data.status === 'pending_review' || data.status === 'active') {
-        // Creation finished out-of-band — refresh to drop edit docks
-        if (document.body.classList.contains('creation-edit')) {
-          location.reload();
-        }
+      const status = data.status || '';
+      if (status === 'pending_review') {
+        seenStatus = status;
         return;
       }
+      if (seenStatus === 'pending_review' && status !== 'pending_review') {
+        reloadSheet('left-review:' + status);
+        return;
+      }
+      if (
+        (data.creation.locked || status === 'active') &&
+        document.body.classList.contains('creation-edit')
+      ) {
+        reloadSheet('locked:' + status);
+        return;
+      }
+      seenStatus = status;
       if (Array.isArray(data.skills)) {
         document.querySelectorAll('[data-spend-skill]').forEach((el) => {
           if (!(el instanceof HTMLElement)) return;
@@ -376,6 +399,9 @@
   function paintTrack(el, current, max, label) {
     if (!el || typeof max !== 'number' || max < 0) return;
     const cur = Math.max(0, Number(current) || 0);
+    const sig = cur + '/' + max;
+    if (el.getAttribute('data-track') === sig) return;
+    el.setAttribute('data-track', sig);
     const p = max <= 0 ? 0 : Math.min(1, cur / max);
     el.setAttribute('aria-label', label + ' ' + cur + ' of ' + max);
     el.style.setProperty('--well-p', String(p));
@@ -1055,7 +1081,7 @@
       id: String(Date.now()) + Math.random(),
       menu: formMenu,
       label,
-      payload,
+      payload: JSON.parse(JSON.stringify(payload)),
     });
     form.hidden = true;
     formMenu = null;
@@ -1086,38 +1112,37 @@
     try {
       let creation = null;
       let lastTraits = null;
-      for (const item of staged) {
-        const body = {
-          action: 'spend-wanting',
+      const data = await post({
+        action: 'spend-wanting-batch',
+        spends: staged.map((item) => ({
           ...item.payload,
           menu: item.menu || (item.payload && item.payload.menu),
-        };
-        const data = await post(body);
-        creation = data.creation;
-        if (Array.isArray(data.traits)) lastTraits = data.traits;
-        if (data.foundations) {
-          for (const [name, raw] of Object.entries(data.foundations)) {
-            const btn = document.querySelector(
-              '[data-spend-foundation="' + CSS.escape(name) + '"]',
-            );
-            if (btn instanceof HTMLElement && typeof raw === 'number') {
-              btn.setAttribute('data-rating', String(raw));
-              const mark = btn.querySelector('[data-roman]');
-              if (mark) mark.textContent = ROMAN[raw] || String(raw);
-            }
+        })),
+      });
+      creation = data.creation;
+      if (Array.isArray(data.traits)) lastTraits = data.traits;
+      if (data.foundations) {
+        for (const [name, raw] of Object.entries(data.foundations)) {
+          const btn = document.querySelector(
+            '[data-spend-foundation="' + CSS.escape(name) + '"]',
+          );
+          if (btn instanceof HTMLElement && typeof raw === 'number') {
+            btn.setAttribute('data-rating', String(raw));
+            const mark = btn.querySelector('[data-roman]');
+            if (mark) mark.textContent = ROMAN[raw] || String(raw);
           }
         }
-        if (Array.isArray(data.skills)) {
-          document.querySelectorAll('[data-spend-skill]').forEach((el) => {
-            if (!(el instanceof HTMLElement)) return;
-            const name = el.getAttribute('data-spend-skill');
-            const entry = data.skills.find((s) => s && s.name === name);
-            const rating = entry ? Number(entry.rating) : 0;
-            paintSeal(el, rating, entry && entry.practice, entry && entry.threshold);
-          });
-        }
-        paintRails(data);
       }
+      if (Array.isArray(data.skills)) {
+        document.querySelectorAll('[data-spend-skill]').forEach((el) => {
+          if (!(el instanceof HTMLElement)) return;
+          const name = el.getAttribute('data-spend-skill');
+          const entry = data.skills.find((s) => s && s.name === name);
+          const rating = entry ? Number(entry.rating) : 0;
+          paintSeal(el, rating, entry && entry.practice, entry && entry.threshold);
+        });
+      }
+      paintRails(data);
       staged = [];
       if (creation) {
         wordsAvailable = creation.words ?? wordsAvailable;
@@ -1131,11 +1156,7 @@
       msg('spend', 'Wanting confirmed' + traitNote + '.', true);
       await pollCreation();
       setTimeout(() => {
-        if (Array.isArray(lastTraits) && lastTraits.length) {
-          location.href = '/characters/' + encodeURIComponent(slug) + '/echoes/';
-        } else {
-          location.reload();
-        }
+        location.reload();
       }, 600);
     } catch (e) {
       msg('wanting', e instanceof Error ? e.message : String(e), false);
@@ -1168,20 +1189,14 @@
         });
         msg('concept', 'Saved.', true);
       } else if (action === 'confirm') {
-        const data = await post({ action: 'confirm' });
+        await post({ action: 'confirm' });
         const body = document.querySelector('.draft-foot__body');
         if (body) {
           body.innerHTML =
-            '<p class="flag flag--ok">Returned to table · awaiting Storyteller review</p>' +
-            '<p class="draft-hint">A review card should appear in the play channel. If not, ST: <code>/review</code>.</p>';
+            '<p class="flag flag--ok">Submitted for approval</p>' +
+            '<p class="draft-hint">The Storyteller approves this sheet or sends it back. It stays open until then.</p>';
+          seenStatus = 'pending_review';
         }
-        msg(
-          'confirm',
-          'Returned to table' +
-            (data.mention ? ' (@' + data.mention.displayName + ')' : '') +
-            '.',
-          true,
-        );
       }
     } catch (e) {
       const m = e instanceof Error ? e.message : String(e);

@@ -34,10 +34,7 @@ const foundations = Object.values(FOUNDATION_GROUPS).flat();
       data-slug={ch.slug}
     >
       <header class="wanting-panel__head">
-        <div>
-          <p class="wanting-panel__kicker">The Wanting</p>
-          <h2 class="wanting-panel__title" id="wanting-panel-title">Spend Words</h2>
-        </div>
+        <h2 class="wanting-panel__title" id="wanting-panel-title">Spend Words</h2>
       </header>
 
       <p class="wanting-panel__lead">
@@ -74,8 +71,8 @@ const foundations = Object.values(FOUNDATION_GROUPS).flat();
         <p class="wanting-form__title" data-wanting-form-title></p>
         <div class="wanting-form__fields" data-wanting-form-fields></div>
         <div class="wanting-form__actions">
-          <button type="submit" class="kod-btn">Stage this Word</button>
-          <button type="button" class="kod-btn" data-wanting-form-cancel>Back</button>
+          <button type="submit" class="wanting-action">Stage this Word</button>
+          <button type="button" class="wanting-action" data-wanting-form-cancel>Back</button>
         </div>
       </form>
 
@@ -89,7 +86,7 @@ const foundations = Object.values(FOUNDATION_GROUPS).flat();
         <button type="button" class="kod-plate wanting-confirm" data-wanting-confirm>
           Confirm Wanting
         </button>
-        <button type="button" class="kod-btn" data-wanting-cancel>
+        <button type="button" class="wanting-action" data-wanting-cancel>
           Cancel · discard
         </button>
       </div>

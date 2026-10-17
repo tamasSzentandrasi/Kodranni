@@ -2,6 +2,7 @@
 export const prerender = false;
 
 import CampaignLayout from '../../../layouts/CampaignLayout.astro';
+import CreationChrome from '../../../components/CreationChrome.astro';
 import SheetChrome from '../../../components/SheetChrome.astro';
 import { getCharacter, loadCommunity } from '../../../data/load';
 import { WEIGHT_BAND } from '../../../lib/format';
@@ -23,6 +24,7 @@ if (auth.canEdit && auth.token) {
 }
 const canEdit = unlocked && auth.canEdit;
 const desk = live && deskToolsOn(Astro.request);
+const playerEdit = canEdit && !desk;
 const sheetEdit = desk || canEdit;
 const living = c.characters.filter((x) => x.status !== 'dead' && x.slug !== ch.slug);
 const active = (ch.echoes ?? []).filter((e) => !e.resolved);
@@ -60,7 +62,9 @@ const echoRoster = [
     concept={ch.concept}
     communityTie={ch.communityTie}
     whoWeSee={ch.whoWeSee}
+    claimable={Boolean(ch.creation?.claimable)}
   >
+  <CreationChrome character={ch} live={live} canEdit={playerEdit} />
 
   <section
     class="kod-plate"
@@ -330,8 +334,8 @@ const echoRoster = [
               {
                 sheetEdit ? (
                   <div class="trait__edit">
-                    <input class="kod-ink" data-trait-name value={t.name} placeholder="Trait name" />
-                    <input class="kod-ink" data-trait-note value={t.note ?? ''} placeholder="Optional note" />
+                    <input class="kod-ink" data-trait-name value={t.name} placeholder="Trait name" autocomplete="off" />
+                    <input class="kod-ink" data-trait-note value={t.note ?? ''} placeholder="Optional note" autocomplete="off" />
                     <button type="button" class="desk-mark" data-trait-remove aria-label="Remove" data-tip="Remove">
                       <svg viewBox="0 0 24 24" aria-hidden="true">
                         <circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.4" />
@@ -358,8 +362,8 @@ const echoRoster = [
         desk && (
           <li class="kod-plate trait" data-trait-new>
             <div class="trait__edit">
-              <input class="kod-ink" data-trait-name placeholder="Trait name" />
-              <input class="kod-ink" data-trait-note placeholder="Note" />
+              <input class="kod-ink" data-trait-name placeholder="Trait name" autocomplete="off" />
+              <input class="kod-ink" data-trait-note placeholder="Note" autocomplete="off" />
             </div>
           </li>
         )
@@ -376,11 +380,14 @@ const echoRoster = [
     {sheetEdit && (
       <script id="echo-resolved" type="application/json" set:html={JSON.stringify(resolved)} />
     )}
+    {sheetEdit && (
+      <script id="trait-seed" type="application/json" set:html={JSON.stringify(ch.traits)} />
+    )}
   </section>
 
   {
     sheetEdit && (
-      <script is:inline src="/sheet-edit-echoes.js"></script>
+      <script is:inline src="/sheet-edit-echoes.js?v=20261017d"></script>
     )
   }
   </SheetChrome>

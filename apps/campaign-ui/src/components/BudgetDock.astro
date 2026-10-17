@@ -54,12 +54,12 @@ const words = creation?.words ?? 0;
       data-foundation-points={String(creation.foundationPoints)}
       data-skill-points={String(creation.skillPoints)}
       data-words={String(creation.words)}
+      data-creation-status={ch.status}
       data-prep-found={String(PREP_FOUNDATION_POINTS)}
       data-prep-skill={String(PREP_SKILL_POINTS)}
     >
       <header class="budget-dock__head">
         <p class="budget-dock__kicker">Creation</p>
-        <h2 class="budget-dock__title">Budgets</h2>
       </header>
 
       <div

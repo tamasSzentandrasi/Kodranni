@@ -50,6 +50,13 @@ function identity(ch: CharacterRecord): string {
       <p class="sheet-identity__who-text">${esc(ch.whoWeSee)}</p>
     </div>`
     : '';
+  const returned =
+    ch.status === 'draft' && ch.creation?.returned
+      ? '<p class="sheet-identity__note">This draft is open. The edits remain.</p>'
+      : '';
+  const waiting = ch.creation?.pendingWanting
+    ? `<p class="sheet-identity__note">${esc(wantingNote(ch.creation.pendingWanting))}</p>`
+    : '';
   return `<div class="kod-plate sheet-identity">
     <div class="sheet-identity__portrait">${portrait}</div>
     <div class="sheet-identity__text">
@@ -64,9 +71,27 @@ function identity(ch: CharacterRecord): string {
         <span class="char-card__status" data-status="${escAttr(ch.status)}">${esc(statusLabel)}</span>
         ${flags}
       </p>
+      ${returned}
+      ${waiting}
     </div>
     ${who}
   </div>`;
+}
+
+/** Same lines as wantingChoiceLine in the app package. */
+function wantingNote(menu: string): string {
+  switch (menu) {
+    case 'plus_one_foundation':
+      return '+1 to one named Foundation. The pay is 3 skill points, named on the sheet.';
+    case 'plus_two_foundation_split':
+      return '+2 Foundation points, split across two. The pay is 5 skill points, or one Negative Trait the Storyteller names.';
+    case 'plus_five_skill':
+      return '+5 skill points. The pay is −1 from one named Foundation.';
+    case 'positive_trait':
+      return 'One Positive named Trait. The pay is 3 skill points, named on the sheet.';
+    default:
+      return 'Name the pay on the sheet.';
+  }
 }
 
 function vtrack(opts: {

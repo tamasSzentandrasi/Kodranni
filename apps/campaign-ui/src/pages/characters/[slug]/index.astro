@@ -3,12 +3,10 @@ export const prerender = false;
 
 import { nextFoundationCost, nextSkillCost } from '@kodranni/app';
 import { ARCHETYPES, FOUNDATION_GROUPS, FOUNDATION_HARM } from '@kodranni/domain';
-import BudgetDock from '../../../components/BudgetDock.astro';
 import CampaignLayout from '../../../layouts/CampaignLayout.astro';
-import ConfirmDock from '../../../components/ConfirmDock.astro';
+import CreationChrome from '../../../components/CreationChrome.astro';
 import SheetChrome from '../../../components/SheetChrome.astro';
 import SkillSeal from '../../../components/SkillSeal.astro';
-import WantingPanel from '../../../components/WantingPanel.astro';
 import { getCharacter, loadCommunity } from '../../../data/load';
 import { harmPips } from '../../../lib/format';
 import { deskToolsOn } from '../../../lib/loopback';
@@ -69,25 +67,9 @@ const roman = (n: number) => ['∅', 'I', 'II', 'III', 'IV'][n] ?? String(n);
     concept={ch.concept}
     communityTie={ch.communityTie}
     whoWeSee={ch.whoWeSee}
+    claimable={Boolean(ch.creation?.claimable)}
   >
-  <BudgetDock character={ch} live={live} canEdit={playerEdit} />
-  <WantingPanel character={ch} live={live} canEdit={playerEdit} />
-  <ConfirmDock character={ch} live={live} canEdit={playerEdit} />
-  {
-    playerEdit && (
-      <aside class="wanting-tracker" id="wanting-tracker" hidden aria-live="polite">
-        <div class="wanting-tracker__head">
-          <div>
-            <p class="wanting-tracker__kicker">The Wanting</p>
-            <p class="wanting-tracker__title" data-wanting-tracker-title>Pick a Wanting line</p>
-          </div>
-          <span class="wanting-tracker__status" data-wanting-tracker-status>Waiting for menu</span>
-        </div>
-        <div class="wanting-tracker__rows" data-wanting-tracker-body></div>
-      </aside>
-    )
-  }
-  {playerEdit && <script is:inline src="/creation-client.js"></script>}
+  <CreationChrome character={ch} live={live} canEdit={playerEdit} />
   {desk && <script is:inline src="/desk-sheet.js"></script>}
 
   <div slot="stage" class="core-grid">

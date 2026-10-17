@@ -165,6 +165,30 @@
     return active.concat(prior);
   }
 
+  let traitSeed = [];
+  try {
+    const raw = document.getElementById('trait-seed');
+    traitSeed = raw ? JSON.parse(raw.textContent || '[]') : [];
+    if (!Array.isArray(traitSeed)) traitSeed = [];
+  } catch {
+    traitSeed = [];
+  }
+  let traitsDirty = false;
+
+  function restoreTraitSeed() {
+    if (!traitList) return;
+    const rows = traitList.querySelectorAll('[data-trait-idx]');
+    traitSeed.forEach((trait, i) => {
+      const li = rows[i];
+      if (!li || !trait || !trait.name) return;
+      const nameEl = li.querySelector('[data-trait-name]');
+      const noteEl = li.querySelector('[data-trait-note]');
+      if (nameEl instanceof HTMLInputElement && !nameEl.value) nameEl.value = trait.name;
+      if (noteEl instanceof HTMLInputElement && trait.note && !noteEl.value) noteEl.value = trait.note;
+    });
+  }
+  restoreTraitSeed();
+
   function readTraits() {
     if (!traitList) return [];
     const rows = Array.from(traitList.querySelectorAll('[data-trait-idx]'))
@@ -268,8 +292,8 @@
     li.className = 'kod-plate trait';
     li.setAttribute('data-trait-idx', String(traitList.querySelectorAll('[data-trait-idx]').length));
     li.innerHTML =
-      '<div class="trait__edit"><input class="kod-ink" data-trait-name placeholder="Trait name" />' +
-      '<input class="kod-ink" data-trait-note placeholder="Note" />' +
+      '<div class="trait__edit"><input class="kod-ink" data-trait-name placeholder="Trait name" autocomplete="off" />' +
+      '<input class="kod-ink" data-trait-note placeholder="Note" autocomplete="off" />' +
       '<button type="button" class="desk-mark" data-trait-remove aria-label="Remove" data-tip="Remove">' +
       '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.4"/>' +
       '<path d="M9 9l6 6M15 9l-6 6" stroke="currentColor" stroke-width="1.4"/></svg></button></div>';
@@ -348,6 +372,7 @@
 
   document.querySelector('[data-trait-add]')?.addEventListener('click', () => {
     if (!traitList) return;
+    traitsDirty = true;
     const empty = traitList.querySelector('.empty');
     if (empty) empty.remove();
     const idx = traitList.querySelectorAll('[data-trait-idx]').length;
@@ -356,8 +381,8 @@
     li.setAttribute('data-trait-idx', String(idx));
     li.innerHTML =
       '<div class="trait__edit">' +
-      '<input class="kod-ink" data-trait-name value="" placeholder="Trait name…" />' +
-      '<input class="kod-ink" data-trait-note value="" placeholder="Optional note" />' +
+      '<input class="kod-ink" data-trait-name value="" placeholder="Trait name…" autocomplete="off" />' +
+      '<input class="kod-ink" data-trait-note value="" placeholder="Optional note" autocomplete="off" />' +
       '<button type="button" data-trait-remove>Remove</button></div>';
     traitList.appendChild(li);
     saveSoon();
@@ -373,6 +398,7 @@
         return;
       }
       traitRemove.closest('[data-trait-idx]')?.remove();
+      traitsDirty = true;
       saveSoon();
       return;
     }
@@ -409,7 +435,9 @@
       credentials: 'same-origin',
       body: JSON.stringify({
         action: 'st-edit',
-        patch: { echoes: readEchoes(), traits: readTraits() },
+        patch: traitsDirty
+          ? { echoes: readEchoes(), traits: readTraits() }
+          : { echoes: readEchoes() },
       }),
     });
     const data = await res.json().catch(() => ({}));
@@ -456,7 +484,10 @@
         ? { ...echo, resolved: { at: new Date().toISOString(), narrative } }
         : echo,
     );
-    const body = { action: 'st-edit', patch: { echoes, traits: readTraits() } };
+    const body = {
+      action: 'st-edit',
+      patch: traitsDirty ? { echoes, traits: readTraits() } : { echoes },
+    };
     if (weight === 3) {
       const key = art.querySelector('[data-echo-fortune]')?.value || 'vitality';
       const level = Number(art.querySelector('[data-echo-fortune-level]')?.value || 2);
@@ -532,7 +563,10 @@
   });
 
   panel.addEventListener('input', saveSoon);
-  traitList?.addEventListener('input', saveSoon);
+  traitList?.addEventListener('input', () => {
+    traitsDirty = true;
+    saveSoon();
+  });
   function settleOnLeave(ev) {
     const next = ev.relatedTarget;
     const leftEcho = panel.contains(ev.target) && !(next instanceof Node && panel.contains(next));

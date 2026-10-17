@@ -7,6 +7,7 @@ import {
   refundSkill,
   spendFoundation,
   spendSkill,
+  spendWantingBatch,
   spendWordWanting,
   stEditCharacter,
   updateDraftConcept,
@@ -39,6 +40,19 @@ type ActionBody =
       traitName?: string;
       traitNote?: string;
       negativeTrait?: { name: string; note?: string };
+    }
+  | {
+      action: 'spend-wanting-batch';
+      spends: {
+        menu: WantingMenuId;
+        foundation?: string;
+        foundations?: [string, string];
+        removeSkills?: { skill: string; ranks: number }[];
+        addSkillPoints?: number;
+        traitName?: string;
+        traitNote?: string;
+        negativeTrait?: { name: string; note?: string };
+      }[];
     }
   | { action: 'confirm' }
   | {
@@ -222,6 +236,21 @@ export async function POST({
           traitName: body.traitName,
           traitNote: body.traitNote,
           negativeTrait: body.negativeTrait,
+        });
+        return json({
+          ok: true,
+          foundations: ch.foundations,
+          skills: ch.skills,
+          traits: ch.traits,
+          creation: ch.creation,
+          ...capacities(ch),
+        });
+      }
+      case 'spend-wanting-batch': {
+        if (!auth.canEdit) return json({ error: 'edit token required' }, 401);
+        const ch = spendWantingBatch(store, {
+          characterSlug: slug,
+          spends: body.spends,
         });
         return json({
           ok: true,

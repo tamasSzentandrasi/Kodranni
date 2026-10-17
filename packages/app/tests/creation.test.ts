@@ -32,7 +32,13 @@ import {
   refundSkill,
   spendFoundation,
   spendSkill,
+  acceptSeenClaim,
+  offerSeenClaim,
+  refuseSeenClaim,
+  secondSeenClaim,
+  spendWantingBatch,
   spendWordWanting,
+  stageWanting,
   stEditCharacter,
   stReviewCharacter,
   startClaimFromBot,
@@ -373,6 +379,98 @@ describe('Words & Wanting', () => {
     expect(store.getCharacterBySlug(character.slug)!.foundations.Strength).toBe(1);
     store.close();
   });
+
+  it('commits two +2 Words together and rolls both back when one Foundation is full', () => {
+    const store = emptyStore();
+    const { character } = startCreateFromBot(store, {
+      platform: 'discord',
+      accountId: 'u-split',
+      displayName: 'Split',
+      name: 'Split Want',
+    });
+    const slug = character.slug;
+    const paid = ['Slash', 'Unarmed', 'Dodge', 'Swimming', 'Wilderness'];
+    const kept = ['Negotiation', 'Tradecraft', 'Etiquette', 'Forgery', 'Sailing & Navigation'];
+    for (const skill of [...paid, ...kept]) {
+      spendSkill(store, { characterSlug: slug, skill });
+    }
+    grantWord(store, { characterSlug: slug });
+    grantWord(store, { characterSlug: slug });
+    spendWantingBatch(store, {
+      characterSlug: slug,
+      spends: [
+        {
+          menu: 'plus_two_foundation_split',
+          foundations: ['Guile', 'Perception'],
+          removeSkills: paid.map((skill) => ({ skill, ranks: 1 })),
+        },
+        {
+          menu: 'plus_two_foundation_split',
+          foundations: ['Strength', 'Constitution'],
+          negativeTrait: { name: 'Looks like a frog' },
+        },
+      ],
+    });
+    const both = store.getCharacterBySlug(slug)!;
+    expect(both.creation!.words).toBe(0);
+    expect(both.foundations.Guile).toBe(2);
+    expect(both.foundations.Perception).toBe(2);
+    expect(both.foundations.Strength).toBe(2);
+    expect(both.foundations.Constitution).toBe(2);
+    expect(both.traits.map((t) => t.name)).toEqual(['Looks like a frog']);
+    for (const skill of paid) {
+      expect(both.skills.find((s) => s.name === skill)).toBeUndefined();
+    }
+    for (const skill of kept) {
+      expect(both.skills.find((s) => s.name === skill)?.rating).toBe(1);
+    }
+
+    grantWord(store, { characterSlug: slug });
+    grantWord(store, { characterSlug: slug });
+    stEditCharacter(store, {
+      characterSlug: slug,
+      actor: 'st',
+      patch: { foundations: { Dexterity: 3 } },
+    });
+    expect(() =>
+      spendWantingBatch(store, {
+        characterSlug: slug,
+        spends: [
+          {
+            menu: 'plus_two_foundation_split',
+            foundations: ['Intellect', 'Resolve'],
+            removeSkills: kept.map((skill) => ({ skill, ranks: 1 })),
+          },
+          {
+            menu: 'plus_two_foundation_split',
+            foundations: ['Dexterity', 'Charisma'],
+            negativeTrait: { name: 'Slow to trust' },
+          },
+        ],
+      }),
+    ).toThrow(/Word 2: Dexterity already at maximum/);
+    const rolled = store.getCharacterBySlug(slug)!;
+    expect(rolled.creation!.words).toBe(2);
+    expect(rolled.foundations.Intellect).toBe(1);
+    expect(rolled.foundations.Dexterity).toBe(3);
+    expect(rolled.traits.map((t) => t.name)).toEqual(['Looks like a frog']);
+    for (const skill of kept) {
+      expect(rolled.skills.find((s) => s.name === skill)?.rating).toBe(1);
+    }
+
+    expect(() =>
+      spendWordWanting(store, {
+        characterSlug: slug,
+        menu: 'plus_two_foundation_split',
+        foundations: ['Authority', 'Charisma'],
+        negativeTrait: { name: 'Both paths' },
+        removeSkills: [{ skill: 'Negotiation', ranks: 1 }],
+      }),
+    ).toThrow(/not both/);
+    expect(store.getCharacterBySlug(slug)!.skills.find((s) => s.name === 'Negotiation')?.rating).toBe(1);
+    expect(store.getCharacterBySlug(slug)!.creation!.words).toBe(2);
+    store.close();
+  });
 });
 
 describe('ST edit (claim marks)', () => {
@@ -431,6 +529,36 @@ describe('ST edit (claim marks)', () => {
     expect(edited.concept).toBe('Still at the mill.');
     store.close();
   });
+
+  it('keeps an item icon the patch omitted and stores claimable', () => {
+    const store = emptyStore();
+    const { character } = startCreateFromBot(store, {
+      platform: 'discord',
+      accountId: 'target',
+      displayName: 'T',
+      name: 'Mark Target',
+    });
+    stEditCharacter(store, {
+      characterSlug: character.slug,
+      actor: 'desk',
+      patch: {
+        claimable: true,
+        inventoryItems: [{ name: 'Knife', icon: 'knife.png' }],
+      },
+    });
+    const again = stEditCharacter(store, {
+      characterSlug: character.slug,
+      actor: 'desk',
+      patch: {
+        claimable: false,
+        inventoryItems: [{ name: 'Knife', note: 'short' }],
+      },
+    });
+    expect(again.creation?.claimable).toBe(false);
+    expect(again.inventory.items[0]?.icon).toBe('knife.png');
+    expect(again.inventory.items[0]?.note).toBe('short');
+    store.close();
+  });
 });
 
 describe('lock / unlock / multi focus', () => {
@@ -462,7 +590,9 @@ describe('lock / unlock / multi focus', () => {
     const list = listCharactersForAccount(store, 'discord', 'multi').filter(
       (c) => c.status === 'active',
     );
-    expect(list.length).toBeGreaterThanOrEqual(2);
+    expect(list.map((c) => c.slug)).toEqual([b.slug]);
+    expect(store.getCharacterBySlug(a.slug)?.player).toBeUndefined();
+    expect(store.getCharacterBySlug(a.slug)?.status).toBe('active');
 
     setFocusedCharacter(store, {
       platform: 'discord',
@@ -475,6 +605,147 @@ describe('lock / unlock / multi focus', () => {
     expect(isCreationLocked(store.getCharacterBySlug(a.slug)!)).toBe(false);
     lockCharacter(store, { characterSlug: a.slug });
     expect(isCreationLocked(store.getCharacterBySlug(a.slug)!)).toBe(true);
+    store.close();
+  });
+
+  it('creating, claiming, or approving another sheet releases the previous one', () => {
+    const store = emptyStore();
+    const alpha = startCreateFromBot(store, {
+      platform: 'discord',
+      accountId: 'solo',
+      displayName: 'Solo',
+      name: 'Alpha',
+    }).character;
+    stReviewCharacter(store, { characterSlug: alpha.slug, decision: 'approve' });
+    const beta = startCreateFromBot(store, {
+      platform: 'discord',
+      accountId: 'solo',
+      displayName: 'Solo',
+      name: 'Beta',
+    }).character;
+    expect(store.getCharacterBySlug(alpha.slug)?.player).toBeUndefined();
+    expect(store.getCharacterBySlug(alpha.slug)?.initiator).toBeUndefined();
+    expect(store.getCharacterBySlug(alpha.slug)?.status).toBe('active');
+    stReviewCharacter(store, { characterSlug: beta.slug, decision: 'approve' });
+    expect(listCharactersForAccount(store, 'discord', 'solo').map((c) => c.slug)).toEqual([
+      beta.slug,
+    ]);
+
+    const guest = createPrebuilt(store, { name: 'Guest', claimable: true });
+    startClaimFromBot(store, {
+      platform: 'discord',
+      accountId: 'solo',
+      displayName: 'Solo',
+      characterSlug: guest.slug,
+    });
+    expect(store.getCharacterBySlug(beta.slug)?.player).toBeUndefined();
+    expect(store.getCharacterBySlug(guest.slug)?.player?.accountId).toBe('solo');
+
+    const other = startCreateFromBot(store, {
+      platform: 'discord',
+      accountId: 'other',
+      displayName: 'Other',
+      name: 'Other Sheet',
+    }).character;
+    stReviewCharacter(store, { characterSlug: other.slug, decision: 'approve' });
+    expect(store.getCharacterBySlug(other.slug)?.player?.accountId).toBe('other');
+    expect(store.getCharacterBySlug(guest.slug)?.player?.accountId).toBe('solo');
+    store.close();
+  });
+});
+
+describe('seen claims and Wanting', () => {
+  it('seconds a claim, grants the speaker one Word, and does not spend from the select', () => {
+    const store = emptyStore();
+    const speaker = startCreateFromBot(store, {
+      platform: 'discord',
+      accountId: 'speaker',
+      displayName: 'Speaker',
+      name: 'Ada Quinn',
+    }).character;
+    const target = startCreateFromBot(store, {
+      platform: 'discord',
+      accountId: 'target',
+      displayName: 'Target',
+      name: 'Mara Reed',
+    }).character;
+    const claim = offerSeenClaim(store, {
+      targetSlug: target.slug,
+      speakerSlug: speaker.slug,
+      speakerAccountId: 'speaker',
+      speakerName: 'Speaker',
+      line: 'We see her at the mill.',
+    });
+    expect(() =>
+      offerSeenClaim(store, {
+        targetSlug: target.slug,
+        speakerSlug: speaker.slug,
+        speakerAccountId: 'speaker',
+        speakerName: 'Speaker',
+        line: 'Again.',
+      }),
+    ).toThrow(/already claimed/);
+    expect(() =>
+      secondSeenClaim(store, { targetSlug: target.slug, claimId: claim.id, accountId: 'speaker' }),
+    ).toThrow(/cannot second/);
+    expect(() => acceptSeenClaim(store, { targetSlug: target.slug, claimId: claim.id })).toThrow(
+      /second/,
+    );
+    secondSeenClaim(store, { targetSlug: target.slug, claimId: claim.id, accountId: 'other' });
+    acceptSeenClaim(store, { targetSlug: target.slug, claimId: claim.id });
+    expect(store.getCharacterBySlug(speaker.slug)?.creation?.words).toBe(1);
+    const foundations = { ...store.getCharacterBySlug(speaker.slug)!.foundations };
+    stageWanting(store, { characterSlug: speaker.slug, menu: 'plus_one_foundation' });
+    const staged = store.getCharacterBySlug(speaker.slug)!;
+    expect(staged.creation?.pendingWanting).toBe('plus_one_foundation');
+    expect(staged.creation?.words).toBe(1);
+    expect(staged.foundations).toEqual(foundations);
+    store.close();
+  });
+
+  it('needs both refusals, and Send back keeps the draft open', () => {
+    const store = emptyStore();
+    const speaker = startCreateFromBot(store, {
+      platform: 'discord',
+      accountId: 'speaker-2',
+      displayName: 'Speaker',
+      name: 'Nela Quinn',
+    }).character;
+    const target = startCreateFromBot(store, {
+      platform: 'discord',
+      accountId: 'target-2',
+      displayName: 'Target',
+      name: 'Orsa Reed',
+    }).character;
+    const claim = offerSeenClaim(store, {
+      targetSlug: target.slug,
+      speakerSlug: speaker.slug,
+      speakerAccountId: 'speaker-2',
+      speakerName: 'Speaker',
+      line: 'We see her on the stair.',
+    });
+    secondSeenClaim(store, { targetSlug: target.slug, claimId: claim.id, accountId: 'other' });
+    refuseSeenClaim(store, { targetSlug: target.slug, claimId: claim.id, by: 'storyteller' });
+    refuseSeenClaim(store, { targetSlug: target.slug, claimId: claim.id, by: 'target' });
+    expect(() => acceptSeenClaim(store, { targetSlug: target.slug, claimId: claim.id })).toThrow(
+      /refused/,
+    );
+    const later = offerSeenClaim(store, {
+      targetSlug: target.slug,
+      speakerSlug: speaker.slug,
+      speakerAccountId: 'speaker-2',
+      speakerName: 'Speaker',
+      line: 'Once more, after the refusal.',
+    });
+    expect(later.id).not.toBe(claim.id);
+
+    confirmReturnToTable(store, { characterSlug: target.slug });
+    const sent = stReviewCharacter(store, { characterSlug: target.slug, decision: 'request_changes' });
+    expect(sent.status).toBe('draft');
+    expect(sent.creation?.returned).toBe(true);
+    expect(sent.creation?.locked).toBe(false);
+    const back = confirmReturnToTable(store, { characterSlug: target.slug });
+    expect(back.character.creation?.returned).toBe(false);
     store.close();
   });
 });
