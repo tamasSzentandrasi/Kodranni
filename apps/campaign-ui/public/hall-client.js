@@ -841,6 +841,8 @@
 
   function onRevChanged(rev) {
     lastRev = rev;
+    // The desk is the writer. A refresh here jumps the page out from under an add.
+    if (document.documentElement.getAttribute('data-desk') === '1') return;
     location.reload();
   }
 

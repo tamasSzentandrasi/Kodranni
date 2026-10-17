@@ -158,9 +158,12 @@ export async function POST({ request }: { request: Request }) {
           copy: body.copy === true,
         });
         break;
-      case 'axisAdd':
-        deskAddAxis(store, str(body.name));
+      case 'axisAdd': {
+        const community = deskAddAxis(store, str(body.name));
+        const axis = community.hierarchyAxes[community.hierarchyAxes.length - 1] ?? '';
+        result = { ok: true, axis, count: community.hierarchyAxes.length };
         break;
+      }
       case 'axisRename':
         deskRenameAxis(store, str(body.from), str(body.to));
         break;
@@ -171,9 +174,12 @@ export async function POST({ request }: { request: Request }) {
         const ch = deskAddNpc(store, str(body.name));
         return json({ ok: true, slug: ch.slug });
       }
-      case 'groupAdd':
-        deskAddGroup(store, str(body.name));
+      case 'groupAdd': {
+        const community = deskAddGroup(store, str(body.name));
+        const group = [...(community.labelGroups ?? [])].reverse().find((g) => g.kind === 'faction');
+        result = group ? { ok: true, group: { id: group.id, name: group.name } } : { ok: true };
         break;
+      }
       case 'groupRename':
         deskRenameGroup(store, str(body.id), str(body.name));
         break;
@@ -183,9 +189,17 @@ export async function POST({ request }: { request: Request }) {
       case 'groupOrder':
         deskOrderGroups(store, strs(body.ids));
         break;
-      case 'labelAdd':
-        deskAddLabel(store, str(body.groupId), str(body.name));
+      case 'labelAdd': {
+        const community = deskAddLabel(store, str(body.groupId), str(body.name));
+        const label = community.labels?.[community.labels.length - 1];
+        result = {
+          ok: true,
+          label: label
+            ? { id: label.id, groupId: label.groupId, name: label.name, hue: label.hue ?? null }
+            : null,
+        };
         break;
+      }
       case 'labelRename':
         deskRenameLabel(store, str(body.id), str(body.name));
         break;

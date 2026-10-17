@@ -310,8 +310,23 @@ const mapHref = campaignQ
               credentials: 'same-origin',
             });
             const j = await res.json().catch(() => ({}));
-            if (res.ok) location.reload();
-            else alert(j.error || j.hint || 'Upload failed (' + res.status + ')');
+            if (res.ok) {
+              const frame = form.closest('.sheet-identity__portrait');
+              const bust = (j.url || form.action) + '?v=' + Date.now().toString(36);
+              let img = frame && frame.querySelector('img.avatar');
+              if (!img && frame) {
+                const mono = frame.querySelector('.avatar--mono');
+                if (mono) mono.remove();
+                img = document.createElement('img');
+                img.className = 'avatar avatar--lg';
+                img.width = 84;
+                img.height = 84;
+                img.alt = '';
+                frame.insertBefore(img, form);
+              }
+              if (img) img.src = bust;
+              input.value = '';
+            } else alert(j.error || j.hint || 'Upload failed (' + res.status + ')');
           } catch (e) {
             alert(e instanceof Error ? e.message : 'Upload failed');
           }

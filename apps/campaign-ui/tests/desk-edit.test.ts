@@ -74,4 +74,28 @@ describe('POST /api/desk/edit', () => {
     expect(snap.notebook).toBe('The well runs low.');
     expect(snap.community.notebook).toBeUndefined();
   });
+
+  it('returns the ladder, category, and plate that were just added', async () => {
+    liveStore();
+    const axis = await post({ op: 'axisAdd', name: 'Salt' });
+    expect(axis.status).toBe(200);
+    const axisBody = (await axis.json()) as { axis?: string; count?: number };
+    expect(axisBody.axis).toBe('Salt');
+    expect(axisBody.count).toBeGreaterThan(3);
+
+    const group = await post({ op: 'groupAdd', name: 'Guilds' });
+    expect(group.status).toBe(200);
+    const groupBody = (await group.json()) as { group?: { id: string; name: string } };
+    expect(groupBody.group?.name).toBe('Guilds');
+    expect(groupBody.group?.id).toBeTruthy();
+
+    const label = await post({ op: 'labelAdd', groupId: groupBody.group?.id, name: 'Weavers' });
+    expect(label.status).toBe(200);
+    const labelBody = (await label.json()) as {
+      label?: { id: string; groupId: string; name: string; hue: number | null };
+    };
+    expect(labelBody.label?.name).toBe('Weavers');
+    expect(labelBody.label?.groupId).toBe(groupBody.group?.id);
+    expect(typeof labelBody.label?.hue).toBe('number');
+  });
 });

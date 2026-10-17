@@ -77,8 +77,7 @@
     saveTimer = window.setTimeout(saveNow, 500);
   }
 
-  async function saveNow(opts) {
-    const reload = !opts || opts.reload !== false;
+  async function saveNow() {
     const msg = panel.querySelector('[data-inv-msg]');
     const res = await fetch('/api/character/' + encodeURIComponent(slug), {
       method: 'POST',
@@ -94,9 +93,42 @@
         msg.className = 'draft-msg draft-msg--err';
       }
     }
-    const added = Boolean(panel.querySelector('[data-item-new] [data-item-name]')?.value?.trim());
-    if (res.ok && panel.getAttribute('data-desk') === '1' && added && reload) location.reload();
+    if (res.ok && panel.getAttribute('data-desk') === '1') promoteNewItem();
     return res.ok;
+  }
+
+  function promoteNewItem() {
+    const fresh = panel.querySelector('[data-item-new]');
+    if (!fresh || fresh.contains(document.activeElement)) return;
+    const nameEl = fresh.querySelector('[data-item-name]');
+    const name = nameEl && 'value' in nameEl ? String(nameEl.value).trim() : '';
+    if (!name) return;
+    const idx = panel.querySelectorAll('[data-item-idx]').length;
+    fresh.setAttribute('data-item-idx', String(idx));
+    fresh.removeAttribute('data-item-new');
+    const edit = fresh.querySelector('.item__edit');
+    if (edit && !edit.querySelector('[data-item-remove]')) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'desk-mark';
+      btn.setAttribute('data-item-remove', '');
+      btn.setAttribute('aria-label', 'Remove');
+      btn.setAttribute('data-tip', 'Remove');
+      btn.innerHTML =
+        '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M9 9l6 6M15 9l-6 6" stroke="currentColor" stroke-width="1.4"/></svg>';
+      edit.appendChild(btn);
+    }
+    const list = panel.querySelector('[data-item-list]');
+    if (!list) return;
+    const li = document.createElement('li');
+    li.className = 'kod-plate item';
+    li.setAttribute('data-item-new', '');
+    li.innerHTML =
+      '<label class="item__icon-hit"><span class="item__icon item__icon--empty" aria-hidden="true"></span>' +
+      '<input type="file" data-item-icon-file accept="image/jpeg,image/png,image/webp" hidden aria-label="Icon for the new item" /></label>' +
+      '<div class="item__edit"><input class="kod-ink" data-item-name placeholder="Item name" />' +
+      '<input class="kod-ink" data-item-note placeholder="Description" /></div>';
+    list.appendChild(li);
   }
 
   const armourBtn = panel.querySelector('[data-armour-cycle]');
@@ -166,9 +198,6 @@
   panel.addEventListener('click', (ev) => {
     const t = ev.target;
     if (!(t instanceof HTMLElement)) return;
-    const hit = t.closest('.item__icon-hit');
-    const fileInput = hit?.querySelector('input[type="file"]');
-    if (fileInput instanceof HTMLInputElement) fileInput.value = '';
     const remove = t.closest('[data-item-remove]');
     if (!remove) {
       clearRemoveAsk();
@@ -210,9 +239,8 @@
       t.value = '';
       return;
     }
-    const fresh = li.hasAttribute('data-item-new');
-    let idx = fresh ? panel.querySelectorAll('[data-item-idx]').length : Number(li.getAttribute('data-item-idx'));
-    if (fresh && !li.querySelector('[data-item-name]')?.value?.trim()) {
+    const named = li.querySelector('[data-item-name]')?.value?.trim();
+    if (li.hasAttribute('data-item-new') && !named) {
       const msg = panel.querySelector('[data-inv-msg]');
       if (msg) {
         msg.hidden = false;
@@ -222,8 +250,13 @@
       t.value = '';
       return;
     }
-    const ok = await saveNow({ reload: false });
+    let idx = li.hasAttribute('data-item-new')
+      ? panel.querySelectorAll('[data-item-idx]').length
+      : Number(li.getAttribute('data-item-idx'));
+    t.value = '';
+    const ok = await saveNow();
     if (!ok) return;
+    if (li.hasAttribute('data-item-idx')) idx = Number(li.getAttribute('data-item-idx'));
     const fd = new FormData();
     fd.append('file', file, file.name);
     fd.append('index', String(idx));
@@ -260,9 +293,14 @@
       }
       const input = hit.querySelector('input');
       if (img.parentElement !== hit) hit.insertBefore(img, input || null);
-      img.src = data.url;
+      const bust = data.url + (String(data.url).includes('?') ? '&' : '?') + 'v=' + Date.now().toString(36);
+      img.src = bust;
     }
-    t.value = '';
-    if (fresh) location.reload();
+  });
+
+  panel.addEventListener('focusout', (ev) => {
+    const next = ev.relatedTarget;
+    if (next instanceof Node && panel.contains(next)) return;
+    window.setTimeout(saveNow, 0);
   });
 })();

@@ -52,7 +52,7 @@ export async function GET({ params }: { params: { slug?: string } }) {
       status: 200,
       headers: {
         'Content-Type': contentType(ext),
-        'Cache-Control': 'public, max-age=60',
+        'Cache-Control': 'no-store',
       },
     });
   } finally {

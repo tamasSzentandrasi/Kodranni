@@ -157,23 +157,23 @@
   mask: center / contain no-repeat;
 }
 
-.kod-fortune--vitality .kod-fortune__icon {
+.kod-fortune--vitality .kod-fortune__icon:not(.kod-fortune__icon--custom) {
   -webkit-mask-image: var(--kod-fortune-vitality);
   mask-image: var(--kod-fortune-vitality);
 }
-.kod-fortune--cohesion .kod-fortune__icon {
+.kod-fortune--cohesion .kod-fortune__icon:not(.kod-fortune__icon--custom) {
   -webkit-mask-image: var(--kod-fortune-cohesion);
   mask-image: var(--kod-fortune-cohesion);
 }
-.kod-fortune--surplus .kod-fortune__icon {
+.kod-fortune--surplus .kod-fortune__icon:not(.kod-fortune__icon--custom) {
   -webkit-mask-image: var(--kod-fortune-surplus);
   mask-image: var(--kod-fortune-surplus);
 }
-.kod-fortune--standing .kod-fortune__icon {
+.kod-fortune--standing .kod-fortune__icon:not(.kod-fortune__icon--custom) {
   -webkit-mask-image: var(--kod-fortune-standing);
   mask-image: var(--kod-fortune-standing);
 }
-.kod-fortune--tradition .kod-fortune__icon {
+.kod-fortune--tradition .kod-fortune__icon:not(.kod-fortune__icon--custom) {
   -webkit-mask-image: var(--kod-fortune-tradition);
   mask-image: var(--kod-fortune-tradition);
 }
@@ -186,8 +186,8 @@
 .kod-fortune--tradition .kod-fortune__icon--custom {
   opacity: 1;
   background: none;
-  -webkit-mask-image: none;
-  mask-image: none;
+  -webkit-mask: none;
+  mask: none;
 }
 
 .kod-fortune__icon--custom img {

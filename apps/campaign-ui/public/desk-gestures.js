@@ -70,6 +70,69 @@
     return data;
   }
 
+  function escAttr(value) {
+    return String(value).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+  }
+
+  function hslHex(hue, sat, light) {
+    const h = ((hue % 360) + 360) % 360;
+    const s = Math.min(100, Math.max(0, sat)) / 100;
+    const l = Math.min(100, Math.max(0, light)) / 100;
+    const a = s * Math.min(l, 1 - l);
+    const f = function (n) {
+      const k = (n + h / 30) % 12;
+      const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+      return Math.round(255 * Math.min(1, Math.max(0, color)))
+        .toString(16)
+        .padStart(2, '0');
+    };
+    return '#' + f(0) + f(8) + f(4);
+  }
+
+  function markButton(attrs, label) {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'desk-mark';
+    Object.keys(attrs).forEach(function (key) {
+      btn.setAttribute(key, attrs[key]);
+    });
+    btn.setAttribute('aria-label', label);
+    btn.setAttribute('data-tip', label);
+    btn.innerHTML =
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M9 9l6 6M15 9l-6 6" stroke="currentColor" stroke-width="1.4"/></svg>';
+    return btn;
+  }
+
+  function iconUrl(file) {
+    return '/api/fortune-icon?file=' + encodeURIComponent(file) + '&v=' + Date.now().toString(36);
+  }
+
+  function ensureImg(parent, className) {
+    let img = parent.querySelector('img');
+    if (!img) {
+      img = document.createElement('img');
+      img.alt = '';
+      parent.insertBefore(img, parent.firstChild);
+    }
+    if (className) img.className = className;
+    return img;
+  }
+
+  function ensureReset(host, kind, key) {
+    if (!host || host.querySelector('[data-desk-icon-reset][data-kind="' + kind + '"]')) return;
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'desk-reset';
+    btn.setAttribute('data-desk-icon-reset', '');
+    btn.setAttribute('data-kind', kind);
+    btn.setAttribute('data-key', key);
+    btn.setAttribute('aria-label', 'Reset icon');
+    btn.textContent = 'Reset';
+    const label = host.querySelector('label');
+    if (label && label.parentElement === host) label.after(btn);
+    else host.prepend(btn);
+  }
+
   function hexToHsl(hex) {
     const m = /^#?([0-9a-f]{6})/i.exec(String(hex || '').trim());
     if (!m) return null;
@@ -551,7 +614,77 @@
     }
   }
 
-  async function upload(kind, key, file) {
+  function paintStoredIcon(kind, key, file, host) {
+    if (!file) return;
+    const url = iconUrl(file);
+    if (kind === 'fortune') {
+      const card = host || document.querySelector('[data-desk-fortune="' + CSS.escape(key) + '"]');
+      const label = card && card.querySelector('.kod-fortune__icon');
+      if (!label) return;
+      label.classList.add('kod-fortune__icon--custom');
+      ensureImg(label, '').src = url;
+      ensureReset(card, 'fortune', key);
+      return;
+    }
+    if (kind === 'label') {
+      const row = host || document.querySelector('[data-desk-label-row][data-label-id="' + CSS.escape(key) + '"]');
+      const seal = row && row.querySelector('.desk-label__seal');
+      if (!seal) return;
+      ensureImg(seal, '').src = url;
+      return;
+    }
+    if (kind === 'axis') {
+      const axis = host || document.querySelector('.kod-hier-axis[data-axis-name="' + CSS.escape(key) + '"]');
+      if (!axis) return;
+      axis.setAttribute('data-seal', 'file');
+      const label = axis.querySelector('.kod-hier-seal');
+      if (label) {
+        label.setAttribute('data-seal', 'file');
+        ensureImg(label, 'kod-hier-seal__img').src = url;
+      }
+      ensureReset(axis.querySelector('.kod-hier-axis__head') || axis, 'axis', key);
+      return;
+    }
+    const ruler = host || document.querySelector('.kod-hier-ruler');
+    if (!ruler) return;
+    ruler.classList.add('kod-hier-ruler--file');
+    const label = ruler.querySelector('.kod-hier-seal');
+    if (label) ensureImg(label, 'kod-hier-seal__img').src = url;
+    ensureReset(ruler, 'ruler', 'ruler');
+  }
+
+  function clearStoredIcon(kind, key, reset) {
+    if (kind === 'fortune') {
+      const card = reset.closest('[data-desk-fortune]');
+      const label = card && card.querySelector('.kod-fortune__icon');
+      if (label) {
+        label.classList.remove('kod-fortune__icon--custom');
+        const img = label.querySelector('img');
+        if (img) img.remove();
+      }
+    } else if (kind === 'label') {
+      const seal = reset.closest('[data-desk-label-row]')?.querySelector('.desk-label__seal');
+      const img = seal && seal.querySelector('img');
+      if (img) img.remove();
+    } else if (kind === 'axis') {
+      const axis = reset.closest('.kod-hier-axis');
+      if (axis) axis.removeAttribute('data-seal');
+      const label = axis && axis.querySelector('.kod-hier-seal');
+      if (label) {
+        label.removeAttribute('data-seal');
+        const img = label.querySelector('img');
+        if (img) img.remove();
+      }
+    } else {
+      const ruler = reset.closest('.kod-hier-ruler');
+      if (ruler) ruler.classList.remove('kod-hier-ruler--file');
+      const img = ruler && ruler.querySelector('.kod-hier-seal img');
+      if (img) img.remove();
+    }
+    reset.remove();
+  }
+
+  async function upload(kind, key, file, host) {
     const fd = new FormData();
     fd.set('kind', kind);
     fd.set('key', key);
@@ -568,7 +701,139 @@
       say(data.error || 'Could not store the icon');
       return;
     }
-    location.reload();
+    say('');
+    paintStoredIcon(kind, key, data.file, host);
+  }
+
+  function axisDataKey(name, index) {
+    const known = { Arms: 'arms', Faith: 'faith', Coin: 'coin', Blood: 'blood' };
+    if (known[name]) return known[name];
+    const cycle = ['arms', 'faith', 'coin', 'blood'];
+    return index >= cycle.length ? 'other' : cycle[index];
+  }
+
+  function mountAxis(name, count) {
+    const axes = document.querySelector('.kod-hier-axes');
+    if (!axes || !name) return;
+    const blank = axes.querySelector('.kod-hier-axis--blank');
+    const key = axisDataKey(name, Math.max(0, count - 1));
+    const col = document.createElement('div');
+    col.className = 'kod-hier-axis';
+    col.setAttribute('data-axis', key);
+    col.setAttribute('data-axis-name', name);
+    const rungs = TIERS.map(function (tier) {
+      return (
+        '<li data-desk-drop="rung" data-axis="' +
+        escAttr(name) +
+        '" data-tier="' +
+        escAttr(tier) +
+        '"><strong class="kod-hier-rung-label">' +
+        escAttr(tier) +
+        '</strong><div class="kod-hier-rung__people"></div></li>'
+      );
+    }).join('');
+    col.innerHTML =
+      '<div class="kod-hier-axis__plate"><div class="kod-hier-axis__head" data-axis-focus="' +
+      escAttr(key) +
+      '" tabindex="-1"><label class="kod-hier-seal"><input type="file" data-desk-seal="axis" data-key="' +
+      escAttr(name) +
+      '" accept="image/jpeg,image/png,image/webp" hidden aria-label="Icon for ' +
+      escAttr(name) +
+      '"></label><input class="desk-write kod-hier-axis__name" data-desk-axis-name data-axis="' +
+      escAttr(name) +
+      '" value="' +
+      escAttr(name) +
+      '" aria-label="Ladder name"><input type="color" class="desk-dye" data-desk-axis-color data-axis="' +
+      escAttr(name) +
+      '" value="#7b5732" aria-label="Colour of ' +
+      escAttr(name) +
+      '"></div><ol class="kod-hier-rungs">' +
+      rungs +
+      '</ol></div>';
+    if (blank) axes.insertBefore(col, blank);
+    else axes.appendChild(col);
+    const shown = axes.querySelectorAll('.kod-hier-axis:not(.kod-hier-axis--blank)').length;
+    if (shown >= 5 && blank) blank.remove();
+    axes.style.setProperty('--ladder-cols', String(shown + (shown < 5 && axes.querySelector('.kod-hier-axis--blank') ? 1 : 0)));
+    if (shown > 3) {
+      axes.querySelectorAll('.kod-hier-axis:not(.kod-hier-axis--blank)').forEach(function (axis) {
+        const head = axis.querySelector('.kod-hier-axis__head');
+        const axisName = axis.getAttribute('data-axis-name') || '';
+        if (!head || head.querySelector('[data-desk-axis-delete]')) return;
+        head.appendChild(markButton({ 'data-desk-axis-delete': '', 'data-axis': axisName }, 'Remove ' + axisName));
+      });
+    }
+    const input = document.querySelector('[data-desk-axis-new]');
+    if (input) input.value = '';
+  }
+
+  function mountGroup(group) {
+    const editor = document.querySelector('[data-desk-editor]');
+    if (!editor || !group || !group.id) return;
+    const cat = document.createElement('div');
+    cat.className = 'allegiance__cat';
+    cat.setAttribute('data-faction-cat', group.id);
+    cat.setAttribute('data-open', 'false');
+    cat.innerHTML =
+      '<div class="allegiance__cat-bar"><div class="kod-btn kod-btn--folio allegiance__cat-head"><input class="desk-write kod-btn__title" data-desk-group-name data-group="' +
+      escAttr(group.id) +
+      '" value="' +
+      escAttr(group.name) +
+      '" aria-label="Category name"></div></div><div class="allegiance__list" data-faction-list inert><input class="desk-write" data-desk-label-new data-group="' +
+      escAttr(group.id) +
+      '" placeholder="Inscribe a faction" aria-label="Inscribe a faction"></div>';
+    const bar = cat.querySelector('.allegiance__cat-bar');
+    if (bar) bar.appendChild(markButton({ 'data-desk-group-delete': '', 'data-group': group.id }, 'Remove'));
+    const fresh = editor.querySelector('[data-desk-group-new]');
+    if (fresh) editor.insertBefore(cat, fresh);
+    else editor.appendChild(cat);
+    if (fresh) fresh.value = '';
+    openCategory(group.id);
+  }
+
+  function mountLabel(label) {
+    if (!label || !label.id) return;
+    const host =
+      document.querySelector('[data-faction-cat="' + CSS.escape(label.groupId) + '"] [data-faction-list]') ||
+      document.querySelector('[data-tag-list][data-group="' + CSS.escape(label.groupId) + '"]');
+    if (!host) return;
+    const row = document.createElement('div');
+    row.className = 'desk-label';
+    row.setAttribute('data-desk-label-row', '');
+    row.setAttribute('data-label-id', label.id);
+    row.setAttribute('data-group', label.groupId);
+    row.setAttribute('aria-pressed', 'false');
+    const picked = label.hue == null ? '' : 'hsl(' + label.hue + ' 55% 48%)';
+    const color = label.hue == null ? '#8c7355' : hslHex(label.hue, 55, 48);
+    if (picked) {
+      row.setAttribute('data-stain', '');
+      row.style.setProperty('--stain', picked);
+    }
+    row.innerHTML =
+      '<div class="desk-label__line"><input type="color" class="desk-dye" data-desk-label-color data-label-id="' +
+      escAttr(label.id) +
+      '" value="' +
+      color +
+      '" aria-label="Colour of ' +
+      escAttr(label.name) +
+      '"><div class="member member--drawer desk-label__plate"' +
+      (picked ? ' data-stain style="--stain:' + picked + '"' : '') +
+      '><span class="member__stain" aria-hidden="true"></span><span class="member__glow" aria-hidden="true"></span><label class="desk-label__seal"><input type="file" data-desk-label-icon data-label-id="' +
+      escAttr(label.id) +
+      '" accept="image/jpeg,image/png,image/webp" hidden aria-label="Icon for ' +
+      escAttr(label.name) +
+      '"></label><input class="desk-write member__name" data-desk-label-name data-label-id="' +
+      escAttr(label.id) +
+      '" value="' +
+      escAttr(label.name) +
+      '" aria-label="Name"></div></div><p class="desk-label__who">—</p>';
+    const line = row.querySelector('.desk-label__line');
+    if (line) line.appendChild(markButton({ 'data-desk-label-delete': '', 'data-label-id': label.id }, 'Remove ' + label.name));
+    const inscribe = host.querySelector('[data-desk-label-new]');
+    if (inscribe) {
+      host.insertBefore(row, inscribe);
+      inscribe.value = '';
+    } else host.appendChild(row);
   }
 
   const title = document.querySelector('[data-desk-rename]');
@@ -706,11 +971,6 @@
     }
     const t = ev.target;
     if (!(t instanceof Element)) return;
-    const fileInput =
-      t instanceof HTMLInputElement && t.type === 'file'
-        ? t
-        : t.closest('label')?.querySelector('input[type="file"]');
-    if (fileInput instanceof HTMLInputElement) fileInput.value = '';
     if (!t.closest('[data-confirm="1"], [data-desk-remove-ask]')) clearAsks(null);
 
     const state = t.closest('[data-desk-state]');
@@ -732,9 +992,15 @@
     if (reset) {
       const kind = reset.getAttribute('data-kind');
       const key = reset.getAttribute('data-key') || '';
-      if (kind === 'fortune') post({ op: 'fortuneLook', key: key, icon: '' }, true);
-      else if (kind === 'axis') post({ op: 'axisLook', name: key, icon: '' }, true);
-      else post({ op: 'rulerLook', icon: '' }, true);
+      const body =
+        kind === 'fortune'
+          ? { op: 'fortuneLook', key: key, icon: '' }
+          : kind === 'axis'
+            ? { op: 'axisLook', name: key, icon: '' }
+            : { op: 'rulerLook', icon: '' };
+      post(body, false).then(function (data) {
+        if (data) clearStoredIcon(kind, key, reset);
+      });
       return;
     }
     const addCharacter = t.closest('[data-desk-add-character]');
@@ -932,12 +1198,18 @@
       return;
     }
     if (t.hasAttribute('data-desk-seal') && t instanceof HTMLInputElement && t.files && t.files[0]) {
-      upload(t.getAttribute('data-desk-seal') || '', t.getAttribute('data-key') || '', t.files[0]);
+      const file = t.files[0];
+      const kind = t.getAttribute('data-desk-seal') || '';
+      const key = t.getAttribute('data-key') || '';
+      t.value = '';
+      upload(kind, key, file, kind === 'ruler' ? t.closest('.kod-hier-ruler') : t.closest('.kod-hier-axis'));
       return;
     }
     if (t.hasAttribute('data-desk-fortune-icon') && t instanceof HTMLInputElement && t.files && t.files[0]) {
       const card = t.closest('[data-desk-fortune]');
-      if (card) upload('fortune', card.getAttribute('data-desk-fortune'), t.files[0]);
+      const file = t.files[0];
+      t.value = '';
+      if (card) upload('fortune', card.getAttribute('data-desk-fortune'), file, card);
       return;
     }
     if (t.hasAttribute('data-desk-label-color')) {
@@ -968,7 +1240,11 @@
       return;
     }
     if (t.hasAttribute('data-desk-label-icon') && t instanceof HTMLInputElement && t.files && t.files[0]) {
-      upload('label', t.getAttribute('data-label-id'), t.files[0]);
+      const file = t.files[0];
+      const row = t.closest('[data-desk-label-row]');
+      const id = t.getAttribute('data-label-id');
+      t.value = '';
+      upload('label', id, file, row);
       return;
     }
     if (t.hasAttribute('data-desk-effect-add') && t instanceof HTMLSelectElement) {
@@ -984,7 +1260,13 @@
       if (at < 0 || !myths[at]) return;
       const label = t.selectedOptions[0] ? t.selectedOptions[0].textContent : kind;
       myths[at].effects.push({ kind: kind, label: label });
-      post({ op: 'myths', myths: myths }, true);
+      const rows = frame.querySelector('.desk-myth-rows');
+      if (rows && !rows.querySelector('[data-desk-myth-row][data-kind="' + kind + '"]')) {
+        const holder = document.createElement('div');
+        holder.innerHTML = chipHtml(kind);
+        if (holder.firstElementChild) rows.appendChild(holder.firstElementChild);
+      }
+      post({ op: 'myths', myths: myths }, false);
       return;
     }
     if (t.hasAttribute('data-desk-myth-title') || t.hasAttribute('data-desk-myth-summary') || t.closest('[data-desk-myth-row]')) {
@@ -1015,7 +1297,9 @@
       return;
     }
     if (t.hasAttribute('data-desk-axis-new') && t.value.trim()) {
-      post({ op: 'axisAdd', name: t.value }, true);
+      post({ op: 'axisAdd', name: t.value }, false).then(function (data) {
+        if (data && data.axis) mountAxis(data.axis, data.count);
+      });
       return;
     }
     if (t.hasAttribute('data-desk-group-name')) {
@@ -1023,11 +1307,15 @@
       return;
     }
     if (t.hasAttribute('data-desk-group-new') && t.value.trim()) {
-      post({ op: 'groupAdd', name: t.value }, true);
+      post({ op: 'groupAdd', name: t.value }, false).then(function (data) {
+        if (data && data.group) mountGroup(data.group);
+      });
       return;
     }
     if (t.hasAttribute('data-desk-label-new') && t.value.trim()) {
-      post({ op: 'labelAdd', groupId: t.getAttribute('data-group'), name: t.value }, true);
+      post({ op: 'labelAdd', groupId: t.getAttribute('data-group'), name: t.value }, false).then(function (data) {
+        if (data && data.label) mountLabel(data.label);
+      });
       return;
     }
     if (t.hasAttribute('data-desk-label-name') && t.value.trim()) {
