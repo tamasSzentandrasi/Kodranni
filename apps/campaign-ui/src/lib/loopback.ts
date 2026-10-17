@@ -55,6 +55,16 @@ export function rejectUnlessDesk(request: Request): Response | null {
   return null;
 }
 
+/**
+ * An archived hall may still read the public snapshot and the between-sessions
+ * Session reading. Every other /api/ call stays refused.
+ */
+export function archiveAllowsApi(method: string, pathname: string): boolean {
+  if (pathname === '/api/snapshot' || pathname.startsWith('/api/snapshot/')) return true;
+  const read = method === 'GET' || method === 'HEAD';
+  return read && (pathname === '/api/session' || pathname === '/api/session/');
+}
+
 export function isDeskPath(pathname: string): boolean {
   const p = pathname.endsWith('/') && pathname.length > 1 ? pathname.slice(0, -1) : pathname;
   return (

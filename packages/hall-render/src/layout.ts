@@ -1,6 +1,6 @@
 import { esc, escAttr } from './escape.js';
 
-export type LayoutPrimary = 'overview' | 'hierarchy' | 'characters' | 'map';
+export type LayoutPrimary = 'overview' | 'hierarchy' | 'characters' | 'map' | 'session';
 
 export const HIERARCHY_TAB_TIP =
   'One crown, then parallel ladders. Same four tiers on every axis (Honoured → Outcast). Colour marks the axis; saturation falls toward Outcast. Hover a name for who they are; click to open the sheet.';
@@ -71,6 +71,7 @@ export function layoutDocument(opts: {
       <a href="/community/"${opts.primary === 'overview' ? ' aria-current="page"' : ''}>Overview</a>
       <span class="tabs__cluster"><a href="/community/hierarchy/"${opts.primary === 'hierarchy' ? ' aria-current="page"' : ''}>Hierarchy</a>${infoBtn('About Hierarchy', HIERARCHY_TAB_TIP)}</span>
       <a href="/characters/"${opts.primary === 'characters' ? ' aria-current="page"' : ''}>Characters</a>
+      <a href="/session/"${opts.primary === 'session' ? ' aria-current="page"' : ''}>Session</a>
     </nav>
     ${opts.body}
   </div>

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { deskToolsOn, isDeskPath, isLocalDeskRequest } from '../src/lib/loopback';
+import { archiveAllowsApi, deskToolsOn, isDeskPath, isLocalDeskRequest } from '../src/lib/loopback';
 
 describe('local desk', () => {
   it('recognises operator and emissary paths', () => {
@@ -51,5 +51,15 @@ describe('local desk', () => {
       headers: { host: 'kodranni.com' },
     });
     expect(deskToolsOn(live)).toBe(false);
+  });
+
+  it('lets an archive read the snapshot and the between-sessions Session call', () => {
+    expect(archiveAllowsApi('GET', '/api/snapshot')).toBe(true);
+    expect(archiveAllowsApi('PUT', '/api/snapshot')).toBe(true);
+    expect(archiveAllowsApi('GET', '/api/session')).toBe(true);
+    expect(archiveAllowsApi('HEAD', '/api/session/')).toBe(true);
+    expect(archiveAllowsApi('POST', '/api/session')).toBe(false);
+    expect(archiveAllowsApi('GET', '/api/desk/table')).toBe(false);
+    expect(archiveAllowsApi('POST', '/api/desk/discord')).toBe(false);
   });
 });

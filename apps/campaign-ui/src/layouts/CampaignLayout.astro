@@ -6,13 +6,15 @@ import {
   ORNAMENT_READY_SCRIPT,
 } from '@kodranni/hall-render';
 import LiveStyles from '../components/LiveStyles.astro';
+import { openSqliteStore } from '@kodranni/store';
+import { resolveStorePath } from '../lib/campaign-paths';
 import { deskToolsOn } from '../lib/loopback';
 
 interface Props {
   title: string;
   communityName: string;
   generatedAt: string;
-  primary: 'overview' | 'hierarchy' | 'characters' | 'map';
+  primary: 'overview' | 'hierarchy' | 'characters' | 'map' | 'session';
   source?: string;
 }
 
@@ -27,10 +29,27 @@ const archive = source === 'snapshot';
 const isMap = primary === 'map';
 const desk = !archive && deskToolsOn(Astro.request);
 const sourceLabel = archive ? 'archive' : desk ? 'Storyteller Desk' : source === 'live' ? 'live store' : 'fixture';
+
+let inboxCount = 0;
+if (desk) {
+  const storePath = resolveStorePath();
+  if (storePath) {
+    try {
+      const store = openSqliteStore(storePath);
+      try {
+        inboxCount = store.listCharacters().filter((ch) => ch.status === 'pending_review').length;
+      } finally {
+        store.close();
+      }
+    } catch {
+      inboxCount = 0;
+    }
+  }
+}
 ---
 
 <!doctype html>
-<html lang="en" class={isMap ? 'is-map' : undefined}>
+<html lang="en" class={isMap ? 'is-map' : undefined} data-desk={desk ? '1' : undefined}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -102,6 +121,10 @@ const sourceLabel = archive ? 'archive' : desk ? 'Storyteller Desk' : source ===
             )
           }
         </span>
+        <a href="/session/" aria-current={primary === 'session' ? 'page' : undefined}>
+          Session
+          {inboxCount > 0 && <span class="tab-count" data-inbox-badge>{inboxCount}</span>}
+        </a>
         {
           desk && (
             <a href="/notebook/" aria-current={title === 'Notebook' ? 'page' : undefined}>

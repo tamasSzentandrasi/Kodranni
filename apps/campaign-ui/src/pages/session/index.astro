@@ -1,0 +1,78 @@
+---
+export const prerender = false;
+
+import { readFileSync } from 'node:fs';
+import { sessionReading } from '@kodranni/hall-render';
+import { defaultCampaignTomlPath, emptyTableState, openSqliteStore, parseCampaignToml } from '@kodranni/store';
+import CampaignLayout from '../../layouts/CampaignLayout.astro';
+import { isArchiveScope, loadCommunity } from '../../data/load';
+import { resolveCampaignSlug, resolveStorePath } from '../../lib/campaign-paths';
+import { deskToolsOn } from '../../lib/loopback';
+import {
+  assembleSession,
+  sessionPageHtml,
+  type SessionDeskModel,
+  type SessionDiscordFields,
+} from '../../lib/session-desk';
+
+const c = loadCommunity();
+const between =
+  Astro.request.headers.get('x-kodranni-archive') === '1' ||
+  isArchiveScope() ||
+  c.source === 'snapshot';
+const desk = !between && deskToolsOn(Astro.request);
+
+let reading = sessionReading(emptyTableState());
+let deskModel: SessionDeskModel | null = null;
+if (!between) {
+  const discord: SessionDiscordFields = { guildId: '', channelId: '', roleId: '' };
+  const slug = resolveCampaignSlug();
+  if (desk && slug) {
+    try {
+      const cfg = parseCampaignToml(readFileSync(defaultCampaignTomlPath(slug), 'utf8'));
+      discord.guildId = cfg.discordGuildId ?? '';
+      discord.channelId = cfg.discordPlayChannelId ?? '';
+      discord.roleId = cfg.discordStorytellerRoleId ?? '';
+    } catch {
+      /* The table is not bound yet. */
+    }
+  }
+  const storePath = resolveStorePath();
+  if (storePath) {
+    const store = openSqliteStore(storePath);
+    try {
+      const assembled = assembleSession({
+        desk,
+        state: store.getTableState(),
+        characters: store.listCharacters(),
+        events: store.listEvents('CharacterReturnedToTable'),
+        discord,
+      });
+      reading = assembled.reading;
+      deskModel = assembled.desk;
+    } finally {
+      store.close();
+    }
+  } else if (desk) {
+    deskModel = assembleSession({
+      desk: true,
+      state: emptyTableState(),
+      characters: [],
+      events: [],
+      discord,
+    }).desk;
+  }
+}
+const body = sessionPageHtml({ between, reading, desk: deskModel });
+---
+
+<CampaignLayout
+  title="Session"
+  communityName={c.name}
+  generatedAt={c.generatedAt}
+  primary="session"
+  source={c.source}
+>
+  <Fragment set:html={body} />
+  {!between && <script src="/session.js" defer></script>}
+</CampaignLayout>

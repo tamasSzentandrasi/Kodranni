@@ -4,6 +4,7 @@ import { hierarchyInner, mapChrome, overviewInner } from './hall.js';
 import { mapInner } from './map.js';
 import { hallViewFromSnapshot, parseSnapshot } from './format.js';
 import { layoutDocument } from './layout.js';
+import { sessionBetweenHtml } from './session.js';
 import { findCharacter, rosterInner } from './roster.js';
 import { sheetEchoesInner, sheetInner, sheetInventoryInner } from './sheet.js';
 
@@ -13,6 +14,7 @@ export type ArchiveRoute =
   | { kind: 'map'; person?: string }
   | { kind: 'roster'; page?: number; selected?: string }
   | { kind: 'sheet'; slug: string; tab: 'core' | 'echoes' | 'inventory' }
+  | { kind: 'session' }
   | { kind: 'notfound' };
 
 export function archiveRoute(pathname: string, search: URLSearchParams): ArchiveRoute {
@@ -20,6 +22,7 @@ export function archiveRoute(pathname: string, search: URLSearchParams): Archive
   if (p === '/community/hierarchy') return { kind: 'hierarchy' };
   if (p === '/character-map') return { kind: 'map', person: search.get('person') ?? undefined };
   if (p === '' || p === '/' || p === '/community') return { kind: 'overview' };
+  if (p === '/session') return { kind: 'session' };
   if (p === '/characters') {
     const page = Number(search.get('p') || '1');
     return { kind: 'roster', page, selected: search.get('sel') ?? undefined };
@@ -112,6 +115,19 @@ export function renderArchivePage(
         primary: 'characters',
         sourceLabel: 'archive',
         body: rosterInner(view, { page: route.page, selected: route.selected }),
+      }),
+    };
+  }
+  if (route.kind === 'session') {
+    return {
+      status: 200,
+      html: layoutDocument({
+        title: 'Session',
+        communityName: name,
+        generatedAt,
+        primary: 'session',
+        sourceLabel: 'archive',
+        body: sessionBetweenHtml(),
       }),
     };
   }
