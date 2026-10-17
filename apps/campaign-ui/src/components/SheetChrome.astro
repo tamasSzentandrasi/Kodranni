@@ -21,6 +21,8 @@ interface Props {
   concept?: string;
   communityTie?: string;
   whoWeSee?: string;
+  /** Desk only. Players can /claim this sheet while this is on. */
+  claimable?: boolean;
 }
 
 const {
@@ -41,6 +43,7 @@ const {
   concept = '',
   communityTie = '',
   whoWeSee = '',
+  claimable = false,
 } = Astro.props;
 const av = avatarUrl(slug, avatar);
 const statusLabel = status === 'pending_review' ? 'pending review' : status;
@@ -180,6 +183,14 @@ const mapHref = campaignQ
           {statusLabel}
         </span>
         {dying && <span class="flag">Dying</span>}
+        {
+          desk && status !== 'dead' && (
+            <label class="sheet-claim">
+              <input type="checkbox" data-desk-claimable checked={claimable} />
+              Claimable
+            </label>
+          )
+        }
         {
           desk && status !== 'dead' && (
             <button

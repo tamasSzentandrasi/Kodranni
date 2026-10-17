@@ -2,6 +2,7 @@
 export const prerender = false;
 
 import CampaignLayout from '../../../layouts/CampaignLayout.astro';
+import CreationChrome from '../../../components/CreationChrome.astro';
 import SheetChrome from '../../../components/SheetChrome.astro';
 import { getCharacter, loadCommunity } from '../../../data/load';
 import { deskToolsOn } from '../../../lib/loopback';
@@ -22,6 +23,7 @@ if (auth.canEdit && auth.token) {
 }
 const canEdit = unlocked && auth.canEdit;
 const desk = live && deskToolsOn(Astro.request);
+const playerEdit = canEdit && !desk;
 const sheetEdit = desk || canEdit;
 const armourLabel =
   ch.armour.kind === 'none' ? 'None' : ch.armour.kind === 'light' ? 'Light' : 'Heavy';
@@ -51,7 +53,9 @@ const armourLabel =
     concept={ch.concept}
     communityTie={ch.communityTie}
     whoWeSee={ch.whoWeSee}
+    claimable={Boolean(ch.creation?.claimable)}
   >
+  <CreationChrome character={ch} live={live} canEdit={playerEdit} />
 
   <section
     class="kod-plate"
@@ -162,9 +166,9 @@ const armourLabel =
                       sheetEdit && (
                         <input
                           type="file"
+                          class="item__icon-file"
                           data-item-icon-file
-                          accept="image/jpeg,image/png,image/webp"
-                          hidden
+                          accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp"
                           aria-label={`Icon for ${it.name}`}
                         />
                       )
@@ -214,9 +218,9 @@ const armourLabel =
                   <span class="item__icon item__icon--empty" aria-hidden="true"></span>
                   <input
                     type="file"
+                    class="item__icon-file"
                     data-item-icon-file
-                    accept="image/jpeg,image/png,image/webp"
-                    hidden
+                    accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp"
                     aria-label="Icon for the new item"
                   />
                 </label>
@@ -241,7 +245,7 @@ const armourLabel =
     <p class="draft-msg" data-inv-msg hidden></p>
   </section>
 
-  {sheetEdit && <script is:inline src="/sheet-edit-inventory.js"></script>}
+  {sheetEdit && <script is:inline src="/sheet-edit-inventory.js?v=20261017d"></script>}
   </SheetChrome>
 </CampaignLayout>
 

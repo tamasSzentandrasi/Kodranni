@@ -17,9 +17,52 @@
         btn.setAttribute('data-tip', idle);
       } else btn.textContent = idle;
     });
-    document.querySelectorAll('[data-desk-remove-ask]').forEach(function (el) {
+    document.querySelectorAll('[data-desk-remove-modal]').forEach(function (el) {
       el.remove();
     });
+  }
+
+  function openRemoveModal(name, slug) {
+    clearAsks(null);
+    const veil = document.createElement('div');
+    veil.className = 'desk-veil';
+    veil.setAttribute('data-desk-remove-modal', '');
+    veil.innerHTML =
+      '<form class="desk-veil__card">' +
+      '<p class="desk-veil__title">Remove ' + escAttr(name) + '</p>' +
+      '<p class="desk-veil__hint">Type the name. Confirm removes them. Cancel leaves the list as it is.</p>' +
+      '<input class="desk-write" name="confirm" autocomplete="off" aria-label="Type ' +
+      escAttr(name) +
+      ' to remove them" placeholder="Type the name">' +
+      '<div class="desk-veil__actions">' +
+      '<button type="button" class="desk-veil__btn" data-desk-remove-cancel>Cancel</button>' +
+      '<button type="submit" class="desk-veil__btn desk-veil__btn--danger">Remove</button>' +
+      '</div></form>';
+    document.body.appendChild(veil);
+    const input = veil.querySelector('input');
+    const form = veil.querySelector('form');
+    if (input instanceof HTMLInputElement) input.focus();
+    veil.addEventListener('click', function (ev) {
+      if (ev.target === veil) clearAsks(null);
+    });
+    const cancel = veil.querySelector('[data-desk-remove-cancel]');
+    if (cancel) {
+      cancel.addEventListener('click', function () {
+        clearAsks(null);
+      });
+    }
+    if (form) {
+      form.addEventListener('submit', function (ev) {
+        ev.preventDefault();
+        const typed = input instanceof HTMLInputElement ? input.value : '';
+        if (typed !== name) {
+          say('Type the name exactly');
+          if (input instanceof HTMLInputElement) input.focus();
+          return;
+        }
+        post({ op: 'remove', slug: slug, confirm: typed }, true);
+      });
+    }
   }
 
   function arm(btn, prompt) {
@@ -873,6 +916,28 @@
     });
   });
 
+  document.querySelectorAll('[data-desk-claimable]').forEach(function (el) {
+    el.addEventListener('change', function () {
+      const root = document.querySelector('[data-desk-sheet]');
+      if (!root || !(el instanceof HTMLInputElement)) return;
+      const slug = root.getAttribute('data-desk-sheet');
+      fetch('/api/character/' + encodeURIComponent(slug), {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ action: 'st-edit', patch: { claimable: el.checked } }),
+      }).then(async function (res) {
+        const data = await res.json().catch(function () {
+          return {};
+        });
+        if (!res.ok) {
+          el.checked = !el.checked;
+          say(data.error || 'Could not save');
+        }
+      });
+    });
+  });
+
   if (new URLSearchParams(location.search).has('name')) {
     const named = document.querySelector('[data-desk-field="name"]');
     if (named instanceof HTMLInputElement) {
@@ -962,6 +1027,13 @@
     });
   });
 
+  document.addEventListener('keydown', function (ev) {
+    if (ev.key !== 'Escape') return;
+    if (!document.querySelector('[data-desk-remove-modal]')) return;
+    ev.preventDefault();
+    clearAsks(null);
+  });
+
   document.addEventListener('click', function (ev) {
     if (suppressClick) {
       suppressClick = false;
@@ -971,7 +1043,8 @@
     }
     const t = ev.target;
     if (!(t instanceof Element)) return;
-    if (!t.closest('[data-confirm="1"], [data-desk-remove-ask]')) clearAsks(null);
+    if (t.closest('[data-desk-remove-modal]')) return;
+    if (!t.closest('[data-confirm="1"]')) clearAsks(null);
 
     const state = t.closest('[data-desk-state]');
     if (state) {
@@ -1109,19 +1182,7 @@
     const remove = t.closest('[data-desk-remove]');
     if (remove) {
       ev.preventDefault();
-      const name = remove.getAttribute('data-name') || '';
-      const host = remove.parentElement;
-      let ask = host && host.querySelector('[data-desk-remove-ask]');
-      if (!ask) {
-        clearAsks(null);
-        ask = document.createElement('input');
-        ask.className = 'desk-write desk-write--ask';
-        ask.setAttribute('data-desk-remove-ask', '');
-        ask.setAttribute('aria-label', 'Type ' + name + ' to remove them');
-        ask.placeholder = 'Type the name';
-        remove.after(ask);
-        ask.focus();
-      }
+      openRemoveModal(remove.getAttribute('data-name') || '', remove.getAttribute('data-slug') || '');
       return;
     }
     if (picked) {
@@ -1179,16 +1240,6 @@
   document.addEventListener('change', function (ev) {
     const t = ev.target;
     if (!(t instanceof HTMLElement)) return;
-    if (t.hasAttribute('data-desk-remove-ask')) {
-      const remove = t.previousElementSibling;
-      const name = remove ? remove.getAttribute('data-name') || '' : '';
-      if (t.value !== name) {
-        say('Type the name exactly');
-        return;
-      }
-      post({ op: 'remove', slug: remove.getAttribute('data-slug'), confirm: t.value }, true);
-      return;
-    }
     if (t.hasAttribute('data-desk-fortune-color')) {
       const card = t.closest('[data-desk-fortune]');
       const tone = toneOf(t);

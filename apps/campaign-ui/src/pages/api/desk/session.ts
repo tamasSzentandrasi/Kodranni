@@ -25,7 +25,9 @@ function nextPath(request: Request): string | null {
     path === '/emissary' ||
     path.startsWith('/emissary/') ||
     path.includes('/setup') ||
-    path.startsWith('/api/')
+    path.startsWith('/api/') ||
+    path === '/notebook' ||
+    path.startsWith('/notebook/')
   ) {
     return '/community/';
   }

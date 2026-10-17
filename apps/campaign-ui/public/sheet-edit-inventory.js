@@ -7,6 +7,11 @@
   const KINDS = ['none', 'light', 'heavy'];
   const LABELS = { none: 'None', light: 'Light', heavy: 'Heavy' };
   let saveTimer = 0;
+  let focusSave = 0;
+  let saveChain = Promise.resolve(true);
+  let iconPicking = false;
+  let iconUploading = false;
+  const ICON_CAP = 2 * 1024 * 1024;
 
   function tokenHeaders() {
     const headers = { 'Content-Type': 'application/json' };
@@ -74,10 +79,76 @@
 
   function saveSoon() {
     window.clearTimeout(saveTimer);
+    window.clearTimeout(focusSave);
     saveTimer = window.setTimeout(saveNow, 500);
   }
 
-  async function saveNow() {
+  function namedRowIndex(li) {
+    const rows = Array.from(panel.querySelectorAll('[data-item-idx], [data-item-new]'));
+    let n = 0;
+    for (const row of rows) {
+      const name = row.querySelector('[data-item-name]')?.value?.trim();
+      if (!name) continue;
+      if (row === li) return n;
+      n += 1;
+    }
+    return -1;
+  }
+
+  function iconError(li, text) {
+    const msg = panel.querySelector('[data-inv-msg]');
+    if (msg) {
+      msg.hidden = false;
+      msg.textContent = text;
+      msg.className = 'draft-msg draft-msg--err';
+    }
+    let rowMsg = li.querySelector('[data-item-icon-msg]');
+    if (!rowMsg) {
+      rowMsg = document.createElement('p');
+      rowMsg.className = 'draft-msg draft-msg--err';
+      rowMsg.setAttribute('data-item-icon-msg', '');
+      li.appendChild(rowMsg);
+    }
+    rowMsg.hidden = false;
+    rowMsg.textContent = text;
+  }
+
+  function ensureIcon(li) {
+    const hit = li.querySelector('.item__icon-hit') || li;
+    let img = hit.querySelector('img.item__icon');
+    if (!img) {
+      img = document.createElement('img');
+      img.className = 'item__icon';
+      img.width = 36;
+      img.height = 36;
+      img.alt = '';
+      const empty = hit.querySelector('.item__icon--empty');
+      if (empty) empty.replaceWith(img);
+      else hit.prepend(img);
+    }
+    return img;
+  }
+
+  function showIcon(li, url) {
+    const img = ensureIcon(li);
+    if (String(url).startsWith('blob:')) {
+      img.dataset.preview = url;
+      img.src = url;
+      return;
+    }
+    const probe = new Image();
+    probe.onload = function () {
+      if (img.isConnected) img.src = url;
+    };
+    probe.onerror = function () {
+      const preview = img.dataset.preview;
+      if (preview && img.getAttribute('src') !== preview) img.src = preview;
+      iconError(li, 'Icon did not load.');
+    };
+    probe.src = url;
+  }
+
+  async function writePatch() {
     const msg = panel.querySelector('[data-inv-msg]');
     const res = await fetch('/api/character/' + encodeURIComponent(slug), {
       method: 'POST',
@@ -95,6 +166,15 @@
     }
     if (res.ok && panel.getAttribute('data-desk') === '1') promoteNewItem();
     return res.ok;
+  }
+
+  function saveNow() {
+    const run = saveChain.then(() => writePatch());
+    saveChain = run.then(
+      (ok) => ok,
+      () => false,
+    );
+    return run;
   }
 
   function promoteNewItem() {
@@ -125,7 +205,7 @@
     li.setAttribute('data-item-new', '');
     li.innerHTML =
       '<label class="item__icon-hit"><span class="item__icon item__icon--empty" aria-hidden="true"></span>' +
-      '<input type="file" data-item-icon-file accept="image/jpeg,image/png,image/webp" hidden aria-label="Icon for the new item" /></label>' +
+      '<input type="file" class="item__icon-file" data-item-icon-file accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp" aria-label="Icon for the new item" /></label>' +
       '<div class="item__edit"><input class="kod-ink" data-item-name placeholder="Item name" />' +
       '<input class="kod-ink" data-item-note placeholder="Description" /></div>';
     list.appendChild(li);
@@ -171,11 +251,11 @@
     li.className = 'kod-plate item';
     li.setAttribute('data-item-idx', String(idx));
     li.innerHTML =
-      '<span class="item__icon item__icon--empty" aria-hidden="true"></span>' +
+      '<label class="item__icon-hit"><span class="item__icon item__icon--empty" aria-hidden="true"></span>' +
+      '<input type="file" class="item__icon-file" data-item-icon-file accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp" aria-label="Item icon" /></label>' +
       '<div class="item__edit">' +
       '<input class="kod-ink" data-item-name placeholder="Item name…" value="" />' +
       '<input class="kod-ink" data-item-note placeholder="Short description (optional)" value="" />' +
-      '<label class="item__icon-upload">Icon<input type="file" data-item-icon-file accept="image/jpeg,image/png,image/webp" hidden /></label>' +
       '<button type="button" data-item-remove>Remove</button></div>';
     list.appendChild(li);
   });
@@ -223,84 +303,113 @@
     if (t.closest('[data-item-name], [data-item-note]')) saveSoon();
   });
 
+  panel.addEventListener('pointerdown', (ev) => {
+    const t = ev.target;
+    if (!(t instanceof Element) || !t.closest('.item__icon-hit')) return;
+    iconPicking = true;
+    window.clearTimeout(saveTimer);
+    window.clearTimeout(focusSave);
+  });
+
+  panel.addEventListener(
+    'cancel',
+    (ev) => {
+      const t = ev.target;
+      if (!(t instanceof HTMLInputElement) || !t.hasAttribute('data-item-icon-file')) return;
+      iconPicking = false;
+    },
+    true,
+  );
+
+  window.addEventListener('focus', () => {
+    if (!iconPicking || iconUploading) return;
+    window.setTimeout(() => {
+      if (!iconUploading) iconPicking = false;
+    }, 500);
+  });
+
   panel.addEventListener('change', async (ev) => {
     const t = ev.target;
     if (!(t instanceof HTMLInputElement) || t.getAttribute('data-item-icon-file') == null) return;
     const li = t.closest('[data-item-idx], [data-item-new]');
     const file = t.files && t.files[0];
+    iconPicking = false;
     if (!li || !file) return;
-    if (file.size > 256 * 1024) {
-      const msg = panel.querySelector('[data-inv-msg]');
-      if (msg) {
-        msg.hidden = false;
-        msg.textContent = 'Max 256KB';
-        msg.className = 'draft-msg draft-msg--err';
-      }
+    const reject = (text) => {
+      iconError(li, text);
       t.value = '';
+    };
+    if (file.size > ICON_CAP) {
+      reject('Use a jpg, png, or webp under 2MB.');
       return;
     }
     const named = li.querySelector('[data-item-name]')?.value?.trim();
-    if (li.hasAttribute('data-item-new') && !named) {
-      const msg = panel.querySelector('[data-inv-msg]');
-      if (msg) {
-        msg.hidden = false;
-        msg.textContent = 'Name the item first';
-        msg.className = 'draft-msg draft-msg--err';
-      }
-      t.value = '';
+    if (!named) {
+      reject('Name the item, then add the picture.');
       return;
     }
-    let idx = li.hasAttribute('data-item-new')
-      ? panel.querySelectorAll('[data-item-idx]').length
-      : Number(li.getAttribute('data-item-idx'));
+    const typeOk =
+      file.type === 'image/jpeg' ||
+      file.type === 'image/png' ||
+      file.type === 'image/webp' ||
+      /\.(jpe?g|png|webp)$/i.test(file.name || '');
+    if (!typeOk) {
+      reject('Use a jpg, png, or webp under 2MB.');
+      return;
+    }
     t.value = '';
-    const ok = await saveNow();
-    if (!ok) return;
-    if (li.hasAttribute('data-item-idx')) idx = Number(li.getAttribute('data-item-idx'));
-    const fd = new FormData();
-    fd.append('file', file, file.name);
-    fd.append('index', String(idx));
-    const headers = {};
-    const m = document.cookie.match(/(?:^|;\s*)kod_edit=([^;]+)/);
-    if (m) headers.Authorization = 'Bearer ' + decodeURIComponent(m[1]);
-    const res = await fetch('/api/character/' + encodeURIComponent(slug) + '/item-icon', {
-      method: 'POST',
-      headers,
-      credentials: 'same-origin',
-      body: fd,
-    });
-    const data = await res.json().catch(() => ({}));
-    if (!res.ok) {
-      const msg = panel.querySelector('[data-inv-msg]');
-      if (msg) {
-        msg.hidden = false;
-        msg.textContent = data.error || 'Icon failed';
-        msg.className = 'draft-msg draft-msg--err';
+    const preview = URL.createObjectURL(file);
+    showIcon(li, preview);
+    iconUploading = true;
+    window.clearTimeout(saveTimer);
+    window.clearTimeout(focusSave);
+    try {
+      const ok = await saveNow();
+      if (!ok) {
+        reject('The item did not save, so the picture was not stored.');
+        return;
       }
-      return;
-    }
-    if (data.icon) {
-      li.setAttribute('data-item-icon', data.icon);
-      const hit = li.querySelector('.item__icon-hit') || li;
-      hit.querySelector('.item__icon--empty')?.remove();
-      let img = hit.querySelector('img.item__icon') || li.querySelector('img.item__icon');
-      if (!img) {
-        img = document.createElement('img');
-        img.className = 'item__icon';
-        img.width = 36;
-        img.height = 36;
-        img.alt = '';
+      const idx = namedRowIndex(li);
+      if (idx < 0) {
+        reject('Name the item, then add the picture.');
+        return;
       }
-      const input = hit.querySelector('input');
-      if (img.parentElement !== hit) hit.insertBefore(img, input || null);
-      const bust = data.url + (String(data.url).includes('?') ? '&' : '?') + 'v=' + Date.now().toString(36);
-      img.src = bust;
+      const fd = new FormData();
+      fd.append('file', file, file.name);
+      fd.append('index', String(idx));
+      fd.append('name', named);
+      const headers = {};
+      const m = document.cookie.match(/(?:^|;\s*)kod_edit=([^;]+)/);
+      if (m) headers.Authorization = 'Bearer ' + decodeURIComponent(m[1]);
+      const res = await fetch('/api/character/' + encodeURIComponent(slug) + '/item-icon', {
+        method: 'POST',
+        headers,
+        credentials: 'same-origin',
+        body: fd,
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        reject(data.error || 'Icon failed');
+        return;
+      }
+      if (data.icon) {
+        const rowMsg = li.querySelector('[data-item-icon-msg]');
+        if (rowMsg) rowMsg.hidden = true;
+        li.setAttribute('data-item-icon', data.icon);
+        const bust = data.url + (String(data.url).includes('?') ? '&' : '?') + 'v=' + Date.now().toString(36);
+        showIcon(li, bust);
+        await saveNow();
+      }
+    } finally {
+      iconUploading = false;
     }
   });
 
   panel.addEventListener('focusout', (ev) => {
     const next = ev.relatedTarget;
     if (next instanceof Node && panel.contains(next)) return;
-    window.setTimeout(saveNow, 0);
+    if (iconPicking || iconUploading) return;
+    window.clearTimeout(focusSave);
+    focusSave = window.setTimeout(saveNow, 0);
   });
 })();

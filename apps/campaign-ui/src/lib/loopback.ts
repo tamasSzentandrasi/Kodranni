@@ -38,15 +38,20 @@ export function cookieValue(header: string | null, name: string): string | undef
   return undefined;
 }
 
-/** Localhost is the Storyteller desk. A tunnel and an archive stay the public hall. */
+/**
+ * Localhost is the Storyteller's machine. The face defaults to the desk.
+ * `kod_desk=0` is the player face, for comparing the two on this machine.
+ * A tunnel and an archive stay the public hall, cookie or not.
+ */
 export function deskToolsOn(request: Request): boolean {
   if (request.headers.get('x-kodranni-archive') === '1') return false;
-  return isLocalDeskRequest(request);
+  if (!isLocalDeskRequest(request)) return false;
+  return cookieValue(request.headers.get('cookie'), DESK_COOKIE) !== '0';
 }
 
 export function deskCookieHeader(on: boolean): string {
-  if (!on) return `${DESK_COOKIE}=; Path=/; Max-Age=0; SameSite=Lax; HttpOnly`;
-  return `${DESK_COOKIE}=1; Path=/; Max-Age=${60 * 60 * 24 * 30}; SameSite=Lax; HttpOnly`;
+  const value = on ? '1' : '0';
+  return `${DESK_COOKIE}=${value}; Path=/; Max-Age=${60 * 60 * 24 * 30}; SameSite=Lax; HttpOnly`;
 }
 
 /** JSON/HTML refusal for a desk write. Null means the call may proceed. */

@@ -7,13 +7,28 @@ import { resolveItemsDir, resolveStorePath } from '../../../../lib/campaign-path
 import { deskToolsOn } from '../../../../lib/loopback';
 import { resolveSheetEdit } from '../../../../lib/sheet-auth';
 
-const ALLOWED = new Set(['.jpg', '.jpeg', '.png', '.webp']);
-const MAX_BYTES = 256 * 1024;
+const MAX_BYTES = 2 * 1024 * 1024;
 
 function contentType(ext: string): string {
   if (ext === '.png') return 'image/png';
   if (ext === '.webp') return 'image/webp';
   return 'image/jpeg';
+}
+
+/** Trust the bytes when the filename extension disagrees. */
+function sniffImage(buf: Buffer): '.png' | '.jpg' | '.webp' | null {
+  if (buf.length >= 8 && buf[0] === 0x89 && buf[1] === 0x50 && buf[2] === 0x4e && buf[3] === 0x47) {
+    return '.png';
+  }
+  if (buf.length >= 3 && buf[0] === 0xff && buf[1] === 0xd8 && buf[2] === 0xff) return '.jpg';
+  if (
+    buf.length >= 12 &&
+    buf.toString('ascii', 0, 4) === 'RIFF' &&
+    buf.toString('ascii', 8, 12) === 'WEBP'
+  ) {
+    return '.webp';
+  }
+  return null;
 }
 
 function json(data: unknown, status = 200) {
@@ -53,7 +68,7 @@ export async function GET({
 
 /**
  * POST /api/character/:slug/item-icon — multipart `file` + `index`.
- * Max 256KB. jpeg/png/webp.
+ * Max 2MB. jpeg, png, or webp.
  */
 export async function POST({
   params,
@@ -83,31 +98,41 @@ export async function POST({
   if (!file || typeof file === 'string') return json({ error: 'Missing file' }, 400);
   if (!Number.isInteger(index) || index < 0) return json({ error: 'Missing index' }, 400);
 
-  const name = (file as File).name || 'item.jpg';
-  const ext = extname(name).toLowerCase() || '.jpg';
-  if (!ALLOWED.has(ext)) return json({ error: 'Allowed: jpg png webp' }, 400);
   const buf = Buffer.from(await (file as File).arrayBuffer());
-  if (buf.byteLength > MAX_BYTES) return json({ error: 'Max 256KB' }, 400);
+  if (buf.byteLength > MAX_BYTES) return json({ error: 'Use a jpg, png, or webp under 2MB' }, 400);
+  const sniffed = sniffImage(buf);
+  if (!sniffed) return json({ error: 'Use a jpg, png, or webp under 2MB' }, 400);
 
-  mkdirSync(itemsDir, { recursive: true });
-  const extNorm = ext === '.jpeg' ? '.jpg' : ext;
-  const fileName = `${slug}-${index}-${Date.now().toString(36)}${Math.floor(Math.random() * 36).toString(36)}${extNorm}`;
-  writeFileSync(join(itemsDir, fileName), buf);
-
+  const wantedName = String(form.get('name') ?? '').trim();
   const store = openSqliteStore(storePath);
+  let fileName = '';
   try {
     const ch = store.getCharacterBySlug(slug);
     if (!ch) return json({ error: 'Character not found' }, 404);
     const items = [...(ch.inventory.items ?? [])];
-    if (!items[index]) return json({ error: 'No item at that index' }, 400);
-    const previous = items[index].icon;
-    items[index] = { ...items[index], icon: fileName };
+    let at = items[index] && (!wantedName || items[index].name === wantedName) ? index : -1;
+    if (at < 0 && wantedName) at = items.findIndex((it) => it.name === wantedName);
+    if (at < 0 || !items[at]) return json({ error: 'No item at that index' }, 400);
+
+    mkdirSync(itemsDir, { recursive: true });
+    fileName = `${slug}-${at}-${Date.now().toString(36)}${Math.floor(Math.random() * 36).toString(36)}${sniffed}`;
+    writeFileSync(join(itemsDir, fileName), buf);
+
+    const previous = items[at].icon;
+    items[at] = { ...items[at], icon: fileName };
     ch.inventory.items = items;
     store.putCharacter(ch);
     if (previous && previous !== fileName && previous === basename(previous) && !previous.includes('..')) {
       const old = join(itemsDir, previous);
       if (existsSync(old)) unlinkSync(old);
     }
+  } catch (e) {
+    if (fileName) {
+      const orphan = join(itemsDir, fileName);
+      if (existsSync(orphan)) unlinkSync(orphan);
+    }
+    const msg = e instanceof Error ? e.message : 'Icon failed';
+    return json({ error: msg }, 400);
   } finally {
     store.close();
   }

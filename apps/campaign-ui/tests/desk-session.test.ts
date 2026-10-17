@@ -34,14 +34,24 @@ describe('POST /api/desk/session', () => {
     expect(res.headers.get('set-cookie')).toContain('kod_desk=1');
   });
 
-  it('clears the cookie and leaves a retired desk path', async () => {
+  it('stores the player face and leaves a retired desk path', async () => {
     const res = await post(
       { 'content-type': 'application/json', referer: 'http://127.0.0.1:8742/community/setup/' },
       JSON.stringify({ on: false }),
     );
     expect(res.status).toBe(303);
     expect(res.headers.get('location')).toBe('/community/');
-    expect(res.headers.get('set-cookie')).toContain('Max-Age=0');
+    expect(res.headers.get('set-cookie')).toContain('kod_desk=0');
+  });
+
+  it('leaves the notebook for the hall when the player face is chosen', async () => {
+    const res = await post(
+      { 'content-type': 'application/x-www-form-urlencoded', referer: 'http://127.0.0.1:8742/notebook/' },
+      'on=0',
+    );
+    expect(res.status).toBe(303);
+    expect(res.headers.get('location')).toBe('/community/');
+    expect(res.headers.get('set-cookie')).toContain('kod_desk=0');
   });
 
   it('204s without a referer and refuses another host', async () => {

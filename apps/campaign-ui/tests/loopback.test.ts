@@ -30,7 +30,7 @@ describe('local desk', () => {
     expect(isLocalDeskRequest(req)).toBe(false);
   });
 
-  it('turns the desk on for every loopback request', () => {
+  it('turns the desk on for loopback until the Storyteller chooses the player face', () => {
     const local = new Request('http://127.0.0.1:8742/community/', {
       headers: { host: '127.0.0.1:8742' },
     });
@@ -39,6 +39,10 @@ describe('local desk', () => {
       headers: { host: '127.0.0.1:8742', cookie: 'kod_desk=1' },
     });
     expect(deskToolsOn(cookie)).toBe(true);
+    const player = new Request('http://127.0.0.1:8742/community/', {
+      headers: { host: '127.0.0.1:8742', cookie: 'kod_desk=0' },
+    });
+    expect(deskToolsOn(player)).toBe(false);
     const tunnel = new Request('http://127.0.0.1:8742/community/', {
       headers: { host: '127.0.0.1:8742', cookie: 'kod_desk=1', 'cf-ray': 'abc' },
     });

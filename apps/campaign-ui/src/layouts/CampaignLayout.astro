@@ -8,7 +8,7 @@ import {
 import LiveStyles from '../components/LiveStyles.astro';
 import { openSqliteStore } from '@kodranni/store';
 import { resolveStorePath } from '../lib/campaign-paths';
-import { deskToolsOn } from '../lib/loopback';
+import { deskToolsOn, isLocalDeskRequest } from '../lib/loopback';
 
 interface Props {
   title: string;
@@ -28,6 +28,7 @@ const asOf = new Date(generatedAt).toLocaleString(undefined, {
 const archive = source === 'snapshot';
 const isMap = primary === 'map';
 const desk = !archive && deskToolsOn(Astro.request);
+const localFace = !archive && isLocalDeskRequest(Astro.request);
 const sourceLabel = archive ? 'archive' : desk ? 'Storyteller Desk' : source === 'live' ? 'live store' : 'fixture';
 
 let inboxCount = 0;
@@ -91,9 +92,27 @@ if (desk) {
           </h1>
         </div>
       </header>
-      <p class="app__meta">
-        As of {asOf} · living record · <span class="src">{sourceLabel}</span>
-      </p>
+      <div class="app__status">
+        <p class="app__meta">
+          As of {asOf} · living record · <span class="src">{sourceLabel}</span>
+        </p>
+        {
+          localFace && (
+            <form class="desk-face" method="post" action="/api/desk/session">
+              <input type="hidden" name="on" value={desk ? '0' : '1'} />
+              <button
+                type="submit"
+                class="desk-face__btn"
+                aria-pressed={desk ? 'true' : 'false'}
+                aria-label={desk ? 'Storyteller Desk on' : 'Storyteller Desk off'}
+              >
+                <span class="desk-face__k">Storyteller Desk</span>
+                <span class="desk-face__state">{desk ? 'On' : 'Off'}</span>
+              </button>
+            </form>
+          )
+        }
+      </div>
 
       <nav class="tabs" aria-label="Primary">
         <a href="/community/" aria-current={primary === 'overview' ? 'page' : undefined}
@@ -246,6 +265,6 @@ if (desk) {
       })();
     </script>
     <Fragment set:html={ORNAMENT_READY_SCRIPT} />
-    {desk && <script is:inline src="/desk-gestures.js"></script>}
+    {desk && <script is:inline src="/desk-gestures.js?v=20261017d"></script>}
   </body>
 </html>
