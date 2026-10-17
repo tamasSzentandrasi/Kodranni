@@ -4,7 +4,7 @@ import { join } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
 import { computePoolSize, type Rng } from '@kodranni/domain';
 import { openSqliteStore, refreshCharacterDerived, seedDemoCampaign } from '@kodranni/store';
-import { executePlayerRoll } from '../src/roll.js';
+import { executePlayerRoll, undoPlayerRoll } from '../src/roll.js';
 import {
   applyRest,
   clearScene,
@@ -159,6 +159,46 @@ describe('tide state', () => {
     expect(closed.position).toBe(10);
     expect(store.getTableState().tide).toBeNull();
     expect(() => closeTide(store)).toThrow(/no Tide/);
+    store.close();
+  });
+
+  it('steps the marker on an opposed roll and puts it back on undo', () => {
+    const store = demoStore();
+    openTide(store, {
+      size: 'skirmish',
+      footing: 'equal',
+      sideA: 'Mill',
+      sideB: 'Palace',
+      dyeA: '#a01818',
+      dyeB: '#3a5c6c',
+    });
+    const ch = refreshCharacterDerived(store.getCharacterBySlug('tomaso')!);
+    ch.exertion.current = Math.max(1, ch.exertion.current);
+    store.putCharacter(ch);
+    const parent = executePlayerRoll(store, {
+      characterSlug: 'tomaso',
+      foundation: 'Strength',
+      skill: 'Carpentry & Masonry',
+      dieTier: 8,
+      exertionDice: 0,
+      rng: () => 0,
+      clientEventId: 'tide-open-roll',
+    });
+    expect(store.getTableState().tide?.position).toBe(8);
+    const child = executePlayerRoll(store, {
+      characterSlug: 'tomaso',
+      foundation: 'Strength',
+      skill: 'Carpentry & Masonry',
+      dieTier: 8,
+      exertionDice: 0,
+      rng: () => 0,
+      parentRollId: parent.rollId,
+      clientEventId: 'tide-oppose-roll',
+    });
+    expect(store.getTableState().tide?.position).toBe(9);
+    expect((store.getRoll(child.rollId)?.data as { tideStep?: { from?: number } }).tideStep?.from).toBe(8);
+    undoPlayerRoll(store, child.rollId);
+    expect(store.getTableState().tide?.position).toBe(8);
     store.close();
   });
 });

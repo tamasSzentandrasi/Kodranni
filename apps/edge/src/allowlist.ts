@@ -19,13 +19,15 @@ export function livePathAllowed(method: string, pathname: string): boolean {
   }
 
   if (p === '/api/snapshot' || p.startsWith('/api/snapshot/')) return m === 'GET' || m === 'HEAD';
-  if (p.startsWith('/api/avatar/')) return m === 'GET' || m === 'HEAD';
+  if (p.startsWith('/api/avatar/')) return m === 'GET' || m === 'HEAD' || m === 'POST';
   if (p === '/api/fortune-icon') return m === 'GET' || m === 'HEAD';
+  if (p === '/api/session') return m === 'GET' || m === 'HEAD';
   if (p.startsWith('/api/character/')) return m === 'GET' || m === 'HEAD' || m === 'POST';
 
   if (m !== 'GET' && m !== 'HEAD' && m !== 'POST') return false;
 
   if (p === '/community' || p.startsWith('/community/')) return m === 'GET' || m === 'HEAD';
+  if (p === '/session') return m === 'GET' || m === 'HEAD';
   if (p === '/character-map' || p.startsWith('/character-map/')) return m === 'GET' || m === 'HEAD';
   if (p === '/characters' || p.startsWith('/characters/')) return m === 'GET' || m === 'HEAD';
   if (p.startsWith('/design/') || p.startsWith('/brand/') || p.startsWith('/_astro/')) {

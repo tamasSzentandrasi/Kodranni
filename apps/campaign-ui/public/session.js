@@ -350,6 +350,36 @@
     });
   }
 
+  function paintInbox(rows) {
+    var body = document.querySelector('[data-inbox-body]');
+    if (!body || !Array.isArray(rows)) return;
+    var key = rows
+      .map(function (row) {
+        return String(row.slug) + '\n' + String(row.name) + '\n' + String(row.sentBy);
+      })
+      .join('\n---\n');
+    if (body.getAttribute('data-inbox-key') === key) return;
+    body.setAttribute('data-inbox-key', key);
+    if (rows.length === 0) {
+      body.innerHTML = '<p data-inbox-empty>No one is waiting.</p>';
+      return;
+    }
+    var html = '<div class="inbox-cards">';
+    rows.forEach(function (row) {
+      html +=
+        '<article class="inbox-card" data-inbox-row data-slug="' + esc(row.slug) + '">' +
+        '<h3>' + esc(row.name) + '</h3>' +
+        '<p class="inbox-card__from">Sent by ' + esc(row.sentBy) + '</p>' +
+        '<p class="inbox-card__actions">' +
+        '<a href="/characters/' + esc(row.slug) + '/">Open</a>' +
+        '<button type="button" class="session-quiet" data-review="approve">Approve</button>' +
+        '<button type="button" class="session-quiet" data-review="request_changes">Send back</button>' +
+        '</p></article>';
+    });
+    html += '</div>';
+    body.innerHTML = html;
+  }
+
   function paintBadge(count) {
     var n = Number(count) || 0;
     document.querySelectorAll('[data-inbox-count], [data-inbox-badge]').forEach(function (badge) {
@@ -442,6 +472,7 @@
         el.remove();
         return;
       }
+      if (el.hasAttribute('data-tide-close')) return;
       if (el instanceof HTMLInputElement || el instanceof HTMLButtonElement) {
         if (el instanceof HTMLInputElement && (el.type === 'text' || el.type === '')) el.readOnly = true;
         else el.disabled = true;
@@ -451,12 +482,36 @@
     if (tide && tide.dyeB) studio.style.setProperty('--tide-b', tide.dyeB);
     var preview = document.querySelector('[data-tide-preview]');
     if (preview && tide) preview.innerHTML = barHtml(tide);
-    if (!studio.querySelector('.tide-studio__note')) {
-      var noteEl = document.createElement('p');
-      noteEl.className = 'tide-studio__note';
-      noteEl.textContent = note || 'The Tide is open.';
-      var foot = studio.querySelector('.tide-studio__foot');
-      if (foot) foot.appendChild(noteEl);
+    var actions = studio.querySelector('.tide-studio__actions');
+    if (!actions) {
+      actions = document.createElement('div');
+      actions.className = 'tide-studio__actions';
+      studio.appendChild(actions);
+    }
+    if (!studio.querySelector('[data-tide-close]')) {
+      var close = document.createElement('button');
+      close.type = 'button';
+      close.className = 'session-quiet';
+      close.setAttribute('data-tide-close', '');
+      close.textContent = 'Close the Tide';
+      actions.appendChild(close);
+    }
+    if (!studio.querySelector('[data-tide-rule]')) {
+      var rule = document.createElement('p');
+      rule.className = 'tide-studio__note';
+      rule.setAttribute('data-tide-rule', '');
+      rule.textContent = 'One Tide at a time. Close it to post the next.';
+      actions.appendChild(rule);
+    }
+    if (note) {
+      var status = studio.querySelector('[data-tide-post-note]');
+      if (!status) {
+        status = document.createElement('p');
+        status.className = 'tide-studio__note';
+        status.setAttribute('data-tide-post-note', '');
+        actions.appendChild(status);
+      }
+      status.textContent = note;
     }
   }
 
@@ -489,13 +544,26 @@
     return row;
   }
 
-  function applyPeople(people) {
+  function exertionShown(row) {
+    var read = row.querySelector('[data-exertion-read]');
+    if (!read) return null;
+    var n = Number(String(read.textContent).split('/')[0]);
+    return Number.isFinite(n) ? n : null;
+  }
+
+  function applyPeople(people, highlightGain) {
     (people || []).forEach(function (person) {
       var row = document.querySelector('[data-rest-person][data-slug="' + CSS.escape(person.slug) + '"]');
       if (!row) return;
+      var before = exertionShown(row);
       row.setAttribute('data-max', String(person.exertionMax));
       var read = row.querySelector('[data-exertion-read]');
       if (read) read.textContent = person.exertion + ' / ' + person.exertionMax;
+      if (highlightGain && before != null && Number(person.exertion) > before) {
+        row.classList.remove('rest-soul--returned');
+        void row.offsetWidth;
+        row.classList.add('rest-soul--returned');
+      }
       var food = row.querySelector('[data-supply-value="food"]');
       var water = row.querySelector('[data-supply-value="water"]');
       if (food) food.textContent = String(person.foodDays);
@@ -541,6 +609,13 @@
   }
 
   if (deskOn()) {
+    try {
+      var heldTideNote = sessionStorage.getItem('kod-tide-note') || '';
+      if (heldTideNote) {
+        sessionStorage.removeItem('kod-tide-note');
+        note(heldTideNote);
+      }
+    } catch (err) { /* private mode */ }
     document.querySelectorAll('[data-rest-band]').forEach(paintAwards);
     fillAdds();
     paintTide();
@@ -551,6 +626,7 @@
           if (!data) return;
           paintWhispers(data.whispers);
           paintBadge(data.pending);
+          paintInbox(data.inbox);
           var studio = document.querySelector('[data-session-tide-open]');
           var preview = document.querySelector('[data-tide-preview]');
           if (data.tide && studio && studio.getAttribute('data-tide-locked') === '1' && preview) {
@@ -616,14 +692,16 @@
         if (!data) return;
         card.remove();
         var inbox = document.querySelector('[data-session-inbox]');
+        var host = (inbox && inbox.querySelector('[data-inbox-body]')) || inbox;
         var left = document.querySelectorAll('[data-inbox-row]').length;
         paintBadge(left);
-        if (inbox && left === 0 && !inbox.querySelector('[data-inbox-empty]')) {
+        if (host && left === 0 && !host.querySelector('[data-inbox-empty]')) {
           var empty = document.createElement('p');
           empty.setAttribute('data-inbox-empty', '');
           empty.textContent = 'No one is waiting.';
-          var cards = inbox.querySelector('.inbox-cards');
+          var cards = host.querySelector('.inbox-cards');
           if (cards) cards.replaceWith(empty);
+          host.setAttribute('data-inbox-key', '');
         }
         if (data.person && !document.querySelector('[data-rest-person][data-slug="' + CSS.escape(data.person.slug) + '"]')) {
           var arrived = personRow(data.person);
@@ -740,7 +818,7 @@
         ampleFood: foodBox instanceof HTMLInputElement && foodBox.checked,
         ampleWater: waterBox instanceof HTMLInputElement && waterBox.checked,
       }).then(function (data) {
-        if (data && data.people) applyPeople(data.people);
+        if (data && data.people) applyPeople(data.people, true);
       });
       return;
     }
@@ -828,6 +906,22 @@
       return;
     }
 
+    if (t.hasAttribute('data-tide-close')) {
+      if (t instanceof HTMLButtonElement && t.disabled) return;
+      if (t instanceof HTMLButtonElement) t.disabled = true;
+      post('/api/desk/table', { op: 'tideClose' }).then(function (data) {
+        if (!data) {
+          if (t instanceof HTMLButtonElement) t.disabled = false;
+          return;
+        }
+        if (data.postError) {
+          try { sessionStorage.setItem('kod-tide-note', data.postError); } catch (err) { /* private mode */ }
+        }
+        location.reload();
+      });
+      return;
+    }
+
     if (t.hasAttribute('data-tide-open')) {
       if (t instanceof HTMLButtonElement && t.disabled) return;
       if (t instanceof HTMLButtonElement) t.disabled = true;
@@ -853,6 +947,19 @@
           ? 'Posted to the play channel.'
           : (data.postError || 'The Tide is open on this table. It posts to the play channel when the table is live.');
         lockTide(data.reading.tide, postedNote);
+      });
+      return;
+    }
+
+    if (t.hasAttribute('data-omen-post')) {
+      if (t instanceof HTMLButtonElement) t.disabled = true;
+      post('/api/desk/table', { op: 'scenePost' }).then(function (data) {
+        var note = document.querySelector('[data-omen-post-note]');
+        var text = data && data.posted
+          ? 'Posted to the play channel.'
+          : ((data && data.postError) || 'The omens are on this table. They post to the play channel when the table is live.');
+        if (note) note.textContent = text;
+        if (t instanceof HTMLButtonElement) t.disabled = false;
       });
       return;
     }

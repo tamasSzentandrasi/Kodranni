@@ -75,6 +75,12 @@ export function restPerson(ch: CharacterRecord): SessionRestPerson {
   };
 }
 
+export function inboxSentBy(ch: {
+  initiator?: { displayName?: string; accountId?: string };
+}): string {
+  return ch.initiator?.displayName || ch.initiator?.accountId || 'the table';
+}
+
 export function assembleSession(input: {
   desk: boolean;
   state: TableState;
@@ -100,7 +106,7 @@ export function assembleSession(input: {
     .map((ch) => ({
       slug: ch.slug,
       name: ch.name,
-      sentBy: ch.initiator?.displayName || ch.initiator?.accountId || 'the table',
+      sentBy: inboxSentBy(ch),
     }));
   const active = input.characters
     .filter((ch) => ch.status === 'active')
@@ -228,6 +234,7 @@ function sceneBoard(model: SessionDeskModel): string {
     <div class="omen-stage"><div data-session-scene>${omenDieHtml(model.die, { edit: true })}</div></div>
     ${lectern}
     ${whispers}
+    <p class="omen-post"><button type="button" class="session-quiet" data-omen-post>Post the omens</button> <span data-omen-post-note></span></p>
   </section>`;
 }
 
@@ -265,8 +272,7 @@ function inbox(pending: SessionDeskModel['pending']): string {
       <div class="kod-slide__panel" id="kod-slide-approvals" data-session-inbox>
         <span class="kod-slide__rail kod-slide__rail--top" aria-hidden="true"></span>
         <span class="kod-slide__rail kod-slide__rail--bot" aria-hidden="true"></span>
-        <h2 class="session-drawer__title">Approvals</h2>
-        ${body}
+        <div data-inbox-body>${body}</div>
       </div>
     </div>
   </div>`;
@@ -365,7 +371,7 @@ function tideStudio(tide: OpenTide | null): string {
       `<button type="button" class="session-quiet" data-tide-size="${value}" aria-pressed="${value === size ? 'true' : 'false'}"${locked ? ' disabled' : ''}>${label}</button>`,
   ).join('');
   const open = locked
-    ? '<p class="tide-studio__note">The Tide is open.</p>'
+    ? '<button type="button" class="session-quiet" data-tide-close>Close the Tide</button><p class="tide-studio__note" data-tide-rule>One Tide at a time. Close it to post the next.</p>'
     : '<button type="button" class="session-quiet" data-tide-open disabled>Post the Tide</button>';
   return `<section class="kod-plate tide-studio" data-session-tide-open style="--tide-a: ${esc(dyeA)}; --tide-b: ${esc(dyeB)}"${locked ? ' data-tide-locked="1"' : ''}>
     ${tideHeadHtml()}
@@ -386,8 +392,8 @@ function tideStudio(tide: OpenTide | null): string {
         <span data-tide-footing-label>${esc(footingWords(footing, sideA, sideB))}</span>
         <input type="range" min="0" max="4" step="1" value="${esc(stop)}" data-tide-footing aria-label="Footing"${locked ? ' disabled' : ''}>
       </label>
-      ${open}
     </div>
+    <div class="tide-studio__actions">${open}</div>
   </section>`;
 }
 

@@ -38,6 +38,8 @@ function env() {
 describe('shouldStampCampaign', () => {
   it('stamps hall routes and leaves chrome files alone', () => {
     expect(shouldStampCampaign('/community/')).toBe(true);
+    expect(shouldStampCampaign('/session/')).toBe(true);
+    expect(shouldStampCampaign('/session/omens.png')).toBe(false);
     expect(shouldStampCampaign('/community/hierarchy/')).toBe(true);
     expect(shouldStampCampaign('/characters/torvald/')).toBe(true);
     expect(shouldStampCampaign('/design/campaign.css')).toBe(false);
@@ -607,6 +609,41 @@ describe('edge handler', () => {
     }
   });
 
+  it('proxies the player Session page and reading, and still refuses the desk', async () => {
+    const e = env();
+    const campaign = 'y';
+    await e.CAMPAIGNS.put(kvKey(campaign, 'origin'), 'https://origin.example');
+    const prev = globalThis.fetch;
+    globalThis.fetch = async (input) => {
+      const u = String(input instanceof Request ? input.url : input);
+      return new Response(`proxied ${u}`, {
+        status: 200,
+        headers: { 'content-type': 'text/html' },
+      });
+    };
+    try {
+      const session = await handleEdgeRequest(
+        new Request(`https://kodranni.com/session/?campaign=${campaign}`),
+        e,
+      );
+      const reading = await handleEdgeRequest(
+        new Request(`https://kodranni.com/api/session?campaign=${campaign}`),
+        e,
+      );
+      const deskWrite = await handleEdgeRequest(
+        new Request(`https://kodranni.com/api/desk/table?campaign=${campaign}`, { method: 'POST' }),
+        e,
+      );
+      expect(session.status).toBe(200);
+      expect(await session.text()).toContain('https://origin.example/session/');
+      expect(reading.status).toBe(200);
+      expect(await reading.text()).toContain('https://origin.example/api/session');
+      expect(deskWrite.status).toBe(404);
+    } finally {
+      globalThis.fetch = prev;
+    }
+  });
+
   it('maps GitHub Pages /Kodranni/Guidebook assets onto kodranni.com/Guidebook', async () => {
     const e = {
       ...env(),
@@ -703,6 +740,62 @@ describe('edge handler', () => {
       );
       expect(res.status).toBe(200);
       expect(await res.json()).toEqual({ id: 'm1' });
+    } finally {
+      globalThis.fetch = prev;
+    }
+  });
+
+  it('swaps a die token for the guild emoji before the channel post', async () => {
+    const e = {
+      ...env(),
+      DISCORD_BOT_TOKEN: 'bot-secret',
+    };
+    const campaign = 'vardmark';
+    const deviceKey = 'e'.repeat(32);
+    await handleEdgeRequest(
+      new Request(`https://face.example/control/register?campaign=${campaign}`, {
+        method: 'POST',
+        body: JSON.stringify({ deviceKey }),
+      }),
+      e,
+    );
+    const channelId = '223456789012345678';
+    const body = JSON.stringify({
+      op: 'send',
+      channelId,
+      payload: { content: 'rolled {{kod-die:d8}} {{kod-die:d6}}' },
+    });
+    const prev = globalThis.fetch;
+    const posted: string[] = [];
+    globalThis.fetch = async (input, init) => {
+      const u = String(input instanceof Request ? input.url : input);
+      if (u.endsWith(`/channels/${channelId}`)) {
+        return new Response(JSON.stringify({ guild_id: '323456789012345678' }), { status: 200 });
+      }
+      if (u.endsWith('/emojis')) {
+        return new Response(JSON.stringify([{ name: 'd8', id: '423456789012345678' }]), {
+          status: 200,
+        });
+      }
+      posted.push(String(init?.body ?? ''));
+      return new Response(JSON.stringify({ id: 'm2' }), {
+        status: 200,
+        headers: { 'content-type': 'application/json' },
+      });
+    };
+    try {
+      const res = await handleEdgeRequest(
+        new Request(`https://face.example/control/discord/rest?campaign=${campaign}`, {
+          method: 'POST',
+          headers: { authorization: `Bearer ${campaign}:${sign(deviceKey, body)}` },
+          body,
+        }),
+        e,
+      );
+      expect(res.status).toBe(200);
+      expect(posted[0]).toContain('<:d8:423456789012345678>');
+      expect(posted[0]).toContain('🎲');
+      expect(posted[0]).not.toContain('{{kod-die:');
     } finally {
       globalThis.fetch = prev;
     }

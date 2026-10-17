@@ -1,5 +1,10 @@
-import type { OpenTide, SceneFace, TableState } from '@kodranni/store';
-import { FIXED_OMEN_FACES, TIDE_DYES } from '@kodranni/store';
+import {
+  FIXED_OMEN_FACES,
+  TIDE_DYES,
+  type OpenTide,
+  type SceneFace,
+  type TableState,
+} from '@kodranni/store/table';
 import { esc } from './escape.js';
 
 export interface SessionSceneLine {
@@ -68,6 +73,18 @@ function footingLabel(tide: OpenTide): string {
     case 'severeB':
       return `${tide.sideB} at a severe disadvantage`;
   }
+}
+
+/** CSS `color-mix` share: `weight` of `hex`, the rest `toward`. */
+export function mixHex(hex: string, toward: string, weight: number): string {
+  const channels = (value: string) => {
+    const n = Number.parseInt(value.replace('#', ''), 16);
+    return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+  };
+  const [r1, g1, b1] = channels(hex);
+  const [r2, g2, b2] = channels(toward);
+  const mix = (a: number, b: number) => Math.round(a * weight + b * (1 - weight));
+  return `#${[mix(r1, r2), mix(g1, g2), mix(b1, b2)].map((v) => v.toString(16).padStart(2, '0')).join('')}`;
 }
 
 /** Same dye twice: the second fill steps toward parchment, as the book describes. */
@@ -297,3 +314,102 @@ export function sessionBetweenHtml(): string {
 }
 
 export const TIDE_DYE_LIST = TIDE_DYES;
+
+const TONE_FILL: Record<string, string> = {
+  positive: '#1c3a28',
+  negative: '#4a1820',
+  mixed: '#163024',
+};
+
+/**
+ * One read-only net. Whispered faces are blank glass: a number, no line.
+ * The public lines belong under the picture, not inside the triangles.
+ */
+export function omenBoardSvg(die: readonly SessionDieFace[]): string {
+  const tri = 64;
+  const height = tri * 0.8660254;
+  const width = 16 + tri * 3 + 16;
+  const board = 16 + height * 7 + 16;
+  const cells = die
+    .map((face) => {
+      const seat = OMEN_NET[face.face - 1] ?? OMEN_NET[0]!;
+      const [x, y, point] = seat;
+      const left = 16 + x * tri;
+      const top = 16 + y * height;
+      const points =
+        point === 'down'
+          ? `${left},${top} ${left + tri},${top} ${left + tri / 2},${top + height}`
+          : `${left + tri / 2},${top} ${left + tri},${top + height} ${left},${top + height}`;
+      const whisper = face.whisper;
+      const fill = whisper ? '#12141a' : (TONE_FILL[face.tone] ?? '#12141a');
+      const cx = left + tri / 2;
+      const cy = top + height * (point === 'down' ? 0.42 : 0.62);
+      return `<polygon points="${points}" fill="${fill}" stroke="#c6c1b8" stroke-width="1.2"/>
+        <text x="${cx.toFixed(1)}" y="${cy.toFixed(1)}" text-anchor="middle" fill="#c6c1b8" font-size="13" font-family="Palatino, Georgia, serif">${esc(face.face)}</text>`;
+    })
+    .join('');
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width.toFixed(1)} ${board.toFixed(1)}" width="${Math.ceil(width)}" height="${Math.ceil(board)}">
+    <rect width="100%" height="100%" fill="#08090d"/>
+    ${cells}
+  </svg>`;
+}
+
+/** Chat clients cache the still. The dyes are in the query so a new pair is a new picture. */
+export function tidePicturePath(tide: { position: number; dyeA: string; dyeB: string }): string {
+  const dye = (hex: string) => hex.replace(/[^0-9a-f]/gi, '').toLowerCase();
+  return `/session/tide.png?p=${tide.position}&a=${dye(tide.dyeA)}&b=${dye(tide.dyeB)}`;
+}
+
+/**
+ * The desk bar as one still. Side A runs from a darkened dye into the dye.
+ * Side B runs from the dye into a darkened dye. Same mixes as the session page.
+ */
+export function tidePictureSvg(tide: {
+  sideA: string;
+  sideB: string;
+  position: number;
+  length: number;
+  dyeA: string;
+  dyeB: string;
+}): string {
+  const fill = tideFill(tide.dyeA, tide.dyeB);
+  const barX = 36;
+  const barW = 648;
+  const at = tide.length > 0 ? Math.min(1, Math.max(0, tide.position / tide.length)) : 0;
+  const split = barX + barW * at;
+  const marker = tideMarkerWords(tide);
+  const edgeA = mixHex(fill.a, '#140808', 0.42);
+  const edgeB = mixHex(fill.b, '#0c1214', 0.45);
+  const left = Math.max(0, split - barX);
+  const right = Math.max(0, barX + barW - split);
+  const leftRect =
+    left > 0.5
+      ? `<rect x="${barX}" y="58" width="${left.toFixed(1)}" height="28" fill="url(#tideA)"/>`
+      : '';
+  const rightRect =
+    right > 0.5
+      ? `<rect x="${split.toFixed(1)}" y="58" width="${right.toFixed(1)}" height="28" fill="url(#tideB)"/>`
+      : '';
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 168" width="720" height="168">
+    <defs>
+      <linearGradient id="tideA" gradientUnits="userSpaceOnUse" x1="${barX}" y1="0" x2="${split.toFixed(1)}" y2="0">
+        <stop offset="0" stop-color="${esc(edgeA)}"/>
+        <stop offset="1" stop-color="${esc(fill.a)}"/>
+      </linearGradient>
+      <linearGradient id="tideB" gradientUnits="userSpaceOnUse" x1="${split.toFixed(1)}" y1="0" x2="${barX + barW}" y2="0">
+        <stop offset="0" stop-color="${esc(fill.b)}"/>
+        <stop offset="1" stop-color="${esc(edgeB)}"/>
+      </linearGradient>
+    </defs>
+    <rect width="720" height="168" fill="#0a0909"/>
+    <text x="36" y="36" fill="${esc(fill.a)}" font-size="15" font-family="Palatino, Georgia, serif">${esc(tide.sideA)} · 0</text>
+    <text x="360" y="36" text-anchor="middle" fill="#c6c1b8" font-size="15" font-family="Palatino, Georgia, serif">${esc(tide.position)} of ${esc(tide.length)}</text>
+    <text x="684" y="36" text-anchor="end" fill="${esc(fill.b)}" font-size="15" font-family="Palatino, Georgia, serif">${esc(tide.length)} · ${esc(tide.sideB)}</text>
+    <rect x="${barX}" y="58" width="${barW}" height="28" fill="#121010" stroke="#3a3530" stroke-width="1"/>
+    ${rightRect}
+    ${leftRect}
+    <polygon points="${split.toFixed(1)},48 ${(split + 8).toFixed(1)},60 ${split.toFixed(1)},72 ${(split - 8).toFixed(1)},60" fill="#e8e2d8" stroke="#1a1512" stroke-width="1"/>
+    <line x1="${split.toFixed(1)}" y1="72" x2="${split.toFixed(1)}" y2="108" stroke="#e8e2d8" stroke-width="2"/>
+    <text x="360" y="142" text-anchor="middle" fill="#c6c1b8" font-size="16" font-family="Palatino, Georgia, serif">${esc(marker)}</text>
+  </svg>`;
+}

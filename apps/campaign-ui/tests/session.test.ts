@@ -11,8 +11,9 @@ import {
 import { sessionReading, storytellerDie } from '@kodranni/hall-render';
 import { defaultCampaignTomlPath, emptyTableState, openSqliteStore, seedDemoCampaign } from '@kodranni/store';
 import { POST as discordPost } from '../src/pages/api/desk/discord';
-import { POST as tablePost } from '../src/pages/api/desk/table';
+import { GET as tableGet, POST as tablePost } from '../src/pages/api/desk/table';
 import { GET as sessionGet } from '../src/pages/api/session';
+import { GET as omensGet } from '../src/pages/session/omens.png';
 import { assembleSession, sessionDeskHtml, sessionPageHtml } from '../src/lib/session-desk';
 
 const dirs: string[] = [];
@@ -79,6 +80,7 @@ describe('session page', () => {
     expect(live).not.toContain('Approvals');
     expect(live).not.toContain('data-session-inbox');
     expect(live).not.toContain('adapter pending');
+    expect(live).not.toContain('Post the omens');
 
     const desk = sessionDeskHtml({
       die: storytellerDie(state),
@@ -101,6 +103,8 @@ describe('session page', () => {
     expect(desk).toContain('data-omen-lectern');
     expect(desk).toContain('data-slide="approvals"');
     expect(desk).toContain('Approvals');
+    expect(desk).toContain('data-inbox-body');
+    expect(desk).not.toContain('session-drawer__title');
     expect(desk).not.toContain('This scene');
     expect(desk).toContain('class="session-count"');
     expect(desk).toContain('Restore &amp; Restock');
@@ -116,6 +120,9 @@ describe('session page', () => {
     expect(desk).toContain('href="/characters/tomaso/"');
     expect(desk).toContain('Tomaso Fero');
     expect(desk).toContain('Post the Tide');
+    expect(desk).toContain('Post the omens');
+    expect(desk).toContain('data-omen-post');
+    expect(desk).not.toContain('Save scene');
     expect(desk).toContain('data-tide-open disabled');
     expect(desk).not.toContain('data-tide-open hidden');
     expect(desk).not.toContain('Stepping and closing');
@@ -174,6 +181,31 @@ describe('GET /api/session', () => {
     expect(quiet.between).toBe(true);
     expect(quiet.scene).toEqual([]);
     expect(JSON.stringify(quiet)).not.toContain('The mill bell');
+  });
+});
+
+describe('GET /api/desk/table', () => {
+  it('returns waiting sheets for the approvals drawer', async () => {
+    const path = liveStore();
+    const store = openSqliteStore(path);
+    const ch = store.getCharacterBySlug('jakov');
+    if (!ch) throw new Error('missing jakov');
+    ch.status = 'pending_review';
+    ch.initiator = { platform: 'discord', accountId: 'p1', displayName: 'Mara' };
+    store.putCharacter(ch);
+    store.close();
+    const res = await tableGet({
+      request: new Request('http://127.0.0.1:8742/api/desk/table', {
+        headers: { host: '127.0.0.1' },
+      }),
+    });
+    expect(res.status).toBe(200);
+    const body = (await res.json()) as {
+      pending: number;
+      inbox: { slug: string; name: string; sentBy: string }[];
+    };
+    expect(body.pending).toBe(1);
+    expect(body.inbox[0]).toMatchObject({ slug: 'jakov', sentBy: 'Mara' });
   });
 });
 
@@ -288,6 +320,11 @@ describe('POST /api/desk/table', () => {
     const foodBefore = caterina.inventory.foodDays;
     prep.close();
 
+    const missing = await tablePost({
+      request: deskRequest('http://127.0.0.1:8742/api/desk/table', { op: 'tideClose' }),
+    });
+    expect(missing.status).toBe(400);
+
     const opened = await tablePost({
       request: deskRequest('http://127.0.0.1:8742/api/desk/table', {
         op: 'tideOpen',
@@ -321,6 +358,27 @@ describe('POST /api/desk/table', () => {
       }),
     });
     expect(again.status).toBe(400);
+
+    const closed = await tablePost({
+      request: deskRequest('http://127.0.0.1:8742/api/desk/table', { op: 'tideClose' }),
+    });
+    expect(closed.status).toBe(200);
+    const closedBody = (await closed.json()) as { reading: { tide: unknown } };
+    expect(closedBody.reading.tide).toBeNull();
+    const reopened = await tablePost({
+      request: deskRequest('http://127.0.0.1:8742/api/desk/table', {
+        op: 'tideOpen',
+        size: 'small',
+        footing: 'equal',
+        sideA: 'Gate',
+        sideB: 'Yard',
+        dyeA: '#a01818',
+        dyeB: '#6e2438',
+      }),
+    });
+    expect(reopened.status).toBe(200);
+    const nextTide = (await reopened.json()) as { reading: { tide: { sideA: string } } };
+    expect(nextTide.reading.tide.sideA).toBe('Gate');
 
     const dry = await tablePost({
       request: deskRequest('http://127.0.0.1:8742/api/desk/table', {
@@ -369,6 +427,39 @@ describe('POST /api/desk/table', () => {
     expect(body.postError).toBe(
       'The Tide is open on this table. It posts to the play channel when the table is live.',
     );
+  });
+
+  it('keeps the omens on the table when the play channel is not live', async () => {
+    const path = liveStore();
+    process.env.KODRANNI_HOME = dirname(path);
+    delete process.env.DISCORD_PLAY_CHANNEL_ID;
+    const posted = await tablePost({
+      request: deskRequest('http://127.0.0.1:8742/api/desk/table', { op: 'scenePost' }),
+    });
+    expect(posted.status).toBe(200);
+    const body = (await posted.json()) as { posted?: boolean; postError?: string };
+    expect(body.posted).toBe(false);
+    expect(body.postError).toBe(
+      'The omens are on this table. They post to the play channel when the table is live.',
+    );
+  });
+
+  it('serves the omen net as a png and hides it on the archive', async () => {
+    liveStore();
+    const picture = await omensGet({
+      request: new Request('http://127.0.0.1:8742/session/omens.png'),
+    });
+    expect(picture.status).toBe(200);
+    expect(picture.headers.get('content-type')).toBe('image/png');
+    const bytes = new Uint8Array(await picture.arrayBuffer());
+    expect(bytes[0]).toBe(0x89);
+    expect(bytes[1]).toBe(0x50);
+    const archived = await omensGet({
+      request: new Request('http://127.0.0.1:8742/session/omens.png', {
+        headers: { 'x-kodranni-archive': '1' },
+      }),
+    });
+    expect(archived.status).toBe(404);
   });
 
   it('lists the inbox in confirm order', () => {

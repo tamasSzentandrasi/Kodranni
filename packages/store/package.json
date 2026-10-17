@@ -6,6 +6,7 @@
   "exports": {
     ".": "./src/index.ts",
     "./types": "./src/types.ts",
+    "./table": "./src/table.ts",
     "./labels": "./src/labels.ts",
     "./relation-map": "./src/relation-map.ts",
     "./demo-icons": "./src/demo-icons.ts"

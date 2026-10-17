@@ -4,12 +4,20 @@ import { livePathAllowed } from '../src/allowlist.js';
 describe('livePathAllowed', () => {
   it('allows hall, sheets, and player APIs', () => {
     expect(livePathAllowed('GET', '/community/')).toBe(true);
+    expect(livePathAllowed('GET', '/session/')).toBe(true);
+    expect(livePathAllowed('GET', '/session')).toBe(true);
+    expect(livePathAllowed('HEAD', '/api/session')).toBe(true);
+    expect(livePathAllowed('GET', '/api/session/')).toBe(true);
+    expect(livePathAllowed('GET', '/session/omens.png')).toBe(true);
+    expect(livePathAllowed('GET', '/session/tide.png')).toBe(true);
     expect(livePathAllowed('GET', '/character-map/')).toBe(true);
     expect(livePathAllowed('GET', '/characters/torvald/')).toBe(true);
     expect(livePathAllowed('GET', '/api/snapshot')).toBe(true);
     expect(livePathAllowed('GET', '/api/fortune-icon')).toBe(true);
     expect(livePathAllowed('GET', '/api/community/rev')).toBe(true);
     expect(livePathAllowed('POST', '/api/character/torvald')).toBe(true);
+    expect(livePathAllowed('POST', '/api/avatar/torvald')).toBe(true);
+    expect(livePathAllowed('POST', '/api/character/torvald/item-icon')).toBe(true);
     expect(livePathAllowed('GET', '/hall-client.js')).toBe(true);
     expect(livePathAllowed('GET', '/archetypes/warrior.jpg')).toBe(true);
     expect(livePathAllowed('GET', '/demo-items/adze.png')).toBe(true);
@@ -27,7 +35,12 @@ describe('livePathAllowed', () => {
     expect(livePathAllowed('GET', '/emissary')).toBe(false);
     expect(livePathAllowed('GET', '/api/desk/snapshot')).toBe(false);
     expect(livePathAllowed('POST', '/api/fortune-icon')).toBe(false);
+    expect(livePathAllowed('POST', '/api/avatar')).toBe(false);
     expect(livePathAllowed('GET', '/notebook/')).toBe(false);
+    expect(livePathAllowed('POST', '/session/')).toBe(false);
+    expect(livePathAllowed('POST', '/api/session')).toBe(false);
+    expect(livePathAllowed('GET', '/api/desk/table')).toBe(false);
+    expect(livePathAllowed('POST', '/api/desk/table')).toBe(false);
     expect(livePathAllowed('POST', '/api/desk/session')).toBe(false);
     expect(livePathAllowed('POST', '/api/desk/restore')).toBe(false);
     expect(livePathAllowed('POST', '/internal/discord')).toBe(false);

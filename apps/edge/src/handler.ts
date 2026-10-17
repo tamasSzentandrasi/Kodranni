@@ -384,13 +384,14 @@ export async function handleEdgeRequest(
       parsed.op === 'send'
         ? `https://discord.com/api/v10/channels/${parsed.channelId}/messages`
         : `https://discord.com/api/v10/channels/${parsed.channelId}/messages/${parsed.messageId}`;
+    const outbound = await paintDieTokens(token, parsed.channelId, parsed.payload ?? {});
     const discord = await fetch(dest, {
       method: parsed.op === 'send' ? 'POST' : 'PATCH',
       headers: {
         authorization: `Bot ${token}`,
         'content-type': 'application/json',
       },
-      body: JSON.stringify(parsed.payload ?? {}),
+      body: JSON.stringify(outbound),
       signal: AbortSignal.timeout(10_000),
     });
     const text = await discord.text();
@@ -536,7 +537,10 @@ async function proxyLive(
   if (!livePathAllowed(request.method, url.pathname)) {
     return json({ error: 'not found' }, 404);
   }
-  const timeoutMs = Number(env.LIVE_PROXY_TIMEOUT_MS ?? 4000);
+  const upload =
+      request.method === 'POST' &&
+      (url.pathname.startsWith('/api/avatar/') || url.pathname.includes('/item-icon'));
+    const timeoutMs = upload ? 20_000 : Number(env.LIVE_PROXY_TIMEOUT_MS ?? 4000);
   try {
     const dest = new URL(origin);
     dest.pathname = url.pathname;
@@ -559,7 +563,10 @@ async function proxyLive(
     }
     return await publicizeLiveResponse(request, proxied, campaign);
   } catch {
-    await env.CAMPAIGNS.put(kvKey(campaign, 'origin'), '');
+    // A slow portrait must not unpublish the hall. A dead GET still clears it.
+    if (request.method === 'GET' || request.method === 'HEAD') {
+      await env.CAMPAIGNS.put(kvKey(campaign, 'origin'), '');
+    }
     return null;
   }
 }
@@ -606,6 +613,7 @@ export function shouldStampCampaign(path: string): boolean {
   const bare = p.endsWith('/') && p.length > 1 ? p.slice(0, -1) : p;
   if (bare === '' || bare === '/' || bare === '/index.html') return true;
   if (bare === '/community' || bare.startsWith('/community/')) return true;
+  if (bare === '/session') return true;
   if (bare === '/character-map' || bare.startsWith('/character-map/')) return true;
   if (bare === '/characters' || bare.startsWith('/characters/')) return true;
   return false;
@@ -707,6 +715,58 @@ function archiveShell(snapshotJson: string | null): string {
   </script>
 </body>
 </html>`;
+}
+
+const dieEmojiCache = new Map<string, { at: number; marks: Record<string, string> }>();
+
+/** Swap {{kod-die:d8}} for a guild emoji. d6 and a miss become the plain dice mark. */
+async function paintDieTokens(token: string, channelId: string, payload: unknown): Promise<unknown> {
+  const raw = JSON.stringify(payload ?? {});
+  if (!raw.includes('{{kod-die:')) return payload ?? {};
+  const marks = await dieMarks(token, channelId);
+  const next = raw.replace(/\{\{kod-die:d(6|8|12)\}\}/g, (_all, tier: string) => marks[`d${tier}`] || '🎲');
+  return JSON.parse(next) as unknown;
+}
+
+async function dieMarks(token: string, channelId: string): Promise<Record<string, string>> {
+  const hit = dieEmojiCache.get(channelId);
+  if (hit && Date.now() - hit.at < 10 * 60 * 1000) return hit.marks;
+  const marks: Record<string, string> = {};
+  try {
+    const channel = await fetch(`https://discord.com/api/v10/channels/${channelId}`, {
+      headers: { authorization: `Bot ${token}` },
+      signal: AbortSignal.timeout(8_000),
+    });
+    if (!channel.ok) return marks;
+    const info = (await channel.json()) as { guild_id?: string };
+    const guildId = info.guild_id;
+    if (!guildId || !/^\d{17,20}$/.test(guildId)) return marks;
+    const guildHit = dieEmojiCache.get(`g:${guildId}`);
+    if (guildHit && Date.now() - guildHit.at < 10 * 60 * 1000) {
+      dieEmojiCache.set(channelId, guildHit);
+      return guildHit.marks;
+    }
+    const emoji = await fetch(`https://discord.com/api/v10/guilds/${guildId}/emojis`, {
+      headers: { authorization: `Bot ${token}` },
+      signal: AbortSignal.timeout(8_000),
+    });
+    if (!emoji.ok) return marks;
+    const list = (await emoji.json()) as { name?: string; id?: string; animated?: boolean }[];
+    for (const row of list) {
+      const name = (row.name ?? '').toLowerCase();
+      const tier = name.match(/(?:^|[^a-z0-9])d(6|8|12)$/)?.[1];
+      if (!tier || !row.id || !row.name) continue;
+      const key = `d${tier}`;
+      if (marks[key] && name !== key) continue;
+      marks[key] = row.animated ? `<a:${row.name}:${row.id}>` : `<:${row.name}:${row.id}>`;
+    }
+    const entry = { at: Date.now(), marks };
+    dieEmojiCache.set(`g:${guildId}`, entry);
+    dieEmojiCache.set(channelId, entry);
+  } catch {
+    return marks;
+  }
+  return marks;
 }
 
 async function discordCatalog(

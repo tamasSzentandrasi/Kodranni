@@ -17,6 +17,7 @@ export default defineConfig({
     ssr: {
       external: [
         'node:sqlite',
+        'sharp',
         '@kodranni/bot-runtime',
         '@kodranni/adapter-discord',
         'discord.js',

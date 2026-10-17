@@ -13,6 +13,7 @@ import {
   type CharacterRecord,
   type CommunityStorePort,
 } from '@kodranni/store';
+import { stepTide } from './table.js';
 
 export interface PlayerRollCommand {
   characterSlug: string;
@@ -83,6 +84,34 @@ function publishOmen(
     if (row) return { effect: row.effect, secret: false };
   }
   return { secret: false };
+}
+
+/**
+ * An opposed roll while a Tide is open moves the marker.
+ * The opening roll is side A: more Marks there increases position.
+ * A reply with more Marks is side B. A tie leaves the margin step at rest; the Omen may still move.
+ * Unopposed rolls do not step.
+ */
+function stepOpposedTide(
+  store: CommunityStorePort,
+  cmd: PlayerRollCommand,
+  marks: number,
+  omen: number | null,
+): { from: number } | undefined {
+  if (!cmd.parentRollId) return undefined;
+  const parent = store.getRoll(cmd.parentRollId);
+  const open = store.getTableState().tide;
+  if (!parent || !open) return undefined;
+  const parentMarks = Number((parent.data as { marks?: number }).marks ?? 0);
+  const winner = parentMarks > marks ? 'A' : marks > parentMarks ? 'B' : null;
+  const from = open.position;
+  stepTide(store, {
+    winner,
+    margin: Math.abs(parentMarks - marks),
+    omen,
+    actor: cmd.actor,
+  });
+  return { from };
 }
 
 /** The pool Cast will roll, without spending or writing a roll. */
@@ -273,6 +302,7 @@ export function executePlayerRoll(
 
   const rollId = randomUUID();
   const omen = publishOmen(store, scene, resolved.omen, resolved.omenHit, rollId);
+  const tideStep = stepOpposedTide(store, cmd, resolved.marks, resolved.omen);
   const whyParts: string[] = [
     `Foundation ${cmd.foundation}=${foundationRating}`,
     primitive
@@ -310,6 +340,7 @@ export function executePlayerRoll(
     exertionSpent: willSpend,
     diedOnRoll,
     sheetBefore,
+    ...(tideStep ? { tideStep } : {}),
   };
 
   store.insertRoll({

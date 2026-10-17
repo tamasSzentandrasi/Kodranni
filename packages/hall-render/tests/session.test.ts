@@ -1,7 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import { emptyTableState, type PublicSnapshot } from '@kodranni/store';
 import { archiveRoute, renderArchivePage } from '../src/pages.js';
-import { sessionReading, sessionSharedHtml, tideMarkerWords } from '../src/session.js';
+import { omenBoardSvg, publicDie, sessionReading, sessionSharedHtml, tideMarkerWords, tidePicturePath, tidePictureSvg } from '../src/session.js';
+import { sheetInner } from '../src/sheet.js';
+import type { CharacterRecord } from '@kodranni/store';
 
 const snap: PublicSnapshot = {
   generatedAt: '2026-08-27T00:00:00.000Z',
@@ -55,6 +57,66 @@ describe('session reading', () => {
     expect(tideMarkerWords({ sideA: 'Mill', sideB: 'Palace', position: 8, length: 15 })).toBe(
       'The marker stands at 8 of 15.',
     );
+    const picture = omenBoardSvg(publicDie(state));
+    expect(picture).toContain('>9<');
+    expect(picture).not.toContain('The sealed bell');
+    expect(picture).not.toContain('The mill bell');
+    const tide = tidePictureSvg({
+      sideA: 'Mill',
+      sideB: 'Palace',
+      position: 8,
+      length: 15,
+      dyeA: '#a01818',
+      dyeB: '#3a5c6c',
+    });
+    expect(tide).toContain('#a01818');
+    expect(tide).toContain('#3a5c6c');
+    expect(tide).toContain('fill="#0a0909"');
+    expect(tide).not.toContain('#f4efe6');
+    expect(tide).toContain('The marker stands at 8 of 15.');
+    expect(tidePicturePath({ position: 8, dyeA: '#A01818', dyeB: '#3a5c6c' })).toBe(
+      '/session/tide.png?p=8&a=a01818&b=3a5c6c',
+    );
+    const whispered = omenBoardSvg([
+      { face: 9, effect: 'The sealed bell', tone: 'negative', fixed: false, whisper: true },
+    ]);
+    expect(whispered).not.toContain('The sealed bell');
+  });
+});
+
+describe('send back on the sheet', () => {
+  it('says the draft is open and names the waiting Wanting', () => {
+    const ch = {
+      id: 'ada',
+      slug: 'ada',
+      name: 'Ada',
+      kind: 'pc',
+      status: 'draft',
+      foundations: {},
+      foundationsEffective: {},
+      skills: [],
+      traits: [],
+      echoes: [],
+      harm: {},
+      flags: { decadence: false, overCapacity: false },
+      inventory: { foodDays: 0, waterDays: 0, items: [] },
+      labelIds: [],
+      echoCapacity: 0,
+      echoWeight: 0,
+      creation: {
+        foundationPoints: 0,
+        skillPoints: 0,
+        words: 1,
+        birthOmenGranted: false,
+        guidingHandGranted: false,
+        locked: false,
+        returned: true,
+        pendingWanting: 'plus_one_foundation',
+      },
+    } as CharacterRecord;
+    const html = sheetInner(ch, 'Aspalath');
+    expect(html).toContain('This draft is open. The edits remain.');
+    expect(html).toContain('+1 to one named Foundation');
   });
 });
 

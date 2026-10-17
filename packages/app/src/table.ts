@@ -17,6 +17,7 @@ import {
   type RestGroup,
   type SceneFace,
   type SceneTone,
+  type TableMessageRef,
   type TableState,
 } from '@kodranni/store';
 
@@ -133,6 +134,16 @@ export function openTide(store: CommunityStorePort, cmd: OpenTideCommand): OpenT
   return store.getTableState().tide!;
 }
 
+/** Remember the roll the next Tide Roll answers, or clear it once that answer lands. */
+export function setTideOpenRoll(store: CommunityStorePort, rollId: string | null): void {
+  const prev = store.getTableState();
+  if (!prev.tide) return;
+  const tide = { ...prev.tide };
+  if (rollId) tide.openRollId = rollId;
+  else delete tide.openRollId;
+  store.putTableState({ ...prev, tide });
+}
+
 export function closeTide(store: CommunityStorePort, actor?: string): OpenTide {
   const prev = store.getTableState();
   if (!prev.tide) throw new Error('no Tide is open');
@@ -176,6 +187,21 @@ export function stepTide(
     payload: { kind: 'tide_step', from: tide.position, to: position, winner: cmd.winner, omen: cmd.omen },
   });
   return next;
+}
+
+/** Remember the channel message so a later step can edit the picture. */
+export function rememberChannelMessage(
+  store: CommunityStorePort,
+  kind: 'tide' | 'scene',
+  ref: TableMessageRef,
+): void {
+  const prev = store.getTableState();
+  if (kind === 'tide') {
+    if (!prev.tide) return;
+    store.putTableState({ ...prev, tide: { ...prev.tide, messageRef: ref } });
+    return;
+  }
+  store.putTableState({ ...prev, sceneBoardRef: ref });
 }
 
 export interface RestoreRow {

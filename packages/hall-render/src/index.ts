@@ -17,6 +17,7 @@ export {
 } from './format.js';
 export { archiveRoute, renderArchivePage } from './pages.js';
 export {
+  omenBoardSvg,
   omenDieHtml,
   omenHeadHtml,
   omenMarkSvg,
@@ -30,6 +31,8 @@ export {
   tideHeadHtml,
   tideMarkSvg,
   tideMarkerWords,
+  tidePicturePath,
+  tidePictureSvg,
   type SessionDieFace,
   type SessionReading,
   type SessionSceneLine,
