@@ -8,3 +8,4 @@ export * from './echo-mirror.js';
 export * from './sheet-token.js';
 export * from './community-token.js';
 export * from './desk.js';
+export * from './table.js';
