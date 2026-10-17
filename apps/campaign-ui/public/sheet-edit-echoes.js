@@ -48,6 +48,8 @@
     const all = art && art.querySelector('[data-echo-all]');
     if (circle) circle.hidden = w !== 2;
     if (all) all.hidden = w !== 3;
+    const fortune = art && art.querySelector('[data-echo-fortune-pick]');
+    if (fortune) fortune.hidden = w !== 3;
     if (art) refreshPicks(art);
   }
 
@@ -181,6 +183,8 @@
     return rows;
   }
 
+  const desk = panel.getAttribute('data-desk') === '1';
+
   function addEchoCard(weight, title, invoke) {
     if (!list) return;
     const empty = list.querySelector('.empty');
@@ -189,33 +193,91 @@
     const art = document.createElement('article');
     art.className = 'kod-plate echo';
     art.setAttribute('data-echo-idx', String(idx));
+    const segs = desk
+      ? '<i class="on" data-seg="1"></i><i data-seg="2"></i><i data-seg="3"></i>'
+      : '<i class="on"></i><i></i><i></i>';
+    const tip = desk ? 'Click a segment to set 1, 2, or 3' : 'Left-click +1 · right-click −1 (1–3)';
+    const resolve = desk
+      ? '<div class="echo__resolve" data-echo-resolve><label>Resolution<textarea class="kod-ink" data-echo-resolution rows="2"></textarea></label>' +
+        '<p data-echo-fortune-pick hidden><label>Fortune<select data-echo-fortune><option value="vitality">Vitality</option><option value="cohesion">Cohesion</option><option value="surplus">Surplus</option><option value="standing">Standing</option><option value="tradition">Tradition</option></select></label>' +
+        '<label>State<select data-echo-fortune-level><option value="0">Crisis</option><option value="1">Strained</option><option value="2" selected>Steady</option><option value="3">Abundance</option></select></label></p>' +
+        '<button type="button" data-echo-resolve-go>Resolve</button></div>'
+      : '';
     art.innerHTML =
       '<div class="echo__weight echo__weight--edit" data-echo-weight data-weight="' +
       weight +
-      '" tabindex="0" data-tip="Left-click +1 · right-click −1 (1–3)">' +
+      '" tabindex="0" data-tip="' +
+      tip +
+      '">' +
       '<span class="weight-segs" aria-label="Weight ' +
       weight +
-      '"><i class="on"></i><i></i><i></i></span>' +
+      '">' +
+      segs +
+      '</span>' +
       '<span class="weight-band">' +
       (BAND[weight] || weight) +
       '</span></div>' +
       '<div class="echo__body">' +
-      '<input class="echo__title-input kod-ink" data-echo-title value="' +
-      (title || '').replace(/"/g, '&quot;') +
-      '" placeholder="Echo title…" />' +
+      '<input class="echo__title-input kod-ink" data-echo-title placeholder="Echo title…" />' +
       '<label class="echo__invoke-edit"><span class="echo__invoke-lab">Invoke when</span>' +
-      '<textarea class="kod-ink" data-echo-invoke rows="2" placeholder="When the table agrees the scene matches…">' +
-      (invoke || '') +
-      '</textarea></label>' +
+      '<textarea class="kod-ink" data-echo-invoke rows="2" placeholder="When the table agrees the scene matches…"></textarea></label>' +
       '<div class="echo__circle" data-echo-circle hidden>' +
       '<p class="echo__circle-lab">Who shares this</p>' +
       '<ul class="echo__people" data-echo-group></ul>' +
       '<label class="echo__pick"><span class="echo__pick-lab">Add a character</span>' +
       '<select class="kod-ink" data-echo-group-pick><option value="">Choose…</option></select></label></div>' +
       '<p class="echo__circle-all" data-echo-all hidden>The whole community.</p>' +
-      '<button type="button" class="echo__remove" data-echo-remove>Remove</button></div>';
-    list.appendChild(art);
+      '<button type="button" class="echo__remove" data-echo-remove>Remove</button>' +
+      resolve +
+      '</div>';
+    const titleEl = art.querySelector('[data-echo-title]');
+    const invokeEl = art.querySelector('[data-echo-invoke]');
+    if (titleEl) titleEl.value = title || '';
+    if (invokeEl) invokeEl.value = invoke || '';
+    const fresh = panel.querySelector('[data-echo-new]');
+    if (fresh) list.insertBefore(art, fresh);
+    else list.appendChild(art);
     paintWeight(art.querySelector('[data-echo-weight]'), weight);
+  }
+
+  function promoteNewEcho() {
+    const fresh = panel.querySelector('[data-echo-new]');
+    if (!fresh || fresh.contains(document.activeElement)) return;
+    const titleEl = fresh.querySelector('[data-echo-title]');
+    const invokeEl = fresh.querySelector('[data-echo-invoke]');
+    const title = titleEl && 'value' in titleEl ? String(titleEl.value).trim() : '';
+    if (!title) return;
+    const invoke = invokeEl && 'value' in invokeEl ? String(invokeEl.value) : '';
+    if (titleEl) titleEl.value = '';
+    if (invokeEl) invokeEl.value = '';
+    addEchoCard(1, title, invoke);
+  }
+
+  function promoteNewTrait() {
+    if (!traitList) return;
+    const fresh = traitList.querySelector('[data-trait-new]');
+    if (!fresh || fresh.contains(document.activeElement)) return;
+    const nameEl = fresh.querySelector('[data-trait-name]');
+    const noteEl = fresh.querySelector('[data-trait-note]');
+    const name = nameEl && 'value' in nameEl ? String(nameEl.value).trim() : '';
+    if (!name) return;
+    const note = noteEl && 'value' in noteEl ? String(noteEl.value) : '';
+    if (nameEl) nameEl.value = '';
+    if (noteEl) noteEl.value = '';
+    const li = document.createElement('li');
+    li.className = 'kod-plate trait';
+    li.setAttribute('data-trait-idx', String(traitList.querySelectorAll('[data-trait-idx]').length));
+    li.innerHTML =
+      '<div class="trait__edit"><input class="kod-ink" data-trait-name placeholder="Trait name" />' +
+      '<input class="kod-ink" data-trait-note placeholder="Note" />' +
+      '<button type="button" class="desk-mark" data-trait-remove aria-label="Remove" data-tip="Remove">' +
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.4"/>' +
+      '<path d="M9 9l6 6M15 9l-6 6" stroke="currentColor" stroke-width="1.4"/></svg></button></div>';
+    const named = li.querySelector('[data-trait-name]');
+    const noted = li.querySelector('[data-trait-note]');
+    if (named) named.value = name;
+    if (noted) noted.value = note;
+    traitList.insertBefore(li, fresh);
   }
 
   panel.addEventListener('click', (ev) => {
@@ -324,12 +386,22 @@
   });
 
   let saveTimer = 0;
+  let saveChain = Promise.resolve();
   function saveSoon() {
     window.clearTimeout(saveTimer);
     saveTimer = window.setTimeout(saveNow, 550);
   }
 
-  async function saveNow() {
+  function saveNow() {
+    const run = saveChain.then(commitEchoes);
+    saveChain = run.then(
+      () => {},
+      () => {},
+    );
+    return run;
+  }
+
+  async function commitEchoes() {
     const msg = document.querySelector('[data-echoes-msg]');
     const res = await fetch('/api/character/' + encodeURIComponent(slug), {
       method: 'POST',
@@ -346,10 +418,10 @@
       msg.textContent = data.error || 'Failed';
       msg.className = 'draft-msg draft-msg--err';
     }
-    const added =
-      Boolean(panel.querySelector('[data-echo-new] [data-echo-title]')?.value?.trim()) ||
-      Boolean(document.querySelector('[data-trait-new] [data-trait-name]')?.value?.trim());
-    if (res.ok && panel.getAttribute('data-desk') === '1' && added) location.reload();
+    if (res.ok && panel.getAttribute('data-desk') === '1') {
+      promoteNewEcho();
+      promoteNewTrait();
+    }
     return res.ok;
   }
 
@@ -461,4 +533,13 @@
 
   panel.addEventListener('input', saveSoon);
   traitList?.addEventListener('input', saveSoon);
+  function settleOnLeave(ev) {
+    const next = ev.relatedTarget;
+    const leftEcho = panel.contains(ev.target) && !(next instanceof Node && panel.contains(next));
+    const leftTrait = traitList && traitList.contains(ev.target) && !(next instanceof Node && traitList.contains(next));
+    if (!leftEcho && !leftTrait) return;
+    window.setTimeout(saveNow, 0);
+  }
+  panel.addEventListener('focusout', settleOnLeave);
+  traitList?.addEventListener('focusout', settleOnLeave);
 })();

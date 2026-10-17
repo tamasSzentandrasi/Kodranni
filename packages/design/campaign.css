@@ -4119,21 +4119,32 @@ select.kod-ink.kod-ink--empty,
 .wanting-form__fields select.kod-ink--empty {
   color: var(--kod-silver-dim);
 }
-select.kod-ink option,
-.wanting-form__fields select option {
-  background-color: #0c0a0a;
-  color: #f2efe9;
+/* The system menu keeps a light sheet and ignores a dark option background.
+   Ink every row dark, including the ones that are not hovered. The closed
+   control keeps the colour set on the select itself. */
+select option,
+select optgroup {
+  background-color: #f6f1e8;
+  color: #14110e;
+  color-scheme: light;
 }
+select.kod-ink option,
+.wanting-form__fields select option,
+.desk-myth-row select option,
+.rite__select option,
 select.kod-ink option:checked,
-.wanting-form__fields select option:checked {
-  background-color: #1a1010;
-  color: #fff8f0;
+.wanting-form__fields select option:checked,
+select option:checked {
+  background-color: #f6f1e8;
+  color: #14110e;
 }
 select.kod-ink option:disabled,
 .wanting-form__fields select option:disabled,
 select.kod-ink option[value=''],
-.wanting-form__fields select option[value=''] {
-  color: #8a8580;
+.wanting-form__fields select option[value=''],
+select option:disabled,
+select option[value=''] {
+  color: #5c564e;
 }
 
 /* Echoes — live sheet, not tutorial columns */
