@@ -20,6 +20,7 @@ import { redactCharacterForPublic } from './redact.js';
 import { DEFAULT_LABEL_GROUPS, migrateCommunityLabels } from './labels.js';
 import { fillDemoItemIcons, fillDemoTraits } from './seed.js';
 import { fillDemoRelationMap, parseRelationMap } from './relation-map.js';
+import { emptyTableState, parseTableState, type TableState } from './table.js';
 
 /** @deprecated Prefer CommunityStorePort — SQLite is one adapter. */
 export type SqliteCommunityStore = CommunityStorePort;
@@ -229,6 +230,36 @@ export function openSqliteStore(path: string): CommunityStorePort {
       );
       return full;
     },
+    listEvents: (type) => {
+      const rows = (
+        type
+          ? db
+              .prepare(
+                `SELECT id, ts, type, actor, client_event_id, payload FROM events WHERE type = ? ORDER BY rowid`,
+              )
+              .all(type)
+          : db
+              .prepare(
+                `SELECT id, ts, type, actor, client_event_id, payload FROM events ORDER BY rowid`,
+              )
+              .all()
+      ) as {
+        id: string;
+        ts: string;
+        type: string;
+        actor: string | null;
+        client_event_id: string | null;
+        payload: string;
+      }[];
+      return rows.map((row) => ({
+        id: row.id,
+        ts: row.ts,
+        type: row.type,
+        actor: row.actor ?? undefined,
+        clientEventId: row.client_event_id ?? undefined,
+        payload: JSON.parse(row.payload) as unknown,
+      }));
+    },
     hasClientEvent: (clientEventId) => {
       const row = db
         .prepare(`SELECT 1 AS ok FROM events WHERE client_event_id = ?`)
@@ -320,7 +351,26 @@ export function openSqliteStore(path: string): CommunityStorePort {
          ON CONFLICT(key) DO UPDATE SET value = excluded.value`,
       ).run(JSON.stringify(map));
     },
+    getTableState: () => readTableState(db),
+    putTableState: (state: TableState) => {
+      db.prepare(
+        `INSERT INTO meta (key, value) VALUES ('table_state', ?)
+         ON CONFLICT(key) DO UPDATE SET value = excluded.value`,
+      ).run(JSON.stringify(state));
+    },
   };
+}
+
+function readTableState(db: DatabaseSync): TableState {
+  const row = db.prepare(`SELECT value FROM meta WHERE key = 'table_state'`).get() as
+    | { value: string }
+    | undefined;
+  if (!row) return emptyTableState();
+  try {
+    return parseTableState(JSON.parse(row.value));
+  } catch {
+    return emptyTableState();
+  }
 }
 
 function readRelationMap(db: DatabaseSync, slug: string): RelationMap | undefined {

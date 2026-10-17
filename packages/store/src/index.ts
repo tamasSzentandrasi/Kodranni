@@ -19,6 +19,7 @@ export * from './secrets.js';
 export * from './redact.js';
 export * from './snapshot.js';
 export * from './relation-map.js';
+export * from './table.js';
 
 // --- lightweight memory store (tests / early adapters) ---
 

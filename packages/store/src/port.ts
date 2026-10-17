@@ -11,6 +11,7 @@ import type {
   RelationMap,
   RollRecord,
 } from './types.js';
+import type { TableState } from './table.js';
 
 export interface CommunityStorePort {
   readonly path: string;
@@ -25,10 +26,15 @@ export interface CommunityStorePort {
   listMembers(): MemberRecord[];
   putMember(m: MemberRecord): void;
   appendEvent(event: Omit<AuditEvent, 'id' | 'ts'> & { id?: string; ts?: string }): AuditEvent;
+  /** Audit rows, oldest first. `type` limits the list to one event name. */
+  listEvents(type?: string): AuditEvent[];
   hasClientEvent(clientEventId: string): boolean;
   insertRoll(roll: RollRecord): void;
   getRoll(id: string): RollRecord | undefined;
   toPublicSnapshot(): PublicSnapshot;
   getRelationMap(): RelationMap | undefined;
   putRelationMap(map: RelationMap): void;
+  /** Scene faces and the open Tide. Absent from toPublicSnapshot. */
+  getTableState(): TableState;
+  putTableState(state: TableState): void;
 }
