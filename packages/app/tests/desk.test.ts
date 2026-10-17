@@ -163,6 +163,67 @@ describe('desk diagram', () => {
     }
     store.close();
   });
+
+  it('copies between ladders and refuses a second seat on a ladder that already has the name', () => {
+    const store = demoStore();
+    const npc = deskAddNpc(store, 'Hilda Gate');
+    deskPlace(store, {
+      slug: npc.slug,
+      name: npc.name,
+      from: { kind: 'unassigned' },
+      to: { kind: 'rung', axis: 'Arms', tier: 'Trusted' },
+      copy: false,
+    });
+    expect(() =>
+      deskPlace(store, {
+        slug: npc.slug,
+        name: npc.name,
+        from: { kind: 'rung', axis: 'Arms', tier: 'Trusted' },
+        to: { kind: 'rung', axis: 'Arms', tier: 'Honoured' },
+        copy: true,
+      }),
+    ).toThrow(/already on this ladder/i);
+    expect(
+      store.getCommunity().placements.filter((p) => p.characterSlug === npc.slug),
+    ).toEqual([expect.objectContaining({ axis: 'Arms', tier: 'Trusted' })]);
+    deskPlace(store, {
+      slug: npc.slug,
+      name: npc.name,
+      from: { kind: 'rung', axis: 'Arms', tier: 'Trusted' },
+      to: { kind: 'rung', axis: 'Faith', tier: 'Acknowledged' },
+      copy: true,
+    });
+    expect(() =>
+      deskPlace(store, {
+        slug: npc.slug,
+        name: npc.name,
+        from: { kind: 'rung', axis: 'Arms', tier: 'Trusted' },
+        to: { kind: 'rung', axis: 'faith', tier: 'Honoured' },
+        copy: true,
+      }),
+    ).toThrow(/already on this ladder/i);
+    const rows = store.getCommunity().placements.filter((p) => p.characterSlug === npc.slug);
+    expect(rows).toHaveLength(2);
+    expect(rows).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ axis: 'Arms', tier: 'Trusted' }),
+        expect.objectContaining({ axis: 'Faith', tier: 'Acknowledged' }),
+      ]),
+    );
+    deskPlace(store, {
+      slug: npc.slug,
+      name: npc.name,
+      from: { kind: 'rung', axis: 'Arms', tier: 'Trusted' },
+      to: { kind: 'rung', axis: 'Arms', tier: 'Outcast' },
+      copy: false,
+    });
+    const moved = store.getCommunity().placements.filter((p) => p.characterSlug === npc.slug);
+    expect(moved.filter((p) => p.axis === 'Arms')).toEqual([
+      expect.objectContaining({ tier: 'Outcast' }),
+    ]);
+    expect(moved.filter((p) => p.axis === 'Faith')).toHaveLength(1);
+    store.close();
+  });
 });
 
 describe('desk sheet', () => {

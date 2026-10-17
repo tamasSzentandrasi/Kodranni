@@ -261,6 +261,14 @@ function samePerson(
   return name.trim().toLowerCase() === otherName.trim().toLowerCase();
 }
 
+function axisEq(a: string, b: string): boolean {
+  return a.trim().toLowerCase() === b.trim().toLowerCase();
+}
+
+function canonicalAxis(axes: readonly string[], axis: string): string | undefined {
+  return axes.find((name) => axisEq(name, axis));
+}
+
 function syncHierarchy(store: CommunityStorePort, community: CommunityRecord): void {
   for (const ch of store.listCharacters()) {
     const rows = (community.placements ?? []).filter((p) =>
@@ -290,19 +298,21 @@ export function deskPlace(
   const matches = (name: string, slug?: string) => samePerson(personName, personSlug, name, slug);
 
   let copy = cmd.copy;
-  if (copy && (cmd.to.kind === 'porch' || cmd.from.kind === 'porch')) {
+  let dest = cmd.to;
+  if (copy && (dest.kind === 'porch' || cmd.from.kind === 'porch')) {
     throw new Error('an outsider is not also on a ladder');
   }
-  if (copy && cmd.to.kind === 'ruler' && community.ruler) {
+  if (copy && dest.kind === 'ruler' && community.ruler) {
     throw new Error('the ruler seat is taken');
   }
-  if (
-    copy &&
-    cmd.from.kind === 'rung' &&
-    cmd.to.kind === 'rung' &&
-    cmd.from.axis === cmd.to.axis
-  ) {
-    copy = false;
+  if (copy && dest.kind === 'rung') {
+    const axis = canonicalAxis(community.hierarchyAxes, dest.axis);
+    if (!axis) throw new Error('unknown axis');
+    const present = (community.placements ?? []).some(
+      (p) => axisEq(p.axis, axis) && matches(p.name, p.characterSlug),
+    );
+    if (present) throw new Error('already on this ladder');
+    dest = { kind: 'rung', axis, tier: dest.tier };
   }
 
   if (!copy) {
@@ -323,9 +333,9 @@ export function deskPlace(
     }
   }
 
-  if (cmd.to.kind === 'rung') {
-    if (!community.hierarchyAxes.includes(cmd.to.axis)) throw new Error('unknown axis');
-    if (!TIERS.has(cmd.to.tier)) throw new Error('unknown rung');
+  if (dest.kind === 'rung') {
+    if (!community.hierarchyAxes.includes(dest.axis)) throw new Error('unknown axis');
+    if (!TIERS.has(dest.tier)) throw new Error('unknown rung');
     if (!copy) {
       community.outsiders = (community.outsiders ?? []).filter(
         (o) => !matches(o.name, o.characterSlug),
@@ -333,16 +343,16 @@ export function deskPlace(
     }
     const row: HierarchyPlacement = {
       name: personName,
-      axis: cmd.to.axis,
-      tier: cmd.to.tier,
+      axis: dest.axis,
+      tier: dest.tier,
       characterSlug: personSlug,
     };
     const idx = (community.placements ?? []).findIndex(
-      (p) => p.axis === cmd.to.axis && matches(p.name, p.characterSlug),
+      (p) => axisEq(p.axis, dest.axis) && matches(p.name, p.characterSlug),
     );
     if (idx >= 0) community.placements[idx] = { ...community.placements[idx], ...row };
     else community.placements = [...(community.placements ?? []), row];
-  } else if (cmd.to.kind === 'porch') {
+  } else if (dest.kind === 'porch') {
     community.placements = (community.placements ?? []).filter(
       (p) => !matches(p.name, p.characterSlug),
     );
@@ -357,7 +367,7 @@ export function deskPlace(
         { name: personName, characterSlug: personSlug },
       ];
     }
-  } else if (cmd.to.kind === 'ruler') {
+  } else if (dest.kind === 'ruler') {
     if (!copy) {
       community.outsiders = (community.outsiders ?? []).filter(
         (o) => !matches(o.name, o.characterSlug),
@@ -372,7 +382,7 @@ export function deskPlace(
   store.appendEvent({
     type: 'HierarchyPlaced',
     actor: 'desk',
-    payload: { name: personName, slug: personSlug, to: cmd.to, copy },
+    payload: { name: personName, slug: personSlug, to: dest, copy },
   });
   return store.getCommunity();
 }

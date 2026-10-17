@@ -1190,6 +1190,24 @@
     host.appendChild(el);
   }
 
+  function axisEq(a, b) {
+    return String(a || '').trim().toLowerCase() === String(b || '').trim().toLowerCase();
+  }
+
+  function alreadyOnLadder(zone, slug, name, axis) {
+    const column = zone.closest('.kod-hier-axis');
+    if (column) {
+      const found = Array.from(column.querySelectorAll('[data-desk-person]')).some(function (el) {
+        return samePerson(el, slug, name);
+      });
+      if (found) return true;
+    }
+    return peopleOf(slug, name).some(function (el) {
+      const seat = parseSeat(el.getAttribute('data-desk-from') || '');
+      return Boolean(seat && seat.kind === 'rung' && axisEq(seat.axis, axis));
+    });
+  }
+
   function settleDrop(state, zone, to) {
     const slug = state.slug;
     const name = state.name;
@@ -1203,7 +1221,10 @@
       say('the ruler seat is taken');
       return false;
     }
-    if (copy && from && from.kind === 'rung' && to.kind === 'rung' && from.axis === to.axis) copy = false;
+    if (copy && to.kind === 'rung' && alreadyOnLadder(zone, slug, name, to.axis)) {
+      say('Already on this ladder');
+      return false;
+    }
     if (!copy && sameSeat(from, to)) return false;
     const host = dropHost(zone);
     if (!host) return false;
