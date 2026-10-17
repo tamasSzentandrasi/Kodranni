@@ -133,6 +133,28 @@ export function createDiscordAdapter(opts: {
     }
   });
 
+  function gatewayDieMarks(): Record<string, string> {
+    const marks: Record<string, string> = {};
+    for (const emoji of client.emojis.cache.values()) {
+      const name = (emoji.name ?? '').toLowerCase();
+      const tier = name.match(/(?:^|[^a-z0-9])d(6|8|12)$/)?.[1];
+      if (!tier || !emoji.id || !emoji.name) continue;
+      const key = `d${tier}`;
+      if (marks[key] && name !== key) continue;
+      marks[key] = emoji.animated ? `<a:${emoji.name}:${emoji.id}>` : `<:${emoji.name}:${emoji.id}>`;
+    }
+    return marks;
+  }
+
+  function paintCard(card: ChatCard): ChatCard {
+    const marks = gatewayDieMarks();
+    const raw = JSON.stringify(card);
+    if (!raw.includes('{{kod-die:')) return card;
+    return JSON.parse(
+      raw.replace(/\{\{kod-die:d(6|8|12)\}\}/g, (_all, tier: string) => marks[`d${tier}`] || '🎲'),
+    ) as ChatCard;
+  }
+
   return {
     platform: 'discord',
     client,
@@ -153,7 +175,7 @@ export function createDiscordAdapter(opts: {
       if (!ch || !ch.isTextBased() || ch.isDMBased()) {
         throw new Error(`cannot send to channel ${channelId}`);
       }
-      const payload = mapCardToDiscordPayload(card);
+      const payload = mapCardToDiscordPayload(paintCard(card));
       const msg = (await ch.send({
         embeds: payload.embeds,
         components: payload.components,
@@ -168,7 +190,7 @@ export function createDiscordAdapter(opts: {
       const ch = await client.channels.fetch(ref.channelId);
       if (!ch || !ch.isTextBased()) return;
       const msg = await ch.messages.fetch(ref.messageId);
-      const payload = mapCardToDiscordPayload(card);
+      const payload = mapCardToDiscordPayload(paintCard(card));
       await msg.edit({ embeds: payload.embeds, components: payload.components });
     },
     async replyEphemeral(interaction: ChatInteraction, content: string): Promise<void> {
@@ -197,6 +219,18 @@ export function createDiscordAdapter(opts: {
           components: payload.components,
         });
       }
+    },
+    async replyEphemeralCard(interaction: ChatInteraction, card: ChatCard): Promise<void> {
+      const ix = pendingIx.get(interaction.id);
+      if (!ix || !ix.isRepliable()) return;
+      const payload = mapCardToDiscordPayload(card);
+      const body = {
+        ephemeral: true as const,
+        embeds: payload.embeds,
+        components: payload.components,
+      };
+      if (ix.deferred || ix.replied) await ix.followUp(body);
+      else await ix.reply(body);
     },
     onInteraction(h) {
       handler = h;

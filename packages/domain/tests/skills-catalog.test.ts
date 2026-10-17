@@ -11,6 +11,10 @@ describe('skills catalog', () => {
   it('has six archetypes and 72 skills', () => {
     expect(ARCHETYPES).toHaveLength(6);
     expect(ALL_SKILLS).toHaveLength(72);
+    expect(ALL_SKILLS.length).toBeGreaterThan(25);
+    for (const arch of ARCHETYPES) {
+      expect(arch.skills.length).toBeLessThanOrEqual(25);
+    }
   });
 
   it('resolves Carpentry & Masonry under Artisan / Strength', () => {

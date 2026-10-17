@@ -24,7 +24,7 @@ export const SLASH = [
     .addStringOption((o) =>
       o
         .setName('skill')
-        .setDescription('Skill (type to search; omit → pick Archetype)')
+        .setDescription('Skill (type to search; omit to choose on the card)')
         .setAutocomplete(true),
     )
     .addStringOption((o) =>
@@ -33,24 +33,10 @@ export const SLASH = [
         .setDescription('Foundation (often not the guiding one)')
         .addChoices(...foundationChoices()),
     )
-    .addIntegerOption((o) => dieTier(o))
-    .addIntegerOption((o) =>
-      o
-        .setName('exertion')
-        .setDescription('Exertion dice to spend (0–2; 2 needs a named Echo)')
-        .setMinValue(0)
-        .setMaxValue(2),
-    )
-    .addStringOption((o) =>
-      o
-        .setName('echo')
-        .setDescription('Named Echo, when the table agreed it matches')
-        .setAutocomplete(true),
-    )
     .addStringOption((o) =>
       o
         .setName('character')
-        .setDescription('Sheeted person, for the Storyteller')
+        .setDescription("Storyteller: roll another person's sheet")
         .setAutocomplete(true),
     ),
   new SlashCommandBuilder()
@@ -84,7 +70,7 @@ export const SLASH = [
     ),
   new SlashCommandBuilder()
     .setName('select')
-    .setDescription('Choose which of your living characters /roll assumes')
+    .setDescription('Name the active character. Claiming another releases the previous.')
     .addStringOption((o) =>
       o
         .setName('character')
@@ -94,10 +80,7 @@ export const SLASH = [
     ),
   new SlashCommandBuilder()
     .setName('birth-omen')
-    .setDescription('Weighing: private Birth Omen d20 → Foundation points on sheet')
-    .addStringOption((o) =>
-      o.setName('character').setDescription('Draft character slug').setRequired(true),
-    )
+    .setDescription('Weighing: private Birth Omen d20 on your active character')
     .addIntegerOption((o) =>
       o
         .setName('face')
@@ -107,10 +90,7 @@ export const SLASH = [
     ),
   new SlashCommandBuilder()
     .setName('guiding-hand')
-    .setDescription('Weighing: private Guiding Hand d20 → Skill points on sheet')
-    .addStringOption((o) =>
-      o.setName('character').setDescription('Draft character slug').setRequired(true),
-    )
+    .setDescription('Weighing: private Guiding Hand d20 on your active character')
     .addIntegerOption((o) =>
       o
         .setName('face')
@@ -120,13 +100,17 @@ export const SLASH = [
     ),
   new SlashCommandBuilder()
     .setName('award-word')
-    .setDescription('ST: award 1 Word to a speaker after an accepted claim')
+    .setDescription('Storyteller: award 1 Word to a named character')
     .addStringOption((o) =>
-      o.setName('character').setDescription('Speaker character slug').setRequired(true),
+      o
+        .setName('character')
+        .setDescription('Who receives the Word')
+        .setRequired(true)
+        .setAutocomplete(true),
     ),
   new SlashCommandBuilder()
     .setName('review')
-    .setDescription('ST: repeat the notice that someone is waiting on the Session inbox')
+    .setDescription('ST: repeat that a character was submitted for approval')
     .addStringOption((o) =>
       o.setName('character').setDescription('Optional name; omit to repeat every waiting person'),
     ),

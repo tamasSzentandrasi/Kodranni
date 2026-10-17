@@ -17,6 +17,25 @@ export interface ChatUserRef {
 
 export type ButtonStyle = 'primary' | 'secondary' | 'success' | 'danger';
 
+/** Shared card colour. Die tiers use the Guidebook die colours. */
+export type CardAccent = 'blood' | 'neutral' | 'd6' | 'd8' | 'd12';
+
+export const CARD_ACCENT: Record<CardAccent, number> = {
+  blood: 0x8a1515,
+  neutral: 0x2a2222,
+  /** Cool steel. Disadvantage. */
+  d6: 0x6a9bb8,
+  /** Warm bone. Ordinary. */
+  d8: 0xe6e0d4,
+  /** Amber. Advantage. */
+  d12: 0xe0b44a,
+};
+
+export function cardAccentColor(accent?: CardAccent): number {
+  if (!accent) return CARD_ACCENT.neutral;
+  return CARD_ACCENT[accent];
+}
+
 export interface ChatButton {
   id: string;
   label: string;
@@ -52,10 +71,29 @@ export interface ChatField {
 export interface ChatCard {
   title?: string;
   description?: string;
-  /** Blood accent by default in adapters. */
-  accent?: 'blood' | 'neutral';
+  /** Blood by default. A roll uses the die-tier accent. */
+  accent?: CardAccent;
+  /**
+   * Public image the client can fetch. Loopback halls omit it:
+   * a chat client cannot load 127.0.0.1.
+   */
+  thumbnailUrl?: string;
+  /** Wide picture under the text. Same fetch rule as the thumbnail. */
+  imageUrl?: string;
+  /** Overrides the accent. The Tide picture uses the desk’s stone. */
+  color?: number;
   fields?: ChatField[];
   footer?: string;
+  /**
+   * Extra embeds on the same message. The title stays on the first embed,
+   * where the client draws it largest.
+   */
+  panels?: {
+    title?: string;
+    description?: string;
+    fields?: ChatField[];
+    footer?: string;
+  }[];
   buttons?: ChatButton[];
   selects?: ChatSelect[];
   /** Deep links (live sheet, archive). */
@@ -109,5 +147,10 @@ export interface ChatPort {
    * (confirm stance, fallback picker, etc.).
    */
   editReplyCard?(interaction: ChatInteraction, card: ChatCard): Promise<void>;
+  /**
+   * New ephemeral card. Does not edit the message the control sits on,
+   * so Oppose can leave the public result in the channel.
+   */
+  replyEphemeralCard?(interaction: ChatInteraction, card: ChatCard): Promise<void>;
   onInteraction(handler: (i: ChatInteraction) => Promise<void>): void;
 }

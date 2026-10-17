@@ -132,4 +132,38 @@ describe('createDiscordHttpAdapter', () => {
     expect(JSON.parse(rest!.body).op).toBe('send');
     void expectedSig;
   });
+
+  it('posts Oppose as a new ephemeral and leaves the public message', async () => {
+    const calls: { url: string; method: string; body: string }[] = [];
+    globalThis.fetch = (async (input: RequestInfo | URL, init?: RequestInit) => {
+      calls.push({
+        url: String(input instanceof Request ? input.url : input),
+        method: init?.method ?? 'GET',
+        body: typeof init?.body === 'string' ? init.body : '',
+      });
+      return new Response('{}', { status: 200 });
+    }) as typeof fetch;
+
+    const port = createDiscordHttpAdapter({
+      campaignId: 'vardmark',
+      applicationId: 'app',
+    });
+    port.onInteraction(async (i) => {
+      await port.replyEphemeralCard?.(i, { title: 'Foundation · Caterina', description: 'Choose.' });
+    });
+    await port.receive({
+      id: 'ix2',
+      type: 3,
+      token: 'tok',
+      application_id: 'app',
+      channel_id: 'c1',
+      message: { id: 'public-roll' },
+      user: { id: 'u1' },
+      data: { custom_id: 'oppose:roll1', component_type: 2 },
+    });
+    const post = calls.find((c) => c.method === 'POST' && c.url.endsWith('/webhooks/app/tok'));
+    expect(post).toBeTruthy();
+    expect(JSON.parse(post!.body).flags).toBe(64);
+    expect(calls.some((c) => c.url.includes('/messages/@original'))).toBe(false);
+  });
 });

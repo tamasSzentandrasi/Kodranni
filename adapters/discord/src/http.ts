@@ -244,6 +244,16 @@ export function createDiscordHttpAdapter(
         components: payload.components,
       });
     },
+    async replyEphemeralCard(interaction: ChatInteraction, card: ChatCard): Promise<void> {
+      const p = pending.get(interaction.id);
+      if (!p) return;
+      const payload = mapCardToDiscordRest(card);
+      await webhook(p, 'POST', '', {
+        flags: FLAG_EPHEMERAL,
+        embeds: payload.embeds,
+        components: payload.components,
+      });
+    },
     onInteraction(h) {
       handler = h;
     },

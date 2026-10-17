@@ -5,7 +5,7 @@ import {
   EmbedBuilder,
   StringSelectMenuBuilder,
 } from 'discord.js';
-import type { ChatCard, ChatSelect } from '@kodranni/chat-port';
+import { cardAccentColor, type ChatCard, type ChatSelect } from '@kodranni/chat-port';
 
 const STYLE: Record<string, ButtonStyle> = {
   primary: ButtonStyle.Primary,
@@ -18,10 +18,11 @@ export function mapCardToDiscordPayload(card: ChatCard): {
   embeds: EmbedBuilder[];
   components: ActionRowBuilder<ButtonBuilder | StringSelectMenuBuilder>[];
 } {
-  const color = card.accent === 'blood' ? 0x8a1515 : 0x2a2222;
-  const embed = new EmbedBuilder().setColor(color);
+  const embed = new EmbedBuilder().setColor(card.color ?? cardAccentColor(card.accent));
   if (card.title) embed.setTitle(card.title);
   if (card.description) embed.setDescription(card.description);
+  if (card.thumbnailUrl) embed.setThumbnail(card.thumbnailUrl);
+  if (card.imageUrl) embed.setImage(card.imageUrl);
   if (card.fields?.length) {
     embed.addFields(
       card.fields.map((f) => ({
@@ -32,6 +33,24 @@ export function mapCardToDiscordPayload(card: ChatCard): {
     );
   }
   if (card.footer) embed.setFooter({ text: card.footer.slice(0, 2048) });
+
+  const embeds = [embed];
+  for (const panel of card.panels ?? []) {
+    const extra = new EmbedBuilder().setColor(card.color ?? cardAccentColor(card.accent));
+    if (panel.title) extra.setTitle(panel.title);
+    if (panel.description) extra.setDescription(panel.description);
+    if (panel.fields?.length) {
+      extra.addFields(
+        panel.fields.map((f) => ({
+          name: f.name,
+          value: f.value.slice(0, 1024),
+          inline: f.inline ?? false,
+        })),
+      );
+    }
+    if (panel.footer) extra.setFooter({ text: panel.footer.slice(0, 2048) });
+    embeds.push(extra);
+  }
 
   const components: ActionRowBuilder<ButtonBuilder | StringSelectMenuBuilder>[] = [];
 
@@ -60,12 +79,12 @@ export function mapCardToDiscordPayload(card: ChatCard): {
   }
 
   if (card.selects?.length) {
-    for (const sel of card.selects.slice(0, 3)) {
+    for (const sel of card.selects.slice(0, 4)) {
       components.push(selectToRow(sel));
     }
   }
 
-  return { embeds: [embed], components };
+  return { embeds, components };
 }
 
 function selectToRow(sel: ChatSelect): ActionRowBuilder<StringSelectMenuBuilder> {
