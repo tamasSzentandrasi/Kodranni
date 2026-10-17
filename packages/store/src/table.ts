@@ -45,6 +45,8 @@ export interface OpenTide {
   start: number;
   position: number;
   messageRef?: TableMessageRef;
+  /** Unanswered Tide-linked roll. The next Roll on the Tide opposes it. */
+  openRollId?: string;
 }
 
 /** Night's table. Kept in SQLite meta and omitted from the public snapshot. */
@@ -132,6 +134,7 @@ function parseTide(raw: unknown): OpenTide | null {
     start: t.start!,
     position: t.position!,
     messageRef: messageRef(t.messageRef),
+    openRollId: typeof t.openRollId === 'string' && t.openRollId ? t.openRollId : undefined,
   };
 }
 

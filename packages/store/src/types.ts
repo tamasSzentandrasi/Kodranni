@@ -187,6 +187,26 @@ export interface PlayerBinding {
   accountId?: string;
 }
 
+/** One purchase from The Wanting. The sheet names the pay. */
+export type WantingChoice =
+  | 'plus_one_foundation'
+  | 'plus_two_foundation_split'
+  | 'plus_five_skill'
+  | 'positive_trait';
+
+/** A spoken “who do we see?” claim on one person. */
+export interface SeenClaim {
+  id: string;
+  speakerAccountId: string;
+  speakerSlug: string;
+  speakerName: string;
+  line: string;
+  secondAccountId?: string;
+  accepted?: boolean;
+  refusedByStoryteller?: boolean;
+  refusedByTarget?: boolean;
+}
+
 /**
  * Creation / Weighing budgets on a character sheet.
  * Dice for Birth Omen / Guiding Hand are rolled on the bot; points land here.
@@ -211,6 +231,12 @@ export interface CreationState {
   claimable?: boolean;
   /** Hall-added NPC not yet weighed by the Storyteller. */
   placeholder?: boolean;
+  /** Spoken claims on this person. One accepted claim per speaker. */
+  seenClaims?: SeenClaim[];
+  /** Chosen on the private Wanting card. The sheet still names the pay. */
+  pendingWanting?: WantingChoice;
+  /** Send back reopened the draft and kept the edits. */
+  returned?: boolean;
 }
 
 export interface SkillProgress {
