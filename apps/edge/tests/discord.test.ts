@@ -77,6 +77,32 @@ describe('Discord HTTP', () => {
     expect(json.data.choices.length).toBeGreaterThan(0);
   });
 
+  it('answers character autocomplete from the published snapshot', async () => {
+    const { pubHex, privateKey } = keypair();
+    const kv = new MemoryKv();
+    await kv.put('guild:9', 'aspalath');
+    await kv.put(
+      'campaign:aspalath:snapshot',
+      JSON.stringify({
+        characters: [
+          { name: 'Jakov Bracco', status: 'active' },
+          { name: 'Caterina Vesper', status: 'dead' },
+        ],
+      }),
+    );
+    const body = JSON.stringify({
+      type: 4,
+      guild_id: '9',
+      data: { name: 'roll', options: [{ name: 'character', value: 'jak', focused: true }] },
+    });
+    const res = await handleDiscordInteraction(signedRequest(privateKey, body), {
+      CAMPAIGNS: kv,
+      DISCORD_PUBLIC_KEY: pubHex,
+    });
+    const json = (await res.json()) as { type: number; data: { choices: { value: string }[] } };
+    expect(json.data.choices.map((c) => c.value)).toEqual(['Jakov Bracco']);
+  });
+
   it('replies dark when origin is unset', async () => {
     const { pubHex, privateKey } = keypair();
     const kv = new MemoryKv();

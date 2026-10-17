@@ -8,9 +8,8 @@ import {
   grantGuidingHand,
   grantWord,
   listCharactersForAccount,
-  mapMember,
   previewHarm,
-  reclaimExertion,
+  previewPlayerPool,
   resolveCharacterByAccount,
   resolveFocusedCharacter,
   resolveRoleByAccount,
@@ -20,6 +19,7 @@ import {
   startClaimFromBot,
   startCreateFromBot,
   stReviewCharacter,
+  undoPlayerRoll,
   issueSheetToken,
   sheetTokenSecret,
   withEditToken,
@@ -63,7 +63,8 @@ export interface RollConfirm {
   foundation: string;
   dieTier: DieTier;
   exertion: number;
-  echoApplies: boolean;
+  echoName?: string;
+  parentRollId?: string;
   channelId: string;
   /** Fallback wizard: awaiting archetype pick. */
   phase?: 'arch' | 'skill' | 'confirm';
@@ -169,6 +170,22 @@ async function showConfirmCard(
 ): Promise<void> {
   c.phase = 'confirm';
   confirmsOf(ctx).set(c.id, c);
+  const person = ctx.store.getCharacterBySlug(c.characterSlug);
+  let poolFormula = '';
+  try {
+    poolFormula = previewPlayerPool(ctx.store, {
+      characterSlug: c.characterSlug,
+      foundation: c.foundation,
+      skill: c.skill,
+      dieTier: c.dieTier,
+      exertionDice: c.exertion,
+      echoInvoked: Boolean(c.echoName),
+      echoName: c.echoName,
+      primitive: !c.skill,
+    }).poolFormula;
+  } catch (err) {
+    poolFormula = err instanceof Error ? err.message : String(err);
+  }
   const card = buildRollConfirmCard({
     confirmId: c.id,
     characterName: c.characterName,
@@ -177,7 +194,11 @@ async function showConfirmCard(
     foundations: [...FOUNDATION_NAMES],
     dieTier: c.dieTier,
     exertion: c.exertion,
-    echoApplies: c.echoApplies,
+    poolFormula,
+    echoes: (person?.echoes ?? [])
+      .filter((echo) => !echo.resolved)
+      .map((echo) => ({ title: echo.title })),
+    echoName: c.echoName,
     liveSheetUrl: sheetUrl(ctx.liveBaseUrl, c.characterSlug, {
       platform: 'discord',
       accountId: c.accountId,
@@ -199,7 +220,9 @@ async function castConfirm(
     skill: c.skill,
     dieTier: c.dieTier,
     exertionDice: c.exertion,
-    echoInvoked: c.echoApplies,
+    echoInvoked: Boolean(c.echoName),
+    echoName: c.echoName,
+    parentRollId: c.parentRollId,
     primitive: !c.skill,
     actor: c.accountId,
     clientEventId: i.clientEventId,
@@ -215,7 +238,7 @@ async function castConfirm(
     faces: result.faces,
     marks: result.marks,
     omen: result.omen,
-    omenHit: result.omenHit,
+    omenHit: result.omenSecret ? null : omenWords(result.omenHit, result.omenEffect),
     practiceGained: result.practiceGained,
     whyPool: result.whyPool,
     liveSheetUrl: sheetUrl(ctx.liveBaseUrl, c.characterSlug),
@@ -246,7 +269,7 @@ async function resolveRollCharacter(
   characterOpt?: string,
 ): Promise<{ ok: true; slug: string; name: string } | { ok: false; message: string }> {
   if (characterOpt) {
-    const ch = ctx.store.getCharacterBySlug(characterOpt);
+    const ch = findSheeted(ctx, characterOpt);
     if (!ch) return { ok: false, message: `Unknown character: ${characterOpt}` };
     if (
       ch.player?.accountId !== accountId &&
@@ -268,17 +291,32 @@ async function resolveRollCharacter(
     return {
       ok: false,
       message:
-        'No character bound. Use `/create` to start a draft, or claim a prebuilt. (Emergency: ST `/map`.)',
+        'No character bound. Use `/create` to start a draft, or claim a prebuilt.',
     };
   }
   if (bound.length > 1) {
-    const names = bound.map((c) => `\`${c.slug}\``).join(', ');
+    const names = bound.map((c) => c.name).join(', ');
     return {
       ok: false,
-      message: `Multiple characters: ${names}. Pass \`character:\` or \`/focus\`.`,
+      message: `Multiple characters: ${names}. Use \`/select\`.`,
     };
   }
   return { ok: true, slug: bound[0]!.slug, name: bound[0]!.name };
+}
+
+function findSheeted(ctx: BotContext, token: string) {
+  const trimmed = token.trim();
+  const bySlug = ctx.store.getCharacterBySlug(trimmed);
+  if (bySlug) return bySlug;
+  const folded = trimmed.toLowerCase();
+  return ctx.store.listCharacters().find((ch) => ch.name.toLowerCase() === folded);
+}
+
+function omenWords(hit: string | null | undefined, effect?: string): string | null {
+  if (hit === 'positive') return 'Positive Consequence';
+  if (hit === 'negative') return 'Negative Consequence';
+  if (hit === 'scene') return effect || 'Scene';
+  return null;
 }
 
 function guidingFoundation(skill?: string, explicit?: string): string {
@@ -296,22 +334,6 @@ async function handleCommand(
 ): Promise<void> {
   const name = canonicalCommand(i.name);
   const { options, user, channelId } = i;
-
-  if (name === 'live') {
-    const live = ctx.liveBaseUrl;
-    const arch = ctx.archiveBaseUrl;
-    const lines = [
-      `**Live sheet:** ${live}`,
-      arch ? `**Archive:** ${arch}` : '**Archive:** (not configured)',
-    ];
-    if (isSt(ctx, user)) {
-      lines.push(
-        '**Storyteller desk:** the desk is the hall at localhost on the machine that holds the record. The public address stays the live hall.',
-      );
-    }
-    await ctx.port.replyEphemeral(i, lines.join('\n'));
-    return;
-  }
 
   if (name === 'create') {
     const nameOpt = options.name != null ? String(options.name) : undefined;
@@ -375,20 +397,29 @@ async function handleCommand(
     return;
   }
 
-  if (name === 'focus') {
-    const characterSlug = String(options.character ?? '');
-    if (!characterSlug) {
-      await ctx.port.replyEphemeral(i, 'Need `character:` slug.');
+  if (name === 'select') {
+    const living = listCharactersForAccount(ctx.store, 'discord', user.accountId).filter(
+      (c) => c.status === 'active',
+    );
+    if (living.length <= 1) {
+      await ctx.port.replyEphemeral(i, 'With one living character, /select is unused.');
+      return;
+    }
+    const token = String(options.character ?? '').trim();
+    const folded = token.toLowerCase();
+    const match = living.find((c) => c.slug === token || c.name.toLowerCase() === folded);
+    if (!match) {
+      await ctx.port.replyEphemeral(i, `None of your living characters is named ${token}.`);
       return;
     }
     const ch = setFocusedCharacter(ctx.store, {
       platform: 'discord',
       accountId: user.accountId,
-      characterSlug,
+      characterSlug: match.slug,
       displayName: user.displayName,
       actor: user.accountId,
     });
-    await ctx.port.replyEphemeral(i, `Now playing as **${ch.name}** (\`${ch.slug}\`).`);
+    await ctx.port.replyEphemeral(i, `Rolls will use **${ch.name}**.`);
     return;
   }
 
@@ -450,38 +481,18 @@ async function handleCommand(
         return;
       }
     }
-    const characterSlug = options.character != null ? String(options.character) : undefined;
-    const pending = ctx.store
-      .listCharacters()
-      .filter((c) => c.status === 'pending_review')
-      .filter((c) => !characterSlug || c.slug === characterSlug);
-    if (pending.length === 0) {
-      await ctx.port.replyEphemeral(
-        i,
-        characterSlug
-          ? `No pending review for \`${characterSlug}\`.`
-          : 'No characters in pending_review. Players Confirm on the sheet after `/create`.',
-      );
+    const token = options.character != null ? String(options.character) : undefined;
+    const pending = ctx.store.listCharacters().filter((c) => c.status === 'pending_review');
+    const named = token ? findSheeted(ctx, token) : undefined;
+    const waiting = token ? pending.filter((c) => c.slug === named?.slug) : pending;
+    if (waiting.length === 0) {
+      await ctx.port.replyEphemeral(i, 'No one is waiting.');
       return;
     }
-    for (const ch of pending) {
-      const accountId = ch.initiator?.accountId ?? ch.player?.accountId ?? '';
-      const stUrl = sheetUrl(ctx.liveBaseUrl, ch.slug, {
-        platform: 'discord',
-        accountId: user.accountId,
-        role: 'storyteller',
-      });
-      await ctx.port.sendCard(
-        channelId,
-        buildDraftReviewCard({
-          characterName: ch.name,
-          characterSlug: ch.slug,
-          mentionAccountId: accountId,
-          liveSheetUrl: stUrl,
-        }),
-      );
+    for (const ch of waiting) {
+      await ctx.port.sendCard(channelId, sessionInboxNotice(ch.name));
     }
-    await ctx.port.replyEphemeral(i, `Posted ${pending.length} review card(s).`);
+    await ctx.port.replyEphemeral(i, `Posted ${waiting.length} notice${waiting.length === 1 ? '' : 's'}.`);
     return;
   }
 
@@ -506,71 +517,6 @@ async function handleCommand(
     await ctx.port.replyEphemeral(
       i,
       `Awarded **1 Word** to **${ch.name}** (now ${ch.creation?.words ?? 0}). Wanting spends are on their sheet.`,
-    );
-    return;
-  }
-
-  if (name === 'reclaim') {
-    if (!isSt(ctx, user)) {
-      const anySt = ctx.store.listMembers().some((m) => m.role === 'storyteller');
-      if (anySt) {
-        await ctx.port.replyEphemeral(i, 'Storyteller only.');
-        return;
-      }
-    }
-    const characterSlug = String(options.character ?? '');
-    if (!characterSlug) {
-      await ctx.port.replyEphemeral(i, 'Need `character:` slug.');
-      return;
-    }
-    const points = options.points != null ? Number(options.points) : undefined;
-    const ch = reclaimExertion(ctx.store, {
-      characterSlug,
-      points,
-      actor: user.accountId,
-      clientEventId: i.clientEventId,
-    });
-    await ctx.port.sendCard(tableChannel(i, channelId), {
-      title: `Exertion restored · ${ch.name}`,
-      description: `Now **${ch.exertion.current}/${ch.exertion.max}**${
-        points != null ? ` (+${points})` : ' (filled)'
-      }.`,
-      accent: 'neutral',
-      links: [{ label: 'Live sheet', url: sheetUrl(ctx.liveBaseUrl, ch.slug) }],
-    });
-    await ctx.port.replyEphemeral(
-      i,
-      `${ch.name} Exertion now ${ch.exertion.current}/${ch.exertion.max}. Posted to the table.`,
-    );
-    return;
-  }
-
-  if (name === 'map') {
-    if (!isSt(ctx, user)) {
-      await ctx.port.replyEphemeral(
-        i,
-        'Emergency only. Preferred path: player `/create` → sheet Confirm → ST Approve.',
-      );
-      return;
-    }
-    const accountId = String(options.user ?? '');
-    const characterSlug = String(options.character ?? '');
-    const role = (options.role as 'player' | 'storyteller') ?? 'player';
-    if (!accountId || !characterSlug) {
-      await ctx.port.replyEphemeral(i, 'Need user and character slug.');
-      return;
-    }
-    mapMember(ctx.store, {
-      platform: 'discord',
-      accountId,
-      characterSlug,
-      role,
-      displayName: user.displayName,
-      actor: user.accountId,
-    });
-    await ctx.port.replyEphemeral(
-      i,
-      `Emergency map: <@${accountId}> → **${characterSlug}** (${role}).`,
     );
     return;
   }
@@ -661,7 +607,22 @@ async function handleCommand(
     );
     const dieTier = (Number(options.tier ?? 8) || 8) as DieTier;
     const exertion = Number(options.exertion ?? 0);
-    const echoApplies = Boolean(options.echo);
+    const echoToken =
+      typeof options.echo === 'string' && options.echo.trim() && options.echo !== 'none'
+        ? options.echo.trim()
+        : undefined;
+    let echoName: string | undefined;
+    if (echoToken) {
+      const person = ctx.store.getCharacterBySlug(resolved.slug);
+      const echo = person?.echoes.find(
+        (row) => !row.resolved && row.title.toLowerCase() === echoToken.toLowerCase(),
+      );
+      if (!echo) {
+        await ctx.port.replyEphemeral(i, `That Echo is not on **${resolved.name}**.`);
+        return;
+      }
+      echoName = echo.title;
+    }
     const confirmId = randomUUID().slice(0, 8);
     const confirm: RollConfirm = {
       id: confirmId,
@@ -672,7 +633,7 @@ async function handleCommand(
       foundation,
       dieTier,
       exertion,
-      echoApplies,
+      echoName,
       channelId,
       phase: skill ? 'confirm' : 'arch',
     };
@@ -707,7 +668,7 @@ async function handleCommand(
     return;
   }
 
-  if (name === 'st-roll') {
+  if (name === 'npc-roll') {
     if (!isSt(ctx, user)) {
       const anySt = ctx.store.listMembers().some((m) => m.role === 'storyteller');
       if (anySt) {
@@ -735,12 +696,13 @@ async function handleCommand(
       faces: result.faces,
       marks: result.marks,
       omen: result.omen,
-      omenHit: null,
+      omenHit: result.omenSecret ? null : omenWords(result.omenHit, result.omenEffect),
       rollId: result.rollId,
       showStPalette: true,
     });
     await ctx.port.sendCard(channelId, card);
-    await ctx.port.replyEphemeral(i, `NPC rolled **${result.marks}** Marks.`);
+    const whisper = result.omenWhisper ? ` Whisper, face ${result.omen}: ${result.omenWhisper}.` : '';
+    await ctx.port.replyEphemeral(i, `NPC rolled **${result.marks}** Marks.${whisper}`);
     return;
   }
 
@@ -823,6 +785,79 @@ async function handleSelect(
     }
     c.foundation = value;
     await showConfirmCard(ctx, i, c);
+    return;
+  }
+
+  if (id.startsWith('roll-tier:')) {
+    const confirmId = id.slice('roll-tier:'.length);
+    const c = confirmsOf(ctx).get(confirmId);
+    if (!c || c.accountId !== i.user.accountId) {
+      await ctx.port.replyEphemeral(i, 'This confirm is not yours or expired.');
+      return;
+    }
+    const tier = Number(value);
+    if (tier !== 6 && tier !== 8 && tier !== 12) {
+      await ctx.port.replyEphemeral(i, 'Unknown die tier.');
+      return;
+    }
+    c.dieTier = tier as DieTier;
+    await showConfirmCard(ctx, i, c);
+    return;
+  }
+
+  if (id.startsWith('roll-echo:')) {
+    const confirmId = id.slice('roll-echo:'.length);
+    const c = confirmsOf(ctx).get(confirmId);
+    if (!c || c.accountId !== i.user.accountId) {
+      await ctx.port.replyEphemeral(i, 'This confirm is not yours or expired.');
+      return;
+    }
+    if (value === 'none') {
+      c.echoName = undefined;
+    } else {
+      const person = ctx.store.getCharacterBySlug(c.characterSlug);
+      const echo = person?.echoes.find((row) => !row.resolved && row.title === value);
+      if (!echo) {
+        await ctx.port.replyEphemeral(i, 'That Echo is not on this sheet.');
+        return;
+      }
+      c.echoName = echo.title;
+    }
+    await showConfirmCard(ctx, i, c);
+    return;
+  }
+
+  if (id.startsWith('harm-track:')) {
+    if (!isSt(ctx, i.user)) {
+      await ctx.port.replyEphemeral(i, 'Storyteller only.');
+      return;
+    }
+    const parts = id.split(':');
+    const rollId = parts[1]!;
+    const family = parts[2] as 'physical' | 'mental' | 'social';
+    const points = Number(parts[3] ?? 0);
+    const roll = ctx.store.getRoll(rollId);
+    const slug = (roll?.data as { characterSlug?: string } | undefined)?.characterSlug;
+    if (!slug || !points) {
+      await ctx.port.replyEphemeral(i, 'Invalid harm apply.');
+      return;
+    }
+    const r = applyHarm(ctx.store, {
+      characterSlug: slug,
+      family,
+      availablePoints: points,
+      allocations: [{ track: value, points }],
+      rollId,
+      actor: i.user.accountId,
+      clientEventId: i.clientEventId,
+    });
+    await ctx.port.sendCard(i.channelId, {
+      title: `Harm applied · ${r.character.name}`,
+      description: r.applied.map((a) => `**${a.track}** +${a.points}`).join(', '),
+      accent: 'blood',
+      footer: r.dying ? 'Dying' : undefined,
+      links: [{ label: 'Live sheet', url: sheetUrl(ctx.liveBaseUrl, r.character.slug) }],
+    });
   }
 }
 
@@ -867,18 +902,6 @@ async function handleButton(
     await showConfirmCard(ctx, i, c);
     return;
   }
-  if (id.startsWith('roll-echo:')) {
-    const confirmId = id.slice('roll-echo:'.length);
-    const c = confirmsOf(ctx).get(confirmId);
-    if (!c || c.accountId !== i.user.accountId) {
-      await ctx.port.replyEphemeral(i, 'This confirm is not yours or expired.');
-      return;
-    }
-    c.echoApplies = !c.echoApplies;
-    await showConfirmCard(ctx, i, c);
-    return;
-  }
-
   if (id.startsWith('prompt-roll:')) {
     const promptId = id.slice('prompt-roll:'.length);
     const prompt = ctx.prompts.get(promptId);
@@ -912,7 +935,6 @@ async function handleButton(
       foundation: prompt.foundation,
       dieTier: prompt.dieTier,
       exertion: 0,
-      echoApplies: false,
       channelId: i.channelId,
       phase: 'confirm',
     };
@@ -1057,34 +1079,110 @@ async function handleButton(
     return;
   }
 
-  if (id.startsWith('st-exert:')) {
+  if (id.startsWith('undo:')) {
     if (!isSt(ctx, i.user)) {
       await ctx.port.replyEphemeral(i, 'Storyteller only.');
       return;
     }
-    const rollId = id.slice('st-exert:'.length);
-    const roll = ctx.store.getRoll(rollId);
-    const slug = (roll?.data as { characterSlug?: string } | undefined)?.characterSlug;
-    if (!slug) {
-      await ctx.port.replyEphemeral(i, 'No character on this roll.');
-      return;
+    const rollId = id.slice('undo:'.length);
+    try {
+      const undone = undoPlayerRoll(ctx.store, rollId, i.user.accountId);
+      await ctx.port.replyEphemeral(i, `Undid the roll for **${undone.name}**.`);
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      await ctx.port.replyEphemeral(i, msg);
     }
-    await ctx.port.replyEphemeral(
-      i,
-      'Use `/reclaim character:…` (optional `points:`) — Exertion is not restored from the roll card.',
-    );
     return;
   }
 
   if (id.startsWith('oppose:')) {
-    await ctx.port.replyEphemeral(
-      i,
-      'Oppose: reply with `/roll` or `/st-roll` (full oppose linking comes next).',
-    );
+    const parentRollId = id.slice('oppose:'.length);
+    const roll = ctx.store.getRoll(parentRollId);
+    if (!roll) {
+      await ctx.port.replyEphemeral(i, 'Unknown roll.');
+      return;
+    }
+    const resolved = await resolveRollCharacter(ctx, i.user.accountId);
+    if (!resolved.ok) {
+      await ctx.port.replyEphemeral(i, resolved.message);
+      return;
+    }
+    const confirmId = randomUUID().slice(0, 8);
+    const confirm: RollConfirm = {
+      id: confirmId,
+      accountId: i.user.accountId,
+      characterSlug: resolved.slug,
+      characterName: resolved.name,
+      foundation: 'Strength',
+      dieTier: 8,
+      exertion: 0,
+      parentRollId,
+      channelId: i.channelId,
+      phase: 'arch',
+    };
+    confirmsOf(ctx).set(confirmId, confirm);
+    const card: ChatCard = {
+      title: `Archetype · ${resolved.name}`,
+      description: 'Oppose that roll. Pick an Archetype, then a skill, then the Ready card.',
+      accent: 'blood',
+      selects: [
+        {
+          id: `roll-arch:${confirmId}`,
+          placeholder: 'Archetype…',
+          options: ARCHETYPES.map((a) => ({
+            value: a.id,
+            label: a.name,
+            description: a.tag,
+          })),
+        },
+      ],
+      buttons: [{ id: `roll-cancel:${confirmId}`, label: 'Cancel', style: 'danger' }],
+    };
+    if (ctx.port.editReplyCard) await ctx.port.editReplyCard(i, card);
+    else await ctx.port.sendCard(i.channelId, card);
     return;
   }
 
   await ctx.port.replyEphemeral(i, `Unhandled button: ${id}`);
+}
+
+/** Channel notice that a character is waiting on the Session inbox. No sheet link. */
+export function sessionInboxNotice(characterName: string): ChatCard {
+  return {
+    title: 'Session',
+    description: `**${characterName}** is waiting on the Session inbox.`,
+    accent: 'neutral',
+  };
+}
+
+export interface RestoreNoticeChange {
+  characterSlug: string;
+  name: string;
+  foodDays?: number;
+  waterDays?: number;
+  exertion?: number;
+}
+
+/** Private lines for people who have an account. Unbound names stay quiet. */
+export function noticesForRestore(
+  changes: readonly RestoreNoticeChange[],
+  people: readonly { slug: string; accountId?: string }[],
+): { accountId: string; text: string }[] {
+  const notes: { accountId: string; text: string }[] = [];
+  for (const change of changes) {
+    const accountId = people.find((person) => person.slug === change.characterSlug)?.accountId;
+    if (!accountId) continue;
+    const bits: string[] = [];
+    if (change.foodDays != null) bits.push(`food is now ${change.foodDays} days`);
+    if (change.waterDays != null) bits.push(`water is now ${change.waterDays} days`);
+    if (change.exertion != null) bits.push(`Exertion is now ${change.exertion}`);
+    if (bits.length === 0) continue;
+    notes.push({
+      accountId,
+      text: `Rest for **${change.name}**: ${bits.join('; ')}.`,
+    });
+  }
+  return notes;
 }
 
 /** Slugs in pending_review that have not been announced this session. */
@@ -1106,23 +1204,3 @@ export function pruneAnnouncedReviews(
   }
 }
 
-/** Build ST review card after sheet Confirm (for bot consumers of events). */
-export function buildDraftReviewCard(input: {
-  characterName: string;
-  characterSlug: string;
-  mentionAccountId: string;
-  liveSheetUrl: string;
-}): ChatCard {
-  return {
-    title: `${input.characterName} · ready for review`,
-    description: `<@${input.mentionAccountId}> finished draft **${input.characterName}**.`,
-    accent: 'blood',
-    fields: [{ name: 'From', value: `<@${input.mentionAccountId}>`, inline: true }],
-    buttons: [
-      { id: `approve:${input.characterSlug}`, label: 'Approve', style: 'success' },
-      { id: `changes:${input.characterSlug}`, label: 'Request changes', style: 'secondary' },
-      { id: `deny:${input.characterSlug}`, label: 'Deny', style: 'danger' },
-    ],
-    links: [{ label: 'Open sheet', url: input.liveSheetUrl }],
-  };
-}

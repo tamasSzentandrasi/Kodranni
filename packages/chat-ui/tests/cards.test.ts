@@ -38,12 +38,13 @@ describe('chat-ui cards', () => {
       showStPalette: true,
     });
     expect(withSt.buttons?.some((b) => b.id.startsWith('st-harm:'))).toBe(true);
+    expect(withSt.buttons?.some((b) => b.id.startsWith('undo:'))).toBe(true);
     expect(withSt.buttons?.some((b) => b.id.startsWith('st-exert:'))).toBe(false);
     expect(card.links?.[0]?.label).toBe('Live sheet');
     expect(card.accent).toBe('blood');
   });
 
-  it('confirm card exposes all Foundations and Echo as apply, not spend', () => {
+  it('confirm card shows the pool, Ordinary, and a named Echo', () => {
     const card = buildRollConfirmCard({
       confirmId: 'c1',
       characterName: 'Tomas',
@@ -62,11 +63,19 @@ describe('chat-ui cards', () => {
       ],
       dieTier: 8,
       exertion: 0,
-      echoApplies: false,
+      poolFormula: '2+1 = 3d8',
+      echoes: [{ title: 'Finish the mill' }],
     });
     expect(card.selects?.[0]?.options).toHaveLength(9);
-    expect(card.buttons?.some((b) => b.label.includes('Echo applies'))).toBe(true);
+    expect(card.fields?.find((f) => f.name === 'Pool')?.value).toBe('2+1 = 3d8');
+    expect(card.fields?.find((f) => f.name === 'Tier')?.value).toBe('d8 · Ordinary');
+    expect(card.fields?.find((f) => f.name === 'Echo')?.value).toBe('None');
+    expect(card.selects?.some((s) => s.options.some((o) => o.label === 'Finish the mill'))).toBe(
+      true,
+    );
+    expect(card.buttons?.some((b) => b.label.includes('Echo applies'))).toBe(false);
     expect(card.buttons?.some((b) => b.id === 'roll-cast:c1')).toBe(true);
+    expect(dieTierLabel(8)).toBe('d8 · Ordinary');
   });
 
   it('approval card has Approve and Deny', () => {

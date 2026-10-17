@@ -3,10 +3,11 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
 import { openSqliteStore, seedDemoCampaign } from '@kodranni/store';
-import { mapMember, sheetTokenSecret } from '@kodranni/app';
+import { confirmReturnToTable, mapMember, startCreateFromBot } from '@kodranni/app';
 import type { ChatCard, ChatInteraction, ChatMessageRef, ChatPort } from '@kodranni/chat-port';
 import {
   handleInteraction,
+  noticesForRestore,
   pruneAnnouncedReviews,
   slugsNeedingReviewCard,
   type BotContext,
@@ -93,6 +94,9 @@ describe('bot router', () => {
     expect(port.replies.length).toBe(1);
     expect(port.replies[0]!.title).toMatch(/^Ready ·/);
     expect(port.replies[0]!.selects?.[0]?.options).toHaveLength(9);
+    const poolLine = port.replies[0]!.fields?.find((f) => f.name === 'Pool')?.value;
+    expect(poolLine).toBeTruthy();
+    expect(port.replies[0]!.fields?.find((f) => f.name === 'Tier')?.value).toContain('Ordinary');
     const castId = port.replies[0]!.buttons?.find((b) => b.id.startsWith('roll-cast:'))?.id;
     expect(castId).toBeTruthy();
     await handleInteraction(ctx, {
@@ -106,6 +110,7 @@ describe('bot router', () => {
     expect(port.cards.length).toBe(1);
     expect(port.cards[0]!.title).toBe('Jakov Bracco');
     expect(port.cards[0]!.fields?.[0]?.name).toBe('Marks');
+    expect(port.cards[0]!.fields?.find((f) => f.name === 'Pool')?.value).toBe(poolLine);
     expect(port.ephemerals.some((e) => e.includes('Marks'))).toBe(true);
     store.close();
   });
@@ -210,19 +215,11 @@ describe('bot router', () => {
     store.close();
   });
 
-  it('/live points the Storyteller at the hall desk', async () => {
+  it('treats the retired commands as unknown', async () => {
     const dir = mkdtempSync(join(tmpdir(), 'kod-bot-'));
     dirs.push(dir);
     const store = openSqliteStore(join(dir, 'c.sqlite'));
     seedDemoCampaign(store);
-    mapMember(store, {
-      platform: 'discord',
-      accountId: 'st-1',
-      characterSlug: 'tomaso',
-      role: 'storyteller',
-    });
-    const prev = process.env.KODRANNI_SHEET_TOKEN_SECRET;
-    process.env.KODRANNI_SHEET_TOKEN_SECRET = 'test-sheet-secret-do-not-use-in-prod';
     const port = mockPort();
     const ctx: BotContext = {
       store,
@@ -231,22 +228,20 @@ describe('bot router', () => {
       prompts: new Map(),
       log: () => {},
     };
-    await handleInteraction(ctx, {
-      type: 'command',
-      id: '4',
-      clientEventId: 'c4',
-      user: { platform: 'discord', accountId: 'st-1', displayName: 'ST' },
-      channelId: 'ch',
-      name: 'live',
-      options: {},
-    });
-    expect(sheetTokenSecret()).toBeTruthy();
-    const text = port.ephemerals.join('\n');
-    expect(text).toContain('localhost');
-    expect(text).not.toContain('/community/setup/');
-    expect(text).not.toContain('edit=');
-    if (prev === undefined) delete process.env.KODRANNI_SHEET_TOKEN_SECRET;
-    else process.env.KODRANNI_SHEET_TOKEN_SECRET = prev;
+    for (const name of ['live', 'reclaim', 'focus', 'st-roll', 'map']) {
+      await handleInteraction(ctx, {
+        type: 'command',
+        id: name,
+        clientEventId: name,
+        user: { platform: 'discord', accountId: 'user-1', displayName: 'P' },
+        channelId: 'ch',
+        name,
+        options: { character: 'jakov', points: 1 },
+      });
+    }
+    expect(port.cards).toHaveLength(0);
+    expect(port.ephemerals.every((e) => /unknown command/i.test(e))).toBe(true);
+    expect(port.ephemerals).toHaveLength(5);
     store.close();
   });
 
@@ -336,7 +331,90 @@ describe('bot router', () => {
     store.close();
   });
 
-  it('ST /reclaim restores Exertion and posts to the table', async () => {
+  it('/select is unused for one living character and chooses among several', async () => {
+    const dir = mkdtempSync(join(tmpdir(), 'kod-bot-'));
+    dirs.push(dir);
+    const store = openSqliteStore(join(dir, 'c.sqlite'));
+    seedDemoCampaign(store);
+    mapMember(store, {
+      platform: 'discord',
+      accountId: 'user-1',
+      characterSlug: 'jakov',
+      role: 'player',
+    });
+    const port = mockPort();
+    const ctx: BotContext = {
+      store,
+      port,
+      liveBaseUrl: 'http://127.0.0.1:8742',
+      prompts: new Map(),
+      log: () => {},
+    };
+    await handleInteraction(ctx, {
+      type: 'command',
+      id: 'sel-one',
+      clientEventId: 'sel-one',
+      user: { platform: 'discord', accountId: 'user-1', displayName: 'P' },
+      channelId: 'ch',
+      name: 'select',
+      options: { character: 'Jakov Bracco' },
+    });
+    expect(port.ephemerals.at(-1)).toMatch(/unused/i);
+
+    const caterina = store.getCharacterBySlug('caterina')!;
+    caterina.player = { platform: 'discord', accountId: 'user-1', displayName: 'P' };
+    store.putCharacter(caterina);
+    await handleInteraction(ctx, {
+      type: 'command',
+      id: 'sel-two',
+      clientEventId: 'sel-two',
+      user: { platform: 'discord', accountId: 'user-1', displayName: 'P' },
+      channelId: 'ch',
+      name: 'select',
+      options: { character: caterina.name },
+    });
+    expect(port.ephemerals.at(-1)).toContain(caterina.name);
+    const focused = store.listMembers().find((m) => m.accountId === 'user-1');
+    expect(focused?.focusedCharacterId).toBe(caterina.id);
+    store.close();
+  });
+
+  it('/npc-roll names the Omen and writes no harm track', async () => {
+    const dir = mkdtempSync(join(tmpdir(), 'kod-bot-'));
+    dirs.push(dir);
+    const store = openSqliteStore(join(dir, 'c.sqlite'));
+    seedDemoCampaign(store);
+    mapMember(store, {
+      platform: 'discord',
+      accountId: 'st-1',
+      characterSlug: 'tomaso',
+      role: 'storyteller',
+    });
+    const before = JSON.stringify(store.getCharacterBySlug('jakov')!.harm);
+    const port = mockPort();
+    const ctx: BotContext = {
+      store,
+      port,
+      liveBaseUrl: 'http://127.0.0.1:8742',
+      prompts: new Map(),
+      log: () => {},
+    };
+    await handleInteraction(ctx, {
+      type: 'command',
+      id: 'npc1',
+      clientEventId: 'npc1',
+      user: { platform: 'discord', accountId: 'st-1', displayName: 'ST' },
+      channelId: 'ch',
+      name: 'npc-roll',
+      options: { foundation: 2, skill: 1, label: 'The miller', tier: 8 },
+    });
+    expect(port.cards[0]?.title).toBe('The miller');
+    expect(port.cards[0]?.fields?.some((f) => f.name === 'Omen')).toBe(true);
+    expect(JSON.stringify(store.getCharacterBySlug('jakov')!.harm)).toBe(before);
+    store.close();
+  });
+
+  it('lets a Storyteller roll a sheeted person by name', async () => {
     const dir = mkdtempSync(join(tmpdir(), 'kod-bot-'));
     dirs.push(dir);
     const store = openSqliteStore(join(dir, 'c.sqlite'));
@@ -357,16 +435,295 @@ describe('bot router', () => {
     };
     await handleInteraction(ctx, {
       type: 'command',
-      id: 'reclaim1',
-      clientEventId: 'rc1',
+      id: 'st-name',
+      clientEventId: 'st-name',
       user: { platform: 'discord', accountId: 'st-1', displayName: 'ST' },
       channelId: 'ch',
-      name: 'reclaim',
-      options: { character: 'jakov', points: 1 },
+      name: 'roll',
+      options: {
+        character: 'Jakov Bracco',
+        foundation: 'Authority',
+        skill: 'Command',
+        tier: 8,
+        exertion: 0,
+      },
     });
-    expect(port.cards[0]?.title).toMatch(/Exertion restored/);
-    expect(port.ephemerals.some((e) => e.includes('Posted to the table'))).toBe(true);
+    expect(port.replies[0]?.title).toBe('Ready · Jakov Bracco');
     store.close();
+  });
+
+  it('requires a named Echo for the second Exertion die', async () => {
+    const dir = mkdtempSync(join(tmpdir(), 'kod-bot-'));
+    dirs.push(dir);
+    const store = openSqliteStore(join(dir, 'c.sqlite'));
+    seedDemoCampaign(store);
+    mapMember(store, {
+      platform: 'discord',
+      accountId: 'user-1',
+      characterSlug: 'jakov',
+      role: 'player',
+    });
+    const port = mockPort();
+    const ctx: BotContext = {
+      store,
+      port,
+      liveBaseUrl: 'http://127.0.0.1:8742',
+      prompts: new Map(),
+      log: () => {},
+    };
+    await handleInteraction(ctx, {
+      type: 'command',
+      id: 'ex2',
+      clientEventId: 'ex2',
+      user: { platform: 'discord', accountId: 'user-1', displayName: 'P' },
+      channelId: 'ch',
+      name: 'roll',
+      options: { foundation: 'Authority', skill: 'Command', tier: 8, exertion: 2 },
+    });
+    expect(port.replies[0]?.fields?.find((f) => f.name === 'Pool')?.value).toMatch(/named Echo/i);
+    const castId = port.replies[0]!.buttons?.find((b) => b.id.startsWith('roll-cast:'))?.id;
+    await handleInteraction(ctx, {
+      type: 'button',
+      id: 'ex2b',
+      clientEventId: 'ex2b',
+      user: { platform: 'discord', accountId: 'user-1', displayName: 'P' },
+      channelId: 'ch',
+      customId: castId!,
+    });
+    expect(port.ephemerals.some((e) => /named Echo/i.test(e))).toBe(true);
+    expect(port.cards).toHaveLength(0);
+    store.close();
+  });
+
+  it('Oppose opens a Ready card tied to that roll, and Undo restores the spend', async () => {
+    const dir = mkdtempSync(join(tmpdir(), 'kod-bot-'));
+    dirs.push(dir);
+    const store = openSqliteStore(join(dir, 'c.sqlite'));
+    seedDemoCampaign(store);
+    mapMember(store, {
+      platform: 'discord',
+      accountId: 'user-1',
+      characterSlug: 'jakov',
+      role: 'player',
+    });
+    mapMember(store, {
+      platform: 'discord',
+      accountId: 'user-2',
+      characterSlug: 'caterina',
+      role: 'player',
+    });
+    mapMember(store, {
+      platform: 'discord',
+      accountId: 'st-1',
+      characterSlug: 'tomaso',
+      role: 'storyteller',
+    });
+    const before = store.getCharacterBySlug('jakov')!.exertion.current;
+    const port = mockPort();
+    const ctx: BotContext = {
+      store,
+      port,
+      liveBaseUrl: 'http://127.0.0.1:8742',
+      prompts: new Map(),
+      log: () => {},
+    };
+    await handleInteraction(ctx, {
+      type: 'command',
+      id: 'op-roll',
+      clientEventId: 'op-roll',
+      user: { platform: 'discord', accountId: 'user-1', displayName: 'P' },
+      channelId: 'ch',
+      name: 'roll',
+      options: { foundation: 'Authority', skill: 'Command', tier: 8, exertion: 1 },
+    });
+    const castId = port.replies[0]!.buttons?.find((b) => b.id.startsWith('roll-cast:'))?.id;
+    await handleInteraction(ctx, {
+      type: 'button',
+      id: 'op-cast',
+      clientEventId: 'op-cast',
+      user: { platform: 'discord', accountId: 'user-1', displayName: 'P' },
+      channelId: 'ch',
+      customId: castId!,
+    });
+    expect(store.getCharacterBySlug('jakov')!.exertion.current).toBe(before - 1);
+    const rollId = port.cards[0]!.buttons?.find((b) => b.id.startsWith('undo:'))?.id.slice(5);
+    expect(rollId).toBeTruthy();
+
+    await handleInteraction(ctx, {
+      type: 'button',
+      id: 'op-btn',
+      clientEventId: 'op-btn',
+      user: { platform: 'discord', accountId: 'user-2', displayName: 'C' },
+      channelId: 'ch',
+      customId: `oppose:${rollId}`,
+    });
+    expect(port.replies.at(-1)?.title).toMatch(/^Archetype ·/);
+    const arch = port.replies.at(-1)?.selects?.[0];
+    await handleInteraction(ctx, {
+      type: 'select',
+      id: 'op-arch',
+      clientEventId: 'op-arch',
+      user: { platform: 'discord', accountId: 'user-2', displayName: 'C' },
+      channelId: 'ch',
+      customId: arch!.id,
+      values: [arch!.options[0]!.value],
+    });
+    const skill = port.replies.at(-1)?.selects?.[0];
+    await handleInteraction(ctx, {
+      type: 'select',
+      id: 'op-skill',
+      clientEventId: 'op-skill',
+      user: { platform: 'discord', accountId: 'user-2', displayName: 'C' },
+      channelId: 'ch',
+      customId: skill!.id,
+      values: [skill!.options[0]!.value],
+    });
+    expect(port.replies.at(-1)?.title).toMatch(/^Ready ·/);
+    const opposeCast = port.replies.at(-1)?.buttons?.find((b) => b.id.startsWith('roll-cast:'))?.id;
+    await handleInteraction(ctx, {
+      type: 'button',
+      id: 'op-cast2',
+      clientEventId: 'op-cast2',
+      user: { platform: 'discord', accountId: 'user-2', displayName: 'C' },
+      channelId: 'ch',
+      customId: opposeCast!,
+    });
+    const opposeRollId = port.cards.at(-1)?.buttons?.find((b) => b.id.startsWith('undo:'))?.id.slice(5);
+    expect(store.getRoll(opposeRollId!)?.parentRollId).toBe(rollId);
+
+    await handleInteraction(ctx, {
+      type: 'button',
+      id: 'undo1',
+      clientEventId: 'undo1',
+      user: { platform: 'discord', accountId: 'st-1', displayName: 'ST' },
+      channelId: 'ch',
+      customId: `undo:${rollId}`,
+    });
+    expect(store.getCharacterBySlug('jakov')!.exertion.current).toBe(before);
+    await handleInteraction(ctx, {
+      type: 'button',
+      id: 'undo2',
+      clientEventId: 'undo2',
+      user: { platform: 'discord', accountId: 'st-1', displayName: 'ST' },
+      channelId: 'ch',
+      customId: `undo:${rollId}`,
+    });
+    expect(port.ephemerals.some((e) => /already undone/i.test(e))).toBe(true);
+    store.close();
+  });
+
+  it('assigns Harm from a track select', async () => {
+    const dir = mkdtempSync(join(tmpdir(), 'kod-bot-'));
+    dirs.push(dir);
+    const store = openSqliteStore(join(dir, 'c.sqlite'));
+    seedDemoCampaign(store);
+    mapMember(store, {
+      platform: 'discord',
+      accountId: 'st-1',
+      characterSlug: 'tomaso',
+      role: 'storyteller',
+    });
+    const jakov = store.getCharacterBySlug('jakov')!;
+    store.insertRoll({
+      id: 'harm-roll',
+      ts: new Date().toISOString(),
+      characterId: jakov.id,
+      data: { characterSlug: 'jakov', marks: 0, failures: 9, kind: 'unopposed' },
+    });
+    const port = mockPort();
+    const ctx: BotContext = {
+      store,
+      port,
+      liveBaseUrl: 'http://127.0.0.1:8742',
+      prompts: new Map(),
+      log: () => {},
+    };
+    await handleInteraction(ctx, {
+      type: 'button',
+      id: 'harm-open',
+      clientEventId: 'harm-open',
+      user: { platform: 'discord', accountId: 'st-1', displayName: 'ST' },
+      channelId: 'ch',
+      customId: 'st-harm:harm-roll',
+    });
+    const card = port.cards[0]!;
+    expect(card.selects?.[0]?.options.length).toBeGreaterThan(0);
+    expect(card.buttons?.map((b) => b.label)).toEqual(['Cancel']);
+    await handleInteraction(ctx, {
+      type: 'select',
+      id: 'harm-pick',
+      clientEventId: 'harm-pick',
+      user: { platform: 'discord', accountId: 'st-1', displayName: 'ST' },
+      channelId: 'ch',
+      customId: card.selects![0]!.id,
+      values: [card.selects![0]!.options[0]!.value],
+    });
+    expect(store.getCharacterBySlug('jakov')!.harm[card.selects![0]!.options[0]!.value]).toBeGreaterThan(0);
+    store.close();
+  });
+
+  it('/review reposts a notice and no signed sheet link', async () => {
+    const dir = mkdtempSync(join(tmpdir(), 'kod-bot-'));
+    dirs.push(dir);
+    const store = openSqliteStore(join(dir, 'c.sqlite'));
+    seedDemoCampaign(store);
+    mapMember(store, {
+      platform: 'discord',
+      accountId: 'st-1',
+      characterSlug: 'tomaso',
+      role: 'storyteller',
+    });
+    const { character } = startCreateFromBot(store, {
+      platform: 'discord',
+      accountId: 'user-9',
+      displayName: 'Nine',
+      name: 'Nia Quinn',
+    });
+    confirmReturnToTable(store, { characterSlug: character.slug });
+    const port = mockPort();
+    const ctx: BotContext = {
+      store,
+      port,
+      liveBaseUrl: 'http://127.0.0.1:8742',
+      prompts: new Map(),
+      log: () => {},
+    };
+    await handleInteraction(ctx, {
+      type: 'command',
+      id: 'rev1',
+      clientEventId: 'rev1',
+      user: { platform: 'discord', accountId: 'st-1', displayName: 'ST' },
+      channelId: 'ch',
+      name: 'review',
+      options: {},
+    });
+    const text = JSON.stringify(port.cards[0]);
+    expect(text).toContain('Nia Quinn');
+    expect(text).toContain('Session inbox');
+    expect(text).not.toContain('edit=');
+    expect(text).not.toContain('http');
+    expect(port.cards[0]?.links).toBeUndefined();
+    expect(port.cards[0]?.buttons).toBeUndefined();
+    store.close();
+  });
+
+  it('writes a Restore notice only for a bound account', () => {
+    const notes = noticesForRestore(
+      [
+        { characterSlug: 'jakov', name: 'Jakov Bracco', foodDays: 1, exertion: 4 },
+        { characterSlug: 'caterina', name: 'Caterina', waterDays: 0 },
+      ],
+      [{ slug: 'jakov', accountId: 'user-1' }, { slug: 'caterina' }],
+    );
+    expect(notes).toEqual([
+      {
+        accountId: 'user-1',
+        text: 'Rest for **Jakov Bracco**: food is now 1 days; Exertion is now 4.',
+      },
+    ]);
+    expect(noticesForRestore([{ characterSlug: 'caterina', name: 'Caterina', foodDays: 1 }], [])).toEqual(
+      [],
+    );
   });
 
   it('announces each pending review once until it leaves the queue', () => {

@@ -13,7 +13,7 @@ const dieTier = (o: {
     .setDescription('Die tier (ST agreement; default d8 Ordinary)')
     .addChoices(
       { name: 'd6 · Disadvantage', value: 6 },
-      { name: 'd8 · Equal', value: 8 },
+      { name: 'd8 · Ordinary', value: 8 },
       { name: 'd12 · Advantage', value: 12 },
     );
 
@@ -37,15 +37,21 @@ export const SLASH = [
     .addIntegerOption((o) =>
       o
         .setName('exertion')
-        .setDescription('Exertion dice to spend (0–2; 2 needs Echo applies)')
+        .setDescription('Exertion dice to spend (0–2; 2 needs a named Echo)')
         .setMinValue(0)
         .setMaxValue(2),
     )
-    .addBooleanOption((o) =>
-      o.setName('echo').setDescription('Echo applies — only if the table agreed it matches'),
+    .addStringOption((o) =>
+      o
+        .setName('echo')
+        .setDescription('Named Echo, when the table agreed it matches')
+        .setAutocomplete(true),
     )
     .addStringOption((o) =>
-      o.setName('character').setDescription('Character slug if you have more than one'),
+      o
+        .setName('character')
+        .setDescription('Sheeted person, for the Storyteller')
+        .setAutocomplete(true),
     ),
   new SlashCommandBuilder()
     .setName('intent')
@@ -77,10 +83,14 @@ export const SLASH = [
       o.setName('character').setDescription('Claimable character slug').setRequired(true),
     ),
   new SlashCommandBuilder()
-    .setName('focus')
-    .setDescription('Set which of your characters is active for rolls')
+    .setName('select')
+    .setDescription('Choose which of your living characters /roll assumes')
     .addStringOption((o) =>
-      o.setName('character').setDescription('Character slug').setRequired(true),
+      o
+        .setName('character')
+        .setDescription('That person’s name')
+        .setRequired(true)
+        .setAutocomplete(true),
     ),
   new SlashCommandBuilder()
     .setName('birth-omen')
@@ -115,48 +125,18 @@ export const SLASH = [
       o.setName('character').setDescription('Speaker character slug').setRequired(true),
     ),
   new SlashCommandBuilder()
-    .setName('reclaim')
-    .setDescription('ST: restore Exertion on a character (not a roll-card button)')
-    .addStringOption((o) =>
-      o.setName('character').setDescription('Character slug').setRequired(true),
-    )
-    .addIntegerOption((o) =>
-      o
-        .setName('points')
-        .setDescription('Points to restore (omit = fill to max)')
-        .setMinValue(1)
-        .setMaxValue(20),
-    ),
-  new SlashCommandBuilder()
     .setName('review')
-    .setDescription('ST: post Approve/Changes/Deny cards for pending drafts')
+    .setDescription('ST: repeat the notice that someone is waiting on the Session inbox')
     .addStringOption((o) =>
-      o.setName('character').setDescription('Optional slug; omit to post all pending'),
+      o.setName('character').setDescription('Optional name; omit to repeat every waiting person'),
     ),
   new SlashCommandBuilder()
-    .setName('st-roll')
-    .setDescription('ST NPC roll (numeric pool, no PC sheet)')
+    .setName('npc-roll')
+    .setDescription('ST: someone with no sheet — a label and the dice')
     .addIntegerOption((o) =>
       o.setName('foundation').setDescription('Foundation dice').setRequired(true),
     )
     .addIntegerOption((o) => o.setName('skill').setDescription('Skill dice').setRequired(true))
-    .addStringOption((o) => o.setName('label').setDescription('NPC label'))
+    .addStringOption((o) => o.setName('label').setDescription('Who this is'))
     .addIntegerOption((o) => dieTier(o)),
-  new SlashCommandBuilder().setName('live').setDescription('Show live / archive sheet URLs'),
-  new SlashCommandBuilder()
-    .setName('map')
-    .setDescription('Emergency: map user → character (prefer /create + Confirm)')
-    .addUserOption((o) => o.setName('user').setDescription('Discord user').setRequired(true))
-    .addStringOption((o) =>
-      o.setName('character').setDescription('Character slug').setRequired(true),
-    )
-    .addStringOption((o) =>
-      o
-        .setName('role')
-        .setDescription('player or storyteller')
-        .addChoices(
-          { name: 'player', value: 'player' },
-          { name: 'storyteller', value: 'storyteller' },
-        ),
-    ),
 ].map((c) => c.toJSON());

@@ -39,7 +39,9 @@ export async function handleDiscordInteraction(
     return json({ error: 'invalid json' }, 400);
   }
   if (ix.type === PING) return json({ type: PONG });
-  if (ix.type === AUTOCOMPLETE) return json({ type: AUTOCOMPLETE_RESULT, data: { choices: skillChoices(ix) } });
+  if (ix.type === AUTOCOMPLETE) {
+    return json({ type: AUTOCOMPLETE_RESULT, data: { choices: await autocompleteChoices(env, ix) } });
+  }
 
   const campaign = await campaignForGuild(env, ix.guild_id);
   if (!campaign) {
@@ -79,6 +81,40 @@ type DiscordIx = {
   application_id?: string;
   data?: { name?: string; options?: { name: string; value?: string; focused?: boolean }[] };
 };
+
+async function autocompleteChoices(
+  env: EdgeLike,
+  ix: DiscordIx,
+): Promise<{ name: string; value: string }[]> {
+  const focused = ix.data?.options?.find((o) => o.focused);
+  if (focused?.name === 'character') return characterChoices(env, ix, String(focused.value ?? ''));
+  return skillChoices(ix);
+}
+
+async function characterChoices(
+  env: EdgeLike,
+  ix: DiscordIx,
+  query: string,
+): Promise<{ name: string; value: string }[]> {
+  const campaign = await campaignForGuild(env, ix.guild_id);
+  if (!campaign) return [];
+  const raw = await env.CAMPAIGNS.get(`campaign:${campaign}:snapshot`);
+  if (!raw) return [];
+  let names: string[] = [];
+  try {
+    const snap = JSON.parse(raw) as { characters?: { name?: string; status?: string }[] };
+    names = (snap.characters ?? [])
+      .filter((ch) => ch.name && ch.status !== 'dead')
+      .map((ch) => ch.name as string);
+  } catch {
+    return [];
+  }
+  const q = query.trim().toLowerCase();
+  return names
+    .filter((name) => !q || name.toLowerCase().includes(q))
+    .slice(0, 25)
+    .map((name) => ({ name: name.slice(0, 100), value: name.slice(0, 100) }));
+}
 
 function skillChoices(ix: DiscordIx): { name: string; value: string }[] {
   const focused = ix.data?.options?.find((o) => o.focused) ?? ix.data?.options?.find((o) => o.name === 'skill');

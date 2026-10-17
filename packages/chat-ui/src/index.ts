@@ -1,10 +1,10 @@
 import type { ChatCard, ChatSelect } from '@kodranni/chat-port';
 
-/** Guidebook die-tier language (Advantage / Equal / Disadvantage). */
+/** Guidebook die-tier language (Advantage / Ordinary / Disadvantage). */
 export function dieTierLabel(tier: number): string {
   if (tier === 6) return 'd6 · Disadvantage';
   if (tier === 12) return 'd12 · Advantage';
-  return 'd8 · Equal';
+  return 'd8 · Ordinary';
 }
 
 export function dieTierShort(tier: number): string {
@@ -68,6 +68,7 @@ export function buildRollResultCard(input: RollCardInput): ChatCard {
   });
   if (input.showStPalette) {
     buttons.push({ id: `st-harm:${input.rollId}`, label: 'Harm', style: 'secondary' as const });
+    buttons.push({ id: `undo:${input.rollId}`, label: 'Undo', style: 'danger' as const });
   }
 
   const links = [];
@@ -93,11 +94,14 @@ export interface RollConfirmCardInput {
   foundations: string[];
   dieTier: number;
   exertion: number;
-  echoApplies: boolean;
+  /** Pool Cast will roll, already computed from the sheet. */
+  poolFormula: string;
+  echoes: { title: string }[];
+  echoName?: string;
   liveSheetUrl?: string;
 }
 
-/** One-screen stance before Cast — Foundation easy to change; Echo = agreed apply. */
+/** One-screen stance before Cast. The player still sets the five choices. */
 export function buildRollConfirmCard(input: RollConfirmCardInput): ChatCard {
   const intent = input.skill
     ? `${input.foundation} + ${input.skill}`
@@ -112,26 +116,40 @@ export function buildRollConfirmCard(input: RollConfirmCardInput): ChatCard {
       default: f === input.foundation,
     })),
   };
+  const tierSelect: ChatSelect = {
+    id: `roll-tier:${input.confirmId}`,
+    placeholder: `Tier · ${dieTierLabel(input.dieTier)}`,
+    options: [
+      { value: '6', label: 'd6 · Disadvantage', default: input.dieTier === 6 },
+      { value: '8', label: 'd8 · Ordinary', default: input.dieTier === 8 },
+      { value: '12', label: 'd12 · Advantage', default: input.dieTier === 12 },
+    ],
+  };
+  const echoSelect: ChatSelect = {
+    id: `roll-echo:${input.confirmId}`,
+    placeholder: input.echoName ? `Echo · ${input.echoName}` : 'Echo · none',
+    options: [
+      { value: 'none', label: 'None', default: !input.echoName },
+      ...input.echoes.slice(0, 24).map((echo) => ({
+        value: echo.title,
+        label: echo.title,
+        default: echo.title === input.echoName,
+      })),
+    ],
+  };
   return {
     title: `Ready · ${input.characterName}`,
     description: `**${intent}** · ${dieTierLabel(input.dieTier)}`,
     accent: 'blood',
     fields: [
+      { name: 'Pool', value: input.poolFormula, inline: false },
       { name: 'Foundation', value: input.foundation, inline: true },
       { name: 'Skill', value: input.skill ?? 'Primitive', inline: true },
       { name: 'Tier', value: dieTierLabel(input.dieTier), inline: true },
-      {
-        name: 'Exertion',
-        value: String(input.exertion),
-        inline: true,
-      },
-      {
-        name: 'Echo',
-        value: input.echoApplies ? 'Applies (agreed)' : 'Does not apply',
-        inline: true,
-      },
+      { name: 'Exertion', value: String(input.exertion), inline: true },
+      { name: 'Echo', value: input.echoName ?? 'None', inline: true },
     ],
-    footer: 'Change Foundation if the table agreed a different one. Echo only when agreed it matches.',
+    footer: 'The pool is what Cast will roll. Choose an Echo only when the table agreed it matches.',
     buttons: [
       { id: `roll-cast:${input.confirmId}`, label: 'Cast', style: 'primary' },
       {
@@ -139,14 +157,9 @@ export function buildRollConfirmCard(input: RollConfirmCardInput): ChatCard {
         label: `Exertion ${input.exertion}`,
         style: 'secondary',
       },
-      {
-        id: `roll-echo:${input.confirmId}`,
-        label: input.echoApplies ? 'Echo applies ✓' : 'Echo applies?',
-        style: 'secondary',
-      },
       { id: `roll-cancel:${input.confirmId}`, label: 'Cancel', style: 'danger' },
     ],
-    selects: [foundSelect],
+    selects: [foundSelect, tierSelect, echoSelect],
     links: input.liveSheetUrl
       ? [{ label: 'Live sheet', url: input.liveSheetUrl }]
       : undefined,
@@ -215,25 +228,27 @@ export interface HarmAssignCardInput {
   tracks: string[];
 }
 
-/** ST assigns precalculated harm points to allowed tracks. */
+/** ST assigns precalculated harm points to one track. */
 export function buildHarmAssignCard(input: HarmAssignCardInput): ChatCard {
-  const buttons = input.tracks.slice(0, 5).map((track) => ({
-    id: `harm-apply:${input.rollId}:${input.family}:${track}:${input.points}`,
-    label: `All → ${track}`,
-    style: 'secondary' as const,
-  }));
   return {
     title: `Harm · ${input.characterName}`,
-    description: `**${input.points}** point(s) available (${input.family}, ratio ${input.ratio}). Assign to one track, or cancel.`,
+    description: `**${input.points}** point(s) available (${input.family}, ratio ${input.ratio}). Choose the track.`,
     accent: 'blood',
     fields: [
       { name: 'Family', value: input.family, inline: true },
       { name: 'Points', value: String(input.points), inline: true },
     ],
-    footer: 'One family per infliction. Split across tracks comes later.',
-    buttons: [
-      ...buttons,
-      { id: `harm-cancel:${input.rollId}`, label: 'Cancel', style: 'danger' },
+    footer: 'One family per infliction. The points land on the track you choose.',
+    selects: [
+      {
+        id: `harm-track:${input.rollId}:${input.family}:${input.points}`,
+        placeholder: 'Track…',
+        options: input.tracks.slice(0, 25).map((track) => ({
+          value: track,
+          label: track,
+        })),
+      },
     ],
+    buttons: [{ id: `harm-cancel:${input.rollId}`, label: 'Cancel', style: 'danger' }],
   };
 }

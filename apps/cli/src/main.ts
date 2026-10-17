@@ -473,7 +473,7 @@ async function main(): Promise<void> {
     return;
   }
 
-  if (cmd === 'st-roll') {
+  if (cmd === 'npc-roll' || cmd === 'st-roll') {
     const slug = arg(args, '--slug');
     const label = arg(args, '--label') ?? 'NPC';
     const foundation = Number(arg(args, '--foundation'));

@@ -17,11 +17,10 @@ import {
   readCampaignConfig,
   readLiveUrl,
 } from '@kodranni/store';
-import { issueSheetToken, sheetTokenSecret, withEditToken } from '@kodranni/app';
 import {
-  buildDraftReviewCard,
   handleInteraction,
   pruneAnnouncedReviews,
+  sessionInboxNotice,
   slugsNeedingReviewCard,
   type BotContext,
 } from './router.js';
@@ -132,7 +131,7 @@ export async function startBotRuntime(opts?: { mode?: BotMode }): Promise<BotHan
   if (discordStorytellerRoleId) {
     ctx.log(`ST Discord role id: ${discordStorytellerRoleId}`);
   } else {
-    ctx.log('ST Discord role id: (unset — use /map role:storyteller or set discord_storyteller_role_id)');
+    ctx.log('ST Discord role id: (unset — set discord_storyteller_role_id)');
   }
   if (loaded.loosened.length) {
     ctx.log(`tightened mode on: ${loaded.loosened.join(', ')}`);
@@ -160,28 +159,6 @@ export async function startBotRuntime(opts?: { mode?: BotMode }): Promise<BotHan
   }
 
   const announcedReviews = new Set<string>();
-  const sheetUrl = (
-    characterSlug: string,
-    edit?: { accountId: string; role?: 'player' | 'storyteller' },
-  ) => {
-    let url = `${shareUrl}/characters/${characterSlug}/`;
-    if (edit && sheetTokenSecret()) {
-      try {
-        url = withEditToken(
-          url,
-          issueSheetToken({
-            platform: 'discord',
-            accountId: edit.accountId,
-            characterSlug,
-            role: edit.role ?? 'player',
-          }),
-        );
-      } catch {
-        /* leave bare */
-      }
-    }
-    return url;
-  };
   const announcePendingReviews = async () => {
     if (!play) return;
     const pending = store.listCharacters().filter((c) => c.status === 'pending_review');
@@ -193,18 +170,7 @@ export async function startBotRuntime(opts?: { mode?: BotMode }): Promise<BotHan
       const ch = pending.find((c) => c.slug === characterSlug);
       if (!ch) continue;
       try {
-        const ownerId = ch.initiator?.accountId ?? '';
-        await port.sendCard(
-          play,
-          buildDraftReviewCard({
-            characterName: ch.name,
-            characterSlug: ch.slug,
-            mentionAccountId: ownerId,
-            liveSheetUrl: ownerId
-              ? sheetUrl(ch.slug, { accountId: ownerId, role: 'player' })
-              : sheetUrl(ch.slug),
-          }),
-        );
+        await port.sendCard(play, sessionInboxNotice(ch.name));
         announcedReviews.add(ch.slug);
         ctx.log(`posted review card for ${ch.slug}`);
       } catch (e) {
