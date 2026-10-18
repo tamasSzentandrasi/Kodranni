@@ -5,50 +5,128 @@ import {
   type ChatInteraction,
   type ChatMessageRef,
 } from '@kodranni/chat-port';
+import { createFluxerGateway, fluxerGatewayToken, type FluxerSocket } from './gateway.js';
+import { interactionFromFluxerEvent, readyUserId, type StoredReaction } from './inbound.js';
 
-export { FLUXER_PREFIX_COMMANDS, parsePrefixCommand } from './prefix.js';
+export { FLUXER_PREFIX_COMMANDS, parsePrefixCommand, prefixCommandOptions } from './prefix.js';
 export type { FluxerPrefixCommand } from './prefix.js';
+export type { FluxerSocket } from './gateway.js';
 
 const FLUXER_API = 'https://web.fluxer.app/api/v1';
 
 /**
  * Fluxer ChatPort. The card on the wire is the Discord embed.
- * One reaction stands in for each enabled button. start and stop do not open a gateway.
+ * One reaction stands in for each enabled button.
+ * start() opens the gateway only when a socket constructor is passed.
  */
 export function createFluxerAdapter(opts: {
   token: string;
   guildId: string;
+  playChannelId?: string;
   apiBase?: string;
   fetch?: typeof fetch;
+  gateway?: {
+    url?: string;
+    WebSocket: new (url: string) => FluxerSocket;
+  };
 }): ChatPort {
-  const token = opts.token.trim();
+  const token = fluxerGatewayToken(opts.token);
   const base = (opts.apiBase ?? FLUXER_API).replace(/\/$/, '');
   const fetchImpl = opts.fetch ?? fetch;
   const call = (method: string, path: string, body?: unknown) =>
     fluxerCall(fetchImpl, token, method, `${base}${path}`, body);
+  const reactions = new Map<string, StoredReaction[]>();
+  const replies = new Map<string, ChatMessageRef>();
+  let selfId = '';
+  let handler: ((i: ChatInteraction) => Promise<void>) | undefined;
+  let gateway: { stop(): void } | undefined;
+
+  async function deliver(channelId: string, card: ChatCard): Promise<ChatMessageRef> {
+    const mapped = mapCardToFluxerPayload(card);
+    const posted = await call(
+      'POST',
+      `/channels/${encodeURIComponent(channelId)}/messages`,
+      wireMessage(mapped),
+    );
+    const messageId = messageIdFrom(posted);
+    if (!messageId) throw new Error('fluxer post returned no message');
+    const stored = mapped.reactions ?? [];
+    reactions.set(messageId, stored);
+    await putReactions(call, channelId, messageId, stored);
+    return { platform: 'fluxer', channelId, messageId };
+  }
 
   return {
     platform: 'fluxer',
-    async start() {},
-    async stop() {},
-    async sendCard(channelId: string, card: ChatCard): Promise<ChatMessageRef> {
-      const mapped = mapCardToFluxerPayload(card);
-      const posted = await call('POST', `/channels/${encodeURIComponent(channelId)}/messages`, wireMessage(mapped));
-      const messageId = messageIdFrom(posted);
-      if (!messageId) throw new Error('fluxer post returned no message');
-      await putReactions(call, channelId, messageId, mapped.reactions ?? []);
-      return { platform: 'fluxer', channelId, messageId };
+    async start() {
+      if (!opts.gateway || gateway) return;
+      const connection = createFluxerGateway({
+        token,
+        guildId: opts.guildId,
+        url: opts.gateway.url,
+        WebSocket: opts.gateway.WebSocket,
+      });
+      gateway = connection;
+      connection.onDispatch((event) => {
+        if (event.t === 'READY') selfId = readyUserId(event.d);
+        const interaction = interactionFromFluxerEvent({
+          t: event.t,
+          d: event.d,
+          selfId,
+          guildId: opts.guildId,
+          playChannelId: opts.playChannelId,
+          reactions,
+        });
+        if (!interaction || !handler) return;
+        void handler(interaction).catch(() => undefined);
+      });
+      try {
+        await connection.start();
+      } catch (err) {
+        gateway = undefined;
+        throw err;
+      }
     },
+    async stop() {
+      gateway?.stop();
+      gateway = undefined;
+    },
+    sendCard: deliver,
     async editCard(ref: ChatMessageRef, card: ChatCard) {
       const mapped = mapCardToFluxerPayload(card);
       const channel = encodeURIComponent(ref.channelId);
       const message = encodeURIComponent(ref.messageId);
       await call('PATCH', `/channels/${channel}/messages/${message}`, wireMessage(mapped));
       await call('DELETE', `/channels/${channel}/messages/${message}/reactions`);
-      await putReactions(call, ref.channelId, ref.messageId, mapped.reactions ?? []);
+      const stored = mapped.reactions ?? [];
+      reactions.set(ref.messageId, stored);
+      await putReactions(call, ref.channelId, ref.messageId, stored);
     },
-    async replyEphemeral() {},
-    onInteraction(_h: (i: ChatInteraction) => Promise<void>) {},
+    async replyEphemeral(i, content) {
+      if (!content.trim()) return;
+      await call('POST', `/channels/${encodeURIComponent(i.channelId)}/messages`, { content });
+    },
+    async editReplyCard(i, card) {
+      const ref = replies.get(i.id) ?? i.messageRef;
+      if (!ref) {
+        replies.set(i.id, await deliver(i.channelId, card));
+        return;
+      }
+      const mapped = mapCardToFluxerPayload(card);
+      const channel = encodeURIComponent(ref.channelId);
+      const message = encodeURIComponent(ref.messageId);
+      await call('PATCH', `/channels/${channel}/messages/${message}`, wireMessage(mapped));
+      await call('DELETE', `/channels/${channel}/messages/${message}/reactions`);
+      const stored = mapped.reactions ?? [];
+      reactions.set(ref.messageId, stored);
+      await putReactions(call, ref.channelId, ref.messageId, stored);
+    },
+    async replyEphemeralCard(i, card) {
+      replies.set(i.id, await deliver(i.channelId, card));
+    },
+    onInteraction(next) {
+      handler = next;
+    },
   };
 }
 

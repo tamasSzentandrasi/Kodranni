@@ -10,6 +10,7 @@ import {
 } from '@kodranni/app';
 import { sessionReading, storytellerDie } from '@kodranni/hall-render';
 import { defaultCampaignTomlPath, emptyTableState, openSqliteStore, seedDemoCampaign } from '@kodranni/store';
+import { POST as chatPost } from '../src/pages/api/desk/chat';
 import { POST as discordPost } from '../src/pages/api/desk/discord';
 import { POST as fluxerPost } from '../src/pages/api/desk/fluxer';
 import { GET as tableGet, POST as tablePost } from '../src/pages/api/desk/table';
@@ -27,6 +28,7 @@ const prevRole = process.env.DISCORD_STORYTELLER_ROLE_ID;
 const prevFluxGuild = process.env.FLUXER_GUILD_ID;
 const prevFluxChannel = process.env.FLUXER_PLAY_CHANNEL_ID;
 const prevFluxRole = process.env.FLUXER_STORYTELLER_ROLE_ID;
+const prevFluxToken = process.env.FLUXER_BOT_TOKEN;
 
 afterEach(() => {
   for (const d of dirs.splice(0)) rmSync(d, { recursive: true, force: true });
@@ -48,6 +50,8 @@ afterEach(() => {
   else process.env.FLUXER_PLAY_CHANNEL_ID = prevFluxChannel;
   if (prevFluxRole === undefined) delete process.env.FLUXER_STORYTELLER_ROLE_ID;
   else process.env.FLUXER_STORYTELLER_ROLE_ID = prevFluxRole;
+  if (prevFluxToken === undefined) delete process.env.FLUXER_BOT_TOKEN;
+  else process.env.FLUXER_BOT_TOKEN = prevFluxToken;
 });
 
 function liveStore() {
@@ -104,6 +108,8 @@ describe('session page', () => {
       tide: null,
       discord: { guildId: '', channelId: '', roleId: '' },
       fluxer: { guildId: '100000000000000044', channelId: '', roleId: '' },
+      discordLive: false,
+      fluxerLive: true,
       bound: [{ name: 'Tomaso Fero', displayName: 'Mara' }],
     });
     expect(desk).toContain('data-omen-edit');
@@ -140,8 +146,17 @@ describe('session page', () => {
     expect(desk).toContain('Short rest');
     expect(desk).toContain('class="kod-tide"');
     expect(desk).toContain('Table chat');
+    expect(desk).toContain('<summary>Table chat</summary>');
+    expect(desk).not.toContain('<summary>Fluxer</summary>');
+    expect(desk.indexOf('>Discord<')).toBeLessThan(desk.indexOf('>Fluxer<'));
     expect(desk).toContain('data-session-fluxer');
     expect(desk).toContain('>Fluxer<');
+    expect(desk).toContain('data-chat-state="discord">Off');
+    expect(desk).toContain('data-chat-platform="discord" data-chat-op="live"');
+    expect(desk).toContain('data-chat-state="fluxer">Bound');
+    expect(desk).toContain('data-chat-platform="fluxer" data-chat-op="end"');
+    expect(desk).toContain('>Go live<');
+    expect(desk).toContain('>Turn off<');
     expect(desk).toContain('data-fluxer-guild');
     expect(desk).toContain('value="100000000000000044"');
     expect(desk).toContain('aria-label="Fluxer guild"');
@@ -573,6 +588,45 @@ describe('POST /api/desk/fluxer', () => {
     expect(text).toContain(`fluxer_storyteller_role_id = "${roleId}"`);
     expect(text).not.toContain('botToken');
     expect(text).not.toContain('FLUXER_BOT_TOKEN');
+  });
+});
+
+describe('POST /api/desk/chat', () => {
+  it('stays on the desk and does not open Fluxer without a server', async () => {
+    const home = mkdtempSync(join(tmpdir(), 'kod-session-home-'));
+    dirs.push(home);
+    process.env.KODRANNI_HOME = home;
+    process.env.KODRANNI_CAMPAIGN_SLUG = 'session-chat-test';
+    delete process.env.FLUXER_GUILD_ID;
+    delete process.env.FLUXER_PLAY_CHANNEL_ID;
+    delete process.env.FLUXER_BOT_TOKEN;
+    delete process.env.FLUXER_STORYTELLER_ROLE_ID;
+    const toml = defaultCampaignTomlPath('session-chat-test');
+    mkdirSync(dirname(toml), { recursive: true });
+    writeFileSync(toml, 'slug = "session-chat-test"\nname = "Bind"\n', 'utf8');
+
+    const player = await chatPost({
+      request: deskRequest(
+        'http://127.0.0.1:8742/api/desk/chat',
+        { platform: 'fluxer', op: 'live' },
+        { cookie: 'kod_desk=0' },
+      ),
+    });
+    expect(player.status).toBe(404);
+
+    const ended = await chatPost({
+      request: deskRequest('http://127.0.0.1:8742/api/desk/chat', { platform: 'fluxer', op: 'end' }),
+    });
+    expect(ended.status).toBe(200);
+    expect(await ended.json()).toEqual({ ok: true, bound: false });
+
+    const live = await chatPost({
+      request: deskRequest('http://127.0.0.1:8742/api/desk/chat', { platform: 'fluxer', op: 'live' }),
+    });
+    expect(live.status).toBe(500);
+    const body = (await live.json()) as { error?: string };
+    expect(body.error).toBe('Set the Fluxer server and play channel first.');
+    expect(body.error).not.toMatch(/\d{15,}/);
   });
 });
 

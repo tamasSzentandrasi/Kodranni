@@ -245,7 +245,7 @@ export function ensureEdgeDeviceKey(env: NodeJS.ProcessEnv = process.env): strin
 export function formatCredentialStatus(s: CredentialStatus): string {
   return [
     `discord ${bits(s.discord)}${s.discord.ready ? ' (ready)' : ''}`,
-    `fluxer ${bits(s.fluxer)}${s.fluxer.ready ? ' (HTTP cards)' : ''}`,
+    `fluxer ${bits(s.fluxer)}${s.fluxer.ready ? ' (desk)' : ''}`,
     `tunnel-token ${s.tunnelToken ? 'set' : 'unset'}`,
   ].join(' · ');
 }

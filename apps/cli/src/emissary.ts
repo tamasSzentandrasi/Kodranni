@@ -80,7 +80,7 @@ export async function runEmissary(opts: {
       'fluxer',
       !fluxerPartial,
       creds.fluxer.ready
-        ? `token+guild${creds.fluxer.playChannel ? '+play-channel' : ''} · HTTP cards`
+        ? `token+guild${creds.fluxer.playChannel ? '+play-channel' : ''} · desk`
         : fluxerPartial
           ? 'partial — need both fluxer-botToken and fluxer-serverID'
           : 'none (optional)',

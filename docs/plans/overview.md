@@ -82,4 +82,4 @@ The Automation chapter now follows this table, in English and Hungarian. The gap
 
 Kept in chat: `/create`, `/claim`, `/select`, `/roll`, `/intent`, `/npc-roll`, `/birth-omen`, `/guiding-hand`, `/award-word`, `/review`.
 
-Leave: `/focus` (renamed `/select`), `/st-roll` (becomes `/npc-roll`), `/map`, `/reclaim`, `/live`. Scene Add on a Discord card does not ship. Discord and Fluxer share this list. On Fluxer the words follow `!`. The gateway stays stopped.
+Leave: `/focus` (renamed `/select`), `/st-roll` (becomes `/npc-roll`), `/map`, `/reclaim`, `/live`. Scene Add on a Discord card does not ship. Discord and Fluxer share this list. On Fluxer the words follow `!`. Table chat starts that gateway.

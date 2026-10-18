@@ -45,6 +45,8 @@ export interface SessionDeskModel {
   tide: OpenTide | null;
   discord: SessionDiscordFields;
   fluxer: SessionFluxerFields;
+  discordLive?: boolean;
+  fluxerLive?: boolean;
   bound: { name: string; displayName: string }[];
 }
 
@@ -95,6 +97,8 @@ export function assembleSession(input: {
   events: AuditEvent[];
   discord: SessionDiscordFields;
   fluxer: SessionFluxerFields;
+  discordLive?: boolean;
+  fluxerLive?: boolean;
 }): { reading: SessionReading; desk: SessionDeskModel | null } {
   const reading = sessionReading(input.state);
   if (!input.desk) return { reading, desk: null };
@@ -143,6 +147,8 @@ export function assembleSession(input: {
       tide: input.state.tide,
       discord: input.discord,
       fluxer: input.fluxer,
+      discordLive: input.discordLive === true,
+      fluxerLive: input.fluxerLive === true,
       bound,
     },
   };
@@ -406,8 +412,9 @@ function tideStudio(tide: OpenTide | null): string {
   </section>`;
 }
 
-function chatPlate(opts: {
-  summary: string;
+function chatCategory(opts: {
+  heading: string;
+  platform: 'discord' | 'fluxer';
   attrs: string;
   guildAttr: string;
   channelAttr: string;
@@ -416,24 +423,23 @@ function chatPlate(opts: {
   channelLabel: string;
   roleLabel: string;
   fields: SessionDiscordFields;
-  bound: string;
+  live: boolean;
 }): string {
   const fields = opts.fields;
-  return `<details class="session-menu" ${opts.attrs}>
-    <summary>${opts.summary}</summary>
-    <div class="session-menu__body">
-      <div class="session-menu__grid">
-        <label>Guild <input class="kod-ink" ${opts.guildAttr} value="${esc(fields.guildId)}" inputmode="numeric" autocomplete="off" aria-label="${opts.guildLabel}"></label>
-        <label>Play channel <input class="kod-ink" ${opts.channelAttr} value="${esc(fields.channelId)}" inputmode="numeric" autocomplete="off" aria-label="${opts.channelLabel}"></label>
-        <label>Storyteller role <input class="kod-ink" ${opts.roleAttr} value="${esc(fields.roleId)}" inputmode="numeric" autocomplete="off" aria-label="${opts.roleLabel}"></label>
-      </div>
-      <p class="session-menu__meta">
-        <span class="session-info" tabindex="0">Bound
-          <span class="session-info__tip" role="tooltip">${opts.bound}</span>
-        </span>
-      </p>
+  const op = opts.live ? 'end' : 'live';
+  const verb = opts.live ? 'Turn off' : 'Go live';
+  return `<section class="session-chat" ${opts.attrs}>
+    <h3>${opts.heading}</h3>
+    <div class="session-menu__grid">
+      <label>Guild <input class="kod-ink" ${opts.guildAttr} value="${esc(fields.guildId)}" inputmode="numeric" autocomplete="off" aria-label="${opts.guildLabel}"></label>
+      <label>Play channel <input class="kod-ink" ${opts.channelAttr} value="${esc(fields.channelId)}" inputmode="numeric" autocomplete="off" aria-label="${opts.channelLabel}"></label>
+      <label>Storyteller role <input class="kod-ink" ${opts.roleAttr} value="${esc(fields.roleId)}" inputmode="numeric" autocomplete="off" aria-label="${opts.roleLabel}"></label>
     </div>
-  </details>`;
+    <p class="session-menu__meta session-chat__live">
+      <span data-chat-state="${opts.platform}">${opts.live ? 'Bound' : 'Off'}</span>
+      <button type="button" class="session-quiet" data-chat-platform="${opts.platform}" data-chat-op="${op}">${verb}</button>
+    </p>
+  </section>`;
 }
 
 function chat(model: SessionDeskModel): string {
@@ -446,32 +452,42 @@ function chat(model: SessionDeskModel): string {
               `<li>${esc(row.name)}${row.displayName ? ` — ${esc(row.displayName)}` : ''}</li>`,
           )
           .join('')}</ul>`;
-  return [
-    chatPlate({
-      summary: 'Table chat',
-      attrs: 'data-session-chat',
-      guildAttr: 'data-discord-guild',
-      channelAttr: 'data-discord-channel',
-      roleAttr: 'data-discord-role',
-      guildLabel: 'Discord guild',
-      channelLabel: 'Discord play channel',
-      roleLabel: 'Discord Storyteller role',
-      fields: model.discord,
-      bound,
-    }),
-    chatPlate({
-      summary: 'Fluxer',
-      attrs: 'data-session-chat data-session-fluxer',
-      guildAttr: 'data-fluxer-guild',
-      channelAttr: 'data-fluxer-channel',
-      roleAttr: 'data-fluxer-role',
-      guildLabel: 'Fluxer guild',
-      channelLabel: 'Fluxer play channel',
-      roleLabel: 'Fluxer Storyteller role',
-      fields: model.fluxer,
-      bound,
-    }),
-  ].join('');
+  return `<details class="session-menu" data-session-chat>
+    <summary>Table chat</summary>
+    <div class="session-menu__body">
+      ${chatCategory({
+        heading: 'Discord',
+        platform: 'discord',
+        attrs: 'data-session-discord',
+        guildAttr: 'data-discord-guild',
+        channelAttr: 'data-discord-channel',
+        roleAttr: 'data-discord-role',
+        guildLabel: 'Discord guild',
+        channelLabel: 'Discord play channel',
+        roleLabel: 'Discord Storyteller role',
+        fields: model.discord,
+        live: model.discordLive === true,
+      })}
+      ${chatCategory({
+        heading: 'Fluxer',
+        platform: 'fluxer',
+        attrs: 'data-session-fluxer',
+        guildAttr: 'data-fluxer-guild',
+        channelAttr: 'data-fluxer-channel',
+        roleAttr: 'data-fluxer-role',
+        guildLabel: 'Fluxer guild',
+        channelLabel: 'Fluxer play channel',
+        roleLabel: 'Fluxer Storyteller role',
+        fields: model.fluxer,
+        live: model.fluxerLive === true,
+      })}
+      <p class="session-menu__meta">
+        <span class="session-info" tabindex="0">Characters
+          <span class="session-info__tip" role="tooltip">${bound}</span>
+        </span>
+      </p>
+    </div>
+  </details>`;
 }
 
 /** Storyteller half. Loopback only. The die is both the view and the editor. */

@@ -2356,6 +2356,25 @@ h2.session-head {
   margin: 0.7rem 0 0;
 }
 
+.session-chat + .session-chat {
+  margin-top: 1.05rem;
+}
+
+.session-chat h3 {
+  margin: 0 0 0.45rem;
+  color: var(--kod-silver-dim);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.session-chat__live {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
 .session-info {
   position: relative;
   display: inline-flex;

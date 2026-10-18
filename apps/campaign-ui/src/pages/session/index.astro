@@ -14,6 +14,8 @@ import {
 import CampaignLayout from '../../layouts/CampaignLayout.astro';
 import { isArchiveScope, loadCommunity } from '../../data/load';
 import { resolveCampaignSlug, resolveStorePath } from '../../lib/campaign-paths';
+import { discordRuntimeOn } from '../../lib/discord-boot';
+import { fluxerRuntimeOn } from '../../lib/fluxer-boot';
 import { deskToolsOn, isLocalDeskRequest } from '../../lib/loopback';
 import {
   assembleSession,
@@ -61,6 +63,8 @@ if (!between) {
         events: store.listEvents('CharacterReturnedToTable'),
         discord,
         fluxer,
+        discordLive: discordRuntimeOn(),
+        fluxerLive: fluxerRuntimeOn(),
       });
       reading = assembled.reading;
       deskModel = assembled.desk;
@@ -75,6 +79,8 @@ if (!between) {
       events: [],
       discord,
       fluxer,
+      discordLive: discordRuntimeOn(),
+      fluxerLive: fluxerRuntimeOn(),
     }).desk;
   }
 }
@@ -100,5 +106,5 @@ if (!between && isLocalDeskRequest(Astro.request)) {
 >
   {nightNote && <p class="session-night" data-session-night>{nightNote}</p>}
   <Fragment set:html={body} />
-  {!between && <script src="/session.js?v=20261018a" defer></script>}
+  {!between && <script src="/session.js?v=20261018b" defer></script>}
 </CampaignLayout>

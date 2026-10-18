@@ -4,6 +4,7 @@
 import { appendFileSync, mkdirSync } from 'node:fs';
 import { dirname } from 'node:path';
 import { createDiscordAdapter, createDiscordHttpAdapter } from '@kodranni/adapter-discord';
+import { createFluxerAdapter, type FluxerSocket } from '@kodranni/adapter-fluxer';
 import {
   DEMO_SLUG,
   applyCampaignFluxerEnv,
@@ -140,7 +141,7 @@ export async function startBotRuntime(opts?: { mode?: BotMode }): Promise<BotHan
     ctx.log(`tightened mode on: ${loaded.loosened.join(', ')}`);
   }
   if (creds.fluxer.ready) {
-    ctx.log('fluxer credentials loaded — cards go out over HTTP; the gateway stays stopped');
+    ctx.log('fluxer credentials loaded');
   }
   await port.start();
   ctx.log(`discord ready · url=${shareUrl}`);
@@ -202,6 +203,96 @@ export async function startBotRuntime(opts?: { mode?: BotMode }): Promise<BotHan
       stopped = true;
       ctx.log('stopping');
       clearInterval(reviewTimer);
+      await port.stop();
+      store.close();
+    },
+  };
+}
+
+/** Host gateway for the Fluxer play channel. The desk calls this. Tests do not. */
+export async function startFluxerRuntime(): Promise<BotHandle> {
+  const loaded = loadSecretsIntoEnv();
+  const slug = process.env.KODRANNI_CAMPAIGN_SLUG ?? DEMO_SLUG;
+  let storePath = process.env.KODRANNI_STORE_PATH;
+  let liveBase =
+    process.env.KODRANNI_LIVE_BASE_URL ?? readLiveUrl(slug) ?? 'http://127.0.0.1:8742';
+  let publicUrl = process.env.KODRANNI_PUBLIC_BASE_URL;
+  let fluxerStorytellerRoleId: string | undefined;
+  try {
+    const cfg = await readCampaignConfig(defaultCampaignTomlPath(slug));
+    applyCampaignFluxerEnv(cfg);
+    storePath = storePath ?? cfg.storePath;
+    publicUrl = publicUrl ?? cfg.edgeUrl ?? cfg.publicBaseUrl;
+    fluxerStorytellerRoleId =
+      cfg.fluxerStorytellerRoleId ?? process.env.FLUXER_STORYTELLER_ROLE_ID?.trim();
+    if (!process.env.KODRANNI_LIVE_BASE_URL) {
+      liveBase = readLiveUrl(slug) ?? cfg.liveBaseUrl;
+    }
+  } catch {
+    /* use env only */
+  }
+
+  const token = process.env.FLUXER_BOT_TOKEN?.trim() ?? '';
+  const guildId = process.env.FLUXER_GUILD_ID?.trim() ?? '';
+  const playChannelId = process.env.FLUXER_PLAY_CHANNEL_ID?.trim() ?? '';
+  if (!guildId || !playChannelId) {
+    throw new Error('Set the Fluxer server and play channel first.');
+  }
+  if (!token) throw new Error('fluxer token is missing');
+  if (!storePath) throw new Error('No store path — set KODRANNI_STORE_PATH or campaign.toml');
+  const Socket = globalThis.WebSocket;
+  if (typeof Socket !== 'function') throw new Error('fluxer gateway is unavailable');
+
+  ensureCampaignRuntime(slug);
+  const logPath = `${campaignRuntimeLogsDir(slug)}/bot.log`;
+  mkdirSync(dirname(logPath), { recursive: true });
+  const store = openSqliteStore(storePath);
+  const port = createFluxerAdapter({
+    token,
+    guildId,
+    playChannelId,
+    gateway: { WebSocket: Socket as unknown as new (url: string) => FluxerSocket },
+  });
+  const shareUrl = (publicUrl || liveBase).replace(/\/$/, '');
+  const ctx: BotContext = {
+    store,
+    port,
+    liveBaseUrl: shareUrl,
+    archiveBaseUrl: shareUrl,
+    prompts: new Map(),
+    log: (line) => logLine(logPath, line),
+    fluxerStorytellerRoleId,
+  };
+  port.onInteraction((i) => handleInteraction(ctx, i));
+  ctx.log(`starting fluxer for campaign ${slug}`);
+  if (loaded.loosened.length) ctx.log(`tightened mode on: ${loaded.loosened.join(', ')}`);
+
+  let stopped = false;
+  try {
+    await port.start();
+  } catch (err) {
+    store.close();
+    throw err;
+  }
+  ctx.log('fluxer ready');
+  try {
+    await port.sendCard(playChannelId, {
+      title: 'Kodranni session',
+      description: 'Living record is on Fluxer. Commands start with !.',
+      accent: 'blood',
+      fields: [{ name: 'Community', value: shareUrl, inline: false }],
+    });
+    ctx.log('posted the fluxer session card');
+  } catch (err) {
+    ctx.log(`fluxer session card failed: ${err instanceof Error ? err.message : err}`);
+  }
+
+  return {
+    receiveInteraction: async () => {},
+    stop: async () => {
+      if (stopped) return;
+      stopped = true;
+      ctx.log('stopping fluxer');
       await port.stop();
       store.close();
     },

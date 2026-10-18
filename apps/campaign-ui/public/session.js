@@ -650,6 +650,19 @@
     var t = ev.target;
     if (!(t instanceof Element)) return;
 
+    var chatBtn = t.closest('[data-chat-platform]');
+    if (chatBtn instanceof HTMLButtonElement) {
+      var platform = chatBtn.getAttribute('data-chat-platform');
+      var chatOp = chatBtn.getAttribute('data-chat-op');
+      chatBtn.disabled = true;
+      post('/api/desk/chat', { platform: platform, op: chatOp }).then(function (data) {
+        chatBtn.disabled = false;
+        if (!data) return;
+        location.reload();
+      });
+      return;
+    }
+
     if (t.closest('[data-slide-toggle="approvals"]')) {
       var slide = document.querySelector('[data-slide="approvals"]');
       setApprovals(!(slide && slide.getAttribute('data-open') === 'true'));

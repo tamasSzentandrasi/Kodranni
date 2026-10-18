@@ -43,7 +43,7 @@ Oppose opens an ephemeral walk tied to that roll and leaves the public result in
 
 An opposed roll steps an open Tide and edits the channel picture. Post the omens posts one public net when the Storyteller is finished. Whispered faces stay blank. There is no `/tide` command.
 
-The Session tab has the same three fields for Fluxer as for Discord: server, play channel, and Storyteller role. Prefix messages carry the same command words. The gateway stays stopped, and the Worker interaction URL stays Discord’s. The token stays in the host secret store.
+Table chat holds Discord, then Fluxer: server, play channel, and Storyteller role. Each has Go live and Turn off. Fluxer Go live opens the gateway in the hall. Prefix messages and reactions are the interactions. The Worker interaction URL stays Discord’s. The token stays in the host secret store.
 
 ---
 
