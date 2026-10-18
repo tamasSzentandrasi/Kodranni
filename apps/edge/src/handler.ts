@@ -14,7 +14,12 @@ import {
   sha256Hex,
   utcDayKey,
 } from './limits.js';
-import { mintCampaignTunnel, type CampaignMeta } from './tunnel-mint.js';
+import {
+  attachCampaignHostname,
+  mintCampaignTunnel,
+  publicHostnameFor,
+  type CampaignMeta,
+} from './tunnel-mint.js';
 
 /**
  * Cloudflare Pages Function / Worker: one hostname.
@@ -171,10 +176,13 @@ export function campaignFromUrl(
   if (host === 'demo.kodranni.com' || host === 'play.kodranni.com') return fallback;
   if (host.endsWith('.workers.dev')) return fallback;
   const sub = /^([a-z0-9-]+)\.kodranni\.com$/.exec(host);
-  if (sub?.[1]?.startsWith('origin-')) {
-    return aliasCampaign(sub[1].slice('origin-'.length), fallback);
+  if (!sub?.[1]) return null;
+  const label = sub[1];
+  if (label.startsWith('origin-')) {
+    return aliasCampaign(label.slice('origin-'.length), fallback);
   }
-  return null;
+  if (label === 'www' || label === 'demo' || label === 'play') return fallback;
+  return label;
 }
 
 function isProductPath(url: URL, campaign: string | null): boolean {
@@ -539,7 +547,12 @@ export async function handleEdgeRequest(
   }
 
   if (url.pathname === '/control/register' && request.method === 'POST') {
-    if (!campaign) return json({ error: 'missing campaign' }, 400);
+    // `?campaign=demo` is an alias for the showcase everywhere else. Register
+    // must refuse that label itself, not the campaign the alias points at.
+    const requested = (url.searchParams.get('campaign') ?? '').trim().toLowerCase();
+    if (!publicHostnameFor(requested)) {
+      return json({ error: 'reserved campaign name' }, 400);
+    }
     const body = await request.text();
     let parsed: { deviceKey: string };
     try {
@@ -550,35 +563,40 @@ export async function handleEdgeRequest(
     if (!parsed.deviceKey || parsed.deviceKey.length < 32) {
       return json({ error: 'deviceKey too short' }, 400);
     }
-    const existing = await env.DEVICE_KEYS.get(campaign);
-    if (existing) return json({ error: 'already registered' }, 409);
-    const ip = request.headers.get('cf-connecting-ip')?.trim();
-    if (ip) {
-      const day = utcDayKey();
-      const rateKey = `rate:reg:${ip}:${day}`;
-      const already = Number((await env.CAMPAIGNS.get(rateKey)) ?? '0');
-      if (already >= MAX_REGISTERS_PER_IP_DAY) {
-        return json({ error: 'register rate limit' }, 429);
+    const existing = await env.DEVICE_KEYS.get(requested);
+    if (existing && existing !== parsed.deviceKey) {
+      return json({ error: 'already registered' }, 409);
+    }
+    if (!existing) {
+      const ip = request.headers.get('cf-connecting-ip')?.trim();
+      if (ip) {
+        const day = utcDayKey();
+        const rateKey = `rate:reg:${ip}:${day}`;
+        const already = Number((await env.CAMPAIGNS.get(rateKey)) ?? '0');
+        if (already >= MAX_REGISTERS_PER_IP_DAY) {
+          return json({ error: 'register rate limit' }, 429);
+        }
+        await env.CAMPAIGNS.put(rateKey, String(already + 1));
       }
-      await env.CAMPAIGNS.put(rateKey, String(already + 1));
+      const hash = await sha256Hex(parsed.deviceKey);
+      const owned = parseIdList(await env.CAMPAIGNS.get(deviceCampaignsKey(hash)));
+      if (owned.length >= MAX_CAMPAIGNS_PER_DEVICE) {
+        return json({ error: 'device campaign limit' }, 403);
+      }
+      await env.DEVICE_KEYS.put(requested, parsed.deviceKey);
+      owned.push(requested);
+      await env.CAMPAIGNS.put(deviceCampaignsKey(hash), JSON.stringify(owned));
+      const all = parseIdList(await env.CAMPAIGNS.get(CAMPAIGN_INDEX_KEY));
+      if (!all.includes(requested)) all.push(requested);
+      await env.CAMPAIGNS.put(CAMPAIGN_INDEX_KEY, JSON.stringify(all));
+      const now = new Date().toISOString();
+      await env.CAMPAIGNS.put(
+        kvKey(requested, 'meta'),
+        JSON.stringify({ createdAt: now, lastActivity: now } satisfies CampaignMeta),
+      );
     }
-    const hash = await sha256Hex(parsed.deviceKey);
-    const owned = parseIdList(await env.CAMPAIGNS.get(deviceCampaignsKey(hash)));
-    if (owned.length >= MAX_CAMPAIGNS_PER_DEVICE) {
-      return json({ error: 'device campaign limit' }, 403);
-    }
-    await env.DEVICE_KEYS.put(campaign, parsed.deviceKey);
-    owned.push(campaign);
-    await env.CAMPAIGNS.put(deviceCampaignsKey(hash), JSON.stringify(owned));
-    const all = parseIdList(await env.CAMPAIGNS.get(CAMPAIGN_INDEX_KEY));
-    if (!all.includes(campaign)) all.push(campaign);
-    await env.CAMPAIGNS.put(CAMPAIGN_INDEX_KEY, JSON.stringify(all));
-    const now = new Date().toISOString();
-    await env.CAMPAIGNS.put(
-      kvKey(campaign, 'meta'),
-      JSON.stringify({ createdAt: now, lastActivity: now } satisfies CampaignMeta),
-    );
-    return json({ ok: true, campaign });
+    const hostname = await attachCampaignHostname(requested, env);
+    return json({ ok: true, campaign: requested, hostname });
   }
 
   if (

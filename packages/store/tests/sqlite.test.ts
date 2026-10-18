@@ -7,7 +7,7 @@ import { emptyCommunity, openSqliteStore } from '../src/sqlite.js';
 import { demoCharactersPresent, seedDemoCampaign } from '../src/seed.js';
 import { parseCampaignToml, serializeCampaignToml } from '../src/campaign-toml.js';
 import { publicSnapshotViolations } from '../src/redact.js';
-import { applyPublicSnapshot, slugFromCampaignName } from '../src/snapshot.js';
+import { applyPublicSnapshot, refusedCampaignSlug, slugFromCampaignName } from '../src/snapshot.js';
 
 const dirs: string[] = [];
 
@@ -215,8 +215,13 @@ describe('sqlite store', () => {
 
 describe('slugFromCampaignName', () => {
   it('turns a campaign title into a slug', () => {
-    expect(slugFromCampaignName('The Ash Hill')).toBe('the-ash-hill');
+    expect(slugFromCampaignName('Aspalath, after the night the knife missed')).toBe(
+      'aspalath-after-the-night-the-knife-missed',
+    );
     expect(slugFromCampaignName('  Vardmark  ')).toBe('vardmark');
+    expect(refusedCampaignSlug('demo')).toBe(true);
+    expect(refusedCampaignSlug('origin-aspalath')).toBe(true);
+    expect(refusedCampaignSlug('aspalath')).toBe(false);
   });
 });
 

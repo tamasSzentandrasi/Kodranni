@@ -36,7 +36,20 @@ export interface DeskStrip {
 
 function tableOn(slug: string, origin: string): string {
   const host = origin.replace(/\/$/, '');
-  if (slug === 'aspalath' || slug === 'demo' || slug === 'play') return `${host}/community/`;
+  let name = '';
+  try {
+    name = new URL(host).hostname.toLowerCase();
+  } catch {
+    name = '';
+  }
+  if (
+    name === `${slug}.kodranni.com` ||
+    name === 'demo.kodranni.com' ||
+    name === 'play.kodranni.com'
+  ) {
+    return `${host}/community/`;
+  }
+  if (slug === 'demo' || slug === 'play') return `${host}/community/`;
   return `${host}/community/?campaign=${encodeURIComponent(slug)}`;
 }
 

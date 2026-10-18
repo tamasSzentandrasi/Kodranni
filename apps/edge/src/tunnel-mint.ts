@@ -25,6 +25,83 @@ export function originHostFor(campaign: string): string {
   return `origin-${campaign}.kodranni.com`;
 }
 
+const RESERVED_PUBLIC = new Set(['www', 'demo', 'play']);
+
+/** Public player hostname. Null for reserved labels and the tunnel prefix. */
+export function publicHostnameFor(campaign: string): string | null {
+  const slug = campaign.trim().toLowerCase();
+  if (!/^[a-z0-9-]{1,48}$/.test(slug)) return null;
+  if (RESERVED_PUBLIC.has(slug) || slug.startsWith('origin-')) return null;
+  return `${slug}.kodranni.com`;
+}
+
+export type HostnameAttach = 'attached' | 'skipped' | 'failed';
+
+/**
+ * Attach `<slug>.kodranni.com` to this Worker. Does not touch `origin-<slug>`.
+ * Missing Cloudflare credentials skip. A refused name does not throw.
+ */
+export async function attachCampaignHostname(
+  campaign: string,
+  env: MintEnv,
+  cfFetch: typeof fetch = fetch,
+): Promise<HostnameAttach> {
+  const host = publicHostnameFor(campaign);
+  const token = env.CF_API_TOKEN?.trim();
+  const account = env.CF_ACCOUNT_ID?.trim();
+  const zone = env.CF_ZONE_ID?.trim();
+  if (!host || !token || !account || !zone) return 'skipped';
+  const headers = {
+    authorization: `Bearer ${token}`,
+    'content-type': 'application/json',
+  };
+  try {
+    if (await hostnameAlreadyAttached(cfFetch, account, headers, host)) return 'attached';
+  } catch {
+    /* list failed; the attach below is the same name again if it is already there */
+  }
+  try {
+    await cfJson(cfFetch, `${CF}/accounts/${account}/workers/domains`, {
+      method: 'PUT',
+      headers,
+      body: JSON.stringify({
+        hostname: host,
+        service: 'kodranni-edge',
+        environment: 'production',
+        zone_id: zone,
+      }),
+    });
+    return 'attached';
+  } catch {
+    return 'failed';
+  }
+}
+
+async function hostnameAlreadyAttached(
+  cfFetch: typeof fetch,
+  account: string,
+  headers: Record<string, string>,
+  host: string,
+): Promise<boolean> {
+  for (let page = 1; page <= 10; page++) {
+    const res = await cfFetch(
+      `${CF}/accounts/${account}/workers/domains?page=${page}&per_page=50`,
+      { method: 'GET', headers },
+    );
+    const data = (await res.json().catch(() => ({}))) as {
+      result?: { hostname?: string }[];
+      success?: boolean;
+      result_info?: { total_pages?: number };
+    };
+    if (!res.ok || data.success === false) throw new Error('cloudflare: list domains failed');
+    const rows = Array.isArray(data.result) ? data.result : [];
+    if (rows.some((row) => row?.hostname === host)) return true;
+    const pages = data.result_info?.total_pages;
+    if (rows.length < 50 || (pages != null && page >= pages)) return false;
+  }
+  return false;
+}
+
 export async function mintCampaignTunnel(
   campaign: string,
   env: MintEnv,

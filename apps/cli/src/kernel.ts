@@ -15,6 +15,7 @@ import {
   ensureCampaignRuntime,
   ensureEdgeDeviceKey,
   PRODUCT_EDGE_CONTROL_URL,
+  campaignPublicUrl,
   productPublicEdgeUrl,
   readLiveUrl,
   readSessionState,
@@ -166,8 +167,7 @@ export async function runLiveKernel(opts: {
   const localUrl = `http://${host}:${port}`;
   const communityUrl = `${localUrl}/community/`;
   const startedAt = new Date().toISOString();
-  const publicEdge =
-    cfg.edgeUrl ?? process.env.KODRANNI_EDGE_URL?.trim() ?? productPublicEdgeUrl(cfg.slug);
+  const playerHost = productPublicEdgeUrl(slug);
   const edgeControl =
     cfg.edgeControlUrl ??
     process.env.KODRANNI_EDGE_CONTROL_URL?.trim() ??
@@ -186,12 +186,7 @@ export async function runLiveKernel(opts: {
   console.log(desk ? `Desk for ${cfg.name} (${cfg.slug})` : `Live table for ${cfg.name} (${cfg.slug})`);
   console.log(`  store: ${cfg.storePath}`);
   console.log(`  local: ${localUrl}/community/`);
-  const tableUrl = `${publicEdge.replace(/\/$/, '')}/community/?campaign=${encodeURIComponent(slug)}`;
-  if (slug !== 'aspalath' && slug !== 'demo' && slug !== 'play') {
-    console.log(`  public: ${tableUrl}`);
-  } else {
-    console.log(`  public: ${publicEdge.replace(/\/$/, '')}/community/`);
-  }
+  console.log(`  public: ${campaignPublicUrl(slug)}`);
 
   ensureCampaignUiBuilt(repoRoot);
   const entry = campaignUiEntry(repoRoot);
@@ -206,7 +201,7 @@ export async function runLiveKernel(opts: {
     slug: cfg.slug,
     bot: desk ? false : bot,
     edgeControlUrl: edgeControl,
-    publicBaseUrl: publicEdge,
+    publicBaseUrl: playerHost,
   });
   for (const [k, v] of Object.entries(env)) {
     if (k === 'NODE_OPTIONS') continue;
@@ -254,11 +249,14 @@ export async function runLiveKernel(opts: {
   }
 
   try {
-    await registerEdgeCampaign({
+    const registered = await registerEdgeCampaign({
       edgeUrl: edgeControl,
       campaignId: slug,
       deviceKey: ensureEdgeDeviceKey(),
     });
+    if (registered.hostname === 'failed') {
+      console.error('  edge: public name was not attached');
+    }
   } catch (e) {
     console.error(`  edge register: ${e instanceof Error ? e.message : e}`);
   }
@@ -304,7 +302,7 @@ export async function runLiveKernel(opts: {
           logPath: tunnelLog,
         });
         tunnelChild = t.child;
-        const publicUrl = publicEdge.replace(/\/$/, '');
+        const publicUrl = playerHost;
         writeLiveUrl(slug, publicUrl);
         writeSessionState(slug, {
           slug,

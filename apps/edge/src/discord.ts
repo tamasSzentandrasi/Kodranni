@@ -132,9 +132,15 @@ async function campaignForGuild(env: EdgeLike, guildId?: string): Promise<string
 }
 
 function archiveUrl(request: Request, campaign: string): string {
-  const host = new URL(request.url).host;
-  if (host === 'demo.kodranni.com' || host === 'play.kodranni.com') return `https://${host}/community/`;
-  return `https://kodranni.com/community/?campaign=${encodeURIComponent(campaign)}`;
+  const host = new URL(request.url).hostname.toLowerCase();
+  if (
+    host === `${campaign}.kodranni.com` ||
+    host === 'demo.kodranni.com' ||
+    host === 'play.kodranni.com'
+  ) {
+    return `https://${host}/community/`;
+  }
+  return `https://${campaign}.kodranni.com/community/`;
 }
 
 async function forwardToHost(

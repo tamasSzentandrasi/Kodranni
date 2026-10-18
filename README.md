@@ -32,7 +32,7 @@ kodranni start
 kodranni stop
 ```
 
-Players open `https://kodranni.com/community/?campaign=<id>` (Aspalath showcase is `https://demo.kodranni.com/community/`). The Storyteller desk is that same hall at `http://127.0.0.1:8742/` on the machine that holds the record. The public address stays the live hall. The bot token stays on the Worker.
+`kodranni --name` is the setup. It writes the campaign on this machine and opens the desk at `http://127.0.0.1:8742/`. The public name is `https://<slug>.kodranni.com/`. `demo.kodranni.com` stays the showcase for Aspalath. `?campaign=` still works on `kodranni.com`. The setup command does not yet register the name; that happens when the campaign is published or the table starts. After setup, customisation, the night, and Discord and Fluxer are the desk. The process is in `docs/plans/hosting.md`. The bot token stays on the Worker.
 
 Own domain means **own hosting** (deploy `apps/edge` on your Cloudflare). See `docs/plans/hosting.md`.
 

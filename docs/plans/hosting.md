@@ -125,7 +125,7 @@ Desk tools render for `isLocalDeskRequest` (loopback, and not tunnelled). A tunn
 
 Windows is out of scope. systemd is the Linux adapter, not the kernel.
 
-A campaign is created empty, or restored from a public snapshot. The name given at founding is the campaign. “Community” remains the in-world hall. Nothing is running when the table is dark. No npm at the table: install the Linux tarball.
+A campaign is founded with a name, or restored from a public snapshot. The command and the handoff to the desk are below. “Community” remains the in-world hall. Nothing is running when the table is dark. No npm at the table: install the Linux tarball.
 
 ### Hard limits
 
@@ -225,6 +225,40 @@ These are not current work:
 
 ---
 
+## Founding a campaign
+
+One install of the program. After that, a campaign is a name.
+
+The worked seed in the Guidebook is Aspalath, after the night the knife missed.
+
+```bash
+kodranni --name "Aspalath"
+```
+
+A snapshot restores the same way:
+
+```bash
+kodranni --name "Aspalath" --from ./snapshot.json
+```
+
+That command is the setup. It turns the name into a slug, refuses `www`, `demo`, and `play`, and refuses a slug the Worker already has. It writes the empty community on this machine, registers the slug with the device key, publishes an empty snapshot, and prints `https://aspalath.kodranni.com/`. The desk opens at `http://127.0.0.1:8742/`. `demo.kodranni.com` stays the showcase for that same campaign.
+
+The empty record is Steady (2) on all five Fortunes, unfounded until the five buttons are pressed. The axes are Arms, Faith, Coin, and Blood, with empty rungs and no ruler. Faction and tag categories exist and have no labels. There are no myths, no people, and no canvas.
+
+The Worker attaches `<slug>.kodranni.com` when the campaign registers. The Storyteller does not edit DNS. A catch-all name would also catch `origin-<slug>.kodranni.com`, which is the tunnel, so each public name is attached on its own and the tunnel host is left alone. `demo.kodranni.com` stays the showcase. Players never use the tunnel host.
+
+One machine may register three campaigns. One address may register five times a day.
+
+From then on the Storyteller Desk does the work. Customisation and management stay there: fortunes, ladders, factions and tags, people and sheets, the notebook, the character-map upload, and the Session night. Go Live opens the public night on that name. End Session publishes the hall, including uploaded pictures, and returns the name to the archive. Discord and Fluxer are configured on the desk: invite the one shared bot, then pick the server, the play channel, and the Storyteller role. A campaign does not get its own application.
+
+The Storyteller does not hold a Cloudflare token, does not edit DNS, and does not come back to the console to change the campaign.
+
+### What this binary does today
+
+`kodranni --name` writes the local campaign and opens the desk. The address it prints is `https://<slug>.kodranni.com/community/`. The command does not yet refuse a reserved slug, register that name, or publish the empty hall. Register on publish and on `kodranni start` asks the Worker to attach the name. Go Live and End Session are still `kodranni start` and `kodranni stop`. The Session tab saves Discord’s guild, channel, and role. Fluxer does not send cards yet. Portraits publish with the snapshot. Other uploaded pictures stay on the machine.
+
+---
+
 ## Product verbs (current binary)
 
 | Command | Meaning |
@@ -235,4 +269,4 @@ These are not current work:
 | `kodranni status` | `down`, `desk`, or `live` plus the URL. |
 | `kodranni emissary` | The readiness list above. |
 
-The README runbook describes this binary: the hall desk on loopback, and players on `?campaign=`. Subdomains are the lock, and they are not this binary yet. See [status.md](./status.md).
+The README runbook describes this binary: the hall desk on loopback, and the printed player address `https://<slug>.kodranni.com/`. The setup command does not register that name yet. See [status.md](./status.md).

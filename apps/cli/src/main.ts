@@ -21,7 +21,7 @@ import {
   openSqliteStore,
   parsePublicSnapshot,
   platformCredentialStatus,
-  productPublicEdgeUrl,
+  campaignPublicUrl,
   readCampaignConfig,
   readLiveUrl,
   seedDemoCampaign,
@@ -40,15 +40,15 @@ function usage(code = 1): never {
   kodranni [--name <campaign name>] [--from snapshot.json]
       Desk (Found if needed). No public tunnel.
   kodranni start [--slug <id>]
-      Open the table. Players use kodranni.com/?campaign=<id>
+      Open the table. Players use https://<slug>.kodranni.com/
   kodranni stop [--slug <id>]
       Publish archive and stop.
   kodranni status [--slug <id>]
   kodranni emissary [--slug <id>]
 
 Found:
-  kodranni --name "The Ash Hill"
-  kodranni --name "The Ash Hill" --from ./snapshot.json
+  kodranni --name "Aspalath"
+  kodranni --name "Aspalath" --from ./snapshot.json
 
 Dev (same binary): campaign init|destroy|export-json|publish|seed-demo, session *, live, roll.
 
@@ -90,9 +90,7 @@ async function loadConfig(slug: string): Promise<CampaignConfig> {
 }
 
 function publicTableUrl(slug: string): string {
-  const host = productPublicEdgeUrl(slug).replace(/\/$/, '');
-  if (slug === 'aspalath' || slug === 'demo' || slug === 'play') return `${host}/community/`;
-  return `${host}/community/?campaign=${encodeURIComponent(slug)}`;
+  return campaignPublicUrl(slug);
 }
 
 function resolveSlug(args: string[]): string {

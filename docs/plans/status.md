@@ -1,9 +1,9 @@
 # Status
 
-**Date:** 2026-10-17  
+**Date:** 2026-10-18  
 **Decisions:** [overview.md](./overview.md) · [decisions.md](./decisions.md) · [hosting.md](./hosting.md)
 
-This file says what the tree does today. The hall on loopback is the Storyteller desk, and the Session tab holds that night’s scene, the Tide reading, the approval inbox, Restore, and Discord bind. The source command list uses `/select` and `/npc-roll`. The channel Tide card is in this build. `https://<slug>.kodranni.com/` is not. The edge workflow uploads the Worker, then registers Discord commands when the Actions token and app id are set. Those secrets are unset, so the step logs a skip and the live list stays the last guild registration.
+This file says what the tree does today. The hall on loopback is the Storyteller desk, and the Session tab holds that night’s scene, the Tide reading, the approval inbox, Restore, and Discord bind. The source command list uses `/select` and `/npc-roll`. The channel Tide card is in this build. The Worker reads `https://<slug>.kodranni.com/`. The setup command does not register that name yet. The edge workflow uploads the Worker, then registers Discord commands when the Actions token and app id are set. Those secrets are unset, so the step logs a skip and the live list stays the last guild registration.
 
 ---
 
@@ -23,11 +23,11 @@ Aspalath’s hall, hierarchy, character map, and sheets are the visual and funct
 
 Creation on an unlocked sheet is still `creation-client.js`, loaded from `DraftPanel.astro` and the character page. It is behind the Guidebook’s creation flow.
 
-The hall on loopback defaults to the Storyteller desk. A control on the record line turns the player face on for that machine (`kod_desk=0`). A tunnel and a public host stay the live hall and never show the control. There is no Discord/Fluxer strip on the hall. Snapshot download and restore sit on the notebook page. `/operator`, `/community/setup/`, `GET /emissary`, and `kod_setup` are gone. Players still open `kodranni.com/community/?campaign=<slug>`.
+The hall on loopback defaults to the Storyteller desk. A control on the record line turns the player face on for that machine (`kod_desk=0`). A tunnel and a public host stay the live hall and never show the control. There is no Discord/Fluxer strip on the hall. Snapshot download and restore sit on the notebook page. `/operator`, `/community/setup/`, `GET /emissary`, and `kod_setup` are gone. Players open `https://<slug>.kodranni.com/`. `?campaign=` still works on `kodranni.com`. `demo.kodranni.com` stays the Aspalath showcase.
 
 A new community from `emptyCommunity()` stores unfounded Steady (2) on all five Fortunes, axes Arms / Faith / Coin / Blood, and two empty label groups (Factions and Tags). Decisions want many faction categories, a colour and an optional icon, and Guidebook fortune buttons. The store has `hue` on a label and no icon field. Pending hierarchy move requests still exist on the community type; the decision drops that queue.
 
-The public path in the running product is still `kodranni.com/community/?campaign=<slug>`. The edge still reads the campaign from that URL shape.
+The Worker reads the campaign from `<slug>.kodranni.com`, from `?campaign=` on the apex, and from `demo` and `play`.
 
 ---
 
@@ -45,8 +45,7 @@ An opposed roll steps an open Tide and edits the channel picture. Post the omens
 
 Still unbuilt:
 
-- Fluxer listing. The Session tab leaves Fluxer out until a server can be listed.
-- Group Echo stakeholders are not seeded from the hierarchy.
+- Fluxer listing. The Session tab leaves Fluxer out until a server can be listed. The desk is where that server, channel, and role are chosen.
 
 The Guidebook already states Fluxer’s contract as Discord’s peer. The adapter (`adapters/fluxer/src/index.ts`) still throws `Fluxer adapter not connected — session runtime pending`. Credentials can sit in the environment. Making that adapter real — bind plate, command list, server, channel, and role — rides with the Discord command work.
 
@@ -54,7 +53,9 @@ The Guidebook already states Fluxer’s contract as Discord’s peer. The adapte
 
 ## Host
 
-`kodranni`, `start`, `stop`, `status`, and `emissary` are the verbs. The README runbook matches this binary: bind from the hall on loopback, and players still use `?campaign=`. Subdomains stay in [decisions.md](./decisions.md).
+`kodranni`, `start`, `stop`, `status`, and `emissary` are the verbs. The README runbook matches this binary: bind from the hall on loopback, and players use `https://<slug>.kodranni.com/`. `?campaign=` still works on the apex.
+
+Founding is the name command in [hosting.md](./hosting.md). After it, the desk owns customisation, the night, and Discord and Fluxer. The name command still only writes the local campaign and opens the desk. It does not register the name. Register on publish and on table start asks the Worker to attach `<slug>.kodranni.com`. Go Live and End Session are still `start` and `stop`.
 
 The hosting shape in [hosting.md](./hosting.md) (one process, KV snapshot, Worker, device key, bot token off the host) is the lock and is largely what the tree was built toward in late August. Two caveats:
 
@@ -67,6 +68,7 @@ The Session tab is where the night is opened and read. `kodranni emissary` stays
 
 ## Left in place on purpose
 
-- Diagram drag, sheet field editors, the creation stack, the channel Tide card, Fluxer listing, and subdomains.
+- Diagram drag, sheet field editors, the creation stack, the channel Tide card, and Fluxer listing.
+- The founding command’s register and empty publish. The Worker already reads `<slug>.kodranni.com`. `?campaign=` still works on the apex.
 - [hungarian-lexicon.md](./hungarian-lexicon.md).
 - `apps/campaign-ui/docs/character-map.md`.

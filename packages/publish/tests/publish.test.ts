@@ -82,5 +82,11 @@ describe('publish archive', () => {
         'https://origin-vardmark.kodranni.com',
       ),
     ).toBe(false);
+    expect(
+      edgeOriginWouldLoop(
+        'https://kodranni-edge.kodranni.workers.dev',
+        'https://aspalath.kodranni.com',
+      ),
+    ).toBe(true);
   });
 });

@@ -149,7 +149,7 @@ describe('applyMachineDefaults', () => {
     const cfg = applyMachineDefaults({ ...base, slug: 'aspalath' }, {});
     expect(cfg.edgeUrl).toBe(productPublicEdgeUrl('aspalath'));
     expect(cfg.edgeControlUrl).toBe(PRODUCT_EDGE_CONTROL_URL);
-    expect(cfg.edgeUrl).toBe('https://demo.kodranni.com');
+    expect(cfg.edgeUrl).toBe('https://aspalath.kodranni.com');
   });
 
   it('does not overwrite an explicit edge_url', () => {

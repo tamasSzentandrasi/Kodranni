@@ -103,9 +103,15 @@ describe('campaignFromUrl', () => {
     ).toBeNull();
   });
 
-  it('does not give Storytellers public subdomains on kodranni.com', () => {
-    expect(campaignFromUrl(new URL('https://ash-hill.kodranni.com/'))).toBeNull();
-    expect(campaignFromUrl(new URL('https://origin-ash-hill.kodranni.com/'))).toBe('ash-hill');
+  it('reads the campaign from its public name and keeps the tunnel host internal', () => {
+    expect(campaignFromUrl(new URL('https://aspalath.kodranni.com/community/'), 'vardmark')).toBe(
+      'aspalath',
+    );
+    expect(campaignFromUrl(new URL('https://origin-aspalath.kodranni.com/'))).toBe('aspalath');
+    expect(campaignFromUrl(new URL('https://demo.kodranni.com/community/'), 'vardmark')).toBe(
+      'vardmark',
+    );
+    expect(campaignFromUrl(new URL('https://www.kodranni.com/community/'), 'vardmark')).toBeNull();
   });
 
   it('does not serve Vardmark for an unknown host', () => {
@@ -133,6 +139,53 @@ describe('edge handler', () => {
       e,
     );
     expect(reg.status).toBe(200);
+    const regBodyJson = (await reg.json()) as { hostname?: string };
+    expect(regBodyJson.hostname).toBe('skipped');
+
+    const again = await handleEdgeRequest(
+      new Request(`https://face.example/control/register?campaign=${campaign}`, {
+        method: 'POST',
+        body: regBody,
+      }),
+      e,
+    );
+    expect(again.status).toBe(200);
+
+    const foreign = await handleEdgeRequest(
+      new Request(`https://face.example/control/register?campaign=${campaign}`, {
+        method: 'POST',
+        body: JSON.stringify({ deviceKey: 'b'.repeat(32) }),
+      }),
+      e,
+    );
+    expect(foreign.status).toBe(409);
+
+    const reserved = await handleEdgeRequest(
+      new Request('https://face.example/control/register?campaign=demo', {
+        method: 'POST',
+        body: regBody,
+      }),
+      e,
+    );
+    expect(reserved.status).toBe(400);
+
+    const play = await handleEdgeRequest(
+      new Request('https://face.example/control/register?campaign=play', {
+        method: 'POST',
+        body: regBody,
+      }),
+      e,
+    );
+    expect(play.status).toBe(400);
+
+    const tunnelName = await handleEdgeRequest(
+      new Request('https://face.example/control/register?campaign=origin-aspalath', {
+        method: 'POST',
+        body: regBody,
+      }),
+      e,
+    );
+    expect(tunnelName.status).toBe(400);
 
     const snap = {
       generatedAt: '2026-08-25T00:00:00.000Z',

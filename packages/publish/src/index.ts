@@ -281,16 +281,23 @@ export async function registerEdgeCampaign(opts: {
   edgeUrl: string;
   campaignId: string;
   deviceKey: string;
-}): Promise<void> {
+}): Promise<{ hostname: 'attached' | 'skipped' | 'failed' }> {
   const url = `${opts.edgeUrl.replace(/\/$/, '')}/control/register?campaign=${encodeURIComponent(opts.campaignId)}`;
   const res = await fetch(url, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
     body: JSON.stringify({ deviceKey: opts.deviceKey }),
   });
-  if (res.status === 409 || res.ok) return;
   const text = await res.text().catch(() => '');
-  throw new Error(`edge register ${res.status}: ${text.slice(0, 240)}`);
+  if (!res.ok) throw new Error(`edge register ${res.status}: ${text.slice(0, 240)}`);
+  let hostname: 'attached' | 'skipped' | 'failed' = 'skipped';
+  try {
+    const data = JSON.parse(text) as { hostname?: string };
+    if (data.hostname === 'attached' || data.hostname === 'failed') hostname = data.hostname;
+  } catch {
+    /* older Worker */
+  }
+  return { hostname };
 }
 
 export async function putSnapshotToEdge(opts: {

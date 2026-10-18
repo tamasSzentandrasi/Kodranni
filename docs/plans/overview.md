@@ -47,7 +47,9 @@ One process holds SQLite, the campaign UI, and the Discord handler. The desk is 
 | `/npc-roll` for someone with no sheet | Chat. Storyteller. A label, foundation dice, skill dice, a tier. |
 | `/intent` | Chat. Storyteller posts an agreed pool for a named player. Kept. |
 | Opposed roll, Tide-linked roll | A reply to the channel result, or to the Tide card. The result is a channel message. |
-| Open a Tide | Session tab, and later Discord `/tide`, writing one record. The channel card shows, steps, and closes it. |
+| Found a campaign | One command: `kodranni --name "…"`. The public name is `https://<slug>.kodranni.com/`. See [hosting.md](./hosting.md). |
+| Open or end the public night | Desk. One control beside the on/off switch: Go Live while dark, End Session while live. |
+| Open a Tide | Session tab. The channel card shows, steps, and closes it. |
 | Scene Omen faces | Edited on the Session tab. Players read the faces there. The channel board is rewritten on save once that card exists. |
 | `/create`, `/claim`, Birth Omen, Guiding Hand, `/award-word` | Chat. Private dice stay ephemeral to that player and the Storyteller. |
 | Mark the person a claim was about | Desk fields on that person. |
@@ -63,14 +65,14 @@ One process holds SQLite, the campaign UI, and the Discord handler. The desk is 
 | Factions and tags | Desk. Factions live inside categories, with a colour and an optional icon. |
 | Character map | Download the canvas (public). Edit in Obsidian. Upload only on the desk. |
 | Echoes, Practice, armour | Desk, and the owner’s sheet while creation is unlocked. |
-| Bind Discord and Fluxer | Session tab, inside Table chat. Discord’s guild, play channel, and Storyteller role save there. Bound characters sit on a hover. Fluxer is omitted until the gateway can list a server. |
+| Bind Discord and Fluxer | Desk, on the Session tab. Invite the shared bot, then the server, the play channel, and the Storyteller role. Bound characters sit on a hover. |
 | Undo the last roll | One Storyteller control on that result card. |
 
 ---
 
 ## Already built, still behind this table
 
-Aspalath’s hall, hierarchy, character map, and sheets are the visual reference. Creation on the sheet is the older dock. The source command list uses `/select` and `/npc-roll`; `/focus`, `/st-roll`, `/reclaim`, `/map`, and `/live` are out of that list. The Discord application still has the last guild registration. Actions has no bot token, so the edge step skips. Discord bind is on the Session tab. The public address is still `kodranni.com/community/?campaign=`. Fluxer throws. The host walkthrough has never been signed.
+Aspalath’s hall, hierarchy, character map, and sheets are the visual reference. Creation on the sheet is the older dock. The source command list uses `/select` and `/npc-roll`; `/focus`, `/st-roll`, `/reclaim`, `/map`, and `/live` are out of that list. The Discord application still has the last guild registration. Actions has no bot token, so the edge step skips. Discord bind is on the Session tab. Players use `https://<slug>.kodranni.com/`. `?campaign=` still works on `kodranni.com`. `demo.kodranni.com` stays the Aspalath showcase. Fluxer throws. The host walkthrough has never been signed.
 
 The Automation chapter now follows this table, in English and Hungarian. The gap between the table and the code is listed in [status.md](./status.md). The desk shell is the hall on loopback. Later steps stay unbuilt until asked.
 
@@ -78,6 +80,6 @@ The Automation chapter now follows this table, in English and Hungarian. The gap
 
 ## Commands after this lock
 
-Kept in chat: `/create`, `/claim`, `/select`, `/roll`, `/intent`, `/npc-roll`, `/birth-omen`, `/guiding-hand`, `/award-word`, `/tide`, `/review`.
+Kept in chat: `/create`, `/claim`, `/select`, `/roll`, `/intent`, `/npc-roll`, `/birth-omen`, `/guiding-hand`, `/award-word`, `/review`.
 
 Leave: `/focus` (renamed `/select`), `/st-roll` (becomes `/npc-roll`), `/map`, `/reclaim`, `/live`. Scene Add on a Discord card does not ship. Discord and Fluxer share this list. The Fluxer adapter is still unwired; it is brought up with the Discord command work, not after the rest of the desk.

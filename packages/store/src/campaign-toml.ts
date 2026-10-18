@@ -71,12 +71,14 @@ const DEFAULTS = {
 /** Worker control plane the host talks to (never the public hostname). */
 export const PRODUCT_EDGE_CONTROL_URL = 'https://kodranni-edge.kodranni.workers.dev';
 
-/** Player-facing hostname on our zone. Showcase slug uses demo.; tables use apex + ?campaign=. */
+/** Player-facing hostname. `demo.kodranni.com` stays an extra name for the showcase. */
 export function productPublicEdgeUrl(slug: string): string {
-  if (slug === 'aspalath' || slug === 'demo' || slug === 'play') {
-    return 'https://demo.kodranni.com';
-  }
-  return 'https://kodranni.com';
+  return `https://${slug.trim().toLowerCase()}.kodranni.com`;
+}
+
+/** Hall path on that hostname. The host is the campaign, so there is no `?campaign=`. */
+export function campaignPublicUrl(slug: string): string {
+  return `${productPublicEdgeUrl(slug)}/community/`;
 }
 
 /** Minimal TOML writer/reader for our fixed keys (no third-party TOML dep). */

@@ -38,7 +38,7 @@ The desk is the campaign UI when the request is local.
 
 **Writes.** Desk actions POST to the campaign API. The handler rejects the call unless `isLocalDeskRequest`.
 
-**What moves off operator.** Discord bind, snapshot download and restore, founding, and add-person leave `/operator` and `/community/setup/` and become plates on the hall, the diagram, and the sheet. Those routes are then removed. Fluxer bind is the same plate, beside Discord. The book already states that contract. The adapter is built alongside the Discord commands; until it can list a server, a channel, and a role, the plate has nothing to pick.
+**What moves off operator.** Discord bind, snapshot download and restore, founding, and add-person leave `/operator` and `/community/setup/` and become plates on the hall, the diagram, and the sheet. Those routes are then removed. Fluxer bind is the same plate, beside Discord. The book already states that contract. The card is the same embed, and one reaction stands in for each button until Fluxer ships components.
 
 **Status strip**, on the desk layout only, replaces the emissary page:
 
@@ -191,7 +191,7 @@ Rose seating stays the engineering note in `apps/campaign-ui/docs/character-map.
 
 ### From an empty campaign
 
-Found with a name. The slug is the subdomain. Reserved labels are refused. The record starts as:
+The name is given once, with the setup command in [hosting.md](./hosting.md). The slug is the subdomain. Reserved labels are refused. After that command, customisation and management are this desk, including Discord and Fluxer. The record starts as:
 
 - Display name and slug
 - Fortunes stored as Steady (2), unfounded until the five buttons are pressed
@@ -215,8 +215,9 @@ Found with a name. The slug is the subdomain. Reserved labels are refused. The r
 | Tags | Name, optional colour, optional icon. Assign to people. |
 | Canvas | Download and upload. |
 | Snapshot | Download the public snapshot. Restore one. |
-| Discord bind | Invite, then guild, play channel, Storyteller role. |
-| Fluxer bind | The same three picks as Discord. Built alongside those commands. |
+| Discord | Invite the shared bot, then guild, play channel, Storyteller role. |
+| Fluxer | The same desk controls and the same card as Discord. A reaction stands in for each button until Fluxer ships components. |
+| Go Live / End Session | One control beside the desk on/off switch. Go Live while the hall is dark. End Session while it is live. |
 | Notebook | Private. Never archived. |
 | Scene faces | The list editor above. Session only. |
 | Tide | Read-only on the strip: open or not. |

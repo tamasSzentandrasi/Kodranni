@@ -36,7 +36,10 @@ export async function publishSnapshotToEdge(slug: string, cfg: CampaignConfig): 
   const store = openSqliteStore(cfg.storePath);
   try {
     const snap = store.toPublicSnapshot();
-    await registerEdgeCampaign({ edgeUrl, campaignId: slug, deviceKey: key });
+    const registered = await registerEdgeCampaign({ edgeUrl, campaignId: slug, deviceKey: key });
+    if (registered.hostname === 'failed') {
+      console.error('  edge: public name was not attached');
+    }
     await putSnapshotToEdge({ edgeUrl, campaignId: slug, deviceKey: key, snapshot: snap });
     console.log(`  edge: snapshot published (${edgeUrl})`);
     try {

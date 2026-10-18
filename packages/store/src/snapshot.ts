@@ -63,3 +63,15 @@ export function slugFromCampaignName(name: string): string {
   if (!s) throw new Error('campaign name needs a letter or digit');
   return s;
 }
+
+const RESERVED_CAMPAIGN_SLUGS = new Set(['www', 'demo', 'play']);
+
+/** True for labels the public zone keeps: www, demo, play, and the tunnel prefix. */
+export function refusedCampaignSlug(slug: string): boolean {
+  const s = slug.trim().toLowerCase();
+  return (
+    !/^[a-z0-9-]{1,48}$/.test(s) ||
+    RESERVED_CAMPAIGN_SLUGS.has(s) ||
+    s.startsWith('origin-')
+  );
+}
