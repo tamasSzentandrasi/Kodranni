@@ -63,4 +63,28 @@ describe('mapCardToFluxerPayload', () => {
     expect(roll.reactions).toEqual([{ emoji: '🎲', id: 'tide-roll' }]);
   });
 
+  it('puts Cast, the die, Exertion, and Cancel on the Ready card', () => {
+    const ready = mapCardToFluxerPayload({
+      title: 'Ready · Marino Orvanti',
+      buttons: [
+        { id: 'roll-cast:abc', label: 'Cast' },
+        { id: 'roll-exert:abc', label: 'Exertion · 0' },
+        { id: 'roll-tier-cycle:abc', label: 'Die · d8 Ordinary' },
+        { id: 'roll-cancel:abc', label: 'Cancel' },
+      ],
+    });
+    expect(ready.reactions).toEqual([
+      { emoji: '🎯', id: 'roll-cast:abc' },
+      { emoji: '➕', id: 'roll-exert:abc' },
+      { emoji: '🎲', id: 'roll-tier-cycle:abc' },
+      { emoji: '✕', id: 'roll-cancel:abc' },
+    ]);
+    expect(resolveFluxerReaction({ customId: 'roll-cast:abc', actorIsStoryteller: false }).once).toBe(
+      true,
+    );
+    expect(resolveFluxerReaction({ customId: 'roll-tier-cycle:abc', actorIsStoryteller: false }).once).toBe(
+      false,
+    );
+  });
+
 });

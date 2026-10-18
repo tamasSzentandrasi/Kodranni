@@ -250,6 +250,10 @@ const REACTION_EMOJI: readonly [string, string][] = [
 function reactionEmoji(id: string): string | undefined {
   if (id === 'tide-roll') return '🎲';
   if (id === 'tide-close') return '✕';
+  if (id.startsWith('roll-cast:')) return '🎯';
+  if (id.startsWith('roll-tier-cycle:')) return '🎲';
+  if (id.startsWith('roll-exert:')) return '➕';
+  if (id.startsWith('roll-cancel:')) return '✕';
   return REACTION_EMOJI.find(([prefix]) => id.startsWith(prefix))?.[1];
 }
 
@@ -281,7 +285,9 @@ function spentChoice(id: string): boolean {
     id.startsWith('st-harm:') ||
     id.startsWith('claim-second:') ||
     id.startsWith('claim-accept:') ||
-    id.startsWith('claim-refuse:')
+    id.startsWith('claim-refuse:') ||
+    id.startsWith('roll-cast:') ||
+    id.startsWith('roll-cancel:')
   );
 }
 
