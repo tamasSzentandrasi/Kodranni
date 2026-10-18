@@ -48,7 +48,7 @@ One process holds SQLite, the campaign UI, and the Discord handler. The desk is 
 | `/intent` | Chat. Storyteller posts an agreed pool for a named player. Kept. |
 | Opposed roll, Tide-linked roll | A reply to the channel result, or to the Tide card. The result is a channel message. |
 | Found a campaign | One command: `kodranni --name "…"`. The public name is `https://<slug>.kodranni.com/`. See [hosting.md](./hosting.md). |
-| Open or end the public night | Desk. One control beside the on/off switch: Go Live while dark, End Session while live. |
+| Open or end the public night | `kodranni start` and `kodranni stop`. The desk header keeps the Storyteller Desk switch. Go live and Turn off sit on Discord and on Fluxer. |
 | Open a Tide | Session tab. The channel card shows, steps, and closes it. |
 | Scene Omen faces | Edited on the Session tab. Players read the faces there. The channel board is rewritten on save once that card exists. |
 | `/create`, `/claim`, Birth Omen, Guiding Hand, `/award-word` | Chat. Private dice stay ephemeral to that player and the Storyteller. |

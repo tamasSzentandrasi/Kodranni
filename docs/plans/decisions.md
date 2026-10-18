@@ -217,7 +217,7 @@ The name is given once, with the setup command in [hosting.md](./hosting.md). Th
 | Snapshot | Download the public snapshot. Restore one. |
 | Discord | Invite the shared bot, then guild, play channel, Storyteller role. |
 | Fluxer | The same desk controls and the same card as Discord. A reaction stands in for each button until Fluxer ships components. |
-| Go Live / End Session | One control beside the desk on/off switch. Go Live while the hall is dark. End Session while it is live. |
+| Go live | On Discord and on Fluxer, under Table chat. The desk header keeps the Storyteller Desk switch. |
 | Notebook | Private. Never archived. |
 | Scene faces | The list editor above. Session only. |
 | Tide | Read-only on the strip: open or not. |
