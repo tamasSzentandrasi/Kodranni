@@ -30,8 +30,9 @@ describe('chat-ui cards', () => {
     expect(card.description).toContain('{{kod-die:d8}}');
     expect(card.description).toContain('\u001b[1;33m5');
     expect(card.description).toContain('\u001b[2;37m3');
-    expect(card.description).toContain('Bright faces are Marks');
-    expect(card.description!.indexOf('Bright faces are Marks')).toBeLessThan(
+    expect(card.description).toContain('5 or higher is a Mark, bright in the roll below.');
+    expect(card.description).not.toContain('2+2 = 4d8');
+    expect(card.description!.indexOf('5 or higher is a Mark')).toBeLessThan(
       card.description!.indexOf('\u001b[1;33m5'),
     );
     expect(card.fields?.find((f) => f.name === 'Marks')).toBeUndefined();

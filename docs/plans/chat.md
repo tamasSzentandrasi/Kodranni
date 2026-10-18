@@ -52,7 +52,7 @@ A slash option of 2 with no Echo stays visible, and the pool line says a named E
 
 ## Result, Oppose, Harm, Undo
 
-The public result is one message. The title is the character and how many marks they rolled. The description says that a bright face is a Mark, then colors each face, then the pool and the intent. A whispered face keeps the number and leaves the line off. Omen sits beside Pool. The accent and the die picture are the tier. Buttons, in one row: Oppose, Why this pool?, and for the Storyteller Harm and Undo.
+The public result is one message. The title is the character and how many marks they rolled. The description says that a face of 5 or higher is a Mark and that Marks are bright in the roll, then colors each face, then the die and the intent. The pool stays in the Pool field. A whispered face keeps the number and leaves the line off. Omen sits beside Pool. The accent and the die picture are the tier. Buttons, in one row: Oppose, Why this pool?, and for the Storyteller Harm and Undo.
 
 Oppose opens that player’s private walk, already tied to the roll. Harm is the track select that already exists. Undo edits nothing in the channel yet. It restores the spend and says so to the Storyteller. When the result message is edited in place, the control comes off that message. That edit uses the channel message id, not the fifteen-minute interaction token.
 

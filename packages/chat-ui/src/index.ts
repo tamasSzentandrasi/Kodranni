@@ -74,7 +74,7 @@ function faceIsMark(face: number): boolean {
   return face >= 5;
 }
 
-/** Discord ansi block. Bright faces are Marks; the dim faces are not. */
+/** Discord ansi block. A face of 5 or higher is painted bright. */
 function diceAnsi(faces: number[]): string {
   const row = faces
     .map((face) => {
@@ -193,11 +193,9 @@ export function buildRollResultCard(input: RollCardInput): ChatCard {
     fields.push({ name: 'Practice', value: `+${input.practiceGained}`, inline: true });
   }
   const lines = [
-    'Bright faces are Marks. A face of 5 or higher counts.',
+    '5 or higher is a Mark, bright in the roll below.',
     '',
     diceAnsi(input.faces),
-    '',
-    `**${input.poolFormula}**`,
     '',
     `${dieMark(input.dieTier)}   ${input.intentLine}`,
   ];
