@@ -1,7 +1,7 @@
 /** Product-edge caps so the $0 Worker stays inside free KV. */
 
 export const MAX_SNAPSHOT_BYTES = 1_000_000;
-/** Same ceiling as a hall portrait upload. KV values stay well under 25 MB. */
+/** Same ceiling as a hall portrait upload. Published pictures share it. KV values stay well under 25 MB. */
 export const MAX_AVATAR_BYTES = 4 * 1024 * 1024;
 export const MAX_CAMPAIGNS_PER_DEVICE = 3;
 export const MAX_REGISTERS_PER_IP_DAY = 5;

@@ -55,7 +55,7 @@ The Guidebook already states Fluxer’s contract as Discord’s peer. The adapte
 
 `kodranni`, `start`, `stop`, `status`, and `emissary` are the verbs. The README runbook matches this binary: bind from the hall on loopback, and players use `https://<slug>.kodranni.com/`. `?campaign=` still works on the apex.
 
-Founding is the name command in [hosting.md](./hosting.md). After it, the desk owns customisation, the night, and Discord and Fluxer. The name command refuses a reserved slug, writes the campaign the first time, registers it, and publishes the empty hall. Opening the same name again leaves it. Register on publish and on table start asks the Worker to attach `<slug>.kodranni.com`. Go Live and End Session are still `start` and `stop`.
+Founding is the name command in [hosting.md](./hosting.md). After it, the desk owns customisation, the night, and Discord and Fluxer. The name command refuses a reserved slug, writes the campaign the first time, registers it, and publishes the empty hall. Opening the same name again leaves it. Register on publish and on table start asks the Worker to attach `<slug>.kodranni.com`. Uploaded pictures publish with that snapshot and are served while the hall is dark. A value that starts with `/` or `http` stays as it is. Go Live and End Session are still `start` and `stop`.
 
 The hosting shape in [hosting.md](./hosting.md) (one process, KV snapshot, Worker, device key, bot token off the host) is the lock and is largely what the tree was built toward in late August. Two caveats:
 

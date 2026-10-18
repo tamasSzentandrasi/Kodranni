@@ -70,6 +70,31 @@ export function avatarIndexKey(campaign: string): string {
   return `campaign:${campaign}:avatar-index`;
 }
 
+const PICTURE_NAME = /^[A-Za-z0-9][A-Za-z0-9._-]{0,160}$/;
+const PICTURE_EXT: Record<string, string> = {
+  '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg',
+  '.png': 'image/png',
+  '.webp': 'image/webp',
+  '.gif': 'image/gif',
+};
+
+export function pictureKvKey(campaign: string, name: string): string {
+  return `campaign:${campaign}:picture:${name}`;
+}
+
+export function pictureIndexKey(campaign: string): string {
+  return `campaign:${campaign}:picture-index`;
+}
+
+/** Basename only, with an image extension. Paths and web URLs are not pictures. */
+export function pictureNameOk(name: string): boolean {
+  if (!PICTURE_NAME.test(name) || name.includes('..')) return false;
+  const dot = name.lastIndexOf('.');
+  if (dot < 1) return false;
+  return Boolean(PICTURE_EXT[name.slice(dot).toLowerCase()]);
+}
+
 function avatarSlugFromPath(pathname: string): string | null {
   const m = /^\/api\/avatar\/([a-z0-9-]{1,64})$/.exec(pathname);
   return m?.[1] ?? null;
@@ -307,6 +332,118 @@ async function storePortrait(
   return json({ ok: true });
 }
 
+async function readPictureIndex(env: EdgeEnv, campaign: string): Promise<string[]> {
+  const raw = await env.CAMPAIGNS.get(pictureIndexKey(campaign));
+  if (!raw) return [];
+  try {
+    const parsed = JSON.parse(raw) as { files?: unknown };
+    if (!Array.isArray(parsed.files)) return [];
+    return parsed.files.filter((name): name is string => typeof name === 'string' && pictureNameOk(name));
+  } catch {
+    return [];
+  }
+}
+
+async function deletePictureKey(env: EdgeEnv, campaign: string, name: string): Promise<void> {
+  const key = pictureKvKey(campaign, name);
+  if (env.CAMPAIGNS.delete) await env.CAMPAIGNS.delete(key);
+  else await env.CAMPAIGNS.put(key, '');
+}
+
+async function deleteStoredPictures(env: EdgeEnv, campaign: string): Promise<void> {
+  for (const name of await readPictureIndex(env, campaign)) {
+    await deletePictureKey(env, campaign, name);
+  }
+  const index = pictureIndexKey(campaign);
+  if (env.CAMPAIGNS.delete) await env.CAMPAIGNS.delete(index);
+  else await env.CAMPAIGNS.put(index, '');
+}
+
+async function storePicture(
+  env: EdgeEnv,
+  campaign: string,
+  name: string,
+  body: string,
+): Promise<Response> {
+  let parsed: { type?: unknown; data?: unknown };
+  try {
+    parsed = JSON.parse(body) as { type?: unknown; data?: unknown };
+  } catch {
+    return json({ error: 'invalid json' }, 400);
+  }
+  if (typeof parsed.type !== 'string' || typeof parsed.data !== 'string') {
+    return json({ error: 'invalid picture' }, 400);
+  }
+  const dot = name.lastIndexOf('.');
+  const expected = dot < 1 ? undefined : PICTURE_EXT[name.slice(dot).toLowerCase()];
+  if (!expected || parsed.type !== expected) return json({ error: 'unsupported picture' }, 400);
+  const bytes = decodeBase64(parsed.data);
+  if (!bytes) return json({ error: 'invalid picture' }, 400);
+  if (bytes.byteLength > MAX_AVATAR_BYTES) return json({ error: 'picture too large' }, 413);
+  await env.CAMPAIGNS.put(pictureKvKey(campaign, name), `${parsed.type}\n${parsed.data}`);
+  return json({ ok: true });
+}
+
+async function storePictureIndex(env: EdgeEnv, campaign: string, body: string): Promise<Response> {
+  let parsed: { files?: unknown };
+  try {
+    parsed = JSON.parse(body) as { files?: unknown };
+  } catch {
+    return json({ error: 'invalid json' }, 400);
+  }
+  if (!Array.isArray(parsed.files) || parsed.files.some((name) => typeof name !== 'string' || !pictureNameOk(name))) {
+    return json({ error: 'invalid picture index' }, 400);
+  }
+  const files = parsed.files as string[];
+  const prev = await readPictureIndex(env, campaign);
+  for (const name of prev) {
+    if (!files.includes(name)) await deletePictureKey(env, campaign, name);
+  }
+  await env.CAMPAIGNS.put(pictureIndexKey(campaign), JSON.stringify({ files }));
+  return json({ ok: true });
+}
+
+async function serveStoredPicture(
+  env: EdgeEnv,
+  campaign: string,
+  name: string,
+): Promise<Response | null> {
+  const raw = await env.CAMPAIGNS.get(pictureKvKey(campaign, name));
+  if (!raw) return null;
+  const nl = raw.indexOf('\n');
+  if (nl < 1) return null;
+  const type = raw.slice(0, nl);
+  const data = raw.slice(nl + 1);
+  if (!AVATAR_TYPES.has(type)) return null;
+  const bytes = decodeBase64(data);
+  if (!bytes || bytes.byteLength === 0) return null;
+  return new Response(bytes, {
+    headers: { 'content-type': type, 'cache-control': 'no-store' },
+  });
+}
+
+function pictureNameFromPath(pathname: string): string | null {
+  const m = /^\/api\/picture\/([^/]+)$/.exec(pathname);
+  if (!m?.[1]) return null;
+  let name: string;
+  try {
+    name = decodeURIComponent(m[1]);
+  } catch {
+    return null;
+  }
+  return pictureNameOk(name) ? name : null;
+}
+
+/** Fortune, label, ladder, ruler, and item pictures share one stored basename. */
+function requestedPicture(url: URL): string | 'bad' | null {
+  const item = /^\/api\/character\/[a-z0-9-]{1,64}\/item-icon$/.test(url.pathname);
+  const fortune = url.pathname === '/api/fortune-icon';
+  if (!item && !fortune) return null;
+  const file = url.searchParams.get('file') ?? '';
+  if (!pictureNameOk(file)) return 'bad';
+  return file;
+}
+
 async function storePortraitIndex(env: EdgeEnv, campaign: string, body: string): Promise<Response> {
   let parsed: { slugs?: unknown };
   try {
@@ -419,6 +556,25 @@ export async function handleEdgeRequest(
       return json({ error: 'unauthorized' }, 401);
     }
     return storePortraitIndex(env, campaign, body);
+  }
+
+  const pictureName = pictureNameFromPath(url.pathname);
+  if (pictureName && request.method === 'PUT') {
+    if (!campaign) return json({ error: 'missing campaign' }, 400);
+    const body = await request.text();
+    if (!(await authorize(request, env, campaign, body))) {
+      return json({ error: 'unauthorized' }, 401);
+    }
+    return storePicture(env, campaign, pictureName, body);
+  }
+
+  if (url.pathname === '/api/picture-index' && request.method === 'PUT') {
+    if (!campaign) return json({ error: 'missing campaign' }, 400);
+    const body = await request.text();
+    if (!(await authorize(request, env, campaign, body))) {
+      return json({ error: 'unauthorized' }, 401);
+    }
+    return storePictureIndex(env, campaign, body);
   }
 
   if (url.pathname === '/control/session/start' && request.method === 'POST') {
@@ -623,6 +779,13 @@ export async function handleEdgeRequest(
   }
 
   if (campaign && (request.method === 'GET' || request.method === 'HEAD')) {
+    const picture = requestedPicture(url);
+    if (picture === 'bad') return new Response('Missing file', { status: 400 });
+    if (picture) {
+      const stored = await serveStoredPicture(env, campaign, picture);
+      if (stored) return stored;
+      return new Response('File missing', { status: 404 });
+    }
     const portraitSlug = avatarSlugFromPath(url.pathname);
     if (portraitSlug) {
       const portrait = await serveStoredPortrait(env, campaign, portraitSlug);
@@ -1028,6 +1191,7 @@ export async function gcInactiveCampaigns(
     await env.DEVICE_KEYS.put(id, '');
     if (env.CAMPAIGNS.delete) await env.CAMPAIGNS.delete(kvKey(id, 'snapshot'));
     await deleteStoredPortraits(env, id);
+    await deleteStoredPictures(env, id);
     tombstoned.push(id);
   }
   if (tombstoned.length) {

@@ -7,6 +7,8 @@ import {
   gcInactiveCampaigns,
   handleEdgeRequest,
   kvKey,
+  pictureIndexKey,
+  pictureKvKey,
   shouldStampCampaign,
   type KvLike,
 } from '../src/handler.js';
@@ -1115,8 +1117,158 @@ describe('edge handler', () => {
     );
     await e.CAMPAIGNS.put(avatarKvKey(campaign, 'jakov'), 'image/jpeg\nYQ==');
     await e.CAMPAIGNS.put(avatarIndexKey(campaign), JSON.stringify({ slugs: ['jakov'] }));
+    await e.CAMPAIGNS.put(pictureKvKey(campaign, 'fortune-vitality-a.jpg'), 'image/jpeg\nYQ==');
+    await e.CAMPAIGNS.put(
+      pictureIndexKey(campaign),
+      JSON.stringify({ files: ['fortune-vitality-a.jpg'] }),
+    );
     const { tombstoned } = await gcInactiveCampaigns(e, Date.now() + INACTIVE_MS + 1000);
     expect(tombstoned).toContain(campaign);
     expect(await e.CAMPAIGNS.get(avatarKvKey(campaign, 'jakov'))).toBeNull();
+    expect(await e.CAMPAIGNS.get(pictureKvKey(campaign, 'fortune-vitality-a.jpg'))).toBeNull();
+    expect(await e.CAMPAIGNS.get(pictureIndexKey(campaign))).toBeNull();
+  });
+
+  it('serves a published picture on the fortune and item urls when the hall is dark', async () => {
+    const e = env();
+    const campaign = 'vardmark';
+    const deviceKey = 'q'.repeat(32);
+    await handleEdgeRequest(
+      new Request(`https://face.example/control/register?campaign=${campaign}`, {
+        method: 'POST',
+        body: JSON.stringify({ deviceKey }),
+      }),
+      e,
+    );
+    const jpeg = Buffer.from([0xff, 0xd8, 0xff, 0xd9]);
+    const png = Buffer.from([0x89, 0x50, 0x4e, 0x47]);
+    const keep = JSON.stringify({ type: 'image/jpeg', data: jpeg.toString('base64') });
+    const drop = JSON.stringify({ type: 'image/png', data: png.toString('base64') });
+    const putKeep = await handleEdgeRequest(
+      new Request(`https://face.example/api/picture/fortune-vitality-a.jpg?campaign=${campaign}`, {
+        method: 'PUT',
+        headers: { authorization: `Bearer ${campaign}:${sign(deviceKey, keep)}` },
+        body: keep,
+      }),
+      e,
+    );
+    const putDrop = await handleEdgeRequest(
+      new Request(`https://face.example/api/picture/label-old-a.png?campaign=${campaign}`, {
+        method: 'PUT',
+        headers: { authorization: `Bearer ${campaign}:${sign(deviceKey, drop)}` },
+        body: drop,
+      }),
+      e,
+    );
+    expect(putKeep.status).toBe(200);
+    expect(putDrop.status).toBe(200);
+    const both = JSON.stringify({ files: ['fortune-vitality-a.jpg', 'label-old-a.png'] });
+    const indexed = await handleEdgeRequest(
+      new Request(`https://face.example/api/picture-index?campaign=${campaign}`, {
+        method: 'PUT',
+        headers: { authorization: `Bearer ${campaign}:${sign(deviceKey, both)}` },
+        body: both,
+      }),
+      e,
+    );
+    expect(indexed.status).toBe(200);
+
+    const fortune = await handleEdgeRequest(
+      new Request('https://demo.kodranni.com/api/fortune-icon?file=fortune-vitality-a.jpg'),
+      e,
+    );
+    expect(fortune.status).toBe(200);
+    expect(fortune.headers.get('content-type')).toBe('image/jpeg');
+    expect(fortune.headers.get('cache-control')).toBe('no-store');
+    expect(Buffer.from(await fortune.arrayBuffer())).toEqual(jpeg);
+
+    const item = await handleEdgeRequest(
+      new Request('https://demo.kodranni.com/api/character/jakov/item-icon?file=fortune-vitality-a.jpg'),
+      e,
+    );
+    expect(item.status).toBe(200);
+    expect(Buffer.from(await item.arrayBuffer())).toEqual(jpeg);
+
+    const index = JSON.stringify({ files: ['fortune-vitality-a.jpg'] });
+    const pruned = await handleEdgeRequest(
+      new Request(`https://face.example/api/picture-index?campaign=${campaign}`, {
+        method: 'PUT',
+        headers: { authorization: `Bearer ${campaign}:${sign(deviceKey, index)}` },
+        body: index,
+      }),
+      e,
+    );
+    expect(pruned.status).toBe(200);
+    const gone = await handleEdgeRequest(
+      new Request('https://demo.kodranni.com/api/fortune-icon?file=label-old-a.png'),
+      e,
+    );
+    expect(gone.status).toBe(404);
+    expect(await gone.text()).toBe('File missing');
+    expect(await e.CAMPAIGNS.get(pictureKvKey(campaign, 'label-old-a.png'))).toBeNull();
+    expect(await e.CAMPAIGNS.get(pictureIndexKey(campaign))).toContain('fortune-vitality-a.jpg');
+
+    const slipped = await handleEdgeRequest(
+      new Request('https://demo.kodranni.com/api/fortune-icon?file=../secret.png'),
+      e,
+    );
+    expect(slipped.status).toBe(400);
+
+    const refused = await handleEdgeRequest(
+      new Request(`https://face.example/api/picture/fortune-vitality-a.jpg?campaign=${campaign}`, {
+        method: 'PUT',
+        headers: { authorization: `Bearer ${campaign}:${sign('nope'.repeat(8), keep)}` },
+        body: keep,
+      }),
+      e,
+    );
+    expect(refused.status).toBe(401);
+
+    const weird = JSON.stringify({ type: 'text/plain', data: jpeg.toString('base64') });
+    const badType = await handleEdgeRequest(
+      new Request(`https://face.example/api/picture/fortune-vitality-a.jpg?campaign=${campaign}`, {
+        method: 'PUT',
+        headers: { authorization: `Bearer ${campaign}:${sign(deviceKey, weird)}` },
+        body: weird,
+      }),
+      e,
+    );
+    expect(badType.status).toBe(400);
+  });
+
+  it('proxies a picture to the live hall and keeps a live 404', async () => {
+    const e = env();
+    const campaign = 'vardmark';
+    const jpeg = Buffer.from([0xff, 0xd8, 0xff, 0xd9]);
+    await e.CAMPAIGNS.put(
+      pictureKvKey(campaign, 'fortune-vitality-a.jpg'),
+      `image/jpeg\n${jpeg.toString('base64')}`,
+    );
+    await e.CAMPAIGNS.put(kvKey(campaign, 'origin'), 'https://origin.example');
+    const prev = globalThis.fetch;
+    globalThis.fetch = async () =>
+      new Response('from-live', { status: 200, headers: { 'content-type': 'image/jpeg' } });
+    try {
+      const live = await handleEdgeRequest(
+        new Request('https://demo.kodranni.com/api/fortune-icon?file=fortune-vitality-a.jpg'),
+        e,
+      );
+      expect(live.status).toBe(200);
+      expect(await live.text()).toBe('from-live');
+    } finally {
+      globalThis.fetch = prev;
+    }
+
+    globalThis.fetch = async () => new Response('missing-live', { status: 404 });
+    try {
+      const missing = await handleEdgeRequest(
+        new Request('https://demo.kodranni.com/api/character/jakov/item-icon?file=fortune-vitality-a.jpg'),
+        e,
+      );
+      expect(missing.status).toBe(404);
+      expect(await missing.text()).toBe('missing-live');
+    } finally {
+      globalThis.fetch = prev;
+    }
   });
 });

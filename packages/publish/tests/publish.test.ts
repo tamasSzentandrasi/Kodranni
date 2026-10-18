@@ -3,7 +3,12 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
 import { openSqliteStore, seedDemoCampaign, type PublicSnapshot } from '@kodranni/store';
-import { edgeOriginWouldLoop, portraitFilesFromSnapshot, writeArchiveFiles } from '../src/index.js';
+import {
+  edgeOriginWouldLoop,
+  pictureFilesFromSnapshot,
+  portraitFilesFromSnapshot,
+  writeArchiveFiles,
+} from '../src/index.js';
 
 const dirs: string[] = [];
 afterEach(() => {
@@ -52,6 +57,58 @@ describe('publish archive', () => {
     const files = portraitFilesFromSnapshot(dir, snap);
     expect(files.map((file) => file.slug)).toEqual(['jakov', 'mara']);
     expect(files.map((file) => file.type)).toEqual(['image/jpeg', 'image/png']);
+  });
+
+  it('reads uploaded pictures and skips paths, urls, and missing files', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'kod-pictures-'));
+    dirs.push(dir);
+    writeFileSync(join(dir, 'fortune-vitality-a.jpg'), Buffer.from([0xff, 0xd8, 0xff]));
+    writeFileSync(join(dir, 'axis-arms-a.png'), Buffer.from([0x89, 0x50]));
+    writeFileSync(join(dir, 'ruler-a.webp'), Buffer.from('RIFF'));
+    writeFileSync(join(dir, 'label-arms-a.gif'), Buffer.from('GIF8'));
+    writeFileSync(join(dir, 'jakov-0-abc.jpg'), Buffer.from([0xff, 0xd8]));
+    writeFileSync(join(dir, 'empty.jpg'), Buffer.alloc(0));
+    const snap = {
+      community: {
+        fortuneLook: { vitality: { icon: 'fortune-vitality-a.jpg' }, cohesion: { icon: 'empty.jpg' } },
+        axisLook: { Arms: { icon: 'axis-arms-a.png' } },
+        rulerLook: { icon: 'ruler-a.webp' },
+        labels: [
+          { id: 'f1', groupId: 'factions', name: 'Arms', icon: 'label-arms-a.gif' },
+          { id: 't1', groupId: 'tags', name: 'Night', icon: '/skip.png' },
+        ],
+      },
+      characters: [
+        {
+          slug: 'jakov',
+          inventory: {
+            items: [
+              { name: 'Sword', icon: '/demo-items/sword.png' },
+              { name: 'Note', icon: 'https://example.test/note.png' },
+              { name: 'Cup', icon: 'jakov-0-abc.jpg' },
+              { name: 'Same', icon: 'fortune-vitality-a.jpg' },
+              { name: 'Gone', icon: 'missing.png' },
+              { name: 'Slip', icon: '../x.png' },
+            ],
+          },
+        },
+      ],
+    } as PublicSnapshot;
+    const files = pictureFilesFromSnapshot(dir, snap);
+    expect(files.map((file) => file.name)).toEqual([
+      'fortune-vitality-a.jpg',
+      'axis-arms-a.png',
+      'ruler-a.webp',
+      'label-arms-a.gif',
+      'jakov-0-abc.jpg',
+    ]);
+    expect(files.map((file) => file.type)).toEqual([
+      'image/jpeg',
+      'image/png',
+      'image/webp',
+      'image/gif',
+      'image/jpeg',
+    ]);
   });
 
   it('detects an origin that would loop the public hostname', () => {

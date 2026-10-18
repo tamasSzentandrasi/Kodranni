@@ -1,12 +1,15 @@
 import {
+  pictureFilesFromSnapshot,
   portraitFilesFromSnapshot,
   putAvatarsToEdge,
+  putPicturesToEdge,
   putSnapshotToEdge,
   registerEdgeCampaign,
   setEdgeOrigin,
 } from '@kodranni/publish';
 import {
   campaignAvatarsDir,
+  campaignItemsDir,
   ensureEdgeDeviceKey,
   openSqliteStore,
   type CampaignConfig,
@@ -49,6 +52,13 @@ export async function publishSnapshotToEdge(slug: string, cfg: CampaignConfig): 
       console.log(`  edge: ${files.length} portraits`);
     } catch (e) {
       console.error(`  edge: portraits ${e instanceof Error ? e.message : e}`);
+    }
+    try {
+      const pictures = pictureFilesFromSnapshot(campaignItemsDir(slug), snap);
+      await putPicturesToEdge({ edgeUrl, campaignId: slug, deviceKey: key, files: pictures });
+      console.log(`  edge: ${pictures.length} pictures`);
+    } catch (e) {
+      console.error(`  edge: pictures ${e instanceof Error ? e.message : e}`);
     }
   } finally {
     store.close();

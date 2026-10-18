@@ -4,7 +4,7 @@
  */
 import { createHmac, randomBytes } from 'node:crypto';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
-import { extname, join } from 'node:path';
+import { basename, extname, join } from 'node:path';
 import {
   assertPublicSnapshot,
   campaignArchiveDir,
@@ -417,6 +417,92 @@ export async function putAvatarsToEdge(opts: {
     path: '/api/avatar-index',
     body: JSON.stringify({ slugs: opts.files.map((file) => file.slug) }),
     label: 'edge portrait index PUT',
+  });
+}
+
+export interface PictureFile {
+  name: string;
+  type: string;
+  bytes: Buffer;
+}
+
+const PICTURE_NAME = /^[A-Za-z0-9][A-Za-z0-9._-]{0,160}$/;
+
+/** A basename the public hall can publish. Paths and web URLs stay as written. */
+export function publishablePictureName(raw: string | undefined): string | null {
+  if (!raw) return null;
+  if (raw.startsWith('/') || raw.startsWith('http') || raw.includes('://')) return null;
+  if (raw.includes('..') || raw.includes('/') || raw.includes('\\') || raw !== basename(raw)) return null;
+  if (!PICTURE_NAME.test(raw)) return null;
+  const type = PORTRAIT_TYPES[extname(raw).toLowerCase()];
+  if (!type) return null;
+  return raw;
+}
+
+function rememberPicture(
+  out: PictureFile[],
+  seen: Set<string>,
+  itemsDir: string,
+  raw: string | undefined,
+): void {
+  const name = publishablePictureName(raw);
+  if (!name || seen.has(name)) return;
+  const full = join(itemsDir, name);
+  if (!existsSync(full)) return;
+  const bytes = readFileSync(full);
+  if (bytes.byteLength === 0 || bytes.byteLength > PORTRAIT_BYTES) return;
+  const type = PORTRAIT_TYPES[extname(name).toLowerCase()];
+  if (!type) return;
+  seen.add(name);
+  out.push({ name, type, bytes });
+}
+
+/** Basenames named on the snapshot that exist under the campaign items directory. */
+export function pictureFilesFromSnapshot(itemsDir: string, snap: PublicSnapshot): PictureFile[] {
+  const out: PictureFile[] = [];
+  const seen = new Set<string>();
+  const community = snap.community;
+  for (const look of Object.values(community?.fortuneLook ?? {})) {
+    rememberPicture(out, seen, itemsDir, look?.icon);
+  }
+  for (const look of Object.values(community?.axisLook ?? {})) {
+    rememberPicture(out, seen, itemsDir, look?.icon);
+  }
+  rememberPicture(out, seen, itemsDir, community?.rulerLook?.icon);
+  for (const label of community?.labels ?? []) {
+    rememberPicture(out, seen, itemsDir, label.icon);
+  }
+  for (const ch of snap.characters ?? []) {
+    for (const item of ch.inventory?.items ?? []) {
+      rememberPicture(out, seen, itemsDir, item.icon);
+    }
+  }
+  return out;
+}
+
+export async function putPicturesToEdge(opts: {
+  edgeUrl: string;
+  campaignId: string;
+  deviceKey: string;
+  files: PictureFile[];
+}): Promise<void> {
+  for (const file of opts.files) {
+    await putSignedEdge({
+      edgeUrl: opts.edgeUrl,
+      campaignId: opts.campaignId,
+      deviceKey: opts.deviceKey,
+      path: `/api/picture/${encodeURIComponent(file.name)}`,
+      body: JSON.stringify({ type: file.type, data: file.bytes.toString('base64') }),
+      label: 'edge picture PUT',
+    });
+  }
+  await putSignedEdge({
+    edgeUrl: opts.edgeUrl,
+    campaignId: opts.campaignId,
+    deviceKey: opts.deviceKey,
+    path: '/api/picture-index',
+    body: JSON.stringify({ files: opts.files.map((file) => file.name) }),
+    label: 'edge picture index PUT',
   });
 }
 
