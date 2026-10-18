@@ -11,6 +11,7 @@ import {
 import { sessionReading, storytellerDie } from '@kodranni/hall-render';
 import { defaultCampaignTomlPath, emptyTableState, openSqliteStore, seedDemoCampaign } from '@kodranni/store';
 import { POST as discordPost } from '../src/pages/api/desk/discord';
+import { POST as fluxerPost } from '../src/pages/api/desk/fluxer';
 import { GET as tableGet, POST as tablePost } from '../src/pages/api/desk/table';
 import { GET as sessionGet } from '../src/pages/api/session';
 import { GET as omensGet } from '../src/pages/session/omens.png';
@@ -23,6 +24,9 @@ const prevHome = process.env.KODRANNI_HOME;
 const prevGuild = process.env.DISCORD_GUILD_ID;
 const prevChannel = process.env.DISCORD_PLAY_CHANNEL_ID;
 const prevRole = process.env.DISCORD_STORYTELLER_ROLE_ID;
+const prevFluxGuild = process.env.FLUXER_GUILD_ID;
+const prevFluxChannel = process.env.FLUXER_PLAY_CHANNEL_ID;
+const prevFluxRole = process.env.FLUXER_STORYTELLER_ROLE_ID;
 
 afterEach(() => {
   for (const d of dirs.splice(0)) rmSync(d, { recursive: true, force: true });
@@ -38,6 +42,12 @@ afterEach(() => {
   else process.env.DISCORD_PLAY_CHANNEL_ID = prevChannel;
   if (prevRole === undefined) delete process.env.DISCORD_STORYTELLER_ROLE_ID;
   else process.env.DISCORD_STORYTELLER_ROLE_ID = prevRole;
+  if (prevFluxGuild === undefined) delete process.env.FLUXER_GUILD_ID;
+  else process.env.FLUXER_GUILD_ID = prevFluxGuild;
+  if (prevFluxChannel === undefined) delete process.env.FLUXER_PLAY_CHANNEL_ID;
+  else process.env.FLUXER_PLAY_CHANNEL_ID = prevFluxChannel;
+  if (prevFluxRole === undefined) delete process.env.FLUXER_STORYTELLER_ROLE_ID;
+  else process.env.FLUXER_STORYTELLER_ROLE_ID = prevFluxRole;
 });
 
 function liveStore() {
@@ -93,6 +103,7 @@ describe('session page', () => {
       groups: [],
       tide: null,
       discord: { guildId: '', channelId: '', roleId: '' },
+      fluxer: { guildId: '100000000000000044', channelId: '', roleId: '' },
       bound: [{ name: 'Tomaso Fero', displayName: 'Mara' }],
     });
     expect(desk).toContain('data-omen-edit');
@@ -129,11 +140,15 @@ describe('session page', () => {
     expect(desk).toContain('Short rest');
     expect(desk).toContain('class="kod-tide"');
     expect(desk).toContain('Table chat');
+    expect(desk).toContain('data-session-fluxer');
+    expect(desk).toContain('>Fluxer<');
+    expect(desk).toContain('data-fluxer-guild');
+    expect(desk).toContain('value="100000000000000044"');
+    expect(desk).toContain('aria-label="Fluxer guild"');
     expect(desk).toContain('Tomaso Fero — Mara');
     expect(desk).not.toContain('Add a face');
     expect(desk).not.toContain('Save scene');
     expect(desk).not.toContain('Save Discord');
-    expect(desk).not.toContain('Fluxer');
     expect(desk).not.toContain('adapter pending');
     expect(desk).not.toContain('>Deny<');
 
@@ -485,6 +500,7 @@ describe('POST /api/desk/table', () => {
       characters: store.listCharacters(),
       events: store.listEvents('CharacterReturnedToTable'),
       discord: { guildId: '', channelId: '', roleId: '' },
+      fluxer: { guildId: '', channelId: '', roleId: '' },
     });
     store.close();
     expect(assembled.desk?.pending.map((row) => row.name)).toEqual(['Zara Quinn', 'Ada Quinn']);
@@ -522,6 +538,41 @@ describe('POST /api/desk/discord', () => {
     expect(text).toContain(`discord_guild_id = "${guildId}"`);
     expect(text).toContain(`discord_play_channel_id = "${channelId}"`);
     expect(text).toContain(`discord_storyteller_role_id = "${roleId}"`);
+  });
+});
+
+describe('POST /api/desk/fluxer', () => {
+  it('rejects a non-snowflake and writes the three ids into campaign.toml', async () => {
+    const home = mkdtempSync(join(tmpdir(), 'kod-session-home-'));
+    dirs.push(home);
+    process.env.KODRANNI_HOME = home;
+    process.env.KODRANNI_CAMPAIGN_SLUG = 'session-fluxer-test';
+    const toml = defaultCampaignTomlPath('session-fluxer-test');
+    mkdirSync(dirname(toml), { recursive: true });
+    writeFileSync(toml, 'slug = "session-fluxer-test"\nname = "Bind"\n', 'utf8');
+
+    const bad = await fluxerPost({
+      request: deskRequest('http://127.0.0.1:8742/api/desk/fluxer', {
+        guildId: 'hall',
+        channelId: '100000000000000001',
+        roleId: '100000000000000002',
+      }),
+    });
+    expect(bad.status).toBe(400);
+
+    const guildId = '100000000000000111';
+    const channelId = '100000000000000222';
+    const roleId = '100000000000000333';
+    const ok = await fluxerPost({
+      request: deskRequest('http://127.0.0.1:8742/api/desk/fluxer', { guildId, channelId, roleId }),
+    });
+    expect(ok.status).toBe(200);
+    const text = readFileSync(toml, 'utf8');
+    expect(text).toContain(`fluxer_guild_id = "${guildId}"`);
+    expect(text).toContain(`fluxer_play_channel_id = "${channelId}"`);
+    expect(text).toContain(`fluxer_storyteller_role_id = "${roleId}"`);
+    expect(text).not.toContain('botToken');
+    expect(text).not.toContain('FLUXER_BOT_TOKEN');
   });
 });
 

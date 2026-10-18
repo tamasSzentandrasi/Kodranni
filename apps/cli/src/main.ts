@@ -10,6 +10,7 @@ import {
   defaultCampaignTomlPath,
   destroyCampaignDir,
   applyCampaignDiscordEnv,
+  applyCampaignFluxerEnv,
   applyMachineDefaults,
   applyPublicSnapshot,
   campaignPublicUrl,
@@ -86,6 +87,7 @@ async function loadConfig(slug: string): Promise<CampaignConfig> {
   loadSecretsIntoEnv();
   const cfg = applyMachineDefaults(await readCampaignConfig(defaultCampaignTomlPath(slug)));
   applyCampaignDiscordEnv(cfg);
+  applyCampaignFluxerEnv(cfg);
   return cfg;
 }
 

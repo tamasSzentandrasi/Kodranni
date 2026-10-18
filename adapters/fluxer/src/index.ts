@@ -6,28 +6,101 @@ import {
   type ChatMessageRef,
 } from '@kodranni/chat-port';
 
+export { FLUXER_PREFIX_COMMANDS, parsePrefixCommand } from './prefix.js';
+export type { FluxerPrefixCommand } from './prefix.js';
+
+const FLUXER_API = 'https://web.fluxer.app/api/v1';
+
 /**
- * Fluxer adapter — equal peer to Discord (Discord-shaped API).
- * Skeleton until bot-runtime session start; same ChatPort + shared cards.
+ * Fluxer ChatPort. The card on the wire is the Discord embed.
+ * One reaction stands in for each enabled button. start and stop do not open a gateway.
  */
-export function createFluxerAdapter(_opts: {
+export function createFluxerAdapter(opts: {
   token: string;
   guildId: string;
   apiBase?: string;
+  fetch?: typeof fetch;
 }): ChatPort {
+  const token = opts.token.trim();
+  const base = (opts.apiBase ?? FLUXER_API).replace(/\/$/, '');
+  const fetchImpl = opts.fetch ?? fetch;
+  const call = (method: string, path: string, body?: unknown) =>
+    fluxerCall(fetchImpl, token, method, `${base}${path}`, body);
+
   return {
     platform: 'fluxer',
-    async start() {
-      // TODO: Fluxer gateway / HTTP (wire-compat path)
-    },
+    async start() {},
     async stop() {},
-    async sendCard(_channelId: string, _card: ChatCard): Promise<ChatMessageRef> {
-      throw new Error('Fluxer adapter not connected — session runtime pending');
+    async sendCard(channelId: string, card: ChatCard): Promise<ChatMessageRef> {
+      const mapped = mapCardToFluxerPayload(card);
+      const posted = await call('POST', `/channels/${encodeURIComponent(channelId)}/messages`, wireMessage(mapped));
+      const messageId = messageIdFrom(posted);
+      if (!messageId) throw new Error('fluxer post returned no message');
+      await putReactions(call, channelId, messageId, mapped.reactions ?? []);
+      return { platform: 'fluxer', channelId, messageId };
     },
-    async editCard() {},
+    async editCard(ref: ChatMessageRef, card: ChatCard) {
+      const mapped = mapCardToFluxerPayload(card);
+      const channel = encodeURIComponent(ref.channelId);
+      const message = encodeURIComponent(ref.messageId);
+      await call('PATCH', `/channels/${channel}/messages/${message}`, wireMessage(mapped));
+      await call('DELETE', `/channels/${channel}/messages/${message}/reactions`);
+      await putReactions(call, ref.channelId, ref.messageId, mapped.reactions ?? []);
+    },
     async replyEphemeral() {},
     onInteraction(_h: (i: ChatInteraction) => Promise<void>) {},
   };
+}
+
+function wireMessage(mapped: { content?: string; embeds: unknown[] }): {
+  content?: string;
+  embeds: unknown[];
+} {
+  return mapped.content ? { content: mapped.content, embeds: mapped.embeds } : { embeds: mapped.embeds };
+}
+
+async function putReactions(
+  call: (method: string, path: string) => Promise<string>,
+  channelId: string,
+  messageId: string,
+  reactions: { emoji: string }[],
+): Promise<void> {
+  const channel = encodeURIComponent(channelId);
+  const message = encodeURIComponent(messageId);
+  for (const reaction of reactions) {
+    const emoji = encodeURIComponent(reaction.emoji);
+    await call('PUT', `/channels/${channel}/messages/${message}/reactions/${emoji}/@me`);
+  }
+}
+
+async function fluxerCall(
+  fetchImpl: typeof fetch,
+  token: string,
+  method: string,
+  url: string,
+  body?: unknown,
+): Promise<string> {
+  if (!token) throw new Error('fluxer token is missing');
+  const res = await fetchImpl(url, {
+    method,
+    headers: {
+      Authorization: `Bot ${token}`,
+      ...(body === undefined ? {} : { 'content-type': 'application/json' }),
+    },
+    body: body === undefined ? undefined : JSON.stringify(body),
+  });
+  const text = await res.text();
+  if (!res.ok) throw new Error(`fluxer ${method.toLowerCase()} failed (${res.status})`);
+  return text;
+}
+
+function messageIdFrom(text: string): string {
+  try {
+    const parsed = JSON.parse(text) as { id?: unknown };
+    return typeof parsed.id === 'string' ? parsed.id : '';
+  } catch {
+    return '';
+  }
 }
 
 const REACTION_EMOJI: readonly [string, string][] = [

@@ -17,7 +17,7 @@ Hungarian word lock: [hungarian-lexicon.md](./hungarian-lexicon.md). Character-m
 | **Guidebook** (`kodranni.com`) | Rules. One public book. |
 | **Campaign UI** | The hall, the hierarchy, the character map, and the sheets. Players see this on the campaign hostname. On the machine that holds the store, the same pages are the **Storyteller Desk**. |
 | **Discord** | Hands at the table: dice, Words, the Tide card, the scene board the players read. The roll card is [chat.md](./chat.md). |
-| **Fluxer** | The same card and the same choices. The adapter is unwired. Reactions stand in for buttons until Fluxer ships components. |
+| **Fluxer** | The same card and the same choices. The Session tab saves the server, the play channel, and the Storyteller role. A reaction stands in for each button until Fluxer ships components. |
 
 One process holds SQLite, the campaign UI, and the Discord handler. The desk is those pages with tools, on loopback. It is not a second app. The Session tab is where the Storyteller opens the night and where players read the scene and the Tide.
 
@@ -72,7 +72,7 @@ One process holds SQLite, the campaign UI, and the Discord handler. The desk is 
 
 ## Already built, still behind this table
 
-Aspalath’s hall, hierarchy, character map, and sheets are the visual reference. Creation on the sheet is the older dock. The source command list uses `/select` and `/npc-roll`; `/focus`, `/st-roll`, `/reclaim`, `/map`, and `/live` are out of that list. The Discord application still has the last guild registration. Actions has no bot token, so the edge step skips. Discord bind is on the Session tab. Players use `https://<slug>.kodranni.com/`. `?campaign=` still works on `kodranni.com`. `demo.kodranni.com` stays the Aspalath showcase. Fluxer throws. The host walkthrough has never been signed.
+Aspalath’s hall, hierarchy, character map, and sheets are the visual reference. Creation on the sheet is the older dock. The source command list uses `/select` and `/npc-roll`; `/focus`, `/st-roll`, `/reclaim`, `/map`, and `/live` are out of that list. The Discord application still has the last guild registration. Actions has no bot token, so the edge step skips. Discord bind is on the Session tab. Players use `https://<slug>.kodranni.com/`. `?campaign=` still works on `kodranni.com`. `demo.kodranni.com` stays the Aspalath showcase. Fluxer uses that same Session tab plate, and a card is the embed plus one reaction. The host walkthrough has never been signed.
 
 The Automation chapter now follows this table, in English and Hungarian. The gap between the table and the code is listed in [status.md](./status.md). The desk shell is the hall on loopback. Later steps stay unbuilt until asked.
 
@@ -82,4 +82,4 @@ The Automation chapter now follows this table, in English and Hungarian. The gap
 
 Kept in chat: `/create`, `/claim`, `/select`, `/roll`, `/intent`, `/npc-roll`, `/birth-omen`, `/guiding-hand`, `/award-word`, `/review`.
 
-Leave: `/focus` (renamed `/select`), `/st-roll` (becomes `/npc-roll`), `/map`, `/reclaim`, `/live`. Scene Add on a Discord card does not ship. Discord and Fluxer share this list. The Fluxer adapter is still unwired; it is brought up with the Discord command work, not after the rest of the desk.
+Leave: `/focus` (renamed `/select`), `/st-roll` (becomes `/npc-roll`), `/map`, `/reclaim`, `/live`. Scene Add on a Discord card does not ship. Discord and Fluxer share this list. On Fluxer the words follow `!`. The gateway stays stopped.

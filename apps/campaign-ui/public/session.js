@@ -1028,6 +1028,23 @@
           if (field instanceof HTMLInputElement) field.defaultValue = field.value.trim();
         });
       });
+      return;
+    }
+    if (t.hasAttribute('data-fluxer-guild') || t.hasAttribute('data-fluxer-channel') || t.hasAttribute('data-fluxer-role')) {
+      if (!(t instanceof HTMLInputElement) || t.value.trim() === t.defaultValue.trim()) return;
+      var fluxGuild = document.querySelector('[data-fluxer-guild]');
+      var fluxChannel = document.querySelector('[data-fluxer-channel]');
+      var fluxRole = document.querySelector('[data-fluxer-role]');
+      post('/api/desk/fluxer', {
+        guildId: fluxGuild instanceof HTMLInputElement ? fluxGuild.value.trim() : '',
+        channelId: fluxChannel instanceof HTMLInputElement ? fluxChannel.value.trim() : '',
+        roleId: fluxRole instanceof HTMLInputElement ? fluxRole.value.trim() : '',
+      }).then(function (data) {
+        if (!data) return;
+        [fluxGuild, fluxChannel, fluxRole].forEach(function (field) {
+          if (field instanceof HTMLInputElement) field.defaultValue = field.value.trim();
+        });
+      });
     }
   });
 

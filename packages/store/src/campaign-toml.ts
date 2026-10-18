@@ -55,7 +55,11 @@ export interface CampaignConfig {
    * Snowflakes as strings.
    */
   discordStorytellerRoleId?: string;
-  /** Fluxer server role ID for Storytellers (when Fluxer adapter is live). */
+  /** Bound Fluxer server. Not a secret. */
+  fluxerGuildId?: string;
+  /** Play channel for the Fluxer session card. */
+  fluxerPlayChannelId?: string;
+  /** Fluxer server role ID for Storytellers. Snowflakes as strings. */
   fluxerStorytellerRoleId?: string;
 }
 
@@ -125,6 +129,15 @@ export function serializeCampaignToml(cfg: CampaignConfig): string {
   if (cfg.discordStorytellerRoleId) {
     lines.push(`discord_storyteller_role_id = ${tomlString(cfg.discordStorytellerRoleId)}`);
   }
+  if (cfg.fluxerGuildId || cfg.fluxerPlayChannelId || cfg.fluxerStorytellerRoleId) {
+    lines.push('', '# Fluxer bind (desk picker — not the token)');
+  }
+  if (cfg.fluxerGuildId) {
+    lines.push(`fluxer_guild_id = ${tomlString(cfg.fluxerGuildId)}`);
+  }
+  if (cfg.fluxerPlayChannelId) {
+    lines.push(`fluxer_play_channel_id = ${tomlString(cfg.fluxerPlayChannelId)}`);
+  }
   if (cfg.fluxerStorytellerRoleId) {
     lines.push(`fluxer_storyteller_role_id = ${tomlString(cfg.fluxerStorytellerRoleId)}`);
   }
@@ -192,6 +205,10 @@ export function parseCampaignToml(text: string): CampaignConfig {
       : undefined,
     discordStorytellerRoleId: map.has('discord_storyteller_role_id')
       ? unquote(map.get('discord_storyteller_role_id')!)
+      : undefined,
+    fluxerGuildId: map.has('fluxer_guild_id') ? unquote(map.get('fluxer_guild_id')!) : undefined,
+    fluxerPlayChannelId: map.has('fluxer_play_channel_id')
+      ? unquote(map.get('fluxer_play_channel_id')!)
       : undefined,
     fluxerStorytellerRoleId: map.has('fluxer_storyteller_role_id')
       ? unquote(map.get('fluxer_storyteller_role_id')!)
@@ -282,6 +299,8 @@ export function applyMachineDefaults(
     env.KODRANNI_TUNNEL_HOSTNAME?.trim() ||
     env.KODRANNI_CF_TUNNEL_HOSTNAME?.trim();
   const stRole = env.DISCORD_STORYTELLER_ROLE_ID?.trim();
+  const fluxerGuild = env.FLUXER_GUILD_ID?.trim();
+  const fluxerPlay = env.FLUXER_PLAY_CHANNEL_ID?.trim();
   const fluxerStRole = env.FLUXER_STORYTELLER_ROLE_ID?.trim();
 
   const hasNamedCreds = Boolean(
@@ -319,6 +338,8 @@ export function applyMachineDefaults(
 
   if (stRole) out.discordStorytellerRoleId = stRole;
   if (fluxerStRole) out.fluxerStorytellerRoleId = fluxerStRole;
+  if (fluxerGuild) out.fluxerGuildId = fluxerGuild;
+  if (fluxerPlay) out.fluxerPlayChannelId = fluxerPlay;
   const guild = env.DISCORD_GUILD_ID?.trim();
   const play = env.DISCORD_PLAY_CHANNEL_ID?.trim();
   if (guild) out.discordGuildId = guild;
@@ -328,7 +349,7 @@ export function applyMachineDefaults(
   if (out.discordGuildId || env.DISCORD_GUILD_ID?.trim()) {
     platforms.add('discord');
   }
-  if (env.FLUXER_BOT_TOKEN?.trim() && env.FLUXER_GUILD_ID?.trim()) {
+  if (env.FLUXER_BOT_TOKEN?.trim() && (out.fluxerGuildId || env.FLUXER_GUILD_ID?.trim())) {
     platforms.add('fluxer');
   }
   out.platforms = [...platforms];
@@ -349,6 +370,22 @@ export function applyCampaignDiscordEnv(
   }
   if (!env.DISCORD_STORYTELLER_ROLE_ID?.trim() && cfg.discordStorytellerRoleId) {
     env.DISCORD_STORYTELLER_ROLE_ID = cfg.discordStorytellerRoleId;
+  }
+}
+
+/** Desk writes toml. Fill Fluxer env from toml when unset. The token stays in the secret store. */
+export function applyCampaignFluxerEnv(
+  cfg: CampaignConfig,
+  env: NodeJS.ProcessEnv = process.env,
+): void {
+  if (!env.FLUXER_GUILD_ID?.trim() && cfg.fluxerGuildId) {
+    env.FLUXER_GUILD_ID = cfg.fluxerGuildId;
+  }
+  if (!env.FLUXER_PLAY_CHANNEL_ID?.trim() && cfg.fluxerPlayChannelId) {
+    env.FLUXER_PLAY_CHANNEL_ID = cfg.fluxerPlayChannelId;
+  }
+  if (!env.FLUXER_STORYTELLER_ROLE_ID?.trim() && cfg.fluxerStorytellerRoleId) {
+    env.FLUXER_STORYTELLER_ROLE_ID = cfg.fluxerStorytellerRoleId;
   }
 }
 

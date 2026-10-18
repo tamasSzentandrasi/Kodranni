@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { createFluxerAdapter, mapCardToFluxerPayload, resolveFluxerReaction } from '../src/index.js';
+import { mapCardToFluxerPayload, resolveFluxerReaction } from '../src/index.js';
 
 describe('mapCardToFluxerPayload', () => {
   it('uses the same die accent and thumbnail as Discord', () => {
@@ -63,10 +63,4 @@ describe('mapCardToFluxerPayload', () => {
     expect(roll.reactions).toEqual([{ emoji: '🎲', id: 'tide-roll' }]);
   });
 
-  it('still refuses to send', async () => {
-    const port = createFluxerAdapter({ token: 't', guildId: 'g' });
-    await expect(port.sendCard('c', { title: 'x' })).rejects.toThrow(
-      'Fluxer adapter not connected — session runtime pending',
-    );
-  });
 });

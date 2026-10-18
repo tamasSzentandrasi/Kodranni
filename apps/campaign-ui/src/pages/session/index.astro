@@ -21,6 +21,7 @@ import {
   sessionPageHtml,
   type SessionDeskModel,
   type SessionDiscordFields,
+  type SessionFluxerFields,
 } from '../../lib/session-desk';
 
 const c = loadCommunity();
@@ -34,6 +35,7 @@ let reading = sessionReading(emptyTableState());
 let deskModel: SessionDeskModel | null = null;
 if (!between) {
   const discord: SessionDiscordFields = { guildId: '', channelId: '', roleId: '' };
+  const fluxer: SessionFluxerFields = { guildId: '', channelId: '', roleId: '' };
   const slug = resolveCampaignSlug();
   if (desk && slug) {
     try {
@@ -41,6 +43,9 @@ if (!between) {
       discord.guildId = cfg.discordGuildId ?? '';
       discord.channelId = cfg.discordPlayChannelId ?? '';
       discord.roleId = cfg.discordStorytellerRoleId ?? '';
+      fluxer.guildId = cfg.fluxerGuildId ?? '';
+      fluxer.channelId = cfg.fluxerPlayChannelId ?? '';
+      fluxer.roleId = cfg.fluxerStorytellerRoleId ?? '';
     } catch {
       /* The table is not bound yet. */
     }
@@ -55,6 +60,7 @@ if (!between) {
         characters: store.listCharacters(),
         events: store.listEvents('CharacterReturnedToTable'),
         discord,
+        fluxer,
       });
       reading = assembled.reading;
       deskModel = assembled.desk;
@@ -68,6 +74,7 @@ if (!between) {
       characters: [],
       events: [],
       discord,
+      fluxer,
     }).desk;
   }
 }
@@ -93,5 +100,5 @@ if (!between && isLocalDeskRequest(Astro.request)) {
 >
   {nightNote && <p class="session-night" data-session-night>{nightNote}</p>}
   <Fragment set:html={body} />
-  {!between && <script src="/session.js?v=20261017d" defer></script>}
+  {!between && <script src="/session.js?v=20261018a" defer></script>}
 </CampaignLayout>

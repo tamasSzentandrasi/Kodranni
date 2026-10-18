@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   applyCampaignDiscordEnv,
+  applyCampaignFluxerEnv,
   applyMachineDefaults,
   parseCampaignToml,
   PRODUCT_EDGE_CONTROL_URL,
@@ -126,6 +127,26 @@ describe('applyMachineDefaults', () => {
       env,
     );
     expect(env.DISCORD_GUILD_ID).toBe('g1');
+  });
+
+  it('round-trips the Fluxer plate and fills env from toml without the token', () => {
+    const text = serializeCampaignToml({
+      ...base,
+      fluxerGuildId: '111',
+      fluxerPlayChannelId: '222',
+      fluxerStorytellerRoleId: '333',
+    });
+    const cfg = parseCampaignToml(text);
+    expect(cfg.fluxerGuildId).toBe('111');
+    expect(cfg.fluxerPlayChannelId).toBe('222');
+    expect(cfg.fluxerStorytellerRoleId).toBe('333');
+    expect(text).not.toContain('botToken');
+    expect(text).not.toContain('FLUXER_BOT_TOKEN');
+    const env: NodeJS.ProcessEnv = { FLUXER_GUILD_ID: 'kept' };
+    applyCampaignFluxerEnv(cfg, env);
+    expect(env.FLUXER_GUILD_ID).toBe('kept');
+    expect(env.FLUXER_PLAY_CHANNEL_ID).toBe('222');
+    expect(env.FLUXER_STORYTELLER_ROLE_ID).toBe('333');
   });
 
   it('clears named tunnel leftover when secrets and named tunnel fields are gone', () => {

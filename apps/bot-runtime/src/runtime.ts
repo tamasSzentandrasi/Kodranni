@@ -6,6 +6,7 @@ import { dirname } from 'node:path';
 import { createDiscordAdapter, createDiscordHttpAdapter } from '@kodranni/adapter-discord';
 import {
   DEMO_SLUG,
+  applyCampaignFluxerEnv,
   defaultCampaignTomlPath,
   ensureCampaignRuntime,
   ensureEdgeDeviceKey,
@@ -50,15 +51,8 @@ export function resolveBotMode(env: NodeJS.ProcessEnv = process.env): BotMode {
 export async function startBotRuntime(opts?: { mode?: BotMode }): Promise<BotHandle> {
   const loaded = loadSecretsIntoEnv();
   const slug = process.env.KODRANNI_CAMPAIGN_SLUG ?? DEMO_SLUG;
-  const creds = platformCredentialStatus();
   const mode = opts?.mode ?? resolveBotMode();
   const token = process.env.DISCORD_BOT_TOKEN;
-  const guildId = process.env.DISCORD_GUILD_ID;
-  if (mode === 'gateway' && (!token || !guildId)) {
-    throw new Error(
-      `bot-runtime gateway requires Discord token + guild (files under ${loaded.dir}: discord-botToken, discord-serverID)`,
-    );
-  }
 
   let storePath = process.env.KODRANNI_STORE_PATH;
   let liveBase =
@@ -71,6 +65,7 @@ export async function startBotRuntime(opts?: { mode?: BotMode }): Promise<BotHan
 
   try {
     const cfg = await readCampaignConfig(defaultCampaignTomlPath(slug));
+    applyCampaignFluxerEnv(cfg);
     storePath = storePath ?? cfg.storePath;
     publicUrl = publicUrl ?? cfg.edgeUrl ?? cfg.publicBaseUrl;
     discordStorytellerRoleId =
@@ -83,6 +78,14 @@ export async function startBotRuntime(opts?: { mode?: BotMode }): Promise<BotHan
     }
   } catch {
     /* use env only */
+  }
+
+  const creds = platformCredentialStatus();
+  const guildId = process.env.DISCORD_GUILD_ID;
+  if (mode === 'gateway' && (!token || !guildId)) {
+    throw new Error(
+      `bot-runtime gateway requires Discord token + guild (files under ${loaded.dir}: discord-botToken, discord-serverID)`,
+    );
   }
 
   if (!storePath) {
@@ -137,7 +140,7 @@ export async function startBotRuntime(opts?: { mode?: BotMode }): Promise<BotHan
     ctx.log(`tightened mode on: ${loaded.loosened.join(', ')}`);
   }
   if (creds.fluxer.ready) {
-    ctx.log('fluxer credentials loaded — adapter not connected yet (no gateway)');
+    ctx.log('fluxer credentials loaded — cards go out over HTTP; the gateway stays stopped');
   }
   await port.start();
   ctx.log(`discord ready · url=${shareUrl}`);

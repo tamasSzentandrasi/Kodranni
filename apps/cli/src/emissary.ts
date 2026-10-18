@@ -1,6 +1,7 @@
 import { existsSync } from 'node:fs';
 import {
   applyCampaignDiscordEnv,
+  applyCampaignFluxerEnv,
   applyMachineDefaults,
   defaultCampaignTomlPath,
   defaultStorePath,
@@ -62,6 +63,7 @@ export async function runEmissary(opts: {
   }
 
   applyCampaignDiscordEnv(cfg);
+  applyCampaignFluxerEnv(cfg);
   const creds = platformCredentialStatus();
   checks.push(
     check(
@@ -78,7 +80,7 @@ export async function runEmissary(opts: {
       'fluxer',
       !fluxerPartial,
       creds.fluxer.ready
-        ? `token+guild${creds.fluxer.playChannel ? '+play-channel' : ''} · adapter pending`
+        ? `token+guild${creds.fluxer.playChannel ? '+play-channel' : ''} · HTTP cards`
         : fluxerPartial
           ? 'partial — need both fluxer-botToken and fluxer-serverID'
           : 'none (optional)',

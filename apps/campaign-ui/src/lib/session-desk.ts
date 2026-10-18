@@ -19,6 +19,12 @@ export interface SessionDiscordFields {
   roleId: string;
 }
 
+export interface SessionFluxerFields {
+  guildId: string;
+  channelId: string;
+  roleId: string;
+}
+
 export interface SessionRestPerson {
   slug: string;
   name: string;
@@ -38,6 +44,7 @@ export interface SessionDeskModel {
   groups: { id: string; name: string; members: string[] }[];
   tide: OpenTide | null;
   discord: SessionDiscordFields;
+  fluxer: SessionFluxerFields;
   bound: { name: string; displayName: string }[];
 }
 
@@ -87,6 +94,7 @@ export function assembleSession(input: {
   characters: CharacterRecord[];
   events: AuditEvent[];
   discord: SessionDiscordFields;
+  fluxer: SessionFluxerFields;
 }): { reading: SessionReading; desk: SessionDeskModel | null } {
   const reading = sessionReading(input.state);
   if (!input.desk) return { reading, desk: null };
@@ -134,6 +142,7 @@ export function assembleSession(input: {
       })),
       tide: input.state.tide,
       discord: input.discord,
+      fluxer: input.fluxer,
       bound,
     },
   };
@@ -397,8 +406,37 @@ function tideStudio(tide: OpenTide | null): string {
   </section>`;
 }
 
+function chatPlate(opts: {
+  summary: string;
+  attrs: string;
+  guildAttr: string;
+  channelAttr: string;
+  roleAttr: string;
+  guildLabel: string;
+  channelLabel: string;
+  roleLabel: string;
+  fields: SessionDiscordFields;
+  bound: string;
+}): string {
+  const fields = opts.fields;
+  return `<details class="session-menu" ${opts.attrs}>
+    <summary>${opts.summary}</summary>
+    <div class="session-menu__body">
+      <div class="session-menu__grid">
+        <label>Guild <input class="kod-ink" ${opts.guildAttr} value="${esc(fields.guildId)}" inputmode="numeric" autocomplete="off" aria-label="${opts.guildLabel}"></label>
+        <label>Play channel <input class="kod-ink" ${opts.channelAttr} value="${esc(fields.channelId)}" inputmode="numeric" autocomplete="off" aria-label="${opts.channelLabel}"></label>
+        <label>Storyteller role <input class="kod-ink" ${opts.roleAttr} value="${esc(fields.roleId)}" inputmode="numeric" autocomplete="off" aria-label="${opts.roleLabel}"></label>
+      </div>
+      <p class="session-menu__meta">
+        <span class="session-info" tabindex="0">Bound
+          <span class="session-info__tip" role="tooltip">${opts.bound}</span>
+        </span>
+      </p>
+    </div>
+  </details>`;
+}
+
 function chat(model: SessionDeskModel): string {
-  const discord = model.discord;
   const bound =
     model.bound.length === 0
       ? '<p>No one is bound yet.</p>'
@@ -408,21 +446,32 @@ function chat(model: SessionDeskModel): string {
               `<li>${esc(row.name)}${row.displayName ? ` — ${esc(row.displayName)}` : ''}</li>`,
           )
           .join('')}</ul>`;
-  return `<details class="session-menu" data-session-chat>
-    <summary>Table chat</summary>
-    <div class="session-menu__body">
-      <div class="session-menu__grid">
-        <label>Guild <input class="kod-ink" data-discord-guild value="${esc(discord.guildId)}" inputmode="numeric" autocomplete="off" aria-label="Discord guild"></label>
-        <label>Play channel <input class="kod-ink" data-discord-channel value="${esc(discord.channelId)}" inputmode="numeric" autocomplete="off" aria-label="Discord play channel"></label>
-        <label>Storyteller role <input class="kod-ink" data-discord-role value="${esc(discord.roleId)}" inputmode="numeric" autocomplete="off" aria-label="Discord Storyteller role"></label>
-      </div>
-      <p class="session-menu__meta">
-        <span class="session-info" tabindex="0">Bound
-          <span class="session-info__tip" role="tooltip">${bound}</span>
-        </span>
-      </p>
-    </div>
-  </details>`;
+  return [
+    chatPlate({
+      summary: 'Table chat',
+      attrs: 'data-session-chat',
+      guildAttr: 'data-discord-guild',
+      channelAttr: 'data-discord-channel',
+      roleAttr: 'data-discord-role',
+      guildLabel: 'Discord guild',
+      channelLabel: 'Discord play channel',
+      roleLabel: 'Discord Storyteller role',
+      fields: model.discord,
+      bound,
+    }),
+    chatPlate({
+      summary: 'Fluxer',
+      attrs: 'data-session-chat data-session-fluxer',
+      guildAttr: 'data-fluxer-guild',
+      channelAttr: 'data-fluxer-channel',
+      roleAttr: 'data-fluxer-role',
+      guildLabel: 'Fluxer guild',
+      channelLabel: 'Fluxer play channel',
+      roleLabel: 'Fluxer Storyteller role',
+      fields: model.fluxer,
+      bound,
+    }),
+  ].join('');
 }
 
 /** Storyteller half. Loopback only. The die is both the view and the editor. */

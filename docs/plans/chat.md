@@ -1,7 +1,7 @@
 # Chat cards
 
 **Date:** 2026-10-17  
-**Status:** The roll face, the Tide picture, the omen picture, the creation cards, and Fluxer’s reaction map are in the tree. Registering the slash list is still a separate operator step. This file does not perform it. The gateway stays stopped.
+**Status:** The roll face, the Tide picture, the omen picture, the creation cards, and Fluxer’s reaction card are in the tree. Registering the slash list is still a separate operator step. This file does not perform it. The gateway stays stopped.
 
 Discord and Fluxer render one card. The words, the die picture, and the accent colour are the same on both. The control that is a select or a button on Discord is the same choice on Fluxer. Until Fluxer ships slash commands and components (roadmap item 7, October 2026, still in development), that choice is a reaction on the same message. The adapter does not invent a second layout.
 
@@ -96,7 +96,7 @@ Confirm is one channel line and one Session inbox row. Approve and Send back sta
 
 ## Fluxer until components
 
-The payload is the same embed: title, description, fields, the tier colour, the die thumbnail. Buttons are carried in the components array for the day item 7 ships. Until then the connected adapter adds one reaction per button, removes a reaction the sender may not use, and on a spent choice edits the embed and clears the reactions. That adapter still throws `Fluxer adapter not connected`. The mapping is what both sides already share.
+The payload is the same embed: title, description, fields, the tier colour, the die thumbnail. The mapper still carries buttons in the components array for the day item 7 ships. That array stays off the wire. `sendCard` posts the embed and adds one reaction per enabled button. A reaction the sender may not use is removed. A spent choice edits the embed and clears the reactions. The same command words follow `!` on the message. The gateway stays stopped.
 
 Threads, forums, and a Discord Activity that iframes the hall are not this contract. Speech stays in the channel.
 
@@ -113,7 +113,7 @@ Threads, forums, and a Discord Activity that iframes the hall are not this contr
 - An opposed roll steps an open Tide and the bot edits the stored message. Unopposed rolls do not. Close is a button on that message. The desk slider does not edit it. There is no `/tide` command.
 - Post the omens, on the desk, posts or edits one public net when the Storyteller is finished. Whispered faces are blank, and their lines are not under the picture.
 - `/create` carries The Wanting. The select stages the purchase. Send back sets `creation.returned` and the sheet says the draft is open.
-- Fluxer maps one reaction per enabled button and `resolveFluxerReaction` decides who may use it. `sendCard` still throws.
+- Fluxer maps one reaction per enabled button and `resolveFluxerReaction` decides who may use it. `sendCard` posts that embed and those reactions. The command words follow `!`. The gateway stays stopped.
 
 ## Still later
 
