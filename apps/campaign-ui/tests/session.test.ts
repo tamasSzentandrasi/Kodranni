@@ -14,7 +14,7 @@ import { POST as discordPost } from '../src/pages/api/desk/discord';
 import { GET as tableGet, POST as tablePost } from '../src/pages/api/desk/table';
 import { GET as sessionGet } from '../src/pages/api/session';
 import { GET as omensGet } from '../src/pages/session/omens.png';
-import { assembleSession, sessionDeskHtml, sessionPageHtml } from '../src/lib/session-desk';
+import { assembleSession, sessionDeskHtml, sessionNightLine, sessionPageHtml } from '../src/lib/session-desk';
 
 const dirs: string[] = [];
 const prevStore = process.env.KODRANNI_STORE_PATH;
@@ -522,5 +522,13 @@ describe('POST /api/desk/discord', () => {
     expect(text).toContain(`discord_guild_id = "${guildId}"`);
     expect(text).toContain(`discord_play_channel_id = "${channelId}"`);
     expect(text).toContain(`discord_storyteller_role_id = "${roleId}"`);
+  });
+});
+
+describe('sessionNightLine', () => {
+  it('names the public hall as live or between sessions', () => {
+    const url = 'https://lantern-watch.kodranni.com/community/';
+    expect(sessionNightLine(url, false)).toBe(`${url} is between sessions.`);
+    expect(sessionNightLine(url, true)).toBe(`${url} is live.`);
   });
 });

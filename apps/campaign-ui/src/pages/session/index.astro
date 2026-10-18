@@ -3,13 +3,21 @@ export const prerender = false;
 
 import { readFileSync } from 'node:fs';
 import { sessionReading } from '@kodranni/hall-render';
-import { defaultCampaignTomlPath, emptyTableState, openSqliteStore, parseCampaignToml } from '@kodranni/store';
+import {
+  campaignPublicUrl,
+  defaultCampaignTomlPath,
+  emptyTableState,
+  openSqliteStore,
+  parseCampaignToml,
+  readSessionState,
+} from '@kodranni/store';
 import CampaignLayout from '../../layouts/CampaignLayout.astro';
 import { isArchiveScope, loadCommunity } from '../../data/load';
 import { resolveCampaignSlug, resolveStorePath } from '../../lib/campaign-paths';
-import { deskToolsOn } from '../../lib/loopback';
+import { deskToolsOn, isLocalDeskRequest } from '../../lib/loopback';
 import {
   assembleSession,
+  sessionNightLine,
   sessionPageHtml,
   type SessionDeskModel,
   type SessionDiscordFields,
@@ -64,6 +72,16 @@ if (!between) {
   }
 }
 const body = sessionPageHtml({ between, reading, desk: deskModel });
+let nightNote = '';
+if (!between && isLocalDeskRequest(Astro.request)) {
+  const nightSlug = resolveCampaignSlug();
+  if (nightSlug) {
+    nightNote = sessionNightLine(
+      campaignPublicUrl(nightSlug),
+      readSessionState(nightSlug)?.tunnel === true,
+    );
+  }
+}
 ---
 
 <CampaignLayout
@@ -73,6 +91,7 @@ const body = sessionPageHtml({ between, reading, desk: deskModel });
   primary="session"
   source={c.source}
 >
+  {nightNote && <p class="session-night" data-session-night>{nightNote}</p>}
   <Fragment set:html={body} />
   {!between && <script src="/session.js?v=20261017d" defer></script>}
 </CampaignLayout>

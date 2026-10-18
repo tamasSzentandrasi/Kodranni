@@ -65,3 +65,26 @@ export function readSessionState(
 export function runtimeDirExists(slug: string, env?: NodeJS.ProcessEnv): boolean {
   return existsSync(campaignRuntimeDir(slug, env));
 }
+
+export type NightOp = 'live' | 'end';
+
+export interface NightResult {
+  ok: true;
+  already?: boolean;
+}
+
+/** Runs in the hall process. The desk route calls it; it does not live in the bundle. */
+export type NightHandler = (op: NightOp) => Promise<NightResult>;
+
+const NIGHT = Symbol.for('kodranni.night');
+
+export function installNightHandler(handler: NightHandler | undefined): void {
+  const bag = globalThis as Record<symbol, unknown>;
+  if (handler) bag[NIGHT] = handler;
+  else delete bag[NIGHT];
+}
+
+export function currentNightHandler(): NightHandler | undefined {
+  const handler = (globalThis as Record<symbol, unknown>)[NIGHT];
+  return typeof handler === 'function' ? (handler as NightHandler) : undefined;
+}

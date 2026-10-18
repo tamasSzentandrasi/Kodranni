@@ -14,6 +14,7 @@ import {
   campaignRuntimeLogsDir,
   ensureCampaignRuntime,
   ensureEdgeDeviceKey,
+  installNightHandler,
   PRODUCT_EDGE_CONTROL_URL,
   campaignPublicUrl,
   productPublicEdgeUrl,
@@ -24,6 +25,7 @@ import {
 } from '@kodranni/store';
 import { waitForHttp } from './http.js';
 import { notifySystemd } from './linux-notify.js';
+import { closeNight, openNight, productionNightIo, stopTunnelPid } from './night.js';
 import {
   findCloudflared,
   startCloudflaredTokenTunnel,
@@ -212,7 +214,17 @@ export async function runLiveKernel(opts: {
   let tunnelChild: ChildProcess | undefined;
   const shutdown = () => {
     killChild(tunnelChild);
+    stopTunnelPid(readSessionState(slug)?.pids?.tunnel, tunnelChild?.pid);
   };
+  installNightHandler(async (op) => {
+    const io = productionNightIo(localUrl);
+    if (op === 'end') {
+      await closeNight(slug, cfg, io);
+      return { ok: true };
+    }
+    const opened = await openNight(slug, cfg, io);
+    return { ok: true, already: opened.already };
+  });
   let stopping = false;
   const graceful = async () => {
     if (stopping) return;

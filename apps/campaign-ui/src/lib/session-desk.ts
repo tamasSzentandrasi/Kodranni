@@ -437,6 +437,11 @@ export function sessionDeskHtml(model: SessionDeskModel): string {
   ].join('');
 }
 
+/** Public name plus whether the night is open. The Session tab shows this on the desk. */
+export function sessionNightLine(publicUrl: string, live: boolean): string {
+  return live ? `${publicUrl} is live.` : `${publicUrl} is between sessions.`;
+}
+
 export function sessionPageHtml(opts: {
   between: boolean;
   reading: SessionReading;

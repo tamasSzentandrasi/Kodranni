@@ -19,8 +19,16 @@
   min-width: 0;
 }
 
-.desk-face {
+.desk-night {
   margin: 0 0 0 auto;
+  display: flex;
+  align-items: baseline;
+  gap: 1.1rem;
+  flex: 0 0 auto;
+}
+
+.desk-face {
+  margin: 0;
   flex: 0 0 auto;
 }
 
@@ -65,12 +73,20 @@ body.is-map .app__status {
   overflow: visible;
 }
 
-body.is-map .desk-face {
+body.is-map .desk-night {
   position: fixed;
   top: 0.85rem;
   right: 1.1rem;
   z-index: 70;
   margin: 0;
+}
+
+.session-night {
+  margin: 0 0 0.85rem;
+  color: #6a625c;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .app__title [data-desk-rename] {
