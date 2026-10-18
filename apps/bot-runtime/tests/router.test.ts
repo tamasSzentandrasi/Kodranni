@@ -120,6 +120,62 @@ describe('bot router', () => {
     store.close();
   });
 
+  it('lets a Storyteller roll a named sheet without claiming it', async () => {
+    const dir = mkdtempSync(join(tmpdir(), 'kod-bot-'));
+    dirs.push(dir);
+    const store = openSqliteStore(join(dir, 'c.sqlite'));
+    seedDemoCampaign(store);
+    mapMember(store, {
+      platform: 'discord',
+      accountId: 'user-1',
+      characterSlug: 'jakov',
+      role: 'player',
+    });
+    const port = mockPort();
+    const ctx: BotContext = {
+      store,
+      port,
+      liveBaseUrl: 'http://127.0.0.1:8742',
+      prompts: new Map(),
+      log: () => {},
+      discordStorytellerRoleId: 'role-st',
+    };
+    const named: ChatInteraction = {
+      type: 'command',
+      id: 'st-roll',
+      clientEventId: 'st-roll',
+      user: {
+        platform: 'discord',
+        accountId: 'visitor',
+        displayName: 'Storyteller',
+        roleIds: ['role-st'],
+      },
+      channelId: 'ch',
+      name: 'roll',
+      options: { character: 'Marino Orvanti' },
+    };
+    await handleInteraction(ctx, named);
+    expect(port.ephemerals.join('\n')).not.toContain('not bound');
+    expect(port.replies[0]?.title).toBe('Ready · Marino Orvanti');
+    const marino = store.getCharacterBySlug('marino');
+    expect(marino?.player?.accountId).toBeUndefined();
+
+    port.replies.length = 0;
+    port.ephemerals.length = 0;
+    await handleInteraction(ctx, {
+      type: 'command',
+      id: 'player-roll',
+      clientEventId: 'player-roll',
+      user: { platform: 'discord', accountId: 'user-1', displayName: 'Player' },
+      channelId: 'ch',
+      name: 'roll',
+      options: { character: 'Marino Orvanti' },
+    });
+    expect(port.replies).toHaveLength(0);
+    expect(port.ephemerals).toContain('That character is not bound to you.');
+    store.close();
+  });
+
   it('allows Foundation change on confirm before Cast', async () => {
     const dir = mkdtempSync(join(tmpdir(), 'kod-bot-'));
     dirs.push(dir);

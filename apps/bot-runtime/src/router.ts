@@ -339,28 +339,30 @@ async function castConfirm(
 
 async function resolveRollCharacter(
   ctx: BotContext,
-  accountId: string,
+  user: { platform: string; accountId: string; roleIds?: string[] },
   characterOpt?: string,
 ): Promise<{ ok: true; slug: string; name: string } | { ok: false; message: string }> {
+  const accountId = user.accountId;
+  const platform = user.platform;
   if (characterOpt) {
     const ch = findSheeted(ctx, characterOpt);
     if (!ch) return { ok: false, message: `Unknown character: ${characterOpt}` };
     if (
       ch.player?.accountId !== accountId &&
       ch.initiator?.accountId !== accountId &&
-      resolveRoleByAccount(ctx.store, 'discord', accountId) !== 'storyteller'
+      !isSt(ctx, user)
     ) {
       return { ok: false, message: 'That character is not bound to you.' };
     }
     return { ok: true, slug: ch.slug, name: ch.name };
   }
-  const focused = resolveFocusedCharacter(ctx.store, 'discord', accountId);
+  const focused = resolveFocusedCharacter(ctx.store, platform, accountId);
   if (focused) return { ok: true, slug: focused.slug, name: focused.name };
-  const bound = listCharactersForAccount(ctx.store, 'discord', accountId).filter(
+  const bound = listCharactersForAccount(ctx.store, platform, accountId).filter(
     (c) => c.status === 'active',
   );
   if (bound.length === 0) {
-    const any = resolveCharacterByAccount(ctx.store, 'discord', accountId);
+    const any = resolveCharacterByAccount(ctx.store, platform, accountId);
     if (any) return { ok: true, slug: any.slug, name: any.name };
     return {
       ok: false,
@@ -505,7 +507,7 @@ async function handleCommand(
   }
 
   if (name === 'birth-omen') {
-    const resolved = await resolveRollCharacter(ctx, user.accountId);
+    const resolved = await resolveRollCharacter(ctx, user);
     if (!resolved.ok) {
       await ctx.port.replyEphemeral(i, resolved.message);
       return;
@@ -530,7 +532,7 @@ async function handleCommand(
   }
 
   if (name === 'guiding-hand') {
-    const resolved = await resolveRollCharacter(ctx, user.accountId);
+    const resolved = await resolveRollCharacter(ctx, user);
     if (!resolved.ok) {
       await ctx.port.replyEphemeral(i, resolved.message);
       return;
@@ -675,7 +677,7 @@ async function handleCommand(
   if (name === 'roll') {
     const characterOpt =
       options.character != null ? String(options.character) : undefined;
-    const resolved = await resolveRollCharacter(ctx, user.accountId, characterOpt);
+    const resolved = await resolveRollCharacter(ctx, user, characterOpt);
     if (!resolved.ok) {
       await ctx.port.replyEphemeral(i, resolved.message);
       return;
@@ -1280,7 +1282,7 @@ async function handleButton(
       await ctx.port.replyEphemeral(i, 'Unknown roll.');
       return;
     }
-    const resolved = await resolveRollCharacter(ctx, i.user.accountId);
+    const resolved = await resolveRollCharacter(ctx, i.user);
     if (!resolved.ok) {
       await ctx.port.replyEphemeral(i, resolved.message);
       return;
@@ -1308,7 +1310,7 @@ async function handleButton(
       await ctx.port.replyEphemeral(i, 'No Tide is open.');
       return;
     }
-    const resolved = await resolveRollCharacter(ctx, i.user.accountId);
+    const resolved = await resolveRollCharacter(ctx, i.user);
     if (!resolved.ok) {
       await ctx.port.replyEphemeral(i, resolved.message);
       return;
