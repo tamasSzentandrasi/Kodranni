@@ -245,7 +245,7 @@ That command is the setup. It turns the name into a slug and, before it writes a
 
 The empty record is Steady (2) on all five Fortunes, unfounded until the five buttons are pressed. The axes are Arms, Faith, Coin, and Blood, with empty rungs and no ruler. Faction and tag categories exist and have no labels. There are no myths, no people, and no canvas.
 
-The Worker attaches `<slug>.kodranni.com` when the campaign registers. The Storyteller does not edit DNS. A catch-all name would also catch `origin-<slug>.kodranni.com`, which is the tunnel, so each public name is attached on its own and the tunnel host is left alone. `demo.kodranni.com` stays the showcase. Players never use the tunnel host.
+The Worker attaches `<slug>.kodranni.com` when the campaign registers. The Storyteller does not edit DNS. A catch-all name would also catch `origin-<slug>.kodranni.com`, which is the tunnel, so each public name is attached on its own and the tunnel host is left alone. The Worker config does not list `custom_domain` routes, because a deploy replaces the whole set and drops names attached at register time. `demo.kodranni.com`, `www.kodranni.com`, and the apex stay attached from the earlier setup and are not re-declared. `demo.kodranni.com` stays the showcase. Players never use the tunnel host.
 
 One machine may register three campaigns. One address may register five times a day.
 
