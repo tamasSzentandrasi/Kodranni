@@ -89,6 +89,13 @@ const UI_SOURCE_DIRS = [
   'apps/campaign-ui/public',
   'packages/hall-render/src',
   'packages/design',
+  // The production hall bundles these. A workspace package stays in the bundle
+  // even when vite ssr.external names it, so a newer file has to rebuild dist.
+  'apps/bot-runtime/src',
+  'adapters/discord/src',
+  'adapters/fluxer/src',
+  'packages/chat-port/src',
+  'packages/chat-ui/src',
 ];
 
 function treeNewerThan(path: string, builtMs: number): boolean {

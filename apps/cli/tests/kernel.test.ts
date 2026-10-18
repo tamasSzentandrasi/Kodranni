@@ -31,6 +31,22 @@ describe('campaignUiBuildStale', () => {
     expect(campaignUiBuildStale(root)).toBe(false);
   });
 
+  it('rebuilds when the bundled Fluxer adapter is newer than dist', () => {
+    const root = mkdtempSync(join(tmpdir(), 'kod-ui-fluxer-'));
+    dirs.push(root);
+    const src = join(root, 'apps/campaign-ui/src');
+    const entry = join(root, 'apps/campaign-ui/dist/server/entry.mjs');
+    const adapter = join(root, 'adapters/fluxer/src/index.ts');
+    mkdirSync(join(root, 'apps/campaign-ui/dist/server'), { recursive: true });
+    mkdirSync(src, { recursive: true });
+    mkdirSync(join(root, 'adapters/fluxer/src'), { recursive: true });
+    writeFileSync(entry, 'old');
+    writeFileSync(adapter, 'new');
+    touch(entry, 1_000);
+    touch(adapter, 2_000);
+    expect(campaignUiBuildStale(root)).toBe(true);
+  });
+
   it('keeps a packaged dist that has no campaign-ui sources', () => {
     const root = mkdtempSync(join(tmpdir(), 'kod-ui-pkg-'));
     dirs.push(root);
