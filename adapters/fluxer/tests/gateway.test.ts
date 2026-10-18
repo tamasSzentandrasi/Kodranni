@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { createFluxerAdapter } from '../src/index.js';
-import { rolesFromMemberBody } from '../src/inbound.js';
+import { interactionFromFluxerEvent, rolesFromMemberBody } from '../src/inbound.js';
 import { createFluxerGateway, FLUXER_GATEWAY_URL, type FluxerSocket } from '../src/gateway.js';
 
 class FakeSocket implements FluxerSocket {
@@ -39,6 +39,52 @@ function ready(socket: FakeSocket) {
 }
 
 describe('fluxer gateway', () => {
+  it('reads a reply to the Ready card as the roll line', () => {
+    const reactions = new Map([
+      [
+        'card-1',
+        [
+          { emoji: '🎯', id: 'roll-cast:abc' },
+          { emoji: '🎲', id: 'roll-tier-cycle:abc' },
+        ],
+      ],
+    ]);
+    const reply = interactionFromFluxerEvent({
+      t: 'MESSAGE_CREATE',
+      d: {
+        id: 'm-1',
+        channel_id: 'channel-1',
+        guild_id: 'guild-1',
+        content: 'Command',
+        author: { id: 'user-1', username: 'ada' },
+        message_reference: { message_id: 'card-1' },
+      },
+      guildId: 'guild-1',
+      playChannelId: 'channel-1',
+      reactions,
+    });
+    expect(reply).toMatchObject({
+      type: 'command',
+      name: 'roll-line',
+      options: { line: 'Command', confirm: 'abc' },
+      messageRef: { platform: 'fluxer', channelId: 'channel-1', messageId: 'card-1' },
+    });
+    const aside = interactionFromFluxerEvent({
+      t: 'MESSAGE_CREATE',
+      d: {
+        id: 'm-2',
+        channel_id: 'channel-1',
+        guild_id: 'guild-1',
+        content: 'Command',
+        author: { id: 'user-1', username: 'ada' },
+      },
+      guildId: 'guild-1',
+      playChannelId: 'channel-1',
+      reactions,
+    });
+    expect(aside).toBeNull();
+  });
+
   it('identifies after hello and does not put the token in a close error', async () => {
     FakeSocket.opened = [];
     const gw = createFluxerGateway({ token: 'secret-token', WebSocket: FakeSocket });

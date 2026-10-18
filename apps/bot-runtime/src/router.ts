@@ -47,10 +47,12 @@ import {
   tideSizeLabel,
 } from '@kodranni/chat-ui';
 import {
+  ALL_SKILLS,
   ARCHETYPES,
   FOUNDATION_NAMES,
   skillByName,
   type DieTier,
+  type SkillDef,
 } from '@kodranni/domain';
 import type { CommunityStorePort } from '@kodranni/store';
 
@@ -250,6 +252,7 @@ async function showConfirmCard(
     exertionCurrent: person?.exertion.current,
     dying: Boolean(person?.dying),
     dieImageUrl: dieImageUrl(ctx.liveBaseUrl, c.dieTier),
+    surface: i.user.platform === 'fluxer' ? 'fluxer' : undefined,
     liveSheetUrl: sheetUrl(ctx.liveBaseUrl, c.characterSlug, {
       platform: 'discord',
       accountId: c.accountId,
@@ -410,6 +413,170 @@ function guidingFoundation(skill?: string, explicit?: string): string {
     if (def) return def.foundation;
   }
   return 'Strength';
+}
+
+function uniqueBy<T>(rows: T[], folded: string, nameOf: (row: T) => string): T | 'ambiguous' | undefined {
+  const exact = rows.filter((row) => nameOf(row).toLowerCase() === folded);
+  if (exact.length === 1) return exact[0];
+  if (exact.length > 1) return 'ambiguous';
+  const partial = rows.filter((row) => {
+    const name = nameOf(row).toLowerCase();
+    return name.startsWith(`${folded} `) || name.split(/\s+/).includes(folded);
+  });
+  if (partial.length === 1) return partial[0];
+  if (partial.length > 1) return 'ambiguous';
+  return undefined;
+}
+
+function matchSkill(folded: string): SkillDef | 'ambiguous' | undefined {
+  const exact = ALL_SKILLS.find((skill) => skill.name.toLowerCase() === folded);
+  if (exact) return exact;
+  return uniqueBy(ALL_SKILLS, folded, (skill) => skill.name);
+}
+
+/** One reply on the Fluxer Ready card. A keyed line can set several fields. */
+function applyRollLine(
+  ctx: BotContext,
+  c: RollConfirm,
+  line: string,
+): { ok: true } | { ok: false; message: string } {
+  const trimmed = line.trim();
+  if (!trimmed) return { ok: false, message: 'Name a skill, an Archetype, or Primitive.' };
+  if (/(^|\s)(foundation|skill|archetype|echo|tier|exertion):/i.test(trimmed)) {
+    return applyKeyedRollLine(ctx, c, trimmed);
+  }
+  return applyBareRollLine(ctx, c, trimmed);
+}
+
+function applyBareRollLine(
+  ctx: BotContext,
+  c: RollConfirm,
+  line: string,
+): { ok: true } | { ok: false; message: string } {
+  const folded = line.toLowerCase();
+  if (folded === 'primitive' || folded === 'foundation alone') {
+    c.archetype = 'primitive';
+    c.skill = undefined;
+    return { ok: true };
+  }
+  if (folded === 'none' || folded === 'no echo') {
+    c.echoName = undefined;
+    if (c.exertion > 1) c.exertion = 1;
+    return { ok: true };
+  }
+  const die = dieTierFrom(folded);
+  if (die) {
+    c.dieTier = die;
+    return { ok: true };
+  }
+  const foundation = FOUNDATION_NAMES.find((name) => name.toLowerCase() === folded);
+  if (foundation) {
+    c.foundation = foundation;
+    return { ok: true };
+  }
+  const archetype = ARCHETYPES.find(
+    (row) => row.id === folded || row.name.toLowerCase() === folded,
+  );
+  if (archetype) {
+    c.archetype = archetype.id;
+    if (c.skill && !archetype.skills.some((skill) => skill.name === c.skill)) c.skill = undefined;
+    return { ok: true };
+  }
+  const skill = matchSkill(folded);
+  if (skill === 'ambiguous') {
+    return { ok: false, message: 'More than one skill matches. Name the whole skill.' };
+  }
+  if (skill) {
+    c.skill = skill.name;
+    c.archetype = skill.archetype;
+    return { ok: true };
+  }
+  const person = ctx.store.getCharacterBySlug(c.characterSlug);
+  const echoes = (person?.echoes ?? []).filter((echo) => !echo.resolved);
+  const echo = uniqueBy(echoes, folded, (row) => row.title);
+  if (echo === 'ambiguous') return { ok: false, message: 'More than one Echo matches.' };
+  if (echo) {
+    c.echoName = echo.title;
+    return { ok: true };
+  }
+  return { ok: false, message: 'Name a skill, an Archetype, or Primitive. 🎯 casts.' };
+}
+
+function applyKeyedRollLine(
+  ctx: BotContext,
+  c: RollConfirm,
+  line: string,
+): { ok: true } | { ok: false; message: string } {
+  const pattern = /(^|\s)(foundation|skill|archetype|echo|tier|exertion):/gi;
+  const marks: { key: string; at: number }[] = [];
+  for (const match of line.matchAll(pattern)) {
+    const key = match[2]?.toLowerCase();
+    if (!key) continue;
+    marks.push({ key, at: (match.index ?? 0) + (match[1]?.length ?? 0) });
+  }
+  const draft: RollConfirm = { ...c };
+  for (let i = 0; i < marks.length; i++) {
+    const mark = marks[i]!;
+    const valueStart = line.indexOf(':', mark.at) + 1;
+    const valueEnd = i + 1 < marks.length ? marks[i + 1]!.at : line.length;
+    const raw = line.slice(valueStart, valueEnd).trim();
+    if (!raw) continue;
+    const applied = applyNamedRollField(ctx, draft, mark.key, raw);
+    if (!applied.ok) return applied;
+  }
+  c.skill = draft.skill;
+  c.foundation = draft.foundation;
+  c.archetype = draft.archetype;
+  c.echoName = draft.echoName;
+  c.dieTier = draft.dieTier;
+  c.exertion = draft.exertion;
+  return { ok: true };
+}
+
+function applyNamedRollField(
+  ctx: BotContext,
+  c: RollConfirm,
+  key: string,
+  raw: string,
+): { ok: true } | { ok: false; message: string } {
+  if (key === 'tier') {
+    const word = /^[dD]?\d+$/.test(raw) ? `d${raw.replace(/^[dD]/, '')}` : raw;
+    return applyBareRollLine(ctx, c, word);
+  }
+  if (key === 'exertion') {
+    const n = Number(raw);
+    if (n !== 0 && n !== 1 && n !== 2) {
+      return { ok: false, message: 'Exertion is 0, 1, or 2.' };
+    }
+    const person = ctx.store.getCharacterBySlug(c.characterSlug);
+    const choices = exertionChoices({
+      exertion: c.exertion,
+      exertionCurrent: person?.exertion.current,
+      dying: Boolean(person?.dying),
+      echoName: c.echoName,
+    });
+    if (!choices.includes(n)) return { ok: false, message: 'That Exertion is not open.' };
+    c.exertion = n;
+    return { ok: true };
+  }
+  if (key === 'skill') {
+    const skill = matchSkill(raw.toLowerCase());
+    if (skill === 'ambiguous') {
+      return { ok: false, message: 'More than one skill matches. Name the whole skill.' };
+    }
+    if (!skill) return { ok: false, message: `Unknown skill “${raw}”.` };
+    c.skill = skill.name;
+    c.archetype = skill.archetype;
+    return { ok: true };
+  }
+  return applyBareRollLine(ctx, c, raw);
+}
+
+function dieTierFrom(folded: string): DieTier | undefined {
+  if (folded === 'd6' || folded === 'disadvantage') return 6;
+  if (folded === 'd12' || folded === 'advantage') return 12;
+  if (folded === 'd8' || folded === 'ordinary') return 8;
+  return undefined;
 }
 
 async function handleCommand(
@@ -739,6 +906,22 @@ async function handleCommand(
     };
     confirmsOf(ctx).set(confirmId, confirm);
     await showConfirmCard(ctx, i, confirm);
+    return;
+  }
+
+  if (name === 'roll-line') {
+    const confirmId = String(options.confirm ?? '');
+    const c = confirmsOf(ctx).get(confirmId);
+    if (!c || c.accountId !== user.accountId) {
+      await ctx.port.replyEphemeral(i, 'This card is not yours, or it has expired.');
+      return;
+    }
+    const applied = applyRollLine(ctx, c, String(options.line ?? ''));
+    if (!applied.ok) {
+      await ctx.port.replyEphemeral(i, applied.message);
+      return;
+    }
+    await showConfirmCard(ctx, i, c);
     return;
   }
 
