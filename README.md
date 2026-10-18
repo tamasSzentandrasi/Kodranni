@@ -32,7 +32,7 @@ kodranni start
 kodranni stop
 ```
 
-`kodranni --name` is the setup. It writes the campaign on this machine and opens the desk at `http://127.0.0.1:8742/`. The public name is `https://<slug>.kodranni.com/`. `demo.kodranni.com` stays the showcase for Aspalath. `?campaign=` still works on `kodranni.com`. The setup command does not yet register the name; that happens when the campaign is published or the table starts. After setup, customisation, the night, and Discord and Fluxer are the desk. The process is in `docs/plans/hosting.md`. The bot token stays on the Worker.
+`kodranni --name` is the setup. It refuses `www`, `demo`, `play`, and a name that starts with `origin-`, writes the empty campaign on this machine, registers that name, publishes the empty hall, and opens the desk at `http://127.0.0.1:8742/`. The public name is `https://<slug>.kodranni.com/`. Opening the same name again leaves the campaign as it is. If the edge cannot take the name, the desk still opens. `demo.kodranni.com` stays the showcase for Aspalath. `?campaign=` still works on `kodranni.com`. After setup, customisation, the night, and Discord and Fluxer are the desk. The process is in `docs/plans/hosting.md`. The bot token stays on the Worker.
 
 Own domain means **own hosting** (deploy `apps/edge` on your Cloudflare). See `docs/plans/hosting.md`.
 

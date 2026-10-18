@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start": "node --experimental-sqlite --import tsx ./src/main.ts",
-    "test": "vitest run"
+    "test": "NODE_OPTIONS='--experimental-sqlite' vitest run"
   },
   "dependencies": {
     "@kodranni/app": "*",

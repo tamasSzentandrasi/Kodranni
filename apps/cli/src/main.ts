@@ -12,7 +12,7 @@ import {
   applyCampaignDiscordEnv,
   applyMachineDefaults,
   applyPublicSnapshot,
-  emptyCommunity,
+  campaignPublicUrl,
   ensureCampaignLayout,
   ensureCampaignRuntime,
   formatCredentialStatus,
@@ -21,7 +21,6 @@ import {
   openSqliteStore,
   parsePublicSnapshot,
   platformCredentialStatus,
-  campaignPublicUrl,
   readCampaignConfig,
   readLiveUrl,
   seedDemoCampaign,
@@ -31,6 +30,7 @@ import {
   type CampaignConfig,
 } from '@kodranni/store';
 import { printEmissaryReport, runEmissary } from './emissary.js';
+import { foundCampaign } from './found.js';
 import { runLiveKernel } from './kernel.js';
 import { printSessionStatus, sessionEnd, sessionStart } from './session.js';
 
@@ -107,24 +107,6 @@ function resolveSlug(args: string[]): string {
   process.exit(1);
 }
 
-async function foundCampaign(name: string, snapshotPath?: string): Promise<string> {
-  const slug = slugFromCampaignName(name);
-  const cfg = await ensureCampaignLayout(slug, name);
-  const store = openSqliteStore(cfg.storePath);
-  if (snapshotPath) {
-    const raw = readFileSync(snapshotPath, 'utf8');
-    applyPublicSnapshot(store, parsePublicSnapshot(raw), slug);
-    console.log(`Restored campaign “${name}” (${slug}) from snapshot`);
-  } else {
-    store.putCommunity(emptyCommunity(slug, name));
-    console.log(`Found campaign “${name}” (${slug})`);
-  }
-  store.close();
-  console.log(`  public: ${publicTableUrl(slug)}`);
-  console.log(`  store:  ${cfg.storePath}`);
-  return slug;
-}
-
 function rngFromArgs(args: string[]) {
   const debug = arg(args, '--debug-seed') ?? arg(args, '--seed');
   if (debug != null) {
@@ -144,8 +126,14 @@ async function main(): Promise<void> {
     const name = arg(args, '--name');
     const from = arg(args, '--from');
     let slug = arg(args, '--slug');
-    if (!slug && name) slug = await foundCampaign(name, from);
-    else if (!slug) slug = resolveSlug(args);
+    if (!slug && name) {
+      try {
+        slug = await foundCampaign({ name, snapshotPath: from });
+      } catch (e) {
+        console.error(e instanceof Error ? e.message : e);
+        process.exit(1);
+      }
+    } else if (!slug) slug = resolveSlug(args);
     else if (from) {
       const cfg = await loadConfig(slug);
       const store = openSqliteStore(cfg.storePath);

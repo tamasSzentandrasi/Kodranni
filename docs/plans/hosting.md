@@ -241,7 +241,7 @@ A snapshot restores the same way:
 kodranni --name "Aspalath" --from ./snapshot.json
 ```
 
-That command is the setup. It turns the name into a slug, refuses `www`, `demo`, and `play`, and refuses a slug the Worker already has. It writes the empty community on this machine, registers the slug with the device key, publishes an empty snapshot, and prints `https://aspalath.kodranni.com/`. The desk opens at `http://127.0.0.1:8742/`. `demo.kodranni.com` stays the showcase for that same campaign.
+That command is the setup. It turns the name into a slug and, before it writes anything, refuses `www`, `demo`, `play`, and a name that starts with `origin-`. The first time, it writes the empty community on this machine, registers the slug with the device key, and publishes an empty snapshot. The line it prints is `https://aspalath.kodranni.com/community/`. The desk opens at `http://127.0.0.1:8742/`. Opening the same name again leaves the campaign and publishes nothing. `--from` restores the snapshot, then registers and publishes. If the edge cannot attach the name, that is logged and the desk still opens. `demo.kodranni.com` stays the showcase for that same campaign.
 
 The empty record is Steady (2) on all five Fortunes, unfounded until the five buttons are pressed. The axes are Arms, Faith, Coin, and Blood, with empty rungs and no ruler. Faction and tag categories exist and have no labels. There are no myths, no people, and no canvas.
 
@@ -255,7 +255,7 @@ The Storyteller does not hold a Cloudflare token, does not edit DNS, and does no
 
 ### What this binary does today
 
-`kodranni --name` writes the local campaign and opens the desk. The address it prints is `https://<slug>.kodranni.com/community/`. The command does not yet refuse a reserved slug, register that name, or publish the empty hall. Register on publish and on `kodranni start` asks the Worker to attach the name. Go Live and End Session are still `kodranni start` and `kodranni stop`. The Session tab saves Discord’s guild, channel, and role. Fluxer does not send cards yet. Portraits publish with the snapshot. Other uploaded pictures stay on the machine.
+`kodranni --name` refuses `www`, `demo`, `play`, and a name that starts with `origin-` before it writes a directory. The first time, it writes the empty community, registers the slug, and publishes that hall. The line it prints is `https://<slug>.kodranni.com/community/`. A campaign already on this machine is left as it is, and nothing is published. `--from` restores the snapshot, then registers and publishes. If the edge refuses the name, that line is logged and the desk still opens. Register on publish and on `kodranni start` asks the Worker to attach the name. Go Live and End Session are still `kodranni start` and `kodranni stop`. The Session tab saves Discord’s guild, channel, and role. Fluxer does not send cards yet. Portraits publish with the snapshot. Other uploaded pictures stay on the machine.
 
 ---
 
@@ -269,4 +269,4 @@ The Storyteller does not hold a Cloudflare token, does not edit DNS, and does no
 | `kodranni status` | `down`, `desk`, or `live` plus the URL. |
 | `kodranni emissary` | The readiness list above. |
 
-The README runbook describes this binary: the hall desk on loopback, and the printed player address `https://<slug>.kodranni.com/`. The setup command does not register that name yet. See [status.md](./status.md).
+The README runbook describes this binary: the hall desk on loopback, and the printed player address `https://<slug>.kodranni.com/community/`. The setup command registers that name and publishes the empty hall. See [status.md](./status.md).
