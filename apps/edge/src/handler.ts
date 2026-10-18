@@ -5,6 +5,7 @@ import {
   CAMPAIGN_INDEX_KEY,
   GC_BATCH,
   INACTIVE_MS,
+  MAX_AVATAR_BYTES,
   MAX_CAMPAIGNS_PER_DEVICE,
   MAX_REGISTERS_PER_IP_DAY,
   MAX_SNAPSHOT_BYTES,
@@ -51,6 +52,22 @@ export function kvKey(
   field: 'origin' | 'snapshot' | 'meta' | 'pages',
 ): string {
   return `campaign:${campaign}:${field}`;
+}
+
+const AVATAR_SLUG = /^[a-z0-9-]{1,64}$/;
+const AVATAR_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/gif']);
+
+export function avatarKvKey(campaign: string, slug: string): string {
+  return `campaign:${campaign}:avatar:${slug}`;
+}
+
+export function avatarIndexKey(campaign: string): string {
+  return `campaign:${campaign}:avatar-index`;
+}
+
+function avatarSlugFromPath(pathname: string): string | null {
+  const m = /^\/api\/avatar\/([a-z0-9-]{1,64})$/.exec(pathname);
+  return m?.[1] ?? null;
 }
 
 export async function hmacHex(key: string, data: string): Promise<string> {
@@ -219,6 +236,107 @@ function snapshotLooksPrivate(json: string): boolean {
   return SNOWFLAKE.test(json) || json.includes('"initiator"') || json.includes('pendingMoves');
 }
 
+function decodeBase64(data: string): Uint8Array | null {
+  if (!data || data.length % 4 === 1) return null;
+  if (!/^[A-Za-z0-9+/]*={0,2}$/.test(data)) return null;
+  try {
+    const bin = atob(data);
+    const out = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+    return out;
+  } catch {
+    return null;
+  }
+}
+
+async function readPortraitIndex(env: EdgeEnv, campaign: string): Promise<string[]> {
+  const raw = await env.CAMPAIGNS.get(avatarIndexKey(campaign));
+  if (!raw) return [];
+  try {
+    const parsed = JSON.parse(raw) as { slugs?: unknown };
+    if (!Array.isArray(parsed.slugs)) return [];
+    return parsed.slugs.filter((slug): slug is string => typeof slug === 'string' && AVATAR_SLUG.test(slug));
+  } catch {
+    return [];
+  }
+}
+
+async function deletePortraitKey(env: EdgeEnv, campaign: string, slug: string): Promise<void> {
+  const key = avatarKvKey(campaign, slug);
+  if (env.CAMPAIGNS.delete) await env.CAMPAIGNS.delete(key);
+  else await env.CAMPAIGNS.put(key, '');
+}
+
+async function deleteStoredPortraits(env: EdgeEnv, campaign: string): Promise<void> {
+  for (const slug of await readPortraitIndex(env, campaign)) {
+    await deletePortraitKey(env, campaign, slug);
+  }
+  const index = avatarIndexKey(campaign);
+  if (env.CAMPAIGNS.delete) await env.CAMPAIGNS.delete(index);
+  else await env.CAMPAIGNS.put(index, '');
+}
+
+async function storePortrait(
+  env: EdgeEnv,
+  campaign: string,
+  slug: string,
+  body: string,
+): Promise<Response> {
+  let parsed: { type?: unknown; data?: unknown };
+  try {
+    parsed = JSON.parse(body) as { type?: unknown; data?: unknown };
+  } catch {
+    return json({ error: 'invalid json' }, 400);
+  }
+  if (typeof parsed.type !== 'string' || typeof parsed.data !== 'string') {
+    return json({ error: 'invalid portrait' }, 400);
+  }
+  if (!AVATAR_TYPES.has(parsed.type)) return json({ error: 'unsupported portrait' }, 400);
+  const bytes = decodeBase64(parsed.data);
+  if (!bytes) return json({ error: 'invalid portrait' }, 400);
+  if (bytes.byteLength > MAX_AVATAR_BYTES) return json({ error: 'portrait too large' }, 413);
+  await env.CAMPAIGNS.put(avatarKvKey(campaign, slug), `${parsed.type}\n${parsed.data}`);
+  return json({ ok: true });
+}
+
+async function storePortraitIndex(env: EdgeEnv, campaign: string, body: string): Promise<Response> {
+  let parsed: { slugs?: unknown };
+  try {
+    parsed = JSON.parse(body) as { slugs?: unknown };
+  } catch {
+    return json({ error: 'invalid json' }, 400);
+  }
+  if (!Array.isArray(parsed.slugs) || parsed.slugs.some((slug) => typeof slug !== 'string' || !AVATAR_SLUG.test(slug))) {
+    return json({ error: 'invalid portrait index' }, 400);
+  }
+  const slugs = parsed.slugs as string[];
+  const prev = await readPortraitIndex(env, campaign);
+  for (const slug of prev) {
+    if (!slugs.includes(slug)) await deletePortraitKey(env, campaign, slug);
+  }
+  await env.CAMPAIGNS.put(avatarIndexKey(campaign), JSON.stringify({ slugs }));
+  return json({ ok: true });
+}
+
+async function serveStoredPortrait(
+  env: EdgeEnv,
+  campaign: string,
+  slug: string,
+): Promise<Response | null> {
+  const raw = await env.CAMPAIGNS.get(avatarKvKey(campaign, slug));
+  if (!raw) return null;
+  const nl = raw.indexOf('\n');
+  if (nl < 1) return null;
+  const type = raw.slice(0, nl);
+  const data = raw.slice(nl + 1);
+  if (!AVATAR_TYPES.has(type)) return null;
+  const bytes = decodeBase64(data);
+  if (!bytes || bytes.byteLength === 0) return null;
+  return new Response(bytes, {
+    headers: { 'content-type': type, 'cache-control': 'no-store' },
+  });
+}
+
 export async function handleEdgeRequest(
   request: Request,
   env: EdgeEnv,
@@ -274,6 +392,25 @@ export async function handleEdgeRequest(
     }
     await env.CAMPAIGNS.put(kvKey(campaign, 'pages'), body);
     return json({ ok: true });
+  }
+
+  const portraitSlug = avatarSlugFromPath(url.pathname);
+  if (portraitSlug && request.method === 'PUT') {
+    if (!campaign) return json({ error: 'missing campaign' }, 400);
+    const body = await request.text();
+    if (!(await authorize(request, env, campaign, body))) {
+      return json({ error: 'unauthorized' }, 401);
+    }
+    return storePortrait(env, campaign, portraitSlug, body);
+  }
+
+  if (url.pathname === '/api/avatar-index' && request.method === 'PUT') {
+    if (!campaign) return json({ error: 'missing campaign' }, 400);
+    const body = await request.text();
+    if (!(await authorize(request, env, campaign, body))) {
+      return json({ error: 'unauthorized' }, 401);
+    }
+    return storePortraitIndex(env, campaign, body);
   }
 
   if (url.pathname === '/control/session/start' && request.method === 'POST') {
@@ -463,6 +600,11 @@ export async function handleEdgeRequest(
   }
 
   if (campaign && (request.method === 'GET' || request.method === 'HEAD')) {
+    const portraitSlug = avatarSlugFromPath(url.pathname);
+    if (portraitSlug) {
+      const portrait = await serveStoredPortrait(env, campaign, portraitSlug);
+      if (portrait) return portrait;
+    }
     const snap = await env.CAMPAIGNS.get(kvKey(campaign, 'snapshot'));
     if (snap) {
       const page = renderArchivePage(snap, url.pathname, url.searchParams);
@@ -862,6 +1004,7 @@ export async function gcInactiveCampaigns(
     await env.CAMPAIGNS.put(kvKey(id, 'meta'), '');
     await env.DEVICE_KEYS.put(id, '');
     if (env.CAMPAIGNS.delete) await env.CAMPAIGNS.delete(kvKey(id, 'snapshot'));
+    await deleteStoredPortraits(env, id);
     tombstoned.push(id);
   }
   if (tombstoned.length) {

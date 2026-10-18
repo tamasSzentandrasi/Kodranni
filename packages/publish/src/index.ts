@@ -3,8 +3,8 @@
  * Primary artifact is snapshot.json. Static HTML under archive/ is the offline adapter only.
  */
 import { createHmac, randomBytes } from 'node:crypto';
-import { mkdirSync, writeFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { extname, join } from 'node:path';
 import {
   assertPublicSnapshot,
   campaignArchiveDir,
@@ -315,6 +315,100 @@ export async function putSnapshotToEdge(opts: {
     const text = await res.text().catch(() => '');
     throw new Error(`edge snapshot PUT ${res.status}: ${text.slice(0, 240)}`);
   }
+}
+
+const PORTRAIT_BYTES = 4 * 1024 * 1024;
+const PORTRAIT_SLUG = /^[a-z0-9-]{1,64}$/;
+const PORTRAIT_TYPES: Record<string, string> = {
+  '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg',
+  '.png': 'image/png',
+  '.webp': 'image/webp',
+  '.gif': 'image/gif',
+};
+
+export interface PortraitFile {
+  slug: string;
+  type: string;
+  bytes: Buffer;
+}
+
+/** Basenames named on the snapshot that exist under the campaign avatar directory. */
+export function portraitFilesFromSnapshot(avatarsDir: string, snap: PublicSnapshot): PortraitFile[] {
+  const out: PortraitFile[] = [];
+  const seen = new Set<string>();
+  for (const ch of snap.characters) {
+    const avatar = ch.avatar;
+    if (!avatar || !PORTRAIT_SLUG.test(ch.slug) || seen.has(ch.slug)) continue;
+    if (
+      avatar.includes('://') ||
+      avatar.startsWith('/') ||
+      avatar.includes('..') ||
+      avatar.includes('/') ||
+      avatar.includes('\\')
+    ) {
+      continue;
+    }
+    const type = PORTRAIT_TYPES[extname(avatar).toLowerCase()];
+    if (!type) continue;
+    const full = join(avatarsDir, avatar);
+    if (!existsSync(full)) continue;
+    const bytes = readFileSync(full);
+    if (bytes.byteLength === 0 || bytes.byteLength > PORTRAIT_BYTES) continue;
+    seen.add(ch.slug);
+    out.push({ slug: ch.slug, type, bytes });
+  }
+  return out;
+}
+
+async function putSignedEdge(opts: {
+  edgeUrl: string;
+  campaignId: string;
+  deviceKey: string;
+  path: string;
+  body: string;
+  label: string;
+}): Promise<void> {
+  const sig = signSnapshotBody(opts.deviceKey, opts.body);
+  const url = `${opts.edgeUrl.replace(/\/$/, '')}${opts.path}?campaign=${encodeURIComponent(opts.campaignId)}`;
+  const res = await fetch(url, {
+    method: 'PUT',
+    headers: {
+      'content-type': 'application/json',
+      authorization: `Bearer ${opts.campaignId}:${sig}`,
+    },
+    body: opts.body,
+  });
+  if (!res.ok) {
+    const text = await res.text().catch(() => '');
+    throw new Error(`${opts.label} ${res.status}: ${text.slice(0, 240)}`);
+  }
+}
+
+export async function putAvatarsToEdge(opts: {
+  edgeUrl: string;
+  campaignId: string;
+  deviceKey: string;
+  files: PortraitFile[];
+}): Promise<void> {
+  for (const file of opts.files) {
+    await putSignedEdge({
+      edgeUrl: opts.edgeUrl,
+      campaignId: opts.campaignId,
+      deviceKey: opts.deviceKey,
+      path: `/api/avatar/${encodeURIComponent(file.slug)}`,
+      body: JSON.stringify({ type: file.type, data: file.bytes.toString('base64') }),
+      label: 'edge portrait PUT',
+    });
+  }
+  await putSignedEdge({
+    edgeUrl: opts.edgeUrl,
+    campaignId: opts.campaignId,
+    deviceKey: opts.deviceKey,
+    path: '/api/avatar-index',
+    body: JSON.stringify({ slugs: opts.files.map((file) => file.slug) }),
+    label: 'edge portrait index PUT',
+  });
 }
 
 export function edgeOriginWouldLoop(edgeUrl: string, origin: string): boolean {

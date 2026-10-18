@@ -67,7 +67,7 @@ Cloudflare Pages + one Function
 | Snapshot | Workers KV | Session end; optional crash-floor write at session start |
 | Live HTML | The host | Rendered from SQLite |
 
-The Function does not SSR the hall. Archive mode reads the snapshot and renders the same components with writes disabled. Live avatars stay on the host. Archive v1 uses a monogram. Player-uploaded blobs wait on a store we have chosen not to pay for.
+The Function does not SSR the hall. Archive mode reads the snapshot and renders the same components with writes disabled. A portrait published with the snapshot is stored in KV and served at `/api/avatar/<slug>` while the hall is dark. Other uploaded files stay on the host.
 
 ### Presence
 

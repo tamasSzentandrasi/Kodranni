@@ -1,6 +1,8 @@
 import { createHmac } from 'node:crypto';
 import { describe, expect, it } from 'vitest';
 import {
+  avatarIndexKey,
+  avatarKvKey,
   campaignFromUrl,
   gcInactiveCampaigns,
   handleEdgeRequest,
@@ -930,6 +932,123 @@ describe('edge handler', () => {
     expect(fourth.status).toBe(403);
   });
 
+  it('serves a published portrait when the hall is dark and drops it from the index', async () => {
+    const e = env();
+    const campaign = 'vardmark';
+    const deviceKey = 'p'.repeat(32);
+    await handleEdgeRequest(
+      new Request(`https://face.example/control/register?campaign=${campaign}`, {
+        method: 'POST',
+        body: JSON.stringify({ deviceKey }),
+      }),
+      e,
+    );
+    const jpeg = Buffer.from([0xff, 0xd8, 0xff, 0xd9]);
+    const keep = JSON.stringify({ type: 'image/jpeg', data: jpeg.toString('base64') });
+    const drop = JSON.stringify({
+      type: 'image/png',
+      data: Buffer.from([0x89, 0x50, 0x4e, 0x47]).toString('base64'),
+    });
+    const putKeep = await handleEdgeRequest(
+      new Request(`https://face.example/api/avatar/jakov?campaign=${campaign}`, {
+        method: 'PUT',
+        headers: { authorization: `Bearer ${campaign}:${sign(deviceKey, keep)}` },
+        body: keep,
+      }),
+      e,
+    );
+    const putDrop = await handleEdgeRequest(
+      new Request(`https://face.example/api/avatar/ghilzai?campaign=${campaign}`, {
+        method: 'PUT',
+        headers: { authorization: `Bearer ${campaign}:${sign(deviceKey, drop)}` },
+        body: drop,
+      }),
+      e,
+    );
+    expect(putKeep.status).toBe(200);
+    expect(putDrop.status).toBe(200);
+    const both = JSON.stringify({ slugs: ['jakov', 'ghilzai'] });
+    const indexed = await handleEdgeRequest(
+      new Request(`https://face.example/api/avatar-index?campaign=${campaign}`, {
+        method: 'PUT',
+        headers: { authorization: `Bearer ${campaign}:${sign(deviceKey, both)}` },
+        body: both,
+      }),
+      e,
+    );
+    expect(indexed.status).toBe(200);
+
+    const dark = await handleEdgeRequest(
+      new Request('https://demo.kodranni.com/api/avatar/jakov'),
+      e,
+    );
+    expect(dark.status).toBe(200);
+    expect(dark.headers.get('content-type')).toBe('image/jpeg');
+    expect(Buffer.from(await dark.arrayBuffer())).toEqual(jpeg);
+
+    const index = JSON.stringify({ slugs: ['jakov'] });
+    const pruned = await handleEdgeRequest(
+      new Request(`https://face.example/api/avatar-index?campaign=${campaign}`, {
+        method: 'PUT',
+        headers: { authorization: `Bearer ${campaign}:${sign(deviceKey, index)}` },
+        body: index,
+      }),
+      e,
+    );
+    expect(pruned.status).toBe(200);
+    const gone = await handleEdgeRequest(
+      new Request('https://demo.kodranni.com/api/avatar/ghilzai'),
+      e,
+    );
+    expect(gone.status).toBe(404);
+    expect(await e.CAMPAIGNS.get(avatarKvKey(campaign, 'ghilzai'))).toBeNull();
+    expect(await e.CAMPAIGNS.get(avatarIndexKey(campaign))).toContain('jakov');
+
+    const refused = await handleEdgeRequest(
+      new Request(`https://face.example/api/avatar/jakov?campaign=${campaign}`, {
+        method: 'PUT',
+        headers: { authorization: `Bearer ${campaign}:${sign('nope'.repeat(8), keep)}` },
+        body: keep,
+      }),
+      e,
+    );
+    expect(refused.status).toBe(401);
+
+    const weird = JSON.stringify({ type: 'text/plain', data: jpeg.toString('base64') });
+    const badType = await handleEdgeRequest(
+      new Request(`https://face.example/api/avatar/jakov?campaign=${campaign}`, {
+        method: 'PUT',
+        headers: { authorization: `Bearer ${campaign}:${sign(deviceKey, weird)}` },
+        body: weird,
+      }),
+      e,
+    );
+    expect(badType.status).toBe(400);
+  });
+
+  it('proxies a portrait to the live hall instead of the stored copy', async () => {
+    const e = env();
+    const campaign = 'vardmark';
+    await e.CAMPAIGNS.put(
+      avatarKvKey(campaign, 'jakov'),
+      `image/jpeg\n${Buffer.from('stored').toString('base64')}`,
+    );
+    await e.CAMPAIGNS.put(kvKey(campaign, 'origin'), 'https://origin.example');
+    const prev = globalThis.fetch;
+    globalThis.fetch = async () =>
+      new Response('from-live', { status: 200, headers: { 'content-type': 'image/jpeg' } });
+    try {
+      const res = await handleEdgeRequest(
+        new Request('https://demo.kodranni.com/api/avatar/jakov'),
+        e,
+      );
+      expect(res.status).toBe(200);
+      expect(await res.text()).toBe('from-live');
+    } finally {
+      globalThis.fetch = prev;
+    }
+  });
+
   it('tombstones campaigns with no activity for 90 days', async () => {
     const e = env();
     const campaign = 'old';
@@ -941,7 +1060,10 @@ describe('edge handler', () => {
       }),
       e,
     );
+    await e.CAMPAIGNS.put(avatarKvKey(campaign, 'jakov'), 'image/jpeg\nYQ==');
+    await e.CAMPAIGNS.put(avatarIndexKey(campaign), JSON.stringify({ slugs: ['jakov'] }));
     const { tombstoned } = await gcInactiveCampaigns(e, Date.now() + INACTIVE_MS + 1000);
     expect(tombstoned).toContain(campaign);
+    expect(await e.CAMPAIGNS.get(avatarKvKey(campaign, 'jakov'))).toBeNull();
   });
 });

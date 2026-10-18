@@ -1,9 +1,9 @@
-import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
-import { openSqliteStore, seedDemoCampaign } from '@kodranni/store';
-import { edgeOriginWouldLoop, writeArchiveFiles } from '../src/index.js';
+import { openSqliteStore, seedDemoCampaign, type PublicSnapshot } from '@kodranni/store';
+import { edgeOriginWouldLoop, portraitFilesFromSnapshot, writeArchiveFiles } from '../src/index.js';
 
 const dirs: string[] = [];
 afterEach(() => {
@@ -33,6 +33,25 @@ describe('publish archive', () => {
     const json = JSON.parse(readFileSync(r.snapshotPath, 'utf8'));
     expect(json.characters.every((c: { status: string }) => c.status !== 'draft')).toBe(true);
     expect(json.characters.every((c: { initiator?: unknown }) => !c.initiator)).toBe(true);
+  });
+
+  it('reads portrait files named on the snapshot and skips urls and missing files', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'kod-portraits-'));
+    dirs.push(dir);
+    writeFileSync(join(dir, 'jakov.jpg'), Buffer.from([0xff, 0xd8, 0xff]));
+    writeFileSync(join(dir, 'mara.png'), Buffer.from([0x89, 0x50]));
+    const snap = {
+      characters: [
+        { slug: 'jakov', avatar: 'jakov.jpg' },
+        { slug: 'mara', avatar: 'mara.png' },
+        { slug: 'tomaso', avatar: 'https://example.test/tomaso.jpg' },
+        { slug: 'orsa', avatar: '../orsa.jpg' },
+        { slug: 'vito', avatar: 'missing.jpg' },
+      ],
+    } as PublicSnapshot;
+    const files = portraitFilesFromSnapshot(dir, snap);
+    expect(files.map((file) => file.slug)).toEqual(['jakov', 'mara']);
+    expect(files.map((file) => file.type)).toEqual(['image/jpeg', 'image/png']);
   });
 
   it('detects an origin that would loop the public hostname', () => {
