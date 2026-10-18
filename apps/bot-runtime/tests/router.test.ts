@@ -635,6 +635,54 @@ describe('bot router', () => {
     store.close();
   });
 
+  it('lets a Fluxer Storyteller roll a sheet by one name', async () => {
+    const dir = mkdtempSync(join(tmpdir(), 'kod-bot-'));
+    dirs.push(dir);
+    const store = openSqliteStore(join(dir, 'c.sqlite'));
+    seedDemoCampaign(store);
+    const port = mockPort();
+    const ctx: BotContext = {
+      store,
+      port,
+      liveBaseUrl: 'http://127.0.0.1:8742',
+      prompts: new Map(),
+      log: () => {},
+      fluxerStorytellerRoleId: 'role-st',
+    };
+    await handleInteraction(ctx, {
+      type: 'command',
+      id: 'fx-roll',
+      clientEventId: 'fx-roll',
+      user: {
+        platform: 'fluxer',
+        accountId: 'fx-st',
+        displayName: 'Storyteller',
+        roleIds: ['role-st'],
+      },
+      channelId: 'ch',
+      name: 'roll',
+      options: { character: 'Marino' },
+    });
+    expect(port.ephemerals.join('\n')).not.toContain('not bound');
+    expect(port.replies[0]?.title).toBe('Ready · Marino Orvanti');
+    expect(store.getCharacterBySlug('marino')?.player?.accountId).toBeUndefined();
+
+    port.replies.length = 0;
+    port.ephemerals.length = 0;
+    await handleInteraction(ctx, {
+      type: 'command',
+      id: 'fx-player',
+      clientEventId: 'fx-player',
+      user: { platform: 'fluxer', accountId: 'fx-player', displayName: 'Player', roleIds: [] },
+      channelId: 'ch',
+      name: 'roll',
+      options: { character: 'Marino' },
+    });
+    expect(port.replies).toHaveLength(0);
+    expect(port.ephemerals).toContain('That character is not bound to you.');
+    store.close();
+  });
+
   it('lets a Storyteller roll a sheeted person by name', async () => {
     const dir = mkdtempSync(join(tmpdir(), 'kod-bot-'));
     dirs.push(dir);

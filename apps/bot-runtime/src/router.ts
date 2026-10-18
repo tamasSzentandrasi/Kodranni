@@ -381,10 +381,19 @@ async function resolveRollCharacter(
 
 function findSheeted(ctx: BotContext, token: string) {
   const trimmed = token.trim();
+  if (!trimmed) return undefined;
   const bySlug = ctx.store.getCharacterBySlug(trimmed);
   if (bySlug) return bySlug;
   const folded = trimmed.toLowerCase();
-  return ctx.store.listCharacters().find((ch) => ch.name.toLowerCase() === folded);
+  const all = ctx.store.listCharacters();
+  const exact = all.find((ch) => ch.name.toLowerCase() === folded);
+  if (exact) return exact;
+  // Fluxer has no autocomplete, so one name is enough when it matches a single sheet.
+  const partial = all.filter((ch) => {
+    const name = ch.name.toLowerCase();
+    return name.startsWith(`${folded} `) || name.split(/\s+/).includes(folded);
+  });
+  return partial.length === 1 ? partial[0] : undefined;
 }
 
 function omenWords(hit: string | null | undefined, effect?: string): string | null {

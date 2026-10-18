@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { createFluxerAdapter } from '../src/index.js';
+import { rolesFromMemberBody } from '../src/inbound.js';
 import { createFluxerGateway, FLUXER_GATEWAY_URL, type FluxerSocket } from '../src/gateway.js';
 
 class FakeSocket implements FluxerSocket {
@@ -147,6 +148,56 @@ describe('fluxer gateway', () => {
     expect(seen).toEqual(['roll', 'oppose:roll-1']);
     expect(calls.some((call) => call.method === 'POST' && call.url.includes('/messages'))).toBe(true);
     expect(calls.every((call) => call.url.startsWith('https://api.fluxer.app/v1/'))).toBe(true);
+    expect(calls.some((call) => call.url.includes('/members/'))).toBe(false);
+    await port.stop();
+  });
+
+  it('reads the Storyteller role from the member when the message has none', async () => {
+    FakeSocket.opened = [];
+    const roleId = '1234567890123456789';
+    const calls: string[] = [];
+    const fetchImpl: typeof fetch = async (url) => {
+      calls.push(String(url));
+      if (String(url).includes('/members/')) {
+        return new Response(JSON.stringify({ roles: [roleId], nick: null }), { status: 200 });
+      }
+      return new Response(null, { status: 204 });
+    };
+    const roles: string[][] = [];
+    const port = createFluxerAdapter({
+      token: 't',
+      guildId: 'guild-1',
+      playChannelId: 'channel-1',
+      fetch: fetchImpl,
+      gateway: { WebSocket: FakeSocket },
+    });
+    port.onInteraction(async (interaction) => {
+      roles.push(interaction.user.roleIds ?? []);
+    });
+    const starting = port.start();
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    const socket = FakeSocket.opened[0]!;
+    hello(socket);
+    ready(socket);
+    await starting;
+    socket.emit('message', {
+      data: JSON.stringify({
+        op: 0,
+        t: 'MESSAGE_CREATE',
+        s: 2,
+        d: {
+          id: 'm-9',
+          channel_id: 'channel-1',
+          guild_id: 'guild-1',
+          content: '!roll Marino',
+          author: { id: 'user-9', username: 'ada' },
+        },
+      }),
+    });
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    expect(calls.some((url) => url.endsWith('/guilds/guild-1/members/user-9'))).toBe(true);
+    expect(roles).toEqual([[roleId]]);
+    expect(rolesFromMemberBody(`{"roles":[${roleId}]}`)).toEqual([roleId]);
     await port.stop();
   });
 });

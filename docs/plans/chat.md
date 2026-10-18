@@ -114,6 +114,7 @@ Threads, forums, and a Discord Activity that iframes the hall are not this contr
 - Post the omens, on the desk, posts or edits one public net when the Storyteller is finished. Whispered faces are blank, and their lines are not under the picture.
 - `/create` carries The Wanting. The select stages the purchase. Send back sets `creation.returned` and the sheet says the draft is open.
 - Fluxer maps one reaction per enabled button and `resolveFluxerReaction` decides who may use it. `sendCard` posts that embed and those reactions to `https://api.fluxer.app/v1`. The web app host refuses the same post. The command words follow `!` or `/`. Table chat starts the gateway and can turn it off.
+- A Fluxer message does not carry roles. The hall reads the member and treats the saved Storyteller role as the Storyteller. `!roll` takes one name when that name matches a single sheet.
 
 ## Still later
 

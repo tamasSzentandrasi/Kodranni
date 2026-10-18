@@ -6,7 +6,12 @@ import {
   type ChatMessageRef,
 } from '@kodranni/chat-port';
 import { createFluxerGateway, fluxerGatewayToken, type FluxerSocket } from './gateway.js';
-import { interactionFromFluxerEvent, readyUserId, type StoredReaction } from './inbound.js';
+import {
+  interactionFromFluxerEvent,
+  readyUserId,
+  rolesFromMemberBody,
+  type StoredReaction,
+} from './inbound.js';
 
 export { FLUXER_PREFIX_COMMANDS, parsePrefixCommand, prefixCommandOptions } from './prefix.js';
 export type { FluxerPrefixCommand } from './prefix.js';
@@ -72,16 +77,27 @@ export function createFluxerAdapter(opts: {
       gateway = connection;
       connection.onDispatch((event) => {
         if (event.t === 'READY') selfId = readyUserId(event.d);
-        const interaction = interactionFromFluxerEvent({
-          t: event.t,
-          d: event.d,
-          selfId,
-          guildId: opts.guildId,
-          playChannelId: opts.playChannelId,
-          reactions,
-        });
-        if (!interaction || !handler) return;
-        void handler(interaction).catch((err: unknown) => {
+        void (async () => {
+          const interaction = interactionFromFluxerEvent({
+            t: event.t,
+            d: event.d,
+            selfId,
+            guildId: opts.guildId,
+            playChannelId: opts.playChannelId,
+            reactions,
+          });
+          if (!interaction || !handler) return;
+          // A Fluxer message has no member. The Storyteller role is on the membership.
+          if (interaction.user.roleIds === undefined) {
+            interaction.user.roleIds = await memberRoles(
+              call,
+              opts.log,
+              interaction.guildId || opts.guildId,
+              interaction.user.accountId,
+            );
+          }
+          await handler(interaction);
+        })().catch((err: unknown) => {
           const raw = err instanceof Error ? err.message : String(err);
           opts.log?.(`fluxer command failed: ${raw.replace(/\d{6,}/g, '#')}`);
         });
@@ -141,6 +157,27 @@ function wireMessage(mapped: { content?: string; embeds: unknown[] }): {
   embeds: unknown[];
 } {
   return mapped.content ? { content: mapped.content, embeds: mapped.embeds } : { embeds: mapped.embeds };
+}
+
+/** GET the member. A missing role list is empty, and the failure stays off the card. */
+async function memberRoles(
+  call: (method: string, path: string) => Promise<string>,
+  log: ((line: string) => void) | undefined,
+  guildId: string,
+  accountId: string,
+): Promise<string[]> {
+  if (!guildId || !accountId) return [];
+  try {
+    const text = await call(
+      'GET',
+      `/guilds/${encodeURIComponent(guildId)}/members/${encodeURIComponent(accountId)}`,
+    );
+    return rolesFromMemberBody(text);
+  } catch (err) {
+    const raw = err instanceof Error ? err.message : String(err);
+    log?.(`fluxer member roles failed: ${raw.replace(/\d{6,}/g, '#')}`);
+    return [];
+  }
 }
 
 async function putReactions(

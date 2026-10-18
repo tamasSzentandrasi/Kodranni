@@ -25,9 +25,25 @@ function snowflake(value: unknown): string {
   return '';
 }
 
-function rolesOf(member: Record<string, unknown>): string[] {
-  if (!Array.isArray(member.roles)) return [];
+/** Present only when the event carried `roles`. A missing field is not an empty set. */
+function rolesOf(member: Record<string, unknown>): string[] | undefined {
+  if (!Array.isArray(member.roles)) return undefined;
   return member.roles.map(snowflake).filter((role) => role.length > 0);
+}
+
+/**
+ * Role ids from a guild member body.
+ * The digits are read as written, so a large snowflake is not rounded.
+ */
+export function rolesFromMemberBody(text: string): string[] {
+  const match = text.match(/"roles"\s*:\s*\[([^\]]*)\]/);
+  if (!match?.[1]) return [];
+  const ids: string[] = [];
+  for (const token of match[1].split(',')) {
+    const digits = token.match(/"(\d+)"/)?.[1] ?? token.match(/(\d+)/)?.[1];
+    if (digits) ids.push(digits);
+  }
+  return ids;
 }
 
 export function readyUserId(data: unknown): string {
