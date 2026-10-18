@@ -1,6 +1,6 @@
 /**
  * Gateway dispatch → the shared chat interaction.
- * A leading ! is a command. A reaction on a card we posted is that button.
+ * A leading ! or / is a command. A reaction on a card we posted is that button.
  */
 import type { ChatInteraction } from '@kodranni/chat-port';
 import { parsePrefixCommand, prefixCommandOptions } from './prefix.js';

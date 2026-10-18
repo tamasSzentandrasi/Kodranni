@@ -247,11 +247,13 @@ export async function startFluxerRuntime(): Promise<BotHandle> {
   const logPath = `${campaignRuntimeLogsDir(slug)}/bot.log`;
   mkdirSync(dirname(logPath), { recursive: true });
   const store = openSqliteStore(storePath);
+  const log = (line: string) => logLine(logPath, line);
   const port = createFluxerAdapter({
     token,
     guildId,
     playChannelId,
     gateway: { WebSocket: Socket as unknown as new (url: string) => FluxerSocket },
+    log,
   });
   const shareUrl = (publicUrl || liveBase).replace(/\/$/, '');
   const ctx: BotContext = {
@@ -260,7 +262,7 @@ export async function startFluxerRuntime(): Promise<BotHandle> {
     liveBaseUrl: shareUrl,
     archiveBaseUrl: shareUrl,
     prompts: new Map(),
-    log: (line) => logLine(logPath, line),
+    log,
     fluxerStorytellerRoleId,
   };
   port.onInteraction((i) => handleInteraction(ctx, i));
@@ -278,7 +280,7 @@ export async function startFluxerRuntime(): Promise<BotHandle> {
   try {
     await port.sendCard(playChannelId, {
       title: 'Kodranni session',
-      description: 'Living record is on Fluxer. Commands start with !.',
+      description: 'Living record is on Fluxer. Commands start with !roll or /roll.',
       accent: 'blood',
       fields: [{ name: 'Community', value: shareUrl, inline: false }],
     });

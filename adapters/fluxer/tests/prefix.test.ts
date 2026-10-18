@@ -8,6 +8,10 @@ describe('parsePrefixCommand', () => {
     }
     expect(parsePrefixCommand('!award-word Mara')).toEqual({ name: 'award-word', args: 'Mara' });
     expect(parsePrefixCommand('!NPC-ROLL the miller')).toEqual({ name: 'npc-roll', args: 'the miller' });
+    expect(parsePrefixCommand('/roll Marino Orvanti')).toEqual({
+      name: 'roll',
+      args: 'Marino Orvanti',
+    });
   });
 
   it('ignores ordinary speech and words that are not commands', () => {

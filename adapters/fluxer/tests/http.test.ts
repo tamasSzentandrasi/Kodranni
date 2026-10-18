@@ -62,7 +62,7 @@ describe('fluxer HTTP cards', () => {
     const port = createFluxerAdapter({ token: 't', guildId: 'g', fetch: fetchImpl });
     await port.sendCard(CHANNEL, { title: 'x' });
     expect(calls).toHaveLength(1);
-    expect(calls[0]?.url).toBe(`https://web.fluxer.app/api/v1/channels/${CHANNEL}/messages`);
+    expect(calls[0]?.url).toBe(`https://api.fluxer.app/v1/channels/${CHANNEL}/messages`);
     expect(JSON.parse(calls[0]?.body ?? '{}')).not.toHaveProperty('components');
   });
 
@@ -87,6 +87,26 @@ describe('fluxer HTTP cards', () => {
     });
     expect(calls.map((call) => call.method)).toEqual(['PATCH', 'DELETE', 'PUT']);
     expect(calls[2]?.url).toContain(`/reactions/${encodeURIComponent('🎲')}/@me`);
+  });
+
+  it('names the Fluxer error code and leaves the body out', async () => {
+    const fetchImpl: typeof fetch = async () =>
+      new Response(
+        JSON.stringify({
+          code: 'INVALID_API_ORIGIN',
+          message: 'nope 123456789012345678',
+        }),
+        { status: 403 },
+      );
+    const port = createFluxerAdapter({
+      token: 't',
+      guildId: 'g',
+      apiBase: 'http://fluxer.test/api/v1',
+      fetch: fetchImpl,
+    });
+    await expect(port.sendCard(CHANNEL, { title: 'x' })).rejects.toThrow(
+      'fluxer post failed (403 INVALID_API_ORIGIN)',
+    );
   });
 
   it('refuses to call out without a token', async () => {

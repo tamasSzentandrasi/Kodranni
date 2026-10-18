@@ -146,7 +146,7 @@ describe('fluxer gateway', () => {
     await new Promise((resolve) => setTimeout(resolve, 0));
     expect(seen).toEqual(['roll', 'oppose:roll-1']);
     expect(calls.some((call) => call.method === 'POST' && call.url.includes('/messages'))).toBe(true);
-    expect(calls.every((call) => call.url.startsWith('https://web.fluxer.app/api/v1/'))).toBe(true);
+    expect(calls.every((call) => call.url.startsWith('https://api.fluxer.app/v1/'))).toBe(true);
     await port.stop();
   });
 });

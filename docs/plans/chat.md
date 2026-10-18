@@ -113,7 +113,7 @@ Threads, forums, and a Discord Activity that iframes the hall are not this contr
 - An opposed roll steps an open Tide and the bot edits the stored message. Unopposed rolls do not. Close is a button on that message. The desk slider does not edit it. There is no `/tide` command.
 - Post the omens, on the desk, posts or edits one public net when the Storyteller is finished. Whispered faces are blank, and their lines are not under the picture.
 - `/create` carries The Wanting. The select stages the purchase. Send back sets `creation.returned` and the sheet says the draft is open.
-- Fluxer maps one reaction per enabled button and `resolveFluxerReaction` decides who may use it. `sendCard` posts that embed and those reactions. The command words follow `!`. Table chat starts the gateway and can turn it off.
+- Fluxer maps one reaction per enabled button and `resolveFluxerReaction` decides who may use it. `sendCard` posts that embed and those reactions to `https://api.fluxer.app/v1`. The web app host refuses the same post. The command words follow `!` or `/`. Table chat starts the gateway and can turn it off.
 
 ## Still later
 

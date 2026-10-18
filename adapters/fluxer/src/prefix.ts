@@ -27,12 +27,15 @@ const OPTION_KEYS = [
   'player',
 ] as const;
 
-/** `!roll`, `!award-word Mara`. Anything else, including a button id, is not a command. */
+/**
+ * `!roll` or `/roll`, then `!award-word Mara`.
+ * Fluxer has no slash registry, so a leading slash is the same word when the client sends it.
+ */
 export function parsePrefixCommand(
   text: string,
 ): { name: FluxerPrefixCommand; args: string } | null {
   let body = text.trim();
-  if (!body.startsWith('!')) return null;
+  if (!body.startsWith('!') && !body.startsWith('/')) return null;
   body = body.slice(1).trim();
   const lower = body.toLowerCase();
   const name = FLUXER_PREFIX_COMMANDS.find((cmd) => lower === cmd || lower.startsWith(`${cmd} `));

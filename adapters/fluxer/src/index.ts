@@ -12,7 +12,8 @@ export { FLUXER_PREFIX_COMMANDS, parsePrefixCommand, prefixCommandOptions } from
 export type { FluxerPrefixCommand } from './prefix.js';
 export type { FluxerSocket } from './gateway.js';
 
-const FLUXER_API = 'https://web.fluxer.app/api/v1';
+/** Bot HTTP host. The web app host answers the same post with INVALID_API_ORIGIN. */
+const FLUXER_API = 'https://api.fluxer.app/v1';
 
 /**
  * Fluxer ChatPort. The card on the wire is the Discord embed.
@@ -29,6 +30,8 @@ export function createFluxerAdapter(opts: {
     url?: string;
     WebSocket: new (url: string) => FluxerSocket;
   };
+  /** Desk log. A failed command must not vanish, and the line must not carry a snowflake. */
+  log?: (line: string) => void;
 }): ChatPort {
   const token = fluxerGatewayToken(opts.token);
   const base = (opts.apiBase ?? FLUXER_API).replace(/\/$/, '');
@@ -78,7 +81,10 @@ export function createFluxerAdapter(opts: {
           reactions,
         });
         if (!interaction || !handler) return;
-        void handler(interaction).catch(() => undefined);
+        void handler(interaction).catch((err: unknown) => {
+          const raw = err instanceof Error ? err.message : String(err);
+          opts.log?.(`fluxer command failed: ${raw.replace(/\d{6,}/g, '#')}`);
+        });
       });
       try {
         await connection.start();
@@ -168,8 +174,20 @@ async function fluxerCall(
     body: body === undefined ? undefined : JSON.stringify(body),
   });
   const text = await res.text();
-  if (!res.ok) throw new Error(`fluxer ${method.toLowerCase()} failed (${res.status})`);
+  if (!res.ok) throw fluxerFailure(method, res.status, text);
   return text;
+}
+
+/** Status and Fluxer’s code only. The body can carry ids, so it stays out of the log. */
+function fluxerFailure(method: string, status: number, text: string): Error {
+  let code = '';
+  try {
+    const parsed = JSON.parse(text) as { code?: unknown };
+    if (typeof parsed.code === 'string' && /^[A-Z0-9_]+$/.test(parsed.code)) code = parsed.code;
+  } catch {
+    /* status is enough */
+  }
+  return new Error(`fluxer ${method.toLowerCase()} failed (${status}${code ? ` ${code}` : ''})`);
 }
 
 function messageIdFrom(text: string): string {
