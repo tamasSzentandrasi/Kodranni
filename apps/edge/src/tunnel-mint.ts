@@ -37,6 +37,12 @@ export function publicHostnameFor(campaign: string): string | null {
 
 export type HostnameAttach = 'attached' | 'skipped' | 'failed';
 
+export interface HostnameAttachResult {
+  result: HostnameAttach;
+  /** Cloudflare's refusal, with long ids removed. Set only when result is failed. */
+  detail?: string;
+}
+
 /**
  * Attach `<slug>.kodranni.com` to this Worker. Does not touch `origin-<slug>`.
  * Missing Cloudflare credentials skip. A refused name does not throw.
@@ -45,36 +51,44 @@ export async function attachCampaignHostname(
   campaign: string,
   env: MintEnv,
   cfFetch: typeof fetch = fetch,
-): Promise<HostnameAttach> {
+): Promise<HostnameAttachResult> {
   const host = publicHostnameFor(campaign);
   const token = env.CF_API_TOKEN?.trim();
   const account = env.CF_ACCOUNT_ID?.trim();
   const zone = env.CF_ZONE_ID?.trim();
-  if (!host || !token || !account || !zone) return 'skipped';
+  if (!host || !token || !account || !zone) return { result: 'skipped' };
   const headers = {
     authorization: `Bearer ${token}`,
     'content-type': 'application/json',
   };
   try {
-    if (await hostnameAlreadyAttached(cfFetch, account, headers, host)) return 'attached';
+    if (await hostnameAlreadyAttached(cfFetch, account, headers, host)) return { result: 'attached' };
   } catch {
     /* list failed; the attach below is the same name again if it is already there */
   }
-  try {
-    await cfJson(cfFetch, `${CF}/accounts/${account}/workers/domains`, {
-      method: 'PUT',
-      headers,
-      body: JSON.stringify({
-        hostname: host,
-        service: 'kodranni-edge',
-        environment: 'production',
-        zone_id: zone,
-      }),
-    });
-    return 'attached';
-  } catch {
-    return 'failed';
+  const bodies = [
+    { hostname: host, service: 'kodranni-edge', environment: 'production', zone_id: zone },
+    { hostname: host, service: 'kodranni-edge', zone_id: zone, enabled: true },
+  ];
+  let detail = 'attach failed';
+  for (const body of bodies) {
+    try {
+      await cfJson(cfFetch, `${CF}/accounts/${account}/workers/domains`, {
+        method: 'PUT',
+        headers,
+        body: JSON.stringify(body),
+      });
+      return { result: 'attached' };
+    } catch (err) {
+      detail = attachFailure(err);
+    }
   }
+  return { result: 'failed', detail };
+}
+
+function attachFailure(err: unknown): string {
+  const msg = err instanceof Error ? err.message : String(err);
+  return msg.replace(/[0-9a-f]{16,}/gi, '[id]').slice(0, 180);
 }
 
 async function hostnameAlreadyAttached(

@@ -99,9 +99,9 @@ describe('attachCampaignHostname', () => {
       called += 1;
       return new Response('{}');
     };
-    expect(await attachCampaignHostname('aspalath', {}, cfFetch)).toBe('skipped');
-    expect(await attachCampaignHostname('demo', env, cfFetch)).toBe('skipped');
-    expect(await attachCampaignHostname('origin-aspalath', env, cfFetch)).toBe('skipped');
+    expect((await attachCampaignHostname('aspalath', {}, cfFetch)).result).toBe('skipped');
+    expect((await attachCampaignHostname('demo', env, cfFetch)).result).toBe('skipped');
+    expect((await attachCampaignHostname('origin-aspalath', env, cfFetch)).result).toBe('skipped');
     expect(called).toBe(0);
   });
 
@@ -125,7 +125,7 @@ describe('attachCampaignHostname', () => {
         { headers: { 'content-type': 'application/json' } },
       );
     };
-    expect(await attachCampaignHostname('aspalath', env, cfFetch)).toBe('attached');
+    expect((await attachCampaignHostname('aspalath', env, cfFetch)).result).toBe('attached');
     const put = calls.find((call) => call.method === 'PUT');
     expect(put?.url).toContain('/workers/domains');
     expect(put?.body).toContain('"hostname":"aspalath.kodranni.com"');
@@ -144,7 +144,7 @@ describe('attachCampaignHostname', () => {
         { headers: { 'content-type': 'application/json' } },
       );
     };
-    expect(await attachCampaignHostname('aspalath', env, listed)).toBe('attached');
+    expect((await attachCampaignHostname('aspalath', env, listed)).result).toBe('attached');
     expect(again.every((call) => call.method === 'GET')).toBe(true);
   });
 
@@ -161,6 +161,8 @@ describe('attachCampaignHostname', () => {
         headers: { 'content-type': 'application/json' },
       });
     };
-    expect(await attachCampaignHostname('aspalath', env, cfFetch)).toBe('failed');
+    const failed = await attachCampaignHostname('aspalath', env, cfFetch);
+    expect(failed.result).toBe('failed');
+    expect(failed.detail).toContain('hostname taken');
   });
 });

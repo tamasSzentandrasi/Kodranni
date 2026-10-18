@@ -255,7 +255,8 @@ export async function runLiveKernel(opts: {
       deviceKey: ensureEdgeDeviceKey(),
     });
     if (registered.hostname === 'failed') {
-      console.error('  edge: public name was not attached');
+      const why = registered.detail ? ` (${registered.detail})` : '';
+      console.error(`  edge: public name was not attached${why}`);
     }
   } catch (e) {
     console.error(`  edge register: ${e instanceof Error ? e.message : e}`);

@@ -595,8 +595,13 @@ export async function handleEdgeRequest(
         JSON.stringify({ createdAt: now, lastActivity: now } satisfies CampaignMeta),
       );
     }
-    const hostname = await attachCampaignHostname(requested, env);
-    return json({ ok: true, campaign: requested, hostname });
+    const attached = await attachCampaignHostname(requested, env);
+    return json({
+      ok: true,
+      campaign: requested,
+      hostname: attached.result,
+      ...(attached.detail ? { detail: attached.detail } : {}),
+    });
   }
 
   if (
