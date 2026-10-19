@@ -1,9 +1,9 @@
 # Chat cards
 
 **Date:** 2026-10-17  
-**Status:** The roll face, the Tide picture, the omen picture, the creation cards, and Fluxer’s reaction card are in the tree. Registering the slash list is still a separate operator step. This file does not perform it. Fluxer starts from Table chat. The Discord gateway stays stopped.
+**Status:** The roll face, the Tide picture, the omen picture, and the creation cards are in the tree. Registering the slash list is still a separate operator step. This file does not perform it. Discord is the table. Fluxer keeps the same card and is not started. The Discord gateway stays stopped.
 
-Discord and Fluxer render one card. The words, the die picture, and the accent colour are the same on both. The control that is a select or a button on Discord is the same choice on Fluxer. Until Fluxer ships slash commands and components (roadmap item 7, October 2026, still in development), that choice is a reaction on the same message. The adapter does not invent a second layout.
+Discord renders the card. The words, the die picture, and the accent colour are the card Fluxer keeps for when its messages can hold the same controls. Discord is the table until then.
 
 A chat client cannot draw the hall. It can show a short message, one colour bar, one fetched image, and a few choices. Seventy-two skills do not fit in one menu. A modal still holds five fields. An ephemeral reply can be edited for about fifteen minutes. A public message can be edited for as long as the bot holds its id.
 
@@ -70,7 +70,7 @@ Birth Omen and Guiding Hand use the typer’s active character and offer only an
 
 The Tide is the message that carries a picture of the Guidebook bar: both dyes, the marker, the side names, size, footing. The text under it repeats the marker sentence so the line can be quoted. The bot stores the message id and replaces the picture when a roll steps the marker. It does not follow the desk slider. An ephemeral Tide dies in about fifteen minutes. A spoiler blur is not a secret.
 
-Fluxer gets the same PNG on the embed and the same edit. A reply to that message is the step until a button exists.
+Fluxer keeps the same picture for when that card can hold the same control.
 
 ---
 
@@ -94,9 +94,9 @@ Confirm is one channel line and one Session inbox row. Approve and Send back sta
 
 ---
 
-## Fluxer until components
+## Fluxer, kept
 
-The payload is the same embed: title, description, fields, the tier colour, the die thumbnail. The mapper still carries buttons in the components array for the day item 7 ships. That array stays off the wire. `sendCard` posts the embed and adds one reaction per enabled button. A reaction the sender may not use is removed. A spent choice edits the embed and clears the reactions. The same command words follow `!` on the message. Table chat starts the gateway. A message or a reaction is the interaction. The Worker interaction URL stays Discord’s.
+The payload is the same embed: title, description, fields, the tier colour, the die thumbnail. The mapper still carries the same buttons for the day Fluxer can show them. Table chat does not start Fluxer. Discord is the table. The Worker interaction URL stays Discord’s.
 
 Threads, forums, and a Discord Activity that iframes the hall are not this contract. Speech stays in the channel.
 
@@ -113,8 +113,7 @@ Threads, forums, and a Discord Activity that iframes the hall are not this contr
 - An opposed roll steps an open Tide and the bot edits the stored message. Unopposed rolls do not. Close is a button on that message. The desk slider does not edit it. There is no `/tide` command.
 - Post the omens, on the desk, posts or edits one public net when the Storyteller is finished. Whispered faces are blank, and their lines are not under the picture.
 - `/create` carries The Wanting. The select stages the purchase. Send back sets `creation.returned` and the sheet says the draft is open.
-- Fluxer maps one reaction per enabled button and `resolveFluxerReaction` decides who may use it. `sendCard` posts that embed and those reactions to `https://api.fluxer.app/v1`. The web app host refuses the same post. The command words follow `!` or `/`. Table chat starts the gateway and can turn it off.
-- A Fluxer message does not carry roles. The hall reads the member and treats the saved Storyteller role as the Storyteller. `!roll` takes one name when that name matches a single sheet. The Ready card has no menus there: reply to it with a skill, an Archetype, or Primitive. 🎲 steps the die, ➕ steps Exertion, 🎯 casts, and ✕ cancels.
+- Fluxer keeps the same card. Table chat does not start it. Discord is the table. The public API host is `https://api.fluxer.app/v1`. The web app host refuses the same post.
 
 ## Still later
 

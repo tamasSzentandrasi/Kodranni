@@ -17,7 +17,7 @@ Hungarian word lock: [hungarian-lexicon.md](./hungarian-lexicon.md). Character-m
 | **Guidebook** (`kodranni.com`) | Rules. One public book. |
 | **Campaign UI** | The hall, the hierarchy, the character map, and the sheets. Players see this on the campaign hostname. On the machine that holds the store, the same pages are the **Storyteller Desk**. |
 | **Discord** | Hands at the table: dice, Words, the Tide card, the scene board the players read. The roll card is [chat.md](./chat.md). |
-| **Fluxer** | The same card and the same choices. The Session tab saves the server, the play channel, and the Storyteller role. A reaction stands in for each button until Fluxer ships components. |
+| **Fluxer** | The same card as Discord, kept until Fluxer can hold the same controls. The Session tab saves the server, the play channel, and the Storyteller role. Discord is the table. |
 
 One process holds SQLite, the campaign UI, and the Discord handler. The desk is those pages with tools, on loopback. It is not a second app. The Session tab is where the Storyteller opens the night and where players read the scene and the Tide.
 
@@ -48,7 +48,7 @@ One process holds SQLite, the campaign UI, and the Discord handler. The desk is 
 | `/intent` | Chat. Storyteller posts an agreed pool for a named player. Kept. |
 | Opposed roll, Tide-linked roll | A reply to the channel result, or to the Tide card. The result is a channel message. |
 | Found a campaign | One command: `kodranni --name "…"`. The public name is `https://<slug>.kodranni.com/`. See [hosting.md](./hosting.md). |
-| Open or end the public night | `kodranni start` and `kodranni stop`. The desk header keeps the Storyteller Desk switch. Go live and Turn off sit on Discord and on Fluxer. |
+| Open or end the public night | `kodranni start` and `kodranni stop`. The desk header keeps the Storyteller Desk switch. Go live and Turn off sit on Discord. Fluxer keeps its fields and is not started. |
 | Open a Tide | Session tab. The channel card shows, steps, and closes it. |
 | Scene Omen faces | Edited on the Session tab. Players read the faces there. The channel board is rewritten on save once that card exists. |
 | `/create`, `/claim`, Birth Omen, Guiding Hand, `/award-word` | Chat. Private dice stay ephemeral to that player and the Storyteller. |
@@ -72,7 +72,7 @@ One process holds SQLite, the campaign UI, and the Discord handler. The desk is 
 
 ## Already built, still behind this table
 
-Aspalath’s hall, hierarchy, character map, and sheets are the visual reference. Creation on the sheet is the older dock. The source command list uses `/select` and `/npc-roll`; `/focus`, `/st-roll`, `/reclaim`, `/map`, and `/live` are out of that list. The Discord application still has the last guild registration. Actions has no bot token, so the edge step skips. Discord bind is on the Session tab. Players use `https://<slug>.kodranni.com/`. `?campaign=` still works on `kodranni.com`. `demo.kodranni.com` stays the Aspalath showcase. Fluxer uses that same Session tab plate, and a card is the embed plus one reaction. The host walkthrough has never been signed.
+Aspalath’s hall, hierarchy, character map, and sheets are the visual reference. Creation on the sheet is the older dock. The source command list uses `/select` and `/npc-roll`; `/focus`, `/st-roll`, `/reclaim`, `/map`, and `/live` are out of that list. The Discord application still has the last guild registration. Actions has no bot token, so the edge step skips. Discord bind is on the Session tab. Players use `https://<slug>.kodranni.com/`. `?campaign=` still works on `kodranni.com`. `demo.kodranni.com` stays the Aspalath showcase. Fluxer uses that same Session tab plate and keeps the same card. Discord is the table. The host walkthrough has never been signed.
 
 The Automation chapter now follows this table, in English and Hungarian. The gap between the table and the code is listed in [status.md](./status.md). The desk shell is the hall on loopback. Later steps stay unbuilt until asked.
 

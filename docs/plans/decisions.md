@@ -38,7 +38,7 @@ The desk is the campaign UI when the request is local.
 
 **Writes.** Desk actions POST to the campaign API. The handler rejects the call unless `isLocalDeskRequest`.
 
-**What moves off operator.** Discord bind, snapshot download and restore, founding, and add-person leave `/operator` and `/community/setup/` and become plates on the hall, the diagram, and the sheet. Those routes are then removed. Fluxer bind is the same plate, beside Discord. The book already states that contract. The card is the same embed, and one reaction stands in for each button until Fluxer ships components.
+**What moves off operator.** Discord bind, snapshot download and restore, founding, and add-person leave `/operator` and `/community/setup/` and become plates on the hall, the diagram, and the sheet. Those routes are then removed. Fluxer bind is the same plate, beside Discord. The book already states that contract. The card is the same embed. Fluxer waits until its messages can hold the same controls. Discord is the table.
 
 **Status strip**, on the desk layout only, replaces the emissary page:
 
@@ -216,8 +216,8 @@ The name is given once, with the setup command in [hosting.md](./hosting.md). Th
 | Canvas | Download and upload. |
 | Snapshot | Download the public snapshot. Restore one. |
 | Discord | Invite the shared bot, then guild, play channel, Storyteller role. |
-| Fluxer | The same desk controls and the same card as Discord. A reaction stands in for each button until Fluxer ships components. |
-| Go live | On Discord and on Fluxer, under Table chat. The desk header keeps the Storyteller Desk switch. |
+| Fluxer | The same card as Discord, kept until Fluxer can hold the same controls. The Session tab still saves the server, the play channel, and the Storyteller role. |
+| Go live | On Discord, under Table chat. Fluxer is not started. The desk header keeps the Storyteller Desk switch. |
 | Notebook | Private. Never archived. |
 | Scene faces | The list editor above. Session only. |
 | Tide | Read-only on the strip: open or not. |

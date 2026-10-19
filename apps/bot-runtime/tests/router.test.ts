@@ -665,39 +665,7 @@ describe('bot router', () => {
     });
     expect(port.ephemerals.join('\n')).not.toContain('not bound');
     expect(port.replies[0]?.title).toBe('Ready · Marino Orvanti');
-    expect(port.replies[0]?.description).toContain('Reply to this card');
-    expect(port.replies[0]?.description).toContain('**');
-    const confirmId = port.replies[0]?.buttons?.find((button) => button.id.startsWith('roll-cast:'))?.id.slice(
-      'roll-cast:'.length,
-    );
-    await handleInteraction(ctx, {
-      type: 'command',
-      id: 'fx-line',
-      clientEventId: 'fx-line',
-      user: {
-        platform: 'fluxer',
-        accountId: 'fx-st',
-        displayName: 'Storyteller',
-        roleIds: ['role-st'],
-      },
-      channelId: 'ch',
-      messageRef: { platform: 'fluxer', channelId: 'ch', messageId: 'card-1' },
-      name: 'roll-line',
-      options: { line: 'Command', confirm: confirmId },
-    });
-    const updated = port.replies.at(-1);
-    expect(updated?.fields?.find((field) => field.name === 'Skill')?.value).toBe('Command');
-    expect(updated?.fields?.find((field) => field.name === 'Archetype')?.value).toBe('Warrior');
-    await handleInteraction(ctx, {
-      type: 'command',
-      id: 'fx-miss',
-      clientEventId: 'fx-miss',
-      user: { platform: 'fluxer', accountId: 'fx-st', displayName: 'Storyteller', roleIds: ['role-st'] },
-      channelId: 'ch',
-      name: 'roll-line',
-      options: { line: 'not a skill', confirm: confirmId },
-    });
-    expect(port.ephemerals.at(-1)).toMatch(/Name a skill/);
+    expect(port.replies[0]?.description).toContain('The menus are Foundation');
     expect(store.getCharacterBySlug('marino')?.player?.accountId).toBeUndefined();
 
     port.replies.length = 0;

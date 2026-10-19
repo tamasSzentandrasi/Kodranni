@@ -16,7 +16,7 @@ A Kodranni **hibrid** asztali rendszer: először a történet, alatta a szoftve
 - **Állapot a tett pillanatában** — ki dob, mennyi erőfeszítés maradt, visszhangok, alapítómítoszok — anélkül, hogy a lapokat chatbe gépelnéd.
 - **Online folytonosság** ülések között a közös csarnokon és a lapokon.
 
-Ez a lap az asztal szerződése. A csarnok és a lapok egy feljegyzés. Azon a gépen, amely a feljegyzést tartja, ugyanezek a lapok a **mesélői pult** (Storyteller Desk), és a változtatás eszközei ott vannak. A Discord és a Fluxer viszi a dobást, a sodrást, és a chatben kimondott szót. A frissen mutatott dobás sérülése az eredménykártyán és a pulton is beírható.
+Ez a lap az asztal szerződése. A csarnok és a lapok egy feljegyzés. Azon a gépen, amely a feljegyzést tartja, ugyanezek a lapok a **mesélői pult** (Storyteller Desk), és a változtatás eszközei ott vannak. A Discord viszi a dobást, a sodrást, és a chatben kimondott szót. A Fluxer ugyanazt a szerződést tartja, amíg a kártyái ugyanazokat a vezérlőket nem tudják tartani. A frissen mutatott dobás sérülése az eredménykártyán és a pulton is beírható.
 
 ----------
 
@@ -41,7 +41,7 @@ A csarnok állandó állapotán kívül marad, mert az ülésé:
 
 ## Discord és Fluxer
 
-A Discord és a Fluxer egy chat-szerződés. Mindkettő szervert, játékcsatornát és mesélői szerepet köt, és a fiókokat karakterekhez rendeli. Egy parancs mindkettőn ugyanazt jelenti.
+A Discord és a Fluxer egy chat-szerződés. Mindkettő szervert, játékcsatornát és mesélői szerepet köt, és a fiókokat karakterekhez rendeli. Egy parancs mindkettőn ugyanazt jelenti. A Discord az asztal, amíg a Fluxer kártyája ugyanazokat a vezérlőket nem tudja tartani.
 
 A játékosok egy címet tartanak a csarnokhoz. Amíg az ülés tart, ez a cím az élő asztal. Ha az ülés áll, az utolsó nyilvános feljegyzést mutatja. A fiókok hozzárendelése a mesélő gépén marad.
 
@@ -60,7 +60,7 @@ A játékosok egy címet tartanak a csarnokhoz. Amíg az ülés tart, ez a cím 
 | `/tide` | Mesélő | Megnyitja a sodrás kártyáját. |
 | `/review` | Mesélő | Megismétli a hírt, hogy egy karakter a pulton vár. |
 
-Discordon az eredménykártya Ellendobás gombja nyitja a kész kártyát arra a dobásra. Fluxeren a dobásra adott válasz az ellendobás. Válasz a sodrás kártyájára, vagy egy már ahhoz kötött dobásra: a sodrás lép. Az eredmény csatornaüzenet. Az adottság és a jártasság párjának nem kell egyeznie.
+Az eredménykártya Ellendobás gombja nyitja a kész kártyát arra a dobásra. A sodrás kártyáján a Dobás lépteti a sodrást. Az eredmény csatornaüzenet. Az adottság és a jártasság párjának nem kell egyeznie.
 
 ----------
 
@@ -76,13 +76,13 @@ Discordon az eredménykártya Ellendobás gombja nyitja a kész kártyát arra a
 
 **Aki lap nélkül van.** `/npc-roll`. Felirat és a kockák. A világ legtöbb embere soha nem kap lapot. Lap a játékoskaraktereké, és azoké, akik vissza fognak térni.
 
-**Ellendobás és sodrás.** Válasz, ahogy fent.
+**Ellendobás és sodrás.** A kártya vezérlője, ahogy fent.
 
 ----------
 
 ## Hol változik a feljegyzés
 
-**Sodrás.** A `/tide` egy kártyát tesz ki. A mesélő megadja a méretet (kis csetepaté, csetepaté, csata), az erőviszonyt, a két oldal nevét, és mindkét oldal színét. A kártya a [Sodrás](/hu/tide/) fejezet sávját mutatja, és minden kötött válasz frissíti a képet. A mesélő a kártyáról zárja a sodrást. A pult mutatja, nyitva van-e.
+**Sodrás.** A `/tide` egy kártyát tesz ki. A mesélő megadja a méretet (kis csetepaté, csetepaté, csata), az erőviszonyt, a két oldal nevét, és mindkét oldal színét. A kártya a [Sodrás](/hu/tide/) fejezet sávját mutatja, és minden lépés frissíti a képet. A mesélő a kártyáról zárja a sodrást. A pult mutatja, nyitva van-e.
 
 **Jeleneti lapok.** A mesélő a pulton veszi fel, javítja és törli őket. A mentés újraírja a csatorna tábláját, amelyet az asztal olvas.
 

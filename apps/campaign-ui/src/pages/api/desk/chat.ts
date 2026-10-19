@@ -7,7 +7,7 @@ import {
   ensureDiscordRuntime,
   stopDiscordRuntime,
 } from '../../../lib/discord-boot';
-import { ensureFluxerRuntime, fluxerRuntimeOn, stopFluxerRuntime } from '../../../lib/fluxer-boot';
+import { stopFluxerRuntime } from '../../../lib/fluxer-boot';
 
 function json(data: unknown, status = 200): Response {
   return new Response(JSON.stringify(data), {
@@ -16,7 +16,7 @@ function json(data: unknown, status = 200): Response {
   });
 }
 
-/** POST /api/desk/chat — start or stop Discord or Fluxer. Loopback desk only. */
+/** POST /api/desk/chat — start or stop Discord, or stop a Fluxer gateway already up. Loopback desk only. */
 export async function POST({ request }: { request: Request }): Promise<Response> {
   const denied = rejectUnlessDesk(request);
   if (denied) return denied;
@@ -29,6 +29,9 @@ export async function POST({ request }: { request: Request }): Promise<Response>
   const platform = body.platform === 'discord' || body.platform === 'fluxer' ? body.platform : null;
   const op = body.op === 'live' || body.op === 'end' ? body.op : null;
   if (!platform || !op) return json({ error: 'need platform and op' }, 400);
+  if (platform === 'fluxer' && op === 'live') {
+    return json({ error: 'Fluxer waits for the same controls Discord uses.' }, 409);
+  }
   try {
     if (op === 'end') {
       if (platform === 'discord') await stopDiscordRuntime();
@@ -44,8 +47,7 @@ export async function POST({ request }: { request: Request }): Promise<Response>
       if (!started) return json({ error: 'Discord did not start' }, 500);
       return json({ ok: true, bound: discordRuntimeOn() });
     }
-    await ensureFluxerRuntime();
-    return json({ ok: true, bound: fluxerRuntimeOn() });
+    return json({ error: 'Fluxer waits for the same controls Discord uses.' }, 409);
   } catch (err) {
     const message = err instanceof Error ? err.message : 'could not start';
     return json({ error: message }, 500);

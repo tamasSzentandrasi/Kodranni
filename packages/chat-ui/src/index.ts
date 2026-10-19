@@ -252,8 +252,6 @@ export interface RollConfirmCardInput {
   archetype?: string;
   archetypes?: { id: string; name: string; tag?: string }[];
   skills?: { name: string; foundation?: string }[];
-  /** Fluxer has no selects. The card tells the player to reply, and reactions stand in for the buttons. */
-  surface?: 'fluxer';
 }
 
 /**
@@ -380,33 +378,22 @@ export function buildRollConfirmCard(input: RollConfirmCardInput): ChatCard {
     },
     { id: `roll-cancel:${input.confirmId}`, label: 'Cancel', style: 'danger' },
   ];
-  const lines =
-    input.surface === 'fluxer'
-      ? [
-          'Reply to this card with a skill, an Archetype, or Primitive.',
-          'A Foundation or an Echo can be named the same way.',
-          '',
-          '🎲 steps the die. ➕ steps Exertion. 🎯 casts. ✕ cancels.',
-          '',
-          `**${input.poolFormula}**`,
-        ]
-      : [
-          'The menus are Foundation, Archetype, Skill, and Echo, in that order.',
-          '',
-          'Die steps Disadvantage, Ordinary, and Advantage.',
-          '',
-          'Exertion spends one point, or two when an Echo is named.',
-          '',
-          `**${input.poolFormula}**`,
-        ];
+  const lines = [
+    'The menus are Foundation, Archetype, Skill, and Echo, in that order.',
+    '',
+    'Die steps Disadvantage, Ordinary, and Advantage.',
+    '',
+    'Exertion spends one point, or two when an Echo is named.',
+    '',
+    `**${input.poolFormula}**`,
+  ];
   if (input.liveSheetUrl) lines.push('', `[Sheet](${input.liveSheetUrl})`);
   return {
     title: `Ready · ${input.characterName}`,
     description: lines.join('\n'),
     accent: dieAccent(input.dieTier),
     thumbnailUrl: input.dieImageUrl,
-    footer:
-      input.surface === 'fluxer' ? '🎯 posts the roll.' : 'Only you see this card. Cast posts the roll.',
+    footer: 'Only you see this card. Cast posts the roll.',
     fields: [
       { name: 'Foundation', value: input.foundation, inline: true },
       { name: 'Archetype', value: archetypeShown, inline: true },

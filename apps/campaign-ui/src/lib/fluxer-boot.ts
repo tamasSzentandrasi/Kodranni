@@ -1,6 +1,7 @@
 /**
  * Fluxer gateway in this process so rolls stay on the hall's sqlite.
- * Go live on the Session tab is what starts it. Tests do not.
+ * Table chat does not start it. A caller can still stop a gateway that is already up.
+ * Tests do not.
  */
 import { startFluxerRuntime, type BotHandle } from '@kodranni/bot-runtime';
 

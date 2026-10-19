@@ -16,7 +16,7 @@ Kodranni is a **hybrid** tabletop system: storytelling first, software as ledger
 - **State at the moment of action** — who is rolling, Exertion left, Echoes, Myths — without retyping sheets into chat.
 - **Online continuity** between sessions on the shared hall and sheets.
 
-This page is the contract at the table. The hall and the sheets are one record. On the machine that holds that record, the same pages are the **Storyteller Desk**, and the tools for changing the record are there. Discord and Fluxer carry the dice, the Tide, and the words said in chat. Harm from a roll just shown is applied on that result card, and on the desk.
+This page is the contract at the table. The hall and the sheets are one record. On the machine that holds that record, the same pages are the **Storyteller Desk**, and the tools for changing the record are there. Discord carries the dice, the Tide, and the words said in chat. Fluxer keeps that same contract for when its cards can hold the same controls. Harm from a roll just shown is applied on that result card, and on the desk.
 
 ----------
 
@@ -41,7 +41,7 @@ Kept off the standing hall, because they belong to the session:
 
 ## Discord and Fluxer
 
-Discord and Fluxer are one chat contract. Each binds a server, a play channel, and the Storyteller role, and maps accounts to characters. A command means the same thing on both.
+Discord and Fluxer are one chat contract. Each binds a server, a play channel, and the Storyteller role, and maps accounts to characters. A command means the same thing on both. Discord is the table until Fluxer can hold the same controls on a card.
 
 Players keep one address for the hall. While the session is up, that address is the live table. When the session is down, it shows the last public record. Account maps stay on the Storyteller’s machine.
 
@@ -60,7 +60,7 @@ Players keep one address for the hall. While the session is up, that address is 
 | `/tide` | Storyteller | Opens the Tide card. |
 | `/review` | Storyteller | Repeats the notice that a character is waiting on the desk. |
 
-On Discord, Oppose on the result card opens the Ready card for that roll. On Fluxer, a reply to a roll is an opposed roll. A reply to the Tide card, or to a roll already tied to it, steps the Tide. The result is a channel message. Pairs of Foundation and Skill need not match.
+Oppose on the result card opens the Ready card for that roll. Roll on the Tide card steps the Tide. The result is a channel message. Pairs of Foundation and Skill need not match.
 
 ----------
 
@@ -76,13 +76,13 @@ On Discord, Oppose on the result card opens the Ready card for that roll. On Flu
 
 **Someone with no sheet.** `/npc-roll`. A label and the dice. Most people in the world never receive a sheet. A sheet is for player characters and for people who will return.
 
-**Opposed, and Tide.** Reply, as above.
+**Opposed, and Tide.** The control on the card, as above.
 
 ----------
 
 ## Where the record changes
 
-**Tide.** `/tide` posts one card. The Storyteller sets the size (small skirmish, skirmish, battle), the footing, the two side names, and a colour for each side. The card shows the bar from the [Tide](/tide/) chapter, and every linked reply updates that picture. The Storyteller closes the Tide from the card. The desk shows whether one is open.
+**Tide.** `/tide` posts one card. The Storyteller sets the size (small skirmish, skirmish, battle), the footing, the two side names, and a colour for each side. The card shows the bar from the [Tide](/tide/) chapter, and each step updates that picture. The Storyteller closes the Tide from the card. The desk shows whether one is open.
 
 **Scene faces.** The Storyteller adds, edits, and clears them on the desk. Saving rewrites the channel board the table is reading.
 

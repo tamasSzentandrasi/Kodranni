@@ -96,7 +96,7 @@ Content: `src/content/docs/`. Deploy: GitHub Pages on `main`.
 | Reconstructible demo | `campaign seed-demo` (author). Players Found a **campaign name** |
 | Archive / one hostname | KV snapshot + Worker. Dark = no host process |
 | Host loop | Unsigned — [status.md](docs/plans/status.md) |
-| Fluxer | Table chat, under Discord. Go live opens the gateway |
+| Fluxer | Kept. The same card as Discord. Table chat does not start it |
 
 Plans: [overview.md](docs/plans/overview.md) · [decisions.md](docs/plans/decisions.md) · [status.md](docs/plans/status.md) · [hosting.md](docs/plans/hosting.md). Hungarian word lock: [hungarian-lexicon.md](docs/plans/hungarian-lexicon.md).
 

@@ -109,7 +109,7 @@ describe('session page', () => {
       discord: { guildId: '', channelId: '', roleId: '' },
       fluxer: { guildId: '100000000000000044', channelId: '', roleId: '' },
       discordLive: false,
-      fluxerLive: true,
+      fluxerLive: false,
       bound: [{ name: 'Tomaso Fero', displayName: 'Mara' }],
     });
     expect(desk).toContain('data-omen-edit');
@@ -153,10 +153,11 @@ describe('session page', () => {
     expect(desk).toContain('>Fluxer<');
     expect(desk).toContain('data-chat-state="discord">Off');
     expect(desk).toContain('data-chat-platform="discord" data-chat-op="live"');
-    expect(desk).toContain('data-chat-state="fluxer">Bound');
-    expect(desk).toContain('data-chat-platform="fluxer" data-chat-op="end"');
+    expect(desk).toContain('data-chat-state="fluxer">Kept');
+    expect(desk).toContain('Fluxer waits for the same controls.');
+    expect(desk).not.toContain('data-chat-platform="fluxer"');
     expect(desk).toContain('>Go live<');
-    expect(desk).toContain('>Turn off<');
+    expect(desk).not.toContain('>Turn off<');
     expect(desk).toContain('data-fluxer-guild');
     expect(desk).toContain('value="100000000000000044"');
     expect(desk).toContain('aria-label="Fluxer guild"');
@@ -623,10 +624,9 @@ describe('POST /api/desk/chat', () => {
     const live = await chatPost({
       request: deskRequest('http://127.0.0.1:8742/api/desk/chat', { platform: 'fluxer', op: 'live' }),
     });
-    expect(live.status).toBe(500);
+    expect(live.status).toBe(409);
     const body = (await live.json()) as { error?: string };
-    expect(body.error).toBe('Set the Fluxer server and play channel first.');
-    expect(body.error).not.toMatch(/\d{15,}/);
+    expect(body.error).toBe('Fluxer waits for the same controls Discord uses.');
   });
 });
 

@@ -426,8 +426,12 @@ function chatCategory(opts: {
   live: boolean;
 }): string {
   const fields = opts.fields;
+  const kept = opts.platform === 'fluxer' && !opts.live;
   const op = opts.live ? 'end' : 'live';
   const verb = opts.live ? 'Turn off' : 'Go live';
+  const control = kept
+    ? 'Fluxer waits for the same controls.'
+    : `<button type="button" class="session-quiet" data-chat-platform="${opts.platform}" data-chat-op="${op}">${verb}</button>`;
   return `<section class="session-chat" ${opts.attrs}>
     <h3>${opts.heading}</h3>
     <div class="session-menu__grid">
@@ -436,8 +440,8 @@ function chatCategory(opts: {
       <label>Storyteller role <input class="kod-ink" ${opts.roleAttr} value="${esc(fields.roleId)}" inputmode="numeric" autocomplete="off" aria-label="${opts.roleLabel}"></label>
     </div>
     <p class="session-menu__meta session-chat__live">
-      <span data-chat-state="${opts.platform}">${opts.live ? 'Bound' : 'Off'}</span>
-      <button type="button" class="session-quiet" data-chat-platform="${opts.platform}" data-chat-op="${op}">${verb}</button>
+      <span data-chat-state="${opts.platform}">${kept ? 'Kept' : opts.live ? 'Bound' : 'Off'}</span>
+      ${control}
     </p>
   </section>`;
 }

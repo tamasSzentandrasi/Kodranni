@@ -50,47 +50,6 @@ export function readyUserId(data: unknown): string {
   return snowflake(record(record(data).user).id);
 }
 
-function replyTarget(data: Record<string, unknown>): string {
-  const fromRef = snowflake(record(data.message_reference).message_id);
-  if (fromRef) return fromRef;
-  return snowflake(record(data.referenced_message).id);
-}
-
-/** A reply to the Ready card. Fluxer has no selects, so the words are the menu. */
-function rollLineReply(
-  data: Record<string, unknown>,
-  reactions: ReadonlyMap<string, readonly StoredReaction[]>,
-  channelId: string,
-  guildId: string,
-  accountId: string,
-  member: Record<string, unknown>,
-): ChatInteraction | null {
-  const line = text(data.content).trim();
-  const messageId = replyTarget(data);
-  if (!line || !messageId) return null;
-  const cast = reactions.get(messageId)?.find((row) => row.id.startsWith('roll-cast:'));
-  if (!cast) return null;
-  const author = record(data.author);
-  const displayName = text(member.nick) || text(author.global_name) || text(author.username);
-  const id = snowflake(data.id) || `${channelId}:${accountId}`;
-  return {
-    type: 'command',
-    id,
-    clientEventId: id,
-    user: {
-      platform: 'fluxer',
-      accountId,
-      displayName: displayName || undefined,
-      roleIds: rolesOf(member),
-    },
-    channelId,
-    guildId: guildId || undefined,
-    messageRef: { platform: 'fluxer', channelId, messageId },
-    name: 'roll-line',
-    options: { line, confirm: cast.id.slice('roll-cast:'.length) },
-  };
-}
-
 export function interactionFromFluxerEvent(input: {
   t: string;
   d: unknown;
@@ -112,8 +71,8 @@ export function interactionFromFluxerEvent(input: {
     const accountId = snowflake(author.id);
     if (!accountId || (input.selfId && accountId === input.selfId)) return null;
     const parsed = parsePrefixCommand(text(data.content));
+    if (!parsed) return null;
     const member = record(data.member);
-    if (!parsed) return rollLineReply(data, input.reactions, channelId, guildId, accountId, member);
     const displayName = text(member.nick) || text(author.global_name) || text(author.username);
     const id = snowflake(data.id) || `${channelId}:${accountId}`;
     return {
