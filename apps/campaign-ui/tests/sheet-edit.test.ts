@@ -5,6 +5,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { issueSheetToken, startCreateFromBot } from '@kodranni/app';
 import { openSqliteStore } from '@kodranni/store';
 import { POST } from '../src/pages/api/character/[slug]';
+import { redirectSheetEdit } from '../src/lib/sheet-auth';
 
 const dirs: string[] = [];
 const prevStore = process.env.KODRANNI_STORE_PATH;
@@ -83,5 +84,37 @@ describe('POST /api/character st-edit', () => {
     const store = openSqliteStore(path);
     expect(store.getCharacterBySlug(slug)!.creation?.claimable).toBe(true);
     store.close();
+  });
+});
+
+describe('sheet edit link', () => {
+  it('parks a valid edit token and leaves an invalid one on the address', () => {
+    process.env.KODRANNI_SHEET_TOKEN_SECRET = 'sheet-edit-test';
+    const token = issueSheetToken({
+      platform: 'discord',
+      accountId: 'player-1',
+      characterSlug: 'ada-mill',
+      secret: 'sheet-edit-test',
+    });
+    const url = new URL(
+      `http://127.0.0.1:8742/characters/ada/?edit=${encodeURIComponent(token)}&campaign=y`,
+    );
+    const res = redirectSheetEdit(url, 'ada-mill');
+    expect(res?.status).toBe(303);
+    const location = res?.headers.get('location') ?? '';
+    expect(location).toBe('/characters/ada/?campaign=y');
+    expect(location).not.toContain('edit=');
+    const cookie = res?.headers.get('set-cookie') ?? '';
+    expect(cookie).toContain('kod_edit=');
+    expect(cookie).toContain('HttpOnly');
+    expect(cookie).toContain('SameSite=Lax');
+    expect(cookie).not.toContain('Secure');
+    expect(res?.headers.get('cache-control')).toBe('no-store');
+    expect(
+      redirectSheetEdit(new URL('http://127.0.0.1:8742/characters/ada/?edit=nope'), 'ada-mill'),
+    ).toBeNull();
+    expect(
+      redirectSheetEdit(new URL('http://127.0.0.1:8742/characters/ada/?campaign=y'), 'ada-mill'),
+    ).toBeNull();
   });
 });

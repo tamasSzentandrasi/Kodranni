@@ -31,10 +31,7 @@
   }
 
   function tokenHeaders() {
-    const headers = { 'Content-Type': 'application/json' };
-    const m = document.cookie.match(/(?:^|;\s*)kod_edit=([^;]+)/);
-    if (m) headers.Authorization = 'Bearer ' + decodeURIComponent(m[1]);
-    return headers;
+    return { 'Content-Type': 'application/json' };
   }
 
   function paintWeight(el, w) {

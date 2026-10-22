@@ -49,20 +49,10 @@
     }
   }
 
-  function readEditToken() {
-    const q = new URLSearchParams(location.search).get('edit');
-    if (q) return q;
-    const m = document.cookie.match(/(?:^|;\s*)kod_edit=([^;]+)/);
-    return m ? decodeURIComponent(m[1]) : '';
-  }
-
   async function post(body) {
-    const headers = { 'Content-Type': 'application/json' };
-    const tok = readEditToken();
-    if (tok) headers.Authorization = 'Bearer ' + tok;
     const res = await fetch('/api/character/' + encodeURIComponent(slug), {
       method: 'POST',
-      headers,
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
       credentials: 'same-origin',
     });
@@ -70,17 +60,6 @@
     if (!res.ok) throw new Error(data.error || res.statusText);
     return data;
   }
-
-  // Persist ?edit= into cookie and clean the address bar
-  (function persistEditQuery() {
-    const u = new URL(location.href);
-    const q = u.searchParams.get('edit');
-    if (!q) return;
-    document.cookie =
-      'kod_edit=' + encodeURIComponent(q) + '; Path=/; Max-Age=86400; SameSite=Lax';
-    u.searchParams.delete('edit');
-    history.replaceState({}, '', u.pathname + u.search + u.hash);
-  })();
 
   function nextFoundCost(rating) {
     if (rating === 0) return 1; // restore ∅ → I

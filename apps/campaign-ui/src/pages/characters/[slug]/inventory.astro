@@ -6,7 +6,7 @@ import CreationChrome from '../../../components/CreationChrome.astro';
 import SheetChrome from '../../../components/SheetChrome.astro';
 import { getCharacter, loadCommunity } from '../../../data/load';
 import { deskToolsOn } from '../../../lib/loopback';
-import { editCookieHeader, resolveSheetEdit } from '../../../lib/sheet-auth';
+import { editCookieHeader, redirectSheetEdit, resolveSheetEdit } from '../../../lib/sheet-auth';
 
 const { slug } = Astro.params;
 const c = loadCommunity();
@@ -14,6 +14,8 @@ const ch = getCharacter(slug!);
 if (!ch) {
   return new Response('Character not found', { status: 404, statusText: 'Not Found' });
 }
+const parkedEdit = redirectSheetEdit(Astro.url, ch.slug);
+if (parkedEdit) return parkedEdit;
 
 const live = c.source === 'live';
 const unlocked = Boolean(live && ch.creation && !ch.creation.locked);

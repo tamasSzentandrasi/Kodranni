@@ -12,7 +12,7 @@ import { openSqliteStore, type DegradeProposal } from '@kodranni/store';
 import { getCharacter, loadCommunity } from '../../../data/load';
 import { harmPips } from '../../../lib/format';
 import { deskToolsOn } from '../../../lib/loopback';
-import { editCookieHeader, resolveSheetEdit } from '../../../lib/sheet-auth';
+import { editCookieHeader, redirectSheetEdit, resolveSheetEdit } from '../../../lib/sheet-auth';
 
 const { slug } = Astro.params;
 const c = loadCommunity();
@@ -20,6 +20,9 @@ const ch = getCharacter(slug!);
 if (!ch) {
   return new Response('Character not found', { status: 404, statusText: 'Not Found' });
 }
+const parkedEdit = redirectSheetEdit(Astro.url, ch.slug);
+if (parkedEdit) return parkedEdit;
+
 const skillMap = new Map(ch.skills.map((s) => [s.name, s]));
 const exP = ch.exertion.max <= 0 ? 0 : Math.min(1, ch.exertion.current / ch.exertion.max);
 const echoP = ch.echoCapacity <= 0 ? 0 : Math.min(1, ch.echoWeight / ch.echoCapacity);

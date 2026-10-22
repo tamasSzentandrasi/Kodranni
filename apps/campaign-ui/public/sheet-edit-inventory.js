@@ -14,10 +14,7 @@
   const ICON_CAP = 2 * 1024 * 1024;
 
   function tokenHeaders() {
-    const headers = { 'Content-Type': 'application/json' };
-    const m = document.cookie.match(/(?:^|;\s*)kod_edit=([^;]+)/);
-    if (m) headers.Authorization = 'Bearer ' + decodeURIComponent(m[1]);
-    return headers;
+    return { 'Content-Type': 'application/json' };
   }
 
   function kind() {
@@ -378,12 +375,8 @@
       fd.append('file', file, file.name);
       fd.append('index', String(idx));
       fd.append('name', named);
-      const headers = {};
-      const m = document.cookie.match(/(?:^|;\s*)kod_edit=([^;]+)/);
-      if (m) headers.Authorization = 'Bearer ' + decodeURIComponent(m[1]);
       const res = await fetch('/api/character/' + encodeURIComponent(slug) + '/item-icon', {
         method: 'POST',
-        headers,
         credentials: 'same-origin',
         body: fd,
       });

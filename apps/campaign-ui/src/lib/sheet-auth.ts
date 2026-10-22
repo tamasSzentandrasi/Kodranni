@@ -36,7 +36,29 @@ export function resolveSheetEdit(
 }
 
 export function editCookieHeader(token: string, maxAgeSec = 60 * 60 * 24): string {
-  return `${COOKIE}=${encodeURIComponent(token)}; Path=/; Max-Age=${maxAgeSec}; SameSite=Lax`;
+  // No Secure: the desk is http://127.0.0.1, and a Secure cookie would be dropped there.
+  return `${COOKIE}=${encodeURIComponent(token)}; Path=/; Max-Age=${maxAgeSec}; SameSite=Lax; HttpOnly`;
+}
+
+/**
+ * A chat link arrives as ?edit=. Park a valid token in the HttpOnly cookie and
+ * leave the address. An invalid token stays on the request and is not redirected.
+ */
+export function redirectSheetEdit(url: URL, characterSlug: string): Response | null {
+  const token = url.searchParams.get('edit');
+  if (!token) return null;
+  const verdict = verifySheetToken(token, { characterSlug });
+  if (!verdict.ok) return null;
+  const next = new URL(url.href);
+  next.searchParams.delete('edit');
+  return new Response(null, {
+    status: 303,
+    headers: {
+      Location: `${next.pathname}${next.search}${next.hash}`,
+      'Set-Cookie': editCookieHeader(token),
+      'Cache-Control': 'no-store',
+    },
+  });
 }
 
 export { COOKIE as EDIT_COOKIE_NAME };
