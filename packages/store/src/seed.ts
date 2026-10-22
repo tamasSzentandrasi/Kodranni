@@ -71,7 +71,11 @@ function demoSeedCharacters(): Map<string, CharacterRecord> {
 
 export { fillDemoItemIcons } from './demo-icons.js';
 
-/** Older live demo stores kept objects and tags in the Trait list. Use the current seed. */
+/**
+ * Older live demo stores kept objects and tags in the Trait list.
+ * A list that still matches that older shape is replaced with the seed.
+ * A name the seed does not have was written at the table, and it stays.
+ */
 export function fillDemoTraits(ch: CharacterRecord): CharacterRecord {
   const seeded = demoSeedCharacters().get(ch.slug);
   if (!seeded) return ch;
@@ -83,6 +87,8 @@ export function fillDemoTraits(ch: CharacterRecord): CharacterRecord {
   ) {
     return ch;
   }
+  const seededNames = new Set(want.map((trait) => trait.name));
+  if (have.some((trait) => trait.name && !seededNames.has(trait.name))) return ch;
   return { ...ch, traits: want.map((t) => ({ name: t.name, note: t.note })) };
 }
 

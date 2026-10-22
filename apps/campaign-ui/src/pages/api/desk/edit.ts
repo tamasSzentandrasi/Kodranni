@@ -254,7 +254,13 @@ export async function POST({ request }: { request: Request }) {
         result = sheetResult(store, deskHarmStep(store, str(body.slug), str(body.track), num(body.delta)));
         break;
       case 'stabilise':
-        result = sheetResult(store, deskStabilise(store, str(body.slug)));
+        result = sheetResult(
+          store,
+          deskStabilise(store, str(body.slug), {
+            name: str(body.traitName),
+            note: str(body.traitNote),
+          }),
+        );
         break;
       case 'degrade-propose': {
         const mode = str(body.mode);

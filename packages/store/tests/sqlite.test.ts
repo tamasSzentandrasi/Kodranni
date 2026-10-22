@@ -263,7 +263,7 @@ describe('campaign.toml', () => {
     expect(cfg.cloudflareTunnelToken).toBe('tok');
   });
 
-  it('replaces invalid demo Traits with the current seed list', () => {
+  it('keeps a Trait the seed does not name, and restores a list that only rearranges the seed', () => {
     const dir = mkdtempSync(join(tmpdir(), 'kodranni-store-'));
     dirs.push(dir);
     const store = openSqliteStore(join(dir, 'community.sqlite'));
@@ -273,8 +273,16 @@ describe('campaign.toml', () => {
       ...orsa,
       traits: [{ name: 'Sister’s ring', note: 'Isotta’s marriage-band.' }],
     });
-    const loaded = store.getCharacterBySlug('orsa')!;
-    expect(loaded.traits.map((t) => t.name)).toEqual(['Literate']);
+    expect(store.getCharacterBySlug('orsa')!.traits).toEqual([
+      { name: 'Sister’s ring', note: 'Isotta’s marriage-band.' },
+    ]);
+    store.putCharacter({
+      ...store.getCharacterBySlug('orsa')!,
+      traits: [{ name: 'Literate', note: 'a note the seed does not carry' }],
+    });
+    const restored = store.getCharacterBySlug('orsa')!;
+    expect(restored.traits.map((t) => t.name)).toEqual(['Literate']);
+    expect(restored.traits[0]?.note).toBeUndefined();
     store.close();
   });
 

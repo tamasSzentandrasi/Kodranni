@@ -842,8 +842,22 @@ export function deskHarmStep(store: CommunityStorePort, slug: string, track: str
   return deskEditCharacter(store, slug, { harm: { [track]: value } });
 }
 
-export function deskStabilise(store: CommunityStorePort, slug: string) {
-  return deskEditCharacter(store, slug, { dying: false });
+export function deskStabilise(
+  store: CommunityStorePort,
+  slug: string,
+  trait?: { name?: string; note?: string },
+) {
+  const ch = store.getCharacterBySlug(slug);
+  if (!ch) throw new Error(`unknown character: ${slug}`);
+  const name = trait?.name?.trim() ?? '';
+  const note = trait?.note?.trim() ?? '';
+  const patch: StEditCharacterPatch = { dying: false };
+  if (name) {
+    const traits = (ch.traits ?? []).map((row) => ({ ...row }));
+    traits.push(note ? { name, note } : { name });
+    patch.traits = traits;
+  }
+  return deskEditCharacter(store, slug, patch);
 }
 
 export function deskSkillStep(

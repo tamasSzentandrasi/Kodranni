@@ -4,7 +4,7 @@ import { join } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
 import { mulberry32, skillThreshold } from '@kodranni/domain';
 import { openSqliteStore, seedDemoCampaign } from '@kodranni/store';
-import { executePlayerRoll, executeStorytellerNpcRoll } from '../src/roll.js';
+import { executePlayerRoll, executeStorytellerNpcRoll, undoPlayerRoll } from '../src/roll.js';
 
 const dirs: string[] = [];
 afterEach(() => {
@@ -105,6 +105,7 @@ describe('executePlayerRoll', () => {
         rng: () => 0,
         clientEventId: `level-${foundation}`,
       });
+      expect(rolled.died).toBe(false);
       const after = store
         .getCharacterBySlug('tomaso')!
         .skills.find((skill) => skill.name === 'Carpentry & Masonry')!;
@@ -139,6 +140,67 @@ describe('executePlayerRoll', () => {
     expect(row.rating).toBe(0);
     expect(row.practice).toBe(2);
     expect(row.threshold).toBe(48);
+    store.close();
+  });
+
+  it('refuses a Dying roll with no Exertion, and a second die at one point', () => {
+    const store = demoStore();
+    const ch = store.getCharacterBySlug('tomaso')!;
+    ch.dying = true;
+    ch.exertion.current = 1;
+    store.putCharacter(ch);
+    expect(() =>
+      executePlayerRoll(store, {
+        characterSlug: 'tomaso',
+        foundation: 'Strength',
+        skill: 'Carpentry & Masonry',
+        exertionDice: 0,
+        rng: () => 0,
+      }),
+    ).toThrow(/Dying characters must spend Exertion on every roll/);
+    expect(() =>
+      executePlayerRoll(store, {
+        characterSlug: 'tomaso',
+        foundation: 'Strength',
+        skill: 'Carpentry & Masonry',
+        exertionDice: 2,
+        echoInvoked: true,
+        rng: () => 0,
+      }),
+    ).toThrow(/not enough Exertion/);
+    store.close();
+  });
+
+  it('clears Dying on the killing spend, and undo restores status, Dying, and Exertion', () => {
+    const store = demoStore();
+    const ch = store.getCharacterBySlug('tomaso')!;
+    const echoes = ch.echoes?.length ?? 0;
+    ch.dying = true;
+    ch.status = 'active';
+    ch.harm.Fever = 3;
+    ch.exertion.current = 1;
+    store.putCharacter(ch);
+    const rolled = executePlayerRoll(store, {
+      characterSlug: 'tomaso',
+      foundation: 'Strength',
+      skill: 'Carpentry & Masonry',
+      exertionDice: 1,
+      rng: () => 0,
+      clientEventId: 'dying-kill',
+    });
+    expect(rolled.died).toBe(true);
+    const dead = store.getCharacterBySlug('tomaso')!;
+    expect(dead.status).toBe('dead');
+    expect(dead.dying).toBe(false);
+    expect(dead.exertion.current).toBe(0);
+    expect(dead.harm.Fever).toBe(3);
+    expect(dead.echoes ?? []).toHaveLength(echoes);
+    undoPlayerRoll(store, rolled.rollId);
+    const back = store.getCharacterBySlug('tomaso')!;
+    expect(back.status).toBe('active');
+    expect(back.dying).toBe(true);
+    expect(back.exertion.current).toBe(1);
+    expect(back.harm.Fever).toBe(3);
     store.close();
   });
 });

@@ -61,6 +61,8 @@ export interface PlayerRollResult {
   poolFormula: string;
   whyPool: string;
   reused: boolean;
+  /** True when this spend left a Dying character at Exertion 0. */
+  died: boolean;
 }
 
 function publishOmen(
@@ -297,6 +299,7 @@ export function executePlayerRoll(
   const diedOnRoll = ch.status !== 'dead' && Boolean(ch.dying) && ch.exertion.current <= 0;
   if (diedOnRoll) {
     ch.status = 'dead';
+    ch.dying = false;
   }
 
   if (skill && resolved.practiceGained > 0) {
@@ -387,6 +390,7 @@ export function executePlayerRoll(
     poolFormula,
     whyPool: whyParts.join('; '),
     reused: false,
+    died: diedOnRoll,
   };
 }
 

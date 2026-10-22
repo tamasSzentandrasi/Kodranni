@@ -233,10 +233,24 @@ if (desk && c.storePath) {
           }
         </div>
         {
-          desk && ch.dying && (
-            <button type="button" class="kod-btn" data-desk-stabilise>
-              Stabilise
-            </button>
+          desk && (
+            <form class="dying-confirm" data-desk-stabilise-form hidden={!ch.dying}>
+              <p>
+                Roll Resolve + Healing first. Then record the Trait that remains. An empty name
+                still clears Dying. The track stays at 3.
+              </p>
+              <label>
+                Trait
+                <input class="kod-ink" data-stabilise-name autocomplete="off" />
+              </label>
+              <label>
+                Note
+                <input class="kod-ink" data-stabilise-note autocomplete="off" />
+              </label>
+              <button type="button" class="kod-btn" data-desk-stabilise>
+                Stabilise
+              </button>
+            </form>
           )
         }
       </section>

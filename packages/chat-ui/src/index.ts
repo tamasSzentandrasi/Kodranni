@@ -1,4 +1,5 @@
 import type { CardAccent, ChatButton, ChatCard, ChatSelect } from '@kodranni/chat-port';
+import { isMark } from '@kodranni/domain';
 
 /** Guidebook die-tier language (Advantage / Ordinary / Disadvantage). */
 export function dieTierLabel(tier: number): string {
@@ -56,7 +57,8 @@ export interface RollCardInput {
   omen: number | null;
   omenHit: string | null;
   margin?: number;
-  practiceGained?: number;
+  /** Set when the spend left a Dying character at Exertion 0. */
+  died?: boolean;
   whyPool?: string;
   /** Quiet line under the dice, such as a Tide link. */
   aside?: string;
@@ -69,16 +71,11 @@ export interface RollCardInput {
   portraitUrl?: string;
 }
 
-/** A face of 5 or more is a Mark. Same rule as the domain counter. */
-function faceIsMark(face: number): boolean {
-  return face >= 5;
-}
-
-/** Discord ansi block. A face of 5 or higher is painted bright. */
+/** Discord ansi block. A face of 5 or higher is painted bright, via isMark. */
 function diceAnsi(faces: number[]): string {
   const row = faces
     .map((face) => {
-      const paint = faceIsMark(face) ? '\u001b[1;33m' : '\u001b[2;37m';
+      const paint = isMark(face) ? '\u001b[1;33m' : '\u001b[2;37m';
       return `${paint}${face}\u001b[0m`;
     })
     .join('   ');
@@ -196,6 +193,7 @@ export function buildRollResultCard(input: RollCardInput): ChatCard {
     '',
     `${dieMark(input.dieTier)}   ${input.intentLine}`,
   ];
+  if (input.died) lines.push('', 'They died.');
   if (input.aside) lines.push('', input.aside);
 
   const buttons = [];

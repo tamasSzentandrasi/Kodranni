@@ -43,6 +43,24 @@ describe('chat-ui cards', () => {
     expect(card.fields?.find((f) => f.name === 'Pool')?.inline).toBe(true);
     expect(card.fields?.find((f) => f.name === 'Pool')?.value).toBe('2+2 = 4d8');
     expect(card.fields?.find((f) => f.name === 'Practice')).toBeUndefined();
+    expect(card.description).not.toContain('They died.');
+    const killed = buildRollResultCard({
+      characterName: 'Tomas',
+      intentLine: 'Strength + Healing · d8',
+      poolFormula: '2+1 = 3d8',
+      dieTier: 8,
+      faces: [4, 6, 1],
+      marks: 1,
+      omen: null,
+      omenHit: null,
+      rollId: 'dead',
+      died: true,
+    });
+    expect(killed.description).toContain('They died.');
+    expect(killed.description).toContain('\u001b[1;33m6');
+    expect(killed.description).toContain('\u001b[2;37m4');
+    expect(killed.fields?.find((f) => f.name === 'Practice')).toBeUndefined();
+    expect(killed.footer).toBe(dieTierLabel(8));
     expect(card.buttons?.some((b) => b.id === 'oppose:r1')).toBe(true);
     const withSt = buildRollResultCard({
       characterName: 'Tomas',

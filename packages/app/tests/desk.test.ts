@@ -289,6 +289,30 @@ describe('desk sheet', () => {
     store.close();
   });
 
+  it('records a Trait on stabilise, and an empty name still clears Dying', () => {
+    const store = demoStore();
+    const slug = 'tomaso';
+    const ch = store.getCharacterBySlug(slug)!;
+    ch.dying = true;
+    ch.harm.Fever = 3;
+    store.putCharacter(ch);
+    const before = store.getCharacterBySlug(slug)!.traits.length;
+    deskStabilise(store, slug, { name: '  Lame left hand  ', note: '  the fever left it  ' });
+    const healed = store.getCharacterBySlug(slug)!;
+    expect(healed.dying).toBe(false);
+    expect(healed.harm.Fever).toBe(3);
+    expect(healed.traits.at(-1)).toEqual({ name: 'Lame left hand', note: 'the fever left it' });
+    expect(healed.traits).toHaveLength(before + 1);
+    healed.dying = true;
+    store.putCharacter(healed);
+    deskStabilise(store, slug, { name: '   ', note: 'ignored' });
+    const again = store.getCharacterBySlug(slug)!;
+    expect(again.dying).toBe(false);
+    expect(again.harm.Fever).toBe(3);
+    expect(again.traits).toHaveLength(before + 1);
+    store.close();
+  });
+
   it('proposes a time leap, confirms the rank drop, and keeps the proposal off the snapshot', () => {
     const store = demoStore();
     const slug = 'tomaso';

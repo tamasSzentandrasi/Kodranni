@@ -301,7 +301,7 @@ async function castConfirm(
     marks: result.marks,
     omen: result.omen,
     omenHit: result.omenSecret ? null : omenWords(result.omenHit, result.omenEffect),
-    practiceGained: result.practiceGained,
+    died: result.died,
     whyPool: result.whyPool,
     aside: c.tideLink
       ? answering

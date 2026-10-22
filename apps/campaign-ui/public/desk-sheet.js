@@ -87,19 +87,8 @@
         const pips = el.querySelector('.pips');
         if (pips) pips.setAttribute('aria-label', pts + ' of 3');
       });
-      const groups = document.querySelector('.found-groups');
-      let stab = document.querySelector('[data-desk-stabilise]');
-      if (data.dying && !stab && groups) {
-        stab = document.createElement('button');
-        stab.type = 'button';
-        stab.className = 'kod-btn';
-        stab.setAttribute('data-desk-stabilise', '');
-        stab.textContent = 'Stabilise';
-        stab.addEventListener('click', function () {
-          send({ op: 'stabilise', slug: slug });
-        });
-        groups.after(stab);
-      } else if (!data.dying && stab) stab.remove();
+      const form = document.querySelector('[data-desk-stabilise-form]');
+      if (form) form.hidden = !data.dying;
     }
 
     function paintDegrade(data) {
@@ -250,7 +239,19 @@
     const stabilise = document.querySelector('[data-desk-stabilise]');
     if (stabilise) {
       stabilise.addEventListener('click', function () {
-        send({ op: 'stabilise', slug: slug });
+        const form = document.querySelector('[data-desk-stabilise-form]');
+        const name = form ? form.querySelector('[data-stabilise-name]') : null;
+        const note = form ? form.querySelector('[data-stabilise-note]') : null;
+        const traitName = name ? name.value : '';
+        const traitNote = note ? note.value : '';
+        send({ op: 'stabilise', slug: slug, traitName: traitName, traitNote: traitNote }).then(
+          function (res) {
+            if (!res || !res.ok) return;
+            if (name) name.value = '';
+            if (note) note.value = '';
+            say(traitName.trim() ? 'Dying cleared. Trait recorded.' : 'Dying cleared.');
+          },
+        );
       });
     }
 
