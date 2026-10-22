@@ -1137,6 +1137,46 @@ export interface StEditCharacterPatch {
   claimable?: boolean;
 }
 
+const UNLOCKED_SHEET_KEYS = [
+  'echoes',
+  'traits',
+  'inventoryItems',
+  'foodDays',
+  'waterDays',
+  'armour',
+] as const;
+
+/**
+ * A sheet token, while creation is unlocked, may save echoes, traits, and inventory.
+ * Harm, Words, foundations, skills, and claim marks stay on the desk.
+ */
+export function editUnlockedSheet(
+  store: CommunityStorePort,
+  cmd: {
+    characterSlug: string;
+    patch: StEditCharacterPatch;
+    actor?: string;
+  },
+): CharacterRecord {
+  const ch = store.getCharacterBySlug(cmd.characterSlug);
+  if (!ch) throw new Error(`unknown character: ${cmd.characterSlug}`);
+  if (isCreationLocked(ch)) throw new Error('character is locked');
+  const raw = cmd.patch as Record<string, unknown>;
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) throw new Error('invalid patch');
+  if (Object.keys(raw).some((key) => !(UNLOCKED_SHEET_KEYS as readonly string[]).includes(key))) {
+    throw new Error('that edit belongs on the desk');
+  }
+  const patch: StEditCharacterPatch = {};
+  for (const key of UNLOCKED_SHEET_KEYS) {
+    if (raw[key] !== undefined) (patch as Record<string, unknown>)[key] = raw[key];
+  }
+  return stEditCharacter(store, {
+    characterSlug: cmd.characterSlug,
+    patch,
+    actor: cmd.actor,
+  });
+}
+
 /** ST patches any character fields — preferred path for claim marks. */
 export function stEditCharacter(
   store: CommunityStorePort,

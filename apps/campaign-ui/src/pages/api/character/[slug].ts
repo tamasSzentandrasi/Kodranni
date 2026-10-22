@@ -9,8 +9,9 @@ import {
   spendSkill,
   spendWantingBatch,
   spendWordWanting,
-  stEditCharacter,
+  editUnlockedSheet,
   updateDraftConcept,
+  type StEditCharacterPatch,
   type WantingMenuId,
 } from '@kodranni/app';
 import { openSqliteStore } from '@kodranni/store';
@@ -271,7 +272,8 @@ export async function POST({
         });
       }
       case 'st-edit': {
-        const patch = body.patch as Parameters<typeof stEditCharacter>[1]['patch'];
+        if (!desk && !auth.canEdit) return json({ error: 'edit token required' }, 401);
+        const patch = body.patch as StEditCharacterPatch;
         const ch = desk
           ? deskEditCharacter(
               store,
@@ -281,7 +283,7 @@ export async function POST({
                 ? { key: body.pivotalFortune.key, level: Number(body.pivotalFortune.level) }
                 : undefined,
             )
-          : stEditCharacter(store, {
+          : editUnlockedSheet(store, {
               characterSlug: slug,
               patch,
               actor: auth.claims?.accountId,

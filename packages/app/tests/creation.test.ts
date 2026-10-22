@@ -39,6 +39,7 @@ import {
   spendWantingBatch,
   spendWordWanting,
   stageWanting,
+  editUnlockedSheet,
   stEditCharacter,
   stReviewCharacter,
   startClaimFromBot,
@@ -557,6 +558,48 @@ describe('ST edit (claim marks)', () => {
     expect(again.creation?.claimable).toBe(false);
     expect(again.inventory.items[0]?.icon).toBe('knife.png');
     expect(again.inventory.items[0]?.note).toBe('short');
+    store.close();
+  });
+
+  it('lets an unlocked sheet save an echo and refuses harm, Words, and a locked sheet', () => {
+    const store = emptyStore();
+    const { character } = startCreateFromBot(store, {
+      platform: 'discord',
+      accountId: 'target',
+      displayName: 'T',
+      name: 'Mark Target',
+    });
+    const saved = editUnlockedSheet(store, {
+      characterSlug: character.slug,
+      actor: 'player-1',
+      patch: { echoes: [{ title: 'The well', weight: 1, invokeWhen: 'At the well' }] },
+    });
+    expect(saved.echoes?.[0]?.title).toBe('The well');
+    expect(() =>
+      editUnlockedSheet(store, {
+        characterSlug: character.slug,
+        actor: 'player-1',
+        patch: { harm: { cut: 2 }, echoes: saved.echoes },
+      }),
+    ).toThrow(/belongs on the desk/);
+    expect(store.getCharacterBySlug(character.slug)!.harm).toEqual(character.harm);
+    expect(() =>
+      editUnlockedSheet(store, {
+        characterSlug: character.slug,
+        actor: 'player-1',
+        patch: { wordsDelta: 3 },
+      }),
+    ).toThrow(/belongs on the desk/);
+    const locked = store.getCharacterBySlug(character.slug)!;
+    locked.creation!.locked = true;
+    store.putCharacter(locked);
+    expect(() =>
+      editUnlockedSheet(store, {
+        characterSlug: character.slug,
+        actor: 'player-1',
+        patch: { traits: [{ name: 'Late' }] },
+      }),
+    ).toThrow(/locked/);
     store.close();
   });
 });
