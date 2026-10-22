@@ -6,6 +6,7 @@ import { openSqliteStore } from '@kodranni/store';
 import { resolveAvatarsDir, resolveStorePath } from '../../../lib/campaign-paths';
 import { deskToolsOn } from '../../../lib/loopback';
 import { resolveSheetEdit } from '../../../lib/sheet-auth';
+import { imageExtensionAgrees, sniffImage } from '../../../lib/sniff-image';
 
 const ALLOWED = new Set(['.jpg', '.jpeg', '.png', '.webp', '.gif']);
 
@@ -127,9 +128,16 @@ export async function POST({
       headers: { 'Content-Type': 'application/json' },
     });
   }
+  const sniffed = sniffImage(buf);
+  if (!imageExtensionAgrees(ext, sniffed)) {
+    return new Response(JSON.stringify({ error: 'Allowed: jpg png webp gif' }), {
+      status: 400,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
 
   mkdirSync(avatarsDir, { recursive: true });
-  const basename = `${slug}${ext}`;
+  const basename = `${slug}${sniffed}`;
   writeFileSync(join(avatarsDir, basename), buf);
 
   const store = openSqliteStore(storePath);

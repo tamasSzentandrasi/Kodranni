@@ -6,6 +6,7 @@ import { deskLabelIcon, deskSetAxisLook, deskSetFortuneLook, deskSetRulerLook } 
 import { openSqliteStore } from '@kodranni/store';
 import { resolveItemsDir, resolveStorePath } from '../../../lib/campaign-paths';
 import { rejectUnlessDesk } from '../../../lib/loopback';
+import { imageExtensionAgrees, sniffImage } from '../../../lib/sniff-image';
 
 const ALLOWED = new Set(['.jpg', '.jpeg', '.png', '.webp']);
 const MAX_BYTES = 256 * 1024;
@@ -71,8 +72,11 @@ export async function POST({ request }: { request: Request }) {
   if (!ALLOWED.has(ext)) return json({ error: 'Allowed: jpg png webp' }, 400);
   const buf = Buffer.from(await (file as File).arrayBuffer());
   if (buf.byteLength > MAX_BYTES) return json({ error: 'Max 256KB' }, 400);
-  const extNorm = ext === '.jpeg' ? '.jpg' : ext;
-  const fileName = `${kind}-${safeBase(key)}-${stamp()}${extNorm}`;
+  const sniffed = sniffImage(buf);
+  if (!imageExtensionAgrees(ext, sniffed) || sniffed === '.gif') {
+    return json({ error: 'Allowed: jpg png webp' }, 400);
+  }
+  const fileName = `${kind}-${safeBase(key)}-${stamp()}${sniffed}`;
   mkdirSync(itemsDir, { recursive: true });
   writeFileSync(join(itemsDir, fileName), buf);
   const store = openSqliteStore(storePath);

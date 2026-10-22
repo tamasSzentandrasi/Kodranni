@@ -6,6 +6,7 @@ import { openSqliteStore } from '@kodranni/store';
 import { resolveItemsDir, resolveStorePath } from '../../../../lib/campaign-paths';
 import { deskToolsOn } from '../../../../lib/loopback';
 import { resolveSheetEdit } from '../../../../lib/sheet-auth';
+import { sniffImage } from '../../../../lib/sniff-image';
 
 const MAX_BYTES = 2 * 1024 * 1024;
 
@@ -13,22 +14,6 @@ function contentType(ext: string): string {
   if (ext === '.png') return 'image/png';
   if (ext === '.webp') return 'image/webp';
   return 'image/jpeg';
-}
-
-/** Trust the bytes when the filename extension disagrees. */
-function sniffImage(buf: Buffer): '.png' | '.jpg' | '.webp' | null {
-  if (buf.length >= 8 && buf[0] === 0x89 && buf[1] === 0x50 && buf[2] === 0x4e && buf[3] === 0x47) {
-    return '.png';
-  }
-  if (buf.length >= 3 && buf[0] === 0xff && buf[1] === 0xd8 && buf[2] === 0xff) return '.jpg';
-  if (
-    buf.length >= 12 &&
-    buf.toString('ascii', 0, 4) === 'RIFF' &&
-    buf.toString('ascii', 8, 12) === 'WEBP'
-  ) {
-    return '.webp';
-  }
-  return null;
 }
 
 function json(data: unknown, status = 200) {
@@ -101,7 +86,7 @@ export async function POST({
   const buf = Buffer.from(await (file as File).arrayBuffer());
   if (buf.byteLength > MAX_BYTES) return json({ error: 'Use a jpg, png, or webp under 2MB' }, 400);
   const sniffed = sniffImage(buf);
-  if (!sniffed) return json({ error: 'Use a jpg, png, or webp under 2MB' }, 400);
+  if (!sniffed || sniffed === '.gif') return json({ error: 'Use a jpg, png, or webp under 2MB' }, 400);
 
   const wantedName = String(form.get('name') ?? '').trim();
   const store = openSqliteStore(storePath);
