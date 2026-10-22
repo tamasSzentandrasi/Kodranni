@@ -25,9 +25,17 @@ export function redactSnapshot(snap: PublicSnapshot): PublicSnapshot {
 /** Return human-readable violations; empty means the payload is safe to publish. */
 export function publicSnapshotViolations(snap: PublicSnapshot): string[] {
   const errors: string[] = [];
-  if (snap.community && 'pendingMoves' in snap.community && snap.community.pendingMoves != null) {
+  const community = snap.community as
+    | (typeof snap.community & { table_state?: unknown; tide?: unknown })
+    | undefined;
+  if (community && 'pendingMoves' in community && community.pendingMoves != null) {
     errors.push('community.pendingMoves');
   }
+  if (community && community.notebook != null) errors.push('community.notebook');
+  if (community && 'table_state' in community && community.table_state != null) {
+    errors.push('community.table_state');
+  }
+  if (community && 'tide' in community && community.tide != null) errors.push('community.tide');
   if (snap.community && 'fortuneMeta' in snap.community && snap.community.fortuneMeta != null) {
     errors.push('community.fortuneMeta');
   }

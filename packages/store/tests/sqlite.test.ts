@@ -72,6 +72,17 @@ describe('sqlite store', () => {
     expect(snap.characters.every((c) => !c.initiator && !c.player?.accountId)).toBe(true);
     expect(store.listMembers()).toHaveLength(1);
     expect(publicSnapshotViolations(snap)).toEqual([]);
+    const leaked = structuredClone(snap);
+    leaked.community.notebook = 'the well runs low';
+    Object.assign(leaked.community, {
+      table_state: { marker: 4 },
+      tide: { open: true },
+    });
+    expect(publicSnapshotViolations(leaked)).toEqual([
+      'community.notebook',
+      'community.table_state',
+      'community.tide',
+    ]);
 
     // idempotent client event
     const a = store.appendEvent({
