@@ -4,7 +4,7 @@ import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
 import { afterEach, describe, expect, it } from 'vitest';
 import { emptyCommunity, openSqliteStore } from '../src/sqlite.js';
-import { demoCharactersPresent, seedDemoCampaign } from '../src/seed.js';
+import { DEMO_ROSTER, demoCharactersPresent, seedDemoCampaign } from '../src/seed.js';
 import { parseCampaignToml, serializeCampaignToml } from '../src/campaign-toml.js';
 import { publicSnapshotViolations } from '../src/redact.js';
 import { applyPublicSnapshot, refusedCampaignSlug, slugFromCampaignName } from '../src/snapshot.js';
@@ -326,7 +326,26 @@ describe('campaign.toml', () => {
     const store = openSqliteStore(join(dir, 'community.sqlite'));
     expect(demoCharactersPresent(store)).toBe(false);
     seedDemoCampaign(store);
+    expect([...DEMO_ROSTER]).toEqual([
+      'agnese',
+      'caterina',
+      'duje',
+      'lovro',
+      'jakov',
+      'luca',
+      'mara',
+      'marino',
+      'matteo',
+      'niccolo',
+      'orsa',
+      'paolo',
+      'piero',
+      'tomaso',
+      'vito',
+    ]);
     expect(demoCharactersPresent(store)).toBe(true);
+    store.deleteCharacter('vito');
+    expect(demoCharactersPresent(store)).toBe(false);
     store.close();
   });
 

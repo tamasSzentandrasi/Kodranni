@@ -13,13 +13,27 @@ export const DEMO_SEED_ID = 'aspalath-after-the-night';
 export const DEMO_SLUG = 'aspalath';
 export const DEMO_NAME = 'Aspalath';
 
+/** Aspalath’s fifteen. A partial directory is not the seed. */
+export const DEMO_ROSTER = [
+  'agnese',
+  'caterina',
+  'duje',
+  'lovro',
+  'jakov',
+  'luca',
+  'mara',
+  'marino',
+  'matteo',
+  'niccolo',
+  'orsa',
+  'paolo',
+  'piero',
+  'tomaso',
+  'vito',
+] as const;
+
 export function demoCharactersPresent(store: CommunityStorePort): boolean {
-  return Boolean(
-    store.getCharacterBySlug('tomaso') &&
-      store.getCharacterBySlug('jakov') &&
-      store.getCharacterBySlug('caterina') &&
-      store.getCharacterBySlug('niccolo'),
-  );
+  return DEMO_ROSTER.every((slug) => store.getCharacterBySlug(slug) != null);
 }
 
 function foundations(p: Partial<Record<string, number>>): Record<string, number> {

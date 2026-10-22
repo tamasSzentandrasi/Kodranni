@@ -1,10 +1,10 @@
 # Kodranni surfaces
 
-**Date:** 2026-09-29  
-**Status:** Decided. The new commands and the public hostnames are not the code you run today. The desk is the hall on loopback, and Session is its night tab.  
+**Date:** 2026-10-22  
+**Status:** Discord is the table. Fluxer keeps the card and is not started. The desk is the hall on loopback, and Session is its night tab.  
 **Detail:** [decisions.md](./decisions.md) · **Chat cards:** [chat.md](./chat.md) · **Built vs decided:** [status.md](./status.md) · **Hosting lock:** [hosting.md](./hosting.md)
 
-The Guidebook is the rules. This file is who touches which surface. The Automation chapter stays as it is until this table is accepted in so many words.
+The Guidebook is the rules. This file is who touches which surface. Automation in English and Hungarian follows the responsibility table below.
 
 Hungarian word lock: [hungarian-lexicon.md](./hungarian-lexicon.md). Character-map seating math: `apps/campaign-ui/docs/character-map.md`.
 
@@ -42,7 +42,7 @@ One process holds SQLite, the campaign UI, and the Discord handler. The desk is 
 
 | Act | Where |
 |-----|--------|
-| `/roll` for the character bound to that account | Chat. `/select` only when the account has more than one living character. |
+| `/roll` for the character bound to that account | Chat. `/select` names the active character, and chooses among them when the account has more than one. |
 | `/roll` for a sheeted NPC | Chat. The Storyteller passes the slug. The sheet supplies the numbers. |
 | `/npc-roll` for someone with no sheet | Chat. Storyteller. A label, foundation dice, skill dice, a tier. |
 | `/intent` | Chat. Storyteller posts an agreed pool for a named player. Kept. |
@@ -72,7 +72,7 @@ One process holds SQLite, the campaign UI, and the Discord handler. The desk is 
 
 ## Already built, still behind this table
 
-Aspalath’s hall, hierarchy, character map, and sheets are the visual reference. Creation on the sheet is the older dock. The source command list uses `/select` and `/npc-roll`; `/focus`, `/st-roll`, `/reclaim`, `/map`, and `/live` are out of that list. The Discord application still has the last guild registration. Actions has no bot token, so the edge step skips. Discord bind is on the Session tab. Players use `https://<slug>.kodranni.com/`. `?campaign=` still works on `kodranni.com`. `demo.kodranni.com` stays the Aspalath showcase. Fluxer uses that same Session tab plate and keeps the same card. Discord is the table. The host walkthrough has never been signed.
+Aspalath’s hall, hierarchy, character map, and sheets are the visual reference. Character creation is the shipped sheet. The source command list uses `/select` and `/npc-roll`; `/focus`, `/st-roll`, `/reclaim`, `/map`, and `/live` are out of that list. The Discord application still has the last guild registration. Actions has no bot token, so the edge step skips. Discord bind is on the Session tab. Players use `https://<slug>.kodranni.com/`. `?campaign=` still works on `kodranni.com`. `demo.kodranni.com` stays the Aspalath showcase. Fluxer uses that same Session tab plate and keeps the same card. Discord is the table. The host walkthrough has never been signed.
 
 The Automation chapter now follows this table, in English and Hungarian. The gap between the table and the code is listed in [status.md](./status.md). The desk shell is the hall on loopback. Later steps stay unbuilt until asked.
 
@@ -82,4 +82,4 @@ The Automation chapter now follows this table, in English and Hungarian. The gap
 
 Kept in chat: `/create`, `/claim`, `/select`, `/roll`, `/intent`, `/npc-roll`, `/birth-omen`, `/guiding-hand`, `/award-word`, `/review`.
 
-Leave: `/focus` (renamed `/select`), `/st-roll` (becomes `/npc-roll`), `/map`, `/reclaim`, `/live`. Scene Add on a Discord card does not ship. Discord and Fluxer share this list. On Fluxer the words follow `!`. Table chat starts that gateway.
+Leave: `/focus` (renamed `/select`), `/st-roll` (becomes `/npc-roll`), `/map`, `/reclaim`, `/live`. Scene Add on a Discord card does not ship. Discord and Fluxer share this list. On Fluxer the words follow `!`. Fluxer keeps the card and is not started.

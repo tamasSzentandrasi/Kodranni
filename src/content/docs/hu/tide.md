@@ -76,7 +76,7 @@ Mindkét oldal **egy** sávot oszt. A mesélő mindkét oldalnak lágy **súlyt*
 |-----------|------------------|--------------|----------------------|
 | Egyenlő talaj | 8 vs 8 | 15 | 8 |
 | Enyhe előny (A) | 8 vs 6 | 13 | 8 |
-| A világosan fölényben | 8 vs 12 | 19 | 8 |
+| A világosan fölényben | 12 vs 8 | 19 | 12 |
 | A súlyos hátrányban | 6 vs 12 | 17 | 6 |
 
 (Az utolsó sor 6-nál kezd, mert A oldal súlya 6 — közelebb kezdik az összeomláshoz.)

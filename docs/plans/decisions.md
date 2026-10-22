@@ -70,7 +70,7 @@ Chat owns the Tide. One open at a time. Session state, absent from the public sn
 Opening is one Storyteller command, built from selectors:
 
 - **Size** — small skirmish, skirmish, battle (1 / 2 / 3 Marks per step).
-- **Footing** — the Guidebook presets, and which side holds them: equal (8 vs 8), slight advantage (8 vs 6), clearly superior (8 vs 12), severe disadvantage (6 vs 12). A type-weights path remains for a bar that matches none of those.
+- **Footing** — the Guidebook presets, and which side holds them: equal (8 vs 8), slight advantage (8 vs 6), clearly superior (12 vs 8), severe disadvantage (6 vs 12). A type-weights path remains for a bar that matches none of those.
 - **Side names** — two short fields.
 - **Side colours** — one dye each, from the palette below. Discord has no colour wheel. The same selector is the control on Fluxer.
 

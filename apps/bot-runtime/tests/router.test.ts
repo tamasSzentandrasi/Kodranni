@@ -400,7 +400,7 @@ describe('bot router', () => {
     store.close();
   });
 
-  it('/select is unused for one living character and chooses among several', async () => {
+  it('/select names the one living character and chooses among several', async () => {
     const dir = mkdtempSync(join(tmpdir(), 'kod-bot-'));
     dirs.push(dir);
     const store = openSqliteStore(join(dir, 'c.sqlite'));

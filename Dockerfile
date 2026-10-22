@@ -9,4 +9,4 @@ RUN npm ci --omit=dev && NODE_OPTIONS=--experimental-sqlite npm run build:campai
 ENV NODE_OPTIONS=--experimental-sqlite
 EXPOSE 8742
 USER node
-CMD ["node", "--experimental-sqlite", "--import", "tsx", "apps/cli/src/main.ts", "live", "--tunnel", "--bot"]
+CMD ["node", "--experimental-sqlite", "--import", "tsx", "apps/cli/src/main.ts", "start"]

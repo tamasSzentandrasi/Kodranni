@@ -50,14 +50,13 @@ Players keep one address for the hall. While the session is up, that address is 
 | Command | Who | What it does |
 |---------|-----|----------------|
 | `/roll` | The bound player | Rolls that character. Foundation, Skill, die tier, Exertion, and which Echo applies. |
-| `/select` | A player with more than one living character | Chooses which of them `/roll` assumes. With one character, it is unused. |
+| `/select` | A player | Names the active character. With more than one living character, it chooses which of them `/roll` assumes. |
 | `/roll` and a name | Storyteller | Rolls a sheeted NPC in that person’s name. The sheet supplies the numbers. |
 | `/npc-roll` | Storyteller | Someone with no sheet: a label, foundation dice, skill dice, a tier. Harm has no track to land on. |
 | `/intent` | Storyteller | Posts an agreed pool for a named player. |
 | `/create`, `/claim` | Player | Opens a draft, or claims a person left ready. |
 | `/birth-omen`, `/guiding-hand` | That player and the Storyteller | Private dice. The points land on the draft. |
 | `/award-word` | Storyteller | Banks one Word on the speaker, for their own Wanting. |
-| `/tide` | Storyteller | Opens the Tide card. |
 | `/review` | Storyteller | Repeats the notice that a character is waiting on the desk. |
 
 Oppose on the result card opens the Ready card for that roll. Roll on the Tide card steps the Tide. The result is a channel message. Pairs of Foundation and Skill need not match.
@@ -82,7 +81,7 @@ Oppose on the result card opens the Ready card for that roll. Roll on the Tide c
 
 ## Where the record changes
 
-**Tide.** `/tide` posts one card. The Storyteller sets the size (small skirmish, skirmish, battle), the footing, the two side names, and a colour for each side. The card shows the bar from the [Tide](/tide/) chapter, and each step updates that picture. The Storyteller closes the Tide from the card. The desk shows whether one is open.
+**Tide.** The Storyteller posts the Tide from the desk. They set the size (small skirmish, skirmish, battle), the footing, the two side names, and a colour for each side. The channel message is the picture the desk publishes: the bar from the [Tide](/tide/) chapter, and each step updates that picture.
 
 **Scene faces.** The Storyteller adds, edits, and clears them on the desk. Saving rewrites the channel board the table is reading.
 

@@ -6,6 +6,7 @@ import { cryptoRng, mulberry32 } from '@kodranni/domain';
 import { executePlayerRoll, executeStorytellerNpcRoll } from '@kodranni/app';
 import {
   DEMO_NAME,
+  DEMO_ROSTER,
   DEMO_SLUG,
   defaultCampaignTomlPath,
   destroyCampaignDir,
@@ -40,8 +41,8 @@ function usage(code = 1): never {
 
   kodranni [--name <campaign name>] [--from snapshot.json]
       Desk (Found if needed). No public tunnel.
-  kodranni start [--slug <id>]
-      Open the table. Players use https://<slug>.kodranni.com/
+  kodranni start [--slug <id>] [--no-tunnel] [--bot]
+      Open the public night. The Discord gateway stays off unless --bot.
   kodranni stop [--slug <id>]
       Publish archive and stop.
   kodranni status [--slug <id>]
@@ -163,7 +164,7 @@ async function main(): Promise<void> {
       cfg,
       repoRoot: resolveRepoRoot(),
       tunnel: !has(args, '--no-tunnel'),
-      bot: !has(args, '--no-bot'),
+      bot: has(args, '--bot') && !has(args, '--no-bot'),
       desk: false,
     });
     return;
@@ -229,7 +230,7 @@ async function main(): Promise<void> {
     const store = openSqliteStore(cfg.storePath);
     if (demoCharactersPresent(store)) {
       store.close();
-      console.log(`Demo already present for ${slug} (tomaso, jakov, caterina, niccolo).`);
+      console.log(`Demo already present for ${slug} (${DEMO_ROSTER.join(', ')}).`);
       console.log(`  store: ${cfg.storePath}`);
       console.log(
         `  Recreate (destroys the campaign directory): kodranni campaign seed-demo --slug ${slug} --force`,
@@ -240,7 +241,7 @@ async function main(): Promise<void> {
     store.close();
     console.log(`Seeded demo: ${cfg.name} (${cfg.slug})`);
     console.log(`  store: ${cfg.storePath}`);
-    console.log(`  characters: tomaso, jakov, caterina, niccolo`);
+    console.log(`  characters: ${DEMO_ROSTER.join(', ')}`);
     console.log(
       `  tunnel: ${cfg.tunnelMode ?? 'quick'}` +
         (cfg.tunnelHostname ? ` · ${cfg.tunnelHostname}` : '') +

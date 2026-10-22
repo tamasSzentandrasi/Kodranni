@@ -75,7 +75,7 @@ Both sides share **one** track. The Storyteller assigns each side a soft **weigh
 |-----------|------------------|--------------|----------------------|
 | Equal footing | 8 vs 8 | 15 | 8 |
 | Slight advantage (A) | 8 vs 6 | 13 | 8 |
-| A clearly superior | 8 vs 12 | 19 | 8 |
+| A clearly superior | 12 vs 8 | 19 | 12 |
 | A severe disadvantage | 6 vs 12 | 17 | 6 |
 
 (The last row starts at 6 because side A’s weight is 6 — they begin closer to collapse.)

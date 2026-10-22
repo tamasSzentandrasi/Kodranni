@@ -64,6 +64,29 @@ function echoesBeforeHarm(path, label) {
 echoesBeforeHarm(join(docs, 'introduction.md'), 'introduction.md');
 echoesBeforeHarm(join(docs, 'hu', 'introduction.md'), 'hu/introduction.md');
 
+function automationContract(path, oppose) {
+	if (!existsSync(path)) {
+		errors.push(`${path}: file missing`);
+		return;
+	}
+	const text = readFileSync(path, 'utf8');
+	if (!text.includes(oppose)) errors.push(`${path}: missing the oppose sentence`);
+	for (const [i, line] of text.split('\n').entries()) {
+		if (line.startsWith('|') && line.includes('`/tide`')) {
+			errors.push(`${path}:${i + 1}: command table still has a /tide row`);
+		}
+	}
+}
+
+automationContract(
+	join(docs, 'automation.md'),
+	'Oppose on the result card opens the Ready card for that roll.',
+);
+automationContract(
+	join(docs, 'hu', 'automation.md'),
+	'Az eredménykártya Ellendobás gombja nyitja a kész kártyát arra a dobásra.',
+);
+
 if (errors.length) {
 	console.error('guidebook-integrity failed:\n' + errors.map((e) => '  - ' + e).join('\n'));
 	process.exit(1);

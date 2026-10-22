@@ -50,14 +50,13 @@ A játékosok egy címet tartanak a csarnokhoz. Amíg az ülés tart, ez a cím 
 | Parancs | Ki | Mit tesz |
 |---------|-----|----------|
 | `/roll` | A kötött játékos | Azt a karaktert dobja. Adottság, jártasság, kockafok, erőfeszítés, és melyik visszhang érvényes. |
-| `/select` | Játékos, akinek több élő karaktere van | Kiválasztja, melyiket veszi a `/roll`. Egy karakternél használatlan. |
+| `/select` | Játékos | Megnevezi az aktív karaktert. Több élő karakternél kiválasztja, melyiket veszi a `/roll`. |
 | `/roll` és egy név | Mesélő | Lappal bíró NPC-t dob annak a személynek a nevében. A számokat a lap adja. |
 | `/npc-roll` | Mesélő | Aki lap nélkül van: felirat, adottságkockák, jártasságkockák, kockafok. A sérülésnek nincs sávja, ahová essen. |
 | `/intent` | Mesélő | Megállapodott készletet tesz ki egy megnevezett játékosnak. |
 | `/create`, `/claim` | Játékos | Piszkozatot nyit, vagy lefoglal egy előkészített személyt. |
 | `/birth-omen`, `/guiding-hand` | Az a játékos és a mesélő | Magán kockák. A pontok a piszkozatra kerülnek. |
 | `/award-word` | Mesélő | Egy szót ír a beszélő javára, A Kívánáshoz. |
-| `/tide` | Mesélő | Megnyitja a sodrás kártyáját. |
 | `/review` | Mesélő | Megismétli a hírt, hogy egy karakter a pulton vár. |
 
 Az eredménykártya Ellendobás gombja nyitja a kész kártyát arra a dobásra. A sodrás kártyáján a Dobás lépteti a sodrást. Az eredmény csatornaüzenet. Az adottság és a jártasság párjának nem kell egyeznie.
@@ -82,7 +81,7 @@ Az eredménykártya Ellendobás gombja nyitja a kész kártyát arra a dobásra.
 
 ## Hol változik a feljegyzés
 
-**Sodrás.** A `/tide` egy kártyát tesz ki. A mesélő megadja a méretet (kis csetepaté, csetepaté, csata), az erőviszonyt, a két oldal nevét, és mindkét oldal színét. A kártya a [Sodrás](/hu/tide/) fejezet sávját mutatja, és minden lépés frissíti a képet. A mesélő a kártyáról zárja a sodrást. A pult mutatja, nyitva van-e.
+**Sodrás.** A mesélő a pultról teszi ki a sodrást. Megadja a méretet (kis csetepaté, csetepaté, csata), az erőviszonyt, a két oldal nevét, és mindkét oldal színét. A csatornaüzenet a kép, amelyet a pult közzétesz: a [Sodrás](/hu/tide/) fejezet sávja, és minden lépés frissíti a képet.
 
 **Jeleneti lapok.** A mesélő a pulton veszi fel, javítja és törli őket. A mentés újraírja a csatorna tábláját, amelyet az asztal olvas.
 

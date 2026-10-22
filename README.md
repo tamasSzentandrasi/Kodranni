@@ -56,7 +56,7 @@ Aspalath demo (author machine): `npm run kodranni -- campaign seed-demo` then `k
 4. Rolls — **two equal paths**:
    - ST `/intent @player skill:…` (autocomplete) → player **Roll** → confirm → Cast
    - Player `/roll skill:…` (autocomplete) → same confirm (all **9** Foundations easy to change; Echo = **applies when agreed**) → Cast
-5. Result card: **Marks first**, die-tier language, sheet Link, ST **Harm**. Exertion restore is `/reclaim`, not a result-card button.
+5. Result card: **Marks first**, die-tier language, sheet Link, ST **Harm**. Exertion restore is the desk Restore on the person.
 
 ---
 
@@ -92,7 +92,7 @@ Content: `src/content/docs/`. Deploy: GitHub Pages on `main`.
 |------|--------|
 | Guidebook | Living |
 | Live UI + tunnel + emissary | Yes — `kodranni start` / `stop` |
-| Discord (create / roll / intent / Harm / `/reclaim`) | Yes — bind from the hall on this machine |
+| Discord (`/roll`, `/intent`, `/create`, `/claim`, `/select`, `/npc-roll`, `/birth-omen`, `/guiding-hand`, `/award-word`, `/review`) | Yes — bind on the Session tab |
 | Reconstructible demo | `campaign seed-demo` (author). Players Found a **campaign name** |
 | Archive / one hostname | KV snapshot + Worker. Dark = no host process |
 | Host loop | Unsigned — [status.md](docs/plans/status.md) |
