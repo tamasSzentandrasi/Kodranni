@@ -13,7 +13,8 @@
   },
   "dependencies": {
     "@kodranni/domain": "*",
-    "@kodranni/hall-render": "*"
+    "@kodranni/hall-render": "*",
+    "@kodranni/store": "*"
   },
   "devDependencies": {
     "vitest": "^3.0.9"
