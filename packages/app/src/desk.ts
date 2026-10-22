@@ -20,7 +20,7 @@ import {
 import {
   TAG_GROUP_ID,
   factionHueFromName,
-  factionsFromLabels,
+  writeDerivedFactions,
   labelId,
   type CharacterRecord,
   type CommunityRecord,
@@ -497,7 +497,7 @@ export function deskRemoveGroup(store: CommunityStorePort, id: string): Communit
   const gone = new Set((community.labels ?? []).filter((l) => l.groupId === id).map((l) => l.id));
   community.labelGroups = (community.labelGroups ?? []).filter((g) => g.id !== id);
   community.labels = (community.labels ?? []).filter((l) => l.groupId !== id);
-  community.factions = factionsFromLabels(community);
+  writeDerivedFactions(community);
   store.putCommunity(community);
   scrubLabelIds(store, gone);
   return store.getCommunity();
@@ -541,7 +541,7 @@ export function deskAddLabel(
     hue: kind === 'faction' ? factionHueFromName(trimmed) : undefined,
   };
   community.labels = [...(community.labels ?? []), label];
-  community.factions = factionsFromLabels(community);
+  writeDerivedFactions(community);
   store.putCommunity(community);
   return store.getCommunity();
 }
@@ -557,7 +557,7 @@ export function deskRenameLabel(
   const label = (community.labels ?? []).find((l) => l.id === id);
   if (!label) throw new Error('unknown label');
   label.name = trimmed;
-  community.factions = factionsFromLabels(community);
+  writeDerivedFactions(community);
   store.putCommunity(community);
   return store.getCommunity();
 }
@@ -572,7 +572,7 @@ export function deskLabelHue(
   const label = (community.labels ?? []).find((l) => l.id === id);
   if (!label) throw new Error('unknown label');
   applyDye(label, { hue, sat: tone?.sat, light: tone?.light });
-  community.factions = factionsFromLabels(community);
+  writeDerivedFactions(community);
   store.putCommunity(community);
   return store.getCommunity();
 }
@@ -614,7 +614,7 @@ export function deskRemoveLabel(store: CommunityStorePort, id: string): Communit
   const community = store.getCommunity();
   if (!(community.labels ?? []).some((l) => l.id === id)) throw new Error('unknown label');
   community.labels = (community.labels ?? []).filter((l) => l.id !== id);
-  community.factions = factionsFromLabels(community);
+  writeDerivedFactions(community);
   store.putCommunity(community);
   scrubLabelIds(store, new Set([id]));
   return store.getCommunity();

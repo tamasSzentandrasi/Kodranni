@@ -121,21 +121,6 @@ export function buildInspectPeople(c: ViewCommunity): InspectPerson[] {
     });
   }
 
-  for (const mv of c.pendingMoves ?? []) {
-    const person = upsert({
-      kind: 'member',
-      name: mv.name,
-      slug: mv.characterSlug,
-      whoWeSee: who(mv.name, mv.characterSlug, mv.note),
-    });
-    person.pending.push({
-      axis: mv.axis,
-      fromTier: mv.fromTier,
-      toTier: mv.toTier,
-      note: mv.note,
-    });
-  }
-
   const seen = new Set<InspectPerson>();
   const out: InspectPerson[] = [];
   for (const p of map.values()) {

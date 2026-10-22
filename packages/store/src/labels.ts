@@ -72,12 +72,19 @@ export function factionLabels(c: CommunityRecord): Label[] {
   return (c.labels ?? []).filter((l) => groups.has(l.groupId));
 }
 
-/** Compat: { name, hue }[] for HallRites / older callers. */
+/** Compat: { name, hue }[] derived from faction labels. */
 export function factionsFromLabels(c: CommunityRecord): { name: string; hue: number }[] {
   return factionLabels(c).map((l) => ({
     name: l.name,
     hue: l.hue ?? factionHueFromName(l.name),
   }));
+}
+
+/** Keep the derived cache when it names someone. An empty list is not stored. */
+export function writeDerivedFactions(c: CommunityRecord): void {
+  const derived = factionsFromLabels(c);
+  if (derived.length === 0) delete c.factions;
+  else c.factions = derived;
 }
 
 export function findLabel(

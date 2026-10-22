@@ -156,7 +156,8 @@ describe('sqlite store', () => {
 
     const again = openSqliteStore(path);
     const c = again.getCommunity();
-    expect(c.pendingMoves).toEqual([]);
+    expect(c.pendingMoves).toBeUndefined();
+    expect('pendingMoves' in c).toBe(false);
     expect(c.fortuneMeta).toEqual({});
     expect(c.fortunesFoundedAt).toBeUndefined();
     again.close();
@@ -188,7 +189,8 @@ describe('sqlite store', () => {
     const live = store.getCommunity();
     expect(live.fortunesFoundedAt).toBe('2026-08-01T12:00:00.000Z');
     expect(live.fortuneMeta?.cohesion?.source).toBe('st');
-    expect(live.pendingMoves).toHaveLength(1);
+    expect(live.pendingMoves).toBeUndefined();
+    expect('pendingMoves' in live).toBe(false);
 
     const snap = store.toPublicSnapshot();
     expect(snap.community.fortunesFoundedAt).toBeUndefined();

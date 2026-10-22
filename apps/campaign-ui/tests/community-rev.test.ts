@@ -47,7 +47,6 @@ function community(extra: Partial<CommunityRecord> = {}): CommunityRecord {
     ...emptyCommunity('vardmark', 'The Vardmark'),
     fortunesFoundedAt: '2026-08-01T12:00:00.000Z',
     fortuneMeta: { cohesion: { at: '2026-08-01T12:00:00.000Z', source: 'founding' } },
-    pendingMoves: [],
     ...extra,
   };
 }
@@ -85,7 +84,6 @@ describe('hallRevPayload', () => {
         'labels',
         'myths',
         'outsiders',
-        'pendingMoves',
         'placements',
         'ruler',
       ].sort(),
@@ -144,7 +142,7 @@ describe('communityRevHash', () => {
     expect('generatedAt' in payload).toBe(false);
   });
 
-  it('changes when fortunes, pendingMoves, or whoWeSee change', () => {
+  it('changes when fortunes or whoWeSee change, and ignores a leftover move queue', () => {
     const base = communityRevHash(community(), chars);
     const fortunes = communityRevHash(
       community({ fortunes: { ...community().fortunes, vitality: 0 } }),
@@ -169,7 +167,7 @@ describe('communityRevHash', () => {
       character({ slug: 'torvald', name: 'Nerio Calva', whoWeSee: 'other' }),
     ]);
     expect(fortunes).not.toBe(base);
-    expect(pending).not.toBe(base);
+    expect(pending).toBe(base);
     expect(who).not.toBe(base);
   });
 });

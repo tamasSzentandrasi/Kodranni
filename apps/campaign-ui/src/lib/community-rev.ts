@@ -29,7 +29,6 @@ export type HallRevPayload = {
   placements: CommunityRecord['placements'];
   outsiders: CommunityRecord['outsiders'];
   labels: NonNullable<CommunityRecord['labels']>;
-  pendingMoves: NonNullable<CommunityRecord['pendingMoves']>;
   characters: HallRevCharacter[];
 };
 
@@ -47,7 +46,6 @@ export function hallRevPayload(
     placements,
     outsiders: community.outsiders ?? [],
     labels: community.labels ?? [],
-    pendingMoves: community.pendingMoves ?? [],
     characters: characters.map((ch) => ({
       slug: ch.slug,
       name: ch.name,

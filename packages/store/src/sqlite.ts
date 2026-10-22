@@ -32,15 +32,17 @@ function normalizeCommunity(raw: CommunityRecord): CommunityRecord {
     const legacy = m as { title: string; summary?: string };
     return { title: legacy.title, summary: legacy.summary, effects: [] };
   });
-  return migrateCommunityLabels({
+  const next = migrateCommunityLabels({
     ...raw,
     myths,
     outsiders: raw.outsiders ?? [],
     placements: raw.placements ?? [],
     hierarchyAxes: raw.hierarchyAxes ?? ['Arms', 'Faith', 'Coin', 'Blood'],
-    pendingMoves: raw.pendingMoves ?? [],
     fortuneMeta: raw.fortuneMeta ?? {},
   });
+  delete next.pendingMoves;
+  if (!next.factions?.length) delete next.factions;
+  return next;
 }
 
 function normalizeCharacter(raw: CharacterRecord): CharacterRecord {
@@ -453,6 +455,5 @@ export function emptyCommunity(slug: string, name: string): CommunityRecord {
     outsiders: [],
     labelGroups: DEFAULT_LABEL_GROUPS.map((g) => ({ ...g })),
     labels: [],
-    factions: [],
   };
 }
