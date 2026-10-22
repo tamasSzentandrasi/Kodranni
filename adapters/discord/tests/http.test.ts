@@ -7,6 +7,28 @@ afterEach(() => {
   globalThis.fetch = prevFetch;
 });
 
+describe('createDiscordHttpAdapter', () => {
+  it('runs one interaction id once', async () => {
+    const port = createDiscordHttpAdapter({ campaignId: 'aspalath' });
+    const seen: string[] = [];
+    port.onInteraction(async (interaction) => {
+      seen.push(interaction.id);
+    });
+    const raw = {
+      id: 'ix-once',
+      type: 2,
+      token: 'tok',
+      application_id: 'app',
+      channel_id: 'c1',
+      member: { user: { id: 'u1', username: 'ada' }, roles: [] },
+      data: { name: 'roll' },
+    };
+    await port.receive(raw);
+    await port.receive(raw);
+    expect(seen).toEqual(['ix-once']);
+  });
+});
+
 describe('mapRawDiscordInteraction', () => {
   it('maps a slash command and flattens user options', () => {
     const mapped = mapRawDiscordInteraction({

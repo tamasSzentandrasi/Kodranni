@@ -8,6 +8,29 @@ type EdgeLike = {
   DISCORD_PUBLIC_KEY?: string;
 };
 
+/** A captured interaction keeps its signed timestamp. Older than this is a replay. */
+const DISCORD_MAX_SKEW_SEC = 5 * 60;
+
+const seenInteractionAt = new Map<string, number>();
+
+export function discordTimestampFresh(timestamp: string, nowMs = Date.now()): boolean {
+  if (!/^\d{1,12}$/.test(timestamp)) return false;
+  const sec = Number(timestamp);
+  const skew = Math.abs(nowMs / 1000 - sec);
+  return Number.isFinite(sec) && skew <= DISCORD_MAX_SKEW_SEC;
+}
+
+/** True when this isolate already forwarded that interaction. */
+function interactionAlreadyForwarded(id: string, nowMs = Date.now()): boolean {
+  const cutoff = nowMs - DISCORD_MAX_SKEW_SEC * 1000;
+  for (const [key, at] of seenInteractionAt) {
+    if (at < cutoff) seenInteractionAt.delete(key);
+  }
+  if (seenInteractionAt.has(id)) return true;
+  seenInteractionAt.set(id, nowMs);
+  return false;
+}
+
 const PING = 1;
 const COMMAND = 2;
 const COMPONENT = 3;
@@ -30,6 +53,9 @@ export async function handleDiscordInteraction(
   const pub = env.DISCORD_PUBLIC_KEY?.trim();
   if (!sig || !ts || !pub) return new Response('Bad request signature.', { status: 401 });
   if (!(await verifyDiscord(pub, ts, raw, sig))) {
+    return new Response('Bad request signature.', { status: 401 });
+  }
+  if (!discordTimestampFresh(ts)) {
     return new Response('Bad request signature.', { status: 401 });
   }
   let ix: DiscordIx;
@@ -68,6 +94,7 @@ export async function handleDiscordInteraction(
     ix.type === COMPONENT
       ? { type: DEFERRED_UPDATE }
       : { type: DEFERRED_CHANNEL, data: { flags: FLAG_EPHEMERAL } };
+  if (ix.id && interactionAlreadyForwarded(ix.id)) return json(deferred);
   const work = forwardToHost(origin, campaign, raw, env).catch(() => undefined);
   if (waitUntil) waitUntil(work);
   else void work;
@@ -75,6 +102,7 @@ export async function handleDiscordInteraction(
 }
 
 type DiscordIx = {
+  id?: string;
   type: number;
   guild_id?: string;
   token?: string;

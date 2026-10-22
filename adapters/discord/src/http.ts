@@ -15,6 +15,16 @@ import type {
 import { mapCardToDiscordRest } from './card.js';
 
 const FLAG_EPHEMERAL = 1 << 6;
+const SEEN_INTERACTION_MS = 10 * 60 * 1000;
+const seenInteractionAt = new Map<string, number>();
+
+function interactionSeen(id: string, now = Date.now()): boolean {
+  const cutoff = now - SEEN_INTERACTION_MS;
+  for (const [key, at] of seenInteractionAt) {
+    if (at < cutoff) seenInteractionAt.delete(key);
+  }
+  return seenInteractionAt.has(id);
+}
 const TYPE_COMMAND = 2;
 const TYPE_COMPONENT = 3;
 const COMPONENT_BUTTON = 2;
@@ -262,6 +272,7 @@ export function createDiscordHttpAdapter(
       const mapped = mapRawDiscordInteraction(ix);
       if (!mapped || !handler) return;
       if (!ix.token || !ix.application_id) return;
+      if (pending.has(mapped.id) || interactionSeen(mapped.id)) return;
       pending.set(mapped.id, {
         token: ix.token,
         applicationId: ix.application_id,
@@ -269,6 +280,7 @@ export function createDiscordHttpAdapter(
       });
       try {
         await handler(mapped);
+        seenInteractionAt.set(mapped.id, Date.now());
       } finally {
         pending.delete(mapped.id);
       }

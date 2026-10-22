@@ -10,8 +10,11 @@ function keypair() {
   return { pubHex, privateKey };
 }
 
-function signedRequest(priv: ReturnType<typeof generateKeyPairSync>['privateKey'], body: string) {
-  const ts = String(Math.floor(Date.now() / 1000));
+function signedRequest(
+  priv: ReturnType<typeof generateKeyPairSync>['privateKey'],
+  body: string,
+  ts = String(Math.floor(Date.now() / 1000)),
+) {
   const sig = nodeSign(null, Buffer.from(ts + body), priv).toString('hex');
   return new Request('https://kodranni.com/interactions', {
     method: 'POST',
@@ -49,6 +52,45 @@ describe('Discord HTTP', () => {
       { CAMPAIGNS: new MemoryKv(), DISCORD_PUBLIC_KEY: pubHex },
     );
     expect(res.status).toBe(401);
+  });
+
+  it('rejects a signed interaction whose timestamp is ten minutes old', async () => {
+    const { pubHex, privateKey } = keypair();
+    const old = String(Math.floor(Date.now() / 1000) - 600);
+    const res = await handleDiscordInteraction(signedRequest(privateKey, JSON.stringify({ type: 1 }), old), {
+      CAMPAIGNS: new MemoryKv(),
+      DISCORD_PUBLIC_KEY: pubHex,
+    });
+    expect(res.status).toBe(401);
+  });
+
+  it('forwards one interaction id once', async () => {
+    const { pubHex, privateKey } = keypair();
+    const kv = new MemoryKv();
+    await kv.put('campaign:aspalath:origin', 'http://127.0.0.1:9');
+    const body = JSON.stringify({ type: 2, id: 'ix-replay-once', data: { name: 'roll' } });
+    const ts = String(Math.floor(Date.now() / 1000));
+    const env = {
+      CAMPAIGNS: kv,
+      DEVICE_KEYS: new MemoryKv(),
+      DEFAULT_CAMPAIGN: 'aspalath',
+      DISCORD_PUBLIC_KEY: pubHex,
+    };
+    let calls = 0;
+    const prev = globalThis.fetch;
+    globalThis.fetch = async () => {
+      calls += 1;
+      return new Response('ok');
+    };
+    try {
+      const first = await handleDiscordInteraction(signedRequest(privateKey, body, ts), env);
+      const second = await handleDiscordInteraction(signedRequest(privateKey, body, ts), env);
+      expect(first.status).toBe(200);
+      expect(second.status).toBe(200);
+      expect(calls).toBe(1);
+    } finally {
+      globalThis.fetch = prev;
+    }
   });
 
   it('PONGs a PING', async () => {
