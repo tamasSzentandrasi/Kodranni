@@ -386,9 +386,11 @@ describe('edge handler', () => {
 
     const prev = globalThis.fetch;
     let seenCookie = '';
+    let seenForwardedHost = '';
     globalThis.fetch = async (_input, init) => {
       const headers = init?.headers;
       seenCookie = headers instanceof Headers ? (headers.get('cookie') ?? '') : '';
+      seenForwardedHost = headers instanceof Headers ? (headers.get('x-forwarded-host') ?? '') : '';
       return new Response('ok', { status: 200, headers: { 'content-type': 'text/html' } });
     };
     try {
@@ -405,6 +407,7 @@ describe('edge handler', () => {
       expect(seenCookie).not.toContain('kod_desk');
       expect(seenCookie).not.toContain('kod_setup');
       expect(seenCookie).not.toContain('other=nope');
+      expect(seenForwardedHost).toBe('kodranni.com');
     } finally {
       globalThis.fetch = prev;
     }

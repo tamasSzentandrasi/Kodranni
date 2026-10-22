@@ -1,7 +1,7 @@
 export const prerender = false;
 
 import { currentNightHandler, type NightOp } from '@kodranni/store';
-import { isLocalDeskRequest } from '../../../lib/loopback';
+import { rejectUnlessDesk } from '../../../lib/loopback';
 
 function json(data: unknown, status = 200): Response {
   return new Response(JSON.stringify(data), {
@@ -40,7 +40,8 @@ async function readOp(request: Request): Promise<NightOp | null> {
 
 /** POST /api/desk/night — Go Live or End Session. Loopback only. The hall stays up. */
 export async function POST({ request }: { request: Request }): Promise<Response> {
-  if (!isLocalDeskRequest(request)) return new Response('Not found', { status: 404 });
+  const denied = rejectUnlessDesk(request);
+  if (denied) return denied;
   const asJson = (request.headers.get('content-type') ?? '').includes('application/json');
   let op: NightOp | null;
   try {

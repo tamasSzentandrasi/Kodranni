@@ -36,10 +36,10 @@ describe('POST /api/desk/night', () => {
     expect(res.status).toBe(503);
   });
 
-  it('runs Go Live from the player face and returns the handler result', async () => {
-    const seen: NightOp[] = [];
-    installNightHandler(async (op) => {
-      seen.push(op);
+  it('refuses Go Live from the player face', async () => {
+    let called = false;
+    installNightHandler(async () => {
+      called = true;
       const result: NightResult = { ok: true, already: true };
       return result;
     });
@@ -47,9 +47,8 @@ describe('POST /api/desk/night', () => {
       { 'content-type': 'application/json', cookie: 'kod_desk=0' },
       JSON.stringify({ op: 'live' }),
     );
-    expect(res.status).toBe(200);
-    expect(seen).toEqual(['live']);
-    expect(await res.json()).toEqual({ ok: true, already: true });
+    expect(res.status).toBe(404);
+    expect(called).toBe(false);
   });
 
   it('ends the session from a form and returns to the page', async () => {

@@ -65,8 +65,8 @@ export function rejectUnlessDesk(request: Request): Response | null {
  * Session reading. Every other /api/ call stays refused.
  */
 export function archiveAllowsApi(method: string, pathname: string): boolean {
-  if (pathname === '/api/snapshot' || pathname.startsWith('/api/snapshot/')) return true;
   const read = method === 'GET' || method === 'HEAD';
+  if (pathname === '/api/snapshot' || pathname.startsWith('/api/snapshot/')) return read;
   return read && (pathname === '/api/session' || pathname === '/api/session/');
 }
 

@@ -59,7 +59,9 @@ describe('local desk', () => {
 
   it('lets an archive read the snapshot and the between-sessions Session call', () => {
     expect(archiveAllowsApi('GET', '/api/snapshot')).toBe(true);
-    expect(archiveAllowsApi('PUT', '/api/snapshot')).toBe(true);
+    expect(archiveAllowsApi('HEAD', '/api/snapshot')).toBe(true);
+    expect(archiveAllowsApi('PUT', '/api/snapshot')).toBe(false);
+    expect(archiveAllowsApi('POST', '/api/snapshot')).toBe(false);
     expect(archiveAllowsApi('GET', '/api/session')).toBe(true);
     expect(archiveAllowsApi('HEAD', '/api/session/')).toBe(true);
     expect(archiveAllowsApi('POST', '/api/session')).toBe(false);
