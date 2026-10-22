@@ -6,8 +6,9 @@ import node from '@astrojs/node';
 export default defineConfig({
   output: 'server',
   adapter: node({ mode: 'standalone' }),
-  // Tunnel rewrites Host to localhost; browser Origin is the public hostname.
-  // Player POSTs are JSON + sheet HMAC / foundingOriginOk — not cookie forms.
+  // Tunnel rewrites Host to loopback while the browser Origin is the public name.
+  // Player posts rely on JSON and the sheet HMAC. kod_edit and kod_desk are
+  // SameSite=Lax, so a cross-site form does not send them.
   security: { checkOrigin: false },
   server: {
     port: 8742,
@@ -15,13 +16,10 @@ export default defineConfig({
   },
   vite: {
     ssr: {
-      external: [
-        'node:sqlite',
-        'sharp',
-        '@kodranni/bot-runtime',
-        '@kodranni/adapter-discord',
-        'discord.js',
-      ],
+      // Workspace packages stay in the hall bundle. The kernel rebuilds when
+      // those sources are newer than dist. node:sqlite, sharp, and discord.js
+      // are the real externals.
+      external: ['node:sqlite', 'sharp', 'discord.js'],
     },
     server: {
       // Cloudflare quick tunnels (*.trycloudflare.com) and LAN access hit this host.
