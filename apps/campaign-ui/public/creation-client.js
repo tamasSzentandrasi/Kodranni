@@ -446,7 +446,7 @@
     const ring = skillEl.querySelector('.skill__ring');
     let p = 0;
     if (rating >= 3) p = 1;
-    else if (rating > 0 && Number(threshold) > 0) {
+    else if (Number(threshold) > 0) {
       p = Math.min(1, Math.max(0, Number(practice) / Number(threshold)));
     }
     if (ring instanceof HTMLElement) ring.style.setProperty('--p', String(p));

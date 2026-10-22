@@ -1,7 +1,7 @@
 export { communityInner, overviewInner, hierarchyInner, mapChrome } from './hall.js';
 export { mapInner, mapFolioLink, type MapMeta } from './map.js';
 export { rosterInner, findCharacter } from './roster.js';
-export { sheetInner, sheetEchoesInner, sheetInventoryInner } from './sheet.js';
+export { sheetInner, sheetEchoesInner, sheetInventoryInner, skillPracticeFill } from './sheet.js';
 export {
   layoutDocument,
   infoBtn,

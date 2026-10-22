@@ -130,9 +130,10 @@ function skillSeal(rating: number, p: number): string {
   </span>`;
 }
 
-function practiceFrac(practice: number, threshold: number, rating: number): number {
+/** Ring fill toward the next rank. Rating 3 is full. Rating 0 fills the same way as 1 and 2. */
+export function skillPracticeFill(rating: number, practice: number, threshold: number): number {
   if (rating >= 3) return 1;
-  if (rating <= 0 || threshold <= 0) return 0;
+  if (threshold <= 0) return 0;
   return Math.min(1, Math.max(0, practice / threshold));
 }
 
@@ -145,13 +146,13 @@ function skillWheel(ch: CharacterRecord): string {
         const rating = prog?.rating ?? 0;
         const practice = prog?.practice ?? 0;
         const threshold = prog?.threshold ?? 24;
-        const p = practiceFrac(practice, threshold, rating);
+        const p = skillPracticeFill(rating, practice, threshold);
         const pct = Math.round(p * 100);
         const tip =
-          rating <= 0
-            ? `Untrained · ${def.foundation}`
-            : rating >= 3
-              ? `Rating 3 (max) · ${def.foundation}`
+          rating >= 3
+            ? `Rating 3 (max) · ${def.foundation}`
+            : rating <= 0
+              ? `Untrained · Practice ${practice}/${threshold} (${pct}% to next) · ${def.foundation}`
               : `Rating ${rating} · Practice ${practice}/${threshold} (${pct}% to next) · ${def.foundation}`;
         return `<li class="skill" data-rating="${rating}" data-rated="${rating > 0 ? 'true' : 'false'}" style="--p: ${p}" data-tip="${escAttr(tip)}" tabindex="0">
           ${skillSeal(rating, p)}

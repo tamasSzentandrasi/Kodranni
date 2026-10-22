@@ -3,6 +3,7 @@ export const prerender = false;
 
 import { nextFoundationCost, nextSkillCost } from '@kodranni/app';
 import { ARCHETYPES, FOUNDATION_GROUPS, FOUNDATION_HARM } from '@kodranni/domain';
+import { skillPracticeFill } from '@kodranni/hall-render';
 import CampaignLayout from '../../../layouts/CampaignLayout.astro';
 import CreationChrome from '../../../components/CreationChrome.astro';
 import SheetChrome from '../../../components/SheetChrome.astro';
@@ -34,11 +35,6 @@ const desk = live && deskToolsOn(Astro.request);
 const playerEdit = canEdit && !desk;
 const foundationPts = ch.creation?.foundationPoints ?? 0;
 const skillPts = ch.creation?.skillPoints ?? 0;
-
-function practiceFrac(practice: number, threshold: number): number {
-  if (threshold <= 0) return 0;
-  return Math.min(1, Math.max(0, practice / threshold));
-}
 
 const roman = (n: number) => ['∅', 'I', 'II', 'III', 'IV'][n] ?? String(n);
 ---
@@ -277,21 +273,16 @@ const roman = (n: number) => ['∅', 'I', 'II', 'III', 'IV'][n] ?? String(n);
                       const rating = prog?.rating ?? 0;
                       const practice = prog?.practice ?? 0;
                       const threshold = prog?.threshold ?? 24;
-                      const p =
-                        rating > 0 && rating < 3
-                          ? practiceFrac(practice, threshold)
-                          : rating >= 3
-                            ? 1
-                            : 0;
+                      const p = skillPracticeFill(rating, practice, threshold);
                       const pct = Math.round(p * 100);
                       const nextCost = playerEdit ? nextSkillCost(rating) : null;
                       const canRaise =
                         playerEdit && nextCost != null && skillPts >= nextCost;
                       const tipBase =
-                        rating <= 0
-                          ? `Untrained · ${def.foundation}`
-                          : rating >= 3
-                            ? `Rating 3 (max) · ${def.foundation}`
+                        rating >= 3
+                          ? `Rating 3 (max) · ${def.foundation}`
+                          : rating <= 0
+                            ? `Untrained · Practice ${practice}/${threshold} (${pct}% to next) · ${def.foundation}`
                             : `Rating ${rating} · Practice ${practice}/${threshold} (${pct}% to next) · ${def.foundation}`;
                       const tip = desk
                         ? `${tipBase} · left-click raises · right-click lowers · hold changes Practice`
@@ -320,8 +311,8 @@ const roman = (n: number) => ['∅', 'I', 'II', 'III', 'IV'][n] ?? String(n);
                           <span class="skill__name">{def.name}</span>
                           {
                             desk && (
-                              <span class="skill__practice" hidden={rating <= 0 || rating >= 3}>
-                                {rating > 0 && rating < 3 ? `${practice}/${threshold}` : ''}
+                              <span class="skill__practice" hidden={rating >= 3}>
+                                {rating < 3 ? `${practice}/${threshold}` : ''}
                               </span>
                             )
                           }

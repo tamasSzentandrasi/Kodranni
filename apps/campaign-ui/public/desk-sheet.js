@@ -104,7 +104,7 @@
 
     function practiceFrac(rating, practice, threshold) {
       if (rating >= 3) return 1;
-      if (rating <= 0 || threshold <= 0) return 0;
+      if (threshold <= 0) return 0;
       return Math.max(0, Math.min(1, practice / threshold));
     }
 
@@ -124,7 +124,7 @@
       if (inner) inner.textContent = roman(rating);
       const count = el.querySelector('.skill__practice');
       if (count) {
-        const show = rating > 0 && rating < 3;
+        const show = rating < 3;
         count.hidden = !show;
         count.textContent = show ? practice + '/' + threshold : '';
       }
@@ -247,7 +247,7 @@
         const rating = Number(el.getAttribute('data-rating') || 0);
         const practice = Number(el.getAttribute('data-practice') || 0);
         const threshold = Number(el.getAttribute('data-threshold') || 0);
-        if (rating <= 0 || rating >= 3) return;
+        if (rating >= 3) return;
         if (dir < 0 && practice <= 0) return;
         const next = Math.max(0, practice + dir);
         paintSkill(el, { rating: rating, practice: next, threshold: threshold });
