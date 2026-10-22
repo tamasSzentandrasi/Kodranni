@@ -7,6 +7,8 @@ import { openSqliteStore, seedDemoCampaign } from '@kodranni/store';
 import {
   deskAddAxis,
   deskAddNpc,
+  deskConfirmDegrade,
+  deskDismissDegrade,
   deskEditCharacter,
   deskFoundFortunes,
   deskFoundationStep,
@@ -14,6 +16,7 @@ import {
   deskLabelHue,
   deskMarkDead,
   deskPlace,
+  deskProposeDegrade,
   deskRemoveAxis,
   deskRemoveCharacter,
   deskRenameAxis,
@@ -283,6 +286,60 @@ describe('desk sheet', () => {
     expect(skill.threshold).toBe(skillThreshold(3, 3));
     const other = after.skills.find((item) => item.name === 'Engineering & Design')!;
     expect(other.rating).toBe(2);
+    store.close();
+  });
+
+  it('proposes a time leap, confirms the rank drop, and keeps the proposal off the snapshot', () => {
+    const store = demoStore();
+    const slug = 'tomaso';
+    const ch = store.getCharacterBySlug(slug)!;
+    ch.skills = [
+      { name: 'Slash', rating: 1, practice: 1, threshold: 96, foundation: 'Strength' },
+      { name: 'Dodge', rating: 2, practice: 70, threshold: 72, foundation: 'Dexterity' },
+      { name: 'Healing', rating: 0, practice: 0, threshold: 48, foundation: 'Resolve' },
+    ];
+    store.putCharacter(ch);
+    const proposal = deskProposeDegrade(store, slug, 'standard', () => 0.25);
+    expect(proposal.omen).toBe(6);
+    expect(proposal.pool).toEqual(['Slash', 'Dodge']);
+    expect(proposal.picked).toEqual(['Slash']);
+    expect(JSON.stringify(store.toPublicSnapshot())).not.toContain('"picked"');
+    const confirmed = deskConfirmDegrade(store, slug);
+    const slash = confirmed.skills.find((skill) => skill.name === 'Slash')!;
+    expect(slash.rating).toBe(0);
+    expect(slash.practice).toBe(0);
+    expect(slash.threshold).toBe(skillThreshold(0, confirmed.foundations.Strength ?? 1));
+    expect(confirmed.skills.find((skill) => skill.name === 'Dodge')?.rating).toBe(2);
+    expect(store.getDegradeProposal(slug)).toBeUndefined();
+    const again = deskConfirmDegrade(store, slug);
+    expect(again.skills.find((skill) => skill.name === 'Slash')?.rating).toBe(0);
+    store.close();
+  });
+
+  it('dismisses a time leap without writing, and refuses a pick that left the pool', () => {
+    const store = demoStore();
+    const slug = 'tomaso';
+    const ch = store.getCharacterBySlug(slug)!;
+    ch.skills = [
+      { name: 'Slash', rating: 1, practice: 1, threshold: 96, foundation: 'Strength' },
+      { name: 'Dodge', rating: 1, practice: 40, threshold: 48, foundation: 'Dexterity' },
+    ];
+    store.putCharacter(ch);
+    deskProposeDegrade(store, slug, 'standard', () => 0.25);
+    deskDismissDegrade(store, slug);
+    expect(store.getDegradeProposal(slug)).toBeUndefined();
+    expect(store.getCharacterBySlug(slug)!.skills.find((skill) => skill.name === 'Slash')?.rating).toBe(1);
+
+    const stale = store.getCharacterBySlug(slug)!;
+    const draws = [0.5, 0];
+    deskProposeDegrade(store, slug, 'short', () => draws.shift() ?? 0);
+    stale.skills = stale.skills.map((skill) =>
+      skill.name === 'Slash' ? { ...skill, rating: 0, practice: 0 } : skill,
+    );
+    store.putCharacter(stale);
+    expect(() => deskConfirmDegrade(store, slug)).toThrow(/propose the time leap again/);
+    expect(store.getCharacterBySlug(slug)!.skills.find((skill) => skill.name === 'Dodge')?.rating).toBe(1);
+    expect(store.getDegradeProposal(slug)?.picked).toEqual(['Slash']);
     store.close();
   });
 

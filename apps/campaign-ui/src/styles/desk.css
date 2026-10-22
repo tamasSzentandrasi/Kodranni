@@ -511,6 +511,27 @@ body.desk-dragging .is-drop {
   padding: 0.35rem 0.6rem;
 }
 
+.time-leap {
+  display: grid;
+  gap: 0.45rem;
+  margin-top: 0.75rem;
+  max-width: 36rem;
+}
+
+[data-degrade-panel][hidden] {
+  display: none;
+}
+
+.time-leap p {
+  margin: 0;
+}
+
+.time-leap__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
 .armour__state {
   cursor: pointer;
 }

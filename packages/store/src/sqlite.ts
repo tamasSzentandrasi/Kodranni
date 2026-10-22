@@ -20,6 +20,7 @@ import { redactCharacterForPublic } from './redact.js';
 import { DEFAULT_LABEL_GROUPS, migrateCommunityLabels } from './labels.js';
 import { fillDemoItemIcons, fillDemoTraits } from './seed.js';
 import { fillDemoRelationMap, parseRelationMap } from './relation-map.js';
+import { parseDegradeProposals, type DegradeProposal } from './degrade-proposal.js';
 import { emptyTableState, parseTableState, type TableState } from './table.js';
 
 /** @deprecated Prefer CommunityStorePort — SQLite is one adapter. */
@@ -358,7 +359,33 @@ export function openSqliteStore(path: string): CommunityStorePort {
          ON CONFLICT(key) DO UPDATE SET value = excluded.value`,
       ).run(JSON.stringify(state));
     },
+    getDegradeProposal: (slug) => readDegradeProposals(db)[slug],
+    putDegradeProposal: (slug, proposal) => {
+      const all = readDegradeProposals(db);
+      if (proposal == null) delete all[slug];
+      else all[slug] = { ...proposal, slug };
+      writeMeta(db, 'degrade_proposals', JSON.stringify(all));
+    },
   };
+}
+
+function writeMeta(db: DatabaseSync, key: string, value: string): void {
+  db.prepare(
+    `INSERT INTO meta (key, value) VALUES (?, ?)
+     ON CONFLICT(key) DO UPDATE SET value = excluded.value`,
+  ).run(key, value);
+}
+
+function readDegradeProposals(db: DatabaseSync): Record<string, DegradeProposal> {
+  const row = db.prepare(`SELECT value FROM meta WHERE key = 'degrade_proposals'`).get() as
+    | { value: string }
+    | undefined;
+  if (!row) return {};
+  try {
+    return parseDegradeProposals(JSON.parse(row.value));
+  } catch {
+    return {};
+  }
 }
 
 function readTableState(db: DatabaseSync): TableState {

@@ -11,6 +11,7 @@ import type {
   RelationMap,
   RollRecord,
 } from './types.js';
+import type { DegradeProposal } from './degrade-proposal.js';
 import type { TableState } from './table.js';
 
 export interface CommunityStorePort {
@@ -37,4 +38,7 @@ export interface CommunityStorePort {
   /** Scene faces and the open Tide. Absent from toPublicSnapshot. */
   getTableState(): TableState;
   putTableState(state: TableState): void;
+  /** Time-leap proposal for one person. Absent from toPublicSnapshot. `null` clears it. */
+  getDegradeProposal(slug: string): DegradeProposal | undefined;
+  putDegradeProposal(slug: string, proposal: DegradeProposal | null): void;
 }

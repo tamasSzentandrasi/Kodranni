@@ -31,12 +31,15 @@ import {
   deskSetFortuneLook,
   deskSetMyths,
   deskSetRulerLook,
+  deskConfirmDegrade,
+  deskDismissDegrade,
+  deskProposeDegrade,
   deskSetNotebook,
   deskSkillStep,
   deskStabilise,
   type DeskSeat,
 } from '@kodranni/app';
-import { openSqliteStore, type FoundationMyth } from '@kodranni/store';
+import { openSqliteStore, type DegradeProposal, type FoundationMyth } from '@kodranni/store';
 import { resolveStorePath } from '../../../lib/campaign-paths';
 import { rejectUnlessDesk } from '../../../lib/loopback';
 
@@ -81,6 +84,23 @@ function sheetPayload(ch: {
     })),
     exertion: ch.exertion ?? { current: 0, max: 0 },
   };
+}
+
+function degradeView(proposal: DegradeProposal | undefined) {
+  if (!proposal) return null;
+  return {
+    mode: proposal.mode,
+    omen: proposal.omen,
+    pool: proposal.pool,
+    picked: proposal.picked,
+  };
+}
+
+function sheetResult(
+  store: { getDegradeProposal(slug: string): DegradeProposal | undefined },
+  ch: Parameters<typeof sheetPayload>[0] & { slug: string },
+) {
+  return { ...sheetPayload(ch), degrade: degradeView(store.getDegradeProposal(ch.slug)) };
 }
 
 function optNum(v: unknown): number | undefined {
@@ -228,16 +248,37 @@ export async function POST({ request }: { request: Request }) {
         deskRemoveCharacter(store, str(body.slug), str(body.confirm));
         break;
       case 'foundation':
-        result = sheetPayload(deskFoundationStep(store, str(body.slug), str(body.name), num(body.delta)));
+        result = sheetResult(store, deskFoundationStep(store, str(body.slug), str(body.name), num(body.delta)));
         break;
       case 'harm':
-        result = sheetPayload(deskHarmStep(store, str(body.slug), str(body.track), num(body.delta)));
+        result = sheetResult(store, deskHarmStep(store, str(body.slug), str(body.track), num(body.delta)));
         break;
       case 'stabilise':
-        result = sheetPayload(deskStabilise(store, str(body.slug)));
+        result = sheetResult(store, deskStabilise(store, str(body.slug)));
         break;
+      case 'degrade-propose': {
+        const mode = str(body.mode);
+        if (mode !== 'standard' && mode !== 'short') throw new Error('unknown time-leap');
+        deskProposeDegrade(store, str(body.slug), mode);
+        const proposed = store.getCharacterBySlug(str(body.slug));
+        if (!proposed) throw new Error(`unknown character: ${str(body.slug)}`);
+        result = sheetResult(store, proposed);
+        break;
+      }
+      case 'degrade-confirm':
+        result = sheetResult(store, deskConfirmDegrade(store, str(body.slug)));
+        break;
+      case 'degrade-dismiss': {
+        const person = str(body.slug);
+        deskDismissDegrade(store, person);
+        const left = store.getCharacterBySlug(person);
+        if (!left) throw new Error(`unknown character: ${person}`);
+        result = sheetResult(store, left);
+        break;
+      }
       case 'skill':
-        result = sheetPayload(
+        result = sheetResult(
+          store,
           deskSkillStep(
             store,
             str(body.slug),
@@ -248,7 +289,7 @@ export async function POST({ request }: { request: Request }) {
         );
         break;
       case 'exertion':
-        result = sheetPayload(deskExertion(store, str(body.slug), num(body.current)));
+        result = sheetResult(store, deskExertion(store, str(body.slug), num(body.current)));
         break;
       case 'claim':
         deskClaimEcho(store, str(body.fromSlug), str(body.title), str(body.toSlug));

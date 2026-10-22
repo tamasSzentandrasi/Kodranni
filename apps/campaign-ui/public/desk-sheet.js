@@ -102,6 +102,26 @@
       } else if (!data.dying && stab) stab.remove();
     }
 
+    function paintDegrade(data) {
+      const panel = document.querySelector('[data-degrade-panel]');
+      if (!panel || !('degrade' in data)) return;
+      const proposal = data.degrade;
+      panel.hidden = !proposal;
+      if (!proposal) return;
+      const read = panel.querySelector('[data-degrade-read]');
+      const pool = panel.querySelector('[data-degrade-pool]');
+      const picked = panel.querySelector('[data-degrade-picked]');
+      const mode = proposal.mode === 'short' ? 'Short' : 'Standard';
+      const poolNames = Array.isArray(proposal.pool) ? proposal.pool : [];
+      const pickedNames = Array.isArray(proposal.picked) ? proposal.picked : [];
+      if (read) {
+        read.textContent =
+          mode + ' · omen ' + proposal.omen + ' · ' + pickedNames.length + ' of ' + poolNames.length;
+      }
+      if (pool) pool.textContent = 'Pool: ' + (poolNames.join(', ') || 'none');
+      if (picked) picked.textContent = 'Picked: ' + (pickedNames.join(', ') || 'none');
+    }
+
     function practiceFrac(rating, practice, threshold) {
       if (rating >= 3) return 1;
       if (threshold <= 0) return 0;
@@ -162,6 +182,7 @@
         });
       }
       if (data.exertion) paintExertion(data);
+      paintDegrade(data);
     }
 
     function send(body) {
@@ -230,6 +251,24 @@
     if (stabilise) {
       stabilise.addEventListener('click', function () {
         send({ op: 'stabilise', slug: slug });
+      });
+    }
+
+    document.querySelectorAll('[data-degrade-mode]').forEach(function (button) {
+      button.addEventListener('click', function () {
+        send({ op: 'degrade-propose', slug: slug, mode: button.getAttribute('data-degrade-mode') });
+      });
+    });
+    const confirmLeap = document.querySelector('[data-degrade-confirm]');
+    if (confirmLeap) {
+      confirmLeap.addEventListener('click', function () {
+        send({ op: 'degrade-confirm', slug: slug });
+      });
+    }
+    const dismissLeap = document.querySelector('[data-degrade-dismiss]');
+    if (dismissLeap) {
+      dismissLeap.addEventListener('click', function () {
+        send({ op: 'degrade-dismiss', slug: slug });
       });
     }
 

@@ -7,8 +7,15 @@ import {
   FOUNDATION_NAMES,
   HIERARCHY_TIERS,
   absorbPractice,
+  cryptoRng,
+  degradePool,
+  downgradeSkill,
+  pickDegradeTargets,
+  rollDie,
   skillByName,
   skillThreshold,
+  type DegradeMode,
+  type Rng,
 } from '@kodranni/domain';
 import {
   TAG_GROUP_ID,
@@ -18,6 +25,7 @@ import {
   type CharacterRecord,
   type CommunityRecord,
   type CommunityStorePort,
+  type DegradeProposal,
   type EchoRecord,
   type FortuneKey,
   type FoundationMyth,
@@ -878,6 +886,62 @@ function rebalanceRuledSkills(ch: CharacterRecord, names: string[]): void {
     absorbPractice(skill, ch.foundations[rulingName] ?? 1);
     if (def) skill.foundation = def.foundation;
   }
+}
+
+function degradeSkillRows(ch: CharacterRecord) {
+  return (ch.skills ?? []).map((skill) => ({
+    name: skill.name,
+    rating: skill.rating,
+    practice: skill.practice,
+    threshold: skill.threshold,
+  }));
+}
+
+/** Roll a fresh d20 and store the proposal. Confirm is what writes the ranks. */
+export function deskProposeDegrade(
+  store: CommunityStorePort,
+  slug: string,
+  mode: DegradeMode,
+  rng: Rng = cryptoRng(),
+): DegradeProposal {
+  if (mode !== 'standard' && mode !== 'short') throw new Error('unknown time-leap');
+  const ch = store.getCharacterBySlug(slug);
+  if (!ch) throw new Error(`unknown character: ${slug}`);
+  const omen = rollDie(20, rng);
+  const draw = pickDegradeTargets(degradeSkillRows(ch), omen, mode, rng);
+  const proposal: DegradeProposal = { slug, mode, omen, pool: draw.pool, picked: draw.picked };
+  store.putDegradeProposal(slug, proposal);
+  return proposal;
+}
+
+/** Apply the stored pick. A cleared proposal writes nothing. */
+export function deskConfirmDegrade(store: CommunityStorePort, slug: string): CharacterRecord {
+  const ch = store.getCharacterBySlug(slug);
+  if (!ch) throw new Error(`unknown character: ${slug}`);
+  const proposal = store.getDegradeProposal(slug);
+  if (!proposal) return ch;
+  const pool = new Set(degradePool(degradeSkillRows(ch)).map((skill) => skill.name));
+  if (proposal.picked.some((name) => !pool.has(name))) {
+    throw new Error('propose the time leap again');
+  }
+  if (proposal.picked.length > 0) {
+    for (const name of proposal.picked) {
+      const skill = ch.skills.find((row) => row.name === name);
+      if (!skill) throw new Error('propose the time leap again');
+      const def = skillByName(skill.name);
+      downgradeSkill(skill, ch.foundations[def?.foundation ?? skill.foundation] ?? 1);
+      if (def) skill.foundation = def.foundation;
+    }
+    store.putCharacter(ch);
+  }
+  store.putDegradeProposal(slug, null);
+  return store.getCharacterBySlug(slug)!;
+}
+
+/** Drop the proposal. The sheet is unchanged. */
+export function deskDismissDegrade(store: CommunityStorePort, slug: string): void {
+  if (!store.getCharacterBySlug(slug)) throw new Error(`unknown character: ${slug}`);
+  store.putDegradeProposal(slug, null);
 }
 
 export function deskExertion(store: CommunityStorePort, slug: string, current: number) {

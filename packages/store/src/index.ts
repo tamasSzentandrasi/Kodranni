@@ -20,6 +20,7 @@ export * from './redact.js';
 export * from './snapshot.js';
 export * from './relation-map.js';
 export * from './table.js';
+export * from './degrade-proposal.js';
 
 // --- lightweight memory store (tests / early adapters) ---
 
