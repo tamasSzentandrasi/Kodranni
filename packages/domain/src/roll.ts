@@ -48,13 +48,13 @@ export function resolveRoll(input: ResolveRollInput): ResolveRollResult {
     else if (omen === DEFAULT_NEGATIVE_OMEN) omenHit = 'negative';
   }
 
-  const usedSkill = input.kind !== 'primitive' && input.skill > 0;
+  // Rating 0 is still a named Skill. Only Primitive omits Practice.
   const practice =
     input.kind === 'primitive'
       ? { gained: 0, reasons: ['primitive'] }
       : practiceGain({
           kind: input.kind === 'opposed' ? 'opposed' : 'unopposed',
-          usedSkill,
+          usedSkill: true,
           exertionSpent: input.exertionSpent,
           marks,
           failures,

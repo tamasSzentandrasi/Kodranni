@@ -35,6 +35,27 @@ describe('resolveRoll', () => {
     expect(r.marks + r.failures).toBe(4);
   });
 
+  it('rating 0 still earns Practice when failures outnumber Marks', () => {
+    const r = resolveRoll({
+      foundation: 2,
+      skill: 0,
+      exertionDice: 0,
+      emptyExertion: false,
+      decadence: false,
+      overCapEchoInvolved: false,
+      dieTier: 8,
+      kind: 'unopposed',
+      exertionSpent: false,
+      rng: scripted([1, 2, 9], [8, 8, 20]),
+    });
+    expect(r.poolSize).toBe(2);
+    expect(r.faces).toEqual([1, 2]);
+    expect(r.marks).toBe(0);
+    expect(r.failures).toBe(2);
+    expect(r.practiceGained).toBe(2);
+    expect(r.practiceReasons).toEqual(['unopposed_more_failures_plus_2']);
+  });
+
   it('primitive grants no practice', () => {
     const r = resolveRoll({
       foundation: 3,
