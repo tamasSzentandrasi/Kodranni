@@ -2,6 +2,7 @@ import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
+import { skillThreshold } from '@kodranni/domain';
 import { openSqliteStore, seedDemoCampaign } from '@kodranni/store';
 import {
   deskAddAxis,
@@ -263,6 +264,25 @@ describe('desk sheet', () => {
     const held = atThree?.practice ?? 0;
     deskSkillStep(store, slug, 'Slash', 0, 4);
     expect(store.getCharacterBySlug(slug)?.skills.find((s) => s.name === 'Slash')?.practice).toBe(held);
+    store.close();
+  });
+
+  it('levels a Skill when a Foundation edit cuts the bar under its Practice', () => {
+    const store = demoStore();
+    const slug = 'tomaso';
+    const ch = store.getCharacterBySlug(slug)!;
+    const row = ch.skills.find((skill) => skill.name === 'Carpentry & Masonry')!;
+    row.practice = 36;
+    store.putCharacter(ch);
+    deskFoundationStep(store, slug, 'Strength', 1);
+    const after = store.getCharacterBySlug(slug)!;
+    const skill = after.skills.find((item) => item.name === 'Carpentry & Masonry')!;
+    expect(after.foundations.Strength).toBe(3);
+    expect(skill.rating).toBe(3);
+    expect(skill.practice).toBe(0);
+    expect(skill.threshold).toBe(skillThreshold(3, 3));
+    const other = after.skills.find((item) => item.name === 'Engineering & Design')!;
+    expect(other.rating).toBe(2);
     store.close();
   });
 

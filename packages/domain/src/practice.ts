@@ -79,10 +79,35 @@ export function basePracticeThreshold(currentSkill: 0 | 1 | 2): number {
   }
 }
 
-/** Foundation 3 halves, 1 doubles, 2 base. */
+/** Foundation 3 halves, 1 doubles, 2 base. Foundation 0 matches 1, and 4 matches 3. */
 export function practiceThreshold(currentSkill: 0 | 1 | 2, rulingFoundation: number): number {
   const base = basePracticeThreshold(currentSkill);
   if (rulingFoundation >= 3) return Math.floor(base / 2);
   if (rulingFoundation <= 1) return base * 2;
   return base;
+}
+
+/**
+ * Bar stored on a Skill row.
+ * Rating 0, 1, and 2 use that rung. Rating 3 keeps the 2→3 bar and does not level further.
+ */
+export function skillThreshold(rating: number, rulingFoundation: number): number {
+  const rung: 0 | 1 | 2 = rating <= 0 ? 0 : rating === 1 ? 1 : 2;
+  return practiceThreshold(rung, rulingFoundation);
+}
+
+/** Recompute the bar, then spend overflow into ranks. Practice is not rescaled when the bar grows. */
+export function absorbPractice(
+  skill: { rating: number; practice: number; threshold: number },
+  rulingFoundation: number,
+): void {
+  if (skill.rating > 3) skill.rating = 3;
+  if (skill.rating < 0) skill.rating = 0;
+  skill.threshold = skillThreshold(skill.rating, rulingFoundation);
+  while (skill.rating < 3 && skill.threshold > 0 && skill.practice >= skill.threshold) {
+    skill.practice -= skill.threshold;
+    skill.rating += 1;
+    skill.threshold = skillThreshold(skill.rating, rulingFoundation);
+  }
+  skill.threshold = skillThreshold(skill.rating, rulingFoundation);
 }

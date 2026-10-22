@@ -1,3 +1,4 @@
+import { skillThreshold } from '@kodranni/domain';
 import { randomUUID } from 'node:crypto';
 import type { CharacterRecord, CommunityRecord, SkillProgress } from './types.js';
 import type { CommunityStorePort } from './port.js';
@@ -149,7 +150,10 @@ function living(opts: LivingOpts): CharacterRecord {
     },
     foundations: opts.foundations,
     foundationsEffective: {},
-    skills: opts.skills,
+    skills: opts.skills.map((skill) => ({
+      ...skill,
+      threshold: skillThreshold(skill.rating, opts.foundations[skill.foundation] ?? 1),
+    })),
     traits: opts.traits,
     exertion: { current: opts.exertionCurrent ?? 0, max: 0 },
     echoes: opts.echoes,

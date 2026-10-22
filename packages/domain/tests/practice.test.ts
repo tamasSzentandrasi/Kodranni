@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { practiceGain, practiceThreshold } from '../src/practice.js';
+import { absorbPractice, practiceGain, practiceThreshold, skillThreshold } from '../src/practice.js';
 
 describe('practiceGain', () => {
   it('Primitive / no skill → 0', () => {
@@ -108,5 +108,40 @@ describe('practiceThreshold', () => {
     expect(practiceThreshold(0, 2)).toBe(24);
     expect(practiceThreshold(0, 3)).toBe(12);
     expect(practiceThreshold(0, 1)).toBe(48);
+  });
+
+  it('Foundation 0 doubles like 1, and Foundation 4 halves like 3', () => {
+    expect(practiceThreshold(1, 0)).toBe(practiceThreshold(1, 1));
+    expect(practiceThreshold(2, 4)).toBe(practiceThreshold(2, 3));
+  });
+});
+
+describe('skillThreshold', () => {
+  it('stores the rung bar, and rating 3 keeps the 2→3 bar', () => {
+    expect(skillThreshold(0, 1)).toBe(48);
+    expect(skillThreshold(1, 1)).toBe(96);
+    expect(skillThreshold(1, 2)).toBe(48);
+    expect(skillThreshold(1, 3)).toBe(24);
+    expect(skillThreshold(2, 2)).toBe(72);
+    expect(skillThreshold(3, 2)).toBe(72);
+    expect(skillThreshold(3, 1)).toBe(144);
+  });
+});
+
+describe('absorbPractice', () => {
+  it('levels when Practice already meets the recomputed bar and does not pass rating 3', () => {
+    const skill = { rating: 1, practice: 96, threshold: 48 };
+    absorbPractice(skill, 1);
+    expect(skill).toEqual({ rating: 2, practice: 0, threshold: 144 });
+
+    const mastered = { rating: 2, practice: 200, threshold: 72 };
+    absorbPractice(mastered, 2);
+    expect(mastered.rating).toBe(3);
+    expect(mastered.practice).toBe(200 - 72);
+    expect(mastered.threshold).toBe(72);
+
+    const stayed = { rating: 1, practice: 10, threshold: 24 };
+    absorbPractice(stayed, 1);
+    expect(stayed).toEqual({ rating: 1, practice: 10, threshold: 96 });
   });
 });

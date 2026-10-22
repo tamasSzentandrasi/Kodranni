@@ -189,9 +189,6 @@ export function buildRollResultCard(input: RollCardInput): ChatCard {
   if (input.margin != null) {
     fields.push({ name: 'Margin', value: String(input.margin), inline: true });
   }
-  if (input.practiceGained != null && input.practiceGained > 0) {
-    fields.push({ name: 'Practice', value: `+${input.practiceGained}`, inline: true });
-  }
   const lines = [
     '5 or higher is a Mark, bright in the roll below.',
     '',

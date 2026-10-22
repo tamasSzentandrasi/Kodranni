@@ -1,8 +1,8 @@
 import { randomUUID } from 'node:crypto';
 import {
-  practiceThreshold,
   rollDie,
   skillByName,
+  skillThreshold,
   type Rng,
   cryptoRng,
 } from '@kodranni/domain';
@@ -574,10 +574,7 @@ export function spendSkill(
   }
   creation.skillPoints -= cost;
   const foundationRating = ch.foundations[def.foundation] ?? 1;
-  const threshold = practiceThreshold(
-    Math.min(2, from) as 0 | 1 | 2,
-    foundationRating,
-  );
+  const threshold = skillThreshold(to, foundationRating);
   if (!skill) {
     skill = {
       name: def.name,
@@ -589,10 +586,7 @@ export function spendSkill(
     ch.skills.push(skill);
   } else {
     skill.rating = to;
-    skill.threshold = practiceThreshold(
-      Math.min(2, to === 3 ? 2 : to) as 0 | 1 | 2,
-      foundationRating,
-    );
+    skill.threshold = threshold;
     skill.foundation = def.foundation;
   }
   clearPlaceholder(ch);
@@ -664,10 +658,7 @@ export function refundSkill(
   } else {
     const foundationRating = ch.foundations[def.foundation] ?? 1;
     skill.rating = to;
-    skill.threshold = practiceThreshold(
-      Math.min(2, to === 3 ? 2 : to) as 0 | 1 | 2,
-      foundationRating,
-    );
+    skill.threshold = skillThreshold(to, foundationRating);
   }
   clearPlaceholder(ch);
   store.putCharacter(ch);

@@ -42,6 +42,7 @@ describe('chat-ui cards', () => {
     expect(card.fields?.find((f) => f.name === 'Omen')?.inline).toBe(true);
     expect(card.fields?.find((f) => f.name === 'Pool')?.inline).toBe(true);
     expect(card.fields?.find((f) => f.name === 'Pool')?.value).toBe('2+2 = 4d8');
+    expect(card.fields?.find((f) => f.name === 'Practice')).toBeUndefined();
     expect(card.buttons?.some((b) => b.id === 'oppose:r1')).toBe(true);
     const withSt = buildRollResultCard({
       characterName: 'Tomas',

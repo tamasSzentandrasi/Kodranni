@@ -2,10 +2,12 @@ import { randomUUID } from 'node:crypto';
 import {
   DEFAULT_DIE_TIER,
   type DieTier,
+  absorbPractice,
   computePoolSize,
   cryptoRng,
   resolveRoll,
   skillByName,
+  skillThreshold,
   type Rng,
 } from '@kodranni/domain';
 import {
@@ -86,6 +88,12 @@ function publishOmen(
   return { secret: false };
 }
 
+/** Catalog Foundation, raw score. Missing score matches the desk default of 1. */
+function rulingScore(ch: CharacterRecord, foundationName: string | undefined): number {
+  if (!foundationName) return 1;
+  return ch.foundations[foundationName] ?? 1;
+}
+
 /**
  * An opposed roll while a Tide is open moves the marker.
  * The opening roll is side A: more Marks there increases position.
@@ -131,7 +139,13 @@ export function previewPlayerPool(
     const def = skillByName(skillName);
     if (!def) throw new Error(`unknown skill: ${skillName}`);
     if (!skill) {
-      skill = { name: def.name, rating: 0, practice: 0, threshold: 24, foundation: def.foundation };
+      skill = {
+        name: def.name,
+        rating: 0,
+        practice: 0,
+        threshold: skillThreshold(0, rulingScore(ch, def.foundation)),
+        foundation: def.foundation,
+      };
     }
   }
   const foundationRating = ch.foundationsEffective[cmd.foundation];
@@ -209,7 +223,7 @@ export function executePlayerRoll(
         name: def.name,
         rating: 0,
         practice: 0,
-        threshold: 24,
+        threshold: skillThreshold(0, rulingScore(ch, def.foundation)),
         foundation: def.foundation,
       };
     }
@@ -270,7 +284,9 @@ export function executePlayerRoll(
           existed: Boolean(priorSkill),
           rating: priorSkill?.rating ?? 0,
           practice: priorSkill?.practice ?? 0,
-          threshold: priorSkill?.threshold ?? 24,
+          threshold:
+            priorSkill?.threshold ??
+            skillThreshold(0, rulingScore(ch, skillByName(skillName)?.foundation)),
         }
       : null,
   };
@@ -285,13 +301,8 @@ export function executePlayerRoll(
 
   if (skill && resolved.practiceGained > 0) {
     skill.practice += resolved.practiceGained;
-    while (skill.rating < 3 && skill.practice >= skill.threshold) {
-      skill.practice -= skill.threshold;
-      skill.rating += 1;
-      if (skill.rating === 1) skill.threshold = 48;
-      else if (skill.rating === 2) skill.threshold = 72;
-      else skill.threshold = 9999;
-    }
+    const ruled = skillByName(skill.name);
+    absorbPractice(skill, rulingScore(ch, ruled?.foundation ?? skill.foundation));
     if (!ch.skills.some((s) => s.name === skill.name)) {
       ch.skills.push(skill);
     }

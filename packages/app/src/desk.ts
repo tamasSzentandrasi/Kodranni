@@ -6,14 +6,16 @@ import {
   FOUNDATION_HARM,
   FOUNDATION_NAMES,
   HIERARCHY_TIERS,
-  practiceThreshold,
+  absorbPractice,
   skillByName,
+  skillThreshold,
 } from '@kodranni/domain';
 import {
   TAG_GROUP_ID,
   factionHueFromName,
   factionsFromLabels,
   labelId,
+  type CharacterRecord,
   type CommunityRecord,
   type CommunityStorePort,
   type EchoRecord,
@@ -795,6 +797,10 @@ export function deskEditCharacter(
   const fromName = before.name;
   const echoesBefore = before.echoes ?? [];
   const ch = stEditCharacter(store, { characterSlug: slug, patch: next, actor: 'desk' });
+  if (next.foundations) {
+    rebalanceRuledSkills(ch, Object.keys(next.foundations));
+    store.putCharacter(ch);
+  }
   if (next.name && next.name.trim() && next.name.trim() !== fromName) {
     renameInCommunity(store, slug, fromName, ch.name);
   }
@@ -845,16 +851,33 @@ export function deskSkillStep(
   if (!ch) throw new Error(`unknown character: ${slug}`);
   const skills = (ch.skills ?? []).map((s) => ({ ...s }));
   let row = skills.find((s) => s.name === skillName);
+  const ruling = ch.foundations[def.foundation] ?? 1;
   if (!row) {
-    row = { name: skillName, rating: 0, practice: 0, threshold: 24, foundation: def.foundation };
+    row = {
+      name: skillName,
+      rating: 0,
+      practice: 0,
+      threshold: skillThreshold(0, ruling),
+      foundation: def.foundation,
+    };
     skills.push(row);
   }
   if (ratingDelta) row.rating = Math.max(0, Math.min(3, row.rating + ratingDelta));
   if (practiceDelta && row.rating < 3) row.practice = Math.max(0, row.practice + practiceDelta);
-  const rung = (row.rating >= 3 ? 2 : row.rating) as 0 | 1 | 2;
-  row.threshold = practiceThreshold(rung, ch.foundations[def.foundation] ?? 1);
+  row.threshold = skillThreshold(row.rating, ruling);
   row.foundation = def.foundation;
   return deskEditCharacter(store, slug, { skills });
+}
+
+function rebalanceRuledSkills(ch: CharacterRecord, names: string[]): void {
+  const touched = new Set(names);
+  for (const skill of ch.skills ?? []) {
+    const def = skillByName(skill.name);
+    const rulingName = def?.foundation ?? skill.foundation;
+    if (!rulingName || !touched.has(rulingName)) continue;
+    absorbPractice(skill, ch.foundations[rulingName] ?? 1);
+    if (def) skill.foundation = def.foundation;
+  }
 }
 
 export function deskExertion(store: CommunityStorePort, slug: string, current: number) {
