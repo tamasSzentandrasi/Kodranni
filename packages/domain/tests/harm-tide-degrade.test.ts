@@ -78,7 +78,16 @@ describe('tide', () => {
         winner: 'A',
         omenStep: 'A',
       }),
-    ).toBe(10);
+    ).toBe(8);
+    expect(
+      stepTidePosition({
+        position: 1,
+        length: 17,
+        marginSteps: 0,
+        winner: null,
+        omenStep: 'A',
+      }),
+    ).toBe(0);
     expect(
       stepTidePosition({
         position: 8,

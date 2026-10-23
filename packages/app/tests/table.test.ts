@@ -151,12 +151,14 @@ describe('tide state', () => {
     ).toThrow(/already open/);
 
     const stepped = stepTide(store, { winner: 'A', margin: 3, omen: 1 });
-    expect(stepped.position).toBe(10);
+    expect(stepped.position).toBe(8);
     const untied = stepTide(store, { winner: null, margin: 9, omen: 10 });
-    expect(untied.position).toBe(10);
+    expect(untied.position).toBe(8);
+    const towardB = stepTide(store, { winner: null, margin: 0, omen: 20 });
+    expect(towardB.position).toBe(9);
 
     const closed = closeTide(store);
-    expect(closed.position).toBe(10);
+    expect(closed.position).toBe(9);
     expect(store.getTableState().tide).toBeNull();
     expect(() => closeTide(store)).toThrow(/no Tide/);
     store.close();
@@ -195,7 +197,7 @@ describe('tide state', () => {
       parentRollId: parent.rollId,
       clientEventId: 'tide-oppose-roll',
     });
-    expect(store.getTableState().tide?.position).toBe(9);
+    expect(store.getTableState().tide?.position).toBe(7);
     expect((store.getRoll(child.rollId)?.data as { tideStep?: { from?: number } }).tideStep?.from).toBe(8);
     undoPlayerRoll(store, child.rollId);
     expect(store.getTableState().tide?.position).toBe(8);

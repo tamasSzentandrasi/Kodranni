@@ -32,7 +32,11 @@ export function weightsForFooting(footing: TideFooting): { weightA: number; weig
   }
 }
 
-/** Position 0 is side A's collapse. A step toward A moves away from that end. */
+/**
+ * Position 0 is side A's collapse.
+ * Winner A moves away from that end, toward B.
+ * An omen step of A is a face that pushes toward A's collapse.
+ */
 export function stepTidePosition(input: {
   position: number;
   length: number;
@@ -43,8 +47,8 @@ export function stepTidePosition(input: {
   let position = input.position;
   if (input.winner === 'A') position += input.marginSteps;
   if (input.winner === 'B') position -= input.marginSteps;
-  if (input.omenStep === 'A') position += 1;
-  if (input.omenStep === 'B') position -= 1;
+  if (input.omenStep === 'A') position -= 1;
+  if (input.omenStep === 'B') position += 1;
   return Math.max(0, Math.min(input.length, position));
 }
 
