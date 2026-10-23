@@ -26,7 +26,7 @@ Reserved: `www`, `demo`, `play`. `demo.kodranni.com` redirects to the showcase. 
 
 ## Reply
 
-An opposed roll is a reply to a channel result. A Tide-linked roll is a reply to the Tide card, or to a roll already tied to it. The result is a channel message. There is no Oppose button and no Tide button on a result card.
+An opposed roll is Oppose on the result card. That opens the Ready card for the reply and leaves the public result where it is. A Tide-linked roll is Roll on the Tide card, or Oppose on a roll already tied to the Tide. The result is a channel message.
 
 ---
 
@@ -105,7 +105,7 @@ A sheet is for player characters and for NPCs who will return. A guard who appea
 
 **`/roll` is the sheeted roll.** With no extra name it uses the character bound to the person who issued it. A player does not pass a slug for their own character.
 
-**`/select` chooses which living character `/roll` assumes** when that account has more than one. One character means `/select` is unused. It is not an NPC tool and it is not a Storyteller tool. The command registered today as `/focus` becomes this.
+**`/select` names the active character.** With one living character it names that person. With more than one it chooses which of them `/roll` assumes. It is not an NPC tool.
 
 **A Storyteller’s `/roll` accepts an optional slug.** That slug is a sheeted NPC or notable. Autocomplete is on the name. The service loads that sheet: effective Foundation, Skill, armour, pool floor, that person’s Exertion and Echoes, Decadence, over-capacity, Dying, Practice written back, Harm able to land on a real track. The Storyteller still chooses Foundation, Skill, tier, Exertion, and which Echo applies. The sheet supplies the numbers.
 
