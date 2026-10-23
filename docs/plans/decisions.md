@@ -152,7 +152,7 @@ Apply writes those three things for the selection, as one desk audit, and leaves
 
 **Chat.** When a selected person has a bound player, that player gets an ephemeral notice of what Restore wrote for them. NPCs and unbound names get no chat line. If nobody selected has a bound account, chat stays quiet.
 
-**What stays on the person.** Harm tracks, Dying, stabilising (Dying clears, the track stays at 3, and the Trait that usually remains is asked for here), and moving food or water from one sheet to another. A father handing his portion to his son is two inventory edits, done before Restore if the fiction needs it. Restore spends or leaves the days each row already holds. Practice degrade is also on the person: the d20 bands propose which of the lowest skills fall, and the Storyteller confirms. It is not part of Restore.
+**What stays on the person.** Harm tracks, and moving food or water from one sheet to another. A father handing his portion to his son is two inventory edits, done before Restore if the fiction needs it. Restore spends or leaves the days each row already holds. A time leap is not part of Restore. The Session tab chooses the people and standard or short, and posts the card. The omen is thrown on that card. Confirm and dismiss are on the Session tab. Stabilising is the same split: someone else opens a Healing roll on the table, the card names who is saved, and the foundation, the die, Exertion, and an Echo are chosen there. The Session tab records the Trait, clears Dying, and leaves the track at 3.
 
 ---
 
@@ -232,7 +232,7 @@ Identity: name, kind, concept, community tie, “who do we see?”, portrait, cl
 
 Creation, shown and not forged: Foundation points left, Skill points left, Words left, whether the two private dice have been granted, locked or not.
 
-Edited on the person: the nine raw Foundations (a 0 or a 4 only with a Trait), each Skill’s rating and Practice, Traits (name and note), Exertion current, the nine Harm tracks, Dying when stabilising, armour and whether it is donned, food days, water days, named items (name, note, tags, icon).
+Edited on the person: the nine raw Foundations (a 0 or a 4 only with a Trait), each Skill’s rating and Practice, Traits (name and note), Exertion current, the nine Harm tracks, armour and whether it is donned, food days, water days, named items (name, note, tags, icon). Dying is shown on the sheet and the list. Clearing it is the Session tab, after the table has thrown Healing for that person.
 
 Echoes: title, weight, invoke condition, the weight-2 circle and its people, resolve or reopen with a narrative. A Pivotal resolution is also a Fortune button and a Myth, done as those controls. Claiming a Legacy copies a Group or Pivotal Echo onto a successor. Decadence, over-capacity, Echo capacity, and Echo weight are shown and derived. Invocation stays on the roll confirm.
 

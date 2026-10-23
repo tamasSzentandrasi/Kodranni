@@ -8,7 +8,6 @@ import CampaignLayout from '../../../layouts/CampaignLayout.astro';
 import CreationChrome from '../../../components/CreationChrome.astro';
 import SheetChrome from '../../../components/SheetChrome.astro';
 import SkillSeal from '../../../components/SkillSeal.astro';
-import { openSqliteStore, type DegradeProposal } from '@kodranni/store';
 import { getCharacter, loadCommunity } from '../../../data/load';
 import { harmPips } from '../../../lib/format';
 import { deskToolsOn } from '../../../lib/loopback';
@@ -40,16 +39,6 @@ const foundationPts = ch.creation?.foundationPoints ?? 0;
 const skillPts = ch.creation?.skillPoints ?? 0;
 
 const roman = (n: number) => ['∅', 'I', 'II', 'III', 'IV'][n] ?? String(n);
-
-let degrade: DegradeProposal | null = null;
-if (desk && c.storePath) {
-  const proposalStore = openSqliteStore(c.storePath);
-  try {
-    degrade = proposalStore.getDegradeProposal(ch.slug) ?? null;
-  } finally {
-    proposalStore.close();
-  }
-}
 ---
 
 <CampaignLayout
@@ -235,71 +224,7 @@ if (desk && c.storePath) {
             ))
           }
         </div>
-        {
-          desk && (
-            <form class="dying-confirm" data-desk-stabilise-form hidden={!ch.dying}>
-              <p>
-                Roll Resolve + Healing first. Then record the Trait that remains. An empty name
-                still clears Dying. The track stays at 3.
-              </p>
-              <label>
-                Trait
-                <input class="kod-ink" data-stabilise-name autocomplete="off" />
-              </label>
-              <label>
-                Note
-                <input class="kod-ink" data-stabilise-note autocomplete="off" />
-              </label>
-              <button type="button" class="kod-btn" data-desk-stabilise>
-                Stabilise
-              </button>
-            </form>
-          )
-        }
       </section>
-
-      {
-        desk && (
-          <section class="kod-plate time-leap" id="section-time-leap">
-            <div class="section-head">
-              <h2>Time leap</h2>
-            </div>
-            <p>
-              A standard leap can take up to three of the five lowest Skills. A short leap can take one.
-              The omen can also take none. Confirm writes that pick. Dismiss writes nothing.
-            </p>
-            <div class="time-leap__actions">
-              <button type="button" class="kod-btn" data-degrade-mode="standard">
-                Standard
-              </button>
-              <button type="button" class="kod-btn" data-degrade-mode="short">
-                Short
-              </button>
-            </div>
-            <div data-degrade-panel hidden={!degrade}>
-              <p data-degrade-read>
-                {
-                  degrade
-                    ? `${degrade.mode === 'short' ? 'Short' : 'Standard'} · omen ${degrade.omen} · ${degrade.picked.length} of ${degrade.pool.length}`
-                    : ''
-                }
-              </p>
-              <p data-degrade-pool>{degrade ? `Pool: ${degrade.pool.join(', ') || 'none'}` : ''}</p>
-              <p data-degrade-picked>
-                {degrade ? `Picked: ${degrade.picked.join(', ') || 'none'}` : ''}
-              </p>
-              <div class="time-leap__actions">
-                <button type="button" class="kod-btn" data-degrade-confirm>
-                  Confirm
-                </button>
-                <button type="button" class="kod-btn" data-degrade-dismiss>
-                  Dismiss
-                </button>
-              </div>
-            </div>
-          </section>
-        )
-      }
 
       <section class="kod-plate" id="section-skills">
         <div class="section-head">

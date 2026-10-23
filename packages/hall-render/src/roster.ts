@@ -93,9 +93,11 @@ export function rosterInner(
       const av = row.avatar
         ? `<img class="avatar" src="${escAttr(row.avatar)}" alt="" width="40" height="40" loading="lazy"/>`
         : `<span class="avatar avatar--mono" aria-hidden="true">${esc(monogram(row.name))}</span>`;
-      const status = row.status
-        ? `<span class="char-card__status${row.dying ? ' char-card__status--dying' : ''}" data-status="${escAttr(row.status)}">${esc(row.status)}${row.dying ? ' · dying' : ''}</span>`
-        : '';
+      const status = row.dying
+        ? `<span class="char-card__status char-card__status--dying" data-status="dying">Dying</span>`
+        : row.status
+          ? `<span class="char-card__status" data-status="${escAttr(row.status)}">${esc(row.status)}</span>`
+          : '';
       const inner = `${av}<span class="char-row__body"><span class="char-row__name">${esc(row.name)}</span><span class="char-row__meta${row.placeholder ? ' char-row__meta--placeholder' : ''}">${esc(row.line)}</span></span>${status}`;
       const style = row.factionHue != null ? ` style="--faction-h: ${row.factionHue}"` : '';
       const selectedAttr = ` data-selected="${selected === row.key ? 'true' : 'false'}"`;

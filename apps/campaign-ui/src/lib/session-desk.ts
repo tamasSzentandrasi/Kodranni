@@ -42,12 +42,17 @@ export interface SessionDeskModel {
   pcs: SessionRestPerson[];
   npcs: SessionRestPerson[];
   groups: { id: string; name: string; members: string[] }[];
+  leapGroups?: { id: string; name: string; members: string[] }[];
   tide: OpenTide | null;
   discord: SessionDiscordFields;
   fluxer: SessionFluxerFields;
   discordLive?: boolean;
   fluxerLive?: boolean;
   bound: { name: string; displayName: string }[];
+  /** Throws waiting on the Session tab. The die was thrown on the table. */
+  leaps?: { slug: string; name: string; mode: 'standard' | 'short'; omen: number; pool: string[]; picked: string[] }[];
+  /** People at Dying. The Healing roll is posted. The Trait is recorded here. */
+  dying?: { slug: string; name: string; tracks: string[] }[];
 }
 
 const FOOTING_STOPS = ['severeA', 'slightA', 'equal', 'slightB', 'severeB'] as const;
@@ -99,6 +104,7 @@ export function assembleSession(input: {
   fluxer: SessionFluxerFields;
   discordLive?: boolean;
   fluxerLive?: boolean;
+  leaps?: SessionDeskModel['leaps'];
 }): { reading: SessionReading; desk: SessionDeskModel | null } {
   const reading = sessionReading(input.state);
   if (!input.desk) return { reading, desk: null };
@@ -144,12 +150,28 @@ export function assembleSession(input: {
         name: group.name,
         members: [...group.members],
       })),
+      leapGroups: (input.state.leapGroups ?? []).map((group) => ({
+        id: group.id,
+        name: group.name,
+        members: [...group.members],
+      })),
       tide: input.state.tide,
       discord: input.discord,
       fluxer: input.fluxer,
       discordLive: input.discordLive === true,
       fluxerLive: input.fluxerLive === true,
       bound,
+      leaps: input.leaps ?? [],
+      dying: input.characters
+        .filter((ch) => ch.status !== 'dead' && ch.dying)
+        .map((ch) => ({
+          slug: ch.slug,
+          name: ch.name,
+          tracks: Object.entries(ch.harm ?? {})
+            .filter(([, points]) => points >= 3)
+            .map(([track]) => track),
+        }))
+        .sort((a, b) => a.name.localeCompare(b.name)),
     },
   };
 }
@@ -494,12 +516,134 @@ function chat(model: SessionDeskModel): string {
   </details>`;
 }
 
+function leapMarkSvg(): string {
+  return `<svg class="session-glyph__svg" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+    <path d="M10 6.4h12M10 25.6h12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+    <path d="M11.2 6.4c.2 4.6 3.4 6.2 4.8 9.6-1.4 3.4-4.6 5-4.8 9.6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+    <path d="M20.8 6.4c-.2 4.6-3.4 6.2-4.8 9.6 1.4 3.4 4.6 5 4.8 9.6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+  </svg>`;
+}
+
+function leapButtons(): string {
+  return `<button type="button" class="session-quiet" data-leap-kind="standard">Standard</button>
+    <button type="button" class="session-quiet" data-leap-kind="short">Short</button>`;
+}
+
+function leapAdd(): string {
+  return `<label class="rest-add">Add <select class="rest-add__pick" data-leap-add aria-label="Add someone to this leap"><option value="">Someone</option></select></label>`;
+}
+
+function leapSoul(
+  person: SessionRestPerson,
+  inGroup: boolean,
+  leap: NonNullable<SessionDeskModel['leaps']>[number] | undefined,
+): string {
+  const out = inGroup
+    ? `<button type="button" class="rest-out" data-leap-out aria-label="Remove ${esc(person.name)} from this leap">×</button>`
+    : '';
+  const waiting = leap
+    ? `<p class="rest-exertion__k">${leap.mode === 'short' ? 'Short' : 'Standard'} · omen ${esc(leap.omen)} · ${esc(leap.picked.length)} of ${esc(leap.pool.length)}</p>
+      <p class="rest-exertion__k">Pool: ${esc(leap.pool.join(', ') || 'none')}</p>
+      <p class="rest-exertion__k">Picked: ${esc(leap.picked.join(', ') || 'none')}</p>
+      <div class="rest-company__bar">
+        <button type="button" class="session-quiet" data-leap-confirm="${esc(person.slug)}">Confirm</button>
+        <button type="button" class="session-quiet" data-leap-dismiss="${esc(person.slug)}">Dismiss</button>
+      </div>`
+    : '';
+  return `<article class="rest-soul" data-leap-person data-slug="${esc(person.slug)}" data-kind="${esc(person.kind)}" data-name="${esc(person.name)}">
+    <h3 class="rest-soul__name"><a href="/characters/${esc(person.slug)}/">${esc(person.name)}</a></h3>
+    ${waiting}
+    ${out}
+  </article>`;
+}
+
+function timeLeap(model: SessionDeskModel): string {
+  const people = [...model.pcs, ...model.npcs];
+  const bySlug = new Map(people.map((person) => [person.slug, person]));
+  const proposals = new Map((model.leaps ?? []).map((leap) => [leap.slug, leap]));
+  const grouped = new Set((model.leapGroups ?? []).flatMap((group) => group.members));
+  const tableRows = model.pcs
+    .filter((person) => !grouped.has(person.slug))
+    .map((person) => leapSoul(person, false, proposals.get(person.slug)))
+    .join('');
+  const groups = (model.leapGroups ?? [])
+    .map((group) => {
+      const rows = group.members
+        .map((slug) => bySlug.get(slug))
+        .filter((person): person is SessionRestPerson => Boolean(person))
+        .map((person) => leapSoul(person, true, proposals.get(person.slug)))
+        .join('');
+      return `<section class="rest-company" data-leap-band data-leap-group data-group-id="${esc(group.id)}">
+        <header class="rest-company__bar">
+          <input class="rest-band__name" data-leap-name value="${esc(group.name)}" maxlength="40" aria-label="Leap group name">
+          ${leapButtons()}
+          <button type="button" class="rest-out" data-leap-dissolve aria-label="Dissolve ${esc(group.name)}">×</button>
+        </header>
+        <div class="rest-company__people" data-leap-people>${rows}</div>
+        ${leapAdd()}
+      </section>`;
+    })
+    .join('');
+  const pool = model.npcs
+    .filter((person) => !grouped.has(person.slug))
+    .map((person) => leapSoul(person, false, proposals.get(person.slug)))
+    .join('');
+  return `<section class="kod-plate" data-session-leap>
+    <h2 class="session-head"><span class="session-glyph" aria-hidden="true">${leapMarkSvg()}</span> Time leap</h2>
+    <p>Standard and Short are the group. A player’s omen is thrown on the table. Someone without a player is simulated here. Confirm writes that pick. Dismiss writes nothing.</p>
+    <section class="rest-company" data-leap-band="players">
+      <header class="rest-company__bar">
+        <span class="rest-band__title">Players</span>
+        ${leapButtons()}
+      </header>
+      <div class="rest-company__people" data-leap-people>${tableRows}</div>
+    </section>
+    <div data-leap-groups>${groups}</div>
+    <p class="rest-new"><button type="button" class="session-quiet" data-leap-new>New group</button></p>
+    <div hidden data-leap-pool>${pool}</div>
+    <p data-leap-note></p>
+  </section>`;
+}
+
+function stabilise(model: SessionDeskModel): string {
+  const dying = model.dying ?? [];
+  const healers = [...model.pcs, ...model.npcs];
+  const body =
+    dying.length === 0
+      ? '<p data-stab-empty>No one is Dying.</p>'
+      : dying
+          .map((row) => {
+            const options = healers
+              .filter((person) => person.slug !== row.slug)
+              .map((person) => `<option value="${esc(person.slug)}">${esc(person.name)}</option>`)
+              .join('');
+            const tracks = row.tracks.length ? row.tracks.join(', ') : 'a track at 3';
+            return `<article class="leap-card" data-stab-row data-slug="${esc(row.slug)}">
+              <h3><a href="/characters/${esc(row.slug)}/">${esc(row.name)}</a></h3>
+              <p>Dying. ${esc(tracks)} stays at 3 until this is recorded.</p>
+              <label>Healer <select class="kod-ink" data-stab-healer aria-label="Healer for ${esc(row.name)}">${options}</select></label>
+              <p><button type="button" class="session-quiet" data-stab-post="${esc(row.slug)}"${options ? '' : ' disabled'}>Post the roll</button> <span data-stab-note></span></p>
+              <label>Trait <input class="kod-ink" data-stab-name autocomplete="off" aria-label="Trait for ${esc(row.name)}"></label>
+              <label>Note <input class="kod-ink" data-stab-note-field autocomplete="off" aria-label="Note for ${esc(row.name)}"></label>
+              <p><button type="button" class="session-quiet" data-stab-record="${esc(row.slug)}">Record the Trait</button></p>
+            </article>`;
+          })
+          .join('');
+  return `<section class="kod-plate" data-session-stabilise>
+    <h2 class="session-head">Dying</h2>
+    <p>Someone else rolls Resolve + Healing on the table. The Trait is written here. Dying clears. The track stays at 3.</p>
+    <div data-stab-body>${body}</div>
+  </section>`;
+}
+
 /** Storyteller half. Loopback only. The die is both the view and the editor. */
 export function sessionDeskHtml(model: SessionDeskModel): string {
   return [
     sceneBoard(model),
     inbox(model.pending),
     restore(model),
+    timeLeap(model),
+    stabilise(model),
     tideStudio(model.tide),
     chat(model),
     '<p class="desk-note" data-session-note hidden></p>',

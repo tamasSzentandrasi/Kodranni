@@ -1304,4 +1304,94 @@ describe('bot router', () => {
     expect(port.cards.at(-1)?.description).toContain('This answer moves the marker.');
     store.close();
   });
+
+  it('throws a time-leap omen on the card and leaves the ranks for the Session tab', async () => {
+    const dir = mkdtempSync(join(tmpdir(), 'kod-bot-'));
+    dirs.push(dir);
+    const store = openSqliteStore(join(dir, 'c.sqlite'));
+    seedDemoCampaign(store);
+    mapMember(store, {
+      platform: 'discord',
+      accountId: 'st-1',
+      characterSlug: 'tomaso',
+      role: 'storyteller',
+    });
+    const before = store.getCharacterBySlug('jakov')!.skills.find((s) => s.name === 'Sneak');
+    const port = mockPort();
+    const ctx: BotContext = {
+      store,
+      port,
+      liveBaseUrl: 'http://127.0.0.1:8742',
+      prompts: new Map(),
+      log: () => {},
+    };
+    await handleInteraction(ctx, {
+      type: 'button',
+      id: 'leap1',
+      clientEventId: 'leap1',
+      user: { platform: 'discord', accountId: 'st-1', displayName: 'ST' },
+      channelId: 'ch',
+      customId: 'leap-throw:jakov:standard',
+    });
+    const proposal = store.getDegradeProposal('jakov');
+    expect(proposal?.mode).toBe('standard');
+    expect(proposal?.omen).toBeGreaterThanOrEqual(1);
+    expect(proposal?.omen).toBeLessThanOrEqual(20);
+    expect(port.replies.at(-1)?.description).toContain(`omen ${proposal?.omen}`);
+    expect(store.getCharacterBySlug('jakov')!.skills.find((s) => s.name === 'Sneak')).toEqual(before);
+    store.close();
+  });
+
+  it('opens a Healing card for a Dying person and does not clear Dying', async () => {
+    const dir = mkdtempSync(join(tmpdir(), 'kod-bot-'));
+    dirs.push(dir);
+    const store = openSqliteStore(join(dir, 'c.sqlite'));
+    seedDemoCampaign(store);
+    mapMember(store, {
+      platform: 'discord',
+      accountId: 'st-1',
+      characterSlug: 'tomaso',
+      role: 'storyteller',
+    });
+    const luca = store.getCharacterBySlug('luca')!;
+    luca.dying = true;
+    luca.harm.Fever = 3;
+    store.putCharacter(luca);
+    const port = mockPort();
+    const ctx: BotContext = {
+      store,
+      port,
+      liveBaseUrl: 'http://127.0.0.1:8742',
+      prompts: new Map(),
+      log: () => {},
+    };
+    await handleInteraction(ctx, {
+      type: 'button',
+      id: 'stab1',
+      clientEventId: 'stab1',
+      user: { platform: 'discord', accountId: 'st-1', displayName: 'ST' },
+      channelId: 'ch',
+      customId: 'stab-open:tomaso:luca',
+    });
+    const opened = port.replies.at(-1);
+    expect(opened?.title).toMatch(/^Stabilise/);
+    expect(opened?.selects?.some((menu) => menu.options.every((option) => option.value === 'Healing'))).toBe(true);
+    expect(opened?.selects?.some((menu) => menu.placeholder === 'Save')).toBe(true);
+    expect(store.getCharacterBySlug('luca')!.dying).toBe(true);
+    const castId = opened?.buttons?.find((button) => button.id.startsWith('roll-cast:'))?.id;
+    await handleInteraction(ctx, {
+      type: 'button',
+      id: 'stab2',
+      clientEventId: 'stab2',
+      user: { platform: 'discord', accountId: 'st-1', displayName: 'ST' },
+      channelId: 'ch',
+      customId: castId!,
+    });
+    const still = store.getCharacterBySlug('luca')!;
+    expect(still.dying).toBe(true);
+    expect(still.harm.Fever).toBe(3);
+    expect(port.cards.at(-1)?.description).toContain('does not clear Dying');
+    expect(port.cards.at(-1)?.description).toContain('Healing');
+    store.close();
+  });
 });

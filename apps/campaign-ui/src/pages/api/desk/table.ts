@@ -10,6 +10,8 @@ import {
   readTable,
   rememberChannelMessage,
   restoreRest,
+  deskProposeDegrade,
+  saveLeapGroups,
   saveRestGroups,
   saveSceneFaces,
   setExertion,
@@ -189,6 +191,74 @@ function messageRef(channelId: string, json: Record<string, unknown>): TableMess
   const messageId = typeof json.id === 'string' ? json.id : '';
   if (!/^\d{17,20}$/.test(messageId)) return undefined;
   return { platform: 'discord', channelId, messageId };
+}
+
+const LEAP_NOT_LIVE = 'The throw waits for the table. It posts when the night is live.';
+const LEAP_NO_CHANNEL = 'Set the play channel in Table chat to post the throw.';
+const LEAP_REJECTED = 'The card did not reach the play channel. Nothing was thrown.';
+
+/** A card on the play channel. It does not remember a Tide or omen message, and it does not roll. */
+async function postTableCard(
+  payload: Record<string, unknown>,
+): Promise<{ posted: boolean; postError?: string }> {
+  const slug = resolveCampaignSlug();
+  if (!slug || !readSessionState(slug)?.tunnel) return { posted: false, postError: LEAP_NOT_LIVE };
+  const channelId = await playChannelId(slug);
+  if (!channelId) return { posted: false, postError: LEAP_NO_CHANNEL };
+  const sent = await edgeControl('/control/discord/rest', { op: 'send', channelId, payload });
+  if (!sent.ok) return { posted: false, postError: LEAP_REJECTED };
+  return { posted: true };
+}
+
+function leapPayload(rows: { slug: string; name: string }[], mode: string): Record<string, unknown> {
+  return {
+    embeds: [
+      {
+        title: 'Time leap',
+        description:
+          mode === 'short'
+            ? 'Short. Throw the omen here. The Session tab confirms the pick.'
+            : 'Standard. Throw the omen here. The Session tab confirms the pick.',
+        color: 0x8a8580,
+      },
+    ],
+    components: [
+      {
+        type: 1,
+        components: rows.map((row) => ({
+          type: 2,
+          style: 1,
+          custom_id: `leap-throw:${row.slug}:${mode}`.slice(0, 100),
+          label: row.name.slice(0, 80),
+        })),
+      },
+    ],
+  };
+}
+
+function stabilisePayload(healer: string, healerName: string, patient: string, patientName: string): Record<string, unknown> {
+  return {
+    embeds: [
+      {
+        title: 'Stabilise',
+        description: `${healerName} rolls Resolve + Healing for ${patientName}. Dying stays until the Session tab records the Trait.`,
+        color: 0xa01818,
+      },
+    ],
+    components: [
+      {
+        type: 1,
+        components: [
+          {
+            type: 2,
+            style: 1,
+            custom_id: `stab-open:${healer}:${patient}`.slice(0, 100),
+            label: 'Open',
+          },
+        ],
+      },
+    ],
+  };
 }
 
 /** Posts or edits only when the table is live and a play channel is configured. */
@@ -451,6 +521,80 @@ export async function POST({ request }: { request: Request }) {
       }
       const reading = sessionReading(readTable(store));
       return json({ ok: true, reading, person, people, posted, postError });
+    } else if (op === 'leapGroups') {
+      saveLeapGroups(store, groups(body.groups), 'desk');
+      return json({ ok: true });
+    } else if (op === 'leapBand') {
+      const mode = str(body.mode);
+      if (mode !== 'standard' && mode !== 'short') return json({ error: 'unknown time-leap' }, 400);
+      const chosen = slugs(body.slugs);
+      if (!chosen.length) return json({ error: 'no one is in this leap' }, 400);
+      const players: { slug: string; name: string }[] = [];
+      const simulated: string[] = [];
+      for (const slug of chosen) {
+        const ch = store.getCharacterBySlug(slug);
+        if (!ch || ch.status === 'dead') throw new Error(`unknown character: ${slug}`);
+        if (store.getDegradeProposal(ch.slug)) continue;
+        if (ch.kind === 'pc') players.push({ slug: ch.slug, name: ch.name });
+        else {
+          deskProposeDegrade(store, ch.slug, mode);
+          simulated.push(ch.slug);
+        }
+      }
+      let posted = false;
+      let postError: string | undefined;
+      try {
+        for (let i = 0; i < players.length; i += 5) {
+          const panel = await postTableCard(leapPayload(players.slice(i, i + 5), mode));
+          posted = panel.posted;
+          postError = panel.postError;
+          if (!panel.posted) break;
+        }
+      } catch {
+        postError = LEAP_REJECTED;
+      }
+      return json({ ok: true, posted, postError, simulated });
+    } else if (op === 'leapPost') {
+      const mode = str(body.mode);
+      if (mode !== 'standard' && mode !== 'short') return json({ error: 'unknown time-leap' }, 400);
+      const chosen = slugs(body.slugs);
+      if (!chosen.length) return json({ error: 'no one is in this leap' }, 400);
+      const rows = chosen.map((slug) => {
+        const ch = store.getCharacterBySlug(slug);
+        if (!ch || ch.status === 'dead') throw new Error(`unknown character: ${slug}`);
+        return { slug: ch.slug, name: ch.name };
+      });
+      let posted = false;
+      let postError: string | undefined;
+      try {
+        for (let i = 0; i < rows.length; i += 5) {
+          const panel = await postTableCard(leapPayload(rows.slice(i, i + 5), mode));
+          posted = panel.posted;
+          postError = panel.postError;
+          if (!panel.posted) break;
+        }
+      } catch {
+        postError = LEAP_REJECTED;
+      }
+      return json({ ok: true, posted, postError });
+    } else if (op === 'stabilisePost') {
+      const patient = store.getCharacterBySlug(str(body.patient));
+      const healer = store.getCharacterBySlug(str(body.healer));
+      if (!patient?.dying) return json({ error: 'they are not Dying' }, 400);
+      if (!healer || healer.status === 'dead') return json({ error: 'the healer has no sheet' }, 400);
+      if (healer.slug === patient.slug) return json({ error: 'someone else rolls' }, 400);
+      let posted = false;
+      let postError: string | undefined;
+      try {
+        const panel = await postTableCard(
+          stabilisePayload(healer.slug, healer.name, patient.slug, patient.name),
+        );
+        posted = panel.posted;
+        postError = panel.postError;
+      } catch {
+        postError = LEAP_REJECTED;
+      }
+      return json({ ok: true, posted, postError });
     } else if (op === 'scenePost') {
       const state = readTable(store);
       const reading = sessionReading(state);

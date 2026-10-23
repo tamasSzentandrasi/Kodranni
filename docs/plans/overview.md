@@ -58,7 +58,9 @@ One process holds SQLite, the campaign UI, and the Discord handler. The desk is 
 | Approve or Send back | Session tab, after the Storyteller edits the submitted person. |
 | `/review` | Reposts the notification. |
 | Restore | Session tab. Player characters are listed. Groups rest apart, and an NPC can be added to a group. Food days and water days step separately. Short rest and long rest apply the replenishment counsel from the ample food and water marks. |
-| Harm outside a roll, Dying, stabilising, Traits, inventory days moved between people | The person, on the desk. |
+| Harm outside a roll, Traits, inventory days moved between people | The person, on the desk. |
+| Time leap | Session tab, in groups like a rest. Standard and Short are the group’s. A player’s omen is thrown on the table card. Someone who is not a player is simulated there. Confirm and dismiss are on the Session tab. The sheet shows the ranks. |
+| Stabilise | Someone else opens a Healing roll on the table. The card names who is saved. The foundation, the die, Exertion, and an Echo are chosen there. The skill stays Healing. The Session tab records the Trait, clears Dying, and leaves the track at 3. |
 | Harm from a roll just shown | That result card. |
 | Diagram | Desk. Unassigned pool, drag onto ladders, porch, crown, Done. A move is spoken, then made here. |
 | Fortunes | Desk. The Guidebook’s five buttons. |

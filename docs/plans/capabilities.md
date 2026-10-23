@@ -13,6 +13,7 @@ A capability is landed only when the code and its targeted test agree. The secti
 - Foundation 0 or 1 doubles the bar. Foundation 2 leaves it. Foundation 3 or 4 halves it.
 - Rating 0 stores the 0→1 bar, rating 1 the 1→2 bar, rating 2 and rating 3 the 2→3 bar. Rating 3 does not level further. The sentinel 9999 is not stored.
 - A level-up subtracts the current bar, raises the rank, then asks for the next bar. Overflow keeps leveling until rating 3 or the remainder is under the bar.
+- An opening roll scores Practice as unopposed. When a reply names that roll, both sides are rescored with the opposed table, and the opening award is replaced from the sheet as it stood before that roll. Undo of the reply puts the opening Practice back.
 - A new untrained row stores the 0→1 bar for its ruling Foundation.
 - Raising a Foundation recomputes every Skill that Foundation rules, and levels a Skill whose Practice already meets the new bar. A lower Foundation does not rescale Practice.
 - A desk hold that adds Practice, and a desk click that changes the rank, recompute the bar and do not level by themselves.
@@ -34,14 +35,18 @@ A capability is landed only when the code and its targeted test agree. The secti
 - A Dying character who spends no Exertion cannot roll. A spend the current pool cannot cover is refused, including a second die when only one point remains. A second die still requires a named Echo.
 - A legal spend that leaves Exertion at 0 sets the status to dead, clears the Dying flag, and leaves tracks and Echoes. The result card says they died.
 - Undo of that roll restores the earlier status, the Dying flag, and Exertion.
-- Stabilise is a desk confirm. It asks for a Trait name and a note, clears Dying, and leaves the track at 3. An empty name still clears Dying. The counsel says to roll Resolve + Healing first.
-- Nothing auto-stabilises from a Mark count. There is no new chat command and no saving throw. A player sheet token cannot set Dying, death, or Exertion.
+- The sheet does not throw a die. A time leap is grouped on the Session tab the way a rest is. Standard and Short belong to the group. A player’s omen is a button on the table card. Someone who is not a player is simulated on that tab. Confirm and dismiss write or drop the stored pick.
+- Stabilise is a Healing roll on the table, by someone other than the person who is Dying. The card names who is being saved, and the roller picks the foundation, the die, Exertion, and an Echo. The skill stays Healing. The Session tab asks for a Trait name and a note, clears Dying, and leaves the track at 3. An empty name still clears Dying.
+- Nothing auto-stabilises from a Mark count. There is no saving throw. A player sheet token cannot set Dying, death, or Exertion.
+- While Dying, the sheet and the character list say Dying, in blood. They do not keep the word active beside it.
 - A track at 3 cannot be lowered while Dying.
+- Harm on a result card uses that roll. An unopposed roll uses failures minus Marks. An opposed roll uses how far the other side won, and only the side that lost has points to assign. The Storyteller still chooses the track.
 
 ## Tide, as written
 
 - The Guidebook row “A clearly superior” / “A világosan fölényben” is 12 vs 8, length 19, start 12, in English and in Hungarian. The same numbers are in the decisions note.
 - The desk footings stay equal, slight, and severe.
+- Position 0 is side A’s collapse. Winner A moves the marker away from that end. A face in the band toward A’s collapse moves the marker toward that end. The two steps stay independent.
 
 ## Desk boundary and the public record
 

@@ -33,7 +33,6 @@ import {
   deskSetRulerLook,
   deskConfirmDegrade,
   deskDismissDegrade,
-  deskProposeDegrade,
   deskSetNotebook,
   deskSkillStep,
   deskStabilise,
@@ -262,15 +261,8 @@ export async function POST({ request }: { request: Request }) {
           }),
         );
         break;
-      case 'degrade-propose': {
-        const mode = str(body.mode);
-        if (mode !== 'standard' && mode !== 'short') throw new Error('unknown time-leap');
-        deskProposeDegrade(store, str(body.slug), mode);
-        const proposed = store.getCharacterBySlug(str(body.slug));
-        if (!proposed) throw new Error(`unknown character: ${str(body.slug)}`);
-        result = sheetResult(store, proposed);
-        break;
-      }
+      case 'degrade-propose':
+        throw new Error('The omen is thrown on the table.');
       case 'degrade-confirm':
         result = sheetResult(store, deskConfirmDegrade(store, str(body.slug)));
         break;

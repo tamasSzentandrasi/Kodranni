@@ -137,6 +137,13 @@ describe('session page', () => {
     expect(desk).toContain('href="/characters/tomaso/"');
     expect(desk).toContain('Tomaso Fero');
     expect(desk).toContain('Post the Tide');
+    expect(desk).toContain('Time leap');
+    expect(desk).toContain('data-leap-kind="standard"');
+    expect(desk).toContain('data-leap-kind="short"');
+    expect(desk).toContain('data-leap-new');
+    expect(desk).toContain('data-leap-band="players"');
+    expect(desk).toContain('No one is Dying.');
+    expect(desk).toContain('data-session-stabilise');
     expect(desk).toContain('Post the omens');
     expect(desk).toContain('data-omen-post');
     expect(desk).not.toContain('Save scene');

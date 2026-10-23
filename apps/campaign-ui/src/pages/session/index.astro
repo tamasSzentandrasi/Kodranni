@@ -56,15 +56,23 @@ if (!between) {
   if (storePath) {
     const store = openSqliteStore(storePath);
     try {
+      const characters = store.listCharacters();
+      const leaps = characters
+        .map((ch) => {
+          const proposal = store.getDegradeProposal(ch.slug);
+          return proposal ? { ...proposal, name: ch.name } : null;
+        })
+        .filter((row): row is NonNullable<typeof row> => Boolean(row));
       const assembled = assembleSession({
         desk,
         state: store.getTableState(),
-        characters: store.listCharacters(),
+        characters,
         events: store.listEvents('CharacterReturnedToTable'),
         discord,
         fluxer,
         discordLive: discordRuntimeOn(),
         fluxerLive: fluxerRuntimeOn(),
+        leaps,
       });
       reading = assembled.reading;
       deskModel = assembled.desk;

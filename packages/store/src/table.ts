@@ -55,6 +55,8 @@ export interface TableState {
   sceneBoardRef?: TableMessageRef;
   tide: OpenTide | null;
   restGroups: RestGroup[];
+  /** Separate from rest. The Session tab groups a time leap. */
+  leapGroups: RestGroup[];
   whispers: OmenWhisper[];
 }
 
@@ -79,7 +81,7 @@ export const TIDE_DYES: readonly { name: string; hex: string }[] = [
 ];
 
 export function emptyTableState(): TableState {
-  return { sceneFaces: [], tide: null, restGroups: [], whispers: [] };
+  return { sceneFaces: [], tide: null, restGroups: [], leapGroups: [], whispers: [] };
 }
 
 export function tideDyeHex(hex: string): string | undefined {
@@ -216,6 +218,7 @@ export function parseTableState(raw: unknown): TableState {
     sceneBoardRef: messageRef(o.sceneBoardRef),
     tide: parseTide(o.tide),
     restGroups: parseGroups(o.restGroups),
+    leapGroups: parseGroups(o.leapGroups),
     whispers: parseWhispers(o.whispers),
   };
 }

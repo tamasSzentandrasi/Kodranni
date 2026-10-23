@@ -236,43 +236,6 @@
       });
     });
 
-    const stabilise = document.querySelector('[data-desk-stabilise]');
-    if (stabilise) {
-      stabilise.addEventListener('click', function () {
-        const form = document.querySelector('[data-desk-stabilise-form]');
-        const name = form ? form.querySelector('[data-stabilise-name]') : null;
-        const note = form ? form.querySelector('[data-stabilise-note]') : null;
-        const traitName = name ? name.value : '';
-        const traitNote = note ? note.value : '';
-        send({ op: 'stabilise', slug: slug, traitName: traitName, traitNote: traitNote }).then(
-          function (res) {
-            if (!res || !res.ok) return;
-            if (name) name.value = '';
-            if (note) note.value = '';
-            say(traitName.trim() ? 'Dying cleared. Trait recorded.' : 'Dying cleared.');
-          },
-        );
-      });
-    }
-
-    document.querySelectorAll('[data-degrade-mode]').forEach(function (button) {
-      button.addEventListener('click', function () {
-        send({ op: 'degrade-propose', slug: slug, mode: button.getAttribute('data-degrade-mode') });
-      });
-    });
-    const confirmLeap = document.querySelector('[data-degrade-confirm]');
-    if (confirmLeap) {
-      confirmLeap.addEventListener('click', function () {
-        send({ op: 'degrade-confirm', slug: slug });
-      });
-    }
-    const dismissLeap = document.querySelector('[data-degrade-dismiss]');
-    if (dismissLeap) {
-      dismissLeap.addEventListener('click', function () {
-        send({ op: 'degrade-dismiss', slug: slug });
-      });
-    }
-
     document.querySelectorAll('[data-desk-skill]').forEach(function (el) {
       const name = el.getAttribute('data-desk-skill');
       let hold = null;

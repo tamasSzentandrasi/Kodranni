@@ -247,6 +247,10 @@ export interface RollConfirmCardInput {
   archetype?: string;
   archetypes?: { id: string; name: string; tag?: string }[];
   skills?: { name: string; foundation?: string }[];
+  /** Stabilise locks the skill to Healing and names who the roll is for. */
+  stabilise?: boolean;
+  patients?: { slug: string; name: string }[];
+  patientSlug?: string;
 }
 
 /**
@@ -373,6 +377,51 @@ export function buildRollConfirmCard(input: RollConfirmCardInput): ChatCard {
     },
     { id: `roll-cancel:${input.confirmId}`, label: 'Cancel', style: 'danger' },
   ];
+  const patient = (input.patients ?? []).find((row) => row.slug === input.patientSlug);
+  const patientSelect: ChatSelect = {
+    id: `roll-patient:${input.confirmId}`,
+    placeholder: 'Save',
+    options: (input.patients ?? []).slice(0, 25).map((row) => ({
+      value: row.slug,
+      label: `Save · ${row.name}`.slice(0, 100),
+      default: row.slug === input.patientSlug,
+    })),
+  };
+  const healingSelect: ChatSelect = {
+    id: `roll-skill:${input.confirmId}`,
+    placeholder: 'Skill',
+    options: [{ value: 'Healing', label: 'Skill · Healing', default: true }],
+  };
+  if (input.stabilise) {
+    const lines = [
+      'The skill is Healing. Pick the foundation, the die, Exertion, and an Echo if it applies.',
+      '',
+      'Die steps Disadvantage, Ordinary, and Advantage.',
+      '',
+      'Exertion spends one point, or two when an Echo is named.',
+      '',
+      `**${input.poolFormula}**`,
+    ];
+    if (input.liveSheetUrl) lines.push('', `[Sheet](${input.liveSheetUrl})`);
+    return {
+      title: `Stabilise · ${input.characterName}`,
+      description: lines.join('\n'),
+      accent: dieAccent(input.dieTier),
+      thumbnailUrl: input.dieImageUrl,
+      footer: 'Only you see this card. Cast posts the roll. Dying stays until the Session tab records the Trait.',
+      fields: [
+        { name: 'Save', value: patient?.name ?? 'Choose who', inline: true },
+        { name: 'Foundation', value: input.foundation, inline: true },
+        { name: 'Skill', value: 'Healing', inline: true },
+        { name: 'Echo', value: input.echoName ?? 'None', inline: true },
+        { name: 'Die', value: dieTierLabel(input.dieTier), inline: true },
+        { name: 'Exertion', value: exertionShown, inline: true },
+        { name: 'Pool', value: input.poolFormula, inline: false },
+      ],
+      buttons,
+      selects: [patientSelect, foundSelect, healingSelect, echoSelect],
+    };
+  }
   const lines = [
     'The menus are Foundation, Archetype, Skill, and Echo, in that order.',
     '',

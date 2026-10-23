@@ -5,6 +5,7 @@ import {
   applyHarm,
   closeTide,
   setTideOpenRoll,
+  deskProposeDegrade,
   executePlayerRoll,
   executeStorytellerNpcRoll,
   grantBirthOmen,
@@ -87,6 +88,8 @@ export interface RollConfirm {
   phase?: 'found' | 'arch' | 'skill' | 'confirm';
   /** `primitive`, an archetype id, or unset until the player chooses. */
   archetype?: string;
+  /** Dying person this Healing roll is for. The skill stays Healing. */
+  stabiliseFor?: string;
 }
 
 export interface BotContext {
@@ -227,10 +230,20 @@ async function showConfirmCard(
   } catch (err) {
     poolFormula = err instanceof Error ? err.message : String(err);
   }
+  if (c.stabiliseFor) {
+    c.skill = 'Healing';
+    c.archetype = skillByName('Healing')?.archetype;
+  }
   const arch =
     c.archetype && c.archetype !== 'primitive'
       ? ARCHETYPES.find((a) => a.id === c.archetype)
       : undefined;
+  const patients = c.stabiliseFor
+    ? ctx.store
+        .listCharacters()
+        .filter((ch) => ch.dying && ch.status !== 'dead' && ch.slug !== c.characterSlug)
+        .map((ch) => ({ slug: ch.slug, name: ch.name }))
+    : [];
   const card = buildRollConfirmCard({
     confirmId: c.id,
     characterName: c.characterName,
@@ -249,6 +262,9 @@ async function showConfirmCard(
     echoName: c.echoName,
     exertionCurrent: person?.exertion.current,
     dying: Boolean(person?.dying),
+    stabilise: Boolean(c.stabiliseFor),
+    patients,
+    patientSlug: c.stabiliseFor,
     dieImageUrl: dieImageUrl(ctx.liveBaseUrl, c.dieTier),
     liveSheetUrl: sheetUrl(ctx.liveBaseUrl, c.characterSlug, {
       platform: 'discord',
@@ -268,6 +284,19 @@ async function castConfirm(
   i: ChatInteraction,
   c: RollConfirm,
 ): Promise<void> {
+  let stabiliseName = '';
+  if (c.stabiliseFor) {
+    c.skill = 'Healing';
+    const patient = ctx.store.getCharacterBySlug(c.stabiliseFor);
+    if (!patient?.dying || patient.slug === c.characterSlug) {
+      await ctx.port.replyEphemeral(
+        i,
+        patient?.dying ? 'Someone else rolls.' : 'They are not Dying.',
+      );
+      return;
+    }
+    stabiliseName = patient.name;
+  }
   confirmsOf(ctx).delete(c.id);
   const person = ctx.store.getCharacterBySlug(c.characterSlug);
   if (c.tideLink && !c.parentRollId) {
@@ -303,11 +332,13 @@ async function castConfirm(
     omenHit: result.omenSecret ? null : omenWords(result.omenHit, result.omenEffect),
     died: result.died,
     whyPool: result.whyPool,
-    aside: c.tideLink
-      ? answering
-        ? 'On the Tide. This answer moves the marker.'
-        : 'On the Tide. The other side answers with Roll.'
-      : undefined,
+    aside: stabiliseName
+      ? `For ${stabiliseName}, who is Dying. The Session tab records the Trait. This roll does not clear Dying.`
+      : c.tideLink
+        ? answering
+          ? 'On the Tide. This answer moves the marker.'
+          : 'On the Tide. The other side answers with Roll.'
+        : undefined,
     liveSheetUrl: sheetUrl(ctx.liveBaseUrl, c.characterSlug),
     archiveSheetUrl: ctx.archiveBaseUrl
       ? sheetUrl(ctx.archiveBaseUrl, c.characterSlug)
@@ -824,6 +855,11 @@ async function handleSelect(
       await ctx.port.replyEphemeral(i, 'This picker is not yours or expired.');
       return;
     }
+    if (c.stabiliseFor) {
+      c.skill = 'Healing';
+      await showConfirmCard(ctx, i, c);
+      return;
+    }
     if (value === 'primitive') {
       c.skill = undefined;
       c.archetype = 'primitive';
@@ -848,6 +884,15 @@ async function handleSelect(
       await ctx.port.replyEphemeral(i, 'This picker is not yours or expired.');
       return;
     }
+    if (c.stabiliseFor) {
+      if (value !== 'Healing') {
+        await ctx.port.replyEphemeral(i, 'Stabilising is Healing.');
+        return;
+      }
+      c.skill = 'Healing';
+      await showConfirmCard(ctx, i, c);
+      return;
+    }
     if (value === 'wait') {
       await ctx.port.replyEphemeral(
         i,
@@ -868,6 +913,24 @@ async function handleSelect(
     }
     c.skill = def.name;
     c.archetype = def.archetype;
+    await showConfirmCard(ctx, i, c);
+    return;
+  }
+
+  if (id.startsWith('roll-patient:')) {
+    const confirmId = id.slice('roll-patient:'.length);
+    const c = confirmsOf(ctx).get(confirmId);
+    if (!c || c.accountId !== i.user.accountId || !c.stabiliseFor) {
+      await ctx.port.replyEphemeral(i, 'This picker is not yours or expired.');
+      return;
+    }
+    const patient = ctx.store.getCharacterBySlug(value);
+    if (!patient?.dying || patient.slug === c.characterSlug) {
+      await ctx.port.replyEphemeral(i, 'Choose someone else who is Dying.');
+      return;
+    }
+    c.stabiliseFor = patient.slug;
+    c.skill = 'Healing';
     await showConfirmCard(ctx, i, c);
     return;
   }
@@ -1297,6 +1360,86 @@ async function handleButton(
       parentRollId,
       channelId: i.channelId,
       phase: 'confirm',
+    };
+    await showConfirmCard(ctx, i, confirm, true);
+    return;
+  }
+
+  if (id.startsWith('leap-throw:')) {
+    if (!isSt(ctx, i.user)) {
+      await ctx.port.replyEphemeral(i, 'Storyteller only.');
+      return;
+    }
+    const parts = id.split(':');
+    const slug = parts[1] ?? '';
+    const mode = parts[2] === 'short' ? 'short' : parts[2] === 'standard' ? 'standard' : '';
+    if (!mode) {
+      await ctx.port.replyEphemeral(i, 'Unknown time leap.');
+      return;
+    }
+    const person = ctx.store.getCharacterBySlug(slug);
+    if (!person || person.status === 'dead') {
+      await ctx.port.replyEphemeral(i, 'Unknown character.');
+      return;
+    }
+    if (ctx.store.getDegradeProposal(slug)) {
+      await ctx.port.replyEphemeral(i, 'Already thrown. Confirm or dismiss it on the Session tab.');
+      return;
+    }
+    const proposal = deskProposeDegrade(ctx.store, slug, mode);
+    const card: ChatCard = {
+      title: `Time leap · ${person.name}`,
+      description: `${mode === 'short' ? 'Short' : 'Standard'} · omen ${proposal.omen} · ${proposal.picked.length} of ${proposal.pool.length}`,
+      fields: [
+        { name: 'Pool', value: proposal.pool.join(', ') || 'none' },
+        { name: 'Picked', value: proposal.picked.join(', ') || 'none' },
+      ],
+      footer: 'Confirm or dismiss on the Session tab. This card does not write the ranks.',
+      accent: 'neutral',
+    };
+    if (ctx.port.editReplyCard) await ctx.port.editReplyCard(i, card);
+    else await ctx.port.replyEphemeral(i, card.description ?? 'Thrown.');
+    return;
+  }
+
+  if (id.startsWith('stab-open:') || id.startsWith('stab-roll:')) {
+    const parts = id.split(':');
+    const healerSlug = parts[1] ?? '';
+    const patientSlug = parts[2] ?? '';
+    const healer = ctx.store.getCharacterBySlug(healerSlug);
+    const patient = ctx.store.getCharacterBySlug(patientSlug);
+    if (!healer || healer.status === 'dead') {
+      await ctx.port.replyEphemeral(i, 'The healer has no sheet.');
+      return;
+    }
+    if (!patient?.dying || patient.slug === healer.slug) {
+      await ctx.port.replyEphemeral(i, patient?.dying ? 'Someone else rolls.' : 'They are not Dying.');
+      return;
+    }
+    const bound = ctx.store.listMembers().some(
+      (member) =>
+        member.platform === i.user.platform &&
+        member.accountId === i.user.accountId &&
+        (member.characterId === healer.id || member.focusedCharacterId === healer.id),
+    );
+    if (!isSt(ctx, i.user) && !bound) {
+      await ctx.port.replyEphemeral(i, 'That roll belongs to the healer.');
+      return;
+    }
+    const confirmId = randomUUID().slice(0, 8);
+    const confirm: RollConfirm = {
+      id: confirmId,
+      accountId: i.user.accountId,
+      characterSlug: healer.slug,
+      characterName: healer.name,
+      foundation: 'Resolve',
+      skill: 'Healing',
+      archetype: skillByName('Healing')?.archetype,
+      dieTier: 8,
+      exertion: healer.dying ? 1 : 0,
+      channelId: i.channelId,
+      phase: 'confirm',
+      stabiliseFor: patient.slug,
     };
     await showConfirmCard(ctx, i, confirm, true);
     return;

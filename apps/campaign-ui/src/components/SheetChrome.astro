@@ -167,10 +167,12 @@ const mapHref = campaignQ
         }
       </p>
       <p class="sheet-identity__chips">
-        <span class="char-card__status" data-status={status}>
-          {statusLabel}
+        <span
+          class:list={['char-card__status', dying && 'char-card__status--dying']}
+          data-status={dying ? 'dying' : status}
+        >
+          {dying ? 'Dying' : statusLabel}
         </span>
-        {dying && <span class="flag">Dying</span>}
         {
           desk && status !== 'dead' && (
             <label class="sheet-claim">

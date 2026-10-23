@@ -322,6 +322,50 @@
     return document.querySelector('[data-rest-band="players"] [data-rest-people]');
   }
 
+  function leapHome() {
+    return document.querySelector('[data-leap-band="players"] [data-leap-people]');
+  }
+
+  function readLeapGroups() {
+    return Array.from(document.querySelectorAll('[data-leap-group]')).map(function (group) {
+      var name = group.querySelector('[data-leap-name]');
+      return {
+        id: group.getAttribute('data-group-id'),
+        name: name instanceof HTMLInputElement ? name.value.trim() : '',
+        members: Array.from(group.querySelectorAll('[data-leap-people] [data-leap-person]')).map(function (row) {
+          return row.getAttribute('data-slug');
+        }),
+      };
+    });
+  }
+
+  function saveLeapGroups() {
+    return post('/api/desk/table', { op: 'leapGroups', groups: readLeapGroups() });
+  }
+
+  function fillLeapAdds() {
+    document.querySelectorAll('[data-leap-group]').forEach(function (group) {
+      var select = group.querySelector('[data-leap-add]');
+      if (!(select instanceof HTMLSelectElement)) return;
+      var here = {};
+      group.querySelectorAll('[data-leap-people] [data-leap-person]').forEach(function (row) {
+        here[row.getAttribute('data-slug')] = true;
+      });
+      var html = '<option value="">Someone</option>';
+      document.querySelectorAll('[data-leap-band="players"] [data-leap-person]').forEach(function (row) {
+        var slug = row.getAttribute('data-slug');
+        if (!slug || here[slug]) return;
+        html += '<option value="' + esc(slug) + '">' + esc(row.getAttribute('data-name')) + '</option>';
+      });
+      document.querySelectorAll('[data-leap-pool] [data-leap-person]').forEach(function (row) {
+        var slug = row.getAttribute('data-slug');
+        if (!slug) return;
+        html += '<option value="' + esc(slug) + '">' + esc(row.getAttribute('data-name')) + '</option>';
+      });
+      select.innerHTML = html;
+    });
+  }
+
   function dropOut(row) {
     var btn = row.querySelector('[data-rest-out]');
     if (btn) btn.remove();
@@ -935,6 +979,135 @@
       return;
     }
 
+    if (t.hasAttribute('data-leap-kind')) {
+      var leapBand = t.closest('[data-leap-band]');
+      var leapMode = t.getAttribute('data-leap-kind');
+      var leapSlugs = leapBand
+        ? Array.from(leapBand.querySelectorAll('[data-leap-people] [data-leap-person]')).map(function (row) {
+            return row.getAttribute('data-slug');
+          })
+        : [];
+      var leapNote = document.querySelector('[data-session-leap] [data-leap-note]');
+      if (!leapSlugs.length) {
+        if (leapNote) leapNote.textContent = 'No one is in this leap.';
+        return;
+      }
+      post('/api/desk/table', { op: 'leapBand', mode: leapMode, slugs: leapSlugs }).then(function (data) {
+        var text = data && data.posted
+          ? 'Posted to the play channel.'
+          : ((data && (data.postError || data.error)) || 'The throw waits for the table.');
+        if (data && data.simulated && data.simulated.length) text += ' Someone without a player was simulated.';
+        if (leapNote) leapNote.textContent = text;
+        if (data && data.simulated && data.simulated.length) location.reload();
+      });
+      return;
+    }
+
+    if (t.hasAttribute('data-leap-out')) {
+      var leapMember = t.closest('[data-leap-person]');
+      if (!leapMember) return;
+      t.remove();
+      if (leapMember.getAttribute('data-kind') === 'pc') {
+        var leapPlayers = leapHome();
+        if (leapPlayers) leapPlayers.appendChild(leapMember);
+      } else {
+        var leapPool = document.querySelector('[data-leap-pool]');
+        if (leapPool) leapPool.appendChild(leapMember);
+      }
+      fillLeapAdds();
+      saveLeapGroups();
+      return;
+    }
+
+    if (t.hasAttribute('data-leap-dissolve')) {
+      var leapGroup = t.closest('[data-leap-group]');
+      if (!leapGroup) return;
+      leapGroup.querySelectorAll('[data-leap-people] [data-leap-person]').forEach(function (member) {
+        var mark = member.querySelector('[data-leap-out]');
+        if (mark) mark.remove();
+        var dest = member.getAttribute('data-kind') === 'pc' ? leapHome() : document.querySelector('[data-leap-pool]');
+        if (dest) dest.appendChild(member);
+      });
+      leapGroup.remove();
+      fillLeapAdds();
+      saveLeapGroups();
+      return;
+    }
+
+    if (t.hasAttribute('data-leap-new')) {
+      var leapHost = document.querySelector('[data-leap-groups]');
+      if (!leapHost) return;
+      var leapId = 'g' + Math.random().toString(36).slice(2, 8);
+      var leapEl = document.createElement('section');
+      leapEl.className = 'rest-company';
+      leapEl.setAttribute('data-leap-band', '');
+      leapEl.setAttribute('data-leap-group', '');
+      leapEl.setAttribute('data-group-id', leapId);
+      leapEl.innerHTML =
+        '<header class="rest-company__bar">' +
+        '<input class="rest-band__name" data-leap-name value="Group" maxlength="40" aria-label="Leap group name">' +
+        '<button type="button" class="session-quiet" data-leap-kind="standard">Standard</button>' +
+        '<button type="button" class="session-quiet" data-leap-kind="short">Short</button>' +
+        '<button type="button" class="rest-out" data-leap-dissolve aria-label="Dissolve Group">×</button>' +
+        '</header><div class="rest-company__people" data-leap-people></div>' +
+        '<label class="rest-add">Add <select class="rest-add__pick" data-leap-add aria-label="Add someone to this leap"><option value="">Someone</option></select></label>';
+      leapHost.appendChild(leapEl);
+      fillLeapAdds();
+      var leapName = leapEl.querySelector('[data-leap-name]');
+      if (leapName instanceof HTMLInputElement) leapName.focus();
+      saveLeapGroups();
+      return;
+    }
+
+    if (t.hasAttribute('data-leap-confirm') || t.hasAttribute('data-leap-dismiss')) {
+      var leapSlug = t.getAttribute('data-leap-confirm') || t.getAttribute('data-leap-dismiss');
+      post('/api/desk/edit', {
+        op: t.hasAttribute('data-leap-confirm') ? 'degrade-confirm' : 'degrade-dismiss',
+        slug: leapSlug,
+      }).then(function (data) {
+        if (data && data.ok) location.reload();
+      });
+      return;
+    }
+
+    if (t.hasAttribute('data-stab-post')) {
+      var stabRow = t.closest('[data-stab-row]');
+      var healerEl = stabRow ? stabRow.querySelector('[data-stab-healer]') : null;
+      var stabNote = stabRow ? stabRow.querySelector('[data-stab-note]') : null;
+      var healer = healerEl instanceof HTMLSelectElement ? healerEl.value : '';
+      if (!healer) {
+        if (stabNote) stabNote.textContent = 'Someone else has to roll.';
+        return;
+      }
+      post('/api/desk/table', {
+        op: 'stabilisePost',
+        patient: t.getAttribute('data-stab-post'),
+        healer: healer,
+      }).then(function (data) {
+        if (stabNote) {
+          stabNote.textContent = data && data.posted
+            ? 'Posted to the play channel.'
+            : ((data && (data.postError || data.error)) || 'The roll waits for the table.');
+        }
+      });
+      return;
+    }
+
+    if (t.hasAttribute('data-stab-record')) {
+      var recordRow = t.closest('[data-stab-row]');
+      var traitName = recordRow ? recordRow.querySelector('[data-stab-name]') : null;
+      var traitNote = recordRow ? recordRow.querySelector('[data-stab-note-field]') : null;
+      post('/api/desk/edit', {
+        op: 'stabilise',
+        slug: t.getAttribute('data-stab-record'),
+        traitName: traitName instanceof HTMLInputElement ? traitName.value : '',
+        traitNote: traitNote instanceof HTMLInputElement ? traitNote.value : '',
+      }).then(function (data) {
+        if (data && data.ok) location.reload();
+      });
+      return;
+    }
+
     if (t.hasAttribute('data-tide-open')) {
       if (t instanceof HTMLButtonElement && t.disabled) return;
       if (t instanceof HTMLButtonElement) t.disabled = true;
@@ -1026,6 +1199,29 @@
       return;
     }
     if (t.hasAttribute('data-group-name')) saveGroups();
+    if (t.hasAttribute('data-leap-add') && t instanceof HTMLSelectElement) {
+      var leapSlug = t.value;
+      t.value = '';
+      if (!leapSlug) return;
+      var leapGroup = t.closest('[data-leap-group]');
+      var leapRow = document.querySelector('[data-leap-person][data-slug="' + CSS.escape(leapSlug) + '"]');
+      var leapPeople = leapGroup && leapGroup.querySelector('[data-leap-people]');
+      if (!leapGroup || !leapRow || !leapPeople) return;
+      if (!leapRow.querySelector('[data-leap-out]')) {
+        var leapOut = document.createElement('button');
+        leapOut.type = 'button';
+        leapOut.className = 'rest-out';
+        leapOut.setAttribute('data-leap-out', '');
+        leapOut.setAttribute('aria-label', 'Remove ' + (leapRow.getAttribute('data-name') || 'them') + ' from this leap');
+        leapOut.textContent = '×';
+        leapRow.appendChild(leapOut);
+      }
+      leapPeople.appendChild(leapRow);
+      fillLeapAdds();
+      saveLeapGroups();
+      return;
+    }
+    if (t.hasAttribute('data-leap-name')) saveLeapGroups();
     if (t.hasAttribute('data-discord-guild') || t.hasAttribute('data-discord-channel') || t.hasAttribute('data-discord-role')) {
       if (!(t instanceof HTMLInputElement) || t.value.trim() === t.defaultValue.trim()) return;
       var guild = document.querySelector('[data-discord-guild]');
@@ -1060,6 +1256,8 @@
       });
     }
   });
+
+  fillLeapAdds();
 
   document.addEventListener('keydown', function (ev) {
     if (ev.key !== 'Escape') return;

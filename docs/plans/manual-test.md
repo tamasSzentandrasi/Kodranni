@@ -1,47 +1,89 @@
 # Click through
 
-**Date:** 2026-10-22
-**Log:** [capabilities.md](./capabilities.md). This is the pass over a temporary hall, not Aspalath.
+**Date:** 2026-10-23
+**Hall:** `http://127.0.0.1:8742/` · Aspalath · Storyteller Desk on
+**Book:** `http://127.0.0.1:4321/Guidebook/` · this tree, not the public site
+**Backup:** `/home/atari/.kodranni/backups/aspalath-2026-10-23-before-click`
+**Log:** [capabilities.md](./capabilities.md)
 
-The hall is `http://127.0.0.1:8742/`. The campaign slug is `lantern-watch`. The fifteen people are the Guidebook’s Aspalath roster, written into a temporary directory. The live Aspalath store is not opened, reseeded, or served. No tunnel. The edge control for this process is a closed local port, so a publish cannot attach a public name.
+You mark the boxes and write what you saw. The notes at the bottom are yours.
 
-Open the pages below on this machine. The address is the desk: there is no `kod_desk=0` cookie unless a step says to set one. After each step, the expected line is what the page or the reply should show.
+On 2026-10-23 the time-leap plate and the stabilise form left the sheet. Time leap is grouped on the Session tab. Standard and Short belong to the group. A player’s omen is thrown on the table. Someone who is not a player is simulated there. Stabilise opens a Healing card that names who is saved. The foundation, the die, Exertion, and an Echo are chosen on that card. The Trait is recorded on the Session tab. The checks above this note were made on the old sheet.
 
-An HTTP pass on 2026-10-22 read the replies below. Those boxes are marked done. They were not clicked in a browser. The open boxes still need eyes on this hall. Discord is not connected here. The pass already wrote on the temporary record: Luca’s Fever is at 3 and then stabilised with the Trait “Lame left hand”; Mara’s Healing went from rating 1 to 0; Jakov’s empty short leap wrote nothing; Piero’s portrait was saved from PNG bytes. Tomaso’s Strength was raised and put back, and Carpentry & Masonry stayed at rating 2 with Practice 18.
+The desk is the hall on this machine. It does not open the public night, and it does not start Discord. Leave **Go live** alone. Do not reseed. Do not delete a person. The copy above is the reset: stop the desk, put that directory back over `~/.kodranni/campaigns/aspalath`, and start the desk again.
 
-## Desk
+A temporary hall named lantern-watch was used for an HTTP pass on 2026-10-22. That hall is retired. Its checks are not this pass.
 
-- [x] `/` shows Lantern Watch, not a tunnel, and the Storyteller Desk tools. HTTP: `/community/` is Lantern Watch, the words Storyteller Desk are in the page, and the page does not say tunnel or Go Live.
-- [x] `/characters/tomaso/` shows the time-leap plate and the stabilise form. He is not Dying, so the form is in the page for when he is. The counsel reads: “Roll Resolve + Healing first. Then record the Trait that remains. An empty name still clears Dying. The track stays at 3.”
-- [x] `/characters/tomaso/` with the player face (`kod_desk=0`) hides the time-leap plate and the stabilise form.
-- [ ] A standard time leap, clicked on the plate, shows an omen, a count, the pool, and the picked names. Confirm writes that pick. Dismiss on a second proposal writes nothing. HTTP already did a short leap: an empty pick wrote nothing, a second confirm wrote nothing, dismiss wrote nothing, and a later short leap took Mara’s Healing from rating 1 to 0.
-- [ ] Raise a Foundation that already has Practice over the new bar. The ruled Skill levels. HTTP raised Tomaso’s Strength from 2 to 3 and Carpentry & Masonry stayed rating 2, Practice 18, while the bar went from 72 to 36, because 18 was under the new bar. Putting Strength back left Practice 18 and restored the bar to 72. The level-up when Practice is already over the new bar is still to click.
-- [ ] A desk hold that adds Practice changes the fraction and does not level by itself. A rating click changes the rank and recomputes the bar.
-- [x] Put a harm track at 3. Dying comes on. Stabilise with a Trait name and a note. Dying clears, the track stays at 3, and the Trait remains on the next load. HTTP: Luca, Fever at 3, Trait “Lame left hand”, note “the fever left it”. The echoes page still shows the Trait and no Dying flag.
-- [ ] Stabilise again is absent once Dying is clear. Lowering that track is allowed after Dying is clear.
+The numbers below are the store as it was when the desk was opened.
 
-## Sheet link
+---
 
-- [x] A character address with `?edit=` and a valid token answers 303, sets `kod_edit` as HttpOnly and SameSite=Lax, and the Location has no `edit`. The cookie is not Secure. HTTP: Tomaso’s link.
-- [x] An address with `?edit=nope` stays on that address and does not set the cookie.
-- [ ] An unlocked sheet saves an echo. The same token cannot save harm or Words. The route test covers this. It was not clicked on this hall.
+## The hall
 
-## Public record
+- [x] Open `http://127.0.0.1:8742/community/`. The name is Aspalath. The record line says Storyteller Desk. There is no Go live in the header.
+- [x] Press **Storyteller Desk** so it reads Off. Open `http://127.0.0.1:8742/characters/tomaso/`. The time-leap plate and the stabilise form are gone. The record line says live store.
+- [x] Press **Storyteller Desk** so it reads On again. Reload Tomaso. The time-leap plate is back.
 
-- [x] `GET /api/snapshot` returns the hall and the body has no notebook, no `table_state`, no Tide body, and no `pendingMoves`. `HEAD` is allowed. HTTP confirmed both.
-- [x] `POST /api/snapshot` is refused.
-- [x] Go Live from the player face (`kod_desk=0`) is refused and does not open a night. HTTP: 404, body “Not found”. The desk face was not asked to go live.
+## Practice, then the Foundation
 
-## Words
+Tomaso Fero. Strength is II. Carpentry & Masonry is rating II, Practice 18. Climbing is rating I, Practice 4. A short click changes the rank. A hold changes Practice and does not change the rank.
 
-- [ ] The Guidebook row “A clearly superior” / “A világosan fölényben” reads 12 vs 8, length 19, start 12.
-- [ ] Automation in both languages has no `/tide` command row, and the oppose sentence is still there. The desk is what posts the Tide.
-- [ ] `/select` with one living character names that person.
+- [x] On Climbing, left-click once. The centre becomes II. The fraction changes to the next bar. It does not keep climbing.
+- [x] Right-click Climbing once. The centre is I again.
+- [x] Press and hold Carpentry & Masonry (left button). Practice climbs. Let it pass the bar printed on the ring. The centre stays II. Keep holding until Practice is at least 36, then let go. Write the fraction you stopped on. | stopped on 36
+- [ ] Left-click Strength once, II to III. Carpentry & Masonry becomes III. Practice drops by 36. Smithing & Forging (Practice 11, rating I) does not become II. Write both fractions. | Smithing stayed lvl 1 with 11/24, Carpentry & Masonry became III with a full practice circle and 18/48 Rating 2 claim on the hover, which I am guessing is a bug
 
-## Left to the table, not this hall
+The store after the pass: Carpentry & Masonry is rating III, Practice 0, bar 72, and Strength is back at II. Smithing is 11/48. The level-up happened. A fresh load of the sheet says “Rating 3 (max)”. The hover and the About line are written when the page opens, and the desk repaint does not change them. At rating III the fraction is hidden, so the old “Rating 2 · Practice 18/48” sentence is all that remains until reload. That sentence is the defect.
+- [x] Right-click Strength back to II. Carpentry stays III. Practice is not scaled back up. Write the Strength fraction you see on a skill that did not level. | Smithing now says 11/48
 
-These need Discord, which this temporary hall does not connect.
+## Time leap
 
-- A Dying character who spends no Exertion is refused. A spend that leaves Exertion at 0 posts “They died.” Undo restores the status, Dying, and Exertion.
+Jakov Bracco, `http://127.0.0.1:8742/characters/jakov/`. One confirm is enough. It does downgrade.
+
+- [x] Press **Standard**. The plate shows an omen, a count, the pool, and the picked names. Write those four. | Sailing & Navigation, Tradecraft, Sneak, Healing, Riding
+- [x] Press **Confirm**. Reload. Each picked Skill at rating I–III is one rank lower and its Practice is 0. A picked Skill that was already untrained has lost its Practice. Write the names. | Sneak was lowered
+- [x] Press **Standard** again. Press **Dismiss**. Reload. Nothing else moved. Write that.
+
+!Note: I do believe this is invalid, clumsy usage, the Time leap would be much better handled on the Session tab, similar to, or together, with the group manager of the Restore & Restock. Additionally, the rolls should be exclusively made on the adapter, so that's another, perhaps better alternative, to handle time leaps.
+
+## Dying
+
+Luca Bandi, `http://127.0.0.1:8742/characters/luca/`. Fever starts clear.
+
+- [x] Left-click the Fever pips until three are lit. The stabilise form appears. The counsel is: “Roll Resolve + Healing first. Then record the Trait that remains. An empty name still clears Dying. The track stays at 3.”
+- [x] Open `http://127.0.0.1:8742/characters/`. Luca’s line shows dying. | Active Dying. And it should be in red, not green, and just say Dying.
+- [x] Back on Luca, type a Trait name and a note. Press **Stabilise**. The form goes. Fever stays at three pips. Write the words the page used.
+- [x] Open Echoes for Luca. The Trait is there. Dying is not.
+- [x] Return to the sheet. The stabilise form is still absent. Right-click Fever once. A pip goes out. That click is allowed now.
+
+!Note: I do believe this is clumsy usage, the roll to stabilise should really happen on the adapter (Discord or Fluxer), so there should be a special roll to stabilise/save (perhaps the latter name is more immersive), with the statuses visible in the sheets and lists.
+
+## Tide on the desk
+
+`http://127.0.0.1:8742/session/`. Do not press **Go live** or **Turn off**.
+
+- [x] Type two side names. **Post the Tide** stays disabled until both names are there. Choose a size and move the footing slider. The label reads equal, slight disadvantage, or severe disadvantage. There is no “clearly superior” stop.
+- [x] Press **Post the Tide**. The bar stays on the page. The note says the channel post waits until the table is live. If the note says it posted to the channel, stop and write that.
+- [x] Press **Close the Tide**. The setup is open again.
+
+## The book
+
+These pages are the local book. `kodranni.com` does not have this tree yet.
+
+- [x] `http://127.0.0.1:4321/Guidebook/tide/` and `http://127.0.0.1:4321/Guidebook/hu/tide/`. The row “A clearly superior” / “A világosan fölényben” is 12 vs 8, length 19, start 12.
+- [x] `http://127.0.0.1:4321/Guidebook/automation/` and `http://127.0.0.1:4321/Guidebook/hu/automation/`. Neither command table has a `/tide` row. Both still have the sentence that Oppose on the result card opens the Ready card. Both say the Storyteller posts the Tide from the desk. `/select` names the active character, and with more than one living character it chooses which `/roll` uses.
+
+## Not this sitting
+
+These need Discord. Leave them.
+
+- An unlocked sheet saves an echo. The same link cannot save harm or Words.
+- `/select` with one living character names that person.
+- A Dying character who spends no Exertion is refused. A spend that leaves Exertion at 0 says they died. Undo restores the status, Dying, and Exertion.
 - The result card has no Practice amount. A face of 5 or higher is bright.
-- `kodranni start` does not launch the Discord gateway. Go Live on the Session tab still does. This pass does not press Go Live.
+- An opposed reply rescores Practice for both sides. Harm on the card uses how far the loser lost. The winner’s card has no points from that exchange.
+- On a Tide, a low Omen moves the marker toward side A’s collapse. A win for side A moves it the other way.
+
+## Notes
+
+Wrote them below the categories.

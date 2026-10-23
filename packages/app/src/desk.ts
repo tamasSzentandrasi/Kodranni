@@ -911,7 +911,7 @@ function degradeSkillRows(ch: CharacterRecord) {
   }));
 }
 
-/** Roll a fresh d20 and store the proposal. Confirm is what writes the ranks. */
+/** Roll a fresh d20 and store the proposal. The table card calls this. Confirm is what writes the ranks. */
 export function deskProposeDegrade(
   store: CommunityStorePort,
   slug: string,

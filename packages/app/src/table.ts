@@ -419,6 +419,47 @@ export function saveRestGroups(
   return next;
 }
 
+/** Same shape as a rest group. A time leap does not change who rested. */
+export function saveLeapGroups(
+  store: CommunityStorePort,
+  groups: { id: string; name: string; members: string[] }[],
+  actor?: string,
+): RestGroup[] {
+  const active = new Set(
+    store
+      .listCharacters()
+      .filter((ch) => ch.status === 'active')
+      .map((ch) => ch.slug),
+  );
+  const seenId = new Set<string>();
+  const seenMember = new Set<string>();
+  const next: RestGroup[] = [];
+  for (const group of groups) {
+    const id = group.id.trim().slice(0, 40);
+    const name = group.name.trim().slice(0, 40);
+    if (!/^[A-Za-z0-9_-]{1,40}$/.test(id)) throw new Error('group id is not usable');
+    if (!name) throw new Error('a group needs a name');
+    if (seenId.has(id)) throw new Error('duplicate group');
+    seenId.add(id);
+    const members: string[] = [];
+    for (const slug of group.members) {
+      if (!active.has(slug) || seenMember.has(slug)) continue;
+      seenMember.add(slug);
+      members.push(slug);
+    }
+    next.push({ id, name, members });
+    if (next.length >= 12) break;
+  }
+  const prev = store.getTableState();
+  store.putTableState({ ...prev, leapGroups: next });
+  store.appendEvent({
+    type: 'TableChanged',
+    actor,
+    payload: { kind: 'leap_groups', groups: next },
+  });
+  return next;
+}
+
 export function readTable(store: CommunityStorePort): TableState {
   return store.getTableState() ?? emptyTableState();
 }
