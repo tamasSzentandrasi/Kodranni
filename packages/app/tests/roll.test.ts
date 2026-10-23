@@ -2,8 +2,9 @@ import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
-import { mulberry32, skillThreshold } from '@kodranni/domain';
-import { openSqliteStore, seedDemoCampaign } from '@kodranni/store';
+import { computePoolSize, mulberry32, skillThreshold, type Rng } from '@kodranni/domain';
+import { openSqliteStore, refreshCharacterDerived, seedDemoCampaign } from '@kodranni/store';
+import { previewHarmFromRoll } from '../src/harm.js';
 import { executePlayerRoll, executeStorytellerNpcRoll, undoPlayerRoll } from '../src/roll.js';
 
 const dirs: string[] = [];
@@ -201,6 +202,99 @@ describe('executePlayerRoll', () => {
     expect(back.dying).toBe(true);
     expect(back.exertion.current).toBe(1);
     expect(back.harm.Fever).toBe(3);
+    store.close();
+  });
+
+  it('rescores both sides when an opposed reply arrives, and undo puts the opening Practice back', () => {
+    const store = demoStore();
+    const ready = (slug: string) => {
+      const ch = store.getCharacterBySlug(slug)!;
+      ch.exertion.current = 4;
+      ch.armour = { kind: 'none', donned: false };
+      let skill = ch.skills.find((s) => s.name === 'Carpentry & Masonry');
+      if (!skill) {
+        skill = {
+          name: 'Carpentry & Masonry',
+          rating: 1,
+          practice: 0,
+          threshold: 48,
+          foundation: 'Strength',
+        };
+        ch.skills.push(skill);
+      }
+      skill.rating = 1;
+      skill.practice = 0;
+      skill.threshold = 48;
+      store.putCharacter(ch);
+      return refreshCharacterDerived(store.getCharacterBySlug(slug)!);
+    };
+    const tomaso = ready('tomaso');
+    const jakov = ready('jakov');
+    const pool = (ch: typeof tomaso) =>
+      computePoolSize({
+        foundation: ch.foundationsEffective.Strength ?? 0,
+        skill: 1,
+        exertionDice: 1,
+        emptyExertion: false,
+        decadence: ch.flags.decadence,
+        overCapEchoInvolved: false,
+      });
+    const script = (face: number, count: number): Rng => {
+      const faces = [...Array(count).fill(face), 10];
+      const sides = [...Array(count).fill(8), 20];
+      let i = 0;
+      return () => {
+        const shown = faces[i] ?? 1;
+        const die = sides[i] ?? 20;
+        i += 1;
+        return (shown - 0.5) / die;
+      };
+    };
+    const parentPool = pool(tomaso);
+    const parent = executePlayerRoll(store, {
+      characterSlug: 'tomaso',
+      foundation: 'Strength',
+      skill: 'Carpentry & Masonry',
+      dieTier: 8,
+      exertionDice: 1,
+      rng: script(8, parentPool),
+      clientEventId: 'open-roll',
+    });
+    const unopposed = Math.floor(parent.marks / 2);
+    expect(store.getCharacterBySlug('tomaso')!.skills.find((s) => s.name === 'Carpentry & Masonry')!.practice).toBe(
+      unopposed,
+    );
+    const child = executePlayerRoll(store, {
+      characterSlug: 'jakov',
+      foundation: 'Strength',
+      skill: 'Carpentry & Masonry',
+      dieTier: 8,
+      exertionDice: 1,
+      rng: script(1, pool(jakov)),
+      parentRollId: parent.rollId,
+      clientEventId: 'oppose-roll',
+    });
+    const margin = parent.marks;
+    expect(store.getCharacterBySlug('tomaso')!.skills.find((s) => s.name === 'Carpentry & Masonry')!.practice).toBe(
+      margin,
+    );
+    expect(store.getCharacterBySlug('jakov')!.skills.find((s) => s.name === 'Carpentry & Masonry')!.practice).toBe(
+      margin + 2,
+    );
+    const parentRow = store.getRoll(parent.rollId)!.data as { kind?: string; marksDifference?: number };
+    const childRow = store.getRoll(child.rollId)!.data as { kind?: string; marksDifference?: number };
+    expect(parentRow.kind).toBe('opposed');
+    expect(parentRow.marksDifference).toBe(0);
+    expect(childRow.kind).toBe('opposed');
+    expect(childRow.marksDifference).toBe(margin);
+    expect(previewHarmFromRoll(store, child.rollId, 'physical').points).toBe(margin);
+    expect(previewHarmFromRoll(store, parent.rollId, 'physical').points).toBe(0);
+    undoPlayerRoll(store, child.rollId);
+    expect(store.getCharacterBySlug('jakov')!.skills.find((s) => s.name === 'Carpentry & Masonry')!.practice).toBe(0);
+    expect(store.getCharacterBySlug('tomaso')!.skills.find((s) => s.name === 'Carpentry & Masonry')!.practice).toBe(
+      unopposed,
+    );
+    expect((store.getRoll(parent.rollId)!.data as { kind?: string }).kind).toBe('unopposed');
     store.close();
   });
 });

@@ -77,9 +77,12 @@ export function previewHarmFromRoll(
     failures?: number;
     kind?: string;
     characterSlug?: string;
+    /** How far the other side beat this roll. 0 when this side did not lose. */
+    marksDifference?: number;
   };
+  const incoming = opts?.marksDifference ?? data.marksDifference;
   const kind =
-    data.kind === 'opposed' || opts?.marksDifference != null ? 'opposed' : 'unopposed';
+    data.kind === 'opposed' || incoming != null ? 'opposed' : 'unopposed';
   const targetSlug = opts?.targetSlug ?? data.characterSlug;
   const target = targetSlug ? store.getCharacterBySlug(targetSlug) : undefined;
   return previewHarm({
@@ -87,7 +90,7 @@ export function previewHarmFromRoll(
     family,
     marks: data.marks,
     failures: data.failures,
-    marksDifference: opts?.marksDifference,
+    marksDifference: incoming,
     ratio: opts?.ratio,
     target: target ?? undefined,
   });

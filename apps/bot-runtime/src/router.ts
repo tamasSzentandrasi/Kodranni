@@ -11,7 +11,7 @@ import {
   grantGuidingHand,
   grantWord,
   listCharactersForAccount,
-  previewHarm,
+  previewHarmFromRoll,
   previewPlayerPool,
   refuseSeenClaim,
   resolveCharacterByAccount,
@@ -1182,12 +1182,7 @@ async function handleButton(
       await ctx.port.replyEphemeral(i, 'Unknown roll.');
       return;
     }
-    const data = roll.data as {
-      marks?: number;
-      failures?: number;
-      characterSlug?: string;
-      kind?: string;
-    };
+    const data = roll.data as { characterSlug?: string };
     const slug = data.characterSlug;
     if (!slug) {
       await ctx.port.replyEphemeral(i, 'Roll has no character (NPC?) — harm not wired.');
@@ -1199,13 +1194,7 @@ async function handleButton(
       return;
     }
     const family = 'physical' as const;
-    const prev = previewHarm({
-      kind: data.kind === 'opposed' ? 'opposed' : 'unopposed',
-      family,
-      marks: data.marks,
-      failures: data.failures,
-      target: ch,
-    });
+    const prev = previewHarmFromRoll(ctx.store, rollId, family);
     if (prev.points <= 0) {
       await ctx.port.replyEphemeral(i, 'No harm points from this roll (points = 0).');
       return;

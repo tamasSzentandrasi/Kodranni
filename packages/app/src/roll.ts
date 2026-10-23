@@ -5,6 +5,7 @@ import {
   absorbPractice,
   computePoolSize,
   cryptoRng,
+  practiceGain,
   resolveRoll,
   skillByName,
   skillThreshold,
@@ -94,6 +95,100 @@ function publishOmen(
 function rulingScore(ch: CharacterRecord, foundationName: string | undefined): number {
   if (!foundationName) return 1;
   return ch.foundations[foundationName] ?? 1;
+}
+
+interface SheetSkillBefore {
+  name: string;
+  existed: boolean;
+  rating: number;
+  practice: number;
+  threshold: number;
+}
+
+interface StoredRollData {
+  characterSlug?: string;
+  skill?: string | null;
+  primitive?: boolean;
+  marks?: number;
+  failures?: number;
+  exertionSpent?: number;
+  practiceGained?: number;
+  practiceReasons?: string[];
+  kind?: string;
+  opponentMarks?: number;
+  marksDifference?: number;
+  revisedBy?: string;
+  unopposedPracticeGained?: number;
+  sheetBefore?: {
+    status?: string;
+    dying?: boolean;
+    skill?: SheetSkillBefore | null;
+  };
+}
+
+/** Margin is this side’s Marks minus the other side’s. Harm incoming is how far this side lost. */
+function exchangePractice(input: {
+  primitive: boolean;
+  marks: number;
+  failures: number;
+  exertionSpent: boolean;
+  opponentMarks: number;
+}): { gained: number; reasons: string[]; marksDifference: number } {
+  const margin = input.marks - input.opponentMarks;
+  const marksDifference = margin < 0 ? -margin : 0;
+  if (input.primitive) return { gained: 0, reasons: ['primitive'], marksDifference };
+  const practice = practiceGain({
+    kind: 'opposed',
+    usedSkill: true,
+    exertionSpent: input.exertionSpent,
+    marks: input.marks,
+    failures: input.failures,
+    margin,
+    lostOpposed: margin < 0,
+  });
+  return { gained: practice.gained, reasons: practice.reasons, marksDifference };
+}
+
+function skillSnapshot(ch: CharacterRecord, skillName: string): SheetSkillBefore {
+  const prior = ch.skills.find((s) => s.name === skillName);
+  return {
+    name: skillName,
+    existed: Boolean(prior),
+    rating: prior?.rating ?? 0,
+    practice: prior?.practice ?? 0,
+    threshold:
+      prior?.threshold ?? skillThreshold(0, rulingScore(ch, skillByName(skillName)?.foundation)),
+  };
+}
+
+function restoreSkill(ch: CharacterRecord, prior: SheetSkillBefore): void {
+  if (!prior.existed) {
+    ch.skills = ch.skills.filter((s) => s.name !== prior.name);
+    return;
+  }
+  const skill = ch.skills.find((s) => s.name === prior.name);
+  if (!skill) return;
+  skill.rating = prior.rating;
+  skill.practice = prior.practice;
+  skill.threshold = prior.threshold;
+}
+
+function writePractice(ch: CharacterRecord, skillName: string, gained: number): void {
+  if (!skillName || gained <= 0) return;
+  let skill = ch.skills.find((s) => s.name === skillName);
+  const ruled = skillByName(skillName);
+  if (!skill) {
+    skill = {
+      name: skillName,
+      rating: 0,
+      practice: 0,
+      threshold: skillThreshold(0, rulingScore(ch, ruled?.foundation)),
+      foundation: ruled?.foundation ?? '',
+    };
+    ch.skills.push(skill);
+  }
+  skill.practice += gained;
+  absorbPractice(skill, rulingScore(ch, ruled?.foundation ?? skill.foundation));
 }
 
 /**
@@ -275,24 +370,27 @@ export function executePlayerRoll(
   });
 
   const skillRating = skill?.rating ?? 0;
-  const priorSkill = skillName ? ch.skills.find((s) => s.name === skillName) : undefined;
-  const sheetBefore = {
+  const rollId = randomUUID();
+  const parent = cmd.parentRollId ? store.getRoll(cmd.parentRollId) : undefined;
+  const parentData = parent?.data as StoredRollData | undefined;
+  const exchange =
+    parent && typeof parentData?.marks === 'number'
+      ? exchangePractice({
+          primitive,
+          marks: resolved.marks,
+          failures: resolved.failures,
+          exertionSpent: willSpend > 0,
+          opponentMarks: parentData.marks,
+        })
+      : null;
+  const practiceGained = exchange ? exchange.gained : resolved.practiceGained;
+  const practiceReasons = exchange ? exchange.reasons : resolved.practiceReasons;
+
+  const bodyBefore = {
     exertion: ch.exertion.current,
     status: ch.status,
     dying: Boolean(ch.dying),
-    skill: skillName
-      ? {
-          name: skillName,
-          existed: Boolean(priorSkill),
-          rating: priorSkill?.rating ?? 0,
-          practice: priorSkill?.practice ?? 0,
-          threshold:
-            priorSkill?.threshold ??
-            skillThreshold(0, rulingScore(ch, skillByName(skillName)?.foundation)),
-        }
-      : null,
   };
-  // Apply mutations
   if (willSpend > 0) {
     ch.exertion.current -= willSpend;
   }
@@ -302,19 +400,57 @@ export function executePlayerRoll(
     ch.dying = false;
   }
 
-  if (skill && resolved.practiceGained > 0) {
-    skill.practice += resolved.practiceGained;
-    const ruled = skillByName(skill.name);
-    absorbPractice(skill, rulingScore(ch, ruled?.foundation ?? skill.foundation));
-    if (!ch.skills.some((s) => s.name === skill.name)) {
-      ch.skills.push(skill);
+  if (
+    parent &&
+    parentData &&
+    parentData.kind !== 'opposed' &&
+    typeof parentData.marks === 'number' &&
+    parentData.characterSlug
+  ) {
+    const parentCh =
+      parentData.characterSlug === ch.slug ? ch : store.getCharacterBySlug(parentData.characterSlug);
+    if (parentCh) {
+      const prior = parentData.sheetBefore?.skill;
+      if (prior) restoreSkill(parentCh, prior);
+      const revised = exchangePractice({
+        primitive: Boolean(parentData.primitive),
+        marks: parentData.marks,
+        failures: parentData.failures ?? 0,
+        exertionSpent: (parentData.exertionSpent ?? 0) > 0,
+        opponentMarks: resolved.marks,
+      });
+      if (prior && !parentData.primitive) writePractice(parentCh, prior.name, revised.gained);
+      if (parentCh !== ch) {
+        refreshCharacterDerived(parentCh);
+        store.putCharacter(parentCh);
+      }
+      store.insertRoll({
+        id: parent.id,
+        ts: parent.ts,
+        characterId: parent.characterId,
+        parentRollId: parent.parentRollId,
+        data: {
+          ...parentData,
+          kind: 'opposed',
+          opponentMarks: resolved.marks,
+          marksDifference: revised.marksDifference,
+          practiceGained: revised.gained,
+          practiceReasons: revised.reasons,
+          revisedBy: rollId,
+          unopposedPracticeGained: parentData.practiceGained ?? 0,
+        },
+      });
     }
   }
 
+  const sheetBefore = {
+    ...bodyBefore,
+    skill: skillName ? skillSnapshot(ch, skillName) : null,
+  };
+  if (skillName) writePractice(ch, skillName, practiceGained);
+
   refreshCharacterDerived(ch);
   store.putCharacter(ch);
-
-  const rollId = randomUUID();
   const omen = publishOmen(store, scene, resolved.omen, resolved.omenHit, rollId);
   const tideStep = stepOpposedTide(store, cmd, resolved.marks, resolved.omen);
   const whyParts: string[] = [
@@ -344,7 +480,12 @@ export function executePlayerRoll(
     omen: resolved.omen,
     omenHit: resolved.omenHit,
     omenEffect: omen.effect,
-    practiceGained: resolved.practiceGained,
+    practiceGained,
+    practiceReasons,
+    kind: exchange ? 'opposed' : primitive ? 'primitive' : 'unopposed',
+    ...(exchange && parentData && typeof parentData.marks === 'number'
+      ? { opponentMarks: parentData.marks, marksDifference: exchange.marksDifference }
+      : {}),
     poolSize: resolved.poolSize,
     poolFormula,
     whyPool: whyParts.join('; '),
@@ -385,13 +526,45 @@ export function executePlayerRoll(
     omenEffect: omen.effect,
     omenSecret: omen.secret || undefined,
     omenWhisper: omen.whisper,
-    practiceGained: resolved.practiceGained,
-    practiceReasons: resolved.practiceReasons,
+    practiceGained,
+    practiceReasons,
     poolFormula,
     whyPool: whyParts.join('; '),
     reused: false,
     died: diedOnRoll,
   };
+}
+
+/** Put the opening roll back to the unopposed Practice it had before this reply rescore. */
+function revertOpeningPractice(
+  store: CommunityStorePort,
+  childRollId: string,
+  parentRollId: string,
+): void {
+  const parent = store.getRoll(parentRollId);
+  const data = parent?.data as StoredRollData | undefined;
+  if (!parent || !data || data.revisedBy !== childRollId || !data.characterSlug) return;
+  const ch = store.getCharacterBySlug(data.characterSlug);
+  if (!ch) return;
+  const prior = data.sheetBefore?.skill;
+  if (prior) restoreSkill(ch, prior);
+  if (prior && !data.primitive) writePractice(ch, prior.name, data.unopposedPracticeGained ?? 0);
+  refreshCharacterDerived(ch);
+  store.putCharacter(ch);
+  const next: StoredRollData = { ...data };
+  delete next.revisedBy;
+  delete next.opponentMarks;
+  delete next.marksDifference;
+  delete next.unopposedPracticeGained;
+  next.kind = data.primitive ? 'primitive' : 'unopposed';
+  next.practiceGained = data.unopposedPracticeGained ?? 0;
+  store.insertRoll({
+    id: parent.id,
+    ts: parent.ts,
+    characterId: parent.characterId,
+    parentRollId: parent.parentRollId,
+    data: next,
+  });
 }
 
 /** Reverse one roll’s Exertion, the Practice it wrote, Harm from that card, and a linked Tide step. */
@@ -465,6 +638,7 @@ export function undoPlayerRoll(
 
   refreshCharacterDerived(ch);
   store.putCharacter(ch);
+  if (roll.parentRollId) revertOpeningPractice(store, rollId, roll.parentRollId);
 
   const from = data.tideStep?.from;
   if (typeof from === 'number') {
